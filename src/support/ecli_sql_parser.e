@@ -49,6 +49,8 @@ feature -- Status setting
 
 feature -- Basic operations
 
+			escape : BOOLEAN
+
 	parse (sql : STRING; callback : ECLI_SQL_PARSER_CALLBACK) is
 			-- parse s, replacing every parameter by the ODBC/CLI marker '?'
 		local
@@ -56,7 +58,6 @@ feature -- Basic operations
 			c, previous_c : CHARACTER
 			parameter_begin, parameter_end : INTEGER
 			parameter : STRING
-			escape : BOOLEAN
 		do
 			from
 				index := 1
@@ -69,6 +70,9 @@ feature -- Basic operations
 				index > sql_count
 			loop
 				c := original_sql.item (index)
+				if c= '?' then
+					do_nothing
+				end
 				inspect state
 				when State_sql then
 					inspect c
@@ -103,6 +107,7 @@ feature -- Basic operations
 						index := index + 1
 					else
 						if escape then
+							escape := False
 							state := state_sql
 						else
 							parsed_sql.append_character (c)
@@ -121,6 +126,7 @@ feature -- Basic operations
 						index := index + 1
 					else
 						if escape then
+							escape := False
 							state := state_sql
 						else
 							parsed_sql.append_character (c)
@@ -154,6 +160,9 @@ feature -- Basic operations
 					parameter_end := 0
 				end
 			end
+			check
+				state=state_sql
+			end
 		end
 		
 feature {NONE} -- Implementation
@@ -169,6 +178,7 @@ feature {NONE} -- Implementation
 	
 invariant
 	good_parameter_marker: (":?~°@§").has (parameter_marker)
+	good_state: state = State_sql implies not escape
 	
 end -- class ECLI_SQL_PARSER
 --
