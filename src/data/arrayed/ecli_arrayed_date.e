@@ -72,7 +72,7 @@ feature -- Access
 		do
 			Result := year_at (cursor_index)
 		ensure
-			value_at_cursor_index: not is_null implies Result = month_at (cursor_index)
+			value_at_cursor_index: not is_null implies Result = year_at (cursor_index)
 			zero_when_null: is_null implies Result = 0
 		end
 

@@ -1,328 +1,123 @@
 indexing
-	description: "Objects that ..."
+	description: "Objects that abstract ISQL commands."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
+deferred class
 	ISQL_COMMAND
 
 inherit
-	ANY
-
-	KL_IMPORTED_STRING_ROUTINES
+	ECLI_STRING_ROUTINES
 		export {NONE} all
 		end
-
-
-create
-	make_file, make_interactive
-
-feature {NONE} -- Initialization
-
-	make_file (a_file : PLAIN_TEXT_FILE) is
-			-- make for `a_file'
-		require
-			file_exists: a_file /= Void
-			file_open_read: a_file.is_open_read
-		do
-			make_interactive
-			input_file := a_file
-		ensure
-			file_set: input_file = a_file
-			not_interactive: not is_interactive
-		end
-
-	make_interactive is
-			-- make interactive
-		do
-			text := STRING_.make (1000)
-		ensure
-			interactive: is_interactive
-		end
-
+		
 feature -- Access
 
-	text : STRING
-		-- command text
-
-	input_file : PLAIN_TEXT_FILE
-		-- input file.  Void => interactive
-
---|feature -- Measurement
+	help_message : STRING is
+			-- help message for current command
+		deferred
+		end
+		
+	error_message : STRING
+	
+feature -- Measurement
 
 feature -- Status report
 
-	is_interactive : BOOLEAN is
-			-- is this an interactive text ?
+	matches (text : STRING) : BOOLEAN is
+			-- does `text' match current command
+		deferred
+		end
+
+	is_error : BOOLEAN is
 		do
-			Result := (input_file = Void)
+			Result := error_message /= Void
 		ensure
-			interactive: Result = (input_file = Void)
-		end
-
-
-	is_begin  : BOOLEAN is
-			-- is 's' a BEGIN TRANSACTION ?
-			-- checking only first 3 charactercommand...
-		do
-			if text.count >= 3 then
-				if      (text.item (1) = 'b' or else text.item  (1) = 'B')
-					and (text.item (2) = 'e' or else text.item (2) = 'E')
-					and (text.item (3) = 'g' or else text.item (3) = 'G')
-				then
-					Result := True
-				end
-			end
-		end
-
-	is_commit  : BOOLEAN is
-			-- is 's' a COMMIT TRANSACTION ?
-			-- checking only first 3 charactercommand...
-		do
-			if text.count >= 3 then
-				if      (text.item (1) = 'c' or else text.item  (1) = 'C')
-					and (text.item (2) = 'o' or else text.item (2) = 'O')
-					and (text.item (3) = 'm' or else text.item (3) = 'M')
-				then
-					Result := True
-				end
-			end
-		end
-
-	is_rollback  : BOOLEAN is
-			-- is 's' a ROLLBACK TRANSACTION ?
-			-- checking only first 3 charactercommand...
-		do
-			if text.count >= 3 then
-				if (text.item (1) = 'r' or text.item  (1) = 'R')
-					and (text.item (2) = 'o' or text.item (2) = 'O')
-					and (text.item (3) = 'l' or text.item (3) = 'L')
-				then
-					Result := True
-				end
-			end
-		end
-
-	is_query  : BOOLEAN is
-			-- is `s' a SELECT ?
-			-- checking only first 3 characters
-		do
-			if text.count >= 3 then
-				if (text.item (1) = 's' or text.item  (1) = 'S')
-					and (text.item (2) = 'e' or text.item (2) = 'E')
-					and (text.item (3) = 'l' or text.item (3) = 'L')
-				then
-					Result := True
-				end
-			end
-		end
-
-	is_set  : BOOLEAN is
-			-- is 's' a SET ?
-		do
-			if text.count >= 3 then
-				if (text.item (1) = 's' or text.item  (1) = 'S')
-					and (text.item (2) = 'e' or text.item (2) = 'E')
-					and (text.item (3) = 't' or text.item (3) = 'T')
-				then
-					Result := True
-				end
-			end
-		end
-
-	is_quit : BOOLEAN is
-			-- is this a 'quit'?
-		do
-			if text.count >=1 then
-				inspect text.item (1)
-				when 'q', 'Q' then
-					Result := True
-				else
-					Result := False
-				end
-			end
-		end
-
-	is_help : BOOLEAN is
-			-- is this a 'help'?
-		do
-			if text.count >=1 then
-				inspect text.item (1)
-				when 'h', 'H' then
-					Result := True
-				else
-					Result := False
-				end
-			end
-		end
-
-	end_of_input : BOOLEAN is
-			-- has 'end of file' been encountered?
-		do
-			if not is_interactive then
-				Result := input_file.end_of_file
-			end
-		end
-
-	is_tables : BOOLEAN is
-			-- is this 'tables' ?
-		do
-			if text.count >=1 then
-				inspect text.item (1)
-				when 'T', 't' then
-					inspect text.item (2) 
-					when 'A', 'a' then
-						Result := True
-					else
-					end
-				else
-				end				
-			end
+			definition: Result = (error_message /= Void)
 		end
 		
-	is_types : BOOLEAN is
-			-- is this 'types' ?
-		do
-			if text.count >=1 then
-				inspect text.item (1)
-				when 'T', 't' then
-					inspect text.item (2) 
-					when 'Y', 'y' then
-						Result := True
-					else
-					end
-				else
-				end				
-			end
-		end
+feature -- Status setting
 
-	is_columns : BOOLEAN is
-			-- is this 'columns' ?
+feature -- Cursor movement
+
+feature -- Element change
+
+	set_error (a_message : STRING) is
+			-- set error_message to `a_message'
+		require
+			a_message_not_void: a_message /= Void
 		do
-			if text.count >=2 then
-				if text.item (1) = 'c' or else text.item (1) = 'C' then
-					if text.item (2) = 'o' or else text.item (2) = 'O' then
-						Result := True
-					end
-				end
-			end
-		end
-	
-	is_sources : BOOLEAN is
-			-- is this 'sources' ?
-		do
-			if text.count >=2 then
-				if text.item (1) = 's' or else text.item (1) = 'S' then
-					if text.item (2) = 'o' or else text.item (2) = 'O' then
-						Result := True
-					end
-				end
-			end
+			error_message := a_message
+		ensure
+			is_error: is_error
 		end
 		
-	is_procedures  : BOOLEAN is
-			-- is 'text' equal to 'PROCEDURES' ?
-		do
-			if text.count >= 3 then
-				if (text.item (1) = 'p' or text.item  (1) = 'P')
-					and (text.item (2) = 'r' or text.item (2) = 'R')
-					and (text.item (3) = 'o' or text.item (3) = 'O')
-				then
-					Result := True
-				end
-			end
-		end
-		
---|feature -- Status setting
+feature -- Removal
 
---|feature -- Cursor movement
+feature -- Resizing
 
---|feature -- Element change
+feature -- Transformation
 
---|feature -- Removal
+feature -- Conversion
 
---|feature -- Resizing
+feature -- Duplication
 
---|feature -- Transformation
-
---|feature -- Conversion
-
---|feature -- Duplication
-
---|feature -- Miscellaneous
+feature -- Miscellaneous
 
 feature -- Basic operations
 
-	read is
-		-- read
-		local
-			done : BOOLEAN
-			separator_index : INTEGER
-		do
-			text.copy("")
-			-- prompt user
-			from
-				read_line
-			until
-				end_of_input or else done
-			loop
-				-- Trim trailing blanks
-				from
-					separator_index := last_string.count
-				until
-					separator_index < 1 or else
-					(last_string.item(separator_index) /= ' ' and then
-					last_string.item(separator_index) /= '%T')
-				loop
-					separator_index := separator_index - 1
-				end
-				-- End of text ?
-				if separator_index >= 1 then
-					if last_string.item (separator_index) = ';' then
-						done := True
-						separator_index := separator_index - 1
-					end
-				end
-				-- Append if not empty string
-				if separator_index >= 1 then
-					-- Add a blank if necessary to avoid concatenating text statements...
-					if text.count > 0 and then (text.item (text.count) /= ' ' or else
-					   last_string.item (1) /= ' ') then
-					   text.append_character (' ')
-					end
-					-- Append next text segment
-					text.append (last_string.substring (1, separator_index))
-				end
-				if not done then
-					read_line
-				end
-			end
-		ensure
-			command_set: text /= Void
+	execute (text : STRING; context : ISQL_CONTEXT) is
+			-- execute `text' within `context'
+		require
+			text_not_void: text /= Void
+			text_matches_command: matches (text)
+			context_not_void: context /= Void
+			context_executable: context.is_executable
+		deferred
 		end
+		
+feature -- Obsolete
 
---|feature -- Obsolete
-
---|feature -- Inapplicable
+feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	read_line is
+	matches_single_string (text : STRING; matcher : STRING) : BOOLEAN is
+		local
+			stream : KL_WORD_INPUT_STREAM
+			temp : STRING
 		do
-			if is_interactive then
-				io.read_line
-				last_string := io.last_string
-			else
-				input_file.read_line
-				last_string := input_file.last_string
+			create stream.make (text," %T%N%R")
+			stream.read_word
+			if not stream.end_of_input then
+				temp := stream.last_string
+				temp.to_lower
+				Result := temp.substring_index (matcher,1)=1
 			end
 		end
 
-	last_string : STRING
+	print_string (output : KI_TEXT_OUTPUT_STREAM; s : STRING) is
+		do
+			if s /= Void then
+				output.put_string (s)
+			else
+				output.put_string ("NULL")
+			end
+		end
 
+	nullable_string (s : STRING) : STRING is
+		do
+			if s/= Void then
+				Result := s
+			else
+				Result := "NULL"
+			end
+		end
+		
+	command_width : INTEGER is 30
+	
 invariant
-
-	command_exists: text /= Void
+	invariant_clause: True -- Your invariant here
 
 end -- class ISQL_COMMAND

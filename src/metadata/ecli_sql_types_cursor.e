@@ -109,7 +109,8 @@ feature -- Access
 				sql_type_date,
 				sql_type_time,
 				sql_type_timestamp,
-				sql_longvarchar
+				sql_longvarchar,
+				sql_all_types
 			>>
 		end
 		

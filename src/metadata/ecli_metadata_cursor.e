@@ -48,6 +48,9 @@ feature --
 				l_name := string_to_pointer (a_name.name)
 				name_length := a_name.name.count
 			end
+			queried_catalog := a_name.catalog
+			queried_schema := a_name.schema
+			queried_name := a_name.name
 			set_status (
 				do_query_metadata ( l_catalog, catalog_length, l_schema, schema_length, l_name, name_length))
 			update_state_after_execution
@@ -80,13 +83,19 @@ feature -- Cursor Movement
 				create_buffers
 			end
 			Precursor
-			create_item	
+			if not off then
+				create_item	
+			else
+				impl_item := Void
+			end
 		end
 		
 	forth is
 		do
 			Precursor
-			create_item
+			if not off then
+				create_item
+			end
 		end
 
 			
@@ -119,13 +128,13 @@ feature {NONE} -- Implementation
 				is_executed := True
 				if has_results then
 					set_cursor_before
+					create_buffers		
 				else
 					set_cursor_after
 				end
 			else
 				impl_result_columns_count := 0
 			end
-			create_buffers		
 		end
 
 	do_query_metadata (a_catalog : POINTER; a_catalog_length : INTEGER;

@@ -40,6 +40,7 @@ feature -- Access
 			-- schema name
 	
 	name : STRING
+			-- table or column name
 	
 feature -- Measurement
 

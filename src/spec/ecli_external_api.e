@@ -136,6 +136,16 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_get_primary_keys ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER) : INTEGER is
+		external "C"
+		end
+
+	ecli_c_get_foreign_keys ( StatementHandle : POINTER ;  
+			CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER;
+			FKCatalogName : POINTER ;  NameLength4 : INTEGER ; FKSchemaName : POINTER ;  NameLength5 : INTEGER ; FKTableName : POINTER ;  NameLength6 : INTEGER) : INTEGER is
+		external "C"
+		end
+
 	ecli_c_get_datasources ( env : POINTER ;  operation : INTEGER ;  source_name : POINTER; source_name_length : INTEGER ; actual_source_name_length : POINTER ; description : POINTER ;  description_length : INTEGER; actual_description_length : POINTER) : INTEGER is
 		external "C"
 		end

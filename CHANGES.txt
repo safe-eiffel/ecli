@@ -1,4 +1,5 @@
 2003-01-01
+	* Tried with SQLite (www.sqlite.org)
 	* Added ECLI_SESSION.is_bind_arrayed_results_capable + updated ECLI_ROWSET_CURSOR preconditions on 'open' and 'open_prepared'
 	* Corrected problem with ECLI_STATEMENT.parameters_count when there were parameters without name
 	* ECLI_ARRAYED_VALUE.set_null is now correctly redefined

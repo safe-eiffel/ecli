@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Procedures metadata."
+	author: "Paul G. Crismer."
 	date: "$Date$"
 	revision: "$Revision$"
 

@@ -23,7 +23,7 @@ inherit
 	ECLI_ROWSET_CAPABLE
 	
 creation
-	make
+	make, make_prepared, open, open_prepared
 	
 feature -- Initialization
 
@@ -59,10 +59,10 @@ feature -- Initialization
 			valid: is_valid
 			definition_set: definition = a_definition
 			definition_is_sql: equal (definition, sql)
-			definition_is_a_query:  has_results or else not is_ok
+			prepared_if_ok: is_ok implies is_prepared
+--			definition_is_a_query:  is_ok implies has_results
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			row_count_set: row_capacity = a_row_count
-			prepared_if_ok: is_ok implies is_prepared
 		end
 		
 feature -- Access
@@ -96,7 +96,7 @@ feature -- Basic operations
 				Precursor
 			ensure then
 				cursor_exists: (is_executed and then has_results) implies (cursor /= Void and then cursor.count = result_columns_count)
-				fetched_columns_count_set: fetched_columns_count = result_columns_count.min (cursor.count)
+				fetched_columns_count_set: (is_executed and then has_results) implies (fetched_columns_count = result_columns_count.min (cursor.count))
 			end
 			
 feature -- Obsolete

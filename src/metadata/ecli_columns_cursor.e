@@ -38,8 +38,8 @@ feature {NONE} -- Initialization
 			search_criteria : ECLI_NAMED_METADATA
 		do
 			!!search_criteria.make (Void, Void, a_table)
-			queried_column := Void
 			make (search_criteria, a_session)
+			queried_column := Void
 		ensure
 			executed: is_ok implies is_executed
 		end
@@ -48,8 +48,8 @@ feature {NONE} -- Initialization
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
-			queried_column := a_column_name
 			make (a_search_criteria, a_session)
+			queried_column := a_column_name
 		end
 
 	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION)	is
