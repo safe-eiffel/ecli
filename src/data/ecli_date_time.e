@@ -21,7 +21,7 @@ feature
 
 	sql_type_code : INTEGER is
 		once
-			Result := Sql_datetime
+			Result := Sql_type_timestamp
 		end
 		
 end -- class ECLI_DATE_TIME

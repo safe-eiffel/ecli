@@ -120,8 +120,15 @@ feature -- Status report
 		end
 
 	column_precision: INTEGER is
+		local
+			l_digits : INTEGER
 		do
-			Result := 9+decimal_digits
+			l_digits := decimal_digits
+			if l_digits > 0 then
+				Result := 9+l_digits
+			else
+				Result := 8
+			end
 		end
 
 	transfer_octet_length: INTEGER is
@@ -135,8 +142,19 @@ feature -- Status report
 		end
 	
 	decimal_digits: INTEGER is
+			-- log_10 (nanoseconds)	
+		local
+			l_nanoseconds : INTEGER
 		do 
-			Result := 9
+			l_nanoseconds := nanosecond
+			from
+				Result := 0
+			until
+				l_nanoseconds = 0
+			loop
+				l_nanoseconds := l_nanoseconds // 10
+				Result := Result + 1
+			end
 		end
 
 	display_size: INTEGER is
