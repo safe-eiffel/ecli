@@ -43,6 +43,8 @@ feature
 			test_real
 			print ("test FLOAT%N")
 			test_float
+			print ("test LONGVARBINARY%N")
+			test_longvarbinary
 		end
 
 	do_arrayed_tests is
@@ -90,6 +92,17 @@ feature
 			-- 
 		local
 			v : ECLI_LONGVARCHAR
+		do
+			create v.make (10000)
+			v.set_item (string_foo)
+			v.set_null
+			v.set_item (string_long)
+		end
+
+	test_longvarbinary is
+			-- 
+		local
+			v : ECLI_LONGVARBINARY
 		do
 			create v.make (10000)
 			v.set_item (string_foo)

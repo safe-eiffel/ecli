@@ -28,11 +28,4 @@
 	<cluster name="test_rowset" location="${ECLI}/examples/test_rowset"/>
 
 	<mount location="${ECLI}/library.xace"/>
-
-	<mount location="${GOBO}/library/time/library.xace"/>
-	<mount location="${GOBO}/library/kernel/library.xace"/>
-	<mount location="${GOBO}/library/structure/library.xace"/>
-	<mount location="${GOBO}/library/utility/library.xace"/>
-	<mount location="${GOBO}/library/pattern/library.xace"/>
-	<mount location="${GOBO}/library/kernel.xace"/>
 </system>

@@ -67,7 +67,9 @@ feature -- Access
 			if is_null_at (index) then
 				Result := Void
 			else
-				string_copy_from_pointer (impl_item, ecli_c_array_value_get_value_at (buffer, index))
+				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), 
+					ecli_c_array_value_get_length_indicator_at(buffer,index))
+				ext_item.copy_to (impl_item)
 				Result := impl_item
 			end
 		end

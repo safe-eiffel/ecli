@@ -170,8 +170,6 @@ feature -- Conversion
 			Result := item.to_double
 		end
 		
-feature -- Basic operations
-
 	out : STRING is
 		do
 			if is_null then
@@ -181,11 +179,29 @@ feature -- Basic operations
 			end
 		end
 
+feature -- Basic operations
+
 	trace (a_tracer : ECLI_TRACER) is
+			-- trace content into `a_tracer'
 		do
 			a_tracer.put_string (Current)
 		end
 
+	append_substring_to (i_start, i_end : INTEGER; string : STRING) is
+			-- append substring [i_start..i_end] to string
+		require
+			i_start_ok: i_start > 0 and i_start <= i_end
+			i_end_ok: i_end > 0 and i_end <= count
+			string_exists: string /= Void
+			not_null: not is_null
+		do
+			ext_item.append_substring_to (i_start, i_end, string)
+		ensure
+			string_set: string.substring (
+				(old (string.count)) + 1, 
+				string.count).is_equal (item.substring (i_start, i_end))			
+		end
+		
 feature -- Obsolete
 
 feature -- Inapplicable

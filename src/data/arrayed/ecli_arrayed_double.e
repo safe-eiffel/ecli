@@ -106,7 +106,7 @@ feature -- Basic operations
 					Result.append_string ("NULL")
 				else
 					sprintf_double (message_buffer.handle, item_at (i).item)
-					Result.append_string (pointer_to_string(message_buffer.handle))
+					Result.append_string (message_buffer.as_string)
 				end
 				if i < count then
 					Result.append_string (",")					
