@@ -50,46 +50,51 @@ feature {NONE} -- Miscellaneous
 
 	create_double_value is
 		do
-			!ECLI_DOUBLE!last_result.make
+			create {ECLI_DOUBLE}last_result.make
 		end
 
+	create_decimal_value (precision, decimal_digits : INTEGER) is
+		do
+			create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
+		end
+		
 	create_real_value is
 		do
-			!ECLI_REAL!last_result.make
+			create {ECLI_REAL}last_result.make
 		end
 
 	create_integer_value is
 		do
-			!ECLI_INTEGER!last_result.make
+			create {ECLI_INTEGER}last_result.make
 		end
 
 	create_char_value (column_precision : INTEGER) is
 		do
-			!ECLI_CHAR!last_result.make (column_precision)
+			create {ECLI_CHAR}last_result.make (column_precision)
 		end
 
 	create_varchar_value (column_precision : INTEGER) is
 		do
 			if column_precision > 254 then
-				!ECLI_LONGVARCHAR!last_result.make (column_precision)
+				create {ECLI_LONGVARCHAR}last_result.make (column_precision)
 			else
-				!ECLI_VARCHAR!last_result.make (column_precision)
+				create {ECLI_VARCHAR}last_result.make (column_precision)
 			end
 		end
 
 	create_date_value is
 		do
-			!ECLI_DATE!last_result.make_default
+			create {ECLI_DATE}last_result.make_default
 		end
 
 	create_timestamp_value is
 		do
-			!ECLI_TIMESTAMP!last_result.make_default
+			create {ECLI_TIMESTAMP}last_result.make_default
 		end
 
 	create_time_value is
 		do
-			!ECLI_TIME!last_result.make_default
+			create {ECLI_TIME}last_result.make_default
 		end
 
 feature -- Basic operations
@@ -110,20 +115,16 @@ feature -- Basic operations
 					create_real_value
 			elseif db_type = sql_double then
 					create_double_value
-			elseif db_type = sql_numeric or db_type = sql_decimal or db_type = sql_float then
-					if decimal_digits = 0 and column_precision <= 10 then
-							create_integer_value
-					else
-						if column_precision <= 7 and decimal_digits <= 7 then
-							create_real_value
-						else
-							create_double_value
-						end
-					end
+			elseif db_type = sql_numeric or db_type = sql_decimal then
+					create_decimal_value (column_precision, decimal_digits)
+			elseif db_type = sql_float then
+					create_real_value
 			elseif db_type = sql_type_date then
 					create_date_value
 			elseif db_type = sql_type_timestamp then
 					create_timestamp_value
+			elseif db_type = Sql_type_time then
+					create_time_value
 			else
 				create_varchar_value (column_precision)
 			end
@@ -138,16 +139,18 @@ feature {NONE} -- Implementation
 	valid_types : ARRAY[INTEGER] is
 		once
 			Result := << 
+				sql_binary,
 				sql_char, 
+				sql_type_date, 
 				sql_decimal, 
 				sql_double, 
 				sql_float, 
 				sql_integer, 
+				sql_longvarbinary,
 				sql_longvarchar,
 				sql_numeric,
 				sql_real, 
 				sql_smallint, 
-				sql_type_date, 
 				sql_type_time,
 				sql_type_timestamp, 
 				sql_varchar

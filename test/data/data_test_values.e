@@ -241,6 +241,29 @@ feature -- Basic operations
 			assert_double_equal ("copy", v.item, z.item)
 		end
 
+	test_decimal is
+			-- test ECLI_DOUBLE
+		local
+			v, z : ECLI_DECIMAL
+			r : MA_DECIMAL
+			ctx : MA_DECIMAL_CONTEXT
+		do
+			create v.make (18, 4)
+			assert ("is_null", v.is_null)
+			create ctx.make_double_extended
+			create r.make_from_string_ctx ("98765432101234.5678", ctx)
+			v.set_item (r)
+			assert_equal ("set_item", r, v.item)
+			v.set_null
+			assert ("set_null", v.is_null)
+			r := -r
+			v.set_item (r)
+			assert_equal ("set_item2", r, v.item)
+			create z.make (v.precision, v.decimal_digits)
+			z.copy (v)
+			assert_equal ("copy", v.item, z.item)
+		end
+
 	test_real is
 			-- test ECLI_REAL
 		local

@@ -64,25 +64,32 @@ feature -- Access
 			ht_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[ECLI_SQL_TYPE], INTEGER]
 			l_cursor : DS_LIST_CURSOR[ECLI_SQL_TYPE]
 		do
-			from
-				ht_cursor := types.new_cursor
-				ht_cursor.start
-				create {DS_LINKED_LIST[ECLI_SQL_TYPE]}Result.make
-			until
-				ht_cursor.off
-			loop
+			if numerics_table /= Void then
+				Result := numerics_table
+			else
 				from
-					l_cursor := ht_cursor.item.new_cursor
-					l_cursor.start
+					ht_cursor := types.new_cursor
+					ht_cursor.start
+					create {DS_LINKED_LIST[ECLI_SQL_TYPE]}Result.make
 				until
-					l_cursor.off
+					ht_cursor.off
 				loop
-					if l_cursor.item.is_unsigned_applicable then
-						Result.put_last (l_cursor.item)
+					from
+						l_cursor := ht_cursor.item.new_cursor
+						l_cursor.start
+					until
+						l_cursor.off
+					loop
+						if l_cursor.item.is_unsigned_applicable 
+							and then l_cursor.item.is_auto_unique_value_applicable
+							and then not l_cursor.item.is_auto_unique_value then
+								Result.put_last (l_cursor.item)
+						end
+						l_cursor.forth
 					end
-					l_cursor.forth
+					ht_cursor.forth
 				end
-				ht_cursor.forth
+				numerics_table := Result
 			end
 		ensure
 			result_not_void: Result /= Void
@@ -226,6 +233,8 @@ feature {NONE} -- Implementation
 			has_type: types.item (type.sql_type_code).has (type)
 		end
 		
+	numerics_table : like numeric_types
+	
 invariant
 	
 	types_not_void: types /= Void

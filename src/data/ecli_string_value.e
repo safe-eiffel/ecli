@@ -137,6 +137,16 @@ feature -- Status report
 			Result := not is_null and then item.is_double
 		end
 
+	convertible_as_decimal : BOOLEAN is
+			-- Is this value convertible to a decimal ?
+		local
+			parser : MA_DECIMAL_TEXT_PARSER
+		do
+			create parser
+			parser.parse (item)
+			Result := not parser.error
+		end
+
 	convertible_as_character : BOOLEAN is
 		do
 			Result := count > 0
@@ -225,6 +235,18 @@ feature -- Conversion
 			-- 
 		do
 			Result := item.to_double
+		end
+
+	as_decimal : MA_DECIMAL is
+			-- Current converted to MA_DECIMAL.
+		local
+			ctx : MA_DECIMAL_CONTEXT
+			s : STRING
+		do
+			s := as_string
+			create ctx.make_double_extended
+			ctx.set_digits (s.count)
+			create Result.make_from_string_ctx (s, ctx)
 		end
 
 	as_boolean : BOOLEAN is

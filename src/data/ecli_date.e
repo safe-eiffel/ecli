@@ -117,6 +117,12 @@ feature -- Status report
 			Result := False
 		end
 
+	convertible_as_decimal : BOOLEAN is
+			-- Is this value convertible to a decimal ?
+		do
+			Result := False
+		end
+
 	convertible_as_integer : BOOLEAN is
 			-- Is this value convertible to an integer ?
 		do
@@ -271,6 +277,11 @@ feature -- Conversion
 
 	as_double : DOUBLE is
 			-- Current converted to DOUBLE
+		do
+		end
+
+	as_decimal : MA_DECIMAL is
+			-- Current converted to MA_DECIMAL.
 		do
 		end
 

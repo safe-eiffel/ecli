@@ -111,7 +111,7 @@ feature -- Conversion
 				c := string.item (index)
 				inspect c
 				when '%N' then
-					Result.append_string ("%%%N%%")
+					Result.append_string ("%%N%%%N%%")
 				else
 					Result.append_character (c)
 				end

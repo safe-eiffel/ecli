@@ -112,6 +112,12 @@ feature -- Status report
 			Result := False
 		end
 
+	convertible_as_decimal : BOOLEAN is
+			-- Is this value convertible to a MA_DECIMAL?
+		do
+			Result := True
+		end
+		
 	convertible_as_date : BOOLEAN is
 			-- Is this value convertible to a date ?
 		do
@@ -159,6 +165,15 @@ feature -- Conversion
 	as_double : DOUBLE is
 		do
 			Result := item
+		end
+
+	as_decimal : MA_DECIMAL is
+			-- Current converted to MA_DECIMAL.
+		local
+			ctx : MA_DECIMAL_CONTEXT
+		do
+			create ctx.make_default
+			create Result.make_from_string_ctx (as_real.out, ctx)
 		end
 
 	as_integer : INTEGER is

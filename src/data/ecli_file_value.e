@@ -109,6 +109,13 @@ feature -- Status report
 	convertible_as_time: BOOLEAN is do  end
 	convertible_as_timestamp: BOOLEAN is do  end
 
+	convertible_as_decimal : BOOLEAN is
+			-- Is this value convertible to a decimal ?
+		do
+			Result := False
+		end
+
+
 feature -- Status setting
 
 feature -- Cursor movement

@@ -38,7 +38,23 @@ creation
 
 feature {NONE} -- Initialization
 
-	make (new_precision, new_decimal_digits, new_rounding_mode : INTEGER) is
+	make (new_precision, new_decimal_digits : INTEGER) is
+			-- Create with `new_precision' and `new_decimal_digits'.
+		require
+			valid_new_precision: new_precision > 0
+			valid_new_decimal_digits: new_decimal_digits >=0 and new_decimal_digits <= new_precision
+		do
+			make_with_rounding (new_precision, new_decimal_digits, Default_rounding_mode)
+		ensure
+			is_null: is_null
+			precision_set: precision = new_precision
+			decimal_digits_set: decimal_digits = new_decimal_digits
+			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision 
+			default_round_mode: rounding_context.rounding_mode = Default_rounding_mode
+		end
+
+	make_with_rounding (new_precision, new_decimal_digits, new_rounding_mode : INTEGER) is
+			-- Create with `new_precision' and `new_decimal_digits' and `new_rounding_mode'.
 		require
 			valid_new_precision: new_precision > 0
 			valid_new_decimal_digits: new_decimal_digits >=0 and new_decimal_digits <= new_precision
@@ -47,7 +63,7 @@ feature {NONE} -- Initialization
 			precision := new_precision
 			decimal_digits := new_decimal_digits
 			create rounding_context.make (precision, new_rounding_mode)
-			buffer := ecli_c_alloc_value (new_precision + 3) -- sign, digits, decimal point, terminating '%U'
+			buffer := ecli_c_alloc_value (new_precision + 3)
 			set_null
 			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_octet_length)
 		ensure
@@ -57,7 +73,7 @@ feature {NONE} -- Initialization
 			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision 
 			round_mode_set: rounding_context.rounding_mode = new_rounding_mode
 		end
-		
+
 feature -- Access
 
 	rounding_context : MA_DECIMAL_CONTEXT
@@ -109,6 +125,12 @@ feature -- Status report
 			Result := False
 		end
 
+	convertible_as_decimal : BOOLEAN is
+			-- Is this value convertible to a decimal ?
+		do 
+			Result := True
+		end
+
 	convertible_as_date : BOOLEAN is
 			-- Is this value convertible to a date ?
 		do 
@@ -156,11 +178,13 @@ feature -- Status report
 			-- Is `value' valid as item.
 		do
 			Result := Precursor (value)
-			Result := Result and then value.count <= precision
-			Result := Result and then value.exponent <= 0 and then - (value.exponent) <= decimal_digits			
+			Result := Result and then value.count + value.exponent <= precision
+			Result := Result and then (value.exponent <= 0 implies - (value.exponent) <= decimal_digits)
+			Result := Result and then not value.is_special
 		ensure then
-			value_precision_compatible: value.count <= precision
-			decimal_digits_compatible: value.exponent <= 0 and then -(value.exponent) <= decimal_digits
+			value_precision_compatible: Result implies (value.count + value.exponent <= precision)
+			decimal_digits_compatible: Result implies (value.exponent <= 0 implies -(value.exponent) <= decimal_digits)
+			no_specials_allowed: Result implies not value.is_special
 		end
 		
 feature {ECLI_VALUE, ECLI_STATEMENT} -- Status report
@@ -230,8 +254,6 @@ feature -- Conversion
 		end
 
 	as_decimal : MA_DECIMAL is
-		require
-			not_null: not is_null
 		do
 			Result := item
 		end

@@ -16,6 +16,8 @@ inherit
 
 	KL_SHARED_FILE_SYSTEM
 	
+	DT_SHARED_SYSTEM_CLOCK
+	
 feature -- Access
 
 	cursor_class : EIFFEL_CLASS
@@ -175,8 +177,7 @@ feature {NONE} -- Basic operations
 			c : DS_HASH_SET_CURSOR[ACCESS_MODULE_METADATA]
 		do
 			create Result.make (column_set.name)
-			Result.add_indexing_clause ("description: %"Results objects %"")
-			Result.add_indexing_clause ("status: %"Automatically generated.  DOT NOT MODIFY !%"")
+			put_indexing_clause (Result, "Buffer objects for database transfer.", "Automatically generated.  DOT NOT MODIFY !")
 			if column_set.parent /= Void then
 				create line.make_from_string (column_set.parent.name)
 				line.append_string ("%N%T%Tredefine%N")
@@ -292,6 +293,20 @@ feature {NONE} -- Basic operations
 			cursor_class.add_feature_group (feature_group) 
 		end
 
+	put_indexing_clause (eiffel_class : EIFFEL_CLASS; description : STRING; status_message : STRING) is
+		require
+			description_not_void: description /= Void
+			status_message_not_void: status_message /= Void
+		do
+			if description.substring_index ("description:", 1) > 0 then
+				eiffel_class.add_indexing_clause (description)
+			else
+				eiffel_class.add_indexing_clause ("description: %""+description+"%"")
+			end
+			eiffel_class.add_indexing_clause ("status: %""+status_message+"%"")
+			eiffel_class.add_indexing_clause ("generated: %""+ system_clock.date_time_now.out +"%"")			
+		end
+		
 	put_element_change (module : ACCESS_MODULE) is
 			-- put element change  features of `module' into `cursor_class'
 		local
@@ -351,16 +366,14 @@ feature {NONE} -- Basic operations
 			-- put indexing, class name, inheritance and creation
 		local
 			parent_clause : STRING
+			description : STRING
 		do
 			if module.description /= Void then
-				cursor_class.add_indexing_clause (module.description)
+				description := module.description
+			else
+				description := "Not available"
 			end
-			cursor_class.add_indexing_clause ("warning: %"Generated cursor '" +module.name +"' : DO NOT EDIT !%"")
-			cursor_class.add_indexing_clause ("author: %"QUERY_ASSISTANT%"")
-			cursor_class.add_indexing_clause ("date: %"$Date : $%"")
-			cursor_class.add_indexing_clause ("revision: %"$Revision : $%"")
-			cursor_class.add_indexing_clause ("licensing: %"See notice at end of class%"")
-
+			put_indexing_clause (cursor_class, description, "Cursor/Query automatically generated for '"+module.name+"'. DO NOT EDIT!")			
 			create parent_clause.make (100)
 			if module.has_result_set then
 				if parent_name /= Void then

@@ -92,6 +92,11 @@ feature -- Status report
 			Result := True
 		end
 
+	convertible_as_decimal : BOOLEAN is
+		do
+			Result := True
+		end
+
 	convertible_as_real : BOOLEAN is
 		do
 			Result := True
@@ -157,6 +162,15 @@ feature -- Conversion
 	as_integer : INTEGER is
 		do
 			Result := item
+		end
+
+	as_decimal : MA_DECIMAL is
+			-- Current converted to MA_DECIMAL.
+		local
+			ctx : MA_DECIMAL_CONTEXT
+		do
+			create ctx.make_double
+			create Result.make_from_string_ctx (as_real.out, ctx)
 		end
 
 	as_real : REAL is

@@ -74,6 +74,11 @@ feature -- Status report
 		deferred
 		end
 
+	convertible_as_decimal : BOOLEAN is
+			-- Is this value convertible to a boolean ?
+		deferred
+		end
+
 	convertible_as_integer : BOOLEAN is
 			-- Is this value convertible to an integer ?
 		deferred
@@ -220,6 +225,14 @@ feature -- Conversion
 			-- Current converted to BOOLEAN.
 		require
 			convertible: convertible_as_boolean
+			not_null: not is_null
+		deferred
+		end
+
+	as_decimal : MA_DECIMAL is
+			-- Current converted to MA_DECIMAL.
+		require
+			convertible: convertible_as_decimal
 			not_null: not is_null
 		deferred
 		end

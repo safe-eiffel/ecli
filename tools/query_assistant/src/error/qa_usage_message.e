@@ -37,7 +37,7 @@ feature {NONE} -- Implementation
 	
 	argument_list : STRING is "-input <input-file> -output_dir <output-directory> %
 			 % -dsn <data-source-name> -user <user-name> -pwd <password> [-catalog <catalog>] [-schema <schema>] %
-			 % [-access_routines_prefix <prefix>] [-max_length <max_length_for_long_data>]"
+			 % [-access_routines_prefix <prefix>] [-max_length <max_length_for_long_data>] [-use_decimal] [-parent_cursor <class_name>] [-parent_modify <class_name>]"
 	
 	has_expat_option : STRING is "(-expat|-eiffel)"
 	without_expat_option : STRING is "-eiffel"

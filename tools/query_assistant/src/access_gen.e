@@ -21,6 +21,7 @@ inherit
 	SHARED_SCHEMA_NAME
 	SHARED_COLUMNS_REPOSITORY
 	SHARED_MAXIMUM_LENGTH
+	SHARED_USE_DECIMAL
 	
 	ACCESS_MODULE_XML_CONSTANTS
 	
@@ -85,9 +86,6 @@ feature -- Access (Command line arguments)
 	
 	password : STRING
 			-- password
-
---| FIXME: consider removing the filter option since parent classes for parameters
---| 	   or results could ne be properly handled
 
 	class_filter : STRING
 			-- class name to generate
@@ -160,8 +158,8 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.0beta3")
-			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2004")
+			error_handler.report_banner ("v1.0rc1")
+			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2005")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
 
@@ -338,6 +336,9 @@ feature -- Basic operations
 				elseif key.is_equal ("-max_length") then
 					maximum_length_string := value
 					arg_index := arg_index + 2
+				elseif key.is_equal ("-use_decimal") then
+					set_use_decimal (True)
+					arg_index := arg_index + 1
 				else
 					arg_index := arg_index + 1
 					error_handler.report_invalid_argument (key, "name unknown")

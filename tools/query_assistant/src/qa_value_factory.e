@@ -12,12 +12,16 @@ class
 	QA_VALUE_FACTORY
 
 inherit
+
+	SHARED_USE_DECIMAL
+	
 	ECLI_VALUE_FACTORY
 		rename
 		export
 		undefine
 		redefine
 			create_double_value,
+			create_decimal_value,
 			create_real_value,
 			create_integer_value,
 			create_char_value,
@@ -150,6 +154,27 @@ feature -- Miscellaneous
 			create {QA_CHAR}last_result.make (column_precision)
 		end
 
+	create_decimal_value (precision: INTEGER; decimal_digits: INTEGER) is
+		do
+			if use_decimal then
+				create {QA_DECIMAL}last_result.make (precision, decimal_digits)
+			else
+				if decimal_digits = 0 then
+					if precision < 10 then
+							create_integer_value
+					else
+							create_double_value
+					end
+				else
+					if precision <= 7 and decimal_digits <= 7 then
+						create_real_value
+					else
+						create_double_value
+					end
+				end
+			end
+		end
+		
 	create_varchar_value (column_precision : INTEGER) is
 		do
 			if column_precision > 254 then
@@ -173,65 +198,6 @@ feature -- Miscellaneous
 		do
 			create {QA_TIME}last_result.make_default
 		end
-
-feature -- Basic operations
-
-	code2eiffel_type (db_type_code : INTEGER) : STRING is
-		do
-			Result := c2e.item (db_type_code)
-		end
-
-	code2ecli_value (db_type_code : INTEGER) : STRING is
-		do
-			Result := c2v.item (db_type_code)
-		end
-
-	code2make_parameters (db_type_code : INTEGER; precision, digits : INTEGER) : STRING is
-		do
-			Result := clone ("")
-			if db_type_code = sql_char or db_type_code = sql_varchar then
-				Result.append (" ("); Result.append (precision.out); Result.append (")")
-			end
-		end
-
-	c2e : DS_HASH_TABLE[STRING, INTEGER] is
-		once
-			create Result.make (12)
-			Result.put("INTEGER", sql_integer)
-			Result.put("INTEGER", sql_smallint)
-			Result.put("STRING", sql_char)
-			Result.put("STRING", sql_varchar)
-			Result.put("ECLI_TIMESTAMP", sql_type_timestamp)
-			Result.put("ECLI_DATE", sql_type_date)
-			Result.put("ECLI_TIME", sql_type_time)
-			Result.put("REAL", sql_real)
-			Result.put("DOUBLE", sql_double)
-			Result.put("DOUBLE", sql_float)
-			Result.put("DOUBLE", sql_decimal)
-			Result.put("DOUBLE", sql_numeric)
-
-		end
-
-	c2v : DS_HASH_TABLE[STRING, INTEGER] is
-		once
-			create Result.make (12)
-			Result.put("ECLI_INTEGER", sql_integer)
-			Result.put("ECLI_INTEGER", sql_smallint)
-			Result.put("ECLI_CHAR", sql_char)
-			Result.put("ECLI_VARCHAR", sql_varchar)
-			Result.put("ECLI_TIMESTAMP", sql_type_timestamp)
-			Result.put("ECLI_DATE", sql_type_date)
-			Result.put("ECLI_TIME", sql_type_time)
-			Result.put("ECLI_REAL", sql_real)
-			Result.put("ECLI_DOUBLE", sql_double)
-			Result.put("ECLI_FLOAT", sql_float)
-			Result.put("ECLI_DOUBLE", sql_decimal)
-			Result.put("ECLI_DOUBLE", sql_numeric)
-		end
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
