@@ -16,7 +16,11 @@ feature -- Access
 		deferred
 		end
 
-	unsubscribed : BOOLEAN
+	unsubscribed : BOOLEAN is
+		do
+			Result := (publisher = Void)
+		end
+		
 
 feature -- Basic operations
 

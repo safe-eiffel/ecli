@@ -17,9 +17,6 @@ inherit
 		select
 		end
 
-creation
-	default_create
-
 feature -- Initialization
 
 feature -- Access

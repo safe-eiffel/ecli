@@ -19,25 +19,25 @@ creation
 	make
 
 feature {NONE} -- Initialization
-	
+
 	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER) is
 		local
 			temp_name : STRING
 			p_temp_name : POINTER
 		do
-			create temp_name.make (max_name_length)
+			!! temp_name.make (max_name_length)
 			p_temp_name := string_to_pointer (temp_name)
 			stmt.set_status (
 				ecli_c_describe_column (stmt.handle,
 					index,
 					p_temp_name,
-					temp_name.capacity,
+					max_name_length,
 					pointer ($actual_name_length),
 					pointer ($db_type_code),
 					pointer ($column_precision),
 					pointer ($decimal_digits),
 					pointer ($nullability)))
-			name := pointer_to_string (p_temp_name)			
+			name := pointer_to_string (p_temp_name)
 		end
 
 feature -- Status report
@@ -45,7 +45,7 @@ feature -- Status report
 	name : STRING
 
 	actual_name_length : INTEGER
-	
+
 end -- class ECLI_COLUMN_DESCRIPTION
 --
 -- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>

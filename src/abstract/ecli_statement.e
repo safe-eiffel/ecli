@@ -20,8 +20,8 @@ inherit
 		end
 
 	ECLI_HANDLE
-		redefine
-			prepare_for_disposal
+		export
+			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} handle
 		end
 
 	PAT_SUBSCRIBER
@@ -29,59 +29,61 @@ inherit
 			publisher as session,
 			published as session_disconnect,
 			has_publisher as has_session,
-			unsubscribed as unattached
+			unsubscribed as is_closed
 		redefine
-			session, session_disconnect
+			session_disconnect
 		end
 
 creation
 	make
 
-feature {NONE} -- Initialization
+feature -- Initialization
 
-	make (a_session : ECLI_SESSION) is
+	make, open (a_session : ECLI_SESSION) is
 			-- create a statement for use on 'session'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
-		do
-			unattached := True
-			attach (a_session)
-		ensure
-			session_ok: session = a_session and not unattached
-			registered: session.is_registered_statement (Current)
-			valid: is_valid
-		end
-
-feature -- 
-
-	attach (a_session : ECLI_SESSION) is
-		require
-			unattached: unattached
-			a_session_exists: a_session /= Void
-			a_session_connected: a_session.is_connected
+			not_valid: not is_valid
 		do
 			session := a_session
 			set_status (ecli_c_allocate_statement (session.handle, $handle))
 			if is_valid then
 				session.register_statement (Current)
 			end
-			unattached := False
 		ensure
-			attached: session = a_session and not unattached
-			registered: session.is_registered_statement (Current) and not unattached
-			valid: is_valid
+			session_ok: session = a_session and not is_closed
+			registered: session.is_registered_statement (Current)
+			valid: 	is_valid
+		end
+
+feature --
+
+	attach (a_session : ECLI_SESSION) is
+		obsolete "Use open/close instead of attach/unattach"
+		do
 		end
 
 	release is
+		obsolete "Use open/close instead of attach/unattach"
+		do
+		end
+
+	close is
 		require
 			valid_statement: is_valid
+			not_closed: not is_closed
 		do
-			prepare_for_disposal
+			if not is_closed then
+				session.unregister_statement (Current)
+			end
+			session := Void
 			release_handle
 		ensure
-			unattached: unattached and not (old session).is_registered_statement (Current)
-			not_valid:  not is_valid
+			closed: 		is_closed
+			unregistered: 	not (old session).is_registered_statement (Current)
+			not_valid:  	not is_valid
+			no_session: 	session = Void
 		end
 
 feature -- Access
@@ -113,7 +115,7 @@ feature -- Access
 		do
 			Result := parameters.item (parameter_positions (name).first)
 		end
-		
+
 	parameter_names : DS_LIST[STRING] is
 			-- names of parameters of query
 		require
@@ -122,7 +124,7 @@ feature -- Access
 			table_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[INTEGER],STRING]
 		do
 			if impl_parameter_names = Void then
-				create {DS_LINKED_LIST[STRING]} impl_parameter_names.make
+				!DS_LINKED_LIST[STRING]! impl_parameter_names.make
 				table_cursor := name_to_position.new_cursor
 				from
 					table_cursor.start
@@ -138,7 +140,7 @@ feature -- Access
 			parameter_count: Result.count <= parameter_count
 		end
 
-	cursor : ARRAY[like value_anchor] 
+	cursor : ARRAY[like value_anchor]
 			-- container where result fields are stored
 
 	parameters : ARRAY[like value_anchor]
@@ -166,7 +168,6 @@ feature -- Measurement
 			valid_statement: is_valid
 			executed: is_executed
 		do
-			get_result_column_count
 			Result := impl_result_column_count
 		end
 
@@ -277,7 +278,7 @@ feature -- Status setting
 		ensure
 			good_mode: not is_prepared_execution_mode
 		end
-			
+
 feature -- Cursor movement
 
 
@@ -287,6 +288,7 @@ feature -- Cursor movement
 			valid_statement: is_valid
 			executed: is_executed
 			before: before
+			cursor_ready: cursor /= Void and then not array_routines.has(cursor,Void)
 		do
 			set_cursor_in
 			fetch_next_row
@@ -300,6 +302,7 @@ feature -- Cursor movement
 			valid_statement: is_valid
 			executed: is_executed
 			result_pending: not off and not before
+			cursor_ready: cursor /= Void and then not array_routines.has (Cursor,Void)
 		do
 			fetch_next_row
 		end
@@ -309,7 +312,7 @@ feature -- Cursor movement
 		require
 			valid_statement: is_valid
 			valid_state: is_executed and not after
-			has_results: has_results			
+			has_results: has_results
 		do
 			set_status (ecli_c_close_cursor (handle))
 			set_cursor_after
@@ -372,7 +375,7 @@ feature -- Element change
 			plist : DS_LIST[INTEGER]
 		do
 			if parameters = Void then
-				create parameters.make (1, parameter_count)
+				!! parameters.make (1, parameter_count)
 			end
 			from plist := parameter_positions (key)
 				plist.start
@@ -397,26 +400,14 @@ feature -- Element change
 			is_executed: is_executed
 		do
 			cursor := row
---			bind_results
 		ensure
 			cursor_set: cursor = row
 		end
 
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
 feature {ECLI_SESSION} -- Miscellaneous
 
-	session_disconnect (a_session : ECLI_SESSION) is
+	session_disconnect (a_session : like session) is
 		do
-			unattached := True
 			release_handle
 			session := Void
 		ensure then
@@ -425,21 +416,10 @@ feature {ECLI_SESSION} -- Miscellaneous
 
 feature {NONE} -- Miscellaneous
 
-
-	prepare_for_disposal is
-		do
-			if not unattached then
-				session.unregister_statement (Current)
-			end
-			session := Void
-			unattached := True
-		end
-
 	release_handle is
 		do
 			set_status (ecli_c_free_statement (handle))
 			set_handle ( default_pointer)
-			ready_for_disposal := True
 		end
 
 feature -- Basic operations
@@ -463,16 +443,19 @@ feature -- Basic operations
 				set_status (ecli_c_execute_direct (handle, tools.string_to_pointer (impl_sql)))
 			end
 			if is_ok then
+				get_result_column_count
 				is_executed := True
 				if has_results then
 					set_cursor_before
 				else
 					set_cursor_after
 				end
+         else
+         	impl_result_column_count := 0
 			end
 		ensure
 			executed: is_executed implies is_ok
-			cursor_state: is_executed implies 
+			cursor_state: is_executed implies
 						((has_results implies before) or
 						(not has_results implies after))
 		end
@@ -488,22 +471,22 @@ feature -- Basic operations
 			description : ECLI_PARAMETER_DESCRIPTION
 		do
 			limit := parameter_count
-			create parameters_description.make (1, limit)
+			!! parameters_description.make (1, limit)
 			from
-				count := 1				
+				count := 1
 			until count > limit or not is_ok
 			loop
-				create description.make (Current, count)
+				!! description.make (Current, count)
 				parameters_description.put (description, count)
 				count := count + 1
-			end	
+			end
 			if not is_ok then
 				parameters_description := Void
 			end
 		ensure
-			description: is_ok implies 
+			description: is_ok implies
 				(parameters_description /= Void and then
-				 parameters_description.count = parameter_count)			 		
+				 parameters_description.count = parameter_count)
 		end
 
 	describe_cursor is
@@ -517,12 +500,12 @@ feature -- Basic operations
 			description : ECLI_COLUMN_DESCRIPTION
 		do
 			limit := result_column_count
-			create cursor_description.make (1, limit)
+			!! cursor_description.make (1, limit)
 			from
-				count := 1				
+				count := 1
 			until count > limit or not is_ok
 			loop
-				create description.make (Current, count, 100)
+				!! description.make (Current, count, 100)
 				cursor_description.put (description, count)
 				count := count + 1
 			end
@@ -532,7 +515,7 @@ feature -- Basic operations
 		ensure
 			description: is_ok implies
 				(cursor_description /= Void and then cursor_description.count = result_column_count)
-		end	
+		end
 
 	bind_parameters is
 			-- bind parameters
@@ -584,6 +567,8 @@ feature -- Inapplicable
 		do
 		end
 
+	array_routines : expanded KL_ARRAY_ROUTINES[ANY]
+
 feature {NONE} -- Implementation
 
 	parsed_sql (s : STRING) : STRING is
@@ -592,18 +577,18 @@ feature {NONE} -- Implementation
 			-- <name> is [a-zA-Z_0-9]+
 		local
 			eq : DS_EQUALITY_TESTER[DS_LIST[INTEGER]]
-			param_count, param_number, i_start, i_begin_parameter_name, i_end_parameter_name, i : INTEGER
-			c : CHARACTER
+			param_count, param_number, i_start, i_begin_parameter_name, i_end_parameter_name : INTEGER
 			name_found : BOOLEAN
 			name : STRING
+			string_routines : expanded KL_STRING_ROUTINES
 		do
-			create Result.make (s.count)
+			Result := string_routines.make (s.count)
 			param_count := s.occurrences ('?')
 			--| create or resize translation table
 			if param_count > 0 then
 				if name_to_position = Void then
-					create name_to_position.make (param_count)
-					create eq
+					!! name_to_position.make (param_count)
+					!! eq
 					name_to_position.set_equality_tester (eq)
 				else
 					if param_count > name_to_position.capacity then
@@ -673,9 +658,9 @@ feature {NONE} -- Implementation
 		ensure
 			is_parsed: is_parsed
 		end
-			
+
 	name_to_position : DS_HASH_TABLE [DS_LIST[INTEGER], STRING]
-	
+
 	set_parsed is
 		require
 			valid_statement: is_valid
@@ -712,19 +697,19 @@ feature {NONE} -- Implementation
 			from
 				index := 1
 				index_max := result_column_count
-			until 
+			until
 				index > result_column_count
 			loop
 				current_value := cursor.item (index)
 				current_value.read_result (Current, index)
 				index := index + 1
-			end		
+			end
 		end
 
 	session : ECLI_SESSION
 
 	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
-			-- Implementation of deferred feature 
+			-- Implementation of deferred feature
 		require else
 			valid_statement: is_valid
 		do
@@ -733,7 +718,7 @@ feature {NONE} -- Implementation
 
 
 	impl_result_column_count : INTEGER
-	
+
 	impl_parameter_names : DS_LIST[STRING]
 
 	impl_sql : STRING
@@ -781,13 +766,26 @@ feature {NONE} -- Implementation
 			if name_to_position.has (a_parameter_name) then
 				name_to_position.item (a_parameter_name).put_right (a_position)
 			else
-				create {DS_LINKED_LIST[INTEGER]}position_list.make
+				!DS_LINKED_LIST[INTEGER]!position_list.make
 				position_list.put_right (a_position)
 				name_to_position.put (position_list, a_parameter_name)
-			end					
+			end
 		end
-invariant
 
+	is_ready_for_disposal : BOOLEAN is
+			-- is this object ready for disposal ?
+		do
+			Result := is_closed
+		end
+
+	disposal_failure_reason : STRING is
+			-- why is this object not ready_for_disposal
+		once
+			Result := "ECLI_STATEMENT must be closed te be disposable."
+		end
+
+invariant
+	closed_is_no_session: session /= Void implies not is_closed
 
 end -- class ECLI_STATEMENT
 --

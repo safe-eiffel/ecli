@@ -10,6 +10,11 @@ VUAR4: $feature valid only if not constant feature.
 Libraries
 ---------
 
+* Visual Eiffel
+	STRING.make : not same semantics as with ISE or SE
+	VE:: STRING.make (n) ensure count = n
+	{ISE,SE}::STRING.make (n) ensure count=0; capacity=n
+
 * Obsolete
 SE::STRING.empty => is_empty
 

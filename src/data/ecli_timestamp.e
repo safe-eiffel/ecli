@@ -29,9 +29,8 @@ feature {NONE} -- Initialization
 
 	make (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER) is
 		require
-			year: a_year > 0
-			month: a_month > 0 and a_month <= 12
-			day: a_day > 0 and a_day <= 31
+			month: a_month >= 1 and a_month <= 12
+			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
@@ -62,9 +61,9 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_TIMESTAMP is
+	item : DT_DATE_TIME is
 		do
-			Result := Current
+			!!Result.make_precise (year,month,day,hour, minute, second,nanosecond // 1_000_000)
 		end
 
 	hour : INTEGER is
@@ -126,9 +125,8 @@ feature -- Measurement
 
 	set (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER) is
 		require
-			year: a_year > 0
 			month: a_month > 0 and a_month <= 12
-			day: a_day > 0 and a_day <= 31
+			day: a_day > 0 and a_day <= days_in_month (a_month, a_year)
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
@@ -149,7 +147,7 @@ feature -- Measurement
 	set_item (other : like item) is
 		do
 			Precursor (other)
-			set_time (other.hour, other.minute, other.second, other.nanosecond)
+			set_time (other.hour, other.minute, other.second, other.millisecond * 1_000_000)
 		end
 
 feature -- Status report
@@ -231,7 +229,11 @@ feature {NONE} -- Implementation
 
 	octet_size : INTEGER is
 		do
-			Result := 16
+			Result := ecli_c_sizeof_timestamp_struct
+		end
+	
+	ecli_c_sizeof_timestamp_struct : INTEGER is
+		external "C"
 		end
 			
 invariant

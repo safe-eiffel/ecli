@@ -26,7 +26,7 @@ inherit
 		end
 
 
-feature -- Status report
+feature {ANY} -- Status report
 
 	is_valid : BOOLEAN is
 			-- Is the associated CLI handle valid ?
@@ -34,11 +34,20 @@ feature -- Status report
 			Result := handle /= default_pointer
 		end
 
+feature {ECLI_HANDLE} -- Status report
+
 	handle : POINTER
 
-	ready_for_disposal : BOOLEAN
+	is_ready_for_disposal : BOOLEAN is
 			-- is this object ready for disposal ?
+		deferred
+		end
 
+	disposal_failure_reason : STRING is
+			-- why is this object not ready_for_disposal
+		deferred
+		end
+		
 feature {NONE} -- Implementation
 
 	set_handle (h : POINTER) is
@@ -49,30 +58,27 @@ feature {NONE} -- Implementation
 		end
 
 	dispose is
+		local
+			exception : expanded EXCEPTIONS
 		do
-			prepare_for_disposal
 			if is_valid then
-				release_handle
+				if not is_ready_for_disposal then
+					exception.raise (disposal_failure_reason)
+					print (disposal_failure_reason)
+				else
+					release_handle
+				end
 			end
 		end
 
 	release_handle is
 			-- release the CLI handle
+		require
+			ready_for_disposal: is_ready_for_disposal
 		deferred
 		ensure
 			invalid:    not is_valid
-			disposable: ready_for_disposal
 		end
-
-	prepare_for_disposal is
-			-- actions that must be performed before releasing the handle
-			-- to be redefined in descendants
-		do
-		end
-
-invariant
-
-	valid_not_disposable: ready_for_disposal xor is_valid
 
 end -- class ECLI_HANDLE
 --

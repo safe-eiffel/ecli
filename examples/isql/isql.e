@@ -22,7 +22,7 @@ feature -- Initialization
 			if args.argument_count < 3 then
 				io.put_string ("Usage: isql <data_source> <user_name> <password>%N")
 			else
-				create session.make (args.argument (1), args.argument (2), args.argument (3))
+				!! session.make (args.argument (1), args.argument (2), args.argument (3))
 				session.connect
 				if session.has_information_message then
 					io.put_string (session.cli_state) 
@@ -33,7 +33,7 @@ feature -- Initialization
 					print_help
 				end
 				-- definition of statement on session
-				create statement.make (session)
+				!! statement.make (session)
 				do_session
 			end;
 		end
@@ -97,7 +97,7 @@ feature -- Initialization
 				i > stmt.cursor_description.count
 			loop
 				width := stmt.cursor_description.item (i).column_precision
-				create s.make (width)
+				!! s.make (width)
 				s.append (stmt.cursor_description.item (i).name)
 				-- pad with blanks
 				npad := width - s.count
@@ -168,8 +168,10 @@ feature -- Basic Operations
 		end
 
 	last_command : STRING is
+		local
+			string_routines : expanded KL_STRING_ROUTINES
 		once
-			create Result.make (1000)
+			 Result := string_routines.make (1000)
 
 		end
 
@@ -191,7 +193,7 @@ feature -- Basic Operations
 			
 	formatting_buffer : MESSAGE_BUFFER is
 		once
-			create Result.make (1000)
+			!! Result.make (1000)
 		end
 	
 	session : ECLI_SESSION
@@ -207,11 +209,11 @@ feature -- Basic Operations
 			from
 				i := 1
 				cols := statement.result_column_count
-				create cursor.make (1, cols)
+				!! cursor.make (1, cols)
 			until
 				i > cols
 			loop
-				create v.make (statement.cursor_description.item (i).column_precision)
+				!! v.make (statement.cursor_description.item (i).column_precision)
 				cursor.put (v, i)
 				i := i + 1
 			end

@@ -1,205 +1,190 @@
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
+
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="Generator" content="Microsoft Word 97">
-   <meta name="description" content="Documentation index">
-   <meta name="Template" content="C:\Program Files\Microsoft Office\Office\html.dot">
-   <meta name="GENERATOR" content="Mozilla/4.7 [fr] (Win98; I) [Netscape]">
-   <title>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</title>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="description" content="Documentation index">
+<meta name="Template"
+content="C:\Program Files\Microsoft Office\Office\html.dot">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</title>
 </head>
+
 <body>
 
-<center><b><font size=+3>Eiffel RDBMS interface Library</font></b>
-<p><b><font size=+2>compatible to ISO/CLI (Call Level Interface) API</font></b></center>
+<p align="center"><font size="6"><b>Eiffel RDBMS interface
+Library</b></font> </p>
 
-<blockquote>Author : Paul G. Crismer&nbsp; &lt;pgcrism@attglobal.net><pgcrism @attglobal.net>
-<br>License: Released under the Eiffel Forum License
-<br>Copyright: 2000 - Paul G. Crismer</blockquote>
+<p align="center"><font size="5"><b>compatible to ISO/CLI (Call
+Level Interface) API</b></font> </p>
 
-<h1>
-Table of contents</h1>
+<blockquote>
+    <p>Author : Paul G. Crismer&nbsp;
+    &lt;pgcrism@attglobal.net&gt;<pgcrism @attglobal.net> <br>
+    License: Released under the Eiffel Forum License <br>
+    Copyright: 2000 - Paul G. Crismer</p>
+</blockquote>
+
+<h1>Table of contents</h1>
 
 <ul>
-<li>
-Abstract</li>
-
-<li>
-<i>Section</i> 0 : Current Status</li>
-
-<li>
-<i>Section</i> 1 : Design choices</li>
-
-<li>
-<i>Section</i> 2 : Implementation notes</li>
-
-<li>
-<i>Section</i> 3 : Architecture Diagram</li>
-
-<li>
-<i>Section 4</i> : Installation and sample applications</li>
+    <li>Abstract</li>
+    <li><i>Section</i> 0 : Current Status</li>
+    <li><i>Section</i> 1 : Design choices</li>
+    <li><i>Section</i> 2 : Implementation notes</li>
+    <li><i>Section</i> 3 : Architecture Diagram</li>
+    <li><i>Section 4</i> : Installation and sample applications</li>
 </ul>
-You'll find in another document a <a href="tutorial.htm">Tutorial and a
-comparison to related work</a>.
-<h1>
-Abstract</h1>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI is an Eiffel wrapper around
-the X/Open ISO/CLI (Call Level Interface).
-<br>This interfaces defines an API to RDBMS drivers, and uses SQL92.
-<br>ISO/CLI is also known as ODBC under MS-Windows.&nbsp; This interface
-has implementations on other platforms.
-<p>ODBC/CLI libraries and drivers are available either as Open Source or
-as commercial products and are available for Windows, Mac, Unix, Linux.&nbsp;
-Database drivers are available for various databases or file formats :
-Text, Excel, DBase, Sybase, SQL-Server, Oracle, PostgreSQL, MySQL, AS/400,
-DB/2, to name only a few of them.
-<p>ECLI wants to be portable across (1) Platforms, (2) Eiffel Compilers.
-<ol>
-<li>
-Platform portability : ECLI works on any platform that has an ISO/CLI Implementation.</li>
 
-<li>
-Eiffel Compiler Portability : ECLI uses as "standard" Eiffel as possible.</li>
+<p>You'll find in another document a <a href="tutorial.htm">Tutorial
+and a comparison to related work</a>. </p>
 
-<br>The GOBO Library is used for specific data structures.</ol>
+<h1>Abstract</h1>
 
-<h1>
-Section 0 : Current Status</h1>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI is an Eiffel
+wrapper around the X/Open ISO/CLI (Call Level Interface). <br>
+This interfaces defines an API to RDBMS drivers, and uses SQL92. <br>
+ISO/CLI is also known as ODBC under MS-Windows.&nbsp; This
+interface has implementations on other platforms. </p>
 
-<h2>
-Simple Database access</h2>
+<p>ODBC/CLI libraries and drivers are available either as Open
+Source or as commercial products and are available for Windows,
+Mac, Unix, Linux.&nbsp; Database drivers are available for
+various databases or file formats : Text, Excel, DBase, Sybase,
+SQL-Server, Oracle, PostgreSQL, MySQL, AS/400, DB/2, to name only
+a few of them. </p>
+
+<p>ECLI wants to be portable across (1) Platforms, (2) Eiffel
+Compilers. </p>
 
 <ol>
-<li>
-Connect/Disconnect to a database.</li>
-
-<li>
-Issue SQL Statements with or without parameters.</li>
-
-<li>
-Parameters can be used by name (extension to CLI).</li>
-
-<li>
-Execute in direct or prepared mode. Prepared mode is <i>more</i> performant
-for repeated execution of same query with different parameters.</li>
-
-<li>
-Get result set data.</li>
-
-<li>
-Describe result-set (metadata)</li>
-
-<li>
-Describe parameters (metadata)</li>
+    <li>Platform portability : ECLI works on any platform that
+        has an ISO/CLI Implementation.</li>
+    <li>Eiffel Compiler Portability : ECLI uses as
+        &quot;standard&quot; Eiffel as possible.</li>
+    <li><br>
+        The GOBO Library is used for specific data structures.</li>
 </ol>
 
-<h2>
-Cursor framework and tool</h2>
-Class ECLI_CURSOR provides basic cursor mechanisms. The "Query Assistant"
-tool generate cursor classes that
+<h1>Section 0 : Current Status</h1>
+
+<h2>Simple Database access</h2>
+
 <ol>
-<li>
-encapsulate the cursor definition (sql query)</li>
-
-<li>
-provide access to result set data, by name</li>
-
-<li>
-pass parameters in a natural way</li>
+    <li>Connect/Disconnect to a database.</li>
+    <li>Issue SQL Statements with or without parameters.</li>
+    <li>Parameters can be used by name (extension to CLI).</li>
+    <li>Execute in direct or prepared mode. Prepared mode is <i>more</i>
+        performant for repeated execution of same query with
+        different parameters.</li>
+    <li>Get result set data.</li>
+    <li>Describe result-set (metadata)</li>
+    <li>Describe parameters (metadata)</li>
 </ol>
-"Query Assistant" also checks that the query is executable on your datasource
-before generating any encapsulating class. Result and parameters names
-are "inferred" by asking meta-data about the executed query. The generated
-class is thus fully "static", i.e. correct types are used and no meta-data
-are asked to the datasource, for the best possible performance.
-<br>The drawback is that, when the database schema changes, cursor classes
-may need to be re-generated.
-<h2>
-Supported SQL data types</h2>
-For the moment CHAR, VARCHAR, INTEGER, FLOAT, DOUBLE, DATE and TIMESTAMP
-data are supported.
-<p>If other datatypes are needed, they can easily be supported. For the
-moment, CHAR data can be used to map to other types, since databases can
-convert automatically CHAR values to other SQL data types. ECLI can be
-used for common RDBMS access in the current state of development.
-<h2>
-Portability</h2>
 
-<h3>
-Compilers</h3>
+<h2>Cursor framework and tool</h2>
+
+<p>Class ECLI_CURSOR provides basic cursor mechanisms. The
+&quot;Query Assistant&quot; tool generate cursor classes that </p>
+
+<ol>
+    <li>encapsulate the cursor definition (sql query)</li>
+    <li>provide access to result set data, by name</li>
+    <li>pass parameters in a natural way</li>
+</ol>
+
+<p>&quot;Query Assistant&quot; also checks that the query is
+executable on your datasource before generating any encapsulating
+class. Result and parameters names are &quot;inferred&quot; by
+asking meta-data about the executed query. The generated class is
+thus fully &quot;static&quot;, i.e. correct types are used and no
+meta-data are asked to the datasource, for the best possible
+performance. <br>
+The drawback is that, when the database schema changes, cursor
+classes may need to be re-generated. </p>
+
+<h2>Supported SQL data types</h2>
+
+<p>For the moment CHAR, VARCHAR, INTEGER, FLOAT, DOUBLE, DATE and
+TIMESTAMP data are supported. </p>
+
+<p>If other datatypes are needed, they can easily be supported.
+For the moment, CHAR data can be used to map to other types,
+since databases can convert automatically CHAR values to other
+SQL data types. ECLI can be used for common RDBMS access in the
+current state of development. </p>
+
+<h2>Portability</h2>
+
+<h3>Compilers</h3>
 
 <ul>
-<li>
-ISE Eiffel</li>
-
-<li>
-SmallEiffel (tested with se -0.76b3)</li>
+    <li>ISE Eiffel</li>
+    <li>SmallEiffel (tested with se -0.76b4)</li>
+    <li>Visual Eiffel 3.2</li>
 </ul>
 
-<h3>
-Platforms</h3>
+<h3>Platforms</h3>
 
 <ul>
-<li>
-Windows</li>
-
-<li>
-Linux</li>
+    <li>Windows</li>
+    <li>Linux</li>
 </ul>
 
-<h1>
-Section 1 : Design choices</h1>
+<h1>Section 1 : Design choices</h1>
 
-<h2>
-D1. Rationale</h2>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The X/Open Call Level Interface
-is a standard API for database access.
-<p>It is available on various platforms, i.e. Unix, Linux, Win32.&nbsp;
-This is one of the only standards that all vendors, including M$, fully
-support without "modifying" it.
-<h2>
-D2. Simplicity</h2>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This Eiffel interface is close
-to CLI, and hides some implementation details as well.&nbsp; This is a
-very simple wrapper.
-<p>The main goal is to give a clear and simple database access for common
-applications. Since it is a thin wrapper, performance should be as good
-as possible.
-<h2>
-D3. What it is not</h2>
-It is not an OO-to-Relational wrapper framework.&nbsp; This interface can
-be a component of such a framework
-<h1>
-Section 2 : Implementation notes</h1>
+<h2>D1. Rationale</h2>
 
-<h2>
-I1. Transactions</h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The X/Open Call
+Level Interface is a standard API for database access. </p>
+
+<p>It is available on various platforms, i.e. Unix, Linux,
+Win32.&nbsp; This is one of the only standards that all vendors,
+including M$, fully support without &quot;modifying&quot; it. </p>
+
+<h2>D2. Simplicity</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This Eiffel
+interface is close to CLI, and hides some implementation details
+as well.&nbsp; This is a very simple wrapper. </p>
+
+<p>The main goal is to give a clear and simple database access
+for common applications. Since it is a thin wrapper, performance
+should be as good as possible. </p>
+
+<h2>D3. What it is not</h2>
+
+<p>It is not an OO-to-Relational wrapper framework.&nbsp; This
+interface can be a component of such a framework </p>
+
+<h1>Section 2 : Implementation notes</h1>
+
+<h2>I1. Transactions</h2>
 
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CLI allows only one transaction per connection/session.&nbsp; There is no subtransaction
 mechanism.</pre>
 
-<h2>
-I2. Error diagnostic</h2>
+<h2>I2. Error diagnostic</h2>
 
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Class ECLI_STATUS implements the necessary mechanisms.</pre>
 
-<h2>
-I3. Data transfer between Database and Program space</h2>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Modules that transfer data between
-database and program space should know the
-<br>database data type and the program data type.&nbsp; That is why data-transfer-values
-are encapsulated
-<br>in the class ECLI_VALUE and its descendants.
-<br>Descendant classes map CLI specific database values : CHAR, VARCHAR,
-INTEGER, ...
-<h1>
-Section 3 : Architecture Diagram</h1>
-<img SRC="architecture.jpg" height=531 width=546>
-<h1>
-Section 4 : Installation and sample applications</h1>
+<h2>I3. Data transfer between Database and Program space</h2>
 
-<h2>
-4.1. Structure</h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Modules that
+transfer data between database and program space should know the <br>
+database data type and the program data type.&nbsp; That is why
+data-transfer-values are encapsulated <br>
+in the class ECLI_VALUE and its descendants. <br>
+Descendant classes map CLI specific database values : CHAR,
+VARCHAR, INTEGER, ... </p>
+
+<h1>Section 3 : Architecture Diagram</h1>
+
+<p><img src="architecture.jpg" width="546" height="531"> </p>
+
+<h1>Section 4 : Installation and sample applications</h1>
+
+<h2>4.1. Structure</h2>
 
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>doc</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- documentation
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>examples</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- examples
@@ -222,29 +207,39 @@ Section 4 : Installation and sample applications</h1>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>linux
 </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>tools
 </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>query_assistant</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- cursor classes generator</pre>
-&nbsp;
-<h2>
-4.2. Installation</h2>
-NOTE for Linux/Unix (*n*x) users : This package uses unixodbc, avalaible
-at <a href="http://www.unixodbc.org/">http://www.unixodbc.org</a>.
-<br>It has been tested with PostgreSQL 7.0.2.
-<h3>
-4.2.0 Define ECLI variable</h3>
-Define the ECLI variable as the ECLI directory
-<h3>
-4. 2.1. Building the C library.</h3>
-A) go to the spec - compiler - platform directory of your choice
-<p>B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library
-<h3>
-4.2.2. Building the samples</h3>
-A) SmallEiffel - run the sebuild.bat (WIN32) or sebuild.sh (*n*x) command
-file
-<p>B) ISE - use the Ace.ace file or linux.Ace file
-<h2>
-4.3. Known Problems</h2>
-Some memory management problems (segmentation violation) can occur. This
-is under investigation.
-<p>They can be caused either by the ODBC library version you are using
-(UnixOdbc on Unix/Linux). They also can appear at garbage collection.
+
+<p>&nbsp; </p>
+
+<h2>4.2. Installation</h2>
+
+<p>NOTE for Linux/Unix (*n*x) users : This package uses unixodbc,
+avalaible at <a href="http://www.unixodbc.org/">http://www.unixodbc.org</a>.
+<br>
+It has been tested with PostgreSQL 7.0.2. </p>
+
+<h3>4.2.0 Define ECLI variable</h3>
+
+<p>Define the ECLI variable as the ECLI directory </p>
+
+<h3>4. 2.1. Building the C library.</h3>
+
+<p>A) go to the spec - compiler - platform directory of your
+choice </p>
+
+<p>B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library </p>
+
+<h3>4.2.2. Building the samples</h3>
+
+<p>A) SmallEiffel - run the sebuild.bat (WIN32) or sebuild.sh
+(*n*x) command file </p>
+
+<p>B) ISE - use the Ace.ace file or linux.Ace file</p>
+
+<p>C) VE - use the specific project definitions</p>
+
+<h2>4.3. Known Problems</h2>
+
+<p>Memory management problems (segmentation violation) have been
+fixed, to our best knowledge. </p>
 </body>
 </html>

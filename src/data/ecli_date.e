@@ -18,6 +18,14 @@ inherit
 		select
 		end
 
+	DT_GREGORIAN_CALENDAR 
+		export 
+			{NONE} all
+			{ANY} days_in_month
+		undefine
+			is_equal, out
+		end
+		
 creation
 	make, make_first
 
@@ -25,16 +33,8 @@ feature {NONE} -- Initialization
 
 	make (a_year, a_month, a_day : INTEGER) is
 		require
-			year: a_year > 0
-			month: a_month > 0 and a_month <= 12
-			day: a_day > 0 and a_day <= 31
---((<<1,3,5,7,8,10,12>>).has (a_month) and a_day <= 31
---				or else (<<4,6,9,11>>).has (a_month) and a_day <= 30
---				or else a_month = 2 and ( 
---					( -- leap
---					   ((a_year \\ 400 = 0) or else ((a_year \\ 4 = 0) and (a_year \\ 100 /= 0))) and a_day <= 29)
---					  or else -- not leap
---					   a_day <= 28))
+			month: a_month >= 1 and a_month <= 12
+			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
 		do
 			allocate_buffer
 			set (a_year, a_month, a_day)
@@ -54,12 +54,12 @@ feature {NONE} -- Initialization
 			month_set: month = 1
 			day_set: day = 1
 		end
-		
+
 feature -- Access
 
-	item : ECLI_DATE is
+	item : DT_DATE is
 		do
-			Result := Current
+			!!Result.make (year, month, day)
 		end
 
 	year : INTEGER is
@@ -101,9 +101,9 @@ feature -- Status report
 		once
 			Result := sql_type_date
 		end
-	
+
 	decimal_digits: INTEGER is
-		do 
+		do
 			Result := 0
 		end
 
@@ -121,16 +121,8 @@ feature -- Status setting
 
 	set (a_year, a_month, a_day : INTEGER) is
 		require
-			year: a_year > 0
-			month: a_month > 0 and a_month <= 12
-			day: a_day > 0 and a_day <= 31
---((<<1,3,5,7,8,10,12>>).has (a_month) and a_day <= 31
---				or else (<<4,6,9,11>>).has (a_month) and a_day <= 30
---				or else a_month = 2 and ( 
---					( -- leap
---					   ((a_year \\ 400 = 0) or else ((a_year \\ 4 = 0) and (a_year \\ 100 /= 0))) and a_day <= 29)
---					  or else -- not leap
---					   a_day <= 28))
+			month: a_month >= 1 and a_month <= 12
+			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
 		do
 			ecli_c_date_set_year (to_external, a_year)
 			ecli_c_date_set_month (to_external, a_month)
@@ -140,8 +132,6 @@ feature -- Status setting
 			month_set: month = a_month
 			day_set: day = a_day
 		end
-
-feature -- Cursor movement
 
 feature -- Element change
 
@@ -163,7 +153,7 @@ feature -- Conversion
 			if is_null then
 				Result := "NULL"
 			else
-				create Result.make (10)
+				Result:= string_routines.make (10)
 				Result.append (pad_integer_4 (year))
 				Result.append_character ('-')
 				Result.append (pad_integer_2 (month))
@@ -171,10 +161,6 @@ feature -- Conversion
 				Result.append (pad_integer_2 (day))
 			end
 		end
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -185,15 +171,13 @@ feature -- Basic operations
 				day = other.day
 		end
 
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
+
+	string_routines : expanded KL_STRING_ROUTINES
 
 	pad_integer_4 (value : INTEGER) : STRING is
 		do
-			create Result.make (4)
+			Result:= string_routines.make (4)
 			if value < 10 then
 				Result.append ("000")
 			elseif value < 100 then
@@ -206,7 +190,7 @@ feature {NONE} -- Implementation
 
 	pad_integer_2 (value : INTEGER) : STRING is
 		do
-			create Result.make (2)
+			Result:= string_routines.make (2)
 			if value < 10 then
 				Result.append ("0")
 			end
@@ -224,21 +208,14 @@ feature {NONE} -- Implementation
 		do
 			Result := 6
 		end
+	
+	ecli_c_sizeof_date_struct : INTEGER is
+		external "C"
+		end
 
 invariant
-	null_or_valid: is_null or
-		(
-			year > 0 and
-			month > 0 and month <= 12 and
-			day > 0 and day <= 31
---((<<1,3,5,7,8,10,12>>).has (month) and day <= 31
---				or else (<<4,6,9,11>>).has (month) and day <= 30
---				or else month = 2 and ( 
---					( -- leap
---					   ((year \\ 400 = 0) or else ((year \\ 4 = 0) and (year \\ 100 /= 0))) and day <= 29)
---					  or else -- not leap
---					   day <= 28))
-		)
+	month:	(not is_null) implies (month >= 1 and month <= 12)
+	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))
 
 end -- class ECLI_DATE
 --

@@ -8,13 +8,6 @@ indexing
 class
 	PAT_PUBLISHER [G->PAT_SUBSCRIBER]
 
-
-feature -- Initialization
-
-feature -- Access
-
-feature -- Measurement
-
 feature -- Status report
 
 	has_subscribed (subscriber : G) : BOOLEAN is
@@ -25,10 +18,9 @@ feature -- Status report
 			Result := subscribers.has (subscriber)
 		end
 
-feature -- Status setting
-
-feature -- Cursor movement
-
+	count : INTEGER
+		-- count of subscribers
+		
 feature -- Element change
 
 	subscribe (subscriber : G) is
@@ -38,8 +30,10 @@ feature -- Element change
 			not_subscribeed:  not has_subscribed (subscriber)
 		do
 			subscribers.put_last (subscriber)
+			count := count + 1
 		ensure
 			subscribed: has_subscribed (subscriber)
+			one_more: count = old count + 1
 		end
 
 feature -- Removal
@@ -51,32 +45,18 @@ feature -- Removal
 			subscribed: has_subscribed (subscriber)
 		do
 			subscribers.delete (subscriber)
+			count := count - 1
 		ensure
 			not_subscribed: not has_subscribed (subscriber)
+			one_less: count = old count - 1
 		end
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
 	subscribers : DS_LIST[G] is
 		do
 			if impl_subscribers = Void then
-				create {DS_LINKED_LIST[G]} impl_subscribers.make
+				!DS_LINKED_LIST[G]! impl_subscribers.make
 			end
 			Result := impl_subscribers
 		ensure
@@ -84,10 +64,6 @@ feature {NONE} -- Implementation
 		end
 
 	impl_subscribers : DS_LIST [G]
-
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class PAT_PUBLISHER
 --

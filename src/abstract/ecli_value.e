@@ -29,8 +29,6 @@ inherit
 			{ANY} all
 		end
 		
-feature -- Initialization
-
 feature -- Access
 
 	item : ANY is
@@ -39,8 +37,6 @@ feature -- Access
 			not_null: not is_null
 		do
 		end
-
-feature -- Measurement
 
 feature -- Status report
 
@@ -230,24 +226,12 @@ feature -- Conversion
 		do
 		end
 
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	release_handle is
 		do
 			ecli_c_free_value (buffer)
 			buffer := default_pointer
-			ready_for_disposal := True
 		end
 
 	to_external : POINTER is
@@ -314,6 +298,10 @@ feature {NONE} -- Implementation values
 			Result := ecli_c_null_data
 		end
 
+	is_ready_for_disposal : BOOLEAN is True
+	
+	disposal_failure_reason : STRING is do	end
+	
 invariant
 	invariant_clause: is_valid
 

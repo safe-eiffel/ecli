@@ -1,5 +1,14 @@
 TODO
+<H1>FUNCTIONALITY</H1>
+Getting various metadata
+	** DONE 2000-07-28 : Result-set metadata, 
+	Tables/Columns/Indexes catalog metadata,
+	SQL Datatypes metadata.
 
+Allow Bulk data transfers
+	A cursor is not a single line, but an array of lines. This is interesting for	performance reasons. (Nice to have).
+
+<H1>DEPLOYMENT</H1>
 Portability
   * Compiler
 	Port to Visual Eiffel - make changes so that the error with an anchored declaration can be avoided.
@@ -11,16 +20,15 @@ Portability
 	Test 'query_assistant' on Linux
 	Test 'test_Xaction' on Linux
 
-Implement other data values
-	Time, BINARY, LONGVARBINARY, ...
-	Those data values should serve
-	for data transfer, not as implementation of corresponding Abstract Data Types.
-	ADT should be defined as clients or extension by inheritance.
-	** DONE 2000-08-10 LONGVARCHAR has been implemented
 
-Documentation.
-	** DONE 2000-10-14 : Tutorial
+<H1>Documentation</H1>
+	<H2>Tutorial</H2>
+		** DONE 2000-10-14 : Tutorial
+	<H2>Examples</H2> 
+		** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
+		More examples to do (???)
 
+<H1>DATA TYPES/VALUES</H1>
 Long Variable Data as streams (file)
         LONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
 	one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
@@ -28,22 +36,22 @@ Long Variable Data as streams (file)
 	reading/writing data to a file. For example, 'item' would be of FILE type.
 	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
 
+Implement other data values
+	Time, BINARY, LONGVARBINARY, ...
+	Note : Those data values should serve for data transfer, not as implementation of corresponding Abstract Data Types.
+	ADT should be defined as clients or extension by inheritance.
+	** DONE 2000-08-10 LONGVARCHAR has been implemented
+
+<H1>Testing</H1>
 Test cases
 
-Examples 
-	** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
-	More examples to do (???)
 	
-Getting various metadata
-	** DONE 2000-07-28 : Result-set metadata, 
-	Tables/Columns/Indexes catalog metadata,
-	SQL Datatypes metadata.
-
+<H1>REFACTORING/IMPROVEMENTS</H1>
 Refactoring
 	** DONE 2000-07-28 : 
 		(+) ECLI_VALUE gets/puts itself to an active statement, 
 		(+) cursor state, class contracts... **
-	Make better use of inheritance, if possible.
 
-Allow Bulk data transfers
-	A cursor is not a single line, but an array of lines. This is interesting for	performance reasons. (Nice to have).
+ 	** 2001-05-11  :
+		External Memory + object disposal : prevent segmentation violation.
+		Usage of open/close on ECLI_SESSION and ECLI_STATEMENT

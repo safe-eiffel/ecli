@@ -11,13 +11,6 @@ class
 inherit
 	ECLI_TYPE_CODES
 
-		rename
-		export
-		undefine
-		redefine
-		select
-		end
-
 feature -- Initialization
 
 	execute (a_cursor : QA_CURSOR; a_file : FILE) is

@@ -22,7 +22,7 @@ feature -- Initialization
 			if args.argument_count < 3 then
 				io.put_string ("Usage: transact <data_source> <user_name> <password>%N")
 			else
-				create session.make (args.argument (1), args.argument (2), args.argument (3))
+				!! session.make (args.argument (1), args.argument (2), args.argument (3))
 				session.connect
 				if session.has_information_message then
 					io.put_string (session.cli_state) 
@@ -32,7 +32,7 @@ feature -- Initialization
 					io.put_string ("Connected !!!%N")
 				end
 				-- definition of statement on session
-				create statement.make (session)
+				!! statement.make (session)
 				do_session
 			end;
 		end
@@ -157,10 +157,10 @@ feature -- Initialization
 			io.put_string ("'%N")
 			
 			statement.set_sql (stmt)
-			create param.make (20)
+			!! param.make (20)
 			param.set_item (first)
 			statement.put_parameter (param, "first")
-			create param.make (30)
+			!! param.make (30)
 			param.set_item (last)
 			statement.put_parameter (param, "last")
 			statement.bind_parameters
@@ -180,12 +180,12 @@ feature -- Initialization
 			from
 				i := 1
 				cols := statement.result_column_count
-				create cursor.make (1, cols)
+				!! cursor.make (1, cols)
 				statement.describe_cursor
 			until
 				i > cols
 			loop
-				create v.make (statement.cursor_description.item (i).column_precision)
+				!! v.make (statement.cursor_description.item (i).column_precision)
 				cursor.put (v, i)
 				i := i + 1
 			end

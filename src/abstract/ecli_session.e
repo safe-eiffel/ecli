@@ -1,5 +1,5 @@
 indexing
-	description: 
+	description:
 
 		"Objects that represent a session to a database"
 
@@ -15,8 +15,8 @@ inherit
 	ECLI_STATUS
 
 	ECLI_HANDLE
-		redefine
-			prepare_for_disposal
+		export
+			{ANY} is_valid
 		end
 
 	ECLI_SHARED_ENVIRONMENT
@@ -27,7 +27,8 @@ inherit
 			unsubscribe as unregister_statement,
 			has_subscribed as is_registered_statement,
 			subscribers as statements,
-			impl_subscribers as impl_statements
+			impl_subscribers as impl_statements,
+			count as statements_count
 		export
 			{ECLI_STATEMENT}
 				register_statement,
@@ -40,68 +41,67 @@ inherit
 			publisher as environment,
 			published as environment_release,
 			has_publisher as has_environment,
-			unsubscribed as unattached
-		redefine	
+			unsubscribed as is_closed
+		redefine
 			environment_release
 		end
 
 creation
 	make
 
-feature {NONE} -- Initialization
+feature -- Initialization
 
-	make (a_data_source, a_user_name, a_password : STRING) is
+	make, open (a_data_source, a_user_name, a_password : STRING) is
 			-- Make session using 'session_string'
 		require
 			data_source_defined: a_data_source /= Void
 			user__name_defined: a_user_name/= Void
 			password_defined: a_password /= Void
+			closed: is_closed
 		do
 			-- set data_source, user_name and password
 			set_data_source (a_data_source)
 			set_user_name(a_user_name)
 			set_password (a_password)
-			unattached := True
-			attach
+			allocate
 		ensure
 			data_source_shared : data_source = a_data_source
 			user_name_shared : user_name= a_user_name
 			password_shared : password = a_password
 			valid: is_valid
-			attached: not unattached
+			open:  not is_closed
 		end
 
 feature -- Initialization
 
 	attach is
 			-- attach current session object to shared CLI environment
-		require
-			unattached: unattached
-		local
-			henv : pointer
+		obsolete "Use open /close instead of attach/release"
 		do
-			-- | Allocate session handle
-			henv := environment.handle
-			set_status (ecli_c_allocate_connection(henv, $handle))
-			--| register with environment
-			environment.register_session (Current)
-			unattached := False
-		ensure
-			attached: not unattached
-			registered: environment.is_registered_session (Current) and not unattached
-			valid: is_valid
 		end
 
 	release is
-			-- releases current session object from environment.  Ready for disposal.
+			-- releases current session object from environment.  Ready for disposal
+		obsolete "Use open/close instead of attach/release"
+		do
+		end
+
+	close is
+			-- closes the the session
 		require
 			valid: is_valid
+			not_connected: not is_connected
+			not_closed: not is_closed
 		do
-			prepare_for_disposal
+			if not is_closed then
+				environment.unregister_session (Current)
+			end
 			release_handle
+			environment := Void
 		ensure
-			unattached: unattached and not (old environment).is_registered_session (Current)
-			not_valid:  not is_valid
+			closed:     	is_closed
+			unregistered:	not (old environment).is_registered_session (Current)
+			not_valid:  	not is_valid
 		end
 
 
@@ -238,7 +238,7 @@ feature -- Basic Operations
 			set_automatic_commit
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
-			commit_mode_reset : not is_manual_commit 
+			commit_mode_reset : not is_manual_commit
 		end
 
 	rollback is
@@ -256,8 +256,8 @@ feature -- Basic Operations
 			set_automatic_commit
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
-			commit_mode_reset : not is_manual_commit 
-		end	
+			commit_mode_reset : not is_manual_commit
+		end
 
 	connect is
 			-- establish a session using the session_string
@@ -270,7 +270,7 @@ feature -- Basic Operations
 		local
 			tools : ECLI_EXTERNAL_TOOLS
 		do
-			set_status (ecli_c_connect (handle, 
+			set_status (ecli_c_connect (handle,
 					tools.string_to_pointer (data_source),
 					tools.string_to_pointer (user_name),
 					tools.string_to_pointer (password)))
@@ -286,66 +286,38 @@ feature -- Basic Operations
 		require
 			is_valid: is_valid
 			connected: is_connected
-		local
-			statements_cursor : DS_LIST_CURSOR [ECLI_STATEMENT]
+			no_opened_statements: statements_count = 0
 		do
-			from
-				statements_cursor := statements.new_cursor
-				statements_cursor.start 
-			until 
-				statements_cursor.off 
-			loop 
-				statements_cursor.item.session_disconnect (Current) 
-				statements_cursor.forth
-			end
 			statements.wipe_out
 			--| actual disconnect
 			set_status (ecli_c_disconnect (handle))
 			if is_ok then
 				set_disconnected
-			end				
+			end
 		ensure
 			not_connected: not is_connected implies is_ok
-			-- foreach s in old statements it_holds not s.is_valid
-			-- statements.empty
 		end
-
 
 feature {ECLI_ENVIRONMENT} --
 
-	environment_release (env : ECLI_ENVIRONMENT) is
+	environment_release (env : like environment) is
 			-- environment is being released
 		do
-			unattached := True
 			if is_connected then
 				disconnect
 			end
 			release_handle
+			environment := Void
 		ensure then
-			released_environment: unattached = True
-		end 
+			released_environment: is_closed = True
+		end
 
 feature {NONE} -- Implementation
-
-	prepare_for_disposal is
-		do
-			if is_connected then
-				disconnect
-			end
-			if not unattached then
-				environment.unregister_session (Current)
-			end
-			unattached := True
-		ensure then
-			not_connected: not is_connected
-			not_referenced_by_environment: unattached or else not environment.is_registered_session (Current)
-		end
 
 	release_handle is
 		do
 			set_status (ecli_c_free_connection (handle))
 			set_handle ( default_pointer)
-			ready_for_disposal := True
 		end
 
 	impl_data_source : STRING
@@ -376,9 +348,40 @@ feature {NONE} -- Implementation
 		end
 
 	impl_is_manual_commit : BOOLEAN
-	
+
+	allocate is
+			-- allocate HANDLE
+		require
+			is_closed: is_closed
+		local
+			henv : pointer
+		do
+			-- | Allocate session handle
+			environment := shared_environment
+			henv := environment.handle
+			set_status (ecli_c_allocate_connection(henv, $handle))
+			--| register with environment
+			environment.register_session (Current)
+		ensure
+			registered: environment.is_registered_session (Current)
+			valid: is_valid
+		end
+
+	is_ready_for_disposal : BOOLEAN is
+			-- is this object ready for disposal ?
+		do
+			Result := statements_count = 0
+		end
+
+	disposal_failure_reason : STRING is
+		once
+			Result := "ECLI_STATEMENT still opened on Current; Close them before closing this session."
+		end
+
+	environment : ECLI_ENVIRONMENT
+
 invariant
-	valid_session: --
+	valid_session: environment /= Void implies environment = shared_environment
 
 end -- class ECLI_SESSION
 --

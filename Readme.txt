@@ -25,6 +25,7 @@ Compiler portability
 ====================
 * ISE Eiffel
 * SmallEiffel
+* Visual Eiffel
 
 	Platforms :
 * Windows

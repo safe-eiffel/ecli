@@ -1,3 +1,9 @@
+2001-05-11
+	* attach/release are now obsolete, use open/close instead
+	* port to Visual Eiffel 3.2
+	* updated tutorial
+	* usage of GOBO 2.0 and its time cluster : DT_DATE, DT_TIME, DT_DATE_TIME
+	
 2000-11-03
 	* fixed segmentation violation problems
 	* added features 'attach' and 'release' to ECLI_SESSION and ECLI_STATEMENT
