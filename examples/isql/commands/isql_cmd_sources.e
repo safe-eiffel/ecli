@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("sou[rces]", command_width)
-			Result.append ("List all datasources defined on current system.")
+			Result.append_string ("List all datasources defined on current system.")
 		end
 
 	match_string : STRING is "sou"

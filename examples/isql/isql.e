@@ -166,10 +166,10 @@ feature {NONE} -- Implementation
 			-- set error_message to "<message> '<value>' "
 		do
 			!!error_message.make (0)
-			error_message.append (message)
-			error_message.append (" '")
-			error_message.append (value)
-			error_message.append ("'")		
+			error_message.append_string (message)
+			error_message.append_string (" '")
+			error_message.append_string (value)
+			error_message.append_string ("'")		
 		ensure
 			error_message /= Void
 		end

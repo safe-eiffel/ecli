@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("com[mit transaction]", command_width)
-			Result.append ("Commit current transaction.")
+			Result.append_string ("Commit current transaction.")
 		end
 
 	match_string : STRING is "com"

@@ -17,7 +17,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("exec[ute] <filename>", command_width)
-			Result.append ("Execute clisql command_stream from <filename>.")
+			Result.append_string ("Execute clisql command_stream from <filename>.")
 		end
 
 	match_string : STRING is "exec"

@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("rol[lback transaction]", command_width)
-			Result.append ("Rollback current transaction.")
+			Result.append_string ("Rollback current transaction.")
 		end
 
 	match_string : STRING is "rol"

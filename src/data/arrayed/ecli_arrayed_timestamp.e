@@ -12,7 +12,9 @@ inherit
 	ECLI_ARRAYED_DATE
 		rename
 			make_single as make_single_date, make_default_single as make_default_1_date,
-			set_item as set_date_item
+			set_item as set_date_item, truncated as date_truncated, create_impl_item as create_date_impl_item
+		export
+			{NONE} make_single_date, make_default_1_date, set_date_item, date_truncated
 		undefine
 			c_type_code,
 			column_precision,
@@ -24,11 +26,11 @@ inherit
 			to_time,
 			to_timestamp,
 			trace,
-			transfer_octet_length, convertible_to_timestamp , convertible_to_date
+			transfer_octet_length, convertible_to_timestamp , convertible_to_date, days_in_month
 		redefine
-			is_equal, out_item_at, set_item_at, create_impl_item --, set_item, set_item_at,
+			is_equal, out_item_at, item_at, set_item_at, impl_item --, set_item, set_item_at,
 		select
-			make_default_1_date, make_single_date, set_date_item--, set_item_at-- to_date
+			set_date_item--, set_item_at-- to_date
 		end
 
 
@@ -53,6 +55,10 @@ inherit
 			year, hour, minute, second, nanosecond, to_date
 --		redefine
 --			trace, hour, minute, second, nanosecond
+		redefine
+			impl_item, create_impl_item
+		select
+			truncated, create_impl_item
 		end
 
 creation
@@ -61,6 +67,18 @@ creation
 feature {NONE} -- Initialization
 
 feature -- Access
+
+	item_at (index: INTEGER) : DT_DATE_TIME is
+			--
+		local
+			save_index : INTEGER
+		do
+			save_index := cursor_index
+			cursor_index := index
+			Result := item
+			cursor_index := save_index
+		end
+
 
 	hour : INTEGER is
 		local
@@ -238,14 +256,14 @@ feature -- Conversion
 			Result := Precursor {ECLI_ARRAYED_DATE} (index)
 			if not is_null then
 				Result.append_character (' ')
-				Result.append (pad_integer_2 (hour))
+				Result.append_string (pad_integer_2 (hour))
 				Result.append_character (':')
-				Result.append (pad_integer_2 (minute))
+				Result.append_string (pad_integer_2 (minute))
 				Result.append_character (':')
-				Result.append (pad_integer_2 (second))
+				Result.append_string (pad_integer_2 (second))
 				if nanosecond > 0 then
 					Result.append_character ('.')
-					Result.append (nanosecond.out)
+					Result.append_string (nanosecond.out)
 				end
 			end
 			cursor_index := save_index
@@ -275,9 +293,11 @@ feature {NONE} -- Implementation
 
 	create_impl_item is
 			do
-				create impl_item.make (1,1,1, 0,0,0)
+				 Precursor {ECLI_TIMESTAMP}
 			end
-		
+
+	impl_item : DT_DATE_TIME
+
 invariant
 	invariant_clause: -- Your invariant here
 

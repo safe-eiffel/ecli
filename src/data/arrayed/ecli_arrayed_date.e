@@ -9,11 +9,9 @@ class
 	ECLI_ARRAYED_DATE
 
 inherit
-	ECLI_ARRAYED_VALUE
-		rename
-		export
+	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE]
 		undefine
-			item, set_item, is_equal, out_item_at
+			set_item, is_equal, out_item_at
 		redefine
 		select
 		end
@@ -51,7 +49,7 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
-	item_at (index : INTEGER) : like item is
+	item_at (index : INTEGER) : DT_DATE is
 		local
 			save_index : INTEGER
 		do
@@ -154,12 +152,14 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_item (other : like item) is
+	set_item (other : DT_DATE) is
 		do
 			set_item_at (other, cursor_index)
+		ensure then
+			item_set: item.is_equal (other)
 		end
 
-	set_item_at (other : like item; index : INTEGER) is
+	set_item_at (other : DT_DATE; index : INTEGER) is
 		do
 			set_date_at (other.year, other.month, other.day, index)
 		end
@@ -198,15 +198,15 @@ feature -- Conversion
 		do
 			!!Result.make (10)
 			if is_null_at (index) then
-				Result.append ("NULL")
+				Result.append_string ("NULL")
 			else
 				save_index := cursor_index
 				cursor_index := index
-				Result.append (pad_integer_4 (year))
+				Result.append_string (pad_integer_4 (year))
 				Result.append_character ('-')
-				Result.append (pad_integer_2 (month))
+				Result.append_string (pad_integer_2 (month))
 				Result.append_character ('-')
-				Result.append (pad_integer_2 (day))
+				Result.append_string (pad_integer_2 (day))
 				cursor_index := save_index
 			end
 		end
@@ -234,10 +234,13 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	create_impl_item is
-		do
-			create impl_item.make (1,1,1)
-		end
+--	create_impl_item is
+--		local
+--			d : DT_DATE
+--		do
+--			create d.make (1,1,1)
+--			impl_item := d -- SmartEiffel does not like creation of generics
+--		end
 		
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)

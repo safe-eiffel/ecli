@@ -477,8 +477,8 @@ feature {NONE} -- Implementation
 			a_name_not_void: a_name /= Void
 		do
 			!!Result.make (a_name.count + 2)
-			Result.append ("p_")
-			Result.append (a_name)
+			Result.append_string ("p_")
+			Result.append_string (a_name)
 			Result.to_lower
 		end
 		

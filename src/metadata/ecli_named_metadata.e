@@ -104,8 +104,8 @@ feature -- Conversion
 			-- 
 		do
 			!!Result.make (0)
-			append_to_string (Result, catalog) Result.append ("%T")
-			append_to_string (Result, schema) Result.append ("%T")
+			append_to_string (Result, catalog) Result.append_string ("%T")
+			append_to_string (Result, schema) Result.append_string ("%T")
 			append_to_string (Result, name)			
 		end
 		
@@ -125,9 +125,9 @@ feature {NONE} -- Implementation
 			-- 
 		do
 			if src = Void then
-				dest.append ("NULL")
+				dest.append_string ("NULL")
 			else
-				dest.append (src)
+				dest.append_string (src)
 			end
 		end
 

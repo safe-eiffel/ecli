@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("be[gin transaction]", command_width)
-			Result.append ("Begin a new transaction.") -- No effect if a transaction is already active.")
+			Result.append_string ("Begin a new transaction.") -- No effect if a transaction is already active.")
 		end
 
 	match_string : STRING is "be"

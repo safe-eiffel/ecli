@@ -46,22 +46,22 @@ feature {NONE} -- implementation
 	make_call : STRING is
 		do
 			create Result.make (12)
-			Result.append ("make")
+			Result.append_string ("make")
 		end
 
 
 	make_call_with_precision : STRING is
 		do
 			create Result.make (12)
-			Result.append ("make (")
-			Result.append (column_precision.out)
-			Result.append (")")
+			Result.append_string ("make (")
+			Result.append_string (column_precision.out)
+			Result.append_string (")")
 		end
 
 	make_first_call : STRING is
 		do
 			create Result.make (12)
-			Result.append ("make_first")
+			Result.append_string ("make_first")
 		end
 		
 end -- class QA_VALUE

@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("he[lp]", Command_width)
-			Result.append ("Print the list of available commands.")
+			Result.append_string ("Print the list of available commands.")
 		end
 
 	match_string : STRING is "he"

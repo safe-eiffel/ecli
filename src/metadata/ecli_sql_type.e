@@ -276,34 +276,34 @@ feature -- Conversion
 			--
 		do
 			!!Result.make (128)
-			Result.append (name)
-			Result.append ("%T")
-			Result.append (sql_type_code.out) Result.append ("%T")
-			Result.append (size.out) Result.append ("%T")
-			if is_literal_prefix_applicable then Result.append (literal_prefix) else Result.append ("NULL") end
-			Result.append ("%T")
-			if is_literal_suffix_applicable then Result.append (literal_suffix) else Result.append ("NULL") end
-			Result.append ("%T")
-			if is_create_params_applicable then Result.append (create_params) else Result.append ("NULL") end
-			Result.append ("%T")
-			Result.append (is_case_sensitive.out) Result.append ("%T")
-			Result.append (searchable.out) Result.append ("%T")
-			if is_unsigned_applicable then Result.append (is_unsigned.out) else Result.append ("NULL") end
-			Result.append ("%T")
-			Result.append (is_fixed_precision_scale.out) Result.append ("%T")
-			if is_auto_unique_value_applicable then Result.append (is_auto_unique_value.out) else Result.append ("NULL") end
-			Result.append ("%T")
-			if local_type_name /= Void then Result.append (local_type_name.out) else Result.append ("NULL") end
-			Result.append ("%T")
-			if is_minimum_scale_applicable then Result.append (minimum_scale.out) else Result.append ("NULL") end
-			Result.append ("%T")
-			if is_maximum_scale_applicable then Result.append (maximum_scale.out) else Result.append ("NULL") end
-			Result.append ("%T")
+			Result.append_string (name)
+			Result.append_string ("%T")
+			Result.append_string (sql_type_code.out) Result.append_string ("%T")
+			Result.append_string (size.out) Result.append_string ("%T")
+			if is_literal_prefix_applicable then Result.append_string (literal_prefix) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			if is_literal_suffix_applicable then Result.append_string (literal_suffix) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			if is_create_params_applicable then Result.append_string (create_params) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			Result.append_string (is_case_sensitive.out) Result.append_string ("%T")
+			Result.append_string (searchable.out) Result.append_string ("%T")
+			if is_unsigned_applicable then Result.append_string (is_unsigned.out) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			Result.append_string (is_fixed_precision_scale.out) Result.append_string ("%T")
+			if is_auto_unique_value_applicable then Result.append_string (is_auto_unique_value.out) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			if local_type_name /= Void then Result.append_string (local_type_name.out) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			if is_minimum_scale_applicable then Result.append_string (minimum_scale.out) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
+			if is_maximum_scale_applicable then Result.append_string (maximum_scale.out) else Result.append_string ("NULL") end
+			Result.append_string ("%T")
 			if exists_sql_data_type then
-				Result.append (sql_data_type.out) Result.append ("%T")
-				Result.append (sql_date_time_sub.out) Result.append ("%T")
-				Result.append (num_prec_radix.out) Result.append ("%T")
-				Result.append (interval_precision.out) Result.append ("%T")
+				Result.append_string (sql_data_type.out) Result.append_string ("%T")
+				Result.append_string (sql_date_time_sub.out) Result.append_string ("%T")
+				Result.append_string (num_prec_radix.out) Result.append_string ("%T")
+				Result.append_string (interval_precision.out) Result.append_string ("%T")
 			end
 		end
 

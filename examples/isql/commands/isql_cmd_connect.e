@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("con[nect] <dsn> <user> <pwd>", Command_width)
-			Result.append ("Connect to <dsn> datasource as <user> with password <pwd>.")
+			Result.append_string ("Connect to <dsn> datasource as <user> with password <pwd>.")
 		end
 
 	match_string : STRING is "con"

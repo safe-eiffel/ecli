@@ -142,12 +142,13 @@ feature {NONE} -- Implementation
 		local
 			count : INTEGER
 			retcode : INTEGER
+			impl_error_buffer : C_STRING
 		do
 			if need_diagnostics then
 				impl_cli_state := STRING_.make_buffer (6)
-				impl_error_buffer := STRING_.make_buffer (256)
+				create impl_error_buffer.make (512)
 				!!impl_error_message.make(0)
-				from 
+				from
 					count := 1
 					retcode := sql_success
 					protect
@@ -157,14 +158,13 @@ feature {NONE} -- Implementation
 					retcode := get_error_diagnostic (count, 
 							string_to_pointer (impl_cli_state),
 							$impl_native_code, 
-							string_to_pointer (impl_error_buffer),
-							255,
+							impl_error_buffer.handle,
+							impl_error_buffer.capacity - 1,
 							$impl_buffer_length_indicator)
 					if retcode = sql_success or else retcode = sql_success_with_info then	
-						impl_error_message.append (
-								pointer_to_string (
-									string_to_pointer (impl_error_buffer)))
-						impl_error_message.append ("%N")
+						impl_error_message.append_string (
+								impl_error_buffer.to_string)
+						impl_error_message.append_string ("%N")
 					end	
 					count := count + 1
 				end
@@ -178,8 +178,6 @@ feature {NONE} -- Implementation
 	impl_cli_state : STRING
 
 	impl_error_message : STRING
-
-	impl_error_buffer : STRING
 
 	need_diagnostics : BOOLEAN
 

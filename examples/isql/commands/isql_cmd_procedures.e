@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("pro[cedures]", command_width)
-			Result.append ("List all procedures in current catalog")
+			Result.append_string ("List all procedures in current catalog")
 		end
 
 	match_string : STRING is "pro"

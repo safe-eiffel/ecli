@@ -20,11 +20,11 @@ inherit
 			item, content_capacity, content_count
 		end
 
-	ECLI_ARRAYED_VALUE
+	ECLI_GENERIC_ARRAYED_VALUE [STRING]
 		rename
 			make as make_arrayed
 		redefine
-			item, set_item, out_item_at, to_string
+			set_item, out_item_at, to_string
 		end
 
 creation
@@ -36,12 +36,15 @@ feature {NONE} -- Initialization
 		require
 			valid_content_capacity: a_content_capacity > 0 and a_content_capacity < max_content_capacity
 			valid_capacity: a_capacity >= 1
+		local
+			s : STRING
 		do
 			buffer := ecli_c_alloc_array_value (a_content_capacity+1, a_capacity)
 			capacity := a_capacity
 			count := capacity
 			set_all_null
-			create impl_item.make (0)
+			create s.make (0)
+			impl_item := s
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
 			capacity_set: capacity = a_capacity
@@ -57,7 +60,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item_at (index : INTEGER) : like item is
+	item_at (index : INTEGER) : STRING is
 		do
 			if is_null_at (index) then
 				Result := Void
@@ -115,6 +118,8 @@ feature -- Element change
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
+		ensure then
+			item_set: item.is_equal (value)
 		end
 
 	set_item_at (value : like item; index : INTEGER) is
@@ -170,9 +175,9 @@ feature {NONE} -- Implementation
 	out_item_at (index : INTEGER) : STRING is
 		do
 			!!Result.make (10)
-			Result.append ("'")
-			Result.append (item_at (index).out)
-			Result.append ("'")
+			Result.append_string ("'")
+			Result.append_string (item_at (index).out)
+			Result.append_string ("'")
 		end
 
 invariant

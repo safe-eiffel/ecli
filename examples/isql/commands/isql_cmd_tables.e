@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("tab[les]", command_width)
-			Result.append ("List all tables in current catalog.")
+			Result.append_string ("List all tables in current catalog.")
 		end
 
 	match_string : STRING is "tab"

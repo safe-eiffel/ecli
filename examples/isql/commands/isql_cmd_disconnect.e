@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("dis[connect]", Command_width)
-			Result.append ("Disconnect current session.")
+			Result.append_string ("Disconnect current session.")
 		end
 
 	match_string : STRING is "dis"

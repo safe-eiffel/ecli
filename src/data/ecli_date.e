@@ -12,10 +12,10 @@ class
 	ECLI_DATE
 
 inherit
-	ECLI_VALUE
+	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
 			item, set_item, out, is_equal, convertible_to_date, to_date,
-			convertible_to_timestamp, to_timestamp
+			convertible_to_timestamp, to_timestamp, create_impl_item
 		end
 
 	ECLI_FORMAT_INTEGER
@@ -24,7 +24,7 @@ inherit
 		end
 		
 creation
-	make, make_first, make_default
+	make, make_default
 
 feature {NONE} -- Initialization
 
@@ -35,18 +35,11 @@ feature {NONE} -- Initialization
 		do
 			allocate_buffer
 			set (a_year, a_month, a_day)
-			create impl_item.make (a_year,a_month,a_day)
+			create_impl_item
 		ensure
 			year_set: year = a_year
 			month_set: month = a_month
 			day_set: day = a_day
-		end
-
-	make_first is
-			-- make as first day of Christian Era : January 1st, 1
-		obsolete "please use make_default instead."
-		do
-			make_default
 		end
 		
 	make_default is
@@ -167,9 +160,11 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_item (other : like item) is
+	set_item (other : DT_DATE) is
 		do
 			set (other.year, other.month, other.day)
+		ensure then
+			item_set: item.is_equal (other)
 		end
 
 feature -- Removal
@@ -186,11 +181,11 @@ feature -- Conversion
 				Result := "NULL"
 			else
 				Result:= string_routines.make (10)
-				Result.append (pad_integer_4 (year))
+				Result.append_string (pad_integer_4 (year))
 				Result.append_character ('-')
-				Result.append (pad_integer_2 (month))
+				Result.append_string (pad_integer_2 (month))
 				Result.append_character ('-')
-				Result.append (pad_integer_2 (day))
+				Result.append_string (pad_integer_2 (day))
 			end
 		end
 
@@ -236,6 +231,14 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	create_impl_item is
+		local
+			d : DT_DATE
+		do
+			create d.make (0,1,1)
+			impl_item := d
+		end
+		
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)
 	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))

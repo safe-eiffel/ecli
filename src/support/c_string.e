@@ -10,6 +10,11 @@ class
 inherit
 	C_MEMORY
 
+	ECLI_EXTERNAL_TOOLS
+		undefine
+			dispose
+		end
+	
 creation
 	make
 	
@@ -46,6 +51,12 @@ feature -- Transformation
 
 feature -- Conversion
 
+	to_string : STRING is
+			-- 
+		do
+			Result := pointer_to_string (handle)
+		end
+		
 feature -- Duplication
 
 feature -- Miscellaneous

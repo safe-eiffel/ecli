@@ -13,7 +13,7 @@ inherit
 		redefine
 			max_capacity, sql_type_code
 		end
-
+		
 creation
 	make
 
@@ -30,7 +30,7 @@ feature -- Status report
 		once
 			Result := sql_varchar
 		end
-
+		
 end -- class ECLI_VARCHAR
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>

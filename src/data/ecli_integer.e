@@ -9,7 +9,7 @@ class
 	ECLI_INTEGER
 
 inherit
-	ECLI_VALUE
+	ECLI_GENERIC_VALUE [INTEGER]
 		redefine
 			item, set_item, out,
 			to_integer, convertible_to_integer,
@@ -25,19 +25,13 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (4)
-			create impl_item
 		end
 
 feature -- Access
 
-	item : INTEGER_REF is
+	item : INTEGER is
 		do
-			if is_null then
-				Result := Void
-			else
-				impl_item.set_item (to_integer)
-				Result := impl_item
-			end
+			Result := to_integer
 		end
 
 feature -- Measurement
@@ -98,12 +92,14 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : like item) is
+	set_item (value : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
-			actual_value := value.item
-			ecli_c_value_set_value (buffer, $actual_value, transfer_octet_length)
+			impl_item := value
+			ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
+		ensure then
+			item_set: item = value
 		end
 
 feature -- Removal
@@ -117,8 +113,8 @@ feature -- Conversion
 	to_integer : INTEGER is
 		do
 			if not is_null then
-				ecli_c_value_copy_value (buffer, $actual_value)
-				Result := actual_value
+				ecli_c_value_copy_value (buffer, $impl_item)
+				Result := impl_item
 			end
 		end
 
@@ -163,17 +159,12 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	actual_value : INTEGER
-
 	octet_size : INTEGER is 
 		do 
 			Result := 4 
 		ensure 
 			result_is_4: Result = 4 
 		end
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class ECLI_INTEGER
 --

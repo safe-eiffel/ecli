@@ -36,6 +36,8 @@ inherit
 				sql_longvarchar
 		end
 
+	KL_IMPORTED_ARRAY_ROUTINES
+	
 creation
 	make_all_types, make_by_type
 
@@ -58,7 +60,7 @@ feature -- Initialization
 			" Use `make' "
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
-			valid_type: supported_types.has (a_type)
+			valid_type: Integer_array_.has (supported_types, a_type)
 			closed: is_closed
 		do
 			make (a_type, a_session)
@@ -71,7 +73,7 @@ feature -- Initialization
 			-- make cursor for `a_type'
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
-			valid_type: supported_types.has (a_type)
+			valid_type: Integer_array_.has (supported_types, a_type)
 			closed: is_closed
 		do
 			cursor_make (a_session)

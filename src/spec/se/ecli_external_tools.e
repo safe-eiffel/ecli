@@ -15,15 +15,11 @@ feature -- Basic operations
 
 	string_to_pointer (s : STRING) : POINTER is
 			-- pointer to "C" version of 's'
-		require
-			good_string: s /= Void
 		do
 			Result := s.to_external
 		end
 
 	pointer_to_string (p : POINTER) : STRING is
-		require
-			good_pointer: p /= default_pointer
 		do
 			create Result.from_external_copy (p)
 		end

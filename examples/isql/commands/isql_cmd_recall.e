@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("re[call] <i>", Command_width)
-			Result.append ("Recall the <i>th command in the history.")
+			Result.append_string ("Recall the <i>th command in the history.")
 		end
 
 	match_string : STRING is "re"

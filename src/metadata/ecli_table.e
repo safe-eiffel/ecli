@@ -68,9 +68,9 @@ feature -- Conversion
 			--
 		do
 			!!Result.make (128)
-			Result.append (Precursor)
-			Result.append ("%T")
-			append_to_string (Result, type) Result.append ("%T")
+			Result.append_string (Precursor)
+			Result.append_string ("%T")
+			append_to_string (Result, type) Result.append_string ("%T")
 			append_to_string (Result, description)
 		end
 

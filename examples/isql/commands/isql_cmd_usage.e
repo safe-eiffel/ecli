@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("usage", command_width)
-			Result.append ("Print command usage.")
+			Result.append_string ("Print command usage.")
 		end
 
 	match_string : STRING is "usage"

@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("q[uit]", command_width)
-			Result.append ("Quit the application.") -- and closes current connection
+			Result.append_string ("Quit the application.") -- and closes current connection
 		end
 
 	match_string : STRING is "q"

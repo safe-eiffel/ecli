@@ -143,7 +143,7 @@ assembly
 external
 
 	object:
-		"ODBC32.lib",
-		"$(ECLI)/src/spec/ise/windows/ecli_c.lib"
+		"$(ECLI)/src/spec/ise/windows/ecli_c.lib",
+		"ODBC32.lib"
 
 end

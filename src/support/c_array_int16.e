@@ -30,17 +30,13 @@ feature -- Measurement
 
 feature -- Element change
 
-	put (value : like item; index : INTEGER) is
+	put (value : INTEGER; index : INTEGER) is
 			-- 
-		require
-			valid_index: index > 0 and index <= capacity
 		local
 			item_ptr : POINTER
 		do
 			item_ptr := item_pointer (index)
 			c_memory_copy (item_ptr, $value, item_size)
-		ensure
-			item_set: item (index).is_equal (value)
 		end
 		
 end -- class C_ARRAY_INT16

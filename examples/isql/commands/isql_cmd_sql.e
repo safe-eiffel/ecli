@@ -19,7 +19,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("<any sql statement>", command_width)
-			Result.append ("Execute any SQL statement or procedure call.")
+			Result.append_string ("Execute any SQL statement or procedure call.")
 		end
 		
 feature -- Status report
@@ -117,8 +117,8 @@ feature {NONE} -- Implementation
 	sql_error (stmt : ECLI_STATUS) : STRING is
 		do
 			create Result.make (0)
-			Result.append ("** ERROR **%N")
-			Result.append (stmt.diagnostic_message)
+			Result.append_string ("** ERROR **%N")
+			Result.append_string (stmt.diagnostic_message)
 			Result.append_character ('%N')
 		end
 

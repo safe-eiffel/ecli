@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("hist[ory]", Command_width)
-			Result.append ("Print the commands history.")
+			Result.append_string ("Print the commands history.")
 		end
 
 	match_string : STRING is "hist"

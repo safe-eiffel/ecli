@@ -21,7 +21,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("edit", command_width)
-			Result.append ("Edit query buffer with current editor.")
+			Result.append_string ("Edit query buffer with current editor.")
 		end
 
 	match_string : STRING is "edit"

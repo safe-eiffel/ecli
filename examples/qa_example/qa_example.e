@@ -84,7 +84,7 @@ feature -- Basic Operations
 			last_command.copy("")
 			io.put_string ("enter value (0=quit) >")
 			io.read_line
-			last_command.append (io.last_string)
+			last_command.append_string (io.last_string)
 		end
 
 	last_command : STRING is

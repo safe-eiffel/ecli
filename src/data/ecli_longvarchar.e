@@ -9,7 +9,7 @@ class
 	ECLI_LONGVARCHAR
 
 inherit
-	ECLI_VALUE
+	ECLI_GENERIC_VALUE [STRING]
 		redefine
 			item, set_item,convertible_to_string, to_string, out, convertible_to_character, to_character
 		end
@@ -22,9 +22,12 @@ feature {NONE} -- Initialization
 	make (n : INTEGER) is
 		require
 			n > 0 and n <= max_capacity
+		local
+			s : STRING
 		do
 			buffer := ecli_c_alloc_value (n+1)
-			create impl_item.make (0)
+			create s.make (0)
+			impl_item := s
 		ensure
 			capacity: capacity = n
 		end
@@ -107,7 +110,7 @@ feature -- Status report
 
 feature -- Element change
 
-	set_item (value : like item) is
+	set_item (value : STRING) is
 			-- set item to 'value', truncating if necessary
 		local
 			actual_length, transfer_length : INTEGER
@@ -123,6 +126,8 @@ feature -- Element change
 			ecli_c_value_set_value (buffer, string_to_pointer (value), actual_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 			unprotect
+		ensure then
+			item_set: equal (item, truncated (value))		
 		end
 			
 feature -- Conversion
@@ -165,10 +170,6 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	octet_size : INTEGER is do Result := transfer_octet_length end
-
-invariant
-	invariant_clause: -- Your invariant here
-
 
 end -- class ECLI_LONGVARCHAR
 --

@@ -9,9 +9,9 @@ class
 	ECLI_TIME
 
 inherit
-	ECLI_VALUE
+	ECLI_GENERIC_VALUE [DT_TIME]
 		redefine
-			to_time, is_equal, out, set_item, item 
+			to_time, is_equal, out, set_item, item, create_impl_item
 		end
 
 	ECLI_FORMAT_INTEGER
@@ -33,7 +33,7 @@ feature {NONE} -- Initialization
 		do
 			allocate_buffer
 			set (a_hour, a_minute, a_second) --, a_nanosecond)
-			create impl_item.make (a_hour,a_minute,a_second)
+			create_impl_item
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
@@ -147,9 +147,11 @@ feature -- Element change
 --			nanosecond_set: nanosecond = a_nanosecond
 		end
 
-	set_item (other : like item) is
+	set_item (other : DT_TIME) is
 		do
 			set (other.hour, other.minute, other.second)
+		ensure then
+			item_set: item.is_equal (other)
 		end
 
 feature -- Removal
@@ -165,14 +167,14 @@ feature -- Conversion
 			!!Result.make (0)
 			if not is_null then
 				Result.append_character (' ')
-				Result.append (pad_integer_2 (hour))
+				Result.append_string (pad_integer_2 (hour))
 				Result.append_character (':')
-				Result.append (pad_integer_2 (minute))
+				Result.append_string (pad_integer_2 (minute))
 				Result.append_character (':')
-				Result.append (pad_integer_2 (second))
+				Result.append_string (pad_integer_2 (second))
 --				if nanosecond > 0 then
 --					Result.append_character ('.')
---					Result.append (nanosecond.out)
+--					Result.append_string (nanosecond.out)
 --				end
 			end
 		end
@@ -217,8 +219,17 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	create_impl_item is
+			-- 
+		local
+			t : DT_TIME
+		do
+			create t.make (0,0,0)
+			impl_item := t			
+		end
+		
 invariant
-	invariant_clause: -- Your invariant here
+	impl_item_not_void: impl_item /= Void
 
 end -- class ECLI_TIME
 --

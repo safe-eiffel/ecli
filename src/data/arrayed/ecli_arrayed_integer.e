@@ -9,9 +9,9 @@ class
 	ECLI_ARRAYED_INTEGER
 
 inherit
-	ECLI_ARRAYED_VALUE
+	ECLI_GENERIC_ARRAYED_VALUE [INTEGER]
 		redefine
-			item, set_item, out
+			set_item, out
 		end
 
 	ECLI_INTEGER
@@ -41,21 +41,16 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : INTEGER_REF is
+	item : INTEGER is
 		do
 			Result := item_at (cursor_index)
 		end
 
-	item_at (index : INTEGER) : like item is
+	item_at (index : INTEGER) : INTEGER is
 			--
 		do
-			if is_null_at (index) then
-				Result := Void
-			else
-				ecli_c_array_value_copy_value_at (buffer, $actual_value, index)
-				!! Result
-				Result.set_item (actual_value)
-			end
+			ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
+			Result := impl_item
 		end
 
 feature -- Measurement
@@ -73,17 +68,19 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : like item) is
+	set_item (value : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
+		ensure then
+			item_set: item = value
 		end
 
-	set_item_at (value : like item; index : INTEGER) is
+	set_item_at (value : INTEGER; index : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
-			actual_value := value.item
-			ecli_c_array_value_set_value_at (buffer, $actual_value, transfer_octet_length, index)
+			impl_item := value
+			ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length, index)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length, index)
 		end
 
@@ -107,20 +104,20 @@ feature -- Basic operations
 		do
 			from i := 1
 				!!Result.make (10)
-				Result.append ("<<")
+				Result.append_string ("<<")
 			until i > count
 			loop
 				if is_null_at (i) then
-					Result.append ("NULL")
+					Result.append_string ("NULL")
 				else
-					Result.append (item_at (i).item.out)
+					Result.append_string (item_at (i).out)
 				end
 				i := i + 1
 				if i <= count then
-					Result.append (", ")
+					Result.append_string (", ")
 				end
 			end
-			Result.append (">>")
+			Result.append_string (">>")
 		end
 
 	trace (a_tracer : ECLI_TRACER) is

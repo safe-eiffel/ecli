@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("ty[pes]", command_width)
-			Result.append ("List all types supported by current connection.")
+			Result.append_string ("List all types supported by current connection.")
 		end
 
 	match_string : STRING is "ty"

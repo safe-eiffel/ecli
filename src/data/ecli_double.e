@@ -12,23 +12,11 @@ class
 	ECLI_DOUBLE
 
 inherit
-	ECLI_VALUE
+	ECLI_GENERIC_VALUE [DOUBLE]
 		redefine
 			item, set_item, out,
 			to_double, convertible_to_double, to_integer, convertible_to_integer,
 			to_real, convertible_to_real
-		end
-
-	KL_IMPORTED_STRING_ROUTINES
-		undefine
-			out
-		end
-	
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose, out
 		end
 	
 creation
@@ -39,19 +27,13 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
-			create impl_item
 		end
 		
 feature -- Access
 
-	item : DOUBLE_REF is
+	item : DOUBLE is
 		do
-			if is_null then
-				Result := Void
-			else
-				impl_item.set_item (to_double)
-				Result := impl_item
-			end
+			Result := to_double
 		end
 
 feature -- Measurement
@@ -110,12 +92,14 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : like item) is
+	set_item (value : DOUBLE) is
 			-- set item to 'value', truncating if necessary
 		do
-			actual_value := value.item
-			ecli_c_value_set_value (buffer, $actual_value, transfer_octet_length)
+			impl_item := value.item
+			ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
+		ensure then
+			item_set: item = value
 		end
 
 feature -- Removal
@@ -129,8 +113,8 @@ feature -- Conversion
 	to_double : DOUBLE is
 		do
 			if not is_null then
-				ecli_c_value_copy_value (buffer, $actual_value)
-				Result := actual_value
+				ecli_c_value_copy_value (buffer, $impl_item)
+				Result := impl_item
 			end
 		end
 
@@ -174,8 +158,6 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	actual_value : DOUBLE
-	
 	sprintf_double (s : POINTER; d : DOUBLE) is
 			-- 
 		external "C" 

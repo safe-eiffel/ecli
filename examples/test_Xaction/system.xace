@@ -29,6 +29,7 @@
 		<option name="check" value="True"/>
 		<option name="optimize" value="False"/>
 	</option>
+	<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
 
 	<cluster name="transact" location="${ECLI}/examples/test_Xaction"/>
 

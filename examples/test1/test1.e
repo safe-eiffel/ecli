@@ -187,7 +187,7 @@ feature --  Basic operations
 		do
 			io.put_string (" - DML - Insert tuples - Parameterized SQL%N")
 			-- parameterized statement
-			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES (?first_name, ?last_name, ?nbr, ?year, ?price)")
+			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ( ?last_name, ?first_name, ?nbr, ?year, ?price)")
 			show_query ("Insertion of parameterized values%N", stmt)
 			-- create and setup parameters and values
 			!! first_name_parameter.make (20)
@@ -200,7 +200,7 @@ feature --  Basic operations
 			!!p_price.make
 			p_price.set_item (price)
 			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
-			stmt.set_parameters (<<first_name_parameter, last_name_parameter, p_nbr, p_birthdate, p_price>>)
+			stmt.set_parameters (<<last_name_parameter, first_name_parameter,  p_nbr, p_birthdate, p_price>>)
 			show_parameter_names (stmt)
 			stmt.bind_parameters
 			if not stmt.is_ok then
@@ -282,13 +282,13 @@ feature --  Basic operations
 		local
 			name_result_value : 	ECLI_CHAR
 			price_result_value : 	ECLI_DOUBLE
-			birthdate_result_value : 	ECLI_DATE_TIME
-			firstname_result_value : 	ECLI_VARCHAR
+			birthdate_result_value : 	ECLI_TIMESTAMP
+--			firstname_result_value : 	ECLI_VARCHAR
 			number_result_value : 		ECLI_INTEGER
 		do
 			-- set execution mode to immediate (no need to prepare)
 			stmt.set_immediate_execution_mode
-			stmt.set_sql ("SELECT * FROM ECLIESSAI")
+			stmt.set_sql ("SELECT name, nbr, bdate, price FROM ECLIESSAI")
 
 			show_query("Selection of all inserted data%N", stmt)
 
@@ -297,12 +297,17 @@ feature --  Basic operations
 				stmt.describe_cursor
 				-- create result set 'value holders'
 				!! name_result_value.make (20)
-				!! firstname_result_value.make (20)
+--				!! firstname_result_value.make (20)
 				!! number_result_value.make
 				!! birthdate_result_value.make_default
 				!! price_result_value.make
 				-- define the container of value holders
-				stmt.set_cursor (<<name_result_value, firstname_result_value, number_result_value, birthdate_result_value, price_result_value>>)
+				-- name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT
+				stmt.set_cursor (<<name_result_value, 
+					-- firstname_result_value, 
+					number_result_value, 
+					 birthdate_result_value, 
+					price_result_value>>)
 				-- iterate on result-set
 				from
 					stmt.start

@@ -17,7 +17,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("out[put] <filename>|stdout", Command_width)
-			Result.append ("Direct output to <filename> | stdout.")
+			Result.append_string ("Direct output to <filename> | stdout.")
 		end
 
 	match_string : STRING is "out"
@@ -69,9 +69,9 @@ feature -- Basic operations
 							context.set_output_file (file)
 						else
 							create msg.make (0)
-							msg.append ("Cannot set file %"")
-							msg.append (name)
-							msg.append ("%" as output")
+							msg.append_string ("Cannot set file %"")
+							msg.append_string (name)
+							msg.append_string ("%" as output")
 							context.filter.begin_error
 							context.filter.put_error (msg)
 							context.filter.end_error

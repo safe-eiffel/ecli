@@ -9,9 +9,9 @@ class
 	ECLI_ARRAYED_TIME
 
 inherit
-	ECLI_ARRAYED_VALUE
+	ECLI_GENERIC_ARRAYED_VALUE [DT_TIME]
 		redefine
-			is_equal, item, out_item_at --to_time, 
+			is_equal, out_item_at --to_time, 
 		end
 
 	ECLI_TIME
@@ -36,6 +36,7 @@ feature {NONE} -- Initialization
 			count := capacity
 			allocate_buffer
 			set_all_null
+			create_impl_item
 		end
 
 feature -- Access
@@ -225,14 +226,14 @@ feature {NONE} -- Implementation
 			!!Result.make (0)
 			if not is_null then
 				Result.append_character (' ')
-				Result.append (pad_integer_2 (hour_at (index)))
+				Result.append_string (pad_integer_2 (hour_at (index)))
 				Result.append_character (':')
-				Result.append (pad_integer_2 (minute_at (index)))
+				Result.append_string (pad_integer_2 (minute_at (index)))
 				Result.append_character (':')
-				Result.append (pad_integer_2 (second_at (index)))
+				Result.append_string (pad_integer_2 (second_at (index)))
 --				if nanosecond > 0 then
 --					Result.append_character ('.')
---					Result.append (nanosecond.out)
+--					Result.append_string (nanosecond.out)
 --				end
 			end
 			cursor_index := save_index

@@ -122,7 +122,7 @@ feature -- Access
 			good_position: Result /= Void and not Result.is_empty
 		end
 
-	parameter (name : STRING) : like value_anchor is
+	parameter (name : STRING) : like parameter_anchor is
 			-- parameter value of `name'
 		require
 			valid_statement: is_valid
@@ -427,7 +427,7 @@ feature -- Element change
 			reset_descriptions: parameters_description = Void and cursor_description = Void
 		end
 
-	set_parameters (param : ARRAY[like value_anchor]) is
+	set_parameters (param : like parameters) is
 			-- set parameters value with 'param'
 		require
 			valid_statement: is_valid
@@ -443,7 +443,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_parameter (value : like parameter; key : STRING) is
+	put_parameter (value : like parameter_anchor; key : STRING) is
 			-- set parameter 'key' with 'value'
 			-- WARNING : Case sensitive !
 		require
@@ -472,7 +472,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	set_cursor (row : ARRAY[like value_anchor]) is
+	set_cursor (row : like cursor) is -- ARRAY[like value_anchor]) is
 			-- set cursor container with 'row'
 		require
 			valid_statement: is_valid

@@ -14,22 +14,22 @@ feature {NONE} -- Implementation
 		do
 			create Result.make (4)
 			if value < 10 then
-				Result.append ("000")
+				Result.append_string ("000")
 			elseif value < 100 then
-				Result.append ("00")
+				Result.append_string ("00")
 			elseif value < 1000 then
-				Result.append ("0")
+				Result.append_string ("0")
 			end
-			Result.append (value.out)
+			Result.append_string (value.out)
 		end
 
 	pad_integer_2 (value : INTEGER) : STRING is
 		do
 			create Result.make (2)
 			if value < 10 then
-				Result.append ("0")
+				Result.append_string ("0")
 			end
-			Result.append (value.out)
+			Result.append_string (value.out)
 		end
 
 

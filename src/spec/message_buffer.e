@@ -40,7 +40,7 @@ feature
 			until 
 				i > capacity
 			loop
-				append (" ")	
+				append_string (" ")	
 				i := i + 1
 			end
 		end

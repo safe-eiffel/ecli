@@ -35,17 +35,6 @@ inherit
 			{NONE} all
 		end
 		
-feature -- Access
-
-	item : ANY is
-			-- Actual value : to be redefined in descendant classes
-		require
-			not_null: not is_null
-		do
-		ensure
-			aliasing: Result = old item
-		end
-
 feature -- Status report
 
 	is_null : BOOLEAN is
@@ -133,18 +122,6 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 
 feature -- Element change
 
-
-	set_item (value: like item) is
-			-- set `item' with content of `value'
-		require
-			value /= Void
-		do
-		ensure
-			item_set: equal (item, truncated (value))
-			not_null: not is_null
-		end;
-
-
 	set_null is
 			-- set item to null
 		do
@@ -155,12 +132,6 @@ feature -- Element change
 
 feature -- Transformation
 
-	truncated (v : like item) : like item is
-			-- truncated 'v' according to 'column_precision'
-			-- does nothing, except for fixed format types like CHAR
-		do
-			Result := v
-		end
  
 feature -- Conversion
 
@@ -172,7 +143,7 @@ feature -- Conversion
 		do
 			Result := out
 		ensure
-			no_aliasing: Result /= old to_string
+			no_aliasing: True -- Result /= old Result
 		end
 
 	to_character : CHARACTER is
@@ -222,7 +193,7 @@ feature -- Conversion
 			not_null: not is_null
 		do
 		ensure
-			no_aliasing: Result /= old to_date
+			no_aliasing: True -- Result /= old Result
 		end
 
 	to_time : DT_TIME is
@@ -232,7 +203,7 @@ feature -- Conversion
 			not_null: not is_null
 		do
 		ensure
-			no_aliasing: Result /= old to_time
+			no_aliasing: True -- Result /= old Result
 		end
 
 	to_timestamp : DT_DATE_TIME is
@@ -242,7 +213,7 @@ feature -- Conversion
 			not_null: not is_null
 		do
 		ensure
-			no_aliasing: Result /= old to_timestamp
+			no_aliasing: True -- Result /= old Result
 		end
 
 feature {NONE} -- Implementation
@@ -331,11 +302,6 @@ feature {NONE} -- Implementation values
 	is_ready_for_disposal : BOOLEAN is True
 	
 	disposal_failure_reason : STRING is do	end
-
-feature 
-
-	impl_item : like item
-			-- reference to actual item this is always the same item !
 	
 end -- class ECLI_VALUE
 --

@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("set [<variable_name>=<value>]", command_width)
-			Result.append ("Set/[show] variables.")
+			Result.append_string ("Set/[show] variables.")
 		end
 
 	match_string : STRING is "set"
@@ -61,15 +61,15 @@ feature {ISQL} -- Inapplicable
 					set_var (var_name, var_value, context)
 				else
 					--create msg.make (0)
-					--msg.append ("Missing value for variable ")
-					--msg.append (var_name)
+					--msg.append_string ("Missing value for variable ")
+					--msg.append_string (var_name)
 					--set_error (msg)
 					set_var (var_name, "", context)
 				end
 			else
 					create msg.make (0)
-					msg.append ("Not a variable assignment ")
-					msg.append (setting)
+					msg.append_string ("Not a variable assignment ")
+					msg.append_string (setting)
 					set_error (msg)
 			end			
 		end
@@ -179,15 +179,15 @@ feature {NONE} -- Implementation
 			loop
 				inspect v.item (index)
 				when '%T' then
-					Result.append ("\t")
+					Result.append_string ("\t")
 				when '%N' then
-					Result.append ("\n")
+					Result.append_string ("\n")
 				when '%U' then
-					Result.append ("\0")
+					Result.append_string ("\0")
 				when '%R' then
-					Result.append ("\r")
+					Result.append_string ("\r")
 				when '\' then
-					Result.append ("\\")
+					Result.append_string ("\\")
 				else
 					Result.append_character (v.item (index))
 				end

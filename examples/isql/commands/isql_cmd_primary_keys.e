@@ -15,7 +15,7 @@ feature -- Access
 	help_message : STRING is
 		do
 			Result := padded ("pk <table-name>", command_width)
-			Result.append ("List all primary columns in <table-name>.")
+			Result.append_string ("List all primary columns in <table-name>.")
 		end
 
 	match_string : STRING is "pk"

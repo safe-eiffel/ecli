@@ -20,10 +20,10 @@ inherit
 		undefine
 			out
 		end
-	
+
 creation
 	make
-	
+
 feature -- Initialization
 
 	make (cursor : ECLI_COLUMNS_CURSOR) is
@@ -35,7 +35,7 @@ feature -- Initialization
 			set_catalog (cursor.buffer_table_cat)
 			set_schema (cursor.buffer_table_schem )
 			if cursor.buffer_table_name.is_null then
-				
+
 			else
 				table := cursor.buffer_table_name.to_string
 			end
@@ -63,11 +63,11 @@ feature -- Initialization
 				description := cursor.buffer_remarks.to_string
 			end
 		end
-		
+
 feature -- Access
 
 	table : STRING
-	
+
 --	name : STRING
 
 	type_code : INTEGER
@@ -75,27 +75,27 @@ feature -- Access
 	type_name : STRING
 
 	size : INTEGER
-			-- size, display length, number of bits, ... depending on actual datatype 
-		
+			-- size, display length, number of bits, ... depending on actual datatype
+
 	transfer_length : INTEGER
 			-- maximum number of bytes to read for a transfer
-		
+
 	decimal_digits : INTEGER
 			-- number of decimal digits if numeric type
 
 	precision_radix : INTEGER
 			-- 10 or 2 if numeric type
-		
+
 	description : STRING
 			-- optional comments, remarks, or description regarding this column
-	
+
 feature -- Measurement
 
 	is_size_applicable : BOOLEAN
 	is_transfer_length_applicable : BOOLEAN
 	is_decimal_digits_applicable : BOOLEAN
 	is_precision_radix_applicable : BOOLEAN
-	
+
 feature -- Status report
 
 feature -- Status setting
@@ -115,40 +115,40 @@ feature -- Conversion
 	out : STRING is
 		do
 			!!Result.make (0)
-			Result.append  (name); Result.append  ("%T")
-			Result.append  (type_code.out); Result.append  ("%T")
-			Result.append  (type_name); Result.append  ("%T")
+			Result.append_string (name); Result.append_string ("%T")
+			Result.append_string (type_code.out); Result.append_string ("%T")
+			Result.append_string (type_name); Result.append_string ("%T")
 			if is_size_applicable then
-				Result.append  ("(") Result.append  (size.out) Result.append  (")")
+				Result.append_string ("(") Result.append_string (size.out) Result.append_string (")")
 			end
-			Result.append  ("%T")
+			Result.append_string ("%T")
 			if is_transfer_length_applicable then
-				Result.append  (transfer_length.out)
+				Result.append_string (transfer_length.out)
 			end
-			Result.append  ("%T")
+			Result.append_string ("%T")
 			if is_decimal_digits_applicable then
-				Result.append  (decimal_digits.out)
+				Result.append_string (decimal_digits.out)
 			end
-			Result.append  ("%T")
+			Result.append_string ("%T")
 			if is_known_nullability then
 				if is_nullable then
-					Result.append  ("NULLABLE")
+					Result.append_string ("NULLABLE")
 				elseif is_not_nullable then
-					Result.append  ("NOT NULL")
+					Result.append_string ("NOT NULL")
 				end
 			else
-				Result.append  ("?NULLABLE?")
+				Result.append_string ("?NULLABLE?")
 			end
-			Result.append  ("%T")
+			Result.append_string ("%T")
 			if is_precision_radix_applicable then
-				Result.append  (precision_radix.out)
+				Result.append_string (precision_radix.out)
 			end
-			Result.append ("%T")
+			Result.append_string ("%T")
 			if description /= Void then
-				Result.append (description)
+				Result.append_string (description)
 			end
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous

@@ -16,12 +16,13 @@
 
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
-		<option name="finalize" value="true"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
 		<option name="finalize" value="false"/>
 	</option>
+	<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
 
 	<cluster name="test_rowset" location="${ECLI}/examples/test_rowset"/>
 

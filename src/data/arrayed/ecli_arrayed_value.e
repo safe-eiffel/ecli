@@ -29,11 +29,11 @@ inherit
 			to_date, convertible_to_date,
 			to_time, convertible_to_time,
 			to_timestamp, convertible_to_timestamp,
-			set_item, set_null, length_indicator_pointer,
+			set_null, length_indicator_pointer,
 			can_trace
 		redefine
 			release_handle, to_external, is_null,
-			out, to_string
+			to_string
 		end
 
 feature -- Initialization
@@ -52,14 +52,6 @@ feature -- Access
 
 	cursor_index : INTEGER
 			-- index of internal cursor
-
-	item_at (index : INTEGER) : like item is
-			-- item at `index'th position
-		require
-			valid_index: index >= lower and index <= count
-			not_null: not is_null_at (index)
-		deferred
-		end
 
 feature -- Measurement
 
@@ -172,16 +164,6 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item_at (value : like item; index : INTEGER) is
-			-- set `index'th value to `value'
-		require
-			valid_index: index >= lower and index <= count
-		deferred
-		ensure
-			item_set: equal (item_at (index), truncated (value))
-			not_null: not is_null_at (index)
-		end
-
 	set_null_at (index: INTEGER) is
 			-- set `index'th value to NULL
 		require
@@ -192,11 +174,6 @@ feature -- Element change
 			null_set: is_null_at (index)
 		end
 
-	set_item (value : like item) is
-		do
-			set_item_at (value, cursor_index)
-		end
-
 feature -- Removal
 
 feature -- Resizing
@@ -205,32 +182,18 @@ feature -- Transformation
 
 feature -- Conversion
 
+	out_item_at (index : INTEGER) : STRING is
+		require
+			valid_index: index >= 1 and index <= count
+		deferred
+		ensure
+			result_not_void: Result /= Void
+		end
+	
 	to_string : STRING is
 			-- visible representation of current item
 		do
 			Result := out_item_at (cursor_index)
-		end
-
-	out : STRING is
-		local
-			i : INTEGER
-		do
-			from i := 1
-				!!Result.make (10)
-				Result.append ("<<")
-			until i > count
-			loop
-				if is_null_at (i) then
-					Result.append ("NULL")
-				else
-					Result.append (out_item_at (i))
-				end
-				i := i + 1
-				if i <= count then
-					Result.append (", ")
-				end
-			end
-			Result.append (">>")
 		end
 
 	to_external : POINTER is
@@ -275,13 +238,6 @@ feature {NONE} -- Implementation
 			-- external 'C' address of length indicator
 		do
 			Result := ecli_c_array_value_get_length_indicator_pointer (buffer)
-		end
-
-	out_item_at (index : INTEGER) : STRING is
-		require
-			valid_index: index >= 1 and index <= count
-		do
-			Result := item_at (index).out
 		end
 
 	set_all_null is
