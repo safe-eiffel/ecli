@@ -45,6 +45,8 @@ feature {NONE} -- boolean values
 feature {NONE} -- fetch operations for SQLDataSources or SQLFetchScroll
 	Sql_fetch_next  : INTEGER is    1
 	Sql_fetch_first  : INTEGER is   2
+	Sql_fetch_first_user: INTEGER is 31
+	Sql_fetch_first_system: INTEGER is 32
 
 feature {NONE} -- Procedure types
 
