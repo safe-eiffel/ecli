@@ -12,9 +12,9 @@ class
 inherit
 
 	ECLI_LONGVARCHAR
-
+	
 	QA_VALUE
-
+		
 creation
 	make
 

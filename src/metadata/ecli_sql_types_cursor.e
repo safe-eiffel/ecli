@@ -74,8 +74,7 @@ feature -- Initialization
 		ensure
 			executed: is_ok implies is_executed
 			open: not is_closed
-		end
-		
+		end		
 		
 feature -- Access
 

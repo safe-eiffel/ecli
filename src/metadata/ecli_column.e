@@ -57,7 +57,9 @@ feature -- Access
 	table : ECLI_TABLE
 	
 	name : STRING
+
 	type_code : INTEGER
+
 	type_name : STRING
 
 	size : INTEGER
@@ -68,6 +70,7 @@ feature -- Access
 		
 	decimal_digits : INTEGER
 			-- number of decimal digits if numeric type
+
 	precision_radix : INTEGER
 			-- 10 or 2 if numeric type
 		

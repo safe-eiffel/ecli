@@ -15,6 +15,7 @@ inherit
 	ECLI_VALUE
 		undefine
 			out, is_equal, item, set_item,
+			to_character, convertible_to_character,
 			to_double, convertible_to_double,
 			to_integer, convertible_to_integer,
 			to_string, convertible_to_string,
