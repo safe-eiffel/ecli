@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that open a cursor on database metadata"
+	description: "Cursors on database metadata."
 	author: "Paul G. Crismer"
 	
 	library: "ECLI"
@@ -24,10 +24,11 @@ inherit
 
 feature {NONE} -- Initialization
 
-	make (a_name : ECLI_NAMED_METADATA; a_session : ECLI_SESSION) is
-			-- Void values for a_name.catalog, a_name.schema, a_name.name can be Void are 'wildcards'
+	make (criteria : ECLI_NAMED_METADATA; a_session : ECLI_SESSION) is
+			-- Create cursor on items matching 
+			-- Void values for criteria.catalog, criteria.schema, criteria.name can be Void are 'wildcards'
 		require
-			a_name_not_void: a_name /= Void
+			criteria_not_void: criteria /= Void
 			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
 		local
@@ -35,19 +36,19 @@ feature {NONE} -- Initialization
 			p_catalog, p_schema, p_name : POINTER
 		do
 			cursor_make (a_session)
-			if a_name.catalog /= Void then
-				create queried_catalog_impl.make_from_string (a_name.catalog)
-				catalog_length := a_name.catalog.count
+			if criteria.catalog /= Void then
+				create queried_catalog_impl.make_from_string (criteria.catalog)
+				catalog_length := criteria.catalog.count
 				p_catalog := queried_catalog_impl.handle
 			end
-			if a_name.schema /= Void then
-				create queried_schema_impl.make_from_string (a_name.schema)
-				schema_length := a_name.schema.count
+			if criteria.schema /= Void then
+				create queried_schema_impl.make_from_string (criteria.schema)
+				schema_length := criteria.schema.count
 				p_schema := queried_schema_impl.handle
 			end
-			if a_name.name /= Void then
-				create queried_name_impl.make_from_string (a_name.name)
-				name_length := a_name.name.count
+			if criteria.name /= Void then
+				create queried_name_impl.make_from_string (criteria.name)
+				name_length := criteria.name.count
 				p_name := queried_name_impl.handle
 			end
 			set_status (
@@ -58,9 +59,9 @@ feature {NONE} -- Initialization
 			update_state_after_execution
 		ensure
 			executed: is_ok implies is_executed
-			queried_catalog_set: a_name.catalog /= Void implies queried_catalog.is_equal (a_name.catalog)
-			queried_schema_set: a_name.schema /= Void implies queried_schema.is_equal (a_name.schema)
-			queried_name_set: a_name.name /= Void implies queried_name.is_equal (a_name.name)
+			queried_catalog_set: criteria.catalog /= Void implies queried_catalog.is_equal (criteria.catalog)
+			queried_schema_set: criteria.schema /= Void implies queried_schema.is_equal (criteria.schema)
+			queried_name_set: criteria.name /= Void implies queried_name.is_equal (criteria.name)
 		end
 
 feature -- Access

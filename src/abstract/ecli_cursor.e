@@ -1,5 +1,5 @@
 indexing
-	description: "Abstraction of a SQL cursor. Starting iteration creates `results' object through `create_buffers'."
+	description: "Cursors over SQL query result set. Starting iteration creates `results' object through `create_buffers'."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

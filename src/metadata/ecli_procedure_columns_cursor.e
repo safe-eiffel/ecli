@@ -1,5 +1,8 @@
 indexing
-	description: "Cursor on catalog metadata regarding columns of a stored procedure."
+	description: "Cursor on catalog metadata regarding columns of stored procedures. %N%
+		% Columns match search criterias : (1) catalog name, (2) schema name, (3) procedure name.%N%
+		% A Void criteria is considered as a wildcard."
+		
 	author: "Paul G. Crismer"
 	
 	library: "ECLI"

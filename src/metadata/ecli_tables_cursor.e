@@ -1,7 +1,7 @@
 indexing
 	description:
 
-		"Objects that search the database repository for tables. %
+		"Cursors on metadata for tables, matching some criteria. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
 		%A Void criteria is considered as a wildcard."
 

@@ -1,8 +1,8 @@
 indexing
 	description:
 
-		"Objects that search the database repository for columns of a table. %
-		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
+		"Cursors over columns of tables. Columns match search criterias :%
+		%(1) catalog name, (2) schema name, (3) table name.%
 		%A Void criteria is considered as a wildcard."
 
 	author: "Paul G. Crismer"
@@ -53,10 +53,10 @@ feature {NONE} -- Initialization
 			make (a_search_criteria, a_session)
 		end
 
-	make (a_table: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
-			-- make cursor on all columns of `a_table'
+	make (criteria : ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
+			-- make cursor on all columns matching `criteria'
 		do
-			Precursor (a_table, a_session)
+			Precursor (criteria, a_session)
 		end
 
 feature -- Access

@@ -1,7 +1,7 @@
 indexing
 	description:
 
-		"Objects that search the database repository for primary key columns of a table. %
+		"Cursors on primary keys of tables. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
 		%A Void criteria is considered as a wildcard."
 

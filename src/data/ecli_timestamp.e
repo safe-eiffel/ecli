@@ -418,8 +418,6 @@ feature {NONE} -- Implementation
 		end
 
 	allocate_buffer is
-		local
-			e : EXCEPTIONS
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_value (transfer_octet_length)

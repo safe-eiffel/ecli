@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that iterate over the SQL types supported by a datasource"
+	description: "Cursors over the SQL types supported by the datasource related to a session."
 	author: "Paul G. Crismer"
 	
 	library: "ECLI"

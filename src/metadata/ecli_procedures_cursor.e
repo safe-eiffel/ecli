@@ -1,7 +1,7 @@
 indexing
 	description:
 
-		"Objects that search the database repository for procedures. %
+		"Cursor on procedures matching criteria. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) procedure name.%
 		%A Void criteria is considered as a wildcard."
 
