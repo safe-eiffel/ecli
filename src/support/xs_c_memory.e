@@ -5,7 +5,7 @@ indexing
 	revision: "$Revision$"
 
 class
-	C_MEMORY
+	XS_C_MEMORY
 
 inherit
 	MEMORY
@@ -82,4 +82,4 @@ feature {NONE} -- Implementation
 invariant
 	memory_allocated: handle /= default_pointer
 
-end -- class C_MEMORY
+end -- class XS_C_MEMORY

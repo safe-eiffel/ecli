@@ -1,14 +1,14 @@
 indexing
-	description: "C allocated arrays of 16bits integer (short)."
+	description: "C allocated arrays of 32bits integer."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	C_ARRAY_INT16
+	XS_C_ARRAY_INT32
 
 inherit
-	C_ARRAY [INTEGER]
+	XS_C_ARRAY [INTEGER]
 	
 creation
 	make
@@ -21,12 +21,13 @@ feature -- Access
 			item_ptr : POINTER
 		do
 			item_ptr := item_pointer (index)
-			Result := c_memory_short_to_integer (item_ptr)
+			c_memory_copy ($actual_value, item_ptr, item_size)
+			Result := actual_value
 		end
 		
 feature -- Measurement
 	
-	item_size : INTEGER is do Result := 2 end
+	item_size : INTEGER is do Result := 4 end
 
 feature -- Element change
 
@@ -38,5 +39,7 @@ feature -- Element change
 			item_ptr := item_pointer (index)
 			c_memory_copy (item_ptr, $value, item_size)
 		end
-		
-end -- class C_ARRAY_INT16
+	
+	actual_value : INTEGER
+	
+end -- class XS_C_ARRAY_INT32

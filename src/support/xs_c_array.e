@@ -5,10 +5,10 @@ indexing
 	revision: "$Revision$"
 
 deferred class
-	C_ARRAY [G]
+	XS_C_ARRAY [G]
 
 inherit
-	C_MEMORY
+	XS_C_MEMORY
 	
 feature {NONE} -- Initialization
 
@@ -83,4 +83,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class C_ARRAY_INT16
+end -- class XS_C_ARRAY

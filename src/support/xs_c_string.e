@@ -5,10 +5,10 @@ indexing
 	revision: "$Revision$"
 
 class
-	C_STRING
+	XS_C_STRING
 
 inherit
-	C_MEMORY
+	XS_C_MEMORY
 
 	ECLI_EXTERNAL_TOOLS
 		undefine
@@ -72,4 +72,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class C_STRING
+end -- class XS_C_STRING
