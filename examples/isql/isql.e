@@ -278,9 +278,11 @@ feature -- Basic Operations
 			index : INTEGER
 			table : ECLI_TABLE
 			cursor : ECLI_TABLES_CURSOR
+			search_criteria : ECLI_NAMED_METADATA
 		do
 			from 
-				!!cursor.make_all_tables (session)
+				!!search_criteria.make (Void, Void, Void)
+				!!cursor.make (search_criteria, session)
 				cursor.start
 				print ("CATALOG%T SCHEMA%T TABLE_NAME%T TYPE%T DESCRIPTION%N")
 			until
@@ -387,13 +389,15 @@ feature -- Basic Operations
 			cursor : ECLI_COLUMNS_CURSOR
 			index : INTEGER
 			the_column : ECLI_COLUMN
+			search_criteria : ECLI_NAMED_METADATA
 		do
 			!!string_routines
 			word_index := s.index_of (' ',1)
 			if word_index > 0 then
 				table_name := string_routines.trimmed (s.substring (word_index + 1, s.count))
 				from
-					!!cursor.make_all_columns (session,table_name)
+					!!search_criteria.make (Void, Void, table_name)
+					!!cursor.make (search_criteria, session)
 					cursor.start
 					print ("COLUMN_NAME%T TYPE%T SIZE %T DESCRIPTION%N")
 				until
