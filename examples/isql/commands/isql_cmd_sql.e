@@ -48,8 +48,10 @@ feature -- Basic operations
 			if cursor.is_ok then
 				if cursor.has_parameters then
 					if context.variables /= Void then
-						set_parameters (cursor)
-						cursor.bind_parameters
+						set_parameters (cursor, context)
+						if cursor.parameters /= Void and then cursor.parameters.count >= cursor.parameters_count then
+							cursor.bind_parameters
+						end
 					end
 				end
 				if cursor.is_prepared then 
@@ -94,13 +96,16 @@ feature {NONE} -- Implementation
 	
 	current_context : ISQL_CONTEXT
 	
-	set_parameters (stmt : ECLI_STATEMENT) is
+	set_parameters (stmt : ECLI_STATEMENT; context : ISQL_CONTEXT) is
+		require
+			stmt_not_void: stmt /= Void
+			context_not_void: context /= Void
 		local
 			value : ECLI_VARCHAR
 			cursor : DS_HASH_TABLE_CURSOR[STRING,STRING]
 		do
 			from
-				cursor := current_context.variables.new_cursor
+				cursor := context.variables.new_cursor
 				cursor.start
 			until
 				cursor.off

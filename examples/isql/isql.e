@@ -68,7 +68,9 @@ feature {NONE} -- Initialization
 					if current_context.session.is_connected then
 						current_context.session.disconnect
 					end
-					current_context.session.close
+					if current_context.session.is_valid then
+						current_context.session.close
+					end
 				end
 			end;
 		end
@@ -219,8 +221,6 @@ feature {NONE} -- Implementation
 			commands.put_last (l_command)			
 			create {ISQL_CMD_COLUMNS}l_command
 			commands.put_last (l_command)
---			create {ISQL_CMD_COMMENT}l_command
---			commands.put_last (l_command)
 			create {ISQL_CMD_CONNECT}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_COMMIT}l_command

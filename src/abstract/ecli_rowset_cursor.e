@@ -27,33 +27,34 @@ creation
 	
 feature -- Initialization
 
-	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_count : INTEGER) is
+	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER) is
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
 			definition_exists: a_definition /= Void
-			row_count_valid: a_row_count >= 1
+			row_count_valid: a_row_capacity >= 1
 		do
-			row_capacity := a_row_count
+			row_capacity := a_row_capacity
 			!!rowset_status.make (row_capacity)
 			row_cursor_make (a_session, a_definition)
+			create impl_row_count.make
 		ensure
 			valid: is_valid
 			definition_set: definition = a_definition
 			definition_is_sql: equal (definition, sql)
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
-			row_count_set: row_capacity = a_row_count
+			row_count_set: row_capacity = a_row_capacity
 		end
 
-	make_prepared, open_prepared (a_session : ECLI_SESSION; a_definition : STRING; a_row_count : INTEGER) is
-			-- make prepared cursor for `a_session' on `a_definition', for fetching at most `a_row_count' at a time
+	make_prepared, open_prepared (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER) is
+			-- make prepared cursor for `a_session' on `a_definition', for fetching at most `a_row_capacity' at a time
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
 			definition_exists: a_definition /= Void
-			row_count_valid: a_row_count >= 1
+			row_count_valid: a_row_capacity >= 1
 		do
-			make (a_session, a_definition, a_row_count)
+			make (a_session, a_definition, a_row_capacity)
 			prepare
 		ensure
 			valid: is_valid
@@ -62,7 +63,7 @@ feature -- Initialization
 			prepared_if_ok: is_ok implies is_prepared
 			definition_is_a_query:  is_ok implies has_results
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
-			row_count_set: row_capacity = a_row_count
+			row_count_set: row_capacity = a_row_capacity
 		end
 		
 feature -- Access
@@ -177,7 +178,7 @@ feature {NONE} -- Implementation
 					--| protect from moving GC
 					collection_off
 					--| Bind `row_count' a getting the actual number of rows fetched
-					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $row_count, 0))			
+					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, impl_row_count.handle, 0))			
 					--| Do actual fetch
 					Precursor
 					--| restore GC

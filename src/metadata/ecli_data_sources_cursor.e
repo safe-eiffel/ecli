@@ -125,6 +125,8 @@ feature -- Cursor movement
 			after := False
 			create c_name.make (max_source_name_length + 1)
 			create c_description.make (max_source_description_length + 1)
+			create actual_name_length.make
+			create actual_description_length.make
 			item_ := Void
 			do_fetch (fetch_first_operation)
 		ensure
@@ -157,14 +159,14 @@ feature {ECLI_DATA_SOURCE} -- Implementation
 	c_name : XS_C_STRING
 	c_description : XS_C_STRING
 
-	actual_name_length : INTEGER
-	actual_description_length : INTEGER
+	actual_name_length : XS_C_INT32
+	actual_description_length : XS_C_INT32
 
 feature {NONE} -- Implementation
 
 	release_handle is do end
 
-	disposal_failure_reason : STRING is do Result :="" end
+	disposal_failure_reason : STRING is once Result := "" end
 
 	is_ready_for_disposal : BOOLEAN is do Result := True end
 
@@ -177,10 +179,10 @@ feature {NONE} -- Implementation
 	do_fetch (direction : INTEGER) is
 			-- actual external query
 		do
-			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, $actual_name_length, c_description.handle, max_source_description_length, $actual_description_length))
+			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, actual_name_length.handle, c_description.handle, max_source_description_length, actual_description_length.handle))
 			if is_ok and then not is_no_data then
-				name := c_name.to_string
-				description := c_description.to_string
+				name := c_name.item
+				description := c_description.item
 				!!item_.make (Current)
 			else
 				item_ := Void

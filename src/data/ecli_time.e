@@ -11,14 +11,9 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DT_TIME]
 		redefine
-			to_time, is_equal, out, set_item, item, create_impl_item
+			to_time, is_equal, out, set_item, item, create_impl_item, impl_item
 		end
-
-	ECLI_FORMAT_INTEGER
-		undefine
-			out, is_equal
-		end
-	
+		
 creation
 	make, make_default
 	
@@ -167,11 +162,11 @@ feature -- Conversion
 			!!Result.make (0)
 			if not is_null then
 				Result.append_character (' ')
-				Result.append_string (pad_integer_2 (hour))
+				Result.append_string (Integer_format.pad_integer_2 (hour))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (minute))
+				Result.append_string (Integer_format.pad_integer_2 (minute))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (second))
+				Result.append_string (Integer_format.pad_integer_2 (second))
 --				if nanosecond > 0 then
 --					Result.append_character ('.')
 --					Result.append_string (nanosecond.out)
@@ -227,7 +222,15 @@ feature {NONE} -- Implementation
 			create t.make (0,0,0)
 			impl_item := t			
 		end
+
+	integer_format : 	ECLI_FORMAT_INTEGER is
+			-- format integer routines
+		once
+			create Result
+		end
 		
+	impl_item : DT_TIME
+	
 invariant
 	impl_item_not_void: impl_item /= Void
 

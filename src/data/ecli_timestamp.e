@@ -25,12 +25,7 @@ inherit
 
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
-			create_impl_item, is_equal,to_timestamp, out, to_string, convertible_to_string, set_item, item
-		end
-
-	ECLI_FORMAT_INTEGER
-		undefine
-			out, is_equal
+			create_impl_item, impl_item, is_equal,to_timestamp, out, to_string, convertible_to_string, set_item, item
 		end
 
 creation
@@ -284,17 +279,17 @@ feature -- Conversion
 		do
 			if not is_null then
 				Result:= string_routines.make (10)
-				Result.append_string (pad_integer_4 (year))
+				Result.append_string (Integer_format.pad_integer_4 (year))
 				Result.append_character ('-')
-				Result.append_string (pad_integer_2 (month))
+				Result.append_string (Integer_format.pad_integer_2 (month))
 				Result.append_character ('-')
-				Result.append_string (pad_integer_2 (day))
+				Result.append_string (Integer_format.pad_integer_2 (day))
 				Result.append_character (' ')
-				Result.append_string (pad_integer_2 (hour))
+				Result.append_string (Integer_format.pad_integer_2 (hour))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (minute))
+				Result.append_string (Integer_format.pad_integer_2 (minute))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (second))
+				Result.append_string (Integer_format.pad_integer_2 (second))
 				if nanosecond > 0 then
 					Result.append_character ('.')
 					Result.append_string (nanosecond.out)
@@ -355,6 +350,14 @@ feature {NONE} -- Implementation
 				buffer := ecli_c_alloc_value (transfer_octet_length)
 			end
 		end
+
+	integer_format : 	ECLI_FORMAT_INTEGER is
+			-- format integer routines
+		once
+			create Result
+		end
+	
+	impl_item : DT_DATE_TIME
 	
 end -- class ECLI_TIMESTAMP
 --

@@ -15,12 +15,7 @@ inherit
 	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
 			item, set_item, out, is_equal, convertible_to_date, to_date,
-			convertible_to_timestamp, to_timestamp, create_impl_item
-		end
-
-	ECLI_FORMAT_INTEGER
-		undefine
-			out, is_equal
+			convertible_to_timestamp, to_timestamp, create_impl_item, impl_item
 		end
 		
 creation
@@ -183,11 +178,11 @@ feature -- Conversion
 				Result := "NULL"
 			else
 				Result:= string_routines.make (10)
-				Result.append_string (pad_integer_4 (year))
+				Result.append_string (integer_format.pad_integer_4 (year))
 				Result.append_character ('-')
-				Result.append_string (pad_integer_2 (month))
+				Result.append_string (integer_format.pad_integer_2 (month))
 				Result.append_character ('-')
-				Result.append_string (pad_integer_2 (day))
+				Result.append_string (integer_format.pad_integer_2 (day))
 			end
 		end
 
@@ -238,7 +233,15 @@ feature {NONE} -- Implementation
 			create d.make (0,1,1)
 			impl_item := d
 		end
-		
+	
+	integer_format : 	ECLI_FORMAT_INTEGER is
+			-- format integer routines
+		once
+			create Result
+		end
+
+	impl_item : DT_DATE
+	
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)
 	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))

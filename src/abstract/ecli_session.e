@@ -138,7 +138,7 @@ feature -- Access
 		do
 			--| evaluate capability
 			if impl_transaction_capability < sql_tc_none then
-				set_status (ecli_c_transaction_capable (handle, $impl_transaction_capability))
+				set_status (ecli_c_transaction_capable (handle, ext_transaction_capability.handle))
 			end
 			Result := impl_transaction_capability
 		ensure
@@ -156,10 +156,18 @@ feature -- Status report
 			valid: is_valid
 			connected: is_connected
 		do
-			set_status (ecli_c_is_manual_commit (handle, $impl_is_manual_commit))
+			set_status (ecli_c_is_manual_commit (handle, ext_is_manual_commit.handle))
 			Result := impl_is_manual_commit
 		end
 
+	is_ready_to_connect : BOOLEAN is
+			-- Is this session ready to be connected ?
+		do
+			Result := (data_source /= Void and then user_name/= Void and then password /= Void)
+		ensure
+			definition: Result = (data_source /= Void and then user_name/= Void and then password /= Void)
+		end
+		
 	is_connected : BOOLEAN is
 			-- Is this session connected to a database ?
 		do
@@ -382,9 +390,7 @@ feature -- Basic Operations
 		require
 			is_valid: is_valid
 			not_connected: not is_connected
-			data_source_set: data_source /= Void
-			user_set : user_name/= Void
-			password_set : password /= Void
+			ready_to_connect: is_ready_to_connect
 		local
 			tools : expanded ECLI_EXTERNAL_TOOLS
 		do
@@ -402,20 +408,31 @@ feature -- Basic Operations
 		end
 
 	disconnect is
-			-- disconnect the session
+			-- disconnect the session and close any remaining statement
 		require
 			is_valid: is_valid
 			connected: is_connected
-			no_opened_statements: statements_count = 0
+		local
+			statements_cursor : DS_LIST_CURSOR[ECLI_STATEMENT]
 		do
-			statements.wipe_out
-			--| actual disconnect
-			set_status (ecli_c_disconnect (handle))
-			if is_ok then
-				set_disconnected
+			-- first close all statements, if any
+			if statements_count > 0 then
+				from
+					statements_cursor := statements.new_cursor
+					statements_cursor.start
+				until
+					statements_cursor.off
+				loop
+					statements_cursor.item.do_close
+					statements_cursor.forth
+				end
+				statements.wipe_out
+				statements_count := 0
 			end
+			do_disconnect
 		ensure
 			not_connected: not is_connected implies is_ok
+			no_opened_statements: statements_count = 0
 		end
 
 feature {ECLI_ENVIRONMENT} --
@@ -437,7 +454,7 @@ feature {NONE} -- Implementation
 	reset_implementation is
 			-- reset all implementation values to default ones
 		do
-			impl_transaction_capability := sql_tc_none - 1
+			ext_transaction_capability.put (sql_tc_none - 1)
 			impl_describe_parameters_capability := sql_false - 1
 			impl_is_bind_arrayed_parameters_capability := -1			
 			impl_is_bind_arrayed_results_capability := -1			
@@ -445,7 +462,12 @@ feature {NONE} -- Implementation
 		
 	release_handle is
 		do
-			set_status (ecli_c_free_connection (handle))
+			if is_connected then
+				do_disconnect
+			end
+			if handle /= default_pointer then
+				set_status (ecli_c_free_connection (handle))
+			end
 			set_handle ( default_pointer)
 		end
 
@@ -476,9 +498,18 @@ feature {NONE} -- Implementation
 
 		end
 
-	impl_is_manual_commit : BOOLEAN
+	impl_is_manual_commit : BOOLEAN is
+		do
+			Result := ext_is_manual_commit.item
+		end
 
-	impl_transaction_capability : INTEGER
+	impl_transaction_capability : INTEGER is
+		do
+			Result := ext_transaction_capability.item
+		end
+		
+	ext_is_manual_commit : XS_C_BOOLEAN
+	ext_transaction_capability : XS_C_INT32
 
 	impl_describe_parameters_capability : INTEGER
 	
@@ -491,11 +522,17 @@ feature {NONE} -- Implementation
 			is_closed: is_closed
 		local
 			henv : pointer
+			ext_handle : XS_C_POINTER
 		do
+			create ext_handle.make
+			create ext_is_manual_commit.make
+			create ext_transaction_capability.make
+
 			-- | Allocate session handle
 			environment := shared_environment
 			henv := environment.handle
-			set_status (ecli_c_allocate_connection(henv, $handle))
+			set_status (ecli_c_allocate_connection(henv, ext_handle.handle))
+			handle := ext_handle.item
 			--| register with environment
 			environment.register_session (Current)
 		ensure
@@ -516,6 +553,16 @@ feature {NONE} -- Implementation
 
 	environment : ECLI_ENVIRONMENT
 
+	do_disconnect is
+			-- do disconnect
+		do
+			--| actual disconnect
+			set_status (ecli_c_disconnect (handle))
+			if is_ok then
+				set_disconnected
+			end			
+		end
+		
 invariant
 	valid_session: environment /= Void implies environment = shared_environment
 

@@ -11,13 +11,14 @@ class
 inherit
 	ECLI_GENERIC_ARRAYED_VALUE [DOUBLE]
 		redefine
-			out
-			
+			out		
+		select
+			is_equal, copy
 		end
 
 	ECLI_DOUBLE
 		rename
-			make as make_double
+			make as make_double, copy as copy_item, is_equal as is_equal_item
 		undefine
 			release_handle, length_indicator_pointer, to_external, 
 			is_null, set_null, out, item, transfer_octet_length, set_item, to_string
@@ -45,8 +46,9 @@ feature -- Access
 
 	item_at (index : INTEGER) : DOUBLE is
 		do
-			ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
-			Result := impl_item
+			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
+			--Result := impl_item
+			Result := c_memory_get_double (ecli_c_array_value_get_value_at(buffer, index))
 		end
 		
 feature -- Measurement
@@ -67,8 +69,9 @@ feature -- Element change
 	set_item_at (value : DOUBLE; index : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
-			impl_item := value.item
-			ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length, index)
+--			impl_item := value.item
+--			ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length, index)
+			c_memory_put_double (ecli_c_array_value_get_value_at(buffer, index), value)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length, index)
 		end
 

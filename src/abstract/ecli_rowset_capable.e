@@ -20,9 +20,12 @@ feature -- Status report
 			Result := rowset_status.item (index)
 		end
 
-	row_count : INTEGER
+	row_count : INTEGER is
 			-- number of rows processed by rowset operation
-
+		do
+			Result := impl_row_count.item
+		end
+		
 	rowset_status : ECLI_ROWSET_STATUS
 	
 feature {NONE} -- implementation
@@ -46,9 +49,11 @@ feature {NONE} -- implementation
 			end
 		end
 		
-
+	impl_row_count : XS_C_INT32
+	
 invariant
 	row_capacity_valid: row_capacity >= 1
 	row_count_valid: row_count <= row_capacity
-
+	impl_row_count_not_void: impl_row_count /= Void
+	
 end -- class ECLI_ROWSET_CAPABLE

@@ -54,10 +54,15 @@ feature
 	test_char is
 			-- 
 		local
-			v : ECLI_CHAR
+			v, z : ECLI_CHAR
 		do
 			create v.make (10)
 			v.set_item (string_foo)
+			create z.make (10)
+			z.copy (v)
+			if v.is_equal (z) then
+				print ("V = Z%N")
+			end
 		end
 	
 	test_varchar is
@@ -85,15 +90,20 @@ feature
 	test_date is
 			-- 
 		local
-			v : ECLI_DATE
+			v, z : ECLI_DATE
 			d : DT_DATE
 		do
 			create v.make_default
+			create z.make_default
 			create d.make (2002,12,10)
 			v.set_item (d)
 			v.set_null
 			create d.make (1889,12,10)
 			v.set_item (d)
+			z.copy (v)
+			if v.is_equal (z) then
+				print ("DATE: V = Z%N")
+			end
 		end
 		
 	test_time is
@@ -200,7 +210,7 @@ feature
 	test_arrayed_longvarchar is
 			-- 
 		local
-			v : ECLI_ARRAYED_LONGVARCHAR
+			v, z : ECLI_ARRAYED_LONGVARCHAR
 		do
 			create v.make (10000, 3)
 			v.set_item_at (string_foo, 1)
@@ -208,6 +218,11 @@ feature
 			v.set_item_at (string_foo, 3)
 			v.set_null_at (2)
 			v.set_item_at (string_long, 3)
+			create z.make(1,1)
+			z.copy (v)
+			if z.is_equal (v) then
+				print ("ALVC: V=Z%N")
+			end
 		end
 
 	test_arrayed_date is
@@ -297,12 +312,16 @@ feature
 	test_arrayed_float is
 			-- 
 		local
-			v : ECLI_ARRAYED_FLOAT
+			v,z : ECLI_ARRAYED_FLOAT
 		do
 			create v.make (3)
 			v.set_item_at (1.2345e-23, 1)
 			v.set_null_at (2)
-			v.set_item_at (-1.2345e23, 3)			
-		end
-		
+			v.set_item_at (-1.2345e23, 3)
+			create z.make (3)
+			z.copy (v)
+			if v.is_equal (z) then
+				print ("AFLOAT: V=Z%N")
+			end
+		end	
 end

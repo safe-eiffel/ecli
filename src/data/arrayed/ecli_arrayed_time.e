@@ -12,15 +12,21 @@ inherit
 	ECLI_GENERIC_ARRAYED_VALUE [DT_TIME]
 		redefine
 			is_equal, out_item_at --to_time, 
+		select
+			is_equal, copy
 		end
 
 	ECLI_TIME
 		rename
-			make as make_single, make_default as make_default_single, set as set_single
+			make as make_single, make_default as make_default_single, set as set_single,
+			is_equal as is_equal_item, copy as copy_item
 		export
 			{NONE} make_single, set_single, make_default_single
 		undefine
-			release_handle, length_indicator_pointer, to_external, is_null, set_null, is_equal, out, set_item, to_string
+			release_handle, length_indicator_pointer, to_external, 
+			is_null, set_null, 
+			-- is_equal, 
+			out, set_item, to_string
 		redefine
 			item, trace, allocate_buffer, hour, minute, second --out, , nanosecond --transfer_octet_length,
 		end
@@ -226,11 +232,11 @@ feature {NONE} -- Implementation
 			!!Result.make (0)
 			if not is_null then
 				Result.append_character (' ')
-				Result.append_string (pad_integer_2 (hour_at (index)))
+				Result.append_string (Integer_format.pad_integer_2 (hour_at (index)))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (minute_at (index)))
+				Result.append_string (Integer_format.pad_integer_2 (minute_at (index)))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (second_at (index)))
+				Result.append_string (Integer_format.pad_integer_2 (second_at (index)))
 --				if nanosecond > 0 then
 --					Result.append_character ('.')
 --					Result.append_string (nanosecond.out)

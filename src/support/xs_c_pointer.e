@@ -1,5 +1,5 @@
 indexing
-	description: "C allocated arrays of 32 bits integers."
+	description: "C allocated 16 bits integer (short)."
 	author: "Paul G. Crismer"
 	
 	library: "XS_C : eXternal Support C"
@@ -9,23 +9,27 @@ indexing
 	licensing: "See notice at end of class"
 
 class
-	XS_C_ARRAY_INT32
+	XS_C_POINTER
 
 inherit
-	XS_C_ARRAY [INTEGER]
+	XS_C_MEMORY
 	
 creation
 	make
 			
+feature -- Initialization
+
+	make is
+		do
+			handle := c_memory_allocate (item_size)
+		end
+		
 feature -- Access
 
-	item (index : INTEGER) : INTEGER is
-			-- item at `index'
-		local
-			item_ptr : POINTER
+	item : POINTER is
+			-- item
 		do
-			item_ptr := item_pointer (index)
-			Result := c_memory_get_int32 (item_ptr)
+			Result := c_memory_get_pointer (handle)
 		end
 		
 feature -- Measurement
@@ -34,16 +38,16 @@ feature -- Measurement
 
 feature -- Element change
 
-	put (value : INTEGER; index : INTEGER) is
-			-- put `value' at `index'
-		local
-			item_ptr : POINTER
+	put (value : POINTER) is
+			-- put `value'
 		do
-			item_ptr := item_pointer (index)
-			c_memory_put_int32 (item_ptr, value)
+			c_memory_put_pointer (handle, value)
 		end
 		
-end -- class XS_C_ARRAY_INT32
+invariant
+	handle_not_default_pointer: handle /= default_pointer
+	
+end -- class XS_C_POINTER
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>

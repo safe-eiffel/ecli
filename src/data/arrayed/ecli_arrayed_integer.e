@@ -12,11 +12,13 @@ inherit
 	ECLI_GENERIC_ARRAYED_VALUE [INTEGER]
 		redefine
 			set_item, out
+		select
+			is_equal, copy
 		end
 
 	ECLI_INTEGER
 		rename
-			make as make_single
+			make as make_single, is_equal as is_equal_item, copy as copy_item
 		export
 			{NONE} make_single
 		undefine
@@ -49,8 +51,9 @@ feature -- Access
 	item_at (index : INTEGER) : INTEGER is
 			--
 		do
-			ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
-			Result := impl_item
+			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
+			--Result := impl_item
+			Result := c_memory_get_int32 (ecli_c_array_value_get_value_at(buffer,index))
 		end
 
 feature -- Measurement
@@ -79,8 +82,9 @@ feature -- Element change
 	set_item_at (value : INTEGER; index : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
-			impl_item := value
-			ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length, index)
+			--impl_item := value
+			--ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length, index)
+			c_memory_put_int32 (ecli_c_array_value_get_value_at(buffer,index), value)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length, index)
 		end
 

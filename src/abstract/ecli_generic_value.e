@@ -14,7 +14,7 @@ deferred class
 inherit
 	ECLI_VALUE
 		redefine
-			out
+			out, is_equal, copy
 		end
 		
 feature -- Access
@@ -55,11 +55,32 @@ feature -- Conversion
 			Result := item.out
 		end
 		
+feature -- Duplication
+
+	copy (other : like Current) is
+			-- 
+		do
+			if other.is_null then
+				set_null
+			else
+				set_item (other.item)
+			end
+		end
+		
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			do
+				Result := (is_null and then other.is_null) or else (item.is_equal (other.item))
+			end
+		
 feature {NONE} -- Implementation
 
-	impl_item : G
+	impl_item : G is
 			-- reference to actual item this is always the same item !
-
+		do
+		end
+		
 	create_impl_item is
 			-- create impl_item
 		do

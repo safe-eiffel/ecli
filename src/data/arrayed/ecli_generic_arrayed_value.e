@@ -21,7 +21,7 @@ inherit
 
 	ECLI_ARRAYED_VALUE
 		redefine
-			out
+			out, is_equal, copy
 		end
 
 
@@ -35,6 +35,14 @@ feature -- Access
 		deferred
 		end
 
+feature -- Measurement
+
+	item_size : INTEGER is
+			-- maximum size of one item
+		do
+			Result := ecli_c_array_value_get_length (buffer)
+		end
+		
 feature -- Element change
 
 	set_item_at (value : G; index : INTEGER) is
@@ -58,6 +66,56 @@ feature -- Resizing
 
 feature -- Transformation
 
+feature -- Duplication
+
+	copy (other : like Current) is
+			-- 
+		local
+			index : INTEGER
+		do
+			if other.count > capacity then
+				release_handle
+				buffer := ecli_c_alloc_array_value (other.item_size,other.count)
+				capacity := other.count
+				count := capacity
+			end
+			from
+				index := 1
+			until
+				index > other.count
+			loop
+				if other.is_null_at (index) then
+					set_null_at (index)
+				else
+					set_item_at (other.item_at (index), index)
+				end
+				index := index + 1
+			end
+		end
+		
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+		local
+			index : INTEGER
+		do
+			if count = other.count then
+				from
+					index := 1
+					Result := True
+				until
+					index > count or else not Result
+				loop
+					if is_null_at (index) then
+						Result := Result and then other.is_null_at (index)
+					else
+						Result := Result and then (item_at (index).is_equal (other.item_at (index)))
+					end
+					index := index + 1
+				end
+			end
+		end
+		
 feature -- Conversion
 
 	out : STRING is

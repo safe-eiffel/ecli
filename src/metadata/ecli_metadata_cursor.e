@@ -148,7 +148,7 @@ feature {NONE} -- Implementation
 					set_cursor_after
 				end
 			else
-				impl_result_columns_count := 0
+				impl_result_columns_count.put (0)
 			end
 		end
 

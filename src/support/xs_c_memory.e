@@ -1,5 +1,5 @@
 indexing
-	description: "Objects give access to C memory"
+	description: "Objects that give access to C memory"
 	author: "Paul G. Crismer"
 	
 	library: "XS_C : eXternal Support C"
@@ -17,7 +17,9 @@ inherit
 		redefine
 			dispose
 		end
-		
+	
+	XS_C_MEMORY_ROUTINES
+	
 feature -- Access
 
 	handle : POINTER
@@ -54,7 +56,7 @@ feature {NONE} -- Implementation
 		external "C"
 		alias "c_memory_short_to_integer"
 		end	
-
+		
 invariant
 	memory_allocated: handle /= default_pointer
 

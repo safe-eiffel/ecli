@@ -47,13 +47,18 @@ feature {NONE} -- Initialization
 				index,
 				c_name.handle,
 				max_name_length,
-				pointer ($actual_name_length),
-				pointer ($sql_type_code),
-				pointer ($size),
-				pointer ($decimal_digits),
-				pointer ($nullability))
+				ext_actual_name_length.handle,
+				ext_sql_type_code.handle,
+				ext_size.handle,
+				ext_decimal_digits.handle,
+				ext_nullability.handle)
 			stmt.set_status (stat)
-			name := c_name.to_string
+			name := c_name.item
+			--actual_name_length := ext_actual_name_length.item
+			sql_type_code := ext_sql_type_code.item
+			size := ext_size.item
+			decimal_digits := ext_decimal_digits.item
+			nullability := ext_nullability.item
 		end
 
 feature -- Access
@@ -63,7 +68,7 @@ feature -- Access
 
 feature {NONE} -- Implementation
 
-	actual_name_length : INTEGER
+	ext_actual_name_length : XS_C_INT32 is once create Result.make end
 
 	temporary_name : STRING is
 			-- 

@@ -21,13 +21,19 @@ inherit
 		export
 			{NONE} all
 		undefine
-			dispose, out
+			dispose, out, copy, is_equal
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
 		undefine
-			out
+			out, is_equal, copy
 		end
+
+	XS_C_MEMORY_ROUTINES
+		undefine
+			copy,out, is_equal
+		end
+
 
 creation
 	make
@@ -105,8 +111,9 @@ feature -- Element change
 	set_item (value : REAL) is
 			-- set item to 'value', truncating if necessary
 		do
-			impl_item := value
-			ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
+--			impl_item := value
+--			ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
+			c_memory_put_real (ecli_c_value_get_value (buffer), value)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
 		ensure then
 			item_set: item = value
@@ -123,8 +130,9 @@ feature -- Conversion
 	to_real : REAL is
 		do
 			if not is_null then
-				ecli_c_value_copy_value (buffer, $impl_item)
-				Result := impl_item
+				--ecli_c_value_copy_value (buffer, $impl_item)
+				--Result := impl_item
+				Result := c_memory_get_real (ecli_c_value_get_value (buffer))
 			end
 		end
 

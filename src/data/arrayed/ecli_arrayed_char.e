@@ -22,7 +22,7 @@ inherit
 		export
 			{NONE} all
 		undefine
-			out
+			out, is_equal, copy
 		end
 
 creation

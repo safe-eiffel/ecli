@@ -1,5 +1,8 @@
 ** TODO **
 
+Starting to create an eiffel.eant file that checks for various variable names and for external libraries
+
+
 FUNCTIONALITY
 
 Getting various metadata
@@ -7,7 +10,7 @@ Getting various metadata
 	** DONE 2002-07 : Tables/Columns metadata
 	** DONE 2002-07 : SQL Datatypes metadata.
 
-	Indexes catalog metadata,
+Indexes catalog metadata,
 
 Allow Bulk data transfers
 	** DONE 2002-09-26 : A cursor is not a single line, but an array of lines. 
@@ -45,11 +48,20 @@ Long Variable Data as streams (file)
 	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
 
 Implement other data values
-	** DONE 2002-07 : Time, 
-	BINARY, LONGVARBINARY, ...
+
+- BINARY, VARBINARY , LONGVARBINARY, ...
 	Note : Those data values should serve for data transfer, not as implementation of corresponding Abstract Data Types.
 	ADT should be defined as clients or extension by inheritance.
+
+- TINYINT, BIGINT
+
+- DECIMAL
+
+- BIT
+
+	** DONE 2002-07 : Time, 
 	** DONE 2000-08-10 LONGVARCHAR has been implemented
+
 
 TESTING
 

@@ -1,5 +1,5 @@
 indexing
-	description: "C allocated arrays of 16 bits integer (short)."
+	description: "C allocated 16 bits integer (short)."
 	author: "Paul G. Crismer"
 	
 	library: "XS_C : eXternal Support C"
@@ -9,41 +9,41 @@ indexing
 	licensing: "See notice at end of class"
 
 class
-	XS_C_ARRAY_INT16
+	XS_C_INT16
 
 inherit
-	XS_C_ARRAY [INTEGER]
+	XS_C_ITEM[INTEGER]
 	
 creation
 	make
-			
+					
 feature -- Access
 
-	item (index : INTEGER) : INTEGER is
-			-- item at `index'
-		local
-			item_ptr : POINTER
+	item : INTEGER is
+			-- item
 		do
-			item_ptr := item_pointer (index)
-			Result := c_memory_get_int16 (item_ptr)
+			Result := c_memory_get_int16 (handle)
 		end
 		
 feature -- Measurement
 	
 	item_size : INTEGER is do Result := 2 end
 
+	minimum_value : INTEGER is -32768
+	maximum_value : INTEGER is 32767
+
 feature -- Element change
 
-	put (value : INTEGER; index : INTEGER) is
-			-- put `value' at `index'
-		local
-			item_ptr : POINTER
+	put (value : INTEGER) is
+			-- put `value'
 		do
-			item_ptr := item_pointer (index)
-			c_memory_put_int16 (item_ptr, value)
+			c_memory_put_int16 (handle, value)
 		end
 		
-end -- class XS_C_ARRAY_INT16
+invariant
+	handle_not_default_pointer: handle /= default_pointer
+	
+end -- class XS_C_INT16
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>

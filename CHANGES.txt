@@ -1,3 +1,11 @@
+2003-05-05
+	* Prepared migration of ECLI to .NET : created support for external values
+	  with classes XS_C_*; This prevents using the '$' operator.
+	* Query assistant heavily reworked.
+	
+2003-03-10
+	* ECLI_VALUE descendants implement correct 'copy' and 'is_equal' features.	  
+	
 2003-02-28
 	* **** WARNING ****
 	  *****************
@@ -17,7 +25,7 @@
 	  same reference -> beware of aliasing problems.
 	* STRING.append usage has been dropped; using ELKS feature 'append_string' now.
 	* 'metadata' cluster provides various cursors on metadata : tables, columns, types, procedures,
-	  primary keys, foreign keys, ...
+	  primary keys, foreign keys, data sources, ...
 	
 2003-01-01
 	* Added ECLI_SESSION.is_bind_arrayed_results_capable + updated ECLI_ROWSET_CURSOR preconditions on 'open' and 'open_prepared'

@@ -12,7 +12,7 @@ inherit
 	ECLI_LONGVARCHAR
 		rename
 			make as make_single, capacity as content_capacity, max_capacity as max_content_capacity,
-			count as content_count
+			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
 			set_item, transfer_octet_length, to_string, convertible_to_string
@@ -25,6 +25,8 @@ inherit
 			make as make_arrayed
 		redefine
 			set_item, out_item_at, to_string
+		select
+			is_equal, copy
 		end
 
 creation

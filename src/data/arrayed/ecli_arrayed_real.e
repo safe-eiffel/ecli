@@ -13,11 +13,14 @@ inherit
 		undefine
 		redefine
 			out_item_at
+		select
+			is_equal, copy
 		end
 
 	ECLI_REAL
 		rename
-			make as make_single
+			make as make_single,
+			copy as copy_item, is_equal as is_equal_item
 		undefine
 			release_handle, length_indicator_pointer, to_external,
 			is_null, set_null, out, item, transfer_octet_length, set_item, to_string
@@ -25,7 +28,7 @@ inherit
 
 	KL_IMPORTED_STRING_ROUTINES
 		undefine
-			out
+			out, is_equal, copy
 		end
 
 creation
@@ -46,8 +49,9 @@ feature -- Access
 	item_at (index : INTEGER) : REAL is
 			--
 		do
-			ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
-			Result := impl_item
+			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
+			--Result := impl_item
+			Result := c_memory_get_real (ecli_c_array_value_get_value_at(buffer,index))
 		end
 
 	item : REAL is
@@ -72,8 +76,9 @@ feature -- Element change
 	set_item_at (value : REAL; index : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
-			impl_item := value.item
-			ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length,index)
+--			impl_item := value.item
+--			ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length,index)
+			c_memory_put_real (ecli_c_array_value_get_value_at(buffer,index),value)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		end
 

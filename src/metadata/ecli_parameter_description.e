@@ -33,10 +33,14 @@ feature {NONE} -- Initialization
 			stmt.set_status (
 				ecli_c_describe_parameter (stmt.handle,
 					index,
-					pointer ($sql_type_code),
-					pointer ($size),
-					pointer ($decimal_digits),
-					pointer ($nullability)))			
+					ext_sql_type_code.handle,
+					ext_size.handle,
+					ext_decimal_digits.handle,
+					ext_nullability.handle))
+			sql_type_code := ext_sql_type_code.item
+			size := ext_size.item
+			decimal_digits := ext_decimal_digits.item
+			nullability := ext_nullability.item
 		end
 
 feature -- Access
@@ -58,6 +62,13 @@ feature -- Access
 	
 	decimal_digits : INTEGER
 			-- maximum number of digits to the right of the decimal point, or the scale of the data. For numeric types only.
+
+feature {NONE} -- Implementation
+
+		ext_sql_type_code : XS_C_INT32 is once create Result.make end
+		ext_size : XS_C_INT32 is once create Result.make end
+		ext_decimal_digits : XS_C_INT32 is once create Result.make end
+		ext_nullability : XS_C_INT32 is once create Result.make end		
 
 end -- class ECLI_PARAMETER_DESCRIPTION
 --

@@ -14,20 +14,17 @@ inherit
 			set_item, is_equal, out_item_at
 		redefine
 		select
-		end
-
-	ECLI_FORMAT_INTEGER
-		undefine
-			out, is_equal
+			is_equal, copy
 		end
 
 	ECLI_DATE
 		rename
-			make as make_single, make_default as make_default_single, set as set_date
+			make as make_single, make_default as make_default_single, set as set_date,
+			is_equal as is_equal_item, copy as copy_item
 		export
 			{NONE} make_single, make_default_single
 		undefine
-			release_handle, length_indicator_pointer, to_external, is_null, set_null, is_equal, out, set_item, to_string
+			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, set_item, to_string
 		redefine
 			item, trace, allocate_buffer, year, month, day, set_date --, transfer_octet_length
 		end
@@ -202,11 +199,11 @@ feature -- Conversion
 			else
 				save_index := cursor_index
 				cursor_index := index
-				Result.append_string (pad_integer_4 (year))
+				Result.append_string (Integer_format.pad_integer_4 (year))
 				Result.append_character ('-')
-				Result.append_string (pad_integer_2 (month))
+				Result.append_string (Integer_format.pad_integer_2 (month))
 				Result.append_character ('-')
-				Result.append_string (pad_integer_2 (day))
+				Result.append_string (Integer_format.pad_integer_2 (day))
 				cursor_index := save_index
 			end
 		end
@@ -233,14 +230,6 @@ feature {NONE} -- Implementation
 				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)
 			end
 		end
-
---	create_impl_item is
---		local
---			d : DT_DATE
---		do
---			create d.make (1,1,1)
---			impl_item := d -- SmartEiffel does not like creation of generics
---		end
 		
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)

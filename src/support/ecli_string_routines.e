@@ -1,9 +1,12 @@
 indexing
 	description: "Supporting string routines"
 	author: "Paul G. Crismer"
+
+	usage: "mix-in, module-object"
+
 	date: "$Date$"
 	revision: "$Revision$"
-	usage: "mix-in, module-object"
+
 class
 	ECLI_STRING_ROUTINES
 
@@ -62,3 +65,8 @@ feature
 		end
 		
 end -- class ECLI_STRING_ROUTINES
+--
+-- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

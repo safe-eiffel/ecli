@@ -12,7 +12,8 @@ inherit
 	ECLI_ARRAYED_DATE
 		rename
 			make_single as make_single_date, make_default_single as make_default_1_date,
-			set_item as set_date_item, truncated as date_truncated, create_impl_item as create_date_impl_item
+			set_item as set_date_item, truncated as date_truncated, create_impl_item as create_date_impl_item,
+			copy_item as copy_item_date, is_equal_item as is_equal_item_date
 		export
 			{NONE} make_single_date, make_default_1_date, set_date_item, date_truncated
 		undefine
@@ -26,23 +27,27 @@ inherit
 			to_time,
 			to_timestamp,
 			trace,
-			transfer_octet_length, convertible_to_timestamp , convertible_to_date, days_in_month
+			transfer_octet_length, convertible_to_timestamp , convertible_to_date, days_in_month,
+			Integer_format
 		redefine
-			is_equal, out_item_at, item_at, set_item_at, impl_item --, set_item, set_item_at,
+--			is_equal, copy, 
+			out_item_at, item_at, set_item_at, impl_item --, set_item, set_item_at,
 		select
-			set_date_item--, set_item_at-- to_date
+			set_date_item,
+			is_equal, copy
 		end
 
 
 	ECLI_TIMESTAMP
 		rename
-			make as make_single, make_default as make_default_2, set as set_single_timestamp
+			make as make_single, make_default as make_default_2, set as set_single_timestamp,
+			copy as copy_item, is_equal as is_equal_item
 		export
 			{NONE} make_single, set_single_timestamp, make_default_2
 		undefine
 			allocate_buffer,
 			day,
-			is_equal,
+--			is_equal,
 			is_null, set_null,
 			length_indicator_pointer,
 			month,
@@ -256,11 +261,11 @@ feature -- Conversion
 			Result := Precursor {ECLI_ARRAYED_DATE} (index)
 			if not is_null then
 				Result.append_character (' ')
-				Result.append_string (pad_integer_2 (hour))
+				Result.append_string (Integer_format.pad_integer_2 (hour))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (minute))
+				Result.append_string (Integer_format.pad_integer_2 (minute))
 				Result.append_character (':')
-				Result.append_string (pad_integer_2 (second))
+				Result.append_string (Integer_format.pad_integer_2 (second))
 				if nanosecond > 0 then
 					Result.append_character ('.')
 					Result.append_string (nanosecond.out)
@@ -280,10 +285,10 @@ feature -- Basic operations
 --			a_tracer.put_timestamp (Current)
 --		end
 
-	is_equal (other : like Current) : BOOLEAN is
-		do
-
-		end
+--	is_equal (other : like Current) : BOOLEAN is
+--		do
+--
+--		end
 
 feature -- Obsolete
 

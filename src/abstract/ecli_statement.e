@@ -51,12 +51,16 @@ feature -- Initialization
 			not_valid: not is_valid
 		local
 			eq : KL_EQUALITY_TESTER[DS_LIST[INTEGER]]
+			ext_handle : XS_C_POINTER
 		do
+			create ext_handle.make
+			create impl_result_columns_count.make
 			session := a_session
 			if session.exception_on_error then
 				raise_exception_on_error
 			end
-			set_status (ecli_c_allocate_statement (session.handle, $handle))
+			set_status (ecli_c_allocate_statement (session.handle, ext_handle.handle))
+			handle := ext_handle.item
 			if is_valid then
 				session.register_statement (Current)
 			end
@@ -93,8 +97,7 @@ feature -- Basic Operations
 			if not is_closed then
 				session.unregister_statement (Current)
 			end
-			session := Void
-			release_handle
+			do_close
 		ensure
 			closed: 		is_closed
 			unregistered: 	not (old session).is_registered_statement (Current)
@@ -102,6 +105,21 @@ feature -- Basic Operations
 			no_session: 	session = Void
 		end
 
+feature {ECLI_SESSION} -- Basic Operations
+
+	do_close is
+			-- 
+		require
+			valid_statement: is_valid
+			not_closed: not is_closed
+		do
+			session := Void
+			release_handle			
+		ensure
+			not_valid:  	not is_valid
+			no_session: 	session = Void			
+		end
+		
 feature -- Access
 
 	sql : STRING
@@ -202,10 +220,10 @@ feature -- Measurement
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed
 		do
-			if impl_result_columns_count = -1 then
+			if impl_result_columns_count.item = -1 then
 				get_result_columns_count
 			end
-			Result := impl_result_columns_count
+			Result := impl_result_columns_count.item
 		end
 
 	fetched_columns_count : INTEGER
@@ -407,7 +425,7 @@ feature -- Element change
 			set_parsed
 			parameters_count_impl := parser.parameters_count
 			impl_parameter_names := Void
-			impl_result_columns_count := -1 -- do not know
+			impl_result_columns_count.put (-1) -- do not know
 			is_executed := False
 			is_prepared := False
 			cursor_description := Void
@@ -537,8 +555,8 @@ feature -- Basic operations
 				else
 					set_cursor_after
 				end
-         else
-         	impl_result_columns_count := 0
+			else
+				impl_result_columns_count.put (0)
 			end
 		ensure
 			executed: is_executed implies is_ok
@@ -813,7 +831,7 @@ feature {NONE} -- Implementation
 		require
 			valid_statement: is_valid
 		do
-			set_status (ecli_c_result_column_count (handle, $impl_result_columns_count))
+			set_status (ecli_c_result_column_count (handle, impl_result_columns_count.handle))
 		end
 
 	bind_one_parameter (i : INTEGER) is
@@ -863,7 +881,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	impl_result_columns_count : INTEGER
+	impl_result_columns_count : XS_C_INT32
 		-- -1 : do not know; must call `get_result_column_count'
 		--  0 : no result-set
 		-- >0  :number of columns in result-set

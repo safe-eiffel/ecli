@@ -43,9 +43,13 @@ feature -- Initialization
 
 	make is
 			-- initialize CLI environment
+		local
+			ext_handle : XS_C_POINTER
 		do
 			-- | Actual allocation of CLI handle
-			set_status (ecli_c_allocate_environment ($handle))
+			create ext_handle.make
+			set_status (ecli_c_allocate_environment (ext_handle.handle))
+			handle := ext_handle.item
 		end
 
 

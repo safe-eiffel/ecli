@@ -171,3 +171,8 @@ invariant
 	good_parameter_marker: (":?~°@§").has (parameter_marker)
 	
 end -- class ECLI_SQL_PARSER
+--
+-- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

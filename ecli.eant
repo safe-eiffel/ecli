@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<project name="ecli" default="help">
+
+	<description>
+		system: "ECLI parent project file."
+		copyright: "Copyright (c) 2002, Paul G. Crismer"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init"/>
+			<redefine target="prepare_compile"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init">
+		<precursor/>
+		<geant target="check_ecli_variables"/>
+	</target>
+
+	<target name="check_ecli_variables">
+		<echo message="WARNING: ECLI variable not set" unless="${ECLI}"/>
+		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
+		<echo message="WARNING: ECLI_C_BCC_DIR variable not set" if="${GOBO_CC}=bcc" unless="${ECLI_C_BCCDIR}"/>
+	</target>
+
+	<target name="prepare_compile" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+
+		<exec executable="nmake -f makefile.mak" dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+		<exec executable="make -f makefile.bcc" if="${GOBO_CC}=bcc"/>
+	</target>
+
+</project>

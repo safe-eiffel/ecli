@@ -43,9 +43,14 @@ feature -- Basic operations
 			password := ""
 			--| consume command
 			worder.read_word
-			worder.read_word
+			--| read data source name, if any
+			worder.read_quoted_word
 			if not worder.end_of_input then
-				source := clone (worder.last_string)
+				if worder.is_last_string_quoted then
+					source := worder.last_string.substring (2,worder.last_string.count - 1)	
+				else
+					source := clone (worder.last_string)
+				end
 				worder.read_word
 				if not worder.end_of_input then
 					user := clone (worder.last_string)

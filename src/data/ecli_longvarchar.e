@@ -11,7 +11,8 @@ class
 inherit
 	ECLI_GENERIC_VALUE [STRING]
 		redefine
-			item, set_item,convertible_to_string, to_string, out, convertible_to_character, to_character
+			item, set_item,convertible_to_string, to_string, out, convertible_to_character, to_character,
+			convertible_to_integer, to_integer, convertible_to_double, to_double, impl_item
 		end
 
 creation
@@ -71,6 +72,16 @@ feature -- Status report
 	convertible_to_string : BOOLEAN is 
 		do
 			Result := True
+		end
+
+	convertible_to_integer : BOOLEAN is 
+		do
+			Result := not is_null and then item.is_integer
+		end
+
+	convertible_to_double : BOOLEAN is 
+		do
+			Result := not is_null and then item.is_double
 		end
 
 	convertible_to_character : BOOLEAN is
@@ -145,6 +156,18 @@ feature -- Conversion
 		ensure then
 			result_is_first_character: Result = item @ 1
 		end
+
+	to_integer : INTEGER is
+			-- 
+		do
+			Result := item.to_integer
+		end
+		
+	to_double : DOUBLE is
+			-- 
+		do
+			Result := item.to_double
+		end
 		
 feature -- Basic operations
 
@@ -171,6 +194,8 @@ feature {NONE} -- Implementation
 
 	octet_size : INTEGER is do Result := transfer_octet_length end
 
+	impl_item : STRING
+	
 end -- class ECLI_LONGVARCHAR
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
