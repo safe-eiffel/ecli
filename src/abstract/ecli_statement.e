@@ -49,6 +49,9 @@ feature -- Initialization
 			not_valid: not is_valid
 		do
 			session := a_session
+			if session.exception_on_error then
+				raise_exception_on_error
+			end
 			set_status (ecli_c_allocate_statement (session.handle, $handle))
 			if is_valid then
 				session.register_statement (Current)
@@ -56,6 +59,7 @@ feature -- Initialization
 		ensure
 			session_ok: session = a_session and not is_closed
 			registered: session.is_registered_statement (Current)
+			same_exception_on_error: exception_on_error = session.exception_on_error
 			valid: 	is_valid
 		end
 
@@ -147,8 +151,9 @@ feature -- Access
 		end
 
 	cursor : ARRAY[like value_anchor]
-			-- container of result values (i.e. buffers for transferring data from program to database)
-			-- content is meaningful only while sweeping through a result set, i.e. "not off"
+			-- container of result values (i.e. buffers for transferring
+			-- data from program to database) content is meaningful only
+			-- while sweeping through a result set, i.e. "not off"
 
 	parameters : ARRAY[like parameter_anchor]
 			-- current parameter values for the statement
@@ -310,7 +315,7 @@ feature -- Status setting
 		end
 
 	set_immediate_execution_mode is
-			-- qery plan is evaluated each time `sql' is executed
+			-- query plan is evaluated each time `sql' is executed
 		require
 			valid_statement: is_valid
 		do
@@ -638,7 +643,7 @@ feature {NONE} -- Implementation
 			-- and set up the name to position translation table
 			-- <name> is [a-zA-Z_0-9]+
 		local
-			eq : DS_EQUALITY_TESTER[DS_LIST[INTEGER]]
+			eq : KL_EQUALITY_TESTER[DS_LIST[INTEGER]]
 			param_count, param_number, i_start, i_begin_parameter_name, i_end_parameter_name : INTEGER
 			name_found : BOOLEAN
 			name : STRING

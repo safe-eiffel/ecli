@@ -14,16 +14,13 @@ inherit
 			close as cursor_close, statement_close as close,
 			create_buffers as create_row_buffers
 		export 
-			{NONE} cursor_make
-			{ANY} is_valid, go_after, close, put_parameter, has_parameter, has_parameters, parameter_count,
-				bound_parameters, bind_parameters, parameters
+			{NONE} cursor_make;
+			{ANY}
+				is_valid, go_after, close, put_parameter, has_parameter,
+				has_parameters, parameters_count, bound_parameters,
+				bind_parameters, parameters
 		end
 	
---	ECLI_BUFFER_FACTORY
---		redefine
---			create_name_to_index, map_name_to_index
---		end
-		
 create
 	make, open
 
@@ -116,7 +113,7 @@ feature -- Cursor movement
 	start is
 			-- start at first row of dataset
 		require
-			prepared: is_prepared
+			prepared: is_prepared_execution_mode implies is_prepared
 			bound_parameters: has_parameters implies bound_parameters
 		do
 			execute
@@ -126,8 +123,10 @@ feature -- Cursor movement
 					statement_start
 				end
 			else
-				print (diagnostic_message)
-				print ("%N")
+				debug
+					print (diagnostic_message)
+					print ("%N")
+				end
 			end
 		ensure
 			executed: is_executed

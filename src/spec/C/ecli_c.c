@@ -494,9 +494,10 @@ EIF_POINTER ecli_c_alloc_array_value (EIF_INTEGER c_buffer_length, EIF_INTEGER a
 	struct ecli_c_array_value *res;
 
 	res = (struct ecli_c_array_value *) malloc(sizeof(struct ecli_c_array_value)+ (c_buffer_length * a_count+ sizeof(long)* a_count));
-	if (res)
+	if (res) {
 		res->length = (long) c_buffer_length;
 		res->count = (long) a_count;
+  }
 	return (EIF_POINTER) res;
 }
 

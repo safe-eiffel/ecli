@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 			set_status (ecli_c_get_procedures ( handle, 
 				default_pointer, 0, default_pointer, 0, default_pointer, 0))
 			if is_ok then
-				get_result_column_count
+				get_result_columns_count
 				is_executed := True
 				if has_results then
 					set_cursor_before
@@ -43,7 +43,7 @@ feature {NONE} -- Initialization
 					set_cursor_after
 				end
 	         else
-	         	impl_result_column_count := 0
+	         	impl_result_columns_count := 0
 			end
 		ensure
 			executed: is_ok implies is_executed

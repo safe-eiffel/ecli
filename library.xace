@@ -3,16 +3,16 @@
 <library name="ecli" prefix="ecli_">
 
 	<description>
-		description:[ 
-		
-			Xace file for the ECLI Library. 
+		description:[
+
+			Xace file for the ECLI Library.
 			Variables used: %
 			 * ECLI			Path of ECLI library
 			 * ECLI_C_COMPILER	type of C compiler; values (bcc|vc|lcc|gcc)
 			 * ECLI_C_BCCDIR	directory where bcc resides if it is used
 			 * GOBO_OS		Operating system; values (windows|linux)
 			 * GOBO_EIFFEL		Eiffel compiler (ise|se|ve|hact)
-			 *  
+			 *
 			]
 		library:     "ECLI Library"
 		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
@@ -22,30 +22,28 @@
 		revision:    "$Revision$"
 	</description>
 
-	<cluster name="ecli" location="${ECLI}/src" abstract="True" >
+	<cluster name="ecli" location="${ECLI}/src">
+		<option name="abstract" value="True"/>
 		<cluster name="abstract"/>
 		<cluster name="data">
 			<cluster name="arrayed"/>
 		</cluster>
 		<cluster name="pattern"/>
 		<cluster name="spec">
-			<cluster name="compiler" location="$/${GOBO_EIFFEL}"/>
+			<cluster name="${GOBO_EIFFEL}" prefix="compiler_"/>
 		</cluster>
 		<cluster name="metadata"/>
 		<cluster name="support"/>
 
-		<external unless="${GOBO_OS}=windows">
-			<link_library location="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libecli_c.a"/>
-			<link_library location="-lodbc"/>
-		</external>
-		<external if="${GOBO_OS}=windows">
-			<link_library location="ODBC32.lib" unless="${ECLI_C_COMPILER}=bcc"/>
-			<link_library location="${ECLI_C_BCCDIR}/lib/PSDK/ODBC32.lib" if="${ECLI_C_COMPILER}=bcc"/>		
-			<link_library location="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecli_c.lib"/>
-		</external>
+		<option unless="${GOBO_OS}=windows">
+			<option name="link" value="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libecli_c.a"/>
+			<option name="link" value="-lodbc"/>
+		</option>
+		<option if="${GOBO_OS}=windows">
+			<option name="link" value="ODBC32.lib" unless="${ECLI_C_COMPILER}=bcc"/>
+			<option name="link" value="${ECLI_C_BCCDIR}/lib/PSDK/ODBC32.lib" if="${ECLI_C_COMPILER}=bcc"/>
+			<option name="link" value="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecli_c.lib"/>
+		</option>
 	</cluster>
-	
-</library>	
 
-
-	
+</library>

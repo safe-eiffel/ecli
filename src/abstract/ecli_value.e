@@ -240,6 +240,8 @@ feature {NONE} -- Implementation
 			-- external 'C' address of value
 		do
 			Result := ecli_c_value_get_value (buffer)
+		ensure
+			not_null: Result /= default_pointer	
 		end
 
 	length_indicator_pointer : POINTER is

@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "Objects that are capable of operating on a rowset."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -9,7 +9,8 @@ class
 
 feature -- Measurement
 
-	row_count : INTEGER
+	row_capacity : INTEGER
+			-- maximum number of rows in this rowset
 	
 feature -- Status report
 
@@ -19,7 +20,7 @@ feature -- Status report
 			Result := rowset_status.item (index)
 		end
 
-	processed_row_count : INTEGER
+	row_count : INTEGER
 			-- number of rows processed by rowset operation
 
 feature {NONE} -- implementation
@@ -34,8 +35,8 @@ feature {NONE} -- implementation
 			index: INTEGER
 		do
 			from index := 1
-				!!status_array.make (1, row_count)
-			until index > row_count
+				!!status_array.make (1, row_capacity)
+			until index > row_capacity
 			loop
 				status_array.put (rowset_status.item (index), index)
 				index := index + 1
@@ -44,6 +45,7 @@ feature {NONE} -- implementation
 		
 
 invariant
-	invariant_clause: True -- Your invariant here
+	row_capacity_valid: row_capacity >= 1
+	row_count_valid: row_count <= row_capacity
 
 end -- class ECLI_ROWSET_CAPABLE

@@ -17,7 +17,9 @@ inherit
 			{ANY} Sql_row_success, Sql_row_success_with_info, Sql_row_error,
 				  Sql_row_deleted, Sql_row_updated,	Sql_row_norow, Sql_row_added
 		end
-		
+	
+	ANY
+	
 creation
 	make
 

@@ -1,6 +1,16 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Objects that represent ARRAYs of typed values to be exchanged with the database.%
+		% These mainly are exchange buffers.  The capacity is set at creation and cannot be changed.%
+		% The actual number of elements to take into account is set using set_count.%
+		% 'set_count' must not be used by a client except when passing parameters.  The other private usage is %
+		% when a rowset_cursor fetches the last set of data (usually less than the capacity)."
+		
+	author: "Paul G. Crismer"
+	
+	usage: "Used in row-set operations : column-wise binding for result-sets, %
+		% or column-wise binding of parameters for modifications.%
+		% Access modes: direct ('item_at'), linear ('start', 'forth', 'item')."
+
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -153,6 +163,14 @@ feature -- Conversion
 			Result.append (">>")
 		end
 
+	to_external : POINTER is
+			-- external 'C' address of value array 
+			-- contiguous memory block of 'capacity' * 'transfer_octet_length'
+			-- use at your own risks !
+		do
+			Result := ecli_c_array_value_get_value (buffer)
+		end
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -161,6 +179,8 @@ feature -- Basic operations
 
 	set_count (a_count : INTEGER) is
 			-- set `count' to `a_count'
+			-- used to indicate that index ranging from 'a_count' + 1 to 'capacity'
+			-- do not hold interesting values
 		require
 			valid_count: a_count >= 1 and a_count <= capacity
 		do
@@ -180,12 +200,6 @@ feature {NONE} -- Implementation
 			buffer := default_pointer
 		end
 
-	to_external : POINTER is
-			-- external 'C' address of value
-		do
-			Result := ecli_c_array_value_get_value (buffer)
-		end
-
 	length_indicator_pointer : POINTER is
 			-- external 'C' address of length indicator
 		do
@@ -200,6 +214,7 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
-	invariant_clause: True -- Your invariant here
+	valid_count: count >= 1 and count <= capacity
+	valid_capacity: capacity >= 1
 
 end -- class ECLI_ARRAYED_VALUE

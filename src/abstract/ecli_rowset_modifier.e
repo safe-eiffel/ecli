@@ -27,19 +27,19 @@ creation
 	
 feature {NONE} -- Initialization
 
-	make, open (a_session : ECLI_SESSION; a_sql : STRING; a_row_count : INTEGER) is
-			-- create modifier on `a_session', using SQL `a_sql' for maximum `a_row_count' rows
+	make, open (a_session : ECLI_SESSION; a_sql : STRING; a_row_capacity : INTEGER) is
+			-- create modifier on `a_session', using SQL `a_sql' for maximum `a_row_capacity' rows
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
 			sql_exists: a_sql /= Void
-			row_count_valid: a_row_count >= 1
+			a_row_capacity_valid: a_row_capacity >= 1
 		do
-			row_count := a_row_count
-			!!rowset_status.make (row_count)
+			row_capacity := a_row_capacity
+			!!rowset_status.make (row_capacity)
 			statement_make (a_session)
 			set_sql (a_sql)
 		ensure
-			row_count_set: row_count = a_row_count
+			row_capacity_set: row_capacity = a_row_capacity
 			sql_set: sql = a_sql
 			session_ok: session = a_session and not is_closed
 			registered: session.is_registered_statement (Current)
@@ -145,7 +145,7 @@ feature {NONE} -- Implementation
 			valid_count: a_count <= row_count
 			valid_parameters_count: valid_parameters_count (a_count)
 		do
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_params_processed_ptr, $processed_row_count, 0))
+			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_params_processed_ptr, $row_count, 0))
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, a_count))
 			statement_execute
 			fill_status_array

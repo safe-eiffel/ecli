@@ -32,11 +32,11 @@ feature -- Initialization
 			definition_exists: a_definition /= Void
 			row_count_valid: a_row_count >= 1
 		do
-			row_count := a_row_count
-			!!rowset_status.make (row_count)
+			row_capacity := a_row_count
+			!!rowset_status.make (row_capacity)
 			row_cursor_make (a_session, a_definition)
 		ensure
-			row_count_set: row_count = a_row_count
+			row_count_set: row_capacity = a_row_count
 		end
 		
 feature -- Access
@@ -66,7 +66,7 @@ feature -- Basic operations
 		start is
 				-- 
 			do
-				fetch_count := 0
+				physical_fetch_count := 0; fetch_increment := 0
 				Precursor
 			end
 			
@@ -80,7 +80,7 @@ feature {NONE} -- Implementation
 	
 	create_buffer_factory is
 		do
-			!!buffer_factory.make (row_count)
+			!!buffer_factory.make (row_capacity)
 		end
 		
 		
@@ -99,48 +99,61 @@ feature {NONE} -- Implementation
 			index : INTEGER
 		do
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_count))
+			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_capacity))
 			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.to_external, 0))
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $processed_row_count, 0))
+			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $row_count, 0))
 			
 			from index := 1
-			until index > result_column_count
+			until index > result_columns_count
 			loop
 				cursor.item (index).bind_as_result (Current, index)
 				index := index + 1
 			end
 		end
 		
-	fetch_count : INTEGER
-			-- number of actual fetch operations
-
+	logical_fetch_count : INTEGER is
+			-- logical number of fetch operations
+		do
+			Result := physical_fetch_count * row_capacity + fetch_increment
+		end
+		
+	physical_fetch_count : INTEGER
+			-- physical number of fetches (with database transfers) 
+	
+	fetch_increment : INTEGER
+			-- number of logical fetches since last physical one
+	
+		
 	fill_cursor is
 			-- 
 		local
 			index : INTEGER
 		do
 			from index := 1
-			until index > result_column_count
+			until index > result_columns_count
 			loop
-				cursor.item (index).set_count (processed_row_count)
+				cursor.item (index).set_count (row_count)
 				index := index + 1
 			end
 		end
 
 	fetch_next_row is
-			-- 
+			-- logical fetch of one row
 		do
-			if fetch_count > 0 and then fetch_count \\ row_count >= processed_row_count and then processed_row_count < row_count then
+			if physical_fetch_count > 0 and then row_count < row_capacity and then fetch_increment >= row_count then
 					go_after
 			else
-				if fetch_count \\ row_count = 0 then
+				if fetch_increment \\ row_capacity = 0 then
 					Precursor
 					fill_status_array
 					start_values
+					physical_fetch_count := physical_fetch_count + 1
+					fetch_increment := 1
+					fetched_columns_count := result_columns_count.min (cursor.count)
 				else
 					forth_values
+					fetch_increment := fetch_increment + 1
 				end
-				fetch_count := fetch_count + 1
 			end
 		end
 		
@@ -150,7 +163,7 @@ feature {NONE} -- Implementation
 			index : INTEGER
 		do
 			from index := 1
-			until index > result_column_count
+			until index > result_columns_count
 			loop
 				cursor.item (index).start
 				index := index + 1
@@ -163,7 +176,7 @@ feature {NONE} -- Implementation
 			index : INTEGER
 		do
 			from index := 1
-			until index > result_column_count
+			until index > result_columns_count
 			loop
 				cursor.item (index).forth
 				index := index + 1

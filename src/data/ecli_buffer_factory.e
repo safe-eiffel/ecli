@@ -75,6 +75,9 @@ feature -- Basic operations
 
 		create_buffers (cursor_description :ARRAY [ECLI_COLUMN_DESCRIPTION]) is
 			-- create all ECLI_VALUE objects
+		require
+			cursor_description_not_void: cursor_description /= Void
+			lower_is_one: cursor_description.lower = 1
 		local
 			i, cols, type_code : INTEGER
 			factory : like value_factory

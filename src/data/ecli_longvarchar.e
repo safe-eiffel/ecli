@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_VALUE
 		redefine
-			item, set_item,convertible_to_string, to_string, out
+			item, set_item,convertible_to_string, to_string, out, convertible_to_character, to_character
 		end
 
 creation
@@ -68,6 +68,11 @@ feature -- Status report
 			Result := True
 		end
 
+	convertible_to_character : BOOLEAN is
+		do
+			Result := count > 0
+		end
+		
 	c_type_code: INTEGER is
 		once
 			Result := sql_c_char
@@ -123,6 +128,14 @@ feature -- Conversion
 			-- Conversion to STRING value
 		do
 			Result := item
+		end
+
+	to_character : CHARACTER is
+			-- Conversion to CHARACTER value
+		do
+			Result := item @ 1
+		ensure then
+			result_is_first_character: Result = item @ 1
 		end
 		
 feature -- Basic operations
