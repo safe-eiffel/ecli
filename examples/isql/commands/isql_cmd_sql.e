@@ -73,15 +73,7 @@ feature -- Basic operations
 						end
 						if not cursor.is_ok then
 							print_error (cursor, context)
-						else
-							--| io.put_string ("OK%N")				
 						end				
-					else
-						a_statement := cursor
-						a_statement.execute
-						if not a_statement.is_ok then
-							print_error (cursor, context)
-						end
 					end
 				else
 					print_error (cursor, context)                                          

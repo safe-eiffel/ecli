@@ -200,7 +200,7 @@ feature -- Cursor movement
 			end
 		ensure
 			executed: is_ok implies is_executed
-			results_created_by_factory: is_ok implies results /= Void
+			results_created_by_factory: (is_ok and then has_result_set) implies results /= Void
 			off_if_not_query: is_ok implies (not has_result_set implies off)
 		end
 
