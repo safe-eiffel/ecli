@@ -9,10 +9,7 @@ class
 	ECLI_ARRAYED_VARCHAR
 
 inherit
-	ECLI_ARRAYED_LONGVARCHAR
-		redefine
-			max_content_capacity, sql_type_code
-		end
+	ECLI_ARRAYED_STRING_VALUE
 
 creation
 	make
@@ -30,11 +27,6 @@ feature -- Status report
 		once
 			Result := sql_varchar
 		end
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class ECLI_ARRAYED_VARCHAR
 --

@@ -9,7 +9,7 @@ class
 	ECLI_ARRAYED_CHAR
 
 inherit
-	ECLI_ARRAYED_VARCHAR
+	ECLI_ARRAYED_STRING_VALUE
 		rename
 		export
 		undefine
@@ -55,6 +55,11 @@ feature -- Access
 
 feature -- Measurement
 
+	max_content_capacity : INTEGER is
+		do
+			Result := 255
+		end
+		
 feature -- Status report
 
 	sql_type_code: INTEGER is
