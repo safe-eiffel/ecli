@@ -176,6 +176,8 @@ feature -- Transformation
 feature -- Conversion
 
 	out : STRING is
+		local
+			string_routines : expanded KL_STRING_ROUTINES	
 		do
 			if is_null then
 				Result := "NULL"
@@ -216,8 +218,6 @@ feature -- Basic operations
 		end
 
 feature {NONE} -- Implementation
-
-	string_routines : expanded KL_STRING_ROUTINES
 
 
 	allocate_buffer is

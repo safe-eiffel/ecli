@@ -279,6 +279,8 @@ feature -- Conversion
 		end
 
 	out : STRING is
+		local
+			string_routines : expanded KL_STRING_ROUTINES	
 		do
 			if not is_null then
 				Result:= string_routines.make (10)
@@ -334,13 +336,9 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
---	octet_size : INTEGER is
-
 	ecli_c_sizeof_timestamp_struct : INTEGER is
 		external "C"
 		end
-
---	impl_item : DT_DATE_TIME
 
 	create_impl_item is
 			--
@@ -357,8 +355,6 @@ feature {NONE} -- Implementation
 				buffer := ecli_c_alloc_value (transfer_octet_length)
 			end
 		end
-
-	string_routines : KL_STRING_ROUTINES is once create Result end
 	
 end -- class ECLI_TIMESTAMP
 --
