@@ -9,6 +9,7 @@ Portability
 		** DONE 2000-06-22 ** using UnixODBC : www.unixodbc.org
 
 	Test 'query_assistant' on Linux
+	Test 'test_Xaction' on Linux
 
 Implement other data values
 	Time, LONGVARCHAR, BINARY, LONGVARBINARY, ...
@@ -18,7 +19,8 @@ Implement other data values
 
 Documentation.
 
-Long Variable DataLONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
+Long Variable Data
+        LONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
 	one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
 	Those ECLI_LONGVARCHAR and ECLI_LONGVARBINARY classes should provide an interface that allows
 	reading/writing data to a file. For example, 'item' would be of FILE type.

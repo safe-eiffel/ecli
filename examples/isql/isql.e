@@ -29,7 +29,8 @@ feature -- Initialization
 					io.put_string (session.diagnostic_message)
 				end
 				if session.is_connected then
-					io.put_string ("Connected !!!%N")
+					io.put_string ("+ Connected %N")
+					print_help
 				end
 				-- definition of statement on session
 				create statement.make (session)
@@ -37,6 +38,15 @@ feature -- Initialization
 			end;
 		end
 				
+	print_help is
+		do
+			io.put_string ("Enter a SQL or a command, then a single ';' on a line%N")
+			io.put_string (" ;%Texecute last SQL or command%N")
+			io.put_string ("Commands%N")
+			io.put_string (" h%Tprint this message%N")
+			io.put_string (" q%Tquit%N")
+		end
+		
 	do_session is
 		do
 			from
@@ -44,20 +54,24 @@ feature -- Initialization
 			until
 				last_command.is_equal ("q")
 			loop
-				statement.set_sql (last_command)
-				statement.execute
-				if not statement.is_ok then
-					print_error
+				if last_command.is_equal ("h") then
+					print_help
 				else
-					if statement.has_information_message then
-						print_error                                             
-					end
-					if statement.has_results then
-						statement.describe_cursor
-						show_column_names (statement)
-						show_result_rows (statement)
+					statement.set_sql (last_command)
+					statement.execute
+					if not statement.is_ok then
+						print_error
 					else
-						io.put_string ("OK%N")
+						if statement.has_information_message then
+							print_error                                             
+						end
+						if statement.has_results then
+							statement.describe_cursor
+							show_column_names (statement)
+							show_result_rows (statement)
+						else
+							io.put_string ("OK%N")
+						end
 					end
 				end
 				read_command

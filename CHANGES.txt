@@ -1,3 +1,8 @@
+2000-08-10
+	* ECLIBUILD.BAT - Helps compile projects that use ECLI and SmallEiffel
+	* test_Xaction	- Exercises transaction capabilities
+	* added support for LONGVARCHAR, in memory (no stream).
+
 ** ECLI 0001 Beta 5 **
 
    !!!  Query assistant - 'Query Assistant' for ECLI allows a developer to generate classes
