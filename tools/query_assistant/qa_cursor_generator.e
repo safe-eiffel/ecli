@@ -111,7 +111,7 @@ feature -- Basic operations
 		do
 			put_line ("indexing")
 			indent
-			put_line ("description: %"Generated cursor '"+current_cursor.name+"' : DO NOT EDIT !%"")
+			put("description: %"Generated cursor '"); put (current_cursor.name); put_line ("' : DO NOT EDIT !%"")
 			put_line ("author: %"QUERY_ASSISTANT%"")
 			put_line ("date: %"$Date : $%"")
 			put_line ("revision: %"$Revision : $%"")
@@ -147,7 +147,7 @@ feature -- Basic operations
 			exdent
 			put_line ("once")
 			indent
-			put_line ("Result := %"" + current_cursor.definition + "%"")
+			put ("Result := %""); put (current_cursor.definition); put_line ("%"")
 			exdent
 			put_line ("end")
 			exdent
@@ -183,7 +183,10 @@ feature -- Basic operations
 				if i >= 2 then
 					put ("; ")
 				end
-				put ("a_" + pname + " : " + pvalue.value_type)
+				put ("a_")
+				put (pname)
+				put (" : ")
+				put (pvalue.value_type)
 				list_cursor.forth
 			end
 			if i > 0 then
@@ -209,7 +212,10 @@ feature -- Basic operations
 				list_cursor.off
 			loop
 				pname := list_cursor.item
-				put_line (pname + ".set_item (a_" + pname + ")")
+				put (pname)
+				put (".set_item (a_")
+				put (pname)
+				put_line (")")
 				list_cursor.forth
 			end
 			-- execute and 'start'
@@ -239,7 +245,7 @@ feature -- Basic operations
 				list_cursor.off
 			loop
 				pname := list_cursor.item
-				put_line (to_lower (pname) + "%T: " + current_cursor.parameter (pname).ecli_type)
+				put (to_lower (pname) ); put ( "%T: " ); put_line ( current_cursor.parameter (pname).ecli_type)
 				i := i + 1
 				list_cursor.forth
 			end
@@ -263,7 +269,9 @@ feature -- Basic operations
 			loop
 				vname := current_cursor.cursor_description.item (i).name
 				vdescription := current_cursor.cursor_description.item (i)
-				put_line (to_lower (vname) + "%T: " + current_cursor.cursor.item (i).ecli_type )
+				put (to_lower (vname))
+				put ("%T: ")
+				put_line (current_cursor.cursor.item (i).ecli_type )
 				i := i + 1
 			end
 			exdent
@@ -289,7 +297,7 @@ feature -- Basic operations
 				indent
 				-- create cursor.make (1, <result_count>)
 				put_line ("-- create cursor values array")
-				put_line ("create cursor.make (1, " + current_cursor.result_column_count.out + ")")
+				put ("create cursor.make (1, "); put (current_cursor.result_column_count.out); put_line (")")
 
 				---- for each column in <column list>
 				-- create <column>.make <corresponding creation parameters>
@@ -304,8 +312,8 @@ feature -- Basic operations
 					a_qa_value := current_cursor.cursor.item (i)
 					a_call := a_qa_value.creation_call
 					cd := current_cursor.cursor_description.item (i)
-					put_line ("create " + to_lower (cd.name) + "." + a_call )
-					put_line ("cursor.put (" + to_lower (cd.name) + ", " + i.out + ")")
+					put ("create "); put (to_lower (cd.name)); put ("."); put_line (a_call)
+					put ("cursor.put ("); put (to_lower (cd.name)); put (", "); put (i.out); put_line (")")
 					i := i + 1
 				end
 				---- for each parameter in <parameter list>
@@ -320,8 +328,8 @@ feature -- Basic operations
 				loop
 					a_qa_value := current_cursor.parameter (c.item)
 					a_call := a_qa_value.creation_call
-					put_line ("create " + to_lower (c.item) + "." + a_qa_value.creation_call)
-					put_line ("put_parameter (" + to_lower (c.item) + ", %"" + c.item + "%")" )
+					put ("create "); put (to_lower (c.item)); put ("."); put_line (a_qa_value.creation_call)
+					put ("put_parameter (") ; put (to_lower (c.item)); put (", %""); put (c.item) ; put_line ("%")" )
 					c.forth
 				end
 				--
@@ -336,7 +344,8 @@ feature -- Basic operations
 			-- put closing of class
 		do
 			put_new_line
-			put_line ("end -- class "+ class_name )
+			put ("end -- class ")
+			put_line (class_name)
 		end
 		
 feature -- Obsolete

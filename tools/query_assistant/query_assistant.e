@@ -186,7 +186,9 @@ feature -- Basic operations
 				end
 				query_file.close
 			else
-				io.put_string ("* ERROR - file '" + query_file_name + "' does not exist%N")
+				io.put_string ("* ERROR - file '")
+				io.put_string (query_file_name)
+				io.put_string ("' does not exist%N")
 				query := Void
 			end
 		end
@@ -240,7 +242,9 @@ feature -- Basic operations
 
 	print_error (action : STRING; cursor : QA_CURSOR) is
 		do
-			io.put_string (  "  * Error : '" + action + " failed%N")
+			io.put_string ("  * Error : '")
+			io.put_string (action)
+			io.put_string (" failed%N")
 			io.put_string (qacursor.diagnostic_message)
 			io.put_string ("%N  * - on query : ")
 			io.put_string (qacursor.definition)
@@ -252,6 +256,7 @@ feature -- Basic operations
 			i : INTEGER
 			d : ECLI_COLUMN_DESCRIPTION
 			e : QA_VALUE
+			file_name : STRING
 		do
 			-- describe results
 			io.put_string ("+ Results metatada :%N")
@@ -292,7 +297,10 @@ feature -- Basic operations
 			end
 			-- generate class	
 			create gen
-			create target_file.make_open_write (target_directory_name + class_name + ".e")
+			file_name := clone (target_directory_name)
+			file_name.append (class_name)
+			file_name.append (".e")
+			create target_file.make_open_write (file_name)
 			qacursor.set_name (class_name)
 			gen.execute (qacursor, target_file)
 			target_file.close	
@@ -314,7 +322,9 @@ feature -- Basic operations
 			until
 				pcursor.off
 			loop
-				io.put_string ("? Type of '" + pcursor.item + "'%N")
+				io.put_string ("? Type of '")
+				io.put_string (pcursor.item)
+				io.put_string ("'%N")
 				ptype := asked_type
 				if ptype = sql_char or ptype = sql_varchar then
 					pprecision := asked_precision
@@ -365,7 +375,9 @@ feature -- Basic operations
 			until
 				pcursor.off
 			loop
-				io.put_string ("? Value of '" + pcursor.item + "' : ")
+				io.put_string ("? Value of '")
+				io.put_string (pcursor.item)
+				io.put_string ("' : ")
 				a_parameter := qacursor.parameter (pcursor.item)
 				a_char ?= a_parameter
 				if a_char /= Void then
