@@ -202,6 +202,11 @@ feature -- Conversion
 		
 feature -- Basic operations
 
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_date (Current)
+		end
+
 	is_equal (other : like Current) : BOOLEAN is
 		do
 			Result := year = other.year and

@@ -13,7 +13,9 @@ class
 inherit
 
 	STRING
-
+		redefine
+			fill_blank
+		end
 creation
 
 	make
@@ -28,6 +30,21 @@ feature
 			count = 0
 		end
 
+	fill_blank is
+		local
+			i : INTEGER
+		do
+			clear_content
+			from 
+				i := 1 
+			until 
+				i > capacity
+			loop
+				append (" ")	
+				i := i + 1
+			end
+		end
+		
 end -- class MESSAGE_BUFFER
 --
 -- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>

@@ -19,7 +19,7 @@ inherit
 			set_date, octet_size,
 			c_type_code, column_precision, db_type_code, 
 			decimal_digits, display_size, out, is_equal,
-			to_timestamp
+			to_timestamp, trace
 		select
 		end
 
@@ -217,6 +217,11 @@ feature -- Duplication
 feature -- Miscellaneous
 
 feature -- Basic operations
+
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_timestamp (Current)
+		end
 
 	is_equal (other : like Current) : BOOLEAN is
 		do

@@ -49,11 +49,14 @@ feature -- Initialization
 				
 	print_help is
 		do
-			io.put_string ("Enter a SQL or a command, then a single ';' on a line%N")
-			io.put_string (" ;%Texecute last SQL or command%N")
+			io.put_string ("Enter a SQL or a command terminated by a ';'%N")
+			io.put_string (" ;%Texecutes last SQL or command%N")
 			io.put_string ("Commands%N")
 			io.put_string (" h%Tprint this message%N")
 			io.put_string (" q%Tquit%N")
+			io.put_string (" BEGIN TRANSACTION%T Begins a new transaction%N")
+			io.put_string (" COMMIT TRANSACTION%T Commits current transaction%N")
+			io.put_string (" ROLLBACK TRANSACTION%T Rollbacks current transaction%N")
 		end
 		
 	do_session is
@@ -61,10 +64,16 @@ feature -- Initialization
 			from
 				read_command
 			until
-				last_command.is_equal ("q")
+				is_session_done
 			loop
 				if last_command.is_equal ("h") then
 					print_help
+				elseif is_begin (last_command) then
+					session.begin_transaction
+				elseif is_commit (last_command) then
+					session.commit
+				elseif is_rollback (last_command) then
+					session.rollback
 				else
 					statement.set_sql (last_command)
 					statement.execute
@@ -85,7 +94,6 @@ feature -- Initialization
 				end
 				read_command
 			end
-			
 		end
 		
 	print_error is
@@ -162,6 +170,9 @@ feature -- Basic Operations
 
 	read_command is
 		-- prompt user
+		local
+			done : BOOLEAN
+			separator_index : INTEGER
 		do
 			last_command.copy("")
 
@@ -169,11 +180,33 @@ feature -- Basic Operations
 			from
 				io.read_line
 			until
-				io.last_string.item(1) = ';'
+				done
 			loop
-				last_command.append (io.last_string)
+				-- Trim trailing blanks
+				from
+					separator_index := io.last_string.count
+				until
+					separator_index < 1 or
+					io.last_string.item(separator_index) /= ' ' or
+					io.last_string.item(separator_index) /= '%T'
+			loop
+					separator_index := separator_index - 1
+				end
+				-- End of command ?
+				if separator_index >= 1 then
+					if io.last_string.item (separator_index) = ';' then
+						done := True
+						separator_index := separator_index - 1
+					end
+				end
+				-- Append if not empty string
+				if separator_index >= 1 then
+					last_command.append (io.last_string.substring (1, separator_index))					
+				end
+				if not done then
 				io.read_line
 			end
+		end
 		end
 
 	last_command : STRING is
@@ -184,6 +217,48 @@ feature -- Basic Operations
 
 		end
 
+	is_begin (s : STRING) : BOOLEAN is
+			-- is 's' a BEGIN TRANSACTION ?
+			-- checking only first 3 characters...
+		do
+			if s.count >= 3 then
+				if      (s.item (1) = 'b' or else s.item  (1) = 'B')
+					and (s.item (2) = 'e' or else s.item (2) = 'E')
+					and (s.item (3) = 'g' or else s.item (3) = 'G')
+				then
+					Result := True	
+				end				
+			end
+		end
+		
+	is_commit (s : STRING) : BOOLEAN is
+			-- is 's' a COMMIT TRANSACTION ?
+			-- checking only first 3 characters...
+		do
+			if s.count >= 3 then
+				if      (s.item (1) = 'c' or else s.item  (1) = 'C')
+					and (s.item (2) = 'o' or else s.item (2) = 'O')
+					and (s.item (3) = 'm' or else s.item (3) = 'M')
+				then
+					Result := True	
+				end				
+			end
+		end
+		
+	is_rollback (s : STRING) : BOOLEAN is
+			-- is 's' a ROLLBACK TRANSACTION ?
+			-- checking only first 3 characters...
+		do
+			if s.count >= 3 then
+				if (s.item (1) = 'r' or s.item  (1) = 'R')
+					and (s.item (2) = 'o' or s.item (2) = 'O')
+					and (s.item (3) = 'l' or s.item (3) = 'L')
+				then
+					Result := True	
+				end				
+			end
+		end
+		
 	pad (s : STRING; n : INTEGER) is
 			-- pad 's' with 'n' blanks
 		local
@@ -229,6 +304,15 @@ feature -- Basic Operations
 			statement.set_cursor (cursor)
 		end
 
+	is_session_done : BOOLEAN is
+			-- 
+		do
+			if last_command.count > 0 then
+				Result :=  last_command.item (1) = 'q'
+						or else last_command.item (1) = 'Q'
+			end
+		end
+		
 end -- class ISQL
 --
 -- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>

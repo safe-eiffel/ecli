@@ -12,6 +12,7 @@ deferred class
 	ECLI_VALUE
 
 inherit
+	ECLI_TRACEABLE
 
 	ECLI_HANDLE
 		rename
@@ -91,6 +92,13 @@ feature -- Status report
 		do
 		end
 
+	can_trace : BOOLEAN is
+		do
+			Result := True
+		ensure then
+			ok: Result
+		end
+		
 feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 
 	c_type_code : INTEGER is

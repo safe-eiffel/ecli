@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_VALUE
 		redefine
-			item, set_item,
+			item, set_item, out,
 			to_double, convertible_to_double
 		end
 
@@ -122,16 +122,35 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-feature -- Obsolete
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_float (Current)
+		end
 
-feature -- Inapplicable
+	out : STRING is
+		local
+			ext : expanded ECLI_EXTERNAL_TOOLS
+			message_buffer : MESSAGE_BUFFER
+		do
+			if is_null then
+				Result := "NULL"
+			else
+				!!message_buffer.make (50)
+				message_buffer.fill_blank
+				sprintf_double (ext.string_to_pointer(message_buffer), item.item)
+				Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
+			end
+		end
 
 feature {NONE} -- Implementation
 
 	actual_value : DOUBLE
 	
-invariant
-	invariant_clause: -- Your invariant here
+	sprintf_double (s : POINTER; d : DOUBLE) is
+			-- 
+		external "C" 
+		alias "ecli_c_sprintf_double"
+		end
 
 end -- class ECLI_FLOAT
 --

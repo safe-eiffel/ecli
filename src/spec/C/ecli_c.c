@@ -240,7 +240,14 @@ EIF_INTEGER ecli_c_close_cursor (EIF_POINTER handle) {
 	return (EIF_INTEGER) SQLCloseCursor ((SQLHSTMT) handle);
 }
 
-static EIF_INTEGER ecli_c_get_error_diagnostic (SQLSMALLINT handle_type, EIF_POINTER handle,  EIF_INTEGER record_index, EIF_POINTER state, EIF_POINTER native_error, EIF_POINTER message, EIF_INTEGER buffer_length, EIF_POINTER length_indicator)  {
+static EIF_INTEGER ecli_c_get_error_diagnostic (SQLSMALLINT handle_type,
+			EIF_POINTER handle,
+			EIF_INTEGER record_index,
+			EIF_POINTER state,
+			EIF_POINTER native_error,
+			EIF_POINTER message,
+			EIF_INTEGER buffer_length,
+			EIF_POINTER length_indicator)  {
 	SQLSMALLINT	p_length_indicator;
 	EIF_INTEGER res;
 	res = (EIF_INTEGER) SQLGetDiagRec(
@@ -252,7 +259,7 @@ static EIF_INTEGER ecli_c_get_error_diagnostic (SQLSMALLINT handle_type, EIF_POI
 		(SQLCHAR *)			message,
 		(SQLSMALLINT)		buffer_length,
 		(SQLSMALLINT *)		&p_length_indicator);
-	*((EIF_INTEGER*) length_indicator)= p_length_indicator;
+	*((EIF_INTEGER*) length_indicator)= (EIF_INTEGER) p_length_indicator;
 	return res;
 }
 
@@ -561,5 +568,12 @@ EIF_INTEGER ecli_c_tc_ddl_commit () {return (EIF_INTEGER) SQL_TC_DDL_COMMIT;}
 EIF_INTEGER ecli_c_tc_ddl_ignore () {return (EIF_INTEGER) SQL_TC_DDL_IGNORE;}
 EIF_INTEGER ecli_c_tc_all () {return (EIF_INTEGER) SQL_TC_ALL;}
 
+/* formatting routines */
 
+void ecli_c_sprintf_double (EIF_POINTER p_result, EIF_DOUBLE d) {
+	sprintf ((char*) p_result, "%.15g", d);
+}
 
+void ecli_c_sprintf_real (EIF_POINTER p_result, EIF_REAL r) {
+	sprintf ((char *) p_result, "%.7g", r);
+}

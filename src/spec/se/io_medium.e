@@ -136,6 +136,16 @@ feature -- Status
             result := true -- until further notice
         end
     
+    is_open_read: BOOLEAN is
+		-- Is this medium opened for input
+	deferred
+	end
+
+    is_open_write: BOOLEAN is
+		-- Is this medium opened for output
+	deferred
+	end
+  
 end -- class IO_MEDIUM
 
 ------------------------------------------------------------------------

@@ -25,6 +25,7 @@ feature -- Initialization
 			else
 				create_and_connect_session
 				if session.is_connected then
+					trace_if_necessary
 					create_statement
 					create_sample_table
 					simple_insert_sample_tuples
@@ -51,6 +52,8 @@ feature -- Access
 
 	data_source_name, user_name, password : STRING
 
+	trace_file_name : STRING
+	
 feature -- Status setting
 
 	arguments_ok : BOOLEAN
@@ -66,6 +69,9 @@ feature --  Basic operations
 				user_name := clone (args.argument (2))
 				password := clone (args.argument (3))
 				arguments_ok := True
+				if args.argument_count > 3 then
+					trace_file_name := clone (args.argument (4))
+				end
 			end
 		ensure
 			ok: arguments_ok implies (data_source_name /= Void and user_name /= Void and password /= Void)
@@ -73,9 +79,30 @@ feature --  Basic operations
 
 	print_usage is
 		do
-				io.put_string ("Usage: test1 <data_source> <user_name> <password>%N")
+				io.put_string ("Usage: test1 <data_source> <user_name> <password> [<trace_file_name>]%N")
 		end
 
+	trace_if_necessary is
+		local
+			f : PLAIN_TEXT_FILE
+			tracer : ECLI_TRACER
+		do
+			if trace_file_name /= Void then
+				!!f.make_open_write (trace_file_name)
+				if f.is_open_write then
+					!!tracer.make (f)
+					session.set_tracer (tracer)
+					io.put_string ("Trace in file : ")
+					io.put_string (trace_file_name)
+					io.put_string ("%N")
+				else
+					io.put_string ("Trace file <")
+					io.put_string (trace_file_name)
+					io.put_string ("> cannot be open.  No trace%N")
+				end
+			end		
+		end
+		
 	create_and_connect_session is
 		do
 			io.put_string ("SESSION - Creation and Connection%N")
@@ -137,7 +164,7 @@ feature --  Basic operations
 
 				stmt.execute
 				--
-				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Lulu', 'Jimmy', 20, {ts '2000-06-25 09:34:00.00'}, 12.2)")
+				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Lulu', 'O''Connor', 20, {ts '2000-06-25 09:34:00.00'}, 12.2)")
 				show_query ("",stmt)
 
 				stmt.execute
@@ -403,11 +430,16 @@ feature -- Miscellaneous
 
 	print_status (status : ECLI_STATUS) is
 		do
-			print ("State         : ")
+			if status.has_information_message then
+				print ("Information *%N")
+			elseif status.is_error then
+				print ("Error       *%N")
+			end
+			print ("%TStatus     : ")
 			print (status.cli_state)
-			print ("%NNative code : ")
+			print ("%N%TNative code: ")
 			print (status.native_code)
-			print ("%NDiagnostic  : ")
+			print ("%N%TDiagnostic : ")
 			print (status.diagnostic_message)
 			print ("%N")
 		end

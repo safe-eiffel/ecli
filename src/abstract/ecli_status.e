@@ -189,7 +189,7 @@ feature {NONE} -- Implementation
 
 	impl_native_code : INTEGER
 
-	impl_cli_state : STRING
+	impl_cli_state : MESSAGE_BUFFER
 
 	impl_error_message : MESSAGE_BUFFER
 

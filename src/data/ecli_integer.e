@@ -126,6 +126,11 @@ feature -- Basic operations
 			end
 		end
 
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_integer (Current)
+		end
+
 feature -- Obsolete
 
 feature -- Inapplicable

@@ -24,6 +24,8 @@ inherit
 			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} handle
 		end
 
+	ECLI_TRACEABLE
+	
 	PAT_SUBSCRIBER
 		rename
 			publisher as session,
@@ -57,7 +59,7 @@ feature -- Initialization
 			valid: 	is_valid
 		end
 
-feature --
+feature -- Obsolete
 
 	attach (a_session : ECLI_SESSION) is
 		obsolete "Use open/close instead of attach/unattach"
@@ -68,6 +70,8 @@ feature --
 		obsolete "Use open/close instead of attach/unattach"
 		do
 		end
+
+feature -- Basic Operations
 
 	close is
 		require
@@ -171,6 +175,8 @@ feature -- Measurement
 			Result := impl_result_column_count
 		end
 
+feature -- Status Report
+
 	has_results : BOOLEAN is
 			-- has this statement a result-set ?
 		require
@@ -192,8 +198,6 @@ feature -- Measurement
 		ensure
 			Result = (parameter_count > 0)
 		end
-
-feature -- Status report
 
 	is_parsed : BOOLEAN is
 			-- is the 'sql' statement parsed for parameters ?
@@ -256,6 +260,18 @@ feature -- Status report
 
 	cursor_before, cursor_in, cursor_after : INTEGER is unique
 
+	can_trace : BOOLEAN is
+			-- can Current trace itself ?
+		do
+			Result := (is_valid and is_parsed and 
+				 (is_prepared_execution_mode implies is_prepared) and
+				 (parameter_count > 0 implies bound_parameters))
+		ensure then
+			definition : Result implies 
+				(is_valid and is_parsed and 
+				 (is_prepared_execution_mode implies is_prepared) and
+				 (parameter_count > 0 implies bound_parameters))
+		end
 
 feature -- Status setting
 
@@ -434,6 +450,9 @@ feature -- Basic operations
 		local
 			tools : ECLI_EXTERNAL_TOOLS
 		do
+			if session.is_tracing then
+				trace (session.tracer)
+			end
 			if is_prepared_execution_mode then
 				set_status (ecli_c_execute (handle) )
 			else
@@ -460,6 +479,11 @@ feature -- Basic operations
 						(not has_results implies after))
 		end
 
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.trace (impl_sql, parameters)
+		end
+		
 	describe_parameters is
 			-- put description of parameters in 'parameters_description'
 		require

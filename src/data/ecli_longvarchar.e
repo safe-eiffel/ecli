@@ -136,6 +136,22 @@ feature -- Basic operations
 			end
 		end
 
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_string (Current)
+		end
+		
+
+feature -- Obsolete
+
+feature -- Inapplicable
+
+feature {NONE} -- Implementation
+
+invariant
+	invariant_clause: -- Your invariant here
+
+
 end -- class ECLI_LONGVARCHAR
 --
 -- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>

@@ -135,6 +135,8 @@ feature -- Access
 			Result := impl_transaction_capability
 		end
 
+	tracer : ECLI_TRACER
+
 feature -- Status report
 
 	is_manual_commit : BOOLEAN is
@@ -168,6 +170,14 @@ feature -- Status report
 				transaction_capability = tc_ddl_ignore )
 		end
 		
+	is_tracing : BOOLEAN is
+			-- is this session tracing SQL statements ?
+		do
+			Result := tracer /= Void
+		ensure
+			has_tracer: Result implies tracer /= Void
+		end
+
 feature -- Status setting
 
 	set_manual_commit is
@@ -228,6 +238,28 @@ feature -- Status setting
 			password = a_password
 		end
 
+	set_tracer (a_tracer : ECLI_TRACER) is
+			-- trace SQL with 'a_tracer'
+		require
+			tracer_ok: a_tracer /= Void
+		do
+			tracer := a_tracer
+		ensure
+			tracer_set: tracer = a_tracer
+			tracing: is_tracing
+		end
+
+	disable_tracing is
+			-- disable session trace
+		require
+			tracing: is_tracing
+		do
+			tracer := Void
+		ensure
+			not_tracing: not is_tracing
+			no_tracer: tracer = Void
+		end
+
 feature -- Basic Operations
 
 	begin_transaction is
@@ -239,6 +271,9 @@ feature -- Basic Operations
 			set_manual_commit
 			if is_ok then
 				impl_has_pending_transaction := True
+			end
+			if is_tracing then
+				tracer.trace_begin
 			end
 		ensure
 			manual_commit:	is_manual_commit implies is_ok
@@ -258,6 +293,9 @@ feature -- Basic Operations
 				impl_has_pending_transaction := False
 			end
 			set_automatic_commit
+			if is_tracing then
+				tracer.trace_commit
+			end
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
 			commit_mode_reset : not is_manual_commit
@@ -276,6 +314,9 @@ feature -- Basic Operations
 				impl_has_pending_transaction := False
 			end
 			set_automatic_commit
+			if is_tracing then
+				tracer.trace_rollback
+			end
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
 			commit_mode_reset : not is_manual_commit

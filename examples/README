@@ -3,8 +3,15 @@ ECLI sample applications
 Directory	Application name	Description
 ---------	----------------	-------------------------------------------------------
 isql		isql			Interactive SQL
+					usage: isql <data_source_name> <user> <password>
+					
 test1		test1			Your first sample application : create table, 
 					insert tuples, select tuples, drop table
+					usage: test1 <data_source_name> <user> <password> [trace_file_name]
+
 test_Xaction	transact		Tests data source transaction capabilities
+					usage: transact <data_source_name> <user> <password>
+
 qa_example	qa_example		Tests 'query_assistant' generated cursor classes
-test_gc		test_gc			Exercices the disposal of ECLI objects
+
+test_gc		test_gc			Exercises the disposal of ECLI objects

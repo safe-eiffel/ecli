@@ -1,3 +1,22 @@
+2001-09-15
+	* TEST1 now traces its output if asked on the command line.
+	
+2001-09-06
+	* ISQL implementation of COMMIT, ROLLBACK and BEGIN.
+		TODO: read until _eof_ or quit
+
+2001-08-31
+	* Port to Visual Eiffel 3.2 Linux
+	* Added Trace capability : output can be read and executed by ISQL
+	* Tested with PostgreSQL 7.1.3 and UnixODBC 2.0.9
+	* Added ISE5.0/Borland makefile for C glue library
+	* Fixed problem with SmallEiffel : getting error messages is now possible
+
+2001-08-26
+	* added makefile for ISE5/Borland in %ECLI%\src\spec\ise\windows
+	* isql now executes commands ended by ; no need for a ; as the first and
+	  single character on a line.
+
 2001-07-19
 	* is_transaction_capable, ECLI_TRANSACTION_CAPABILITY_CONSTANTS
 

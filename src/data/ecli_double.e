@@ -115,23 +115,36 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_double (Current)
+		end
+
 	out : STRING is
+		local
+			ext : expanded ECLI_EXTERNAL_TOOLS
+			message_buffer : MESSAGE_BUFFER
 		do
 			if is_null then
 				Result := "NULL"
 			else
-				Result := item.item.out
+				!!message_buffer.make (50)
+				message_buffer.fill_blank
+				sprintf_double (ext.string_to_pointer(message_buffer), item.item)
+				Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
 			end
 		end
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
 	actual_value : DOUBLE
 	
+	sprintf_double (s : POINTER; d : DOUBLE) is
+			-- 
+		external "C" 
+		alias "ecli_c_sprintf_double"
+		end
+		
 invariant
 	invariant_clause: -- Your invariant here
 

@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "Date and time objects; synonym of ECLI_TIMESTAMP"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -9,50 +9,10 @@ class
 	ECLI_DATE_TIME
 
 inherit
-	ANY
-		rename
-		export
-		undefine
-		redefine
-		select
-		end
+	ECLI_TIMESTAMP
 
-feature -- Initialization
-
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: -- Your invariant here
+creation
+	make, make_first
 
 end -- class ECLI_DATE_TIME
 --
