@@ -248,7 +248,7 @@ feature {NONE} -- Implementation
 						if not shared_schema_name.is_empty then
 							l_schema := shared_schema_name
 						end
-						parameters_cursor.item.check_validity (query_session, l_catalog, l_schema)
+						parameters_cursor.item.check_validity (l_catalog, l_schema)
 						is_parameters_valid := is_parameters_valid and then parameters_cursor.item.is_valid
 						if is_parameters_valid then
 							parameters_cursor.forth

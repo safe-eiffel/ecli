@@ -18,6 +18,7 @@ inherit
 
 	SHARED_CATALOG_NAME
 	SHARED_SCHEMA_NAME
+	SHARED_COLUMNS_REPOSITORY
 	
 creation
 
@@ -363,12 +364,17 @@ feature {NONE} -- Implementation
 			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
 			session : ECLI_SESSION
 			l_name : STRING
+			repository : COLUMNS_REPOSITORY
 		do
 			from
 				cursor := modules.new_cursor
 				cursor.start
 				create session.make (dsn, user,password)
 				session.connect
+				if session.is_connected then
+					create repository.make (session)
+					set_shared_columns_repository (repository)
+				end
 			until
 				not session.is_connected or else cursor.off
 			loop

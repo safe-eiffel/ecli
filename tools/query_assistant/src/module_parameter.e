@@ -20,6 +20,11 @@ inherit
 		redefine
 			is_equal
 		end
+
+	SHARED_COLUMNS_REPOSITORY
+		undefine
+			is_equal
+		end
 		
 create
 	make
@@ -89,31 +94,47 @@ feature -- Status report
 	
 feature -- Status setting
 
-	check_validity (a_session : ECLI_SESSION; a_catalog_name, a_schema_name : STRING) is
-				-- check validity of module wrt `a_session', using metadata in (`a_catalog_name', `a_schema_name')
-			require
-				a_session_not_void: a_session /= Void
-				a_session_connected: a_session.is_connected
+--	check_validity (a_session : ECLI_SESSION; a_catalog_name, a_schema_name : STRING) is
+--				-- check validity of module wrt `a_session', using metadata in (`a_catalog_name', `a_schema_name')
+--			require
+--				a_session_not_void: a_session /= Void
+--				a_session_connected: a_session.is_connected
+--			local
+--				cursor : ECLI_COLUMNS_CURSOR
+--				nm : ECLI_NAMED_METADATA
+--			do
+--				create nm. make (a_catalog_name, a_schema_name, reference_column.table) 
+--				create cursor.make_query_column (nm,reference_column.column,a_session)
+--				if cursor.is_ok then
+--					cursor.start
+--					if not cursor.off then
+--						is_valid := True
+--						metadata := cursor.item
+--					else
+--						is_valid := False
+--						metadata := Void
+--					end
+--				else
+--					is_valid := False
+--					metadata := Void
+--				end
+--				cursor.close
+--			ensure
+--				valid_and_metadata: is_valid implies metadata /= Void
+--			end
+
+	check_validity (a_catalog_name, a_schema_name : STRING) is
+				-- check validity of module wrt (`a_catalog_name', `a_schema_name')
 			local
-				cursor : ECLI_COLUMNS_CURSOR
-				nm : ECLI_NAMED_METADATA
 			do
-				create nm. make (a_catalog_name, a_schema_name, reference_column.table) 
-				create cursor.make_query_column (nm,reference_column.column,a_session)
-				if cursor.is_ok then
-					cursor.start
-					if not cursor.off then
-						is_valid := True
-						metadata := cursor.item
-					else
-						is_valid := False
-						metadata := Void
-					end
+				shared_columns_repository.search (a_catalog_name, a_schema_name, reference_column.table, reference_column.column)
+				if shared_columns_repository.found then
+					metadata := shared_columns_repository.last_column
+					is_valid := True
 				else
-					is_valid := False
 					metadata := Void
+					is_valid := False
 				end
-				cursor.close
 			ensure
 				valid_and_metadata: is_valid implies metadata /= Void
 			end
