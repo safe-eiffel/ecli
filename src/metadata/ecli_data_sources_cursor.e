@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "Objects that iterate over data sources"
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -13,19 +13,59 @@ inherit
 	ECLI_HANDLE
 	
 	ECLI_STATUS
+		export
+			{ANY} Sql_fetch_first, Sql_fetch_first_user, Sql_fetch_first_system
+		end
 	
-	ECLI_EXTERNAL_TOOLS
+creation
+	make_all, make_user, make_system
 	
+feature {NONE} -- Initialization
+	
+	make_all is
+			-- make cursor on 'all' datasources
+		do
+			fetch_first_operation := Sql_fetch_first
+			is_all_datasources := True
+		ensure
+			all_sources: is_all_datasources
+			fetch_first: fetch_first_operation = Sql_fetch_first
+		end
+		
+	make_user is
+			-- make cursor on 'user' datasources
+		do
+			fetch_first_operation := Sql_fetch_first_user
+			is_user_datasources := True
+		ensure
+			user_sources: is_user_datasources
+			fetch_first: fetch_first_operation = Sql_fetch_first_user
+		end
+		
+	make_system is
+			-- make cursor on 'system' datasources
+		do
+			fetch_first_operation := Sql_fetch_first_system
+			is_system_datasources := True
+		ensure
+			system_sources: is_system_datasources
+			fetch_first: fetch_first_operation = Sql_fetch_first_system
+		end
+		
+
 feature -- Access
 
 	item : ECLI_DATA_SOURCE is
-			-- 
+			-- current item
 		do
 			Result := item_
 		ensure
 			definition: Result /= Void implies not off
 		end
-		
+
+	fetch_first_operation : INTEGER
+			-- operation code for fetching first source
+	
 feature -- Measurement
 
 feature -- Status report
@@ -39,6 +79,12 @@ feature -- Status report
 	before : BOOLEAN
 	
 	after : BOOLEAN
+
+	is_user_datasources : BOOLEAN
+	
+	is_system_datasources : BOOLEAN
+	
+	is_all_datasources : BOOLEAN
 	
 feature -- Status setting
 
@@ -46,21 +92,27 @@ feature -- Cursor movement
 
 	start is
 			-- 
+		require
+			is_off: off
 		do
 			before := False
 			after := False
 			!!name_buffer.make (101)
 			!!description_buffer.make (301)
 			item_ := Void
-			do_fetch (Sql_fetch_first)
+			do_fetch (fetch_first_operation)
 		ensure
 			not_before: not before
 		end
 		
 	forth is
 			-- 
+		require
+			not_off: not off
 		do
 			do_fetch (Sql_fetch_next)
+		ensure
+			off_is_after: off implies after
 		end
 		
 feature -- Element change
@@ -116,12 +168,12 @@ feature {NONE} -- Implementation
 			name_ptr : POINTER
 			description_ptr : POINTER
 		do
-			name_ptr := string_to_pointer (name_buffer)
-			description_ptr := string_to_pointer (description_buffer)
+			name_ptr := tools.string_to_pointer (name_buffer)
+			description_ptr := tools.string_to_pointer (description_buffer)
 			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, name_ptr, 100, $actual_name_length, description_ptr, 300, $actual_description_length))
 			if is_ok and then not is_no_data then
-				name := pointer_to_string (name_ptr)
-				description := pointer_to_string (description_ptr)
+				name := tools.pointer_to_string (name_ptr)
+				description := tools.pointer_to_string (description_ptr)
 				!!item_.make (Current)
 			else
 				item_ := Void
@@ -130,6 +182,8 @@ feature {NONE} -- Implementation
 		end
 		
 	item_ : ECLI_DATA_SOURCE
+	
+	tools : ECLI_EXTERNAL_TOOLS
 	
 invariant
 	invariant_clause: True -- Your invariant here
