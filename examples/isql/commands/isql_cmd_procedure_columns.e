@@ -18,7 +18,9 @@ inherit
 			match_string,
 			put_heading,
 			put_detail,
-			new_cursor
+			new_cursor,
+			column_type,
+			cursor_type
 		end	
 	
 	ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS
@@ -48,7 +50,7 @@ feature {NONE} -- Implementation
 			filter.put_heading ("Type")
 		end
 		
-	put_detail (the_column: ECLI_PROCEDURE_COLUMN; filter: ISQL_FILTER) is
+	put_detail (the_column: like column_type; filter: ISQL_FILTER) is
 			-- put `the_column' in `filter' stream
 		local
 			type_label : STRING
@@ -71,4 +73,7 @@ feature {NONE} -- Implementation
 			filter.put_column (type_label)
 		end
 		
+	column_type : ECLI_PROCEDURE_COLUMN is do end
+	cursor_type:  ECLI_PROCEDURE_COLUMNS_CURSOR is do end
+	
 end -- class ISQL_CMD_PROCEDURE_COLUMNS

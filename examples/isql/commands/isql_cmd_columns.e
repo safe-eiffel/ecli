@@ -37,7 +37,7 @@ feature -- Basic operations
 			stream : KL_WORD_INPUT_STREAM
 			l_table, l_schema, l_catalog : STRING
 			query : ECLI_NAMED_METADATA
-			cursor : ECLI_COLUMNS_CURSOR
+			cursor : like cursor_type
 		do
 			create stream.make (text, " %T")
 			stream.read_word
@@ -82,10 +82,10 @@ feature {NONE} -- Implementation
 				create Result.make (a_table, a_session)
 		end
 		
-	put_results (a_cursor : ECLI_COLUMNS_CURSOR; context : ISQL_CONTEXT) is
+	put_results (a_cursor : like cursor_type; context : ISQL_CONTEXT) is
 			-- 
 		local
-			the_column : ECLI_COLUMN
+			the_column : like column_type
 		do
 			if a_cursor.is_executed then
 				from
@@ -121,7 +121,7 @@ feature {NONE} -- Implementation
 			filter.put_heading ("DESCRIPTION")
 		end
 		
-	put_detail (the_column : ECLI_COLUMN; filter : ISQL_FILTER) is
+	put_detail (the_column : like column_type; filter : ISQL_FILTER) is
 			-- 
 		require
 			the_column_exists: the_column /= Void
@@ -133,5 +133,9 @@ feature {NONE} -- Implementation
 			filter.put_column (nullable_string (the_column.size.out))
 			filter.put_column (nullable_string (the_column.description))
 		end
-		
+	
+	column_type : ECLI_COLUMN is do end
+	cursor_type : ECLI_COLUMNS_CURSOR is do end
+	
+	
 end -- class ISQL_CMD_COLUMNS
