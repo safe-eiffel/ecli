@@ -4,19 +4,25 @@ ECLI --
 	2) Installation
 
 1. Structure
-
-	abstract			-- abstract ECLI data types
-	data				-- data transfer classes
 	doc				-- documentation
-	pattern				-- used pattern classes
-	spec				-- special classes
-		C			-- C wrappers
-		Ise			-- Ise specific
-			Windows			Platform specific
-			linux
-		se			-- SmallEiffel specific
-			Windows		 	...
-			linux
+	examples			-- examples
+		test1			-- table creation, insertions, selection, drop
+		isql			-- interactive SQL
+		qa_example		-- sample application for cursor generator
+	src
+		abstract			-- abstract ECLI data types
+		data				-- data transfer classes
+		pattern				-- used pattern classes
+		spec				-- special classes
+			C			-- C wrappers
+			Ise			-- Ise specific
+				Windows			Platform specific
+				linux
+			se			-- SmallEiffel specific
+				Windows		 	...
+				linux
+	tools
+		query_assistant		-- cursor classes generator
 
 2. Installation
 
