@@ -373,7 +373,7 @@ feature -- Basic operations
 			if is_prepared_execution_mode then
 				set_status (ecli_c_execute (handle) )
 			else
-				if is_executed and has_results and not after then
+				if is_executed and then has_results and then not after then
 					close_cursor
 				end
 				set_status (ecli_c_execute_direct (handle, tools.string_to_pointer (impl_sql)))

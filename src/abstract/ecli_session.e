@@ -100,11 +100,9 @@ feature -- Status report
 			-- Is this session in 'manual commit mode' ?
 		require
 			connected: is_connected
-		local
-			v : BOOLEAN
 		do
-			set_status (ecli_c_is_manual_commit (handle, $v))
-			Result := v
+			set_status (ecli_c_is_manual_commit (handle, $impl_is_manual_commit))
+			Result := impl_is_manual_commit
 		end
 
 	is_connected : BOOLEAN is
@@ -337,13 +335,15 @@ feature {NONE} -- Implementation
 
 	impl_is_connected : BOOLEAN
 
-		get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- to be redefined in descendant classes
 		do
 			Result := ecli_c_session_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
 
 		end
 
+	impl_is_manual_commit : BOOLEAN
+	
 invariant
 	valid_session: --
 
