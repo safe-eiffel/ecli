@@ -28,7 +28,13 @@
 		<option name="line_generation" value="true"/>
 	</option>
 
-	<cluster name="a_root_cluster" location="${ECLI}/tools/query_assistant/src"/>
+	<cluster name="root_cluster" location="${ECLI}/tools/query_assistant/src" prefix="qa">
+		<cluster name="data"/>
+		<cluster name="error"/>
+		<cluster name="generation"/>
+		<cluster name="module"/>
+		<cluster name="xml"/>
+	</cluster>
 	
 	<mount location="${ECLI}/support/codegen/library.xace"/>
 	

@@ -375,21 +375,24 @@ feature {NONE} -- Basic operations
 			feature_group : EIFFEL_FEATURE_GROUP
 			attribute : EIFFEL_ATTRIBUTE
 			attribute_value : STRING
+			eiffel_names : EIFFEL_NAME_ROUTINES
 		do
+			create eiffel_names
 			create feature_group.make ("Constants")
 			create attribute.make ("definition", "STRING")
 			if not module.query.has ('%N') then
 				attribute.set_value ("%""+module.query+"%"")
 			else
-				create attribute_value.make_from_string ("%"[")
-				if module.query.item(1) /= '%N' then
-					attribute_value.append_character ('%N')
-				end
-				attribute_value.append_string (module.query)
-				if module.query.item (module.query.count) /= '%N' then
-					attribute_value.append_character ('%N')
-				end
-				attribute_value.append_string ("]%"")
+--				create attribute_value.make_from_string ("%"[")
+--				if module.query.item(1) /= '%N' then
+--					attribute_value.append_character ('%N')
+--				end
+--				attribute_value.append_string (module.query)
+--				if module.query.item (module.query.count) /= '%N' then
+--					attribute_value.append_character ('%N')
+--				end
+--				attribute_value.append_string ("]%"")
+				create attribute_value.make_from_string (eiffel_names.manifest_string_constant (module.query))
 				attribute.set_value (attribute_value)
 			end
 			

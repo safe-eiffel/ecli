@@ -33,7 +33,7 @@ feature {NONE} -- Initialization
 			-- generate access modules
 		do
 			Arguments.set_program_name ("query_assistant")
-			!! error_handler.make_standard
+			create error_handler.make_standard
 			print_prologue 
 			process_arguments
 			if not has_error then
@@ -106,7 +106,7 @@ feature -- Constants
 
 feature -- Access (generation)
 
-	error_handler: UT_ERROR_HANDLER
+	error_handler: QA_ERROR_HANDLER
 			-- Error handler
 	
 	modules : DS_HASH_TABLE [ACCESS_MODULE, STRING]
@@ -173,9 +173,9 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_info_message ("** ECLI Query Assistant v1.0beta**")
-			error_handler.report_info_message ("*  Copyright (c) 2001-2003 Paul G. Crismer and others.")
-			error_handler.report_info_message ("*  Released under the Eiffel Forum license version 1.%N")
+			error_handler.report_banner ("v1.0beta2")
+			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2004")
+			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
 
 	process_document is
@@ -211,12 +211,12 @@ feature -- Basic operations
 							modules.search (l_module.name)
 							if modules.found then
 								--| Error : module already exists
-								error_handler.report_error_message ("! [Error] Module %'"+l_module.name+"%' already exists!%N")
+								error_handler.report_already_exists (l_module.name, l_module.name, "Module")
 							else
 								modules.force (l_module, l_module.name) 
 								parameter_sets.search (l_module.parameters.name)
 								if parameter_sets.found then
-									error_handler.report_error_message ("! [Error] Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
+									error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
 								else
 									parameter_sets.force (l_module.parameters, l_module.parameters.name) 
 								end
@@ -242,26 +242,24 @@ feature -- Basic operations
 			pipe_not_void: tree_pipe /= Void
 		local
 			in: KL_TEXT_INPUT_FILE
-			cannot_read: UT_CANNOT_READ_FILE_ERROR
 		do
-			error_handler.report_info_message ("- parsing data...")
+			error_handler.report_start ("Parsing XML file")
 			!! in.make (in_filename)
 			in.open_read
 			if not in.is_open_read then
-				!! cannot_read.make (in_filename)
-				error_handler.report_error (cannot_read)
+				error_handler.report_cannot_read_file (in_filename)
 				has_error := True
 			else
 				event_parser.set_string_mode_mixed
 				event_parser.parse_from_stream (in)
 				in.close
 				if tree_pipe.error.has_error then
-					error_handler.report_error_message (tree_pipe.last_error)
+					error_handler.report_parse_error (tree_pipe.last_error)
 					has_error := True
 				else
 				end
 			end
-			error_handler.report_info_message (". parsing done.")
+			error_handler.report_end ("Parsing XML file", has_error)
 		end
 
 	process_arguments is
@@ -273,7 +271,7 @@ feature -- Basic operations
 			error_message : STRING
 		do
 			if Arguments.argument_count < 2 then
-				error_handler.report_error (Usage_message)
+				error_handler.report_usage (Fact.is_expat_parser_available)
 				has_error := True
 			else
 				from 
@@ -294,7 +292,7 @@ feature -- Basic operations
 						if fact.is_expat_parser_available then
 							event_parser := fact.new_expat_parser
 						else
-							error_handler.report_error_message ("! [Error] : expat is not availabe, please choose other parser backend")
+							error_handler.report_xml_parser_unavailable ("EXPAT") 
 							has_error := True
 						end
 						arg_index := arg_index + 1
@@ -330,7 +328,7 @@ feature -- Basic operations
 						arg_index := arg_index + 2
 					else
 						arg_index := arg_index + 1
-						error_handler.report_error_message ("! [Error] Invalid argument name : "+key)
+						error_handler.report_invalid_argument (key, "name unknown")
 					end
 				end
 					-- Create standard pipe holder and bind it to event parser.
@@ -341,56 +339,56 @@ feature -- Basic operations
 						event_parser.set_callbacks (tree_pipe.start)
 					else
 						has_error := True
-						error_message.append_string ("No XML parser specified.  Use option -expat or -eiffel.%N")
+						error_handler.report_missing_argument ("-eiffel' or '-expat'", "An XML parser must be specified")
 					end
 				end
 				if user = Void then
 					has_error := True
-					error_message.append_string ("No user name specified.  Use option -user.%N")
+					error_handler.report_missing_argument ("-user", "a user name must be specified")
 				end
 				if password = Void then
 					has_error := True
-					error_message.append_string ("No password specified.  Use option -pwd.%N")
+					error_handler.report_missing_argument ("-pwd", "a password must be specified")
 				end
 				if dsn = Void then
 					has_error := True
-					error_message.append_string ("No data source name specified.  Use option -dsn.%N")
+					error_handler.report_missing_argument ("-dsn", "a data source name must be specified")
 				end
 				if in_filename = Void then
 					has_error := True
-					error_message.append_string ("No input filename specified.  Use option -input.%N")
+					error_handler.report_missing_argument ("-input", "an input file name must be specified")
 				end
 				if out_directory = Void then
 					has_error := True
-					error_message.append_string ("No output directory specified.  Use option -output_dir.%N")					
+					error_handler.report_missing_argument ("-output", "an output directory must be specified")
 				end
 				if dsn /= Void and then user /= Void and then password /= Void then
 					create session.make (dsn, user,password)
 					session.connect
 					if session.is_connected then
+						session.raise_exception_on_error
 						create repository.make (session)
 						set_shared_columns_repository (repository)
 					else
-						error_message.append_string ("Failed to connect to database.%N")
+						error_handler.report_database_connection_failed (dsn)
 						has_error := True
 					end
 				end
 				if maximum_length_string /= Void then
-					if not maximum_length_string.is_double then
+					if not maximum_length_string.is_double or else maximum_length_string.to_double <= 0 then
 						has_error := True
-						error_message.append_string ("Maximum length is not a number in option -max_length.%N")
+						error_handler.report_invalid_argument ("-maximum_length", "must be a strictly positive integer")
 					else
 						if maximum_length_string.to_double > reasonable_maximum_length then
 							has_error := True
-							error_message.append_string ("Maximum length is not reasonable : the value provided is greater than "+reasonable_maximum_length.out+"!%N")
+							error_handler.report_invalid_argument ("-maximum_length","Maximum length is not reasonable, the value provided is greater than "+reasonable_maximum_length.out)
 						else
 							set_maximum_length (maximum_length_string.to_integer)
 						end
 					end
 				end
 				if has_error then
-					error_handler.report_error_message (error_message)
-					error_handler.report_error (Usage_message)
+					error_handler.report_usage (Fact.is_expat_parser_available)
 				end
 			end
 		ensure
@@ -401,22 +399,6 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	Usage_message: UT_USAGE_MESSAGE is
-			-- Usage message
-		local
-			a_message: STRING
-		once
-			a_message := clone ("(")
-			if fact.is_expat_parser_available then
-				a_message.append_string ("-expat|")
-			end
-			a_message.append_string ("-eiffel) -input <input-file> -output_dir <output-directory> %
-			 % -dsn <data-source-name> -user <user-name> -pwd <password> -catalog <catalog> -schema <schema> %
-			 % [-access_routines_prefix <prefix>] [-max_length <max_length_for_long_data>]")
-			!! Result.make (a_message)
-		ensure
-			usage_message_not_void: Result /= Void
-		end
 
 	resolve_parent_classes is
 			-- resolve parent classes for parameters and result sets
@@ -492,15 +474,16 @@ feature {NONE} -- Implementation
 			loop
 				l_name := cursor.item.name
 				if class_filter = Void or else class_filter.is_equal (cursor.item.name) then
-					error_handler.report_info_message ("- Analyzing "+cursor.item.name)
+					error_handler.report_start ("Analyzing "+cursor.item.name)
 					cursor.item.check_validity (session, error_handler, Reasonable_maximum_length)
 					if cursor.item.is_valid then
-						error_handler.report_info_message (". OK")
+						error_handler.report_end ("Analyzing "+cursor.item.name,True)
 						if cursor.item.has_result_set then
 							result_sets.force (cursor.item.results, cursor.item.results.name)
 						end
 					else
-						-- produce an error message						
+						error_handler.report_end ("Analyzing "+cursor.item.name,False)
+						--| report error
 					end
 				end
 				cursor.forth
@@ -508,7 +491,8 @@ feature {NONE} -- Implementation
 			if session.is_connected then
 				session.disconnect
 			else
-				error_handler.report_error_message ("! Error : Datasource not connected " + session.diagnostic_message)
+--				error_handler.report_d ("! Error : Datasource not connected " + session.diagnostic_message)
+--				Must we do something here ?
 			end
 			session.close
 		end
@@ -521,7 +505,7 @@ feature {NONE} -- Implementation
 			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_RESULT], STRING]
 			s : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
 		do
-			error_handler.report_info_message ("- Generating classes ... ")
+			error_handler.report_start ("Class generation")
 			--| classes for modules
 			from
 				c := modules.new_cursor
@@ -535,30 +519,6 @@ feature {NONE} -- Implementation
 				c.forth
 			end
 			create gen
---			--| classes for parent parameters
---			from
---				p := parent_parameter_sets.new_cursor
---				p.start
---			until
---				p.off
---			loop
---				error_handler.report_info_message (" + " + p.item.name)
---				gen.create_parameters_class (p.item)
---				gen.write_class (gen.parameters_class, out_directory)
---				p.forth
---			end
---			--| classes for parent results
---			from
---				r := parent_result_sets.new_cursor
---				r.start
---			until
---				r.off
---			loop
---				error_handler.report_info_message (" + " + r.item.name)
---				gen.create_results_class (r.item)
---				gen.write_class (gen.results_class, out_directory)
---				r.forth
---			end
 			--| classes for parent results
 			from
 				s := all_parents_set.new_cursor
@@ -566,7 +526,7 @@ feature {NONE} -- Implementation
 			until
 				s.off
 			loop
-				error_handler.report_info_message (" + " + s.item.name)
+				error_handler.report_start ("Generating " + s.item.name)
 				gen.create_set_class (s.item)
 				gen.write_class (gen.set_class, out_directory)
 				s.forth
@@ -576,6 +536,8 @@ feature {NONE} -- Implementation
 				gen.create_access_routines_class (access_routines_prefix, modules)
 				gen.write_class (gen.access_routines_class, out_directory)
 			end
+			--| FIXME : report if class generation has produced an error
+			error_handler.report_end ("Class generation", True)
 		end
 		
 	generate (module : ACCESS_MODULE;a_error_handler : UT_ERROR_HANDLER) is

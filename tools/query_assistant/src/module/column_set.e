@@ -15,9 +15,6 @@ inherit
 		rename
 			make as make_set
 		end
-
---creation
---	make, make_with_parent_name
 	
 feature {NONE} -- Initialization
 
