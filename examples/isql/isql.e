@@ -34,7 +34,16 @@ feature -- Initialization
 				end
 				-- definition of statement on session
 				!! statement.make (session)
+				--
+				-- interactive session
+				--
 				do_session
+				
+				-- closing statement
+				statement.close
+				-- disconnecting and closing session
+				session.disconnect
+				session.close
 			end;
 		end
 				

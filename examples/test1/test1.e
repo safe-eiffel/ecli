@@ -29,18 +29,18 @@ feature -- Initialization
 					create_sample_table
 					simple_insert_sample_tuples
 					query_database
-               parameterized_insert
-               query_database
-               parameterized_prepared_insert_sample_tuples
+					parameterized_insert
+					query_database
+					parameterized_prepared_insert_sample_tuples
 					query_database
 					drop_table
-               close_statement
+					close_statement
 					disconnect_session
 				end
 				close_session
 			end
-         io.put_string ("Press ENTER to continue")
-         io.read_line
+			io.put_string ("Press ENTER to continue")
+			io.read_line
 		end
 
 
@@ -79,9 +79,9 @@ feature --  Basic operations
 	create_and_connect_session is
 		do
 			io.put_string ("SESSION - Creation and Connection%N")
-         !! session.make (data_source_name, user_name, password)
+			!! session.make (data_source_name, user_name, password)
 			session.connect
-         if session.has_information_message or not session.is_ok then
+			if session.has_information_message or not session.is_ok then
 				print_status (session)
 			end
 			if session.is_connected then
@@ -97,7 +97,7 @@ feature --  Basic operations
 			session_connected: session /= VOid and then session.is_connected
 		do
 			io.put_string ("STATEMENT - Creation%N")
-         -- definition of statement on session
+			-- definition of statement on session
 			!! stmt.make (session)
 		ensure
 			stmt_exists: stmt /= Void
@@ -108,7 +108,7 @@ feature --  Basic operations
 				stmt_exists: stmt /= Void
 			do
 				io.put_string (" - DDL - Create sample table%N")
-            -- DDL statement
+				-- DDL statement
 				-- | Uncomment next line for using MS Access driver or PostgreSQL
 				stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
 				--
@@ -128,7 +128,7 @@ feature --  Basic operations
 			-- insert sample tuples with simple direct SQL
 		do
 				io.put_string (" - DML - Insert tuples - Direct SQL%N")
-            -- DML statements
+				-- DML statements
 
 				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
 				show_query ("Insertion of hard-coded values%N", stmt)
@@ -150,11 +150,11 @@ feature --  Basic operations
 		local
 			p_birthdate : 	ECLI_TIMESTAMP
 			first_name_parameter, last_name_parameter : 	ECLI_CHAR
-         p_nbr : ECLI_INTEGER
-         price : DOUBLE
-         p_price : ECLI_DOUBLE
+			p_nbr : ECLI_INTEGER
+			price : DOUBLE
+			p_price : ECLI_DOUBLE
 		do
-      	io.put_string (" - DML - Insert tuples - Parameterized SQL%N")
+			io.put_string (" - DML - Insert tuples - Parameterized SQL%N")
 			-- parameterized statement
 			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES (?first_name, ?last_name, ?nbr, ?year, ?price)")
 			show_query ("Insertion of parameterized values%N", stmt)
@@ -162,24 +162,24 @@ feature --  Basic operations
 			!! first_name_parameter.make (20)
 			first_name_parameter.set_item ("Portail")
 			!!last_name_parameter.make (20)
-         last_name_parameter.set_item ("Guillaume")
+			last_name_parameter.set_item ("Guillaume")
 			!!p_nbr.make
-         p_nbr.set_item (10)
-         price := 89.107896
-         !!p_price.make
-         p_price.set_item (price)
-         !! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
-         stmt.set_parameters (<<first_name_parameter, last_name_parameter, p_nbr, p_birthdate, p_price>>)
+			p_nbr.set_item (10)
+			price := 89.107896
+			!!p_price.make
+			p_price.set_item (price)
+			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
+			stmt.set_parameters (<<first_name_parameter, last_name_parameter, p_nbr, p_birthdate, p_price>>)
 			show_parameter_names (stmt)
 			stmt.bind_parameters
 			if not stmt.is_ok then
-         	print_status (stmt)
-         end
-         stmt.execute
+				print_status (stmt)
+			end
+			stmt.execute
 			if not stmt.is_ok then
 				print_status (stmt)
 			end
-      end
+		end
 
 	parameterized_prepared_insert_sample_tuples is
 			-- insert sample tuples with parameterized and prepared SQL
@@ -194,8 +194,8 @@ feature --  Basic operations
 			!! name_parameter.make (20)
 			name_parameter.set_item ("Stoney")
 			!!other_name_parameter.make (20)
-         other_name_parameter.set_item ("Archibald")
-         !! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
+			other_name_parameter.set_item ("Archibald")
+			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
 			stmt.set_parameters (<<name_parameter, other_name_parameter, p_birthdate>>)
 			-- using 'prepare' sets prepared_execution_mode
 			stmt.prepare
@@ -203,8 +203,8 @@ feature --  Basic operations
 				io.put_string (stmt.diagnostic_message)
 				io.put_character ('%N')
 			else
-         	io.put_string ("Prepared%N")
-         end
+				io.put_string ("Prepared%N")
+			end
 			show_parameter_names (stmt)
 			stmt.describe_parameters
 			if not stmt.is_ok then
@@ -245,7 +245,7 @@ feature --  Basic operations
 
 			stmt.execute
 			if stmt.is_ok then
-         	stmt.describe_cursor
+				stmt.describe_cursor
 				-- create result set 'value holders'
 				!! name_result_value.make (20)
 				!! firstname_result_value.make (20)
@@ -267,29 +267,28 @@ feature --  Basic operations
 			else
 				io.put_string (stmt.diagnostic_message)
 				io.put_character ('%N')
-         end
+			end
 
 		end
 
 	drop_table is
 		do
-				-- DDL statement
-				stmt.set_sql  ("DROP TABLE ECLIESSAI")
-				show_query ("Dropping table%N", stmt)
-
-				stmt.execute
-				if not stmt.is_ok then
-            	print_status (stmt)
-            end
+			-- DDL statement
+			stmt.set_sql  ("DROP TABLE ECLIESSAI")
+			show_query ("Dropping table%N", stmt)
+			stmt.execute
+			if not stmt.is_ok then
+				print_status (stmt)
+			end
 		end
 
 	disconnect_session is
 		do
-				-- session disconnection
-				session.disconnect
-				if not session.is_connected then
-					io.put_string ("Disconnected!!!%N")
-				end
+			-- session disconnection
+			session.disconnect
+			if not session.is_connected then
+				io.put_string ("Disconnected!!!%N")
+			end
 		end
 
 	close_statement is
@@ -322,6 +321,10 @@ feature -- Miscellaneous
 		end
 
 	show_column_names (astmt : ECLI_STATEMENT) is
+		require
+			statement_exists: astmt /= Void
+			statement_executed: astmt.is_executed
+			statement_has_results: astmt.has_results
 		local
 			i, width : INTEGER
 			s : STRING
@@ -377,13 +380,11 @@ feature -- Miscellaneous
 		end
 
 	print_status (status : ECLI_STATUS) is
-   	do
-           --if status.has_information_message or status.is_error then
-                   print (status.cli_state)
-                   print (status.native_code)
-                   print (status.diagnostic_message)
-           --end
-      end
+		do
+			print (status.cli_state)
+			print (status.native_code)
+			print (status.diagnostic_message)
+		end
 
 invariant
 end -- class TEST1

@@ -108,11 +108,25 @@ feature -- Initialization
 				memory.full_collect
 			end
 		rescue
-			a_ok := True
+			a_tried := True
 			retry
 		end
 	
+	do_case_b is
+		do
+		end
+	
+	do_case_c is
+		do
+		end
 		
+	do_case_d is
+		do
+		end
+		
+	do_case_e is
+		do
+		end
 
 	
 	args :  expanded ARGUMENTS

@@ -33,11 +33,23 @@ feature -- Initialization
 				end
 				-- definition of statement on session
 				!! statement.make (session)
-				do_session
+				--
+				-- actual test 
+				--
+				if session.is_transaction_capable then
+					do_test
+				else
+					io.put_string ("The data source is not transaction-capable !")
+				end
+				--
+				-- cleanup
+				statement.close
+				session.disconnect
+				session.close
 			end;
 		end
 				
-	do_session is
+	do_test is
 		do
 			show_initial_message
 			create_table
