@@ -3,8 +3,8 @@
 <project name="example" default="help">
 
 	<description>
-		description: "Eiffel Ant file for Gobo Eiffel examples"
-		copyright: "Copyright (c) 2001, Eric Bezault and others"
+		description: "Eiffel Ant file for ECLI examples"
+		copyright: "Copyright (c) 2002, Paul G. Crismer and others"
 		license: "Eiffel Forum License v1 (see forum.txt)"
 		date: "$Date$"
 		revision: "$Revision$"
@@ -19,7 +19,7 @@
 
 	<target name="install" depend="init">
 		<description>
-			Install the Gobo Eiffel examples.
+			Install the ECLI examples.
 		</description>
 
 		<set name="target" value="install"/>
