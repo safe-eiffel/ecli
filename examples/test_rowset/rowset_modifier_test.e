@@ -13,20 +13,21 @@ creation
 feature {NONE} -- Initialization
 
 	make (a_session : ECLI_SESSION) is
-			-- 
+			-- make and run test on `a_session'
 		do
 			session := a_session
+			drop_table
 			create_table
 			do_insert
 			test_insert
---			do_update
---			test_update
---			drop_table
+			do_update
+			test_update
 		end
 		
 feature -- Access
+
 	names : ARRAY [STRING] is
-			-- 
+			-- array of names
 		once
 			Result := <<
 				"a",
@@ -59,7 +60,7 @@ feature -- Access
 		end
 		
 	ages : ARRAY [INTEGER] is
-			-- 
+			-- array of ages
 		once
 			Result := <<
 				1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -68,15 +69,15 @@ feature -- Access
 			>>
 		end
 		
-feature -- Measurement
+--| ffeature -- Measurement
 
-feature -- Status report
+--| ffeature -- Status report
 
-feature -- Status setting
+--| ffeature -- Status setting
 
-feature -- Cursor movement
+--| feature -- Cursor movement
 
-feature -- Element change
+feature -- Constants
 
 	sql_create : STRING is "CREATE TABLE ROWSETSAMPLE (NAME VARCHAR(30), AGE INTEGER)"
 	
@@ -92,17 +93,17 @@ feature -- Element change
 	
 	sql_count : STRING is "SELECT COUNT(*) AS ROW_COUNT FROM ROWSETSAMPLE"
 	
-feature -- Removal
+--| feature -- Removal
 
-feature -- Resizing
+--| feature -- Resizing
 
-feature -- Transformation
+--| feature -- Transformation
 
-feature -- Conversion
+--| feature -- Conversion
 
-feature -- Duplication
+--| feature -- Duplication
 
-feature -- Miscellaneous
+--| feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -120,20 +121,88 @@ feature -- Basic operations
 
 	do_insert is 
 		do  
-			do_rowset_sql (sql_insert, names, ages)
+			do_rowset_modify (sql_insert, names, ages)
 		end
 		
 	test_insert is 
+		local
+			i : INTEGER
 		do  
-			do_simple_sql (sql_count)	
+			!!cursor.make (session, sql_count)
+			cursor.start
+			i := (cursor @i 1).to_integer
+			print ("Bulk insert : ")
+			if i = 26 then
+				print ("Passed")
+			else
+				print ("Failed")
+			end
+			print ("%N")
+			cursor.close
 		end
 		
-	do_update is do  end
-	test_update is do  end
+	do_update is 
+		local
+			update_array : ARRAY[INTEGER]
+			index : INTEGER
+		do  
+			-- create and setup update_array
+			!! update_array.make (ages.lower, ages.upper)
+			from
+				index := ages.lower
+			until
+				index > ages.upper
+			loop
+				update_array.put (ages.item (index) + 2, index)
+				index := index + 1
+			end
+			-- do update
+			do_rowset_modify (sql_update, names, update_array)
+		end		
 		
-feature -- Obsolete
+	test_update is 
+		local
+			ages_array : ARRAY[INTEGER]
+			i : INTEGER
+		do  
+			!!cursor.make (session, sql_select)
+			!!ages_array.make (1, 26)
+			from
+				i := 1
+				cursor.start
+			until
+				not cursor.is_ok or else cursor.off
+			loop
+				ages_array.put (cursor.item_by_index (2).to_integer, i)
+				i := i + 1
+				cursor.forth
+			end
+			cursor.close
+			-- compare arrays
+			print ("Bulk update : ")
+			if i > 26 then
+				from
+					i := ages.lower
+				until
+					i > ages.upper or else ages.item (i) /= (ages_array.item (i) - 2)
+				loop
+					i := i + 1
+				end
+				if i > ages.upper then
+					print ("Passed")
+				else
+					print ("Failed")
+				end
+			else
+				print ("Failed")
+			end
+			print ("%N")
+			
+		end
+		
+--| feature -- Obsolete
 
-feature -- Inapplicable
+--| feature -- Inapplicable
 
 feature {NONE} -- Implementation
 	
@@ -163,7 +232,7 @@ feature {NONE} -- Implementation
 			statement.close
 		end
 	
-	do_rowset_sql (a_sql : STRING; name_array : ARRAY[STRING]; age_array : ARRAY[INTEGER]) is
+	do_rowset_modify (a_sql : STRING; name_array : ARRAY[STRING]; age_array : ARRAY[INTEGER]) is
 			-- 
 		local
 			index, j : INTEGER
@@ -174,14 +243,14 @@ feature {NONE} -- Implementation
 				index := 1; j := 1
 				rowset_modifier.put_parameter (buffer_age, "age")
 				rowset_modifier.put_parameter (buffer_name, "name")
+				rowset_modifier.bind_parameters
 			until
 				index > name_array.upper
 			loop
 				buffer_name.set_item_at (name_array @ index, j)
 				buffer_age.set_item_at (age_array @ index, j)
 				if j \\ 10 = 0 or index = name_array.upper then
-					rowset_modifier.bind_parameters (j)
-					rowset_modifier.execute
+					rowset_modifier.execute (j)
 				end
 				index := index + 1
 				j := j \\ 10 + 1
@@ -190,6 +259,8 @@ feature {NONE} -- Implementation
 		end
 
 	statement : ECLI_STATEMENT
+	
+	cursor : ECLI_ROW_CURSOR
 	
 	rowset_modifier : ECLI_ROWSET_MODIFIER
 	
