@@ -1,14 +1,18 @@
 indexing
-	description: "SQL TIME arrayed value"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_TIME
+	description:
+	
+			"SQL TIME arrayed value"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_TIME
 
 inherit
+
 	ECLI_GENERIC_ARRAYED_VALUE [DT_TIME]
 		redefine
 			is_equal, out_item_at --to_time, 
@@ -33,6 +37,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -131,7 +136,6 @@ feature -- Measurement
 			second_set: second_at (index) = a_second
 		end
 
-
 	set_item_at (other : like item; index : INTEGER) is
 		do
 			set_at (other.hour, other.minute, other.second, index)
@@ -208,9 +212,4 @@ feature {NONE} -- Implementation
 			cursor_index := save_index
 		end
 
-end -- class ECLI_ARRAYED_TIME
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

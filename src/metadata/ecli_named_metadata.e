@@ -1,24 +1,25 @@
 indexing
-	description: "Objects that are named metadata, i.e. with catalog, schema and name."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_NAMED_METADATA
+	description:
+	
+			"Objects that are named metadata, i.e. with catalog, schema and name."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_NAMED_METADATA
 
 inherit
-	
+
 	ANY
 		redefine
 			out
 		end
 
 creation
+
 	make
 	
 feature {NONE} -- Initialization
@@ -98,7 +99,6 @@ feature -- Conversion
 			append_to_string (Result, schema) Result.append_string ("%T")
 			append_to_string (Result, name)			
 		end
-		
 
 feature {NONE} -- Implementation
 
@@ -112,9 +112,4 @@ feature {NONE} -- Implementation
 			end
 		end
 
-end -- class ECLI_NAMED_METADATA
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

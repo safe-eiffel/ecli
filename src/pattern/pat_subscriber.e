@@ -1,12 +1,15 @@
 indexing
-	description: "Subscriber part of the publisher/subscriber pattern"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-deferred class
-	PAT_SUBSCRIBER
+	description:
+	
+			"Subscriber part of the publisher/subscriber pattern"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PAT_SUBSCRIBER
 
 feature -- Initialization
 
@@ -40,14 +43,8 @@ feature -- Basic operations
 		do
 		end
 
-	
 invariant
 
 	subscription: unsubscribed or else has_publisher
 
-end -- class PAT_SUBSCRIBER
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that parse SQL queries, searching for parameters."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_SQL_PARSER
+	description:
+	
+			"Objects that parse SQL queries, searching for parameters."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_SQL_PARSER
 
 creation
+
 	make
 	
 feature {NONE} -- Initialization
@@ -185,9 +190,4 @@ invariant
 	good_parameter_marker: (":?~°@§").has (parameter_marker)
 	good_state: state = State_sql implies not escape
 	
-end -- class ECLI_SQL_PARSER
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

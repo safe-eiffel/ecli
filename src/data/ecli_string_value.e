@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that ..."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_STRING_VALUE
+	description:
+	
+			"Objects that ..."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_STRING_VALUE
 
 inherit
+
 	ECLI_GENERIC_VALUE[STRING]
 		redefine
 			item, set_item,
@@ -18,8 +23,9 @@ inherit
 feature {NONE} -- Initialization
 
 	make (n : INTEGER) is
+			-- Make with capacity `n', within limits of `maximum_capacity'.
 		require
-			valid_n: n > 0 and n <= max_capacity
+			valid_n: n > 0 and n <= maximum_capacity
 		local
 			s : STRING
 		do
@@ -32,6 +38,19 @@ feature {NONE} -- Initialization
 		ensure
 			is_null: is_null
 			capacity: capacity = n
+			maximum_capacity: maximum_capacity = default_maximum_capacity
+		end
+
+	make_force_maximum_capacity (n : INTEGER) is
+			-- Make with capacity `n', forcing `maximum_capacity'.
+		require
+			valid_n: n > 0
+		do
+			make (n)
+		ensure
+			is_null: is_null
+			capacity_set: capacity = n
+			maximum_capacity_set: maximum_capacity = n
 		end
 		
 feature -- Access
@@ -47,7 +66,18 @@ feature -- Access
 		end
 
 	max_capacity : INTEGER is
-		deferred
+		obsolete "Use `maximum_capacity' instead."
+		do
+			Result := maximum_capacity
+		end
+		
+	maximum_capacity : INTEGER is
+		do
+			if maximum_capacity_impl > 0 then
+				Result := maximum_capacity_impl
+			else
+				Result := default_maximum_capacity
+			end
 		end
 
 	capacity : INTEGER is
@@ -118,7 +148,6 @@ feature -- Status report
 			Result := not is_null and then item.is_boolean
 		end
 
-
 	convertible_as_real : BOOLEAN is
 			-- Is this value convertible to a real ?
 		do
@@ -142,7 +171,6 @@ feature -- Status report
 		do
 			Result := False
 		end
-
 
 feature -- Element change
 
@@ -239,7 +267,7 @@ feature -- Basic operations
 		require
 			i_start_ok: i_start > 0 and i_start <= i_end
 			i_end_ok: i_end > 0 and i_end <= count
-			string_exists: string /= Void
+			string_not_void: string /= Void
 			not_null: not is_null
 		do
 			ext_item.append_substring_to (i_start, i_end, string)
@@ -249,8 +277,13 @@ feature -- Basic operations
 				string.count).is_equal (item.substring (i_start, i_end))			
 		end
 		
-feature -- Obsolete
+feature -- Constants
 
+	default_maximum_capacity : INTEGER is
+			-- default maximum capacity
+		deferred
+		end
+	
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
@@ -260,10 +293,12 @@ feature {NONE} -- Implementation
 	impl_item : STRING
 
 	ext_item : XS_C_STRING
-	
+
+	maximum_capacity_impl : INTEGER
+		
 invariant
 
-	ext_item_exists: ext_item /= Void
-	impl_item_exists: impl_item /= Void
+	ext_item_not_void: ext_item /= Void
+	impl_item_not_void: impl_item /= Void
 
-end -- class ECLI_STRING_VALUE
+end

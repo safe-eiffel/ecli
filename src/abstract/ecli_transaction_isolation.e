@@ -1,23 +1,23 @@
 indexing
-	description: "Object that abstract a transaction isolation type"
-	
-	library: "ECLI"
-	
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_TRANSACTION_ISOLATION
+	description:
+	
+			"Object that abstract a transaction isolation type"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TRANSACTION_ISOLATION
 
 inherit
-	
+
 	ANY
 		redefine
 			is_equal
 		end
-			
-	
+
 	ECLI_TRANSACTION_ISOLATION_CONSTANTS
 		export
 			{NONE} all
@@ -26,6 +26,7 @@ inherit
 		end
 		
 creation
+
 	make, set_read_committed, set_read_uncommitted, set_repeatable_read, set_serializable
 	
 feature {NONE} -- Initialization
@@ -109,4 +110,4 @@ feature -- Comparison
 invariant
 	exclusive: is_read_uncommitted xor is_read_committed xor is_repeatable_read xor is_serializable
 
-end -- class ECLI_TRANSACTION_ISOLATION
+end

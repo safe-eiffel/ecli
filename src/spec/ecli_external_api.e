@@ -1,14 +1,18 @@
 indexing
-	description: "CLI C Interface"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_EXTERNAL_API
+	description:
+	
+			"CLI C Interface"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_EXTERNAL_API
 
 inherit
+
 	ECLI_API_CONSTANTS
 	
 feature {NONE} -- Implementation
@@ -47,7 +51,6 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	
 	ecli_c_set_pointer_statement_attribute (StatementHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
 		external "C"
 		end
@@ -56,7 +59,6 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	
 	ecli_c_set_pointer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
 		external "C"
 		end
@@ -268,7 +270,6 @@ feature {NONE} -- Value handling functions for ARRAYED values
 		external "C"
 		end
 
-
 	ecli_c_array_value_get_length (v : POINTER)  : INTEGER is
 			-- maximum length of elements
 		external "C"
@@ -327,7 +328,6 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 		external "C"
 		end
 
-
 	 ecli_c_date_set_year (dt : POINTER; v : INTEGER) is
 		external "C"
 		end
@@ -339,7 +339,6 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 	 ecli_c_date_set_day (dt : POINTER; v : INTEGER) is
 		external "C"
 		end
-
 
 	-- TIME getters and setters 
 	ecli_c_time_get_hour (tm : POINTER) : INTEGER is
@@ -353,7 +352,6 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 	ecli_c_time_get_second (tm : POINTER) : INTEGER is
 		external "C"
 		end
-
 
 	 ecli_c_time_set_hour (tm : POINTER; v : INTEGER) is
 		external "C"
@@ -384,7 +382,6 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 		external "C"
 		end
 
-
 	 ecli_c_timestamp_set_hour (tm : POINTER; v : INTEGER) is
 		external "C"
 		end
@@ -401,9 +398,4 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 		external "C"
 		end
 
-end -- class ECLI_EXTERNAL_API
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

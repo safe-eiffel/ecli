@@ -15,7 +15,7 @@ feature {NONE} -- Initialization
 	make (current_session : ECLI_SESSION) is
 			-- make repository for `current_session'
 		require
-			current_session_exists: current_session /= Void
+			current_session_not_void: current_session /= Void
 			current_session_connected: current_session.is_connected
 		do
 			session := current_session
@@ -57,8 +57,8 @@ feature -- Basic operations
 	search (catalog_name, schema_name, table_name, column_name : STRING) is
 			-- search columns corresponding to `catalog_name', `schema_name', `table_name', `column_name'
 		require
-			table_name_exists: table_name /= Void
-			columne_name_exists: column_name /= Void
+			table_name_not_void: table_name /= Void
+			columne_name_not_void: column_name /= Void
 		local
 			cursor : ECLI_COLUMNS_CURSOR
 			nm : ECLI_NAMED_METADATA
@@ -97,8 +97,8 @@ feature {NONE} -- Implementation
 
 	hash_identifiant (catalog_name, schema_name, table_name, column_name : STRING) : STRING is
 		require
-			table_name_exists: table_name /= Void
-			columne_name_exists: column_name /= Void
+			table_name_not_void: table_name /= Void
+			columne_name_not_void: column_name /= Void
 		do
 			create Result.make (50)
 			if catalog_name /= Void then
@@ -113,7 +113,7 @@ feature {NONE} -- Implementation
 			Result.append_character (hash_delimiter)
 			Result.append_string (column_name)
 		ensure
-			result_exists: Result /= Void
+			result_not_void: Result /= Void
 		end
 
 	hash_delimiter : CHARACTER is '|'

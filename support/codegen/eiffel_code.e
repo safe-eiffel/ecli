@@ -16,7 +16,7 @@ feature -- Basic operations
 	write (output: KI_TEXT_OUTPUT_STREAM) is
 			-- Print source code representation of this fragment to 'output'.
 		require
-			output_exists: output /= Void
+			output_not_void: output /= Void
 		deferred
 		end
 

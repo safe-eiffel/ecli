@@ -1,11 +1,15 @@
 indexing
-	description: "Objects that ..."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_FILE_LONGVARCHAR
+	description:
+	
+			"LONGVARCHAR large data"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_FILE_LONGVARCHAR
 
 inherit
 
@@ -15,6 +19,7 @@ inherit
 		end
 
 creation
+
 	make_input, make_output
 	
 feature -- Access
@@ -24,34 +29,6 @@ feature -- Access
 			Result := Sql_longvarchar
 		end
 		
-feature -- Measurement
-	
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	get_transfer_length : INTEGER is
@@ -62,7 +39,4 @@ feature {NONE} -- Implementation
 			end			
 		end
 		
-invariant
-	invariant_clause: True -- Your invariant here
-
-end -- class ECLI_FILE_LONGVARCHAR
+end

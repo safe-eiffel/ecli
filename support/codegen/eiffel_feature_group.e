@@ -24,7 +24,7 @@ feature -- Initialization
 	make (new_comment: STRING) is
 			-- Create an empty feature group with 'comment'
 		require
-			comment_exists: new_comment /= Void
+			comment_not_void: new_comment /= Void
 		do
 			set_comment (new_comment)
 			create exports.make
@@ -47,7 +47,7 @@ feature -- Status setting
 	set_comment (new_comment: like comment) is
 			-- Set the comment for this feature group.
 		require
-			new_comment_exists: new_comment /= Void
+			new_comment_not_void: new_comment /= Void
 		do
 			comment := new_comment
 		end
@@ -55,7 +55,7 @@ feature -- Status setting
 	add_export (class_name: STRING) is
 			-- Add 'class_name' to export list for this group.
 		require
-			class_name_exists: class_name /= Void
+			class_name_not_void: class_name /= Void
 		do
 			exports.force_last (class_name)
 		end
@@ -63,7 +63,7 @@ feature -- Status setting
 	add_feature (new_feature: EIFFEL_FEATURE) is
 			-- Add 'new_feature' to the features of this group.
 		require
-			new_feature_exists: new_feature /= Void
+			new_feature_not_void: new_feature /= Void
 		do
 			features.force_last (new_feature)
 		end 
@@ -121,8 +121,8 @@ feature {NONE} -- Implementation
 	
 invariant
 	
-	comment_exists: comment /= Void
-	feature_exist: features /= Void
-	exports_exist:exports /= Void
+	comment_not_void: comment /= Void
+	feature_not_void: features /= Void
+	exports_not_void:exports /= Void
 
 end -- class EIFFEL_FEATURE_GROUP

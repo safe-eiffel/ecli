@@ -1,15 +1,17 @@
 indexing
-	description: "Factory of ECLI_ARRAYED_VALUE descendant instances"
-	
-	note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
-	
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_VALUE_FACTORY
+	description:
+	
+			"Factory of ECLI_ARRAYED_VALUE descendant instances"
+
+	note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_VALUE_FACTORY
 
 inherit
 
@@ -31,6 +33,7 @@ inherit
 		end
 			
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -108,13 +111,7 @@ feature {NONE} -- Implementation
 			!ECLI_ARRAYED_TIME!last_result.make (row_count)
 		end
 
-
 invariant
 	invariant_clause: -- Your invariant here
 
-end -- class ECLI_ARRAYED_VALUE_FACTORY
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

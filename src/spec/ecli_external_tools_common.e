@@ -1,13 +1,18 @@
 indexing
-	description: "Objects handle cpmmunication with external objects"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_EXTERNAL_TOOLS_COMMON
+	description:
+	
+			"Objects handle cpmmunication with external objects"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_EXTERNAL_TOOLS_COMMON
 
 inherit
+
 	MEMORY
 
 feature -- Status report
@@ -56,4 +61,4 @@ feature -- Basic operations
 --			is_protected := False
 --		end
 
-end -- class ECLI_EXTERNAL_TOOLS_COMMON
+end

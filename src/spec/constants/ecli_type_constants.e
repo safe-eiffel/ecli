@@ -1,5 +1,9 @@
 indexing
-	description: "CLI DB type codes.  Use this class as a mix-in. Extracted from SQL.h, for ODBC ver >= 3.5	"
+
+	description:
+	
+			"CLI DB type codes.  Use this class as a mix-in. Extracted from SQL.h, for ODBC ver >= 3.5	"
+
 --SQL_CHAR
 --SQL_VARCHAR
 --SQL_LONGVARCHAR
@@ -36,16 +40,15 @@ indexing
 --unsupported* SQL_INTERVAL_HOUR_TO_MINUTE
 --unsupported* SQL_INTERVAL_HOUR_TO_SECOND
 --unsupported* SQL_INTERVAL_MINUTE_TO_SECOND
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_TYPE_CONSTANTS
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TYPE_CONSTANTS
 
 feature {NONE} -- SQL data type indicators
-
 
 	Sql_all_types	:	INTEGER is	0
 		--  GetTypeInfo() request for all data types 
@@ -108,7 +111,6 @@ feature {NONE} -- Not yet supported
 --	Sql_interval_hour_to_second	:	INTEGER is do Result := (100 + Sql_code_hour_to_second) end
 --	Sql_interval_minute_to_second	:	INTEGER is do Result := (100 + Sql_code_minute_to_second) end
 
-
 feature {NONE} -- C data type indicators
 
 --SQL_C_CHAR
@@ -132,7 +134,6 @@ feature {NONE} -- C data type indicators
 --SQL_C_NUMERIC
 --SQL_C_GUID
 
-
 	Sql_c_char	:	INTEGER is do Result := Sql_char end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC 
 	Sql_c_long	:	INTEGER is do Result := Sql_integer end		   --  INTEGER					  
 	Sql_c_short	:	INTEGER is do Result := Sql_smallint end		  --  SMALLINT					 
@@ -143,7 +144,6 @@ feature {NONE} -- C data type indicators
 
 	Sql_signed_offset	:	INTEGER is	-20
 	Sql_unsigned_offset	:	INTEGER is	-22
-
 
 	Sql_c_type_date	:	INTEGER is do Result := Sql_type_date end
 	Sql_c_type_time	:	INTEGER is do Result := Sql_type_time end
@@ -185,10 +185,4 @@ feature {NONE} -- C data type indicators
 
 	Sql_type_null	:	INTEGER is	0
 
-
-end -- class ECLI_TYPE_CONSTANTS
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

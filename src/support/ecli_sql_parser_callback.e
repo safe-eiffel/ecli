@@ -1,11 +1,15 @@
 indexing
-	description: "Objects that are called back by an ECLI_SQL_PARSER"
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_SQL_PARSER_CALLBACK
+	description:
+	
+			"Objects that are called back by an ECLI_SQL_PARSER"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_SQL_PARSER_CALLBACK
 
 feature -- Status report
 
@@ -22,4 +26,4 @@ feature -- Basic operations
 		deferred
 		end
 
-end -- class ECLI_SQL_PARSER_CALLBACK
+end

@@ -55,7 +55,7 @@ feature -- Element change
 			-- * ECLI_TIME if sample is a valid CLI time literal {d 'yyyy-mm-dd'}
 			-- * ECLI_TIMESTAMP if sample if a valid CLI timestamp literal {ts 'yyyy-mm-dd hh:mm:ss[.nnn ]'}
 		require
-			sample_exists: sample /= Void
+			sample_not_void: sample /= Void
 		local
 			converted : BOOLEAN
 			date_result : QA_DATE

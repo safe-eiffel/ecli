@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that know the iso TIMESTAMP format and are able to convert from/to it"
-	author: "Paul "
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_TIMESTAMP_FORMAT
+	description:
+	
+			"Objects that know the iso TIMESTAMP format and are able to convert from/to it"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TIMESTAMP_FORMAT
 
 inherit
+
 	ECLI_FORMAT [DT_DATE_TIME]
 	
 	ECLI_ISO_FORMAT_CONSTANTS
@@ -89,14 +94,14 @@ feature {NONE} -- Implementation
 			cli_regex_string.append_string ("'}")
 			Result.compile (cli_regex_string)
 		ensure then
-			regex_exists: Result /= Void
+			regex_not_void: Result /= Void
 		end
 	
 	ifmt : ECLI_FORMAT_INTEGER is
 		once
 			create Result
 		ensure
-			result_exists: Result /= Void
+			result_not_void: Result /= Void
 		end
 		
 	regex_component_count : INTEGER is 7
@@ -104,4 +109,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_TIMESTAMP_FORMAT
+end

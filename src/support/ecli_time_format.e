@@ -1,15 +1,18 @@
 indexing
-	description: "Time formats, ISO specification."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_TIME_FORMAT
+	description:
+	
+			"Time formats, ISO specification."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TIME_FORMAT
 
 inherit
+
 	ECLI_FORMAT [DT_TIME]
 	
 	ECLI_ISO_FORMAT_CONSTANTS
@@ -87,4 +90,4 @@ feature {NONE} -- Implementation
 	
 	regex_component_count : INTEGER is 4
 	
-end -- class ECLI_TIME_FORMAT
+end

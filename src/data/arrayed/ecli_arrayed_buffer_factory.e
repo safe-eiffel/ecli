@@ -1,19 +1,25 @@
 indexing
-	description: "Objects that create arrayed buffers for rowset commands"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ARRAYED_BUFFER_FACTORY
+	description:
+	
+			"Objects that create arrayed buffers for rowset commands"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_BUFFER_FACTORY
 
 inherit
+
 	ECLI_BUFFER_FACTORY
 		redefine
 			value_factory, value_anchor
 		end
 	
 creation
+
 	make
 	
 feature {NONE} -- Initialization
@@ -27,8 +33,7 @@ feature {NONE} -- Initialization
 		end
 		
 feature -- Access
-	
-		
+
 feature -- Measurement
 
 	row_count : INTEGER
@@ -77,4 +82,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: -- Your invariant here
 
-end -- class ECLI_ARRAYED_BUFFER_FACTORY
+end

@@ -1,17 +1,18 @@
 indexing
+
 	description: 
 
 		"Objects that represent typed values to be exchanged with the database"
 
-	author: 	"Paul G. Crismer"
-	date: 		"$Date$"
-	revision: 	"$Revision$"
-	licensing: 	"See notice at end of class"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
-deferred class
-	ECLI_GENERIC_VALUE [G]
+deferred class ECLI_GENERIC_VALUE [G]
 
 inherit
+
 	ECLI_VALUE
 		redefine
 			out, copy
@@ -34,7 +35,7 @@ feature -- Element change
 	set_item (value: G) is
 			-- Set `item' with content of `value'
 		require
-			value_exists: value /= Void
+			value_not_void: value /= Void
 		do
 		ensure
 			item_set: equal (item, formatted (value))
@@ -96,9 +97,4 @@ feature {NONE} -- Implementation
 			Result := "<NULL>"
 		end
 	
-end -- class ECLI_GENERIC_VALUE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

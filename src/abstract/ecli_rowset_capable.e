@@ -1,15 +1,18 @@
 indexing
-	description: "Objects that are able of operating on a rowset%N%
+
+	description:
+	
+		"Objects that are able of operating on a rowset%N%
 		% A rowset is an array  of `row_capacity' rows.%N%
 		% Database operations occur one rowset at a time.%N%
 		% Status information is available for each row in the rowset."
-		
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_ROWSET_CAPABLE
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_ROWSET_CAPABLE
 
 feature -- Access
 
@@ -67,4 +70,4 @@ invariant
 	impl_row_count_not_void: impl_row_count /= Void
 	rowset_status_capacity: rowset_status /= Void and then rowset_status.count = row_capacity
 	
-end -- class ECLI_ROWSET_CAPABLE
+end

@@ -1,20 +1,17 @@
 indexing
+
 	description:
 
 		"Cursors on metadata for tables, matching some criteria. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
 		%A Void criteria is considered as a wildcard."
 
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_TABLES_CURSOR
+class ECLI_TABLES_CURSOR
 
 inherit
 
@@ -26,6 +23,7 @@ inherit
 		end
 
 creation
+
 	make_all_tables, make_table, make
 
 feature {NONE} -- Initialization
@@ -59,7 +57,6 @@ feature {NONE} -- Initialization
 			!!search_criteria.make (Void, Void, a_table_name)
 			make (search_criteria, a_session)
 		end
-
 
 feature -- Access
 
@@ -116,9 +113,4 @@ feature {NONE} -- Implementation
 			Result := ecli_c_get_tables (handle, a_catalog, a_catalog_length, a_schema, a_schema_length, a_name, a_name_length, default_pointer, 0)
 		end
 
-end -- class ECLI_TABLES_CURSOR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

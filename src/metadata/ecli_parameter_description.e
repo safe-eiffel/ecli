@@ -1,16 +1,18 @@
 indexing
-	description: "Description of Parameter data"
-	author: "Paul G. Crismer"
+
+	description:
 	
-	library: "ECLI"
-	
+			"Description of Parameter data"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
-class
-	ECLI_PARAMETER_DESCRIPTION
+
+	class ECLI_PARAMETER_DESCRIPTION
 
 inherit
+
 	ECLI_DATA_DESCRIPTION
 		
 	-- begin mix-in
@@ -26,6 +28,7 @@ inherit
 	-- end mix-in
 	
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -72,9 +75,4 @@ feature {NONE} -- Implementation
 		ext_decimal_digits : XS_C_INT32 is once create Result.make end
 		ext_nullability : XS_C_INT32 is once create Result.make end		
 
-end -- class ECLI_PARAMETER_DESCRIPTION
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

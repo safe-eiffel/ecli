@@ -14,7 +14,7 @@ feature -- Access
 		do
 			Result := columns_repository_cell.item	
 		ensure
-			repository_exists: Result /= Void
+			repository_not_void: Result /= Void
 		end
 		
 feature -- Element change

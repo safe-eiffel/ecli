@@ -20,7 +20,7 @@ feature -- Initialization
 	make (new_name: STRING) is
 			-- Create a new Eiffel feature with 'name'
 		require
-			name_exists: new_name /= Void
+			name_not_void: new_name /= Void
 		do
 			set_name (new_name)
 		end
@@ -38,7 +38,7 @@ feature -- Status setting
 	set_name (new_name: STRING) is
 			-- Set feature name to 'name'
 		require
-			name_exists: new_name /= Void
+			name_not_void: new_name /= Void
 		do
 			name := new_name
 		end
@@ -46,13 +46,13 @@ feature -- Status setting
 	set_comment (new_comment: STRING) is
 			-- Set feature comment to 'new_comment'
 		require
-			comment_exists: new_comment /= Void
+			comment_not_void: new_comment /= Void
 		do
 			comment := new_comment
 		end
 
 invariant
 
-	name_exists: name /= Void
+	name_not_void: name /= Void
 
 end -- class EIFFEL_FEATURE

@@ -1,11 +1,15 @@
 indexing
-	description: "Objects that provide integer formatting routines"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_FORMAT_INTEGER
+	description:
+	
+			"Objects that provide integer formatting routines"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_FORMAT_INTEGER
 
 feature -- Conversion
 
@@ -31,10 +35,4 @@ feature -- Conversion
 			Result.append_string (value.out)
 		end
 
-
-end -- class ECLI_FORMAT_INTEGER
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

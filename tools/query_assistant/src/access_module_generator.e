@@ -33,7 +33,7 @@ feature -- Basic operations
 	write_class (a_class : EIFFEL_CLASS; a_target_directory : STRING) is
 			-- write `a_class' as an eiffel file into `a_target_directory'
 		require
-			a_class_exists: a_class /= Void
+			a_class_not_void: a_class /= Void
 			a_target_directory_exists: a_target_directory /= Void and then File_system.directory_exists (a_target_directory)
 		local
 			file_name : STRING
@@ -51,20 +51,21 @@ feature -- Basic operations
 	create_cursor_class (module : ACCESS_MODULE) is 
 			-- create class from `module' and write it into `directory_name'
 		require
-			module_exists: module /= Void
+			module_not_void: module /= Void
 		do
 			create cursor_class.make (class_name (module))
 			put_heading (module)
 			put_visible_features (module)
 			put_invisible_features (module)
 		ensure
-			cursor_class_exists: cursor_class /= Void and then cursor_class.name.is_equal (module.name)
+			cursor_class_not_void: cursor_class /= Void
+			cursor_class_and_module_have_same_name: cursor_class.name.is_equal (module.name)
 		end
 
 	create_parameters_class (parameter_set : COLUMN_SET[MODULE_PARAMETER]) is
 			-- create class from `parameter_set' and write it into `directory_name'
 		require
-			parameter_set_exists: parameter_set /= Void
+			parameter_set_not_void: parameter_set /= Void
 		do
 			parameters_class := virtual_row_class (parameter_set)
 		ensure
@@ -75,7 +76,7 @@ feature -- Basic operations
 	create_results_class (result_set : COLUMN_SET[MODULE_RESULT]) is 
 			-- create class from `result_set' and write it into `directory_name'
 		require
-			result_set_exists: result_set /= Void
+			result_set_not_void: result_set /= Void
 		do
 			results_class := virtual_row_class (result_set)
 		ensure
@@ -85,7 +86,7 @@ feature -- Basic operations
 	create_set_class (set : COLUMN_SET[ACCESS_MODULE_METADATA]) is 
 			-- create class from `result_set' and write it into `directory_name'
 		require
-			set_exists: set /= Void
+			set_not_void: set /= Void
 		do
 			set_class := virtual_row_class (set)
 		ensure
@@ -95,8 +96,8 @@ feature -- Basic operations
 	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[ACCESS_MODULE, STRING]) is
 			-- create deferred access routines helper class
 		require
-			prefix_exists: name_prefix /= Void
-			modules_exist: modules /= Void
+			prefix_not_void: name_prefix /= Void
+			modules_not_void: modules /= Void
 		local
 			l_class_name : STRING
 			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE, STRING]
@@ -161,7 +162,7 @@ feature {NONE} -- Basic operations
 	virtual_row_class (column_set : COLUMN_SET[ACCESS_MODULE_METADATA]) : EIFFEL_CLASS is
 			-- create virtual row class reflecting `column_set'
 		require
-			column_set_exists: column_set /= Void
+			column_set_not_void: column_set /= Void
 		local
 			routine : EIFFEL_ROUTINE
 			attribute : EIFFEL_ATTRIBUTE
@@ -463,8 +464,8 @@ feature {NONE} -- Implementation
 	put_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
 			-- put access routines for `module' into `group'
 		require
-			module_exists: module /= Void
-			group_exists: group /= Void
+			module_not_void: module /= Void
+			group_not_void: group /= Void
 		local
 			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
 			eiffel_routine : EIFFEL_ROUTINE
@@ -486,8 +487,8 @@ feature {NONE} -- Implementation
 	put_helper_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
 			-- put access routines for `module' into `group'
 		require
-			module_exists: module /= Void
-			group_exists: group /= Void
+			module_not_void: module /= Void
+			group_not_void: group /= Void
 		local
 			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
 			eiffel_routine : EIFFEL_ROUTINE
@@ -508,7 +509,7 @@ feature {NONE} -- Implementation
 			put_signature_to_routine (module.parameters, eiffel_routine)
 			
 			--| precondition
-			create routine_precondition.make ("cursor_exists", "cursor /= Void")
+			create routine_precondition.make ("cursor_not_void, "cursor /= Void")
 			eiffel_routine.add_precondition (routine_precondition)
 		
 			if module.parameters.count > 0 then
@@ -575,9 +576,9 @@ feature {NONE} -- Implementation
 	put_access_create_object (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP; access_create_object_routine_names : DS_HASH_TABLE[BOOLEAN,STRING]) is
 			-- put `create_object_from_<module.results>' into `group'
 		require
-			module_exists: module /= Void
-			group_exists: group /= Void
-			access_create_object_routine_names_exists: access_create_object_routine_names /= Void
+			module_not_void: module /= Void
+			group_not_void: group /= Void
+			access_create_object_routine_names_not_void: access_create_object_routine_names /= Void
 		local
 			routine_name : STRING
 			routine_parameter, routine_precondition, routine_postcondition : DS_PAIR [STRING,STRING]
@@ -593,9 +594,9 @@ feature {NONE} -- Implementation
 				create eiffel_routine.make (routine_name)
 				create routine_parameter.make ("row", as_upper (module.results.final_set.name))
 				eiffel_routine.add_param (routine_parameter)
-				create routine_precondition.make ("row_exists", "row /= Void")
+				create routine_precondition.make ("row_not_void, "row /= Void")
 				eiffel_routine.add_precondition (routine_precondition)
-				create routine_precondition.make ("last_cursor_exists", "last_cursor /= Void")
+				create routine_precondition.make ("last_cursor_not_void, "last_cursor /= Void")
 				eiffel_routine.add_precondition (routine_precondition)
 				create routine_postcondition.make ("last_cursor_extended", "not is_error implies (last_cursor.count = old (last_cursor.count) + 1)")
 				eiffel_routine.add_postcondition (routine_postcondition)

@@ -1,16 +1,22 @@
 indexing
-	description: "Input parameters in SQL statements"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_INPUT_PARAMETER
+	description:
+	
+			"Input parameters in SQL statements"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_INPUT_PARAMETER
 
 inherit
+
 	ECLI_STATEMENT_PARAMETER
 
 creation
+
 	make
 	
 feature -- Status report
@@ -29,4 +35,4 @@ feature {ECLI_STATEMENT} -- Basic operations
 invariant
 	is_input: is_input
 
-end -- class ECLI_INPUT_PARAMETER
+end

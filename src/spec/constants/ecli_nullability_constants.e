@@ -1,11 +1,15 @@
 indexing
-	description: "Nullable metadata constants"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_NULLABILITY_CONSTANTS
+	description:
+	
+			"Nullable metadata constants"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_NULLABILITY_CONSTANTS
 
 feature -- Status Report
 
@@ -18,4 +22,4 @@ feature -- Status Report
 	--
 	Sql_nullable_unknown	:	INTEGER is	2
 
-end -- class ECLI_NULLABILITY_CONSTANTS
+end

@@ -1,14 +1,15 @@
 indexing
+
 	description: 
 	
 		"Objects that reflect status of rowset operations. They basically are an array of integer."
 
-	author: "Paul G. Crismer "
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ROWSET_STATUS
+class ECLI_ROWSET_STATUS
 
 inherit
 
@@ -22,6 +23,7 @@ inherit
 		end
 	
 creation
+
 	make
 
 feature -- Status report
@@ -42,4 +44,4 @@ feature -- Status report
 			Result := (item (index) = Sql_row_error)
 		end
 
-end -- class ECLI_ROWSET_STATUS
+end

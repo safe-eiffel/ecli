@@ -1,22 +1,20 @@
 indexing
+
 	description:
 
 		"Cursors on primary keys of tables. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
 		%A Void criteria is considered as a wildcard."
 
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_PRIMARY_KEY_CURSOR
+class ECLI_PRIMARY_KEY_CURSOR
 
 inherit
+
 	ECLI_METADATA_CURSOR
 		rename
 			queried_name as queried_table
@@ -25,6 +23,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -133,9 +132,4 @@ feature {NONE} -- Implementation
 
 	creating_item : BOOLEAN
 
-end -- class ECLI_PRIMARY_KEY_CURSOR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

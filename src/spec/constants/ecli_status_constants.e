@@ -1,11 +1,15 @@
 indexing
-	description: "Status constants"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_STATUS_CONSTANTS
+	description:
+	
+			"Status constants"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_STATUS_CONSTANTS
 
 feature -- Status Report
 
@@ -20,4 +24,4 @@ feature -- Status Report
 	Sql_need_data	:	INTEGER is	99
 	Sql_no_total    : 	INTEGER is	-4
 
-end -- class ECLI_STATUS_CONSTANTS
+end

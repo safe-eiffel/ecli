@@ -1,23 +1,22 @@
 indexing
-	description: "Date and Time ISO formats and corresponding helper functions."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ISO_FORMAT_CONSTANTS
+	description:
+	
+			"Date and Time ISO formats and corresponding helper functions."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ISO_FORMAT_CONSTANTS
 
 inherit
+
 	ECLI_FORMAT_INTEGER
 	
 feature -- Access
 
-	date_regex : STRING is "([0-9]{1,4})\-([0-9]{2})\-([0-9]{2})"
-	
-	date_regex_minimum_component_count : INTEGER is 3
-	
 	time_regex : STRING is "([0-9]{2})\:([0-9]{2})\:([0-9]{2})(\.([0-9]+))"
 	
 	time_regex_minimum_component_count : INTEGER is 3
@@ -30,7 +29,6 @@ feature -- Access
 			Result.append_string (time_regex)
 		end
 	
-	date_to_string (date : DT_DATE) : STRING is
 			-- convert `date' to corresponding ISO format
 		do
 			create Result.make (10)
@@ -40,9 +38,7 @@ feature -- Access
 			Result.append_string (date_separator)
 			Result.append_string (pad_integer_2 (date.day))
 		end
-	
-	date_separator : STRING is "-"
-	
+
 	time_to_string (time : DT_TIME) : STRING is
 			-- convert `time' to corresponding ISO format
 		do
@@ -102,4 +98,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_ISO_FORMAT_CONSTANTS
+end

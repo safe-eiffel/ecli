@@ -1,12 +1,15 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+
+	description:
+	
+			"Objects that transfer large data from/into a file."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-
-	ECLI_FILE_VALUE
+deferred class ECLI_FILE_VALUE
 
 inherit
 
@@ -27,6 +30,7 @@ inherit
 feature {NONE} -- Initialization
 
 	make_input (an_input_file : like input_file) is
+			-- make for reading from `an_input_file'
 		require
 			an_input_file_exists: an_input_file /= Void and then an_input_file.exists
 			an_input_file_not_open: not an_input_file.is_open_read
@@ -39,6 +43,7 @@ feature {NONE} -- Initialization
 		end
 		
 	make_output (an_output_file : like output_file) is
+			-- make for writing to `an_output_file'
 		require
 			an_output_file_exists: an_output_file /= Void and then an_output_file.exists
 			an_output_file_not_open: not an_output_file.is_open_write
@@ -65,6 +70,8 @@ feature -- Access
 feature -- Measurement
 
 	decimal_digits: INTEGER
+			-- number of decimal digits
+			
 	size: INTEGER
 		
 	display_size: INTEGER is
@@ -77,7 +84,7 @@ feature -- Measurement
 feature -- Status report
 
 	is_input : BOOLEAN is
-			-- Is Current an buffer for database input ?
+			-- Is Current a buffer for database input ?
 		do
 			Result := input_file /= Void
 		ensure
@@ -109,6 +116,7 @@ feature -- Cursor movement
 feature -- Element change
 
 	set_input_file (an_input_file : like input_file) is
+			-- change `input_file' to `an_input_file'
 		require
 			not_is_output: not is_output
 			an_input_file_exists: an_input_file /= Void and then an_input_file.exists
@@ -122,6 +130,7 @@ feature -- Element change
 		end
 
 	set_output_file (an_output_file : like output_file) is
+			-- change `output_file' to `an_output_file'
 		require
 			not_is_input: not is_input
 			an_output_file_exists: an_output_file /= Void and then an_output_file.exists
@@ -175,6 +184,7 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	bind_as_parameter (stmt: ECLI_STATEMENT; index: INTEGER) is
+			-- bind as `index'-th parameter of `stmt'
 		local
 			length_at_execution : XS_C_INT32
 			parameter_rank : XS_C_INT32
@@ -196,6 +206,7 @@ feature -- Basic operations
 		end
 		
 	read_result (stmt: ECLI_STATEMENT; index: INTEGER) is
+			-- read `index'-th result of `stmt', writing into `output_file'
 		local
 			transfer_string : STRING
 			transfer_length : INTEGER
@@ -229,6 +240,7 @@ feature -- Basic operations
 		end
 		
 	put_parameter (stmt: ECLI_STATEMENT; index: INTEGER) is
+			-- Put `index'-th parameter of `stmt' by reading data from `input_file'.
 		do
 			if not is_null then
 				from
@@ -247,10 +259,6 @@ feature -- Basic operations
 			end
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	internal_make is
@@ -260,7 +268,8 @@ feature {NONE} -- Implementation
 		end
 		
 	ext_item : XS_C_STRING
-
+			-- handle to buffer seen as a string
+			
 	get_transfer_length : INTEGER is
 		do
 				Result := ecli_c_value_get_length_indicator (buffer)
@@ -270,6 +279,9 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
-	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_FILE_VALUE
+	ext_item_not_void: ext_item /= Void
+	ext_item_shares_buffer: ext_item.to_external = buffer
+	input_xor_output: is_input xor is_output
+	
+end

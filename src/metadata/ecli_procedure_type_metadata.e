@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that are procedure type metadata"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_PROCEDURE_TYPE_METADATA
+	description:
+	
+			"Objects that are procedure type metadata"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_PROCEDURE_TYPE_METADATA
 
 inherit
+
 	ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS
 	
 feature {NONE} -- Access
@@ -54,4 +59,4 @@ feature -- Status report
 			Result := column_type = Sql_result_col
 		end
 		
-end -- class ECLI_PROCEDURE_TYPE_METADATA
+end

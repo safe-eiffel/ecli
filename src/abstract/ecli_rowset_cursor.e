@@ -1,16 +1,19 @@
 indexing
-	description: "Row cursors that physically fetch sets of rows.%N%
-			%Rows are physically retrieved `row_count' at a time, minimizing network traffic."
-			
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ROWSET_CURSOR
+	description:
+	
+		"Row cursors that physically fetch sets of rows.%N%
+			%Rows are physically retrieved `row_count' at a time, minimizing network traffic."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ROWSET_CURSOR
 
 inherit
-	
+
 	ECLI_ROW_CURSOR
 		rename
 			make as row_cursor_make, open as row_cursor_open, 
@@ -27,6 +30,7 @@ inherit
 	ECLI_ROWSET_CAPABLE
 	
 creation
+
 	make, make_prepared, open, open_prepared
 	
 feature -- Initialization
@@ -35,7 +39,7 @@ feature -- Initialization
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			definition_exists: a_definition /= Void
+			definition_not_void: a_definition /= Void
 			row_count_valid: a_row_capacity >= 1
 		do
 			row_capacity := a_row_capacity
@@ -55,7 +59,7 @@ feature -- Initialization
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			definition_exists: a_definition /= Void
+			definition_not_void: a_definition /= Void
 			row_count_valid: a_row_capacity >= 1
 		do
 			make (a_session, a_definition, a_row_capacity)
@@ -73,11 +77,11 @@ feature -- Initialization
 	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory : like buffer_factory) is
 			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			sql_definition_exists: sql_definition /= Void
-			a_buffer_factory_exists: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void
+			a_buffer_factory_not_void: a_buffer_factory /= Void
 		do
 			row_capacity := a_row_capacity
 			make_row_count_capable
@@ -94,11 +98,11 @@ feature -- Initialization
 	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory :  like buffer_factory) is
 			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			sql_definition_exists: sql_definition /= Void
-			a_buffer_factory_exists: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void
+			a_buffer_factory_not_void: a_buffer_factory /= Void
 		do
 			make_with_buffer_factory (a_session, sql_definition, a_row_capacity, a_buffer_factory)
 			prepare
@@ -175,8 +179,7 @@ feature {NONE} -- Implementation
 	
 	fetch_increment : INTEGER
 			-- number of logical fetches since last physical one
-	
-		
+
 	fill_results is
 			-- update 'count' of all values in cursor
 		local
@@ -247,4 +250,4 @@ feature {NONE} -- Implementation
 			create impl_row_count.make
 		end
 
-end -- class ECLI_ROWSET_CURSOR
+end

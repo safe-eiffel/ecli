@@ -1,14 +1,15 @@
 indexing
-	description: "Fixed length buffer, for external usage"
 
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
-
+	description:
 	
-class
-	MESSAGE_BUFFER
+			"Fixed length buffer, for external usage"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class MESSAGE_BUFFER
 
 inherit
 
@@ -45,10 +46,5 @@ feature
 			end
 		end
 		
-end -- class MESSAGE_BUFFER
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end
 

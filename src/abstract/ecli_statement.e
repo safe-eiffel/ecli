@@ -1,19 +1,20 @@
 indexing
+
 	description:
 
 		 "Objects that represent statements that manipulate %
 		% a database. They are defined on a connected session.  %
 		% Provide CLI/ODBC CORE and some Level 1 functionalities."
 
-	author: 	"Paul G. Crismer"
-	date: 		"$Date$"
-	revision: 	"$Revision$"
-	licensing: 	"See notice at end of class"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
-class
-	ECLI_STATEMENT
+class ECLI_STATEMENT
 
 inherit
+
 	ECLI_STATUS
 		export
 			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} set_status
@@ -44,6 +45,7 @@ inherit
 	ECLI_SQL_PARSER_CALLBACK
 	
 creation
+
 	make
 
 feature -- Initialization
@@ -51,7 +53,7 @@ feature -- Initialization
 	make, open (a_session : ECLI_SESSION) is
 			-- Create a statement for use on `session'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
 			not_valid: not is_valid
 		local
@@ -150,11 +152,11 @@ feature -- Access
 			parameter_name_ok: parameter_name /= Void
 			has_parameter: parameters_count > 0
 			defined_parameter: has_parameter (parameter_name)
-			parameters_exist: parameters /= Void
+			parameters_not_void: parameters /= Void
 		do
 			Result := parameters.item (parameter_positions (parameter_name).first)
 		ensure
-			Result_exists: Result /= Void
+			Result_not_void: Result /= Void
 		end
 
 	parameter_names : DS_LIST[STRING] is
@@ -179,7 +181,7 @@ feature -- Access
 			end
 			Result := impl_parameter_names
 		ensure
-			Result_exists: Result /= Void
+			Result_not_void: Result /= Void
 			Result_count_less_or_equal_parameters_count: Result.count <= parameters_count
 		end
 
@@ -235,7 +237,7 @@ feature -- Measurement
 			-- Number of parameters in `sql'
 		require
 			valid_statement: is_valid
-			sql_exists: sql /= Void
+			sql_not_void: sql /= Void
 		do
 			Result := parameters_count_impl
 		end
@@ -400,7 +402,6 @@ feature -- Status setting
 
 feature -- Cursor movement
 
-
 	start is
 			-- Start iterating on result set
 		require
@@ -484,7 +485,7 @@ feature -- Element change
 			-- all parameters are taken as input parameters
 		require
 			valid_statement: is_valid
-			parameters_array_exist: parameters_array /= Void
+			parameters_array_not_void: parameters_array /= Void
 			parameters_array_valid_bounds: parameters_array.lower = 1 and then parameters_array.count = parameters_count
 			no_void_parameter: not array_routines.has (parameters_array, Void)
 		do
@@ -501,7 +502,7 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			statement_has_parameters: has_parameters
-			value_exists: value /= Void
+			value_not_void: value /= Void
 			parameter_name_exists : parameter_name /= Void
 			known_parameter_name: has_parameter (parameter_name)
 		do
@@ -521,7 +522,7 @@ feature -- Element change
 			-- Set `results' container with `row'
 		require
 			valid_statement: is_valid
-			row_exist: row /= Void
+			row_not_void: row /= Void
 			row_lower: row.lower = 1
 			row_count: row.count > 0
 			is_executed: is_executed
@@ -803,7 +804,7 @@ feature {NONE} -- Implementation
 	fill_results is
 		require
 			valid_statement: is_valid
-			results_exists: results /= Void
+			results_not_void: results /= Void
 			-- results_arity: results.count >= result_columns_count
 		local
 			index, index_max : INTEGER
@@ -835,7 +836,6 @@ feature {NONE} -- Implementation
 		do
 			Result := ecli_c_statement_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
-
 
 	impl_row_count : XS_C_INT32
 		-- Buffer for storing number of rows affected
@@ -969,7 +969,7 @@ feature {NONE} -- Hooks for descendants
 			end
 			set_status (ecli_c_row_count (handle, impl_row_count.handle))
 		ensure
-			impl_row_count_exists: impl_row_count /= Void
+			impl_row_count_not_void: impl_row_count /= Void
 		end
 		
 invariant
@@ -977,9 +977,4 @@ invariant
 	parameter_index_bounds: last_bound_parameter_index >= 0 and (parameters /= Void implies last_bound_parameter_index <= parameters.upper)
 	parameters_description_without_void: parameters_description /= Void implies not array_routines.has (parameters_description,Void)
 
-end -- class ECLI_STATEMENT
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

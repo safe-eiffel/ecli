@@ -1,11 +1,15 @@
 indexing
-	description: "Constants accepted by SQLGetFunctions;"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_FUNCTIONS_CONSTANTS
+	description:
+	
+			"Constants accepted by SQLGetFunctions;"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_FUNCTIONS_CONSTANTS
 
 feature -- Access
 
@@ -102,4 +106,4 @@ feature -- Access
 	Sql_api_sqlsetscrolloptions	:	INTEGER is	69
 	Sql_api_sqltableprivileges	:	INTEGER is	70
 
-end -- class ECLI_FUNCTIONS_CONSTANTS
+end

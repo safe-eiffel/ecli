@@ -1,14 +1,18 @@
 indexing
-	description: "CLI SQL REAL arrayed value"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_REAL
+	description:
+	
+			"CLI SQL REAL arrayed value"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_REAL
 
 inherit
+
 	ECLI_GENERIC_ARRAYED_VALUE [REAL]
 		undefine
 		redefine
@@ -32,6 +36,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -116,9 +121,4 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-end -- class ECLI_ARRAYED_REAL
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

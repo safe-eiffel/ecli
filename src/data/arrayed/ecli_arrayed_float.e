@@ -1,36 +1,36 @@
 indexing
-	description: "CLI SQL FLOAT value"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_FLOAT
+	description:
+	
+			"CLI SQL FLOAT value"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_FLOAT
 
 inherit
+
 	ECLI_ARRAYED_DOUBLE
 		redefine
 			column_precision, sql_type_code, decimal_digits, display_size, transfer_octet_length
 		end
 
 creation
+
 	make
 
 feature -- Initialization
 
-		
 feature -- Access
-
 
 feature -- Measurement
 
 feature -- Status report
 
-		
-
 feature -- Status setting
-
 
 	column_precision: INTEGER is
 		do
@@ -77,9 +77,4 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-end -- class ECLI_ARRAYED_FLOAT
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

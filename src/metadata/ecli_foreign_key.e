@@ -1,21 +1,21 @@
 indexing
-	description: "Foreign keys of a table, referring to a primary key of other table.%
+
+	description:
+	
+		"Foreign keys of a table, referring to a primary key of other table.%
 		% The table identified by [catalog, schema, table] is the referring table.%
 		% The foreign key of the referring table is composed of `columns' and is identified by `key_name'.%
 		% The referenced table primary key is `referenced key'."
-		
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_FOREIGN_KEY
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_FOREIGN_KEY
 
 inherit
+
 	ECLI_PRIMARY_KEY
 		rename
 			make as make_pk, add_column as add_pk_column
@@ -30,6 +30,7 @@ inherit
 		end
 		
 creation
+
 	make
 	
 feature {NONE} -- Initialization
@@ -37,7 +38,7 @@ feature {NONE} -- Initialization
 	make (cursor : ECLI_FOREIGN_KEYS_CURSOR) is
 			-- create from `cursor' current position
 		require
-			cursor_exists: cursor /= Void
+			cursor_not_void: cursor /= Void
 			cursor_not_off: not cursor.off
 		local
 			pk_catalog, pk_schema, pk_table, primary_key_name : STRING
@@ -140,9 +141,4 @@ invariant
 	delete_rule_value: is_delete_rule_applicable implies (delete_rule = Sql_cascade or else delete_rule = Sql_set_null or else delete_rule = Sql_set_default or else delete_rule = Sql_no_action)
 	deferrability_value: is_deferrability_applicable implies (deferrability = Sql_initially_deferred or else deferrability = Sql_initially_immediate or else deferrability = Sql_not_deferrable)
 
-end -- class ECLI_FOREIGN_KEY
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

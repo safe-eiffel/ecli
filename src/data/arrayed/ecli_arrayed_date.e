@@ -1,14 +1,18 @@
 indexing
-	description: "SQL DATE arrayed value"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_DATE
+	description:
+	
+			"SQL DATE arrayed value"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_DATE
 
 inherit
+
 	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE]
 		undefine
 			set_item, out_item_at
@@ -31,6 +35,7 @@ inherit
 		end
 	
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -104,9 +109,7 @@ feature -- Access
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
-			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			if not is_null_at (index) then
 				Result := ecli_c_date_get_year (date_pointer)
 			end
@@ -116,9 +119,7 @@ feature -- Access
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
-			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			if not is_null_at (index) then
 				Result := ecli_c_date_get_month (date_pointer)
 			end
@@ -128,9 +129,7 @@ feature -- Access
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
-			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			if not is_null_at (index) then
 				Result := ecli_c_date_get_day (date_pointer)
 			end
@@ -138,7 +137,6 @@ feature -- Access
 
 feature -- Measurement
 
-		
 feature -- Status report
 
 --	transfer_octet_length: INTEGER is
@@ -162,9 +160,7 @@ feature -- Element change
 
 	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER ) is
 		local
-			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			ecli_c_date_set_year (date_pointer, a_year)
 			ecli_c_date_set_month (date_pointer, a_month)
 			ecli_c_date_set_day (date_pointer, a_day)			
@@ -239,9 +235,4 @@ invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)
 	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))
 
-end -- class ECLI_ARRAYED_DATE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

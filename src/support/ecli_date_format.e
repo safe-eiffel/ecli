@@ -1,15 +1,18 @@
 indexing
-	description: "ISO Date formats and conversion facilities."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_DATE_FORMAT
+	description:
+	
+			"ISO Date formats and conversion facilities."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_DATE_FORMAT
 
 inherit
+
 	ECLI_FORMAT [DT_DATE]
 	
 	ECLI_ISO_FORMAT_CONSTANTS
@@ -83,4 +86,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_DATE_FORMAT
+end

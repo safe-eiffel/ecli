@@ -1,32 +1,27 @@
 indexing
+
 	description: 
 	
 		"SQL TIMESTAMP values"
-		
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_TIMESTAMP
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TIMESTAMP
 
 inherit
+
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
 			create_impl_item, impl_item, is_equal, out, 
 			set_item, item
 		end
-
---	KL_IMPORTED_STRING_ROUTINES
---		export
---			{NONE} all
---		undefine
---			out, is_equal, copy
---		end
-	
+		
 creation
-	make, make_first, make_default
+
+	make, make_first, make_default, make_null
 
 feature {NONE} -- Initialization
 
@@ -60,6 +55,8 @@ feature {NONE} -- Initialization
 			--set_date (1,1,1)
 			make (1, 1, 1, 0,0,0,0)
 		ensure
+			not_null: not is_null
+			day_one: year = 1 and then month = 1 and then day = 1
 			hour_set: hour = 0
 			minute_set: minute = 0
 			second_set: second = 0
@@ -67,11 +64,24 @@ feature {NONE} -- Initialization
 		end
 
 	make_first is
-			--
+			-- make first day of Christian era
+		obsolete "Use `make_first' instead"
 		do
 			make_default
+		ensure
+			not_null: not is_null
+			day_one:
 		end
 
+	make_null is
+			-- make null
+		do
+			make_default
+			set_null
+		ensure
+			is_null: is_null
+		end
+		
 feature -- Access
 
 	item : DT_DATE_TIME is
@@ -150,6 +160,9 @@ feature -- Measurement
 			month_ok: a_month >= 1 and a_month <= 12
 		do
 			Result := calendar.days_in_month(a_month, a_year)
+		ensure
+			days_in_month_positive: Result > 0
+			days_in_month_not_more_31: Result <= 31
 		end
 
 	size : INTEGER is
@@ -435,9 +448,4 @@ feature {NONE} -- Implementation
 
 	calendar : DT_GREGORIAN_CALENDAR is once create Result end
 	
-end -- class ECLI_TIMESTAMP
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

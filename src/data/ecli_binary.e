@@ -1,29 +1,31 @@
 indexing
-	description: "SQL BINARY (n) data objects."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_BINARY
+	description:
+	
+			"SQL BINARY (n) data objects."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_BINARY
 
 inherit
+
 	ECLI_BINARY_VALUE
 		redefine
 			formatted
 		end
 		
 creation
-	make
+
+	make, make_force_maximum_capacity
 	
 feature -- Access
 
-	max_capacity : INTEGER is
-			-- 
-		once
+	default_maximum_capacity : INTEGER is
+		do
 			Result := 8_192
 		end
 
@@ -68,4 +70,4 @@ feature {NONE} -- Implementation
 			end
 		end
 
-end -- class ECLI_BINARY
+end

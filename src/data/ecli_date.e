@@ -1,30 +1,27 @@
 indexing
+
 	description: 
 	
 		"SQL DATE values"
 
-	author: "Paul G. Crismer"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_DATE
+class ECLI_DATE
 
 inherit
+
 	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
 			item, set_item, out, is_equal, 
 			create_impl_item, impl_item
 		end
-		
---	KL_IMPORTED_STRING_ROUTINES
---		undefine
---			out, is_equal, copy
---		end
 
 creation
-	make, make_default
+
+	make, make_default, make_null
 
 feature {NONE} -- Initialization
 
@@ -51,6 +48,14 @@ feature {NONE} -- Initialization
 			year_set: year = 1
 			month_set: month = 1
 			day_set: day = 1
+		end
+
+	make_null is
+		do
+			make_default
+			set_null
+		ensure
+			is_null: is_null
 		end
 		
 feature -- Access
@@ -159,8 +164,7 @@ feature -- Measurement
 		do
 			Result := calendar.days_in_month(a_month, a_year)
 		end
-		
-		
+
 	size : INTEGER is
 		do
 			Result := 10
@@ -291,7 +295,6 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-
 	allocate_buffer is
 		do
 			if buffer = default_pointer then
@@ -326,9 +329,4 @@ invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)
 	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))
 
-end -- class ECLI_DATE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

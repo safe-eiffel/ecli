@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 	make (the_metadata : ECLI_COLUMN_DESCRIPTION; maximum_length : INTEGER) is
 			-- Initialize `Current'.
 		require
-			the_metadata_exist: the_metadata /= Void
+			the_metadata_not_void: the_metadata /= Void
 		do
 			metadata := the_metadata
 			if maximum_length > 0 then

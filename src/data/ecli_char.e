@@ -1,17 +1,18 @@
 indexing
+
 	description: 
 	
 		"SQL CHAR (n) values"
 
-	author: "Paul G. Crismer"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_CHAR
+class ECLI_CHAR
 
 inherit
+
 	ECLI_STRING_VALUE
 		redefine
 			make, count, sql_type_code, item, formatted
@@ -19,8 +20,9 @@ inherit
 		end
 
 creation
-	make
 
+	make, make_force_maximum_capacity
+	
 feature {NONE} -- Initialization
 
 	make (n : INTEGER) is
@@ -30,11 +32,10 @@ feature {NONE} -- Initialization
 		ensure then
 			count = capacity
 		end
-		
 
 feature -- Access
 
-	max_capacity : INTEGER is
+	default_maximum_capacity : INTEGER is
 		once
 			Result := 255
 		end
@@ -94,11 +95,7 @@ feature {NONE} -- Implementation
 		end
 	
 invariant
+
 	count_capacity: count = capacity
 
-end -- class ECLI_CHAR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

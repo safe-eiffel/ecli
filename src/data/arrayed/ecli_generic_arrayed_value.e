@@ -1,21 +1,24 @@
 indexing
-	description: "Objects that represent ARRAYs of typed values to be exchanged with the database.%
-		% These mainly are exchange buffers.  The capacity is set at creation and cannot be changed.%
+
+	description:
+	
+		"Objects that represent ARRAYs of typed values to be exchanged with the database.%
+		% These mainly are exchange buffers.  The capacity is set at creation
+ and cannot be changed.%
 		% The actual number of elements to take into account is set using set_count.%
 		% 'set_count' must not be used by a client except when passing parameters.  The other private usage is %
 		% when a rowset_cursor fetches the last set of data (usually less than the capacity)."
 
-	author: "Paul G. Crismer"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 	usage: "Used in row-set operations : column-wise binding for result-sets, %
 		% or column-wise binding of parameters for modifications.%
 		% Access modes: direct ('item_at'), linear ('start', 'forth', 'item')."
 
-	date: "$Date$"
-	revision: "$Revision$"
-
-deferred class
-	ECLI_GENERIC_ARRAYED_VALUE [G]
+deferred class ECLI_GENERIC_ARRAYED_VALUE
 
 inherit
 
@@ -23,7 +26,6 @@ inherit
 		redefine
 			out, is_equal, copy
 		end
-
 
 feature -- Access
 
@@ -146,14 +148,12 @@ feature -- Conversion
 			-- where the result is truncated or padded
 		deferred
 		end
-		
-		
-feature {NONE} -- Implementation
 
+feature {NONE} -- Implementation
 
 	out_item_at (index : INTEGER) : STRING is
 		do
 			Result := item_at (index).out
 		end
 
-end -- class ECLI_GENERIC_ARRAYED_VALUE
+end

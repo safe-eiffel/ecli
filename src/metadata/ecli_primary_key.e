@@ -1,17 +1,18 @@
 indexing
-	description: "Primary keys of a table"
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_PRIMARY_KEY
+	description:
+	
+			"Primary keys of a table"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_PRIMARY_KEY
 
 inherit
+
 	ECLI_NAMED_METADATA
 		rename
 			make as make_metadata,
@@ -22,9 +23,11 @@ inherit
 		end
 	
 creation
+
 	make 
 
 creation
+
 	{ECLI_FOREIGN_KEY} make_by_name
 	
 feature {NONE} -- Initialization
@@ -32,7 +35,7 @@ feature {NONE} -- Initialization
 	make (cursor : ECLI_PRIMARY_KEY_CURSOR) is
 			-- create from `cursor' current position
 		require
-			cursor_exists: cursor /= Void
+			cursor_not_void: cursor /= Void
 			cursor_not_off: not cursor.off
 		do
 			set_catalog (cursor.buffer_table_cat)
@@ -97,9 +100,4 @@ invariant
 	table_name_not_void: table /= Void
 	columns_not_void: columns /= Void and then not columns.has (Void)
 
-end -- class ECLI_PRIMARY_KEY
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

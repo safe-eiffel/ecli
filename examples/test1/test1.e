@@ -186,7 +186,7 @@ feature --  Basic operations
 				io.put_string ("%NSUCCESS : Connected %N")
 			end
 		ensure
-			session_exists: session /= Void
+			session_not_void: session /= Void
 		end
 
 	create_statement is
@@ -199,13 +199,13 @@ feature --  Basic operations
 			-- definition of statement on session
 			create  stmt.make (session)
 		ensure
-			stmt_exists: stmt /= Void
+			stmt_not_void: stmt /= Void
 		end
 
 	create_sample_table is
 				-- create sample table named ECLITRIAL
 			require
-				stmt_exists: stmt /= Void
+				stmt_not_void: stmt /= Void
 			do
 				io.put_string ("%N DDL - Create sample table%N")
 				io.put_string ("---------------------------------%N")
@@ -513,7 +513,7 @@ feature -- Miscellaneous
 	show_column_names (a_statement : ECLI_STATEMENT) is
 			-- show column names of `a_statement'.cursor_description
 		require
-			statement_exists: a_statement /= Void
+			statement_not_void: a_statement /= Void
 			statement_executed: a_statement.is_executed
 			statement_has_results: a_statement.has_result_set
 		local

@@ -1,18 +1,22 @@
 indexing
-	description: "Row cursors.%N%
+
+	description:
+	
+		"Row cursors.%N%
 			%A row cursor allows sweeping, row by row, through a result-set of a SQL query.%N%
 			%The ECLI_VALUE buffers composing the row are built by `buffer_factory' using%N%
 			%the result-set description obtained from the database server.%N%
 			%Individual column items can be accessed by name or by index."
-			
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ROW_CURSOR
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ROW_CURSOR
 
 inherit
+
 	ECLI_CURSOR
 		rename
 			make as cursor_make, open as statement_open,
@@ -28,6 +32,7 @@ inherit
 		end
 
 creation
+
 	make, open, make_prepared, open_prepared, make_with_buffer_factory,
 	make_prepared_with_buffer_factory
 
@@ -36,9 +41,9 @@ feature {NONE} -- Initialization
 	make, open (a_session : ECLI_SESSION; sql_definition : STRING) is
 			-- Make cursor for `a_session' on `sql_definition'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
-			sql_definition_exists: sql_definition /= Void
+			sql_definition_not_void: sql_definition /= Void
 		do
 			create_buffer_factory
 			buffer_factory.set_precision_limit (buffer_factory.Default_precision_limit)
@@ -54,9 +59,9 @@ feature {NONE} -- Initialization
 	make_prepared, open_prepared (a_session : ECLI_SESSION; sql_definition : STRING) is
 			-- Make prepared cursor for `a_session' on `sql_definition'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
-			sql_definition_exists: sql_definition /= Void
+			sql_definition_not_void: sql_definition /= Void
 		do
 			make (a_session, sql_definition)
 			prepare
@@ -72,10 +77,10 @@ feature {NONE} -- Initialization
 	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory : like buffer_factory) is
 			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
-			sql_definition_exists: sql_definition /= Void
-			a_buffer_factory_exists: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void
+			a_buffer_factory_not_void: a_buffer_factory /= Void
 		do
 			definition := sql_definition
 			cursor_make (a_session)
@@ -90,10 +95,10 @@ feature {NONE} -- Initialization
 	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory :  like buffer_factory) is
 			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
-			a_session_exists: a_session /= Void
+			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
-			sql_definition_exists: sql_definition /= Void
-			a_buffer_factory_exists: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void
+			a_buffer_factory_not_void: a_buffer_factory /= Void
 		do
 			make_with_buffer_factory (a_session, sql_definition, a_buffer_factory)
 			prepare
@@ -117,7 +122,7 @@ feature -- Access
 			-- Column item by `name'
 		require
 			is_executed: is_executed
-			name_exists: name /= Void
+			name_not_void: name /= Void
 			has_column_by_name: has_column (name)
 		do
 			Result := results.item (name_to_index.item (name))
@@ -165,7 +170,7 @@ feature -- Status report
 	has_column (name : STRING) : BOOLEAN is
 			-- Does `name' match the name of a column in Current ?
 		require
-			name_exists: name /= Void
+			name_not_void: name /= Void
 		do
 			Result := name_to_index.has (name)
 		end
@@ -230,4 +235,4 @@ feature {NONE} -- Implementation
 			name_to_index_set: is_ok implies name_to_index = buffer_factory.last_index_table
 		end
 
-end -- class ECLI_ROW_CURSOR
+end

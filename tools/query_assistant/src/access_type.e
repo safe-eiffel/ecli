@@ -14,7 +14,7 @@ feature -- Initialization
 
 	make_from_string (name : STRING) is
 		require
-			name_exists: name /= Void
+			name_not_void: name /= Void
 		do
 			if name.is_equal ("read") then
 				type := c_read
@@ -50,7 +50,7 @@ feature -- Status report
 	
 	valid_type (name : STRING) : BOOLEAN is
 		require
-			name_exists: name /= Void
+			name_not_void: name /= Void
 		do
 			if name.is_equal ("read") then
 				Result := True

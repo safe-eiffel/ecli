@@ -229,9 +229,9 @@ feature -- Basic operations
 				a_cursor.forth
 			end
 		ensure
-			modules_exist: modules /= Void
-			parameter_sets_exist: parameter_sets /= Void
-			result_sets_exist: result_sets /= Void
+			modules_not_void: modules /= Void
+			parameter_sets_not_void: parameter_sets /= Void
+			result_sets_not_void: result_sets /= Void
 		end
 	
 	parse_xml_input_file is

@@ -1,17 +1,21 @@
 indexing
-	description: "Encapsulation of CLI environment.%
+
+	description:
+	
+		"Encapsulation of CLI environment.%
 				% There should be a single object of this type in a system.%
 				% This object is a handle to the CLI facilities : it is the first%
 				% CLI object to be created, and the last to be deleted."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ENVIRONMENT
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ENVIRONMENT
 
 inherit
+
 	ECLI_HANDLE
 
 	ECLI_EXTERNAL_API
@@ -34,6 +38,7 @@ inherit
 			end
 
 creation
+
 	{ECLI_SHARED_ENVIRONMENT} make
 
 feature {NONE} -- Initialization
@@ -48,7 +53,6 @@ feature {NONE} -- Initialization
 			set_status (ecli_c_allocate_environment (ext_handle.handle))
 			handle := ext_handle.item
 		end
-
 
 feature {NONE} -- Implementation
 
@@ -79,9 +83,4 @@ feature {NONE} -- Implementation
 invariant
 	is_valid: is_valid
 
-end -- class ECLI_ENVIRONMENT
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

@@ -1,16 +1,18 @@
 indexing
+
 	description: 
 		
 		"Objects that create buffers for DB to application information exchange."
 
-	author: "Paul G. Crismer."
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_BUFFER_FACTORY
+class ECLI_BUFFER_FACTORY
 
 inherit
+
 	KL_IMPORTED_ARRAY_ROUTINES
 	
 feature -- Initialization
@@ -37,7 +39,6 @@ feature -- Access
 			do
 				Result := last_buffers
 			end
-		
 
 	last_index_table : DS_HASH_TABLE [INTEGER, STRING]
 			-- last table mapping column name to column index in last_buffer 
@@ -143,15 +144,14 @@ feature {NONE} -- Implementation
 			end
 			Result := impl_value_factory
 		ensure
-			result_exists: Result /= Void
+			result_not_void: Result /= Void
 		end
 	
 	value_anchor : ECLI_VALUE is
 		do
 		end
-		
-	
+
 invariant
 	invariant_clause: -- Your invariant here
 
-end -- class ECLI_BUFFER_FACTORY
+end

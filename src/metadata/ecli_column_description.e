@@ -1,17 +1,18 @@
 indexing
-	description: "Description of result-set column"
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_COLUMN_DESCRIPTION
+	description:
+	
+			"Description of result-set column"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_COLUMN_DESCRIPTION
 
 inherit
+
 	ECLI_PARAMETER_DESCRIPTION
 		rename
 			make as make_parameter
@@ -31,6 +32,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -94,11 +96,6 @@ feature {NONE} -- Implementation
 --		end
 
 invariant
-	name_exists: name /= Void
+	name_not_void: name /= Void
 	
-end -- class ECLI_COLUMN_DESCRIPTION
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

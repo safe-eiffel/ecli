@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that handle some data format"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_FORMAT [G]
+	description:
+	
+			"Objects that handle some data format"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_FORMAT
 
 inherit
+
 	KL_IMPORTED_STRING_ROUTINES
 	
 feature -- Access
@@ -34,11 +39,11 @@ feature -- Element change
 	create_from_string (s : STRING) is
 			-- create new `last_result' from `s'
 		require
-			s_exists: s /= Void
+			s_not_void: s /= Void
 			s_matching: matching_string (s)
 		deferred
 		ensure
-			last_result_exists: last_result /= Void
+			last_result_not_void: last_result /= Void
 			last_result_same_as_s: formatted (last_result).is_equal (s)
 		end
 		
@@ -53,10 +58,10 @@ feature -- Conversion
 	formatted (value : G) : STRING is
 			-- `value' formatted with respect to Current format
 		require
-			value_exists: value /= Void
+			value_not_void: value /= Void
 		deferred
 		ensure
-			result_exists: Result /= Void
+			result_not_void: Result /= Void
 			result_matching_format: matching_string (Result)
 		end
 		
@@ -75,7 +80,7 @@ feature {NONE} -- Implementation
 	regex : RX_PCRE_REGULAR_EXPRESSION is
 		deferred
 		ensure
-			result_exists: Result /= Void
+			result_not_void: Result /= Void
 			result_compiled: Result.is_compiled
 		end
 		
@@ -84,4 +89,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_FORMAT
+end

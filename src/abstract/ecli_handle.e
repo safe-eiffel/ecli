@@ -1,4 +1,5 @@
 indexing
+
 	description:
 
 		"Objects that use an implementation (external) handle. This can be used %
@@ -8,13 +9,12 @@ indexing
 	   % in order to free externally allocated memory. `prepare_for_disposal' is executed before `release_handle'%
 	   % and should also be redefined by descendant classes."
 
-	author: "Paul G. Crismer"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-deferred class
-	ECLI_HANDLE
+deferred class ECLI_HANDLE
 
 inherit
 
@@ -95,9 +95,4 @@ feature {NONE} -- Implementation
 			end
 		end
 		
-end -- class ECLI_HANDLE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that ..."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_ARRAYED_STRING_VALUE
+	description:
+	
+			"Objects that ..."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_ARRAYED_STRING_VALUE
 
 inherit
+
 	ECLI_STRING_VALUE
 		rename
 			make as make_single, capacity as content_capacity, max_capacity as max_content_capacity,
@@ -107,12 +112,9 @@ feature -- Measurement
 
 feature -- Status report
 
-
 feature -- Status setting
 
-
 feature -- Cursor movement
-
 
 feature -- Element change
 
@@ -178,4 +180,4 @@ feature {NONE} -- Implementation
 			Result.append_string ("'")
 		end
 
-end -- class ECLI_ARRAYED_STRING_VALUE
+end

@@ -1,19 +1,25 @@
 indexing
-	description: "Objects that ..."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_BINARY_VALUE
+	description:
+	
+			"Binary values"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_BINARY_VALUE
 
 inherit
+
 	ECLI_STRING_VALUE
 		redefine
 			item, c_type_code
 		end
 		
 feature -- Access
+
 
 	item : STRING is
 		do
@@ -30,4 +36,4 @@ feature -- Access
 			Result := sql_c_binary
 		end
 
-end -- class ECLI_BINARY_VALUE
+end

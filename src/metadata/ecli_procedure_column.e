@@ -1,13 +1,18 @@
 indexing
-	description: "Procedure columns metadata : parameters, result, result_set."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_PROCEDURE_COLUMN
+	description:
+	
+			"Procedure columns metadata : parameters, result, result_set."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_PROCEDURE_COLUMN
 
 inherit
+
 	ECLI_COLUMN
 		redefine
 			make
@@ -21,6 +26,7 @@ inherit
 		end
 		
 creation
+
 	make
 	
 feature -- Initialization
@@ -61,4 +67,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_PROCEDURE_COLUMN
+end

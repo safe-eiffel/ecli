@@ -1,20 +1,17 @@
 indexing
+
 	description:
 
 		"Cursor on procedures matching criteria. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) procedure name.%
 		%A Void criteria is considered as a wildcard."
 
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_PROCEDURES_CURSOR
+class ECLI_PROCEDURES_CURSOR
 
 inherit
 
@@ -26,6 +23,7 @@ inherit
 		end
 
 creation
+
 	make_all_procedures, make -- , make_by_type
 
 feature {NONE} -- Initialization
@@ -42,7 +40,6 @@ feature {NONE} -- Initialization
 		ensure
 			executed: is_ok implies is_executed
 		end
-
 
 feature -- Access
 
@@ -115,9 +112,4 @@ feature {NONE} -- Implementation
 				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
 		end
 
-end -- class ECLI_PROCEDURES_CURSOR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

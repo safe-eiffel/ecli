@@ -1,11 +1,15 @@
 indexing
-	description: "Transaction capability constants"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_TRANSACTION_CAPABILITY_CONSTANTS
+	description:
+	
+			"Transaction capability constants"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TRANSACTION_CAPABILITY_CONSTANTS
 
 feature -- Status Report
 
@@ -24,4 +28,4 @@ feature -- Status Report
 	Sql_tc_ddl_ignore	:	INTEGER is	4
 		-- DML transaction support, DDL statements are ignored
 
-end -- class ECLI_TRANSACTION_CAPABILITY_CONSTANTS
+end

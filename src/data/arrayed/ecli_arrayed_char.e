@@ -1,14 +1,18 @@
 indexing
-	description: "SQL CHAR (n) arrayed values"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_CHAR
+	description:
+	
+			"SQL CHAR (n) arrayed values"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_CHAR
 
 inherit
+
 	ECLI_ARRAYED_STRING_VALUE
 		rename
 		export
@@ -26,6 +30,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -37,7 +42,6 @@ feature {NONE} -- Initialization
 		ensure then
 			content_count = content_capacity
 		end
-
 
 feature -- Access
 
@@ -114,9 +118,4 @@ feature {NONE} -- Implementation
 invariant
 --	count_capacity: count <= capacity
 
-end -- class ECLI_ARRAYED_CHAR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

@@ -1,13 +1,18 @@
 indexing
-	description: "Stored procedures"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_STORED_PROCEDURE
+	description:
+	
+			"Stored procedures"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_STORED_PROCEDURE
 
 inherit
+
 	ECLI_STATEMENT
 		rename
 			put_parameter as put_input_parameter
@@ -19,6 +24,7 @@ inherit
 		end
 		
 creation
+
 	make
 
 feature -- Access
@@ -26,15 +32,14 @@ feature -- Access
 	directed_parameter (name : STRING) : ECLI_STATEMENT_PARAMETER is
 			-- parameter related to `key'
 		require
-			name_exists: name /= Void
+			name_not_void: name /= Void
 			has_parameter_of_name: has_parameter (name)
 		do
 			Result := directed_parameters.item (parameter_positions (name).first)
 		ensure
-			result_exists: Result /= Void
+			result_not_void: Result /= Void
 		end
-		
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -142,4 +147,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_STORED_PROCEDURE
+end

@@ -135,7 +135,7 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
-	name_exists: name /= Void
+	name_not_void: name /= Void
 
 end -- class ACCESS_MODULE_METADATA
 --

@@ -1,22 +1,20 @@
 indexing
+
 	description:
 
 		"Cursors over columns of tables. Columns match search criterias :%
 		%(1) catalog name, (2) schema name, (3) table name.%
 		%A Void criteria is considered as a wildcard."
 
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_COLUMNS_CURSOR
+class ECLI_COLUMNS_CURSOR
 
 inherit
+
 	ECLI_METADATA_CURSOR
 		rename
 			queried_name as queried_table
@@ -25,6 +23,7 @@ inherit
 		end
 
 creation
+
 	make, make_query_column, make_all_columns
 
 feature {NONE} -- Initialization
@@ -188,9 +187,4 @@ feature {NONE} -- Implementation
 
 	queried_column_impl : XS_C_STRING
 	
-end -- class ECLI_COLUMNS_CURSOR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

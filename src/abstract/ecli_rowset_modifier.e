@@ -1,13 +1,18 @@
 indexing
-	description: "Objects that modify the database one rowset at a time."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ROWSET_MODIFIER
+	description:
+	
+			"Objects that modify the database one rowset at a time."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ROWSET_MODIFIER
 
 inherit
+
 	ECLI_STATEMENT
 		rename
 			make as statement_make, open as statement_open, bind_parameters as statement_bind_parameters,
@@ -24,6 +29,7 @@ inherit
 	ECLI_ROWSET_CAPABLE
 	
 creation
+
 	make
 	
 feature {NONE} -- Initialization
@@ -32,7 +38,7 @@ feature {NONE} -- Initialization
 			-- create modifier on `a_session', using SQL `a_sql' for maximum `a_row_capacity' rows
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
-			sql_exists: a_sql /= Void
+			sql_not_void: a_sql /= Void
 			a_row_capacity_valid: a_row_capacity >= 1
 		do
 			make_row_count_capable
@@ -159,4 +165,4 @@ feature {NONE} -- Implementation
 			create impl_row_count.make
 		end
 		
-end -- class ECLI_ROWSET_MODIFIER
+end

@@ -1,18 +1,20 @@
 indexing
-	description: "Cursor on catalog metadata regarding columns of stored procedures. %N%
+
+	description:
+	
+		"Cursor on catalog metadata regarding columns of stored procedures. %N%
 		% Columns match search criterias : (1) catalog name, (2) schema name, (3) procedure name.%N%
 		% A Void criteria is considered as a wildcard."
-		
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_PROCEDURE_COLUMNS_CURSOR
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_PROCEDURE_COLUMNS_CURSOR
 
 inherit
+
 	ECLI_COLUMNS_CURSOR
 		redefine
 			set_buffer_values_array, create_buffer_values,
@@ -20,6 +22,7 @@ inherit
 		end
 
 creation
+
 	make
 	
 feature -- Access
@@ -102,4 +105,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_PROCEDURE_COLUMNS_CURSOR
+end

@@ -1,17 +1,18 @@
 indexing
+
 	description: 
 	
 		"SQL TIME values"
-		
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_TIME
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TIME
 
 inherit
+
 	ECLI_GENERIC_VALUE [DT_TIME]
 		redefine
 --			convertible_as_time, as_time, 
@@ -21,7 +22,8 @@ inherit
 		end
 		
 creation
-	make, make_default
+
+	make, make_default, make_null
 	
 feature {NONE} -- Initialization
 
@@ -35,20 +37,32 @@ feature {NONE} -- Initialization
 			set (a_hour, a_minute, a_second) --, a_nanosecond)
 			create_impl_item
 		ensure
+			not_null: not is_null
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
 			second_set: second = a_second
 		end
 
 	make_default is
+			-- Make zero
 		do
 			make (0,0,0)
 		ensure
+			not_null: not is_null
 			hour_set: hour = 0
 			minute_set: minute = 0
 			second_set: second = 0
 		end
 
+	make_null is
+			-- Make null.
+		do
+			make_default
+			set_null
+		ensure
+			is_null: is_null
+		end
+		
 feature -- Access
 
 	item : DT_TIME is
@@ -158,7 +172,6 @@ feature -- Measurement
 			Result := ecli_c_sizeof_time_struct
 		end
 
-	
 	decimal_digits: INTEGER is
 		do
 			Result := 0
@@ -323,9 +336,4 @@ feature {NONE} -- Implementation
 invariant
 	impl_item_not_void: impl_item /= Void
 
-end -- class ECLI_TIME
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

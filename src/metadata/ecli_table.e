@@ -1,17 +1,18 @@
 indexing
-	description: "Objects that describe an SQL Table"
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_TABLE
+	description:
+	
+			"Objects that describe an SQL Table"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_TABLE
 
 inherit
+
 	ECLI_NAMED_METADATA
 		rename
 			make as make_metadata
@@ -21,6 +22,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -28,7 +30,7 @@ feature {NONE} -- Initialization
 	make (tables_cursor : ECLI_TABLES_CURSOR) is
 			-- create table from `tables_cursor' item from `a_repository'
 		require
-			cursor_exists: tables_cursor /= Void
+			cursor_not_void: tables_cursor /= Void
 			cursor_not_off:  not tables_cursor.off
 		do
 			set_catalog (tables_cursor.buffer_catalog_name)
@@ -62,9 +64,4 @@ feature -- Conversion
 			append_to_string (Result, description)
 		end
 
-end -- class ECLI_TABLE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

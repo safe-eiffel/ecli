@@ -1,15 +1,15 @@
 indexing
-	description: "Cursors on database metadata."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-deferred class
-	ECLI_METADATA_CURSOR
+	description:
+	
+			"Cursors on database metadata."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_METADATA_CURSOR
 
 inherit
 
@@ -172,9 +172,4 @@ feature {NONE} -- Implementation
 	queried_schema_impl : XS_C_STRING
 	queried_name_impl : XS_C_STRING
 	
-end -- class ECLI_METADATA_CURSOR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

@@ -1,3 +1,7 @@
+2004-06-22
+	* License is now Eiffel Forum v2.
+	* New indexing clause format to standardize with the format of GOBO.
+	
 2004-05-14
 	* Refactored ECLI_VALUE hierarchy
 	* Introduced sending/getting long data : ECLI_FILE_VALUE and descendants

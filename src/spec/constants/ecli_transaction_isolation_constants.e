@@ -1,13 +1,17 @@
 indexing
-	description: "Transaction isolation constants - Used as bitmask in Sql_txn_isolation_option"
-	author: "Paul G. Crismer"
+
+	description:
+	
+			"Transaction isolation constants - Used as bitmask in Sql_txn_isolation_option"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 	usage: "buy or inherit.  When inheriting,  export {NONE} all."
-	
-class
-	ECLI_TRANSACTION_ISOLATION_CONSTANTS
+
+class ECLI_TRANSACTION_ISOLATION_CONSTANTS
 
 feature -- Constants
 
@@ -37,4 +41,4 @@ feature -- Status report
 			end
 		end
 		
-end -- class ECLI_TRANSACTION_ISOLATION_CONSTANTS
+end

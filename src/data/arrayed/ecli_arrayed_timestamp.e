@@ -1,14 +1,18 @@
 indexing
-	description: "SQL TIMESTAMP arrayed values"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_TIMESTAMP
+	description:
+	
+			"SQL TIMESTAMP arrayed values"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_TIMESTAMP
 
 inherit
+
 --	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE_TIME]
 --		undefine
 --			set_item, out_item_at
@@ -80,6 +84,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initialization
@@ -96,7 +101,6 @@ feature -- Access
 			Result := item
 			cursor_index := save_index
 		end
-
 
 	hour : INTEGER is
 		local
@@ -319,9 +323,4 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: -- Your invariant here
 
-end -- class ECLI_ARRAYED_TIMESTAMP
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

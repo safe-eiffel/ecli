@@ -26,7 +26,7 @@ feature -- Initialisation
 	make (new_name: STRING) is
 			-- Create new routine with 'name'
 		require
-			new_name_exists: new_name /= Void
+			new_name_not_void: new_name /= Void
 		do
 			feature_make (new_name)
 			create params.make
@@ -82,7 +82,7 @@ feature -- Status setting
 	set_type (new_type: STRING) is
 			-- Set the type of this routine to 'type'
 		require
-			new_type_exists: new_type /= Void
+			new_type_not_void: new_type /= Void
 		do
 			type := new_type
 		end
@@ -90,9 +90,9 @@ feature -- Status setting
 	add_param (new_parameter: DS_PAIR [STRING, STRING]) is
 			-- Add new parameter with name 'new_parameter.first' and value 'new_parameter.second'
 		require
-			new_parameter_exists: new_parameter /= Void
-			parameter_name_exists: new_parameter.first /= Void
-			parameter_value_exists: new_parameter.second /= Void
+			new_parameter_not_void: new_parameter /= Void
+			parameter_name_not_void: new_parameter.first /= Void
+			parameter_value_not_void: new_parameter.second /= Void
 		do
 			params.force_last (new_parameter)
 		end
@@ -100,9 +100,9 @@ feature -- Status setting
 	add_local (new_local: DS_PAIR [STRING, STRING]) is
 			-- Add new local with name 'new_local.first' and type 'new_local.second'
 		require
-			new_local_exists: new_local /= Void
-			local_name_exists: new_local.first /= Void
-			local_type_exists: new_local.second /= Void
+			new_local_not_void: new_local /= Void
+			local_name_not_void: new_local.first /= Void
+			local_type_not_void: new_local.second /= Void
 		do
 			if locals = Void then
 				create body.make
@@ -114,7 +114,7 @@ feature -- Status setting
 	add_body_line (line: STRING) is
 			-- Add 'line' to the body of this routine
 		require
-			line_exists: line /= Void
+			line_not_void: line /= Void
 		do
 			if body = Void then
 				create body.make
@@ -127,7 +127,7 @@ feature -- Status setting
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
 		require
-			precondition_exists: precondition /= Void		
+			precondition_not_void: precondition /= Void
 		do
 			is_require_else := True
 			add_precondition (precondition)
@@ -139,7 +139,7 @@ feature -- Status setting
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
 		require
-			precondition_exists: precondition /= Void		
+			precondition_not_void: precondition /= Void
 		do
 			if preconditions = Void then
 				create preconditions.make
@@ -151,7 +151,7 @@ feature -- Status setting
 			-- Add a postcondition with the expression 'postcondition.first' and
 			-- label 'postcondition.second' to this routine.
 		require
-			postcondition_exists: postcondition /= Void		
+			postcondition_not_void: postcondition /= Void
 		do
 			is_ensure_then := True
 			add_postcondition (postcondition)
@@ -163,7 +163,7 @@ feature -- Status setting
 			-- Add a postcondition with the expression 'postcondition.first' and
 			-- label 'postcondition.second' to this routine.
 		require
-			postcondition_exists: postcondition /= Void		
+			postcondition_not_void: postcondition /= Void
 		do
 			if postconditions = Void then
 				create postconditions.make
@@ -307,6 +307,6 @@ invariant
 	function_definition: is_function implies type /= Void
 	deferred_definition: is_deferred implies (body = Void and locals = Void)
 	no_body_or_locals: body = Void implies locals = Void
-	params_exist: params /= Void
+	params_not_void: params /= Void
 		
 end -- class EIFFEL_ROUTINE

@@ -1,17 +1,18 @@
 indexing
+
 	description: 
 	
 		"SQL DOUBLE values"
 
-	author: "Paul G. Crismer"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_DOUBLE
+class ECLI_DOUBLE
 
 inherit
+
 	ECLI_GENERIC_VALUE [DOUBLE]
 		redefine
 			item, set_item, out --,
@@ -25,8 +26,8 @@ inherit
 			copy,out, is_equal
 		end
 
-	
 creation
+
 	make
 
 feature -- Initialization
@@ -35,6 +36,9 @@ feature -- Initialization
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
 			check_valid
+			set_null
+		ensure
+			is_null: is_null
 		end
 		
 feature -- Access
@@ -43,7 +47,6 @@ feature -- Access
 		do
 			Result := c_memory_get_double (ecli_c_value_get_value(buffer))
 		end
-
 
 	c_type_code: INTEGER is
 		once
@@ -129,7 +132,6 @@ feature -- Status report
 		do
 			Result := False
 		end
-
 
 feature -- Cursor movement
 
@@ -227,9 +229,4 @@ feature {NONE} -- Implementation
 		alias "ecli_c_sprintf_double"
 		end
 
-end -- class ECLI_DOUBLE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

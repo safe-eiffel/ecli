@@ -1,23 +1,25 @@
 indexing
-	description: "Objects that describe a SQL type, as supported by a datasource."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_SQL_TYPE
+	description:
+	
+			"Objects that describe a SQL type, as supported by a datasource."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_SQL_TYPE
 
 inherit
+
 	ECLI_NULLABLE_METADATA
 		redefine
 			out
 		end
 
 creation
+
 	make
 
 feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
@@ -198,7 +200,6 @@ feature -- Access
 			Result := impl_minimum_scale
 		end
 
-
 	maximum_scale : INTEGER is
 			-- maximum scale for numeric values
 		require
@@ -329,9 +330,4 @@ feature {NONE} -- Implementation
 	impl_num_prec_radix : INTEGER
 	impl_interval_precision : INTEGER
 
-end -- class ECLI_SQL_TYPE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

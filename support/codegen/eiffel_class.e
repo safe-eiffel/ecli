@@ -24,7 +24,7 @@ feature -- Initialization
 	make (class_name: like name) is
 			-- Create new code class with 'name'
 		require
-			class_name_exists: class_name /= Void
+			class_name_not_void: class_name /= Void
 		do
 			set_name (class_name)
 			create indexing_clauses.make			
@@ -63,7 +63,7 @@ feature -- Status setting
 	set_name (new_name: like name) is
 			-- Set the class name
 		require
-			new_name_exists: new_name /= Void
+			new_name_not_void: new_name /= Void
 		do
 			name := new_name
 		end
@@ -71,7 +71,7 @@ feature -- Status setting
 	add_indexing_clause (new_indexing: STRING) is
 			-- Add 'new_indexing' as an indexing clause for this class
 		require
-			new_clause_exists: new_indexing /= Void
+			new_clause_not_void: new_indexing /= Void
 		do
 			indexing_clauses.force_last (new_indexing)
 		end
@@ -79,7 +79,7 @@ feature -- Status setting
 	add_parent (new_parent: STRING) is
 			-- Add 'new_parent' to parents
 		require
-			new_parent_exists: new_parent /= Void
+			new_parent_not_void: new_parent /= Void
 		do
 			parents.force_last (new_parent)
 		end
@@ -87,7 +87,7 @@ feature -- Status setting
 	add_creation_procedure_name (new_name: STRING) is
 			-- Add 'new_name' as the name of a creation procedure.
 		require
-			new_name_exists: new_name /= Void
+			new_name_not_void: new_name /= Void
 		do
 			creation_procedure_names.force_last (new_name)
 		end
@@ -95,7 +95,7 @@ feature -- Status setting
 	add_feature_group (new_group: EIFFEL_FEATURE_GROUP) is
 			-- Add 'new_group' to the feature groups of this class.
 		require
-			new_group_exists: new_group /= Void
+			new_group_not_void: new_group /= Void
 		do
 			feature_groups.force_last (new_group)
 		end
@@ -103,8 +103,8 @@ feature -- Status setting
 	add_invariant (new_invariant_clause : DS_PAIR[STRING,STRING]) is
 			-- Add `new_invariant_clause' to the invariants of this class.
 		require
-			new_invariant_clause_exists: new_invariant_clause /= Void
-			invariant_parts_exist: new_invariant_clause.first /= Void and then new_invariant_clause.second /= Void
+			new_invariant_clause_not_void: new_invariant_clause /= Void
+			invariant_parts_not_void: new_invariant_clause.first /= Void and then new_invariant_clause.second /= Void
 			invariant_parts_significatn: not (new_invariant_clause.first.is_empty or new_invariant_clause.second.is_empty)
 		do
 			invariants.put_last (new_invariant_clause)
@@ -249,9 +249,9 @@ feature {NONE} -- Implementation
 
 invariant
 
-	name_exists: name /= Void
-	parents_exists: parents /= Void
-	creation_procedure_names_exists: creation_procedure_names /= Void
-	feature_groups_exist: feature_groups /= Void
+	name_not_void: name /= Void
+	parents_not_void: parents /= Void
+	creation_procedure_names_not_void: creation_procedure_names /= Void
+	feature_groups_not_void: feature_groups /= Void
 
 end -- class EIFFEL_CLASS

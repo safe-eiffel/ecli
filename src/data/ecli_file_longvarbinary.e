@@ -1,17 +1,22 @@
 indexing
-	description: "Objects that ..."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_FILE_LONGVARBINARY
+	description:
+	
+			"LONGVARBINARY large data."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_FILE_LONGVARBINARY
 
 inherit
 
 	ECLI_FILE_VALUE
 
 creation
+
 	make_input, make_output
 	
 feature -- Access
@@ -21,4 +26,4 @@ feature -- Access
 			Result := Sql_longvarbinary
 		end
 
-end -- class ECLI_FILE_LONGVARBINARY
+end

@@ -1,16 +1,22 @@
 indexing
-	description: "Output parameters in SQL statements"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_OUTPUT_PARAMETER
+	description:
+	
+			"Output parameters in SQL statements"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_OUTPUT_PARAMETER
 
 inherit
+
 	ECLI_STATEMENT_PARAMETER
 
 creation
+
 	make
 	
 feature -- Access
@@ -57,4 +63,4 @@ feature {NONE} -- Implementation
 invariant
 	is_output: is_output
 	
-end -- class ECLI_OUTPUT_PARAMETER
+end

@@ -152,7 +152,7 @@ feature -- Element change
 		
 	set_type (new_type : ACCESS_TYPE) is
 		require
-			new_type_exists: new_type /= VOid
+			new_type_not_void: new_type /= VOid
 		do
 			type := new_type
 		ensure

@@ -1,14 +1,18 @@
 indexing
-	description: "SQL LONGVARCHAR (n) arrayed values"
-	author: "Paul-G.Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_ARRAYED_LONGVARCHAR
+	description:
+	
+			"SQL LONGVARCHAR (n) arrayed values"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ARRAYED_LONGVARCHAR
 
 inherit
+
 	ECLI_ARRAYED_STRING_VALUE
 
 --	ECLI_GENERIC_ARRAYED_VALUE [STRING]
@@ -21,6 +25,7 @@ inherit
 --		end
 
 creation
+
 	make
 
 feature -- Access
@@ -186,9 +191,4 @@ feature -- Access
 --		end
 --
 --
-end -- class ECLI_ARRAYED_LONGVARCHAR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

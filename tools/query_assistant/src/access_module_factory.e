@@ -175,7 +175,7 @@ feature -- Basic operations
 	create_parameter_map (element : XM_ELEMENT) is
 			-- create parameter map from `element'
 		require
-			element_exists: element /= Void
+			element_not_void: element /= Void
 		do
 			create parameter_map.make (10)
 			populate_parameter_map (element)
@@ -268,7 +268,7 @@ feature {NONE} -- Implementation
 	create_parameter (element : XM_ELEMENT; is_template : BOOLEAN) is
 			-- create parameter based on `element'
 		require
-			element_exists: element /= Void
+			element_not_void: element /= Void
 			element_name_is_parameter: element.name.string.is_equal (t_parameter)
 		local
 			l_name, l_table, l_column : STRING
@@ -317,8 +317,8 @@ feature {NONE} -- Implementation
 	create_parameter_from_template (element : XM_ELEMENT; template : MODULE_PARAMETER) is
 			-- create parameter from `element', using `template'
 		require
-			element_exists: element /= Void
-			template_exists: template /= Void
+			element_not_void: element /= Void
+			template_not_void: template /= Void
 			element_name_is_parameter: element.name.string.is_equal (t_parameter)
 		local
 			l_name, l_table, l_column : STRING

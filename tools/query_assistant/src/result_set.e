@@ -41,7 +41,7 @@ feature -- Element change
 	put (column : like item; column_rank : INTEGER) is
 			-- put `column' with position `column_rank'
 		require
-			column_exists: column /= Void
+			column_not_void: column /= Void
 			column_rank_positive: column_rank > 0
 		do
 			put_set (column)
@@ -51,7 +51,7 @@ feature -- Element change
 	force (column : like item; column_rank : INTEGER) is
 			-- force `column' with position `column_rank'
 		require
-			column_exists: column /= Void
+			column_not_void: column /= Void
 			column_rank_positive: column_rank > 0
 		do
 			force_set (column)

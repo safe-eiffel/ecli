@@ -1,17 +1,18 @@
 indexing
-	description: "Procedures metadata."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_PROCEDURE
+	description:
+	
+			"Procedures metadata."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_PROCEDURE
 
 inherit
+
 	ECLI_NAMED_METADATA
 		rename
 			make as make_metadata
@@ -26,6 +27,7 @@ inherit
 		end
 
 creation
+
 	make
 
 feature {NONE} -- Initilization
@@ -87,9 +89,4 @@ feature -- Conversion
 			end
 		end
 
-end -- class ECLI_PROCEDURE
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

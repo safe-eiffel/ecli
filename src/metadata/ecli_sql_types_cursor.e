@@ -1,15 +1,15 @@
 indexing
-	description: "Cursors over the SQL types supported by the datasource related to a session."
-	author: "Paul G. Crismer"
-	
-	library: "ECLI"
-	
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_SQL_TYPES_CURSOR
+	description:
+	
+			"Cursors over the SQL types supported by the datasource related to a session."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_SQL_TYPES_CURSOR
 
 inherit
 
@@ -43,6 +43,7 @@ inherit
 	KL_IMPORTED_ARRAY_ROUTINES
 	
 creation
+
 	make_all_types, make_by_type
 
 feature -- Initialization
@@ -144,7 +145,6 @@ feature -- Cursor Movement
 				impl_item := Void
 			end
 		end
-
 
 feature {ECLI_SQL_TYPE} -- Status
 
@@ -248,9 +248,4 @@ feature {NONE} -- Implementation
 			create_buffers
 		end
 
-end -- class ECLI_SQL_TYPES_CURSOR
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

@@ -155,7 +155,7 @@ feature -- Element change
 	set_sample (s : STRING) is
 			-- 
 		require
-			s_exists: s /= Void
+			s_not_void: s /= Void
 			s_not_empty: not s.is_empty
 		do
 			sample := s

@@ -1,17 +1,18 @@
 indexing
+
 	description: 
 	
 		"Objects that trace SQL execution on an output medium"
 
-	author: "Paul G. Crismer"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
 
-class
-	ECLI_TRACER
+class ECLI_TRACER
 
 creation
+
 	make
 	
 feature -- Initialization
@@ -19,7 +20,7 @@ feature -- Initialization
 	make (a_medium : like medium) is
 			-- Make tracer
 		require
-			medium_exists: a_medium /= Void
+			medium_not_void: a_medium /= Void
 			medium_open_write: a_medium.is_open_write
 		do
 			medium := a_medium
@@ -104,8 +105,7 @@ feature {ECLI_SESSION} -- Basic operations
 		do
 			medium.put_string ("ROLLBACK TRANSACTION;%N")
 		end
-		
-		
+
 feature {ECLI_VALUE} -- Basic operations
 
 	put_string (a_value : ECLI_GENERIC_VALUE[STRING]) is
@@ -203,7 +203,6 @@ feature {ECLI_VALUE} -- Basic operations
 		
 feature {NONE} -- Implementation
 
-
 	put_parameter_value (a_value : ECLI_VALUE) is
 			-- Put 'a_value' on 'medium'
 		require
@@ -244,9 +243,4 @@ invariant
 
 	medium_inv: medium /= Void and then medium.is_open_write
 
-end -- class ECLI_TRACER
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

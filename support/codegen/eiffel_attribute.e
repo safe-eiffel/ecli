@@ -26,8 +26,8 @@ feature -- Initialization
 	make (new_name, new_type: STRING) is
 			-- Create a new attribute
 		require
-			new_name_exists: new_name /= Void
-			new_type_exists: new_type /= Void
+			new_name_not_void: new_name /= Void
+			new_type_not_void: new_type /= Void
 		do
 			feature_make (new_name)
 			set_type (new_type)
@@ -76,6 +76,6 @@ feature -- Basic operations
 
 invariant
 
-	type_exists: type /= Void
+	type_not_void: type /= Void
 
 end -- class EIFFEL_ATTRIBUTE

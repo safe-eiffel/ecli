@@ -1,16 +1,18 @@
 indexing
-	description: "Objects that group row status constants"
-	
-	library: "ECLI"
-	
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_ROW_STATUS_CONSTANTS
+	description:
+	
+			"Objects that group row status constants"
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_ROW_STATUS_CONSTANTS
 
 inherit
+
 		ECLI_API_CONSTANTS
 			export
 				{ANY} 
@@ -22,4 +24,4 @@ inherit
 					Sql_row_success_with_info
 			end
 
-end -- class ECLI_ROW_STATUS_CONSTANTS
+end

@@ -1,17 +1,18 @@
 indexing
+
 	description:
 
 		"Objects that represent a session to a database"
 
-	author: 	"Paul G. Crismer"
-	date: 		"$Date$"
-	revision: 	"$Revision$"
-	licensing: 	"See notice at end of class"
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
-class
-	ECLI_SESSION
+class ECLI_SESSION
 
 inherit
+
 	ECLI_STATUS
 
 	ECLI_HANDLE
@@ -49,6 +50,7 @@ inherit
 	ECLI_TRANSACTION_CAPABILITY_CONSTANTS
 
 creation
+
 	make
 
 feature -- Initialization
@@ -86,7 +88,6 @@ feature -- Initialization
 		obsolete "Use open/close instead of attach/release"
 		do
 		end
-
 
 feature -- Access
 
@@ -137,7 +138,7 @@ feature -- Access
 			set_status (ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_txn_isolation , ext_txn_isolation.handle))
 			create Result.make (ext_txn_isolation.item)
 		ensure
-			Result_exist: Result /= Void
+			Result_not_void: Result /= Void
 		end
 		
 feature -- Status report
@@ -249,7 +250,7 @@ feature -- Status report
 		do
 			Result := tracer /= Void
 		ensure
-			tracing_is_tracer_exists: Result = (tracer /= Void)
+			tracing_is_tracer_not_void: Result = (tracer /= Void)
 		end
 
 feature -- Status setting
@@ -349,8 +350,7 @@ feature -- Element change
 		ensure
 			done_when_ok: is_ok implies (transaction_isolation.is_equal (an_isolation))
 		end
-		
-	
+
 feature -- Basic Operations
 
 	begin_transaction is
@@ -610,9 +610,4 @@ feature {NONE} -- Implementation
 invariant
 	valid_session: environment /= Void implies environment = shared_environment
 
-end -- class ECLI_SESSION
---
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
--- See file <forum.txt>
---
+end

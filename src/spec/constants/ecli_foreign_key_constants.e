@@ -1,11 +1,15 @@
 indexing
-	description: "Constants relative to foreign keys."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_FOREIGN_KEY_CONSTANTS
+	description:
+	
+			"Constants relative to foreign keys."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_FOREIGN_KEY_CONSTANTS
 
 feature -- Constants
 
@@ -19,10 +23,8 @@ feature -- Constants
 			Result := 1
 		end
 
-
 	Sql_initially_deferred	:	INTEGER is	5
 	Sql_initially_immediate	:	INTEGER is	6
 	Sql_not_deferrable	:	INTEGER is	7
 
-
-end -- class ECLI_FOREIGN_KEY_CONSTANTS
+end
