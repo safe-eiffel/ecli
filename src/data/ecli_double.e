@@ -57,7 +57,6 @@ feature -- Status report
 
 feature -- Status setting
 
-
 	c_type_code: INTEGER is
 		once
 			Result := sql_c_double

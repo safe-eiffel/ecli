@@ -23,9 +23,10 @@ feature -- Status report
 	row_count : INTEGER
 			-- number of rows processed by rowset operation
 
+	rowset_status : ECLI_ROWSET_STATUS
+	
 feature {NONE} -- implementation
 	
-	rowset_status : ECLI_ROWSET_STATUS
 	
 	status_array : ARRAY[INTEGER]
 			-- for debugging purposes : rowset_status content cannot be viewed in the debugger

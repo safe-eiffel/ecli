@@ -9,6 +9,10 @@ indexing
 class
 	TEST1
 
+inherit
+	
+	ECLI_TYPE_CONSTANTS
+	
 creation
 
 	make
@@ -88,10 +92,10 @@ feature --  Basic operations
 			tracer : ECLI_TRACER
 		do
 			if trace_file_name /= Void then
-				!!f.make (trace_file_name)
+				create f.make (trace_file_name)
 				f.open_write
 				if f.is_open_write then
-					!!tracer.make (f)
+					create tracer.make (f)
 					session.set_tracer (tracer)
 					io.put_string ("Trace in file : ")
 					io.put_string (trace_file_name)
@@ -106,14 +110,15 @@ feature --  Basic operations
 		
 	create_and_connect_session is
 		do
-			io.put_string ("SESSION - Creation and Connection%N")
-			!! session.make (data_source_name, user_name, password)
+			io.put_string ("%N SESSION - Creation and Connection%N")
+			io.put_string ("---------------------------------%N")
+			create  session.make (data_source_name, user_name, password)
 			session.connect
 			if session.has_information_message or not session.is_ok then
 				print_status (session)
 			end
 			if session.is_connected then
-				io.put_string ("Connected !!!%N")
+				io.put_string ("Connected createcreate %N")
 			end
 		ensure
 			session_exists: session /= Void
@@ -124,9 +129,10 @@ feature --  Basic operations
 		require
 			session_connected: session /= VOid and then session.is_connected
 		do
-			io.put_string ("STATEMENT - Creation%N")
+			io.put_string ("%N STATEMENT - Creation%N")
+			io.put_string ("---------------------------------%N")
 			-- definition of statement on session
-			!! stmt.make (session)
+			create  stmt.make (session)
 		ensure
 			stmt_exists: stmt /= Void
 		end
@@ -135,20 +141,22 @@ feature --  Basic operations
 			require
 				stmt_exists: stmt /= Void
 			do
-				io.put_string (" - DDL - Create sample table%N")
+				io.put_string ("%N DDL - Create sample table%N")
+				io.put_string ("---------------------------------%N")
 				-- DDL statement
-				-- | Uncomment next line for using MS Access driver or PostgreSQL
-				stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
+				-- | Uncomment next line for using MS Access driver or PostgreSQL or SQL Server
+				stmt.set_sql ("CREATE TABLE ECLITRIAL (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
 				--
 				-- | Uncomment next line for using Oracle 8 driver, and comment previous one
-				--stmt.set_sql ("CREATE TABLE ECLIESSAI (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")
+				--stmt.set_sql ("CREATE TABLE ECLITRIAL (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")
+
 				-- | Uncomment next line for using Interbase driver, and comment previous one
-				--stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
+				--stmt.set_sql ("CREATE TABLE ECLITRIAL (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
 				show_query ("Table creation : ",stmt)
 
 				stmt.execute
 				if stmt.is_ok then
-					io.put_string ("Table ECLIESSAI created%N")
+					io.put_string ("Table ECLITRIAL created%N")
 				else
 					print_status (stmt)
 				end
@@ -157,23 +165,24 @@ feature --  Basic operations
 	simple_insert_sample_tuples is
 			-- insert sample tuples with simple direct SQL
 		do
-				io.put_string (" - DML - Insert tuples - Direct SQL%N")
-				-- DML statements
+			io.put_string ("%N DML - Insert tuples - Direct SQL%N")
+			io.put_string ("---------------------------------%N")
+			-- DML statements
 
-				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
-				show_query ("Insertion of hard-coded values%N", stmt)
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
+			show_query ("Insertion of hard-coded values%N", stmt)
 
-				stmt.execute
-				--
-				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Lulu', 'O''Connor', 20, {ts '2000-06-25 09:34:00.00'}, 12.2)")
-				show_query ("",stmt)
+			stmt.execute
+			--
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ('Lulu', 'O''Connor', 20, {ts '2000-06-25 09:34:00.00'}, 12.2)")
+			show_query ("",stmt)
 
-				stmt.execute
-				--
-				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Didi', 'Lemmings', 30, {ts '2000-07-26 23:59:59.00'}, 42.4)")
-				show_query ("", stmt)
+			stmt.execute
+			--
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ('Didi', 'Lemmings', 30, {ts '2000-07-26 23:59:59.00'}, 42.4)")
+			show_query ("", stmt)
 
-				stmt.execute
+			stmt.execute
 		end
 
 	parameterized_insert is
@@ -184,23 +193,34 @@ feature --  Basic operations
 			p_nbr : ECLI_INTEGER
 			price : DOUBLE
 			p_price : ECLI_DOUBLE
+			l_parameters : ARRAY[ECLI_VALUE]
 		do
-			io.put_string (" - DML - Insert tuples - Parameterized SQL%N")
+			io.put_string ("%N DML - Insert tuples - Parameterized SQL%N")
+			io.put_string ("------------------------------------------%N")
 			-- parameterized statement
-			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ( ?last_name, ?first_name, ?nbr, ?year, ?price)")
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ( ?last_name, ?first_name, ?nbr, ?year, ?price)")
 			show_query ("Insertion of parameterized values%N", stmt)
 			-- create and setup parameters and values
-			!! first_name_parameter.make (20)
-			first_name_parameter.set_item ("Portail")
-			!!last_name_parameter.make (20)
-			last_name_parameter.set_item ("Guillaume")
-			!!p_nbr.make
-			p_nbr.set_item (10)
+			create  first_name_parameter.make (20)
+			create last_name_parameter.make (20)
+			create p_nbr.make
 			price := 89.107896
-			!!p_price.make
+			create p_price.make
+			create  p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
+			first_name_parameter.set_item ("Portail")
+			last_name_parameter.set_item ("Guillaume")
+			p_nbr.set_item (10)
 			p_price.set_item (price)
-			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
-			stmt.set_parameters (<<last_name_parameter, first_name_parameter,  p_nbr, p_birthdate, p_price>>)
+			create l_parameters.make (1, 5)
+			-- setup parameters array
+			l_parameters.put (last_name_parameter, 1)
+			l_parameters.put (first_name_parameter,2)
+			l_parameters.put (p_nbr,3)
+			l_parameters.put (p_birthdate,4)
+			l_parameters.put (p_price,5)
+			-- set parameters
+			stmt.set_parameters (l_parameters)
+			-- SmartEiffel fooled by manifest arrays <<last_name_parameter, first_name_parameter,  p_nbr, p_birthdate, p_price>>)
 			show_parameter_names (stmt)
 			stmt.bind_parameters
 			if not stmt.is_ok then
@@ -217,21 +237,28 @@ feature --  Basic operations
 		local
 			p_birthdate : 	ECLI_TIMESTAMP
 			first_name_parameter, last_name_parameter : 	ECLI_CHAR
+			l_parameters: ARRAY[ECLI_VALUE]
 		do
+			io.put_string ("%N Parameterized insert sample %N")
+			io.put_string ("---------------------------------%N")
 			-- parameterized statement
-			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES (?first_name, ?last_name, 40, ?some_date, 89.02)")
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES (?first_name, ?last_name, 40, ?some_date, 89.02)")
 			show_query ("Insertion of parameterized values%N", stmt)
 			-- create and setup parameters and values
-			!! first_name_parameter.make (20)
+			create  first_name_parameter.make (20)
+			create last_name_parameter.make (20)
+			create  p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
 			first_name_parameter.set_item ("Stoney")
-			!!last_name_parameter.make (20)
 			last_name_parameter.set_item ("Archibald")
-			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
 
 			-- set parameters by "tuple" i.e. ARRAY[ECLI_VALUE]
-			-- order *matters* !!!
-
-			stmt.set_parameters (<<first_name_parameter, last_name_parameter, p_birthdate>>)
+			-- order *matters* 
+			create l_parameters.make (1,3)
+			l_parameters.put (first_name_parameter,1)
+			l_parameters.put (last_name_parameter, 2)
+			l_parameters.put (p_birthdate, 3)
+			stmt.set_parameters (l_parameters)
+			-- Do not use Manifest Arrays : SmartEiffel 1.0 and greater generate wrong code !
 
 			-- using 'prepare' sets prepared_execution_mode
 			stmt.prepare
@@ -247,7 +274,7 @@ feature --  Basic operations
 			if stmt.is_describe_parameters_capable then
 				stmt.describe_parameters
 			else
-				io.put_string ("* Parameter description not possible !!! *%N")
+				io.put_string ("* Parameter description not possible *%N")
 			end
 
 			io.put_string ("Executing with parameters : '")
@@ -283,12 +310,13 @@ feature --  Basic operations
 			name_result_value : 	ECLI_CHAR
 			price_result_value : 	ECLI_DOUBLE
 			birthdate_result_value : 	ECLI_TIMESTAMP
---			firstname_result_value : 	ECLI_VARCHAR
+			firstname_result_value : 	ECLI_VARCHAR
 			number_result_value : 		ECLI_INTEGER
+			l_cursor : ARRAY[ECLI_VALUE]
 		do
 			-- set execution mode to immediate (no need to prepare)
 			stmt.set_immediate_execution_mode
-			stmt.set_sql ("SELECT name, nbr, bdate, price FROM ECLIESSAI")
+			stmt.set_sql ("SELECT name, fname, nbr, bdate, price FROM ECLITRIAL")
 
 			show_query("Selection of all inserted data%N", stmt)
 
@@ -296,18 +324,21 @@ feature --  Basic operations
 			if stmt.is_ok then
 				stmt.describe_cursor
 				-- create result set 'value holders'
-				!! name_result_value.make (20)
---				!! firstname_result_value.make (20)
-				!! number_result_value.make
-				!! birthdate_result_value.make_default
-				!! price_result_value.make
+				create  name_result_value.make (20)
+				create  firstname_result_value.make (20)
+				create  number_result_value.make
+				create  birthdate_result_value.make_default
+				create  price_result_value.make
 				-- define the container of value holders
 				-- name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT
-				stmt.set_cursor (<<name_result_value, 
-					-- firstname_result_value, 
-					number_result_value, 
-					 birthdate_result_value, 
-					price_result_value>>)
+				create l_cursor.make (1, 5)
+				l_cursor.put (name_result_value, 1)
+				l_cursor.put (firstname_result_value, 2)
+				l_cursor.put (number_result_value,3)
+				l_cursor.put (birthdate_result_value, 4)
+				l_cursor.put (price_result_value, 5)
+				
+				stmt.set_cursor (l_cursor)
 				-- iterate on result-set
 				from
 					stmt.start
@@ -328,7 +359,7 @@ feature --  Basic operations
 	drop_table is
 		do
 			-- DDL statement
-			stmt.set_sql  ("DROP TABLE ECLIESSAI")
+			stmt.set_sql  ("DROP TABLE ECLITRIAL")
 			show_query ("Dropping table%N", stmt)
 			stmt.execute
 			if not stmt.is_ok then
@@ -341,7 +372,7 @@ feature --  Basic operations
 			-- session disconnection
 			session.disconnect
 			if not session.is_connected then
-				io.put_string ("Disconnected!!!%N")
+				io.put_string ("Disconnected!create %N")
 			end
 		end
 
@@ -388,19 +419,8 @@ feature -- Miscellaneous
 			until
 				i > astmt.cursor_description.count
 			loop
-				width := astmt.cursor_description.item (i).size
-				!! s.make (width)
-				s.append (astmt.cursor_description.item (i).name)
-				-- pad with blanks
-				from
-					width := width - s.count
-				until
-					width <= 0
-				loop
-					s.append_character (' ')
-					width := width - 1
-				end
-				io.put_string (s)
+				io.put_string (formatted_column (astmt.cursor_description.item (i).name,
+							astmt.cursor_description.item (i)))
 				if i <= astmt.cursor_description.count then
 					io.put_character ('|')
 				end
@@ -409,16 +429,44 @@ feature -- Miscellaneous
 			io.put_character ('%N')
 		end
 
+	formatted_column (s : STRING; d : ECLI_COLUMN_DESCRIPTION) : STRING is
+			-- 
+		local
+			width : INTEGER
+		do
+			width := d.size
+			if d.sql_type_code = sql_integer 
+			   or else d.sql_type_code = sql_double 
+			   or else d.sql_type_code = Sql_float then
+				width := width.min (15)
+			end
+			create  Result.make (width)
+			Result.append (s)
+			-- pad with blanks
+			from
+				width := width - s.count
+			until
+				width <= 0
+			loop
+				Result.append_character (' ')
+				width := width - 1
+			end
+		end
+		
 	show_result_row (astmt : ECLI_STATEMENT) is
 		local
 			i : INTEGER
+			width : INTEGER
+			s : STRING
 		do
 			from
 				i := 1
 			until
 				i > astmt.cursor.count
 			loop
-				io.put_string (astmt.cursor.item (i).out)
+				io.put_string (formatted_column (
+							astmt.cursor.item (i).out,
+							astmt.cursor_description.item (i)))
 				io.put_character ('|')
 				i := i + 1
 			end

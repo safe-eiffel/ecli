@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "Objects that test bulk operations."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -121,7 +121,10 @@ feature -- Basic operations
 
 	do_insert is 
 		do  
+			print ("Trying bulk insert ... %N")
+			print ("---------------------- %N")
 			do_rowset_modify (sql_insert, names, ages)
+			inserted_count := names.count - errors
 		end
 		
 	test_insert is 
@@ -132,8 +135,11 @@ feature -- Basic operations
 			cursor.start
 			i := cursor.item_by_index (1).to_integer
 			print ("Bulk insert : ")
-			if i = 26 then
+			if i = inserted_count then
 				print ("Passed")
+				if inserted_count /= names.count then
+					print (" whith ") print ((names.count - inserted_count).out) print (" errors")
+				end
 			else
 				print ("Failed")
 			end
@@ -146,6 +152,8 @@ feature -- Basic operations
 			update_array : ARRAY[INTEGER]
 			index : INTEGER
 		do  
+			print ("Trying bulk update...  %N")
+			print ("---------------------- %N")
 			-- create and setup update_array
 			!! update_array.make (ages.lower, ages.upper)
 			from
@@ -160,44 +168,57 @@ feature -- Basic operations
 			do_rowset_modify (sql_update, names, update_array)
 		end		
 		
-	test_update is 
+	test_update is
+			-- test if bulk update was ok
 		local
-			ages_array : ARRAY[INTEGER]
 			i : INTEGER
+			ok : BOOLEAN
+			index : INTEGER
 		do  
+			-- sweep through updated values
 			!!cursor.make (session, sql_select)
-			!!ages_array.make (1, 26)
 			from
-				i := 1
 				cursor.start
+				ok := True
 			until
-				not cursor.is_ok or else cursor.off
+				not cursor.is_ok or else cursor.off or else not ok
 			loop
-				ages_array.put (cursor.item_by_index (2).to_integer, i)
-				i := i + 1
+				-- find index in names array, to find corresponding age
+				index := index_of_array_string (names, cursor.item_by_index (1).to_string)
+				if index > 0 then
+					-- ok if retrieved value is ages.item (index) + 2
+					ok := (cursor.item_by_index (2).to_integer = (ages.item (index) + 2) )
+				end
 				cursor.forth
 			end
 			cursor.close
 			-- compare arrays
 			print ("Bulk update : ")
-			if i > 26 then
-				from
-					i := ages.lower
-				until
-					i > ages.upper or else ages.item (i) /= (ages_array.item (i) - 2)
-				loop
-					i := i + 1
-				end
-				if i > ages.upper then
-					print ("Passed")
-				else
-					print ("Failed")
-				end
+			if ok then
+				print ("Passed")
 			else
 				print ("Failed")
 			end
-			print ("%N")
-			
+			print ("%N")			
+		end
+
+	index_of_array_string (a : ARRAY[STRING]; s : STRING) : INTEGER is
+			-- index of `s' in `a'
+		local
+			index : INTEGER
+		do
+			from
+				index := a.lower
+			until
+				index > a.upper or else a.item (index).is_equal (s)
+			loop
+				index := index + 1
+			end
+			if index <= a.upper then
+				Result := index
+			else
+				Result := 0
+			end
 		end
 		
 --| feature -- Obsolete
@@ -237,6 +258,7 @@ feature {NONE} -- Implementation
 		local
 			index, j : INTEGER
 		do
+			errors := 0
 			!! rowset_modifier.make (session, a_sql, row_count)
 			-- put values in array
 			from
@@ -251,6 +273,7 @@ feature {NONE} -- Implementation
 				buffer_age.set_item_at (age_array @ index, j)
 				if j \\ 10 = 0 or index = name_array.upper then
 					rowset_modifier.execute (j)
+					handle_modifier_errors (rowset_modifier)
 					if rowset_modifier.has_information_message or else rowset_modifier.is_error then
 						print (rowset_modifier.diagnostic_message)
 						print ("%N")
@@ -269,7 +292,62 @@ feature {NONE} -- Implementation
 	rowset_modifier : ECLI_ROWSET_MODIFIER
 	
 	row_count : INTEGER is 10;
+
+	errors : INTEGER
 	
+	inserted_count : INTEGER
+	updated_count : INTEGER
+	
+	handle_modifier_errors (r : ECLI_ROWSET_MODIFIER) is
+			-- handle errors on 'r' after execution
+			-- examine each status:
+		local
+			index : INTEGER
+			const : expanded ECLI_ROW_STATUS_CONSTANTS
+			status : INTEGER
+			stmt : ECLI_STATEMENT
+			p_age : ECLI_INTEGER
+			p_name : ECLI_VARCHAR
+			
+		do
+			-- Error handling with bulk operations is not straigthforward.
+			-- First, locate offending parameter set
+			-- Then retry query with non-arrayed parameters and get the error information
+			from 
+				index := 1
+				create p_age.make
+				create p_name.make (30)
+			until
+				index > r.row_count
+			loop
+				status := r.item_status (index)
+				if status = const.Sql_row_error then
+					-- Retry query with a single-value statement and get error message
+					p_age.set_item (buffer_age.item_at (index))
+					p_name.set_item (buffer_name.item_at (index))
+					create stmt.make (session)
+					stmt.set_sql (r.sql)
+					stmt.put_parameter (p_age, "age")
+					stmt.put_parameter (p_name, "name")
+					stmt.bind_parameters
+					stmt.execute
+					check
+						not stmt.is_ok
+					end
+					print ("Error : ")
+					print (stmt.diagnostic_message);
+					print ("SQL : "); print (stmt.sql); print ("%N")
+					print ("Parameters:%N")
+					print ("%Tage : "); print (p_age.out); print ("%N")
+					print ("%Tname: '"); print (p_name.out); print ("'%N")
+					stmt.close
+					errors := errors + 1
+				end
+				
+				index := index + 1
+			end
+		end
+		
 invariant
 	invariant_clause: True -- Your invariant here
 

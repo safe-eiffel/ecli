@@ -41,10 +41,6 @@ feature -- Initialization
 				else
 					!! session.make (dsn, user, password)
 					session.connect
-					if session.has_information_message then
-						io.put_string (session.cli_state) 
-						io.put_string (session.diagnostic_message)
-					end
 					if session.is_connected then
 						io.put_string ("+ Connected %N")
 						do_tests

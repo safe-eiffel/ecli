@@ -34,6 +34,7 @@ feature {NONE} -- Initialization
 			sql_exists: a_sql /= Void
 			a_row_capacity_valid: a_row_capacity >= 1
 		do
+			create external_row_count.make (1)
 			row_capacity := a_row_capacity
 			!!rowset_status.make (row_capacity)
 			statement_make (a_session)
@@ -62,7 +63,7 @@ feature -- Status report
 			index : INTEGER
 			last_count : INTEGER
 		do
-			Result := a_row_count <= row_count
+			Result := a_row_count <= row_capacity
 			from
 				index := 1
 				last_count := -1 
@@ -104,7 +105,7 @@ feature -- Basic operations
 	execute (a_count : INTEGER) is
 			-- execute for 'a_count' rows
 		require
-			valid_count: a_count <= row_count
+			valid_count: a_count <= row_capacity
 			valid_parameters_count: valid_parameters_count (a_count)
 		do
 			execute_count (a_count)
@@ -142,15 +143,22 @@ feature {NONE} -- Implementation
 
 	execute_count (a_count : INTEGER) is
 		require
-			valid_count: a_count <= row_count
+			valid_count: a_count <= row_capacity
 			valid_parameters_count: valid_parameters_count (a_count)
 		do
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_params_processed_ptr, $row_count, 0))
+			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_params_processed_ptr, external_row_count.handle, 0))
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, a_count))
 			statement_execute
 			fill_status_array
+			row_count := external_row_count.item (1)
 		ensure
 			command: not has_results
+			row_count_updated: row_count = external_row_count.item (1)
 		end
 
+	external_row_count : C_ARRAY_INT32
+
+invariant
+	external_row_count: external_row_count /= Void and then external_row_count.capacity = 1
+	
 end -- class ECLI_ROWSET_MODIFIER
