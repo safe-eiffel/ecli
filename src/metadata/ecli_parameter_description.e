@@ -61,8 +61,6 @@ feature -- Access
 	sql_type_code : INTEGER
 			-- type code of SQL data type
 		
-	column_precision : INTEGER is obsolete "Use 'size' instead" do Result := size end
-
 	size : INTEGER
 			-- The column size of numeric data types is defined as the maximum number of digits used 
 			-- by the data type of the column or parameter, or the precision of the data. 

@@ -25,6 +25,12 @@ feature -- Status report
 		end
 
 	column_precision : INTEGER is
+		obsolete "Use 'size' instead"
+		do
+			Result := size
+		end
+	
+	size : INTEGER is
 			-- maximum number of 'digits' used by the data type
 			-- for character and binary data : number of bytes or characters
 			-- for numeric data : number of sigificant digits
