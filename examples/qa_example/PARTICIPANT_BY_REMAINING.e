@@ -6,7 +6,7 @@ indexing
 	licensing: "See notice at end of class"
 class
 
-	PARTICIPANT_BY_REMAINING_CURSOR
+	PARTICIPANT_BY_REMAINING
 
 inherit
 
@@ -33,7 +33,7 @@ feature -- Access
 	definition : STRING is
 			-- SQL definition of Current
 		once
-			Result := "select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,  p.country, r.reg_time, (r.fee - r.paid_amount) as remaining from PARTICIPANT p, REGISTRATION r where 	r.participant_id = p.identifier AND 	(r.fee - r.paid_amount) > ?premaining"
+			Result := "select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state, p.country, r.reg_time, (r.fee - r.paid_amount) as remaining from PARTICIPANT p, REGISTRATION r where 	r.participant_id = p.identifier AND 	(r.fee - r.paid_amount) > ?premaining"
 		end
 
 feature -- Access (parameters)
@@ -46,7 +46,7 @@ feature -- Access (results)
 	first_name	: ECLI_VARCHAR
 	last_name	: ECLI_VARCHAR
 	street	: ECLI_VARCHAR
-	no	: ECLI_INTEGER
+	no	: ECLI_VARCHAR
 	zip	: ECLI_INTEGER
 	city	: ECLI_VARCHAR
 	state	: ECLI_VARCHAR
@@ -70,7 +70,7 @@ feature {NONE} -- Implementation
 			cursor.put (last_name, 3)
 			create street.make (100)
 			cursor.put (street, 4)
-			create no.make
+			create no.make (10)
 			cursor.put (no, 5)
 			create zip.make
 			cursor.put (zip, 6)
@@ -90,4 +90,4 @@ feature {NONE} -- Implementation
 		end
 
 
-end -- class PARTICIPANT_BY_REMAINING_CURSOR
+end -- class PARTICIPANT_BY_REMAINING

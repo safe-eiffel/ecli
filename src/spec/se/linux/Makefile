@@ -6,15 +6,13 @@ PLATFORM = linux-glibc2.1
 SMALLEIFFELDIR=$(SmallEiffel:/sys/system.se=)
 CFLAGS =  -O -I$(SMALLEIFFELDIR)/sys/runtime -I. -I/usr/local/include
 RM = /bin/rm -f
-SRC = $(ECLI)/src/spec/c
+SRC = $(ECLI)/src/spec/C
 OBJ = ecli_c.o io.o
-
-all: libecli_c.a 
 
 .c.o:
 	$(CC) $(CFLAGS) -c $(SRC)/$<
 
-libecli_c.a: $(OBJ)
+libecli_c.a: eclivar $(OBJ)
 	$(AR) -ru $@ $(OBJ)
 	$(RANLIB) $@
 
@@ -24,6 +22,15 @@ ecli_c.o:  $(SRC)/ecli_c.c
 io.o:  $(SRC)/io.c
 	$(CC) $(CFLAGS) -c $<
 
+.PHONY: all clean eclivar
+
 clean:
 	$(RM) libecli_c.a $(OBJ)
 
+all: eclivar libecli_c.a 
+
+eclivar:
+	@if test -z "$(ECLI)" ; then \
+		 echo "* ERROR * -- ECLI variable not set "; \
+		 echo "*         -- Please set it first, then make the build !" ;  \
+	fi

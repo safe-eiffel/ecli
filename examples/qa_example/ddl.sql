@@ -10,7 +10,6 @@ create table PARTICIPANT (
 	country VARCHAR (20)
 )
 ;
-
 create table REGISTRATION (
 	identifier INTEGER not null,
 	participant_id INTEGER not null,
@@ -18,6 +17,5 @@ create table REGISTRATION (
 	fee	DOUBLE,
 	paid_amount DOUBLE)
 ;
-
 q
 ;
