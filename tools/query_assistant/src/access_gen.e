@@ -451,7 +451,7 @@ feature {NONE} -- Implementation
 			end
 			create resolver
 			all_parents_set := resolver.resolve_parents (all_sets, error_handler)
-			resolver.resolve_descendants (all_parents_set)
+			resolver.resolve_descendants (all_sets)
 		end
 		
 		

@@ -105,29 +105,31 @@ feature -- Basic operations
 			access_create_object_routine_names : DS_HASH_TABLE [BOOLEAN,STRING]
 		do
 			create access_create_object_routine_names.make (modules.count)
-			
+			--| class name
 			create l_class_name.make_from_string (name_prefix)
 			l_class_name.append_string ("_ACCESS_ROUTINES")
 			l_class_name.to_upper
 			
+			--| class object
 			create access_routines_class.make (l_class_name)
 			access_routines_class.set_deferred
+			access_routines_class.add_parent ("PO_STATUS_USE")
+			access_routines_class.add_parent ("PO_STATUS_MANAGEMENT")
+			--| feature groups
 			create basic_operations.make ("Basic operations")
 			create implementation.make ("Implementation")
 			implementation.add_export ("NONE")
 			access_routines_class.add_feature_group (basic_operations)
 			access_routines_class.add_feature_group (implementation)
-			create deferred_session.make ("session")
-			deferred_session.set_type ("ECLI_SESSION")
-			implementation.add_feature (deferred_session)
 			from
 				cursor := modules.new_cursor
 				cursor.start
 			until
 				cursor.off
 			loop
-				if cursor.item.is_valid and then cursor.item.has_result_set then
+				if cursor.item.type.is_extended and then cursor.item.is_valid and then cursor.item.has_result_set then
 					put_access_routine (cursor.item, basic_operations)
+					put_helper_access_routine (cursor.item, implementation)
 					put_access_create_object (cursor.item, implementation, access_create_object_routine_names)
 				end
 				cursor.forth
@@ -381,6 +383,7 @@ feature {NONE} -- Basic operations
 			routine : EIFFEL_ROUTINE
 			feature_group : EIFFEL_FEATURE_GROUP
 			line : STRING
+			local_buffers : DS_PAIR[STRING,STRING]
 		do
 			
 			create feature_group.make ("Implementation")
@@ -389,8 +392,10 @@ feature {NONE} -- Basic operations
 			create routine.make ("create_buffers")
 			routine.set_comment ("-- Creation of buffers")
 			
+			create local_buffers.make ("buffers", "ARRAY[like value_anchor]")
+			routine.add_local (local_buffers)
 			routine.add_body_line ("create item.make")
-			routine.add_body_line ("create cursor.make (1,"+module.results.count.out+")")
+			routine.add_body_line ("create buffers.make (1,"+module.results.count.out+")")
 			
 			from
 				count := module.results.count
@@ -400,7 +405,7 @@ feature {NONE} -- Basic operations
 			until
 				c.off
 			loop
-				create line.make_from_string("cursor.put (item.")
+				create line.make_from_string("buffers.put (item.")
 				line.append_string (c.item.eiffel_name)
 				line.append_string (", ")
 				line.append_string (module.results.rank.item (c.item.name).out)
@@ -409,7 +414,7 @@ feature {NONE} -- Basic operations
 				i := i + 1
 				c.forth
 			end
-
+			routine.add_body_line ("set_results (buffers)")
 			feature_group.add_feature (routine)
 			cursor_class.add_feature_group (feature_group) 
 		end
@@ -446,8 +451,7 @@ feature {NONE} -- Implementation
 			l_name, parameter_setting_line : STRING
 		do
 			--| routine name: read_<access> 
-			create l_name.make_from_string ("read_")
-			l_name.append_string (module.name)
+			create l_name.make_from_string (module.name)
 			l_name.to_lower
 			--| eiffel routine
 			create eiffel_routine.make (l_name)
@@ -455,17 +459,43 @@ feature {NONE} -- Implementation
 			put_signature_to_routine (module.parameters, eiffel_routine)
 			create routine_precondition.make ("refine_in_descendants", "False")
 			eiffel_routine.add_precondition (routine_precondition)
+			group.add_feature (eiffel_routine)
+		end
+		
+	put_helper_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
+			-- put access routines for `module' into `group'
+		require
+			module_exists: module /= Void
+			group_exists: group /= Void
+		local
+			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
+			eiffel_routine : EIFFEL_ROUTINE
+			new_parameter, local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
+			l_name, parameter_setting_line : STRING
+		do
+			--| routine name: do_<access> 
+			create l_name.make_from_string ("do_")
+			l_name.append_string (module.name)
+			l_name.to_lower
+			--| eiffel routine
+			create eiffel_routine.make (l_name)
+			eiffel_routine.set_comment ("helper implementation of access `"+module.name+"'")
+			--| routine signature : (cursor : module_name; [eiffel_signature (<parameter_set>)]) is
+			create local_cursor.make ("cursor", as_upper (module.name))
+			eiffel_routine.add_param (local_cursor)
+	
+			put_signature_to_routine (module.parameters, eiffel_routine)
+			
+			--| precondition
+			create routine_precondition.make ("cursor_exists", "cursor /= Void")
+			eiffel_routine.add_precondition (routine_precondition)
+		
 			--	local
 			--		parameters : <access_parameters>
-			--		cursor : <access>
 			create local_parameters.make ("parameters",  as_upper (module.parameters.type))
 			eiffel_routine.add_local (local_parameters)
-			create local_cursor.make ("cursor", as_upper (module.name))
-			eiffel_routine.add_local (local_cursor)
 			--	do
-			--		create cursor.make (session)
 			--		create parameters.make
-			eiffel_routine.add_body_line ("create cursor.make (session)")
 			eiffel_routine.add_body_line ("create parameters.make")
 			--		[fill_parameter_set (<parameter_set>, parameters)]
 			from 
@@ -486,23 +516,33 @@ feature {NONE} -- Implementation
 			eiffel_routine.add_body_line ("cursor.set_parameters_object (parameters)")
 			--		from
 			--			cursor.start
+			--			status.reset
 			--		until
-			--			cursor.is_error or else cursor.off
+			--			status.is_error or else cursor.is_error or else cursor.off
 			--		loop
 			--			create_object_from_<access_results>
 			--			cursor.forth
 			--		end
-			--		cursor.close
+			--      if cursor.is_error then
+			--			status.set_datastore_error (cursor.native_code, cursor.diagnostic_message)
+			--		elseif cursor.is_ok and cursor.has_information_message then
+			--			status.set_datastore_warning (cursor.native_code, cursor.diagnostic_message)
+			--		end
 			--	end
 			eiffel_routine.add_body_line ("from")
 			eiffel_routine.add_body_line ("%Tcursor.start")
+			eiffel_routine.add_body_line ("%Tstatus.reset")
 			eiffel_routine.add_body_line ("until")
-			eiffel_routine.add_body_line ("%Tnot cursor.is_ok or else cursor.off")
+			eiffel_routine.add_body_line ("%Tstatus.is_error or else not cursor.is_ok or else cursor.off")
 			eiffel_routine.add_body_line ("loop")
 			eiffel_routine.add_body_line ("%Tcreate_object_from_"+as_lower (module.results.final_set.name)+" (cursor.item)")
 			eiffel_routine.add_body_line ("%Tcursor.forth")
 			eiffel_routine.add_body_line ("end")
-			eiffel_routine.add_body_line ("cursor.close")
+			eiffel_routine.add_body_line ("if cursor.is_error then")
+			eiffel_routine.add_body_line ("%Tstatus.set_datastore_error (cursor.native_code, cursor.diagnostic_message)")
+			eiffel_routine.add_body_line ("elseif cursor.is_ok and cursor.has_information_message then")
+			eiffel_routine.add_body_line ("%Tstatus.set_datastore_warning (cursor.native_code, cursor.diagnostic_message)")
+			eiffel_routine.add_body_line ("end")
 			group.add_feature (eiffel_routine)
 		end
 		

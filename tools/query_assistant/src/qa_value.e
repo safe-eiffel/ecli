@@ -15,14 +15,6 @@ inherit
 	ECLI_VALUE
 		undefine
 			out,
-			as_character, convertible_as_character,
-			as_double, convertible_as_double,
-			as_integer, convertible_as_integer,
-			as_string, convertible_as_string,
-			as_real, convertible_as_real,
-			as_date, convertible_as_date,
-			as_timestamp, convertible_as_timestamp,
-			as_time, convertible_as_time,
 			copy
 		end
 

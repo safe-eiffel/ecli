@@ -62,6 +62,7 @@ feature -- Basic operations
 			name_att, type_att : XM_ATTRIBUTE
 			name, type : STRING
 			description, query : XM_ELEMENT
+			module_type : ACCESS_TYPE
 		do
 			is_error := False
 			last_module := Void
@@ -108,6 +109,10 @@ feature -- Basic operations
 						end
 						if last_result_set /= Void then
 							last_module.set_results (last_result_set)
+						end
+						if type_att /= Void then
+							create module_type.make_from_string (type_att.value)
+							last_module.set_type (module_type)
 						end
 					else
 						error_handler.report_error_message ("! [Error] Module '"+name+"' does not have any <sql> element")
@@ -361,13 +366,13 @@ feature {NONE} -- Implementation
 		do
 			create sql_parser.make
 			parameter_names.wipe_out
+			parameter_names.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]}) 
 			sql_parser.parse (sql, Current)
 			if last_parameter_set = Void or else last_parameter_set.count < parameter_names.count then
 				-- remove parameter names that already exist
 				from
 					cursor := last_parameter_set.new_cursor
 					cursor.start
-					parameter_names.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]}) 
 				until
 					cursor.off
 				loop
