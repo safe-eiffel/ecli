@@ -154,8 +154,8 @@ feature {ECLI_DATA_SOURCE} -- Implementation
 	name : STRING
 	description : STRING
 	
-	c_name : C_STRING
-	c_description : C_STRING
+	c_name : XS_C_STRING
+	c_description : XS_C_STRING
 
 	actual_name_length : INTEGER
 	actual_description_length : INTEGER

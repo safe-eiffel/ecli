@@ -1,8 +1,12 @@
 indexing
 	description: "C allocated arrays of `item_size' bytes items."
 	author: "Paul G. Crismer"
+	
+	library: "XS_C : eXternal Support C"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 deferred class
 	XS_C_ARRAY [G]
@@ -13,7 +17,7 @@ inherit
 feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
-			-- 
+			-- create for `a_capacity' elements
 		require
 			valid_capacity: a_capacity > 0
 		do
@@ -61,10 +65,11 @@ feature -- Measurement
 		ensure
 			definition: Result = capacity
 		end
+		
 feature -- Element change
 
 	put (value : G; index : INTEGER) is
-			-- 
+			-- put `value' at `index'
 		require
 			valid_index: index >= lower and index <= upper
 		deferred
@@ -75,12 +80,14 @@ feature -- Element change
 feature {NONE} -- Implementation
 
 	item_pointer (index : INTEGER) : POINTER is
-			-- 
+			-- pointer of `index'-th item
 		do
 			Result := c_memory_pointer_plus (handle, (index - 1) * item_size)
 		end
 		
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class XS_C_ARRAY
+--
+-- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

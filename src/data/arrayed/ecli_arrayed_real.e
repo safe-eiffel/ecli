@@ -94,7 +94,7 @@ feature -- Basic operations
 	out_item_at (index : INTEGER) : STRING is
 			--
 		local
-			message_buffer : C_STRING
+			message_buffer : XS_C_STRING
 			ext : ECLI_EXTERNAL_TOOLS
 		do
 			create ext

@@ -1,8 +1,12 @@
 indexing
-	description: "C allocated arrays of 16bits integer (short)."
+	description: "C allocated arrays of 16 bits integer (short)."
 	author: "Paul G. Crismer"
+	
+	library: "XS_C : eXternal Support C"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	XS_C_ARRAY_INT16
@@ -31,7 +35,7 @@ feature -- Measurement
 feature -- Element change
 
 	put (value : INTEGER; index : INTEGER) is
-			-- 
+			-- put `value' at `index'
 		local
 			item_ptr : POINTER
 		do
@@ -40,3 +44,8 @@ feature -- Element change
 		end
 		
 end -- class XS_C_ARRAY_INT16
+--
+-- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

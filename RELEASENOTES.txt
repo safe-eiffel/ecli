@@ -1,6 +1,6 @@
 ECLI v1.1
 
-GOBO 3.0 is used
+GOBO 3.1 is used
 ECLI_TRACE now takes an KI_CHARACTER_OUTPUT_STREAM as argument in place of an IO_MEDIUM
 
 ECLI v1.0 (2001-09-15)

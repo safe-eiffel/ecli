@@ -12,7 +12,7 @@ class
 
 inherit
 
-	C_ARRAY_INT16
+	XS_C_ARRAY_INT16
 
 	ECLI_EXTERNAL_API
 		export 

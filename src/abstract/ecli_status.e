@@ -142,7 +142,7 @@ feature {NONE} -- Implementation
 		local
 			count : INTEGER
 			retcode : INTEGER
-			impl_error_buffer : C_STRING
+			impl_error_buffer : XS_C_STRING
 		do
 			if need_diagnostics then
 				impl_cli_state := STRING_.make_buffer (6)

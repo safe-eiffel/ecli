@@ -155,3 +155,4 @@ end -- class ECLI_COLUMN
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --
+

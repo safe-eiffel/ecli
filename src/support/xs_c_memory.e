@@ -1,8 +1,12 @@
 indexing
 	description: "Objects give access to C memory"
-	author: ""
+	author: "Paul G. Crismer"
+	
+	library: "XS_C : eXternal Support C"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	XS_C_MEMORY
@@ -18,38 +22,10 @@ feature -- Access
 
 	handle : POINTER
 	
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	dispose is
-			-- 
+			-- free external resources
 		do
 			c_memory_free (handle)
 		end
@@ -83,3 +59,8 @@ invariant
 	memory_allocated: handle /= default_pointer
 
 end -- class XS_C_MEMORY
+--
+-- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

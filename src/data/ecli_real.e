@@ -155,7 +155,7 @@ feature -- Basic operations
 
 	out : STRING is
 		local
-			message_buffer : C_STRING
+			message_buffer : XS_C_STRING
 		do
 			if is_null then
 				Result := "NULL"

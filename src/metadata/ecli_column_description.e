@@ -40,7 +40,7 @@ feature {NONE} -- Initialization
 			valid_maximum: max_name_length > 0
 		local
 			stat : INTEGER
-			c_name : C_STRING
+			c_name : XS_C_STRING
 		do
 			create c_name.make (max_name_length + 1)
 			stat := ecli_c_describe_column (stmt.handle,
