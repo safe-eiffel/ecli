@@ -1,6 +1,11 @@
 indexing
-	description: "Objects that iterate over columns metadata for a table."
-	author: ""
+	description: 
+		
+		"Objects that search the database repository for columns of a table. %
+		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
+		%A Void criteria is considered as a wildcard."
+		
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -8,70 +13,55 @@ class
 	ECLI_COLUMNS_CURSOR
 
 inherit
-	ECLI_CURSOR
+	ECLI_METADATA_CURSOR
 		rename
-			statement_start as start
-		export 
-			{ANY} close
+			queried_name as queried_table
 		redefine
-			start, forth
+			item, impl_item, make
 		end
 
 	ECLI_EXTERNAL_TOOLS
 	
 create
-	make_all_columns -- , make_by_type
+	make_all_columns, make -- , make_by_type
 	
 feature {NONE} -- Initialization
 
 	make_all_columns (a_session : ECLI_SESSION; a_table : STRING) is
 			-- make cursor on all columns of `a_table'
+		obsolete
+			"Use `make' or `make_by_column'"
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
 			a_table_not_void: a_table /= Void
 		local
-			schema_pointer : POINTER
-			catalog_pointer : POINTER
-			table_name_pointer : POINTER
-			schema_length, catalog_length, table_name_length : INTEGER
+			search_criteria : ECLI_NAMED_METADATA
 		do
-			make (a_session)
---			if a_table.catalog /= Void then
---				catalog_pointer := string_to_pointer (a_table.catalog)
---				catalog_length := a_table.catalog.count
---			end
---			if a_table.schema /= Void then
---				schema_pointer := string_to_pointer (a_table.schema)
---				schema_length := a_table.schema.count
---			end
---			if a_table.name /= Void then
-			table_name_pointer := string_to_pointer (a_table)
-			table_name_length := a_table.count
---			end
-			--set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
-			set_status (ecli_c_get_columns ( handle, 
-				catalog_pointer, catalog_length,
-				schema_pointer, schema_length,
-				table_name_pointer, table_name_length, 
-				default_pointer, 0))
-			if is_ok then
-				get_result_columns_count
-				is_executed := True
-				if has_results then
-					set_cursor_before
-				else
-					set_cursor_after
-				end
-	         else
-	         	impl_result_columns_count := 0
-			end
-			create_buffers
+			!!search_criteria.make (Void, Void, a_table)
+			queried_column := Void
+			make (search_criteria, a_session)
 		ensure
 			executed: is_ok implies is_executed
 		end
-	
+
+	make_one_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : STRING; a_session : ECLI_SESSION) is
+			-- search for column whose name matches `a_search_criteria' and `a_column_name'
+			-- Void values are wildcards
+		do
+			queried_column := a_column_name
+			make (a_search_criteria, a_session)
+		end
+
+	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION)	is
+		do
+			queried_column := Void
+			Precursor (a_name, a_session)
+		end
+		
 feature -- Access
 
+	queried_column : STRING
+	
 	item : ECLI_COLUMN is
 			-- current type description
 		require
@@ -84,27 +74,16 @@ feature -- Access
 	
 feature -- Cursor Movement
 
-	start is
+	create_item is
+			-- 
 		do
-			if cursor  = Void then
-				create_buffers
-			end
-			Precursor
-			if not off then
-				!!impl_item.make (Current)
-			end	
-		end
-		
-	forth is
-		do
-			Precursor
 			if not off then
 				!!impl_item.make (Current)
 			else
 				impl_item := Void				
 			end
 		end
-
+		
 feature {ECLI_COLUMN} -- Access
 
 		buffer_table_cat : ECLI_VARCHAR
@@ -178,4 +157,21 @@ feature {NONE} -- Implementation
 	
 	definition : STRING is once Result := "SQLColumns" end
 
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+			-- 
+		local
+			a_column : POINTER
+			a_column_length : INTEGER
+		do
+			if queried_column /= Void then
+				a_column := string_to_pointer (queried_column)
+				a_column_length := queried_column.count
+			end
+			Result := ecli_c_get_columns ( handle, 
+				a_catalog, a_catalog_length,
+				a_schema, a_schema_length,
+				a_name, a_name_length, 
+				a_column, a_column_length)
+		end
+		
 end -- class ECLI_COLUMNS_CURSOR

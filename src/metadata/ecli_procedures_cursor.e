@@ -1,6 +1,11 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: 
+	
+		"Objects that search the database repository for procedures. %
+		%Search criterias are (1) catalog name, (2) schema name, (3) procedure name.%
+		%A Void criteria is considered as a wildcard."
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -9,17 +14,20 @@ class
 
 inherit
 
-	ECLI_CURSOR
+	ECLI_METADATA_CURSOR
 		rename
-			statement_start as start
-		export 
-			{ANY} close
+			queried_name as queried_procedure
 		redefine
-			start, forth
+			item, impl_item
+		end
+
+	ECLI_EXTERNAL_TOOLS
+		export
+			{NONE} all
 		end
 		
 create
-	make_all_procedures -- , make_by_type
+	make_all_procedures, make -- , make_by_type
 	
 feature {NONE} -- Initialization
 
@@ -27,26 +35,15 @@ feature {NONE} -- Initialization
 			-- make cursor for all types of session
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
+		local
+			search_criteria : ECLI_NAMED_METADATA
 		do
-			make (a_session)
---			set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
-			set_status (ecli_c_get_procedures ( handle, 
-				default_pointer, 0, default_pointer, 0, default_pointer, 0))
-			if is_ok then
-				get_result_columns_count
-				is_executed := True
-				if has_results then
-					set_cursor_before
-					create_buffers
-				else
-					set_cursor_after
-				end
-	         else
-	         	impl_result_columns_count := 0
-			end
+			!!search_criteria.make (Void, Void, Void)
+			make (search_criteria, a_session)
 		ensure
 			executed: is_ok implies is_executed
 		end
+
 	
 feature -- Access
 
@@ -58,27 +55,6 @@ feature -- Access
 	
 feature -- Cursor Movement
 
-	start is
-		do
-			if cursor  = Void then
-				create_buffers
-			end
-			Precursor
-			if not off then
-				!!impl_item.make (Current)
-			end	
-		end
-		
-	forth is
-		do
-			Precursor
-			if not off then
-				!!impl_item.make (Current)
-			else
-				impl_item := Void				
-			end
-		end
-
 feature {ECLI_PROCEDURE} -- Access
 
 		buffer_catalog_name,
@@ -86,7 +62,7 @@ feature {ECLI_PROCEDURE} -- Access
 			buffer_procedure_name,
 			buffer_description, buffer_na1, buffer_na2, buffer_na3 : ECLI_VARCHAR
 	
-			buffer_procedure_type : ECLI_INTEGER
+		buffer_procedure_type : ECLI_INTEGER
 			
 feature {NONE} -- Implementation
 
@@ -128,4 +104,13 @@ feature {NONE} -- Implementation
 	
 	definition : STRING is once Result := "SQLProcedures" end
 
+	do_query_metadata (l_catalog : POINTER; catalog_length : INTEGER; 
+		l_schema : POINTER; schema_length : INTEGER; 
+		l_name : POINTER; name_length : INTEGER) : INTEGER is
+			-- 
+		do
+			Result := ecli_c_get_procedures ( handle, 
+				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
+		end
+		
 end -- class ECLI_PROCEDURES_CURSOR

@@ -14,6 +14,23 @@ inherit
 			out
 		end
 
+creation
+	make
+	
+feature {NONE} -- Initialization
+
+	make (a_catalog, a_schema, a_name : STRING) is
+			-- make for `a_catalog', `a_schema', `a_name'
+		do
+			catalog := a_catalog
+			schema := a_schema
+			name := a_name
+		ensure
+			catalog_assigned: catalog = a_catalog
+			schema_assigned: schema = a_schema
+			name_assigned: name = a_name
+		end
+		
 feature -- Access
 
 	catalog : STRING
@@ -35,7 +52,7 @@ feature -- Cursor movement
 feature -- Element change
 
 	set_catalog (value : ECLI_VARCHAR) is
-			-- 
+			-- set `catalog' wit `value'
 		require
 			value: value /= Void
 		do
@@ -44,7 +61,9 @@ feature -- Element change
 			else
 				catalog := Void
 			end
-			
+		ensure
+			void_if_null_value: value.is_null implies catalog = Void
+			assigned_if_not_null: not value.is_null implies catalog.is_equal (value.to_string)
 		end
 
 	set_schema (value : ECLI_VARCHAR) is
@@ -57,6 +76,9 @@ feature -- Element change
 			else
 				schema := Void
 			end
+		ensure
+			void_if_null_value: value.is_null implies schema = Void
+			assigned_if_not_null: not value.is_null implies schema.is_equal (value.to_string)		
 		end
 		
 	set_name (value : ECLI_VARCHAR) is
@@ -65,6 +87,8 @@ feature -- Element change
 			value: value /= Void and then not value.is_null
 		do
 			name := value.to_string
+		ensure
+			assigned: name.is_equal (value.to_string)		
 		end
 		
 feature -- Removal

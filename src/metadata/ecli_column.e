@@ -14,6 +14,9 @@ inherit
 		end
 
 	ECLI_NAMED_METADATA
+		rename
+			make as make_metadata
+		export {NONE} make_metadata
 		undefine
 			out
 		end

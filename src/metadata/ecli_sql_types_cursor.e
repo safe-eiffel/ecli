@@ -8,18 +8,10 @@ class
 	ECLI_SQL_TYPES_CURSOR
 
 inherit
---	ECLI_STATEMENT
---		rename
---			execute as statement_execute
---		export {NONE} all;
---			{ANY} start, forth , off, after, close
---		redefine
---			start, forth
---		end
 
 	ECLI_CURSOR
 		rename
-			statement_start as start
+			statement_start as start, make as cursor_make
 		export 
 			{ANY} close
 		redefine
@@ -55,20 +47,34 @@ feature -- Initialization
 			session_opened: a_session /= Void and then a_session.is_connected
 			closed: is_closed
 		do
-			make (a_session)
-			get_type_info (sql_all_types)
+			make (sql_all_types, a_session)
 		ensure
 			executed: is_ok implies is_executed
 			open: not is_closed
 		end
 
 	make_by_type, open_by_type (a_session : ECLI_SESSION; a_type : INTEGER) is
+		obsolete
+			" Use `make' "
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
 			valid_type: supported_types.has (a_type)
 			closed: is_closed
 		do
-			make (a_session)
+			make (a_type, a_session)
+		ensure
+			executed: is_ok implies is_executed
+			open: not is_closed
+		end		
+
+	make (a_type : INTEGER; a_session : ECLI_SESSION) is
+			-- make cursor for `a_type'
+		require
+			session_opened: a_session /= Void and then a_session.is_connected
+			valid_type: supported_types.has (a_type)
+			closed: is_closed
+		do
+			cursor_make (a_session)
 			get_type_info (a_type)
 		ensure
 			executed: is_ok implies is_executed

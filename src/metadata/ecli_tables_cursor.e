@@ -1,6 +1,12 @@
 indexing
-	description: "Objects that search the database repository for tables."
-	author: ""
+	description: 
+	
+		"Objects that search the database repository for tables. %
+		%Search criterias are (1) catalog name, (2) schema name, (3) table name.%
+		%A Void criteria is considered as a wildcard."
+		
+	author: "Paul G. Crismer"
+	
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -9,47 +15,51 @@ class
 
 inherit
 
-	ECLI_CURSOR
+	ECLI_METADATA_CURSOR
 		rename
-			statement_start as start
-		export 
-			{ANY} close
+			queried_name as queried_table
 		redefine
-			start, forth
+			item, impl_item
 		end
 
 	ECLI_EXTERNAL_TOOLS
 		export{NONE} all end
 		
 create
-	make_all_tables, make_table
+	make_all_tables, make_table, make
 	
 feature {NONE} -- Initialization
 
 	make_all_tables (a_session : ECLI_SESSION) is
 			-- make cursor for all types of session
+		obsolete
+			"Use feature `make' "
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
+		local
+			search_criteria: ECLI_NAMED_METADATA
 		do
-			make (a_session)
-			-- set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
-			set_status (ecli_c_get_tables ( handle, default_pointer, 0, default_pointer, 0, default_pointer, 0, default_pointer, 0))
-			update_state_after_execution
+			!!search_criteria.make (Void, Void, Void)
+			make (search_criteria, a_session)
 		ensure
 			executed: is_ok implies is_executed
 		end
 
 	make_table (a_table_name : STRING; a_session : ECLI_SESSION) is
 			-- make for `a_table_name'
+		obsolete
+			" Use feature `make'"
 		require
 			a_table_name_not_void: a_table_name /= Void
 			a_sessin_not_void: a_session /= Void
+			a_session_connected: a_session.is_connected				
+		local
+			search_criteria: ECLI_NAMED_METADATA
 		do
-			make (a_session)
-			--set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
-			set_status (ecli_c_get_tables ( handle, default_pointer, 0, default_pointer, 0, string_to_pointer (a_table_name), a_table_name.count, default_pointer, 0 ))
-			update_state_after_execution			
+			!!search_criteria.make (Void, Void, a_table_name)
+			make (search_criteria, a_session)
 		end
+
 		
 feature -- Access
 
@@ -58,9 +68,6 @@ feature -- Access
 		require
 			not_off: not off
 		do
-			if impl_item = Void then
-				!!impl_item.make (Current)
-			end
 			Result := impl_item
 		ensure
 			definition: Result /= Void
@@ -68,27 +75,14 @@ feature -- Access
 		
 feature -- Cursor Movement
 
-	start is
+	create_item is
+			-- 
 		do
-			if cursor  = Void then
-				create_buffers
-			end
-			Precursor
 			if not off then
 				!!impl_item.make (Current)
-			end	
+			end
 		end
 		
-	forth is
-		do
-			Precursor
-			if not off then
-				!!impl_item.make (Current)
-			else
-				impl_item := Void				
-			end
-		end
-
 feature {ECLI_TABLE} -- Access
 
 		buffer_catalog_name,
@@ -119,24 +113,11 @@ feature {NONE} -- Implementation
 
 	impl_item : ECLI_TABLE
 	
-	definition : STRING is once Result := "SQLTables" end
-	
-	update_state_after_execution is
-			-- post_make action
+	definition : STRING is once Result := "SQLTables" end		
+
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
 		do
-			if is_ok then
-				get_result_columns_count
-				is_executed := True
-				if has_results then
-					set_cursor_before
-				else
-					set_cursor_after
-				end
-	         else
-	         	impl_result_columns_count := 0
-			end
-			create_buffers		
+			Result := ecli_c_get_tables (handle, a_catalog, a_catalog_length, a_schema, a_schema_length, a_name, a_name_length, default_pointer, 0)
 		end
 		
-
 end -- class ECLI_TABLES_CURSOR
