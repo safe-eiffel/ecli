@@ -11,15 +11,21 @@ class
 	ECLI_BINARY
 
 inherit
-	ECLI_VARBINARY
+	ECLI_BINARY_VALUE
 		redefine
-			sql_type_code, formatted
+			formatted
 		end
 		
 creation
 	make
 	
 feature -- Access
+
+	max_capacity : INTEGER is
+			-- 
+		once
+			Result := 8_192
+		end
 
 	sql_type_code : INTEGER is
 			-- 

@@ -10,10 +10,7 @@ class
 	ECLI_VARBINARY
 
 inherit
-	ECLI_LONGVARBINARY
-		redefine
-			max_capacity, sql_type_code
-		end
+	ECLI_BINARY_VALUE
 		
 creation
 	make

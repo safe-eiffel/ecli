@@ -12,7 +12,7 @@ class
 	ECLI_CHAR
 
 inherit
-	ECLI_VARCHAR
+	ECLI_STRING_VALUE
 		redefine
 			make, count, sql_type_code, item, formatted
 		select
@@ -34,6 +34,11 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
+	max_capacity : INTEGER is
+		once
+			Result := 255
+		end
+		
 	count : INTEGER
 
 	item : STRING is

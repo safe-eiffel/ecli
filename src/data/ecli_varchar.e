@@ -9,10 +9,7 @@ class
 	ECLI_VARCHAR
 
 inherit
-	ECLI_LONGVARCHAR
-		redefine
-			max_capacity, sql_type_code
-		end
+	ECLI_STRING_VALUE
 		
 creation
 	make
