@@ -233,7 +233,8 @@ feature {NONE} -- Implementation
 				results := Void
 			end
 		ensure
-			results_count: results.count = query_statement.results_description.count
+			results_void_if_no_result_set: results = Void implies not query_statement.has_result_set
+			results_count: results /= Void implies results.count = query_statement.results_description.count
 		end
 		
 	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is

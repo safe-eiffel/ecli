@@ -82,7 +82,7 @@ feature {NONE} -- Implementation
 		require
 			string_not_void: string /= Void
 		local
-			last_upper, upper, changed : BOOLEAN
+			last_upper, upper : BOOLEAN
 			index : INTEGER
 			c, u : CHARACTER
 		do

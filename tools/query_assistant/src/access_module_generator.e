@@ -511,7 +511,10 @@ feature {NONE} -- Implementation
 			--| precondition
 			create routine_precondition.make ("cursor_not_void", "cursor /= Void")
 			eiffel_routine.add_precondition (routine_precondition)
+			create routine_precondition.make ("last_cursor_empty", "last_cursor /= Void and then last_cursor.is_empty")
+			eiffel_routine.add_precondition (routine_precondition)
 		
+			--| locals
 			if module.parameters.count > 0 then
 					
 				--	local
