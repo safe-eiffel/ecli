@@ -15,8 +15,44 @@
 <p><b><font size=+1>Paul G. Crismer</font></b>
 <p><b>pgcrism@attglobal.net</b></center>
 
+<pre>$Date$</pre>
+
+<pre>$Revision$</pre>
+
+<ol>
+<li>
+<a href="#Introduction">Introduction</a></li>
+
+<li>
+<a href="#ODBCCLI">ODBC/CLI Background</a></li>
+
+<li>
+<a href="#Yourfirstdatabase">Your first database session</a></li>
+
+<li>
+<a href="#Statuscheckinganderror">Status checking and error handling</a></li>
+
+<li>
+<a href="#StatementExec">Statement execution</a></li>
+
+<li>
+<a href="#GettingResults">Getting results</a></li>
+
+<li>
+<a href="#Getting esult-setmetadata">Getting result-set metadata</a></li>
+
+<li>
+<a href="#ParameterizedStmts">Parameterized statements</a></li>
+
+<li>
+<a href="#OptimizingforPerformance">Optimizing for "performance"</a></li>
+
+<li>
+<a href="#Conclusion">Conclusion</a></li>
+</ol>
+
 <h1>
-Introduction</h1>
+<a NAME="Introduction"></a>Introduction</h1>
 
 <h2>
 What is ECLI ?</h2>
@@ -69,6 +105,8 @@ it uses as portable Eiffel as possible, and has already been tested using&nbsp;<
 
 <br>&nbsp;
 <p>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
 <br>&nbsp;
 <br>&nbsp;
 <p>* ISE Eiffel and&nbsp;
@@ -175,7 +213,7 @@ on Relational Database modeling, nor on RDBMS systems management.
 <p>We assume that the reader has at least basic knowledge in database applications
 and is familiar with relational databases and SQL.
 <h1>
-ODBC/CLI Background</h1>
+<a NAME="ODBCCLI"></a>ODBC/CLI Background</h1>
 
 <h2>
 Layers</h2>
@@ -252,7 +290,7 @@ rowprefetch=20</td>
 <p>The above table shows some sample data source configurations.</center>
 
 <h1>
-Your first database session</h1>
+<a NAME="Yourfirstdatabase"></a>Your first database session</h1>
 The class ECLI_SESSION provides session-management features. A session
 object is created for accessing a specific <i>data-source</i>, by using
 authorization rights of a specific database <i>user</i>.
@@ -326,7 +364,7 @@ end</tt></pre>
 
 <br>&nbsp;
 <h1>
-Status checking and error handling</h1>
+<a NAME="Statuscheckinganderror"></a>Status checking and error handling</h1>
 All sensible ECLI classes inherit from the ECLI_STATUS class, which provides
 status checking and error handling.
 <p>Standard ODBC error handling information provides :
@@ -460,7 +498,7 @@ message</td>
 <p>The classes ECLI_SESSION and ECLI_STATEMENT (see next chapter) inherit
 from ECLI_STATUS, and can be used the same way.
 <h1>
-Statement execution</h1>
+<a NAME="StatementExec"></a>Statement execution</h1>
 Execution of a SQL request is done through an ECLI_STATEMENT object. The
 ECLI_STATEMENT class provides all the features needed to execute SQL requests
 and get the associated results.
@@ -552,7 +590,7 @@ allows you to change the query and go further with statement execution.
 </table></center>
 
 <h1>
-Getting results</h1>
+<a NAME="GettingResults"></a>Getting results</h1>
 A database selection returns a virtual table known as a <i>result-set</i>.
 This is an actual table since it also can be queried. A result-set can
 be explored by opening a cursor that provides access to each row in turn.
@@ -830,7 +868,7 @@ updates and insertions.</td>
 
 <br>&nbsp;
 <h1>
-Getting result-set metadata</h1>
+<a NAME="Getting esult-setmetadata"></a>Getting result-set metadata</h1>
 It is often interesting to get a <i>description</i> of a result-set, known
 as metadata. The following example shows how it is possible to get the
 names of the resulting rows :
@@ -924,7 +962,7 @@ of the array passed by <i>set_cursor</i> is checked against this value.</td>
 
 <br>&nbsp;
 <h1>
-Parameterized statements</h1>
+<a NAME="ParameterizedStmts"></a>Parameterized statements</h1>
 It is common to use SQL queries that look the same, but with different
 constant values. An example of this is when inserting a lot of data in
 the same table. One can for example read a file with data, and use the
@@ -1108,7 +1146,7 @@ next execution takes them into account</td>
 <br>&nbsp;
 <br>&nbsp;
 <h1>
-Optimizing for "performance"</h1>
+<a NAME="OptimizingforPerformance"></a>Optimizing for "performance"</h1>
 There are times when performance matters a lot.&nbsp; Optimizing performance
 can be done at the database level, and at the application level.
 <h2>
@@ -1269,7 +1307,7 @@ falling in prepared execution mode.</td>
 
 <br>&nbsp;
 <h1>
-Conclusion</h1>
+<a NAME="Conclusion"></a>Conclusion</h1>
 This tutorial has shown the most important features of ECLI.
 <p>Other more advanced features can be found in the class interfaces, in
 the examples, and with the tool application <i>query_assistant</i>.
