@@ -179,10 +179,10 @@ feature -- Status report
 		local
 			functions : expanded ECLI_FUNCTIONS_CONSTANTS
 		do
-			if impl_transaction_capability < sql_false then
+			if impl_describe_parameters_capability < sql_false then
 				set_status (ecli_c_sql_get_functions (handle, functions.Sql_api_sqldescribeparam, $ impl_describe_parameters_capability))
 			end
-			Result := impl_transaction_capability = sql_true
+			Result := impl_describe_parameters_capability = sql_true
 		end
 
 	is_bind_arrayed_parameters_capable : BOOLEAN is

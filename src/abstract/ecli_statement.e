@@ -169,6 +169,9 @@ feature -- Access
 	cursor_description : ARRAY [ECLI_COLUMN_DESCRIPTION]
 			-- cursor values metadata 
 
+	last_bound_parameter_index : INTEGER
+			-- index of last *successfuly* bound parameter after `bind_parameters'. Zero if none
+			
 feature -- Measurement
 
 	parameter_count : INTEGER is
@@ -426,6 +429,7 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			param_exist: param /= Void
+			param_lower: param.lower = 1
 			param_count: param.count = parameters_count
 			params_not_void: not array_routines.has (param, Void)
 		do
@@ -470,7 +474,8 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			row_exist: row /= Void
-		--	row_count: row.count >= result_columns_count
+			row_lower: row.lower = 1
+			row_count: row.count > 0
 			is_executed: is_executed
 		do
 			cursor := row
@@ -611,14 +616,23 @@ feature -- Basic operations
 			from
 				parameter_index := 1
 			until
-				parameter_index > parameters.count
+				not is_ok or else parameter_index > parameters.count
 			loop
 				bind_one_parameter (parameter_index)
 				parameter_index := parameter_index + 1
 			end
-			bound_parameters := True
+			if is_ok then
+				last_bound_parameter_index := parameter_index - 1
+				bound_parameters := True
+			else
+				last_bound_parameter_index := parameter_index - 2
+				bound_parameters := False
+			end
 		ensure
-			bound_parameters: bound_parameters
+			bound_parameters: is_ok implies bound_parameters
+			parameter_index_less: not is_ok implies last_bound_parameter_index < parameters.upper  
+			parameter_index_n: is_ok implies last_bound_parameter_index = parameters.upper
+			parameter_index_bounds: last_bound_parameter_index >= 0 and last_bound_parameter_index <= parameters.upper
 		end
 
 	prepare is
