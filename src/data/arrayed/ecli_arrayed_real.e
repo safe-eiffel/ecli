@@ -90,6 +90,12 @@ feature -- Transformation
 
 feature -- Conversion
 
+	as_string : STRING is
+			-- 
+		do
+			Result := out_item_at (cursor_index)
+		end
+		
 feature -- Duplication
 
 feature -- Miscellaneous

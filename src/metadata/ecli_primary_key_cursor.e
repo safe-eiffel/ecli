@@ -74,7 +74,7 @@ feature -- Cursor Movement
 					end
 					creating_item := False
 					Cursor_status := cursor_in
-					fetched_columns_count := cursor.count
+					fetched_columns_count := results.count
 			else
 				impl_item := Void
 			end
@@ -106,9 +106,9 @@ feature {NONE} -- Implementation
 		end
 
 	set_buffer_into_cursor is
-			-- set cursor with buffer values
+			-- set results cursor with buffer values
 		do
-			set_cursor (<<
+			set_results (<<
 				buffer_table_cat,
 				buffer_table_schem,
 				buffer_table_name,
@@ -117,7 +117,7 @@ feature {NONE} -- Implementation
 				buffer_pk_name
 				>>)
 		ensure
-			cursor_not_void: cursor /= Void
+			results_not_void: results /= Void
 		end
 
 	definition : STRING is once Result := "SQLPrimaryKeys" end

@@ -98,7 +98,7 @@ feature {NONE} -- Implementation
 			create buffer_table_type.make (255)
 			create buffer_description.make (255)
 
-			set_cursor (<<
+			set_results (<<
 					buffer_catalog_name,
 					buffer_schema_name,
 					buffer_table_name,

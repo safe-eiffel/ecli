@@ -60,48 +60,47 @@ feature -- Status report
 
 	convertible_as_string : BOOLEAN is
 			-- Is this value convertible to a string ?
-		do
-			Result := True
+		deferred
 		end
 
 	convertible_as_character : BOOLEAN is
 			-- Is this value convertible to a character ?
-		do
+		deferred
 		end
 
 	convertible_as_boolean : BOOLEAN is
 			-- Is this value convertible to a boolean ?
-		do
+		deferred
 		end
 
 	convertible_as_integer : BOOLEAN is
 			-- Is this value convertible to an integer ?
-		do
+		deferred
 		end
 
 	convertible_as_real : BOOLEAN is
 			-- Is this value convertible to a real ?
-		do
+		deferred
 		end
 
 	convertible_as_double : BOOLEAN is
 			-- Is this value convertible to a double ?
-		do
+		deferred
 		end
 
 	convertible_as_date : BOOLEAN is
 			-- Is this value convertible to a date ?
-		do
+		deferred
 		end
 
 	convertible_as_time : BOOLEAN is
 			-- Is this value convertible to a time ?
-		do
+		deferred
 		end
 
 	convertible_as_timestamp : BOOLEAN is
 			-- Is this value convertible to a timestamp ?
-		do
+		deferred
 		end
 
 
@@ -204,8 +203,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_string
 			not_null: not is_null
-		do
-			Result := out
+		deferred
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end
@@ -215,7 +213,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_character
 			not_null: not is_null
-		do
+		deferred
 		end
 
 	as_boolean : BOOLEAN is
@@ -223,7 +221,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_boolean
 			not_null: not is_null
-		do
+		deferred
 		end
 
 	as_integer : INTEGER is
@@ -231,7 +229,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_integer
 			not_null: not is_null
-		do
+		deferred
 		end
 
 	as_real : REAL is
@@ -239,7 +237,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_real
 			not_null: not is_null
-		do
+		deferred
 		end
 
 	as_double : DOUBLE is
@@ -247,7 +245,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_double
 			not_null: not is_null
-		do
+		deferred
 		end
 
 	as_date : DT_DATE is
@@ -255,7 +253,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_date
 			not_null: not is_null
-		do
+		deferred
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end
@@ -265,7 +263,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_time
 			not_null: not is_null
-		do
+		deferred
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end
@@ -275,7 +273,7 @@ feature -- Conversion
 		require
 			convertible: convertible_as_timestamp
 			not_null: not is_null
-		do
+		deferred
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end

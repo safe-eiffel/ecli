@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE]
 		undefine
-			set_item, is_equal, out_item_at
+			set_item, out_item_at
 		redefine
 		select
 			is_equal, copy
@@ -24,7 +24,8 @@ inherit
 		export
 			{NONE} make_single, make_default_single
 		undefine
-			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, set_item, as_string
+			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, set_item,
+			as_string
 		redefine
 			item, trace, allocate_buffer, year, month, day, set_date --, transfer_octet_length
 		end
@@ -187,6 +188,11 @@ feature -- Transformation
 
 feature -- Conversion
 
+	as_string : STRING is
+		do
+			Result := out_item_at (cursor_index)
+		end
+		
 	out_item_at (index : INTEGER) : STRING is
 		local
 			save_index : INTEGER
@@ -213,12 +219,12 @@ feature -- Basic operations
 			a_tracer.put_date (Current)
 		end
 
-	is_equal (other : like Current) : BOOLEAN is
-		do
-			Result := year = other.year and
-				month = other.month and
-				day = other.day
-		end
+--	is_equal (other : like Current) : BOOLEAN is
+--		do
+--			Result := year = other.year and
+--				month = other.month and
+--				day = other.day
+--		end
 
 feature {NONE} -- Implementation
 

@@ -54,7 +54,7 @@ feature {NONE} -- Implementation
 	
 	set_buffer_values_array is
 		do
-			set_cursor (<<
+			set_results (<<
 				buffer_table_cat,
 				buffer_table_schem,
 				buffer_table_name,

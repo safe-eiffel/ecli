@@ -21,19 +21,19 @@ inherit
 
 	ECLI_VALUE
 		undefine
-			as_character, convertible_as_character,
-			as_boolean, convertible_as_boolean,
-			as_integer, convertible_as_integer,
-			as_real, convertible_as_real,
-			as_double, convertible_as_double,
-			as_date, convertible_as_date,
-			as_time, convertible_as_time,
-			as_timestamp, convertible_as_timestamp,
+--			as_character, convertible_as_character,
+--			as_boolean, convertible_as_boolean,
+--			as_integer, convertible_as_integer,
+--			as_real, convertible_as_real,
+--			as_double, convertible_as_double,
+--			as_date, convertible_as_date,
+--			as_time, convertible_as_time,
+--			as_timestamp, convertible_as_timestamp,
 			set_null, length_indicator_pointer,
 			can_trace
 		redefine
-			release_handle, to_external, is_null,
-			as_string
+			release_handle, to_external, is_null --,
+--			as_string
 		end
 
 feature -- Initialization
@@ -190,11 +190,11 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
 	
-	as_string : STRING is
-			-- visible representation of current item
-		do
-			Result := out_item_at (cursor_index)
-		end
+--	as_string : STRING is
+--			-- visible representation of current item
+--		do
+--			Result := out_item_at (cursor_index)
+--		end
 
 	to_external : POINTER is
 			-- external 'C' address of value array

@@ -26,9 +26,10 @@ inherit
 			release_handle, length_indicator_pointer, to_external, 
 			is_null, set_null, 
 			-- is_equal, 
-			out, set_item, as_string
+			out, set_item
 		redefine
-			item, trace, allocate_buffer, hour, minute, second --out, , nanosecond --transfer_octet_length,
+			item, trace, allocate_buffer, hour, minute, second, as_string
+			--out, , nanosecond --transfer_octet_length,
 		end
 
 creation
@@ -58,44 +59,19 @@ feature -- Access
 		end
 
 	hour : INTEGER is
-		local
-			time_pointer : POINTER
 		do
-			time_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
-			if not is_null then
-				Result := ecli_c_timestamp_get_hour (time_pointer)
-			end
+			Result := hour_at (cursor_index)
 		end
 
 	minute : INTEGER is
-		local
-			time_pointer : POINTER
 		do
-			time_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
-			if not is_null then
-				Result := ecli_c_timestamp_get_minute (time_pointer)
-			end
+			Result := minute_at (cursor_index)
 		end
 
 	second : INTEGER is
-		local
-			time_pointer : POINTER
 		do
-			time_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
-			if not is_null then
-				Result := ecli_c_timestamp_get_second (time_pointer)
-			end
+			Result := second_at (cursor_index)
 		end
-
---	nanosecond : INTEGER is
---		local
---			time_pointer : POINTER
---		do
---			time_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
---			if not is_null then
---				Result := ecli_c_timestamp_get_fraction (time_pointer)
---			end
---		end
 
 	hour_at (index : INTEGER) : INTEGER is
 		require
@@ -133,18 +109,6 @@ feature -- Access
 			end
 		end
 
---	nanosecond_at (index : INTEGER) : INTEGER is
---		require
---			valid_index: index >= 1 and index <= count
---		local
---			time_pointer : POINTER
---		do
---			time_pointer := ecli_c_array_value_get_value_at (buffer, index)
---			if not is_null_at (index) then
---				Result := ecli_c_time_get_fraction (time_pointer)
---			end
---		end
-
 feature -- Measurement
 
 	set_at (a_hour, a_minute, a_second, index : INTEGER) is --, a_nanosecond : INTEGER; index : INTEGER ) is
@@ -152,7 +116,6 @@ feature -- Measurement
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
---			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
 			valid_index: index >= 1 and index <= count
 		local
 			time_pointer : POINTER
@@ -161,19 +124,17 @@ feature -- Measurement
 			ecli_c_time_set_hour (time_pointer, a_hour)
 			ecli_c_time_set_minute (time_pointer, a_minute)
 			ecli_c_time_set_second (time_pointer, a_second)
---			ecli_c_time_set_hour (time_pointer, a_nanosecond)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		ensure
 			hour_set: hour_at (index) = a_hour
 			minute_set: minute_at (index) = a_minute
 			second_set: second_at (index) = a_second
---			nanosecond_set: nanosecond_at (index) = a_nanosecond
 		end
 
 
 	set_item_at (other : like item; index : INTEGER) is
 		do
-			set_at (other.hour, other.minute, other.second, index) --, other.millisecond * 1_000_000, index)
+			set_at (other.hour, other.minute, other.second, index)
 		end
 
 feature -- Status report
@@ -191,7 +152,13 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Conversion
-
+		
+		as_string : STRING is
+				-- 
+			do
+				Result := out_item_at (cursor_index)
+			end
+			
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -237,16 +204,9 @@ feature {NONE} -- Implementation
 				Result.append_string (Integer_format.pad_integer_2 (minute_at (index)))
 				Result.append_character (':')
 				Result.append_string (Integer_format.pad_integer_2 (second_at (index)))
---				if nanosecond > 0 then
---					Result.append_character ('.')
---					Result.append_string (nanosecond.out)
---				end
 			end
 			cursor_index := save_index
 		end
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class ECLI_ARRAYED_TIME
 --

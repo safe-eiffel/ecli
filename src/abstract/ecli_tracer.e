@@ -108,7 +108,7 @@ feature {ECLI_SESSION} -- Basic operations
 		
 feature {ECLI_VALUE} -- Basic operations
 
-	put_string (a_value : ECLI_LONGVARCHAR) is
+	put_string (a_value : ECLI_GENERIC_VALUE[STRING]) is
 			-- Put 'a_value' as a string constant
 		require
 			a_value /= Void and then not a_value.is_null

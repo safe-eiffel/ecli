@@ -15,9 +15,9 @@ inherit
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
 			create_impl_item, impl_item, is_equal, out, 
-			as_string, convertible_as_string, 
-			set_item, item,
-			convertible_as_timestamp, as_timestamp
+--			as_string, convertible_as_string, 
+--			convertible_as_timestamp, as_timestamp,
+			set_item, item
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
@@ -188,6 +188,48 @@ feature -- Status report
 			Result := True
 		end
 
+	convertible_as_character : BOOLEAN is
+			-- Is this value convertible to a character ?
+		do
+			Result := False
+		end
+
+	convertible_as_boolean : BOOLEAN is
+			-- Is this value convertible to a boolean ?
+		do
+			Result := False
+		end
+
+	convertible_as_integer : BOOLEAN is
+			-- Is this value convertible to an integer ?
+		do
+			Result := False
+		end
+
+	convertible_as_real : BOOLEAN is
+			-- Is this value convertible to a real ?
+		do
+			Result := False
+		end
+
+	convertible_as_double : BOOLEAN is
+			-- Is this value convertible to a double ?
+		do
+			Result := False
+		end
+
+	convertible_as_date : BOOLEAN is
+			-- Is this value convertible to a date ?
+		do
+			Result := True
+		end
+
+	convertible_as_time : BOOLEAN is
+			-- Is this value convertible to a time ?
+		do
+			Result := False
+		end
+
 feature -- Element change
 
 	set_date (a_year, a_month, a_day : INTEGER ) is
@@ -302,6 +344,41 @@ feature -- Conversion
 			Result := clone (item)
 		end
 
+	as_date : DT_DATE is
+		do
+			Result := item.date
+		end
+
+	as_character : CHARACTER is
+			-- Current converted to CHARACTER 
+		do
+		end
+
+	as_boolean : BOOLEAN is
+			-- Current converted to BOOLEAN
+		do
+		end
+
+	as_integer : INTEGER is
+			-- Current converted to INTEGER
+		do
+		end
+
+	as_real : REAL is
+			-- Current converted to REAL
+		do
+		end
+
+	as_double : DOUBLE is
+			-- Current converted to DOUBLE
+		do
+		end
+
+	as_time : DT_TIME is
+			-- Current converted to DT_TIME
+		do
+		end
+		
 feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is

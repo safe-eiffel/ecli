@@ -126,12 +126,12 @@ feature {NONE} -- Implementation
 				create impl_value_factory.make
 			end
 			Result := impl_value_factory
+		ensure
+			result_exists: Result /= Void
 		end
 	
 	value_anchor : ECLI_VALUE is
-			-- 
 		do
-			
 		end
 		
 	

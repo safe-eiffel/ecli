@@ -9,6 +9,13 @@ class
 	ECLI_ARRAYED_TIMESTAMP
 
 inherit
+--	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE_TIME]
+--		undefine
+--			set_item, out_item_at
+--		redefine
+--		select
+--			is_equal, copy
+--		end
 	ECLI_ARRAYED_DATE
 		rename
 			make_single as make_single_date, make_default_single as make_default_1_date,
@@ -20,14 +27,21 @@ inherit
 			c_type_code,
 			column_precision,
 			convertible_as_string,
+			convertible_as_character,
+			convertible_as_boolean,
+			convertible_as_integer,
+			convertible_as_real,
+			convertible_as_double,
+			convertible_as_date, 
+			convertible_as_time,
+			convertible_as_timestamp , 			
+			as_boolean, as_character, as_integer, as_real, as_double, as_time, as_timestamp,
 			sql_type_code,
 			decimal_digits,
 			display_size,
 			item,
-			as_time,
-			as_timestamp,
 			trace,
-			transfer_octet_length, convertible_as_timestamp , convertible_as_date, days_in_month,
+			transfer_octet_length, days_in_month,
 			Integer_format, Calendar, size
 		redefine
 --			is_equal, copy, 
@@ -36,7 +50,6 @@ inherit
 			set_date_item,
 			is_equal, copy
 		end
-
 
 	ECLI_TIMESTAMP
 		rename

@@ -14,9 +14,10 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DOUBLE]
 		redefine
-			item, set_item, out,
-			as_double, convertible_as_double, as_integer, convertible_as_integer,
-			as_real, convertible_as_real
+			item, set_item, out --,
+--			as_double, convertible_as_double, 
+--			as_integer, convertible_as_integer,
+--			as_real, convertible_as_real
 		end
 
 	XS_C_MEMORY_ROUTINES
@@ -39,10 +40,41 @@ feature -- Access
 
 	item : DOUBLE is
 		do
-			Result := as_double
+			Result := c_memory_get_double (ecli_c_value_get_value(buffer))
+		end
+
+
+	c_type_code: INTEGER is
+		once
+			Result := sql_c_double
+		end
+
+	sql_type_code: INTEGER is
+		once
+			Result := sql_double
 		end
 
 feature -- Measurement
+
+	size : INTEGER is
+		do
+			Result := 15
+		end
+
+	decimal_digits: INTEGER is
+		do 
+			Result := 0
+		end
+
+	display_size: INTEGER is
+		do
+			Result := 22
+		end
+
+	transfer_octet_length: INTEGER is
+		do
+			Result := 8
+		end
 
 feature -- Status report
 
@@ -61,37 +93,42 @@ feature -- Status report
 			Result := True
 		end
 
-feature -- Status setting
-
-	c_type_code: INTEGER is
-		once
-			Result := sql_c_double
-		end
-
-	size : INTEGER is
+	convertible_as_string : BOOLEAN is
+			-- Is this value convertible to a string ?
 		do
-			Result := 15
+			Result := True
 		end
 
-	sql_type_code: INTEGER is
-		once
-			Result := sql_double
-		end
-	
-	decimal_digits: INTEGER is
-		do 
-			Result := 0
-		end
-
-	display_size: INTEGER is
+	convertible_as_character : BOOLEAN is
+			-- Is this value convertible to a character ?
 		do
-			Result := 22
+			Result := False
 		end
 
-	transfer_octet_length: INTEGER is
+	convertible_as_boolean : BOOLEAN is
+			-- Is this value convertible to a boolean ?
 		do
-			Result := 8
+			Result := False
 		end
+
+	convertible_as_date : BOOLEAN is
+			-- Is this value convertible to a date ?
+		do
+			Result := False
+		end
+
+	convertible_as_time : BOOLEAN is
+			-- Is this value convertible to a time ?
+		do
+			Result := False
+		end
+
+	convertible_as_timestamp : BOOLEAN is
+			-- Is this value convertible to a timestamp ?
+		do
+			Result := False
+		end
+
 
 feature -- Cursor movement
 
@@ -114,23 +151,47 @@ feature -- Conversion
 
 	as_double : DOUBLE is
 		do
-			if not is_null then
-				Result := c_memory_get_double (ecli_c_value_get_value(buffer))
-			end
+			Result := item
 		end
 
 	as_integer : INTEGER is
 		do
-			if not is_null then
-				Result := as_double.truncated_to_integer
-			end
+			Result := item.truncated_to_integer
 		end
 
 	as_real : REAL is
 		do
-			if not is_null then
-				Result := as_double.truncated_to_real
-			end
+			Result := item.truncated_to_real
+		end
+
+	as_string : STRING is
+		do
+			Result := item.out
+		end
+
+	as_character : CHARACTER is
+			-- Current converted to CHARACTER 
+		do
+		end
+
+	as_boolean : BOOLEAN is
+			-- Current converted to BOOLEAN
+		do
+		end
+
+	as_date : DT_DATE is
+			-- Current converted to DATE
+		do
+		end
+
+	as_time : DT_TIME is
+			-- Current converted to DT_TIME
+		do
+		end
+
+	as_timestamp : DT_DATE_TIME is
+			-- Current converted to DT_DATE_TIME
+		do
 		end
 		
 feature -- Duplication

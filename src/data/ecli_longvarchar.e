@@ -14,8 +14,13 @@ class
 inherit
 	ECLI_GENERIC_VALUE [STRING]
 		redefine
-			item, set_item,convertible_as_string, as_string, out, convertible_as_character, as_character,
-			convertible_as_integer, as_integer, convertible_as_double, as_double, impl_item
+			item, set_item,
+--			convertible_as_string, as_string, 
+--			convertible_as_character, as_character,
+--			convertible_as_integer, as_integer, 
+--			convertible_as_double, as_double, 
+			out, 
+			impl_item
 		end
 	
 creation
@@ -69,7 +74,37 @@ feature -- Access
 			end
 		end
 
+	c_type_code: INTEGER is
+		once
+			Result := sql_c_char
+		end
+
+	sql_type_code: INTEGER is
+		once
+			Result := sql_longvarchar
+		end
+
 feature -- Measurement
+		
+	size: INTEGER is
+		do
+			Result := display_size
+		end
+
+	decimal_digits: INTEGER is
+		do 
+			Result := 0
+		end
+
+	display_size: INTEGER is
+		do
+			Result := transfer_octet_length - 1
+		end
+
+	transfer_octet_length: INTEGER is
+		do
+			Result := ecli_c_value_get_length (buffer)
+		end
 
 feature -- Status report
 
@@ -92,36 +127,38 @@ feature -- Status report
 		do
 			Result := count > 0
 		end
-		
-	c_type_code: INTEGER is
-		once
-			Result := sql_c_char
-		end
 
-	size: INTEGER is
+	convertible_as_boolean : BOOLEAN is
+			-- Is this value convertible to a boolean ?
 		do
-			Result := display_size
+			Result := not is_null and then item.is_boolean
 		end
 
-	sql_type_code: INTEGER is
-		once
-			Result := sql_longvarchar
-		end
-	
-	decimal_digits: INTEGER is
-		do 
-			Result := 0
-		end
 
-	display_size: INTEGER is
+	convertible_as_real : BOOLEAN is
+			-- Is this value convertible to a real ?
 		do
-			Result := transfer_octet_length - 1
+			Result := not is_null and then item.is_real
 		end
 
-	transfer_octet_length: INTEGER is
+	convertible_as_date : BOOLEAN is
+			-- Is this value convertible to a date ?
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := False
 		end
+
+	convertible_as_time : BOOLEAN is
+			-- Is this value convertible to a time ?
+		do
+			Result := False
+		end
+
+	convertible_as_timestamp : BOOLEAN is
+			-- Is this value convertible to a timestamp ?
+		do
+			Result := False
+		end
+
 
 feature -- Element change
 
@@ -137,12 +174,20 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
---			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_length)
 			ext_item.from_string (value)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 		end
 			
 feature -- Conversion
+
+	out : STRING is
+		do
+			if is_null then
+				Result := "NULL"
+			else
+				Result := item
+			end
+		end
 
 	as_string : STRING is
 			-- Conversion to STRING value
@@ -169,14 +214,32 @@ feature -- Conversion
 		do
 			Result := item.to_double
 		end
-		
-	out : STRING is
+
+	as_boolean : BOOLEAN is
+			-- Current converted to BOOLEAN
 		do
-			if is_null then
-				Result := "NULL"
-			else
-				Result := item
-			end
+			Result := item.to_boolean
+		end
+
+	as_real : REAL is
+			-- Current converted to REAL
+		do
+			Result := item.to_real
+		end
+
+	as_date : DT_DATE is
+			-- Current converted to DATE
+		do
+		end
+
+	as_time : DT_TIME is
+			-- Current converted to DT_TIME
+		do
+		end
+
+	as_timestamp : DT_DATE_TIME is
+			-- Current converted to DT_DATE_TIME
+		do
 		end
 
 feature -- Basic operations
@@ -213,6 +276,10 @@ feature {NONE} -- Implementation
 	impl_item : STRING
 
 	ext_item : XS_C_STRING
+	
+invariant
+	ext_item_exists: ext_item /= Void
+	impl_item_exists: impl_item /= Void
 	
 end -- class ECLI_LONGVARCHAR
 --

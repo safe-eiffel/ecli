@@ -14,7 +14,7 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DT_TIME]
 		redefine
-			convertible_as_time, as_time, 
+--			convertible_as_time, as_time, 
 			is_equal, out, 
 			set_item, item,
 			create_impl_item, impl_item
@@ -30,7 +30,6 @@ feature {NONE} -- Initialization
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
---			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
 		do
 			allocate_buffer
 			set (a_hour, a_minute, a_second) --, a_nanosecond)
@@ -39,19 +38,15 @@ feature {NONE} -- Initialization
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
 			second_set: second = a_second
---			nanosecond_set: nanosecond = a_nanosecond
 		end
 
 	make_default is
 		do
---			allocate_buffer
---			set (0, 0, 0)
 			make (0,0,0)
 		ensure
 			hour_set: hour = 0
 			minute_set: minute = 0
 			second_set: second = 0
---			nanosecond_set: nanosecond = 0
 		end
 
 feature -- Access
@@ -90,15 +85,68 @@ feature -- Access
 			Result := sql_c_type_time
 		end
 
-feature -- Measurement
+	sql_type_code: INTEGER is
+		once
+			Result := sql_type_time
+		end
 
-	convertible_as_time : BOOLEAN is
-			-- is Current convertible as a time ?
+feature -- Status report
+
+	convertible_as_string : BOOLEAN is
+			-- Is this value convertible to a string ?
 		do
 			Result := True
 		end
-		
-feature -- Status report
+
+	convertible_as_character : BOOLEAN is
+			-- Is this value convertible to a character ?
+		do
+			Result := False
+		end
+
+	convertible_as_boolean : BOOLEAN is
+			-- Is this value convertible to a boolean ?
+		do
+			Result := False
+		end
+
+	convertible_as_integer : BOOLEAN is
+			-- Is this value convertible to an integer ?
+		do
+			Result := False
+		end
+
+	convertible_as_real : BOOLEAN is
+			-- Is this value convertible to a real ?
+		do
+			Result := False
+		end
+
+	convertible_as_double : BOOLEAN is
+			-- Is this value convertible to a double ?
+		do
+			Result := False
+		end
+
+	convertible_as_date : BOOLEAN is
+			-- Is this value convertible to a date ?
+		do
+			Result := False
+		end
+
+	convertible_as_time : BOOLEAN is
+			-- Is this value convertible to a time ?
+		do
+			Result := True
+		end
+
+	convertible_as_timestamp : BOOLEAN is
+			-- Is this value convertible to a timestamp ?
+		do
+			Result := False
+		end
+
+feature -- Measurement
 
 	size : INTEGER is
 		do
@@ -107,13 +155,9 @@ feature -- Status report
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_sizeof_time_struct --ecli_c_value_get_length (buffer)
+			Result := ecli_c_sizeof_time_struct
 		end
 
-	sql_type_code: INTEGER is
-		once
-			Result := sql_type_time
-		end
 	
 	decimal_digits: INTEGER is
 		do
@@ -137,19 +181,16 @@ feature -- Element change
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
---			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
 
 		do
 			ecli_c_time_set_hour (to_external, a_hour)
 			ecli_c_time_set_minute (to_external, a_minute)
 			ecli_c_time_set_second (to_external, a_second)
---			ecli_c_timestamp_set_fraction (to_external, a_nanosecond)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
 			second_set: second = a_second
---			nanosecond_set: nanosecond = a_nanosecond
 		end
 
 	set_item (other : DT_TIME) is
@@ -181,6 +222,47 @@ feature -- Conversion
 	as_time : DT_TIME is
 		do
 			Result := clone (item)
+		end
+
+	as_string : STRING is
+			-- Current converted to STRING
+		do
+			Result := out
+		end
+
+	as_character : CHARACTER is
+			-- Current converted to CHARACTER 
+		do
+		end
+
+	as_boolean : BOOLEAN is
+			-- Current converted to BOOLEAN
+		do
+		end
+
+	as_integer : INTEGER is
+			-- Current converted to INTEGER
+		do
+		end
+
+	as_real : REAL is
+			-- Current converted to REAL
+		do
+		end
+
+	as_double : DOUBLE is
+			-- Current converted to DOUBLE
+		do
+		end
+
+	as_date : DT_DATE is
+			-- Current converted to DATE
+		do
+		end
+
+	as_timestamp : DT_DATE_TIME is
+			-- Current converted to DT_DATE_TIME
+		do
 		end
 		
 feature -- Duplication

@@ -14,8 +14,10 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
-			item, set_item, out, is_equal, convertible_as_date, as_date,
-			convertible_as_timestamp, as_timestamp, create_impl_item, impl_item
+			item, set_item, out, is_equal, 
+--			convertible_as_date, as_date,
+--			convertible_as_timestamp, as_timestamp, 
+			create_impl_item, impl_item
 		end
 		
 	KL_IMPORTED_STRING_ROUTINES
@@ -45,8 +47,6 @@ feature {NONE} -- Initialization
 	make_default is
 			-- make default date as first day of Christian Era : January 1st, 1
 		do
---			allocate_buffer
---			set (1,1,1)
 			make (1, 1, 1)
 		ensure
 			not_null: not is_null
@@ -84,6 +84,72 @@ feature -- Access
 			end
 		end
 
+	c_type_code: INTEGER is
+		once
+			Result := sql_c_type_date
+		end
+
+	sql_type_code: INTEGER is
+		once
+			Result := sql_type_date
+		end
+
+feature -- Status report
+
+	convertible_as_string : BOOLEAN is
+			-- Is this value convertible to a string ?
+		do
+			Result := True
+		end
+
+	convertible_as_character : BOOLEAN is
+			-- Is this value convertible to a character ?
+		do
+			Result := False
+		end
+
+	convertible_as_boolean : BOOLEAN is
+			-- Is this value convertible to a boolean ?
+		do
+			Result := False
+		end
+
+	convertible_as_integer : BOOLEAN is
+			-- Is this value convertible to an integer ?
+		do
+			Result := False
+		end
+
+	convertible_as_real : BOOLEAN is
+			-- Is this value convertible to a real ?
+		do
+			Result := False
+		end
+
+	convertible_as_double : BOOLEAN is
+			-- Is this value convertible to a double ?
+		do
+			Result := False
+		end
+
+	convertible_as_date : BOOLEAN is
+			-- Is this value convertible to a date ?
+		do
+			Result := True
+		end
+
+	convertible_as_time : BOOLEAN is
+			-- Is this value convertible to a time ?
+		do
+			Result := False
+		end
+
+	convertible_as_timestamp : BOOLEAN is
+			-- Is this value convertible to a timestamp ?
+		do
+			Result := True
+		end
+
 feature -- Measurement
 
 	days_in_month (a_month, a_year : INTEGER) : INTEGER is
@@ -96,32 +162,10 @@ feature -- Measurement
 			Result := calendar.days_in_month(a_month, a_year)
 		end
 		
-feature -- Status report
-
-	convertible_as_date : BOOLEAN is 
-		do
-			Result := True
-		end
-	
-	convertible_as_timestamp : BOOLEAN is
-			-- is Current convertible to timestamp ?
-		do 
-			Result := True
-		end
 		
-	c_type_code: INTEGER is
-		once
-			Result := sql_c_type_date
-		end
-
 	size : INTEGER is
 		do
 			Result := 10
-		end
-
-	sql_type_code: INTEGER is
-		once
-			Result := sql_type_date
 		end
 
 	decimal_digits: INTEGER is
@@ -195,6 +239,42 @@ feature -- Conversion
 			-- Current converted to timestamp
 		do
 			!!Result.make(year, month, day, 0, 0, 0)
+		end
+
+	as_string : STRING is
+			-- Current converted to STRING
+		do
+			Result := out
+		end
+
+	as_character : CHARACTER is
+			-- Current converted to CHARACTER 
+		do
+		end
+
+	as_boolean : BOOLEAN is
+			-- Current converted to BOOLEAN
+		do
+		end
+
+	as_integer : INTEGER is
+			-- Current converted to INTEGER
+		do
+		end
+
+	as_real : REAL is
+			-- Current converted to REAL
+		do
+		end
+
+	as_double : DOUBLE is
+			-- Current converted to DOUBLE
+		do
+		end
+
+	as_time : DT_TIME is
+			-- Current converted to DT_TIME
+		do
 		end
 		
 feature -- Basic operations

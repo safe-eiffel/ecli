@@ -35,9 +35,9 @@ feature -- Initialization
 			row_count_valid: a_row_capacity >= 1
 		do
 			row_capacity := a_row_capacity
+			make_row_count_capable
 			!!rowset_status.make (row_capacity)
 			row_cursor_make (a_session, a_definition)
-			make_row_count_capable
 		ensure
 			valid: is_valid
 			definition_set: definition = a_definition
@@ -175,7 +175,7 @@ feature {NONE} -- Implementation
 					go_after
 			else
 				if fetch_increment \\ row_capacity = 0 then
-					--| Bind `row_count' a getting the actual number of rows fetched
+					--| Bind `row_count' for getting the actual number of rows fetched
 					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, impl_row_count.handle, 0))			
 					--| Do actual fetch
 					Precursor

@@ -126,7 +126,7 @@ feature -- Access
 		end
 
 	literal_suffix : STRING is
-			-- Character(s) used to prefix a literal
+			-- Character(s) used to suffix a literal
 		do
 			Result := impl_literal_suffix
 		ensure

@@ -152,7 +152,7 @@ feature {NONE} -- Implementation
 			if need_diagnostics then
 				--impl_cli_state := STRING_.make_buffer (6)
 				if impl_cli_state = Void then create impl_cli_state.make (6) end
-				if impl_error_buffer = Void then create impl_error_buffer.make (512) end
+				if impl_error_buffer = Void then create impl_error_buffer.make (512) end -- SQL_MAX_MSG_LEN
 				if impl_native_code = Void then create impl_native_code.make end
 				if impl_buffer_length_indicator = Void then create impl_buffer_length_indicator.make end
 				!!impl_error_message.make(0)
@@ -166,14 +166,16 @@ feature {NONE} -- Implementation
 							impl_cli_state.handle,
 							impl_native_code.handle, 
 							impl_error_buffer.handle,
-							impl_error_buffer.capacity - 1,
+							impl_error_buffer.capacity,
 							impl_buffer_length_indicator.handle)
-					if retcode = sql_success or else retcode = sql_success_with_info then	
+					if retcode = sql_success_with_info and then impl_buffer_length_indicator.item > impl_error_buffer.capacity then
+						create impl_error_buffer.make (impl_buffer_length_indicator.item)
+					elseif retcode = sql_success or else retcode = sql_success_with_info then
 						impl_error_message.append_string (
 								impl_error_buffer.as_string)
 						impl_error_message.append_string ("%N")
+						count := count + 1
 					end	
-					count := count + 1
 				end
 				need_diagnostics := False
 			end

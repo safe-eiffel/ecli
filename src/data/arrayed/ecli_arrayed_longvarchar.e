@@ -15,7 +15,8 @@ inherit
 			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
-			set_item, transfer_octet_length, as_string, convertible_as_string
+			set_item, transfer_octet_length--, 
+--			as_string, convertible_as_string
 		redefine
 			item, content_capacity, content_count
 		end
@@ -47,6 +48,9 @@ feature {NONE} -- Initialization
 			set_all_null
 			create s.make (0)
 			impl_item := s
+			--| create ext_item, with dummy values
+			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1), 
+				ecli_c_array_value_get_length_indicator_at(buffer,1))
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
 			capacity_set: capacity = a_capacity
@@ -101,12 +105,13 @@ feature -- Access
 
 feature -- Measurement
 
-feature -- Status report
-
 	transfer_octet_length: INTEGER is
 		do
 			Result := ecli_c_array_value_get_length (buffer)
 		end
+
+feature -- Status report
+
 
 feature -- Status setting
 
@@ -133,7 +138,7 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
-			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), transfer_length )
+			ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), transfer_length )
 			ext_item.from_string (value)
 			--ecli_c_array_value_set_value_at (buffer, string_to_pointer (value), actual_length, index)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_length, index)
@@ -147,11 +152,11 @@ feature -- Transformation
 
 feature -- Conversion
 
-		as_string : STRING is
-				--
-			do
-				Result := item_at (cursor_index).out
-			end
+--		as_string : STRING is
+--				--
+--			do
+--				Result := item_at (cursor_index).out
+--			end
 
 feature -- Duplication
 
@@ -178,8 +183,6 @@ feature {NONE} -- Implementation
 			Result.append_string ("'")
 		end
 
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class ECLI_ARRAYED_LONGVARCHAR
 --

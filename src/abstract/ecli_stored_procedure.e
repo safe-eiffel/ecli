@@ -135,8 +135,6 @@ feature {NONE} -- Implementation
 		
 	bind_one_parameter (i: INTEGER) is
 			-- 
-		local
-			l_parameter : ECLI_VALUE
 		do
 			directed_parameters.item (i).bind (Current, i)	
 		end
