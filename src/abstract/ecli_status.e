@@ -148,6 +148,7 @@ feature {NONE} -- Implementation
 			count : INTEGER
 			retcode : INTEGER
 			impl_error_buffer : XS_C_STRING
+			saved_native_code : INTEGER
 		do
 			if need_diagnostics then
 				--impl_cli_state := STRING_.make_buffer (6)
@@ -174,9 +175,11 @@ feature {NONE} -- Implementation
 						impl_error_message.append_string (
 								impl_error_buffer.as_string)
 						impl_error_message.append_string ("%N")
+						saved_native_code := impl_native_code.item
 						count := count + 1
 					end	
 				end
+				impl_native_code.put (saved_native_code)
 				need_diagnostics := False
 			end
 		end
