@@ -15,8 +15,10 @@ inherit
 
 	ECLI_STRING_VALUE
 		redefine
-			make, count, sql_type_code, item, formatted
-		select
+			make, 
+			count, 
+			item, 
+			formatted
 		end
 
 creation

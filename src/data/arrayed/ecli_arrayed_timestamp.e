@@ -20,67 +20,78 @@ inherit
 --		select
 --			is_equal, copy
 --		end
-	ECLI_ARRAYED_DATE
-		rename
-			make_single as make_single_date, make_default_single as make_default_1_date,
-			set_item as set_date_item, formatted as date_formatted, create_impl_item as create_date_impl_item,
-			copy_item as copy_item_date, is_equal_item as is_equal_item_date
-		export
-			{NONE} make_single_date, make_default_1_date, set_date_item, date_formatted
-		undefine
-			c_type_code,
-			column_precision,
-			convertible_as_string,
-			convertible_as_character,
-			convertible_as_boolean,
-			convertible_as_integer,
-			convertible_as_real,
-			convertible_as_double,
-			convertible_as_date, 
-			convertible_as_time,
-			convertible_as_timestamp , 			
-			as_boolean, as_character, as_integer, as_real, as_double, as_time, as_timestamp,
-			sql_type_code,
-			decimal_digits,
-			display_size,
-			item,
-			trace,
-			transfer_octet_length, days_in_month,
-			Integer_format, Calendar, size
+--	ECLI_ARRAYED_DATE
+--		rename
+--			make_single as make_single_date, make_default_single as make_default_1_date,
+--			set_item as set_date_item, formatted as date_formatted, create_impl_item as create_date_impl_item,
+--			copy_item as copy_item_date, is_equal_item as is_equal_item_date
+--		export
+--			{NONE} make_single_date, make_default_1_date, set_date_item, date_formatted
+--		undefine
+--			c_type_code,
+--			column_precision,
+--			convertible_as_string,
+--			convertible_as_character,
+--			convertible_as_boolean,
+--			convertible_as_integer,
+--			convertible_as_real,
+--			convertible_as_double,
+--			convertible_as_date, 
+--			convertible_as_time,
+--			convertible_as_timestamp , 			
+--			as_boolean, as_character, as_integer, as_real, as_double, as_time, as_timestamp,
+--			sql_type_code,
+--			decimal_digits,
+--			display_size,
+--			item,
+--			trace,
+--			transfer_octet_length, days_in_month,
+--			Integer_format, Calendar, size
+--		redefine
+----			is_equal, copy, 
+--			out_item_at, item_at, set_item_at, impl_item --, set_item, set_item_at,
+--		select
+--			set_date_item,
+--			is_equal, copy
+--		end
+
+	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE_TIME]
 		redefine
---			is_equal, copy, 
-			out_item_at, item_at, set_item_at, impl_item --, set_item, set_item_at,
+			out_item_at, set_item
 		select
-			set_date_item,
 			is_equal, copy
 		end
 
+	ECLI_ARRAYED_DATE_ROUTINES
+		undefine
+			is_equal, copy, out
+		redefine
+			out_item_at
+		end
+		
 	ECLI_TIMESTAMP
 		rename
-			make as make_single, make_default as make_default_2, set as set_single_timestamp,
+			make as make_single, set as set_single_timestamp,
 			copy as copy_item, is_equal as is_equal_item
 		export
-			{NONE} make_single, set_single_timestamp, make_default_2
+			{NONE} make_single, set_single_timestamp, make_default
 		undefine
 			allocate_buffer,
 			day,
-			make_null,
 			is_null, set_null,
 			length_indicator_pointer,
 			month,
-			out, out_null,
+			out,
 			release_handle,
-			set_date,
+--			set_date,
 			set_item,
 			to_external,
 			as_string,
-			year, hour, minute, second, nanosecond, as_date
+			year, hour, minute, second, nanosecond
 --		redefine
 --			trace, hour, minute, second, nanosecond
 		redefine
 			impl_item, create_impl_item
-		select
-			formatted, create_impl_item
 		end
 
 creation
@@ -88,6 +99,16 @@ creation
 	make
 
 feature {NONE} -- Initialization
+
+	make (a_capacity : INTEGER) is
+			-- make array of null dates
+		do
+			capacity := a_capacity
+			count := capacity
+			allocate_buffer
+			set_all_null
+			create_impl_item
+		end
 
 feature -- Access
 
@@ -203,10 +224,11 @@ feature -- Measurement
 			timestamp_pointer : POINTER
 		do
 			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, index)
-			ecli_c_timestamp_set_hour (timestamp_pointer, a_hour)
-			ecli_c_timestamp_set_minute (timestamp_pointer, a_minute)
-			ecli_c_timestamp_set_second (timestamp_pointer, a_second)
-			ecli_c_timestamp_set_fraction (timestamp_pointer, a_nanosecond)
+--			ecli_c_timestamp_set_hour (timestamp_pointer, a_hour)
+--			ecli_c_timestamp_set_minute (timestamp_pointer, a_minute)
+--			ecli_c_timestamp_set_second (timestamp_pointer, a_second)
+--			ecli_c_timestamp_set_fraction (timestamp_pointer, a_nanosecond)
+			set_time_external (timestamp_pointer, a_hour, a_minute, a_second, a_nanosecond)
 		ensure
 			hour_set: hour_at (index) = a_hour
 			minute_set: minute_at (index) = a_minute
@@ -275,7 +297,7 @@ feature -- Conversion
 		do
 			save_index := cursor_index
 			cursor_index := index
-			Result := Precursor {ECLI_ARRAYED_DATE} (index)
+			Result := Precursor {ECLI_ARRAYED_DATE_ROUTINES} (index)
 			if not is_null then
 				Result.append_character (' ')
 				Result.append_string (Integer_format.pad_integer_2 (hour))
@@ -312,6 +334,13 @@ feature -- Obsolete
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
+
+	allocate_buffer is
+		do
+			if buffer = default_pointer then
+				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)
+			end
+		end
 
 	create_impl_item is
 			do

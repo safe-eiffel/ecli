@@ -18,7 +18,10 @@ inherit
 		export
 		undefine
 		redefine
-			make, content_count, sql_type_code, item_at, formatted
+			make, 
+			content_count, 
+--			sql_type_code, 
+			item_at, formatted
 		select
 		end
 

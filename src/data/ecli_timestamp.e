@@ -248,12 +248,11 @@ feature -- Element change
 			month: a_month >= 1 and a_month <= 12
 			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
 		do
-			ecli_c_date_set_year (to_external, a_year)
-			ecli_c_date_set_month (to_external, a_month)
-			ecli_c_date_set_day (to_external, a_day)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
-			set_time (0, 0, 0, 0)
+			set_date_external (to_external, a_year, a_month, a_day)
+			set_time_external (to_external, 0, 0, 0, 0)
 		ensure
+			not_null: not is_null
 			year_set: year = a_year
 			month_set: month = a_month
 			day_set: day = a_day
@@ -268,10 +267,8 @@ feature -- Element change
 			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
 
 		do
-			ecli_c_timestamp_set_hour (to_external, a_hour)
-			ecli_c_timestamp_set_minute (to_external, a_minute)
-			ecli_c_timestamp_set_second (to_external, a_second)
-			ecli_c_timestamp_set_fraction (to_external, a_nanosecond)
+			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
+			set_time_external (to_external, a_hour, a_minute, a_second, a_nanosecond)
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
@@ -291,6 +288,7 @@ feature -- Element change
 			set_date (a_year, a_month, a_day)
 			set_time (a_hour, a_minute, a_second, a_nanosecond)
 		ensure
+			not_null: not is_null
 			year_set: year = a_year
 			month_set: month = a_month
 			day_set: day = a_day
@@ -448,4 +446,39 @@ feature {NONE} -- Implementation
 
 	calendar : DT_GREGORIAN_CALENDAR is once create Result end
 	
+	set_date_external (pointer : POINTER; a_year, a_month, a_day : INTEGER ) is
+			-- set date part of external `pointer'
+		require
+			pointer_not_default: pointer /= default_pointer
+			month: a_month >= 1 and a_month <= 12
+			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
+		do
+			ecli_c_date_set_year (pointer, a_year)
+			ecli_c_date_set_month (pointer, a_month)
+			ecli_c_date_set_day (pointer, a_day)
+		ensure
+			year_set: ecli_c_date_get_year (pointer) = a_year
+			month_set: ecli_c_date_get_month (pointer) = a_month
+			day_set: ecli_c_date_get_day (pointer) = a_day
+		end
+	
+	set_time_external (pointer : POINTER; a_hour, a_minute, a_second, a_nanosecond : INTEGER ) is
+			-- Set time part of external structure referenced by `pointer'
+		require
+			pointer_not_default: pointer /= default_pointer
+			hour: a_hour >= 0 and a_hour <= 23
+			minute: a_minute >= 0 and a_minute <= 59
+			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
+			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
+		do
+			ecli_c_timestamp_set_hour (pointer, a_hour)
+			ecli_c_timestamp_set_minute (pointer, a_minute)
+			ecli_c_timestamp_set_second (pointer, a_second)
+			ecli_c_timestamp_set_fraction (pointer, a_nanosecond)
+		ensure
+			hour_set: ecli_c_timestamp_get_hour (pointer) = a_hour
+			minute_set: ecli_c_timestamp_get_minute (pointer) = a_minute
+			second_set: ecli_c_timestamp_get_second (pointer) = a_second
+			fraction_set: ecli_c_timestamp_get_fraction (pointer) = a_nanosecond
+		end
 end

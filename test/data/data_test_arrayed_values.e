@@ -77,7 +77,7 @@ feature -- Basic operations
 			assert ("set_null", v.is_null)
 			v.set_item_at (string_long, 3)
 			assert_equal ("set_item_at2",string_long,v.item_at (3))
-			create z.make (v.capacity,3)
+			create z.make (v.content_capacity,3)
 			z.copy (v)
 			assert_equal("copy", v, z)
 		end

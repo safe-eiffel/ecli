@@ -45,12 +45,12 @@ feature {NONE} -- Initialization
 			buffer := ecli_c_alloc_array_value (a_content_capacity+1, a_capacity)
 			capacity := a_capacity
 			count := capacity
-			set_all_null
 			create s.make (0)
 			impl_item := s
 			--| create ext_item, with dummy values
 			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1), 
 				ecli_c_array_value_get_length_indicator_at(buffer,1))
+			set_all_null
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
 			capacity_set: capacity = a_capacity

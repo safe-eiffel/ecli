@@ -15,7 +15,7 @@ inherit
 
 	ECLI_CURSOR
 		rename
-			statement_start as start, make as cursor_make
+			make as cursor_make
 		export
 			{ANY} close
 		redefine

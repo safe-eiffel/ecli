@@ -15,7 +15,8 @@ inherit
 
 	ECLI_GENERIC_ARRAYED_VALUE [DT_TIME]
 		redefine
-			is_equal, out_item_at --to_time, 
+			--is_equal, 
+			out_item_at --to_time, 
 		select
 			is_equal, copy
 		end
@@ -174,12 +175,12 @@ feature -- Basic operations
 			a_tracer.put_time (Current)
 		end
 
-	is_equal (other : like Current) : BOOLEAN is
-		do
-			Result := hour = other.hour and
-				minute = other.minute and
-				second = other.second
-		end
+--	is_equal (other : like Current) : BOOLEAN is
+--		do
+--			Result := hour = other.hour and
+--				minute = other.minute and
+--				second = other.second
+--		end
 
 feature -- Obsolete
 

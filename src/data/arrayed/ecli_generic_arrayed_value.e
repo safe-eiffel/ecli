@@ -23,7 +23,9 @@ inherit
 
 	ECLI_ARRAYED_VALUE
 		redefine
-			out, is_equal, copy
+			out, 
+--			is_equal, 
+			copy
 		end
 
 feature -- Access
