@@ -1,7 +1,8 @@
 indexing
 	description: 
 
-		"Objects that represent a CLI status"
+		"Objects that represent a CLI status, reflects its various values%
+		% and associated information messages"
 
 	author: 	"Paul G. Crismer"
 	date: 		"$Date$"
@@ -17,16 +18,18 @@ inherit
 		export {NONE}	all
 		end
 
+	EXCEPTIONS
+		export {NONE} all
+		end
+
 feature -- Access
 
 	status : INTEGER
 
 	diagnostic_message : STRING is
-			-- Message describing an error
-		require
-			error: is_error or has_information_message
+			-- Message describing the current status
+			-- Empty if status does not reflect an error or warning
 		do
-			--| TODO
 			get_diagnostics
 			Result := impl_error_message
 		end
@@ -55,7 +58,9 @@ feature -- Access
 	is_ok : BOOLEAN is
 			-- Is the last CLI command ok ?
 		do
-			Result := status = cli_ok or else has_information_message
+			Result := status = cli_ok or else has_information_message 
+				or else  status = cli_no_data 
+			    	or else status = cli_need_data;
 		end
 
 	is_error : BOOLEAN is
@@ -68,7 +73,24 @@ feature -- Measurement
 
 feature -- Status report
 
+	exception_on_error : BOOLEAN
+		-- When true, an exception is raised if not is_ok
+
 feature -- Status setting
+
+	raise_exception_on_error is
+		do
+			exception_on_error := True
+		ensure
+			exception_on_error: exception_on_error
+		end
+	
+	disable_exception_on_error is
+		do
+			exception_on_error := False
+		ensure
+			continue_on_error: not exception_on_error
+		end
 
 feature -- Cursor movement
 
@@ -129,6 +151,11 @@ feature {NONE} -- Implementation
 		do
 			status := v
 			need_diagnostics := True
+			if exception_on_error and then not is_ok
+			then
+				raise (diagnostic_message)
+			end
+
 		ensure
 			status: status = v
 		end

@@ -38,10 +38,9 @@ feature -- Measurement
 feature -- Status report
 
 	is_null : BOOLEAN is
+			-- is this a NULL value (in RDBMS sense) ?
 		do
 			Result := ecli_c_value_get_length_indicator (buffer) = sql_null_data
-		ensure
-			Result implies item = Void
 		end
 
 	convertible_to_string : BOOLEAN is
@@ -155,7 +154,7 @@ feature -- Element change
 		do
 		ensure
 			null_value: is_null implies value = void;
-			item_set: equal (item, value)
+			item_set: equal (item, truncated (value))
 		end;
 
 
@@ -173,6 +172,13 @@ feature -- Resizing
 
 feature -- Transformation
 
+	truncated (v : like item) : like item is
+			-- truncated 'v' according to 'column_precision'
+			-- does nothing, except for fixed format types like CHAR
+		do
+			Result := v
+		end
+ 
 feature -- Conversion
 
 	to_string : STRING is
@@ -262,7 +268,8 @@ feature {NONE} -- Implementation
 
 	release_handle is
 		do
-			-- | free associated C buffer memory
+			ecli_c_free_value (buffer)
+			buffer := default_pointer
 		end
 
 feature {NONE} -- data type indicators

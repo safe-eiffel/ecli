@@ -100,7 +100,9 @@ feature -- Measurement
 	has_results : BOOLEAN is
 			-- has this statement a result-set ?
 		do
-			Result := result_column_count = 0
+			Result := result_column_count > 0
+		ensure
+			results: Result implies result_column_count > 0
 		end
 
 feature -- Status report
@@ -245,7 +247,7 @@ feature -- Basic operations
 		-- execute sql statement
 		require
 			query_is_parsed: is_parsed
-			is_prepared_execution_mode implies is_prepared
+			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
 			parameters_set: parameter_count > 0 implies bound_parameters
 		local
 			tools : ECLI_EXTERNAL_TOOLS
@@ -307,6 +309,8 @@ feature -- Basic operations
 
 	start is
 			-- get first result row, if available
+		require
+			executed: is_executed
 		do
 			set_status (ecli_c_fetch (handle))
 			if status = cli_no_data then
@@ -314,11 +318,14 @@ feature -- Basic operations
 			else
 				fill_cursor
 			end
+		ensure
+			results: not off implies has_results
 		end
 
 	forth is
 			-- get next result row
 		require
+			executed: is_executed
 			result_pending: not off
 		do
 			start
@@ -326,6 +333,8 @@ feature -- Basic operations
 
 	finish is
 			-- finish reading results
+		require
+			executed: is_executed
 		do
 			set_status (ecli_c_close_cursor (handle))
 			off := True
@@ -371,7 +380,7 @@ feature {NONE} -- Implementation
 				from
 					i_start := 1
 					param_number := 1
-				variant param_count - param_number
+				variant s.count+1 - i_start
 				until
 					param_number > param_count or i_start > s.count
 				loop
@@ -386,12 +395,6 @@ feature {NONE} -- Implementation
 					end
 					Result.extend (s.item (i_begin_parameter_name))
 					i_begin_parameter_name := i_begin_parameter_name + 1
-					--
-					-- i_begin_parameter_name := s.index_of ('?', i_start)+1
-					
-					check 
-						i_begin_parameter_name > 1 
-					end
 
 					--| go past parameter name
 					from
@@ -432,15 +435,11 @@ feature {NONE} -- Implementation
 					Result.extend (s.item(i_start))
 					i_start := i_start + 1
 				end
-				check
-					parameter_count = name_to_position.count
-				end
 			else
 				Result.copy (s)
 			end
 			set_parsed
 		ensure
-			impl_sql /= Void
 			is_parsed: is_parsed
 		end
 			

@@ -1,32 +1,34 @@
-<HTML>
-<HEAD><TITLE>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</TITLE>
-</HEAD>
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [fr] (Win98; I) [Netscape]">
+   <title>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</title>
+</head>
+<body>
 
-<BODY>
+<pre>Eiffel Library to ISO/CLI (Call Level Interface) comptabile DB systems
 
-<PRE>
-Eiffel Library to ISO/CLI (Call Level Interface) comptabile DB systems
-
-Author : Paul G. Crismer <pgcrism@attglobal.net>
+Author : Paul G. Crismer&nbsp;<pgcrism@attglobal.net>
 License: Released under the Eiffel Forum License
-Copyright: 2000 - Paul G. Crismer
-</PRE>
+Copyright: 2000 - Paul G. Crismer</pre>
 
-<H1>Table of contents</H1>
-<PRE>
-	<em>Abstract</em>
-	<em>Section</em> 0 : Current Status
-	<em>Section</em> 1 : Design choices
-	<em>Section</em> 2 : Implementation notes
-	<em>Section</em> 3 : Architecture Diagram
-	<em>Section</em> 4 : TODO
-</PRE>
-<H1>Abstract</H1>
+<h1>
+Table of contents</h1>
 
-<PRE>
-	ECLI is an Eiffel wrapper around the X/Open ISO/CLI (Call Level Interface).
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Abstract
+</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Section</i> 0 : Current Status
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Section</i> 1 : Design choices
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Section</i> 2 : Implementation notes
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Section</i> 3 : Architecture Diagram
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Section</i> 4 : TODO</pre>
+
+<h1>
+Abstract</h1>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI is an Eiffel wrapper around the X/Open ISO/CLI (Call Level Interface).
 This interfaces defines an API to RDBMS drivers, and uses SQL92.
-ISO/CLI is also known as ODBC under MS-Windows.  This interface has implementations on other platforms.
+ISO/CLI is also known as ODBC under MS-Windows.&nbsp; This interface has implementations on other platforms.
 
 ECLI wants to be portable across (1) Platforms, (2) Eiffel Compilers.
 
@@ -37,16 +39,15 @@ The GOBO Library is used for specific data structures.
 
 Some tricks have been used to be free from the idiosyncrasies of any Eiffel Compiler.
 It is a pity that even for basic/kernel classes it seems impossible for compiler vendors/providers to
-agree on some standard.
-</PRE>
+agree on some standard.</pre>
 
-<H1>Section 0 : Current Status</H1>
+<h1>
+Section 0 : Current Status</h1>
 
-<PRE>
-	Simple Database access :
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Simple Database access :
 1) Connect/Disconnect to a database
 2) Issue SQL Statements
-	with or without parameters
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with or without parameters
 3) Get result set data.
 
 For the moment, only CHAR, VARCHAR, INTEGER, FLOAT, DOUBLE, DATE and TIMESTAMP data are supported.
@@ -54,60 +55,70 @@ For the moment, only CHAR, VARCHAR, INTEGER, FLOAT, DOUBLE, DATE and TIMESTAMP d
 Since databases can convert automatically CHAR values to other SQL data types, it is possible
 to use ECLI in the current state of development for common RDBMS access.
 
-	Compiler portability :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Compiler portability :
 * ISE Eiffel
-* SmallEiffel
+* SmallEiffel (tested with se -0.76b3)
 
-	Platforms :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Platforms :
 * Windows
-( Linux to come ...)
+* Linux
 
-</PRE>
+</pre>
 
-<H1>Section 1 : Design choices</H1>
+<h1>
+Section 1 : Design choices</h1>
 
-<H2>D1. Rationale</H2>
-<PRE>
-	The X/Open Call Level Interface is a standard API for database access.
-It is available on various platforms, i.e. Unix, Linux, Win32.  This is one of the
-only standards that all vendors, including M$, fully support without "modifying" it.
-</PRE>
-<H2>D2. Simplicity</H2>
-<PRE>
-	This Eiffel interface is close to CLI, and hides some implementation details as
-well.  This is a very simple wrapper.
+<h2>
+D1. Rationale</h2>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The X/Open Call Level Interface is a standard API for database access.
+It is available on various platforms, i.e. Unix, Linux, Win32.&nbsp; This is one of the
+only standards that all vendors, including M$, fully support without "modifying" it.</pre>
+
+<h2>
+D2. Simplicity</h2>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This Eiffel interface is close to CLI, and hides some implementation details as
+well.&nbsp; This is a very simple wrapper.
 
 The main goal is to give a clear and simple database access for common applications.
-Since it is a thin wrapper, performance should be as good as possible.
-</PRE>
-<H2>D3. What it is not</H2>
-<PRE>
-	It is not an OO-to-Relational wrapper framework.  This interface can be a component
-of such a framework
-</PRE>
-<H1>Section 2 : Implementation notes</H1>
+Since it is a thin wrapper, performance should be as good as possible.</pre>
 
-<H2>I1. Transactions</H2>
-<PRE>
-	CLI allows only one transaction per connection/session.  There is no subtransaction
-mechanism.
-</PRE>
-<H2>I2. Error diagnostic</H2>
-<PRE>
-	Class ECLI_STATUS implements the necessary mechanisms.
-</PRE>
-<H2>I3. Data transfer between Database and Program space</H2>
-<PRE>
-	Modules that transfer data between database and program space should know the
-database data type and the program data type.  That is why data-transfer-values are encapsulated
+<h2>
+D3. What it is not</h2>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It is not an OO-to-Relational wrapper framework.&nbsp; This interface can be a component
+of such a framework</pre>
+
+<h1>
+Section 2 : Implementation notes</h1>
+
+<h2>
+I1. Transactions</h2>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CLI allows only one transaction per connection/session.&nbsp; There is no subtransaction
+mechanism.</pre>
+
+<h2>
+I2. Error diagnostic</h2>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Class ECLI_STATUS implements the necessary mechanisms.</pre>
+
+<h2>
+I3. Data transfer between Database and Program space</h2>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Modules that transfer data between database and program space should know the
+database data type and the program data type.&nbsp; That is why data-transfer-values are encapsulated
 in the class ECLI_VALUE and its descendants.
-Descendant classes map CLI specific database values : CHAR, VARCHAR, INTEGER, ...
-</PRE>
-<H1>Section 3 : Architecture Diagram</H1>
-<img src="./architecture.jpg">
-<H1>Section 4 : TODO</H1>
-<PRE>
-T0. Implement other data values : Time, LONGVARCHAR, BINARY, LONGVARBINARY, ...
+Descendant classes map CLI specific database values : CHAR, VARCHAR, INTEGER, ...</pre>
+
+<h1>
+Section 3 : Architecture Diagram</h1>
+<img SRC="architecture.jpg" >
+<h1>
+Section 4 : TODO</h1>
+
+<pre>T0. Implement other data values : Time, LONGVARCHAR, BINARY, LONGVARBINARY, ...
 Those data values should serve
 for data transfer, not as implementation of corresponding Abstract Data Types.
 ADT should be defined as clients or extension by inheritance.
@@ -115,7 +126,7 @@ ADT should be defined as clients or extension by inheritance.
 T1. Documentation.
 
 T2. Long Variable Data (LONGVARCHAR, LONGVARBINARY) : Result set columns currently are retrieved
-one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
+one column at a time (using SQLGetData).&nbsp; Very long data cannot be stored in computer memory.
 Those ECLI_LONGVARCHAR and ECLI_LONGVARBINARY classes should provide an interface that allows
 reading/writing data to a file. For example, 'item' would be of FILE type.
 
@@ -123,15 +134,15 @@ T3. Test cases
 
 T4. Examples
 
-T5. Port to Unix/Linux.  This should be fairly easy using UnixODBC : www.unixodbc.org
+T5. ** DONE 2000-06-22 ** Port to Unix/Linux.&nbsp; This should be fairly easy using UnixODBC : www.unixodbc.org
 
 T6. Getting various metadata : Result-set metadata, Tables/Columns/Indexes catalog metadata,
 SQL Datatypes metadata.
 
 T7. Refactoring ... Make better use of inheritance, if possible.
 
-T8. Allow Bulk data transfers : a cursor is not a single line, but an array of lines.  This is interesting for
-performance reasons. (Nice to have).
-</PRE>
-</BODY>
-</HTML>
+T8. Allow Bulk data transfers : a cursor is not a single line, but an array of lines.&nbsp; This is interesting for
+performance reasons. (Nice to have).</pre>
+
+</body>
+</html>
