@@ -41,7 +41,14 @@ ECLI --
 	+- support			-- support classes that could be used in other projects
 	+- tools
 	   +-	query_assistant		-- cursor classes generator
+	   
+      kernel				-- the SAFE_KERNEL variable should point to it
+        +- external			-- external support for all SAFE projects
+            +- src			
+      
 
+NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) various support classes mainly
+       related to external support.  The SAFE_KERNEL variable should point to it.
 2. Installation
 
   NOTE for Linux/Unix (*n*x) users : 
@@ -54,33 +61,49 @@ ECLI --
   	ECLI 		-  the ECLI directory
   	GOBO_OS 	-  DO NOT FORGET to set it especially under linux (set it to 'linux')  
 	GOBO_CC		-  Windows specific: the C compiler you've used to compile the C wrapper library.
-			   Supported 'keys' : lcc, msc, gcc.
+			   Supported 'keys' : lcc, msc, bcc.
+	GOBO_EIFFEL	-  'se', 'ise' or 've'
+	SAFE_KERNEL	-  should point to the 'kernel' directory; this SAFE_KERNEL provides
 	
 	SMARTEIFFELDIR	- Installation directory of SmartEiffel
 	
-  2.1. Building the C library.
-	
+  2.1. Building the C libraries.
+  
+  
+	The libraries that must be built are :
+		SAFE_KERNEL	external support
+		ECLI		external support
+		
 	** DO NOT TRUST libraries you would get from an archive; maybe they have not been
           built with a compiler compatible with your system **
 
-	2.1.1 Manually
+	2.1.1 SAFE_KERNEL
+		
+	A) cd to SAFE_KERNEL directory
+	B) run 'geant install'
 	
-	A) go to the src/spec/<eiffel_compiler>/<platform> - compiler - platform directory of your choice
-	B) make the C wrapper library
-		WIN32: ecli_${GOBO_CC}.lib  or 
-		Unix/Linux: libecli_c.a
+	This builds a library named xs_c_${GOBO_CC}.${lib}
 	
+	Example: 
+		WIN32, se, lcc => xs_c_lcc.lib in SAFE_KERNEL/external/src/spec/se/windows
+		Linux, ise     => libxs_c.a  in SAFE_KERNEL/external/src/spec/ise/linux
+			
 	Known problems : makefiles or .bat files are known to work, but problems may still remain.
 
-	2.1.2 Geant-ically
+	2.1.2 ECLI
 	
-	cd to $ECLI
-	run the following command : geant -b ecli.eant compile_libs
+	A) cd to ECLI directory
+	B) run the following command : geant -b ecli.eant compile_libs
+	
+	Example: 
+		WIN32, se, lcc => ecli_c_lcc.lib in ECLI/src/spec/se/windows
+		Linux, ise     => libecli_c.a  in ECLI/src/spec/ise/linux
 	
   2.2. Building the samples
 
-	Run the following command : geant compile_<eiffel_compiler>
-	where <eiffel_compiler> is 'se', 've', 'ise'
+	A) go to the desired sample directory, e.g. 'cd $ECLI/examples/test1'
+	B) Run the following command : geant compile_<eiffel_compiler>
+	   where <eiffel_compiler> is 'se', 've', 'ise'
 	
 3. Known Problems
 
