@@ -56,6 +56,8 @@ feature -- Status report
 
 	is_prepared: BOOLEAN
 
+	is_error : BOOLEAN
+	
 	is_validity_checked : BOOLEAN
 	
 	is_query_valid : BOOLEAN
@@ -265,6 +267,13 @@ feature {NONE} -- Implementation
 			l_catalog, l_schema : STRING
 
 		do
+			create sql_parameters.make (10)
+			sql_parameters.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+			sql_parameters.extend (query_statement.parameter_names)
+			parameter_set_names := parameters.as_set_name
+			symdif := sql_parameters.symdifference (parameter_set_names)
+			undefined_parameters := symdif.intersection (sql_parameters)
+			unknown_parameters := symdif.intersection (parameter_set_names)
 			--| same number
 			is_parameters_valid := (query_statement.parameter_names.count = parameters.count)
 			if not is_parameters_valid then
@@ -272,25 +281,6 @@ feature {NONE} -- Implementation
 				a_error_handler.report_parameter_count_mismatch (name)
 			else
 				--| same names	?		
-				create sql_parameters.make (10)
-				sql_parameters.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
-				sql_parameters.extend (query_statement.parameter_names)
-				parameter_set_names := parameters.as_set_name
-				symdif := sql_parameters.symdifference (parameter_set_names)
-				undefined_parameters := symdif.intersection (sql_parameters)
-				unknown_parameters := symdif.intersection (parameter_set_names)
---				
---				parameters_cursor := parameters.new_cursor
---				from
---					parameters_cursor.start
---					create tester
---					sql_parameters.set_equality_tester (tester)
---				until
---					not is_parameters_valid or else parameters_cursor.off
---				loop
---					is_parameters_valid := is_parameters_valid and sql_parameters.has (parameters_cursor.item.name)
---					parameters_cursor.forth
---				end
 				is_parameters_valid := is_parameters_valid and undefined_parameters.count = 0
 				if not is_parameters_valid then
 					from
@@ -328,19 +318,19 @@ feature {NONE} -- Implementation
 						a_error_handler.report_invalid_reference_column (name, parameters_cursor.item.name, parameters_cursor.item.reference_column.table, parameters_cursor.item.reference_column.column)
 					end
 				end
-				-- Report unknown parameters
-				if unknown_parameters.count > 0 then
-					from
-						cursor_string := unknown_parameters.new_cursor
-						cursor_string.start
-					until
-						cursor_string.off
-					loop
-						a_error_handler.report_parameter_unknown (name, cursor_string.item)
-						cursor_string.forth
-					end
-				end				
 			end
+			-- Report unknown parameters
+			if unknown_parameters.count > 0 then
+				from
+					cursor_string := unknown_parameters.new_cursor
+					cursor_string.start
+				until
+					cursor_string.off
+				loop
+					a_error_handler.report_parameter_unknown (name, cursor_string.item)
+					cursor_string.forth
+				end
+			end				
 		end
 
 	prepare_query (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER) is
@@ -366,7 +356,6 @@ feature {NONE} -- Implementation
 		local
 			cs : DS_SET_CURSOR[MODULE_PARAMETER]
 			factory : QA_VALUE_FACTORY
-			is_error : BOOLEAN
 			parameters_put : INTEGER
 		do
 			create factory.make
@@ -396,7 +385,7 @@ feature {NONE} -- Implementation
 							end
 							cs.forth
 						end
-						if not is_error and then parameters_put = query_statement.parameters_count then
+						if not is_error and then parameters_put = query_statement.parameter_names.count then
 							-- begin transaction
 							session.begin_transaction
 							-- try query
@@ -408,6 +397,7 @@ feature {NONE} -- Implementation
 								is_query_valid := True
 							else						
 								a_error_handler.report_query_execution_failed (query_statement.sql, query_statement.diagnostic_message, name)
+								is_error := True
 							end
 							-- rollback
 							session.rollback
@@ -423,6 +413,7 @@ feature {NONE} -- Implementation
 			is_checked_query_trial := True
 		ensure
 			is_checked_query_trial: is_checked_query_trial
+			error_or_success: is_error xor is_query_valid
 		end
 
 invariant
