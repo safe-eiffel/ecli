@@ -14,7 +14,7 @@ deferred class
 inherit
 	ECLI_VALUE
 		redefine
-			out, is_equal, copy
+			out, copy
 		end
 		
 feature -- Access

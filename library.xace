@@ -12,7 +12,7 @@
 			 * GOBO_CC		type of C compiler; values (bcc|msc|lcc|gcc)
 			 * GOBO_OS		Operating system; values (windows|linux)
 			 * GOBO_EIFFEL		Eiffel compiler (ise|se|ve)
-			 *
+			 * SAFE_KERNEL		path of SAFE kernel
 			]
 		library:     "ECLI Library"
 		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
@@ -48,5 +48,5 @@
 		</option>
 	</cluster>
 
-	<mount location="${SAFE}/lib/kernel/library.xace"/>
+	<mount location="${SAFE_KERNEL}/library.xace"/>
 </library>
