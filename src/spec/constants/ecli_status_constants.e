@@ -18,5 +18,6 @@ feature -- Status Report
 
 	Sql_still_executing	:	INTEGER is	2
 	Sql_need_data	:	INTEGER is	99
+	Sql_no_total    : 	INTEGER is	-4
 
 end -- class ECLI_STATUS_CONSTANTS

@@ -173,6 +173,18 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_param_data (stmt, value_ptr_ptr : POINTER)  : INTEGER is
+		external "C"
+		end
+
+	ecli_c_put_data (stmt, data_ptr : POINTER; str_len_or_ind : INTEGER)  : INTEGER is
+		external "C"
+		end
+
+	ecli_c_len_data_at_exe (len : INTEGER) : INTEGER is
+		external "C"
+		end
+
 	ecli_c_fetch (stmt : POINTER) : INTEGER is
 		external "C"
 		end

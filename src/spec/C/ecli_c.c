@@ -414,6 +414,25 @@ EIF_INTEGER ecli_c_get_data (EIF_POINTER stmt,
 		(SQLINTEGER *)		len_indicator_pointer);
 }
 
+EIF_INTEGER ecli_c_param_data (EIF_POINTER stmt, EIF_POINTER value_ptr_ptr) {
+	return (EIF_INTEGER) SQLParamData(
+     	(SQLHSTMT)     stmt,
+     	(SQLPOINTER *)     value_ptr_ptr);
+}
+
+EIF_INTEGER ecli_c_put_data (EIF_POINTER stmt,
+							 EIF_POINTER data_ptr,
+							 EIF_INTEGER str_len_or_ind) {
+	return (EIF_INTEGER) SQLPutData(
+     	(SQLHSTMT)     stmt,
+     	(SQLPOINTER)     data_ptr,
+     	(SQLINTEGER)     str_len_or_ind);
+}
+
+EIF_INTEGER ecli_c_len_data_at_exe (EIF_INTEGER len) {
+	return (EIF_INTEGER) (SQL_LEN_DATA_AT_EXEC(len));
+}
+
 EIF_INTEGER ecli_c_fetch (EIF_POINTER handle) {
 	return (EIF_INTEGER) SQLFetch ((SQLHSTMT) handle);
 }
