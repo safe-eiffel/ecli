@@ -14,7 +14,7 @@ inherit
 			make as make_single, capacity as content_capacity, max_capacity as max_content_capacity,
 			count as content_count
 		undefine
-			release_handle, length_indicator_pointer, to_external, is_null, out, trace,
+			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
 			set_item, transfer_octet_length, to_string, convertible_to_string
 		redefine
 			item, content_capacity, content_count

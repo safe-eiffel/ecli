@@ -31,23 +31,6 @@ inherit
 			make_default_1_date, make_single_date, set_date_item--, set_item_at-- to_date
 		end
 
---	ECLI_ARRAYED_TIME
---		rename 
---			make_single as make_single_time, make_default_single as make_default_1_time, 
---			set_item as set_time_item, set_at as set_time_time_at, set_item_at as set_time_item_at
---		undefine
---			c_type_code,
---			column_precision, 
---			convertible_to_string,
---			sql_type_code, 
---			decimal_digits, 
---			display_size, 
---			item,  
---			to_time, hour, minute, second,
---			to_timestamp, make, --set_time_item_at,
---			trace, allocate_buffer, item_at, to_date, convertible_to_timestamp,convertible_to_date,
---			transfer_octet_length, is_equal, out_item_at --, set_item_at --, set_item, set_item_at, 
---		end
 	
 	ECLI_TIMESTAMP
 		rename
@@ -58,7 +41,7 @@ inherit
 			allocate_buffer, 
 			day, 
 			is_equal,
-			is_null, 
+			is_null, set_null, 
 			length_indicator_pointer,
 			month, 
 			out, 
@@ -76,17 +59,6 @@ creation
 	make
 
 feature {NONE} -- Initialization
-
---	make_default (a_capacity : INTEGER) is
---			-- 
---		do
---			capacity := a_capacity
---			count := capacity
---			allocate_buffer
---		ensure
---			capacity_set: capacity = a_capacity
---			count_set: count = capacity
---		end
 		
 feature -- Access
 

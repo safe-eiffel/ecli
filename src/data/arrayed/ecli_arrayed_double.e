@@ -20,7 +20,7 @@ inherit
 			make as make_double
 		undefine
 			release_handle, length_indicator_pointer, to_external, 
-			is_null, out, item, transfer_octet_length, set_item, to_string
+			is_null, set_null, out, item, transfer_octet_length, set_item, to_string
 		end
 		
 creation

@@ -83,6 +83,7 @@ feature -- Obsolete
 feature -- Basic Operations
 
 	close is
+			-- close statement and release external resources
 		require
 			valid_statement: is_valid
 			not_closed: not is_closed
@@ -602,7 +603,7 @@ feature -- Basic operations
 			end
 		ensure
 			description: is_ok implies
-				(cursor_description /= Void and then cursor_description.count = result_columns_count)
+				(cursor_description /= Void and then cursor_description.lower = 1 and then cursor_description.count = result_columns_count)
 		end
 
 	bind_parameters is
@@ -694,6 +695,13 @@ feature {ECLI_STATUS} -- Inapplicable
 			Result := is_ok
 			--| get back to original situation
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 1))
+		end
+
+	can_use_arrayed_results : BOOLEAN is
+			-- can we use arrayed results ?
+		do
+			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
+			Result := is_ok
 		end
 
 feature {NONE} -- Implementation
@@ -832,6 +840,8 @@ feature {NONE} -- Implementation
 				index := index + 1
 			end
 			fetched_columns_count := result_columns_count.min (cursor.count)
+		ensure
+			fetched_columns_count_set: fetched_columns_count = result_columns_count.min (cursor.count)
 		end
 
 	session : ECLI_SESSION

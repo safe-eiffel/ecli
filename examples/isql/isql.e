@@ -234,10 +234,14 @@ feature -- Basic Operations
 	do_execute_query (s : STRING) is
 			-- execute query 's' -- must be a SELECT or a procedure call that returns a result-set
 		local
-			cursor : ECLI_ROWSET_CURSOR
+			cursor : ECLI_ROW_CURSOR
 			after_first : BOOLEAN
 		do
-			!!cursor.make (session, s, 20)
+			if session.is_bind_arrayed_results_capable then
+				create {ECLI_ROWSET_CURSOR}cursor.make (session, s, 20)
+			else
+				create cursor.make (session,s)
+			end
 			if cursor.is_ok then
 				if cursor.has_parameters then
 					if vars /= Void then

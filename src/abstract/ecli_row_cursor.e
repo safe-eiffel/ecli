@@ -40,7 +40,6 @@ feature {NONE} -- Initialization
 			valid: is_valid
 			definition_set: definition = a_sql
 			definition_is_sql: equal (definition, sql)
---			definition_is_a_query:  has_results or else not is_ok
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 		end
 
@@ -66,7 +65,7 @@ feature -- Access
 			-- definition as an SQL query
 
 	item, infix "@" (name : STRING) : like value_anchor is
-			-- 
+			-- column item by `name'
 		require
 			is_executed: is_executed
 			name_exists: name /= Void
@@ -90,12 +89,14 @@ feature -- Access
 			valid_index: index >= lower and index <= upper
 		do
 			Result := cursor_description.item (index).name
+		ensure
+			not_void: Result /= Void
 		end
 		
 feature -- Measurement
 
 	lower : INTEGER is
-			-- 
+			-- lower cursor index
 		require
 			is_executed: is_executed
 		do
@@ -103,7 +104,7 @@ feature -- Measurement
 		end
 		
 	upper : INTEGER is
-			-- 
+			-- upper cursor index
 		require
 			is_executed: is_executed
 		do
@@ -114,7 +115,7 @@ feature -- Measurement
 feature -- Status report
 
 	has_column (name : STRING) : BOOLEAN is
-			-- 
+			-- Does `name' match the name of a column in Current ?
 		require
 			name_exists: name /= Void
 		do
@@ -130,6 +131,7 @@ feature -- Cursor movement
 		require
 			prepared: is_prepared_execution_mode implies is_prepared
 			bound_parameters: has_parameters implies bound_parameters
+			not_executed: not is_executed
 		do
 			execute
 			if is_ok then
@@ -194,13 +196,15 @@ feature {NONE} -- Implementation
 		end
 		
 	create_row_buffers is
-			-- 
+			-- create column buffers for cursor row 
 		do
 			describe_cursor
 			cursor := Void
 			if not is_ok then
-				print (diagnostic_message)
-				print ("%N")
+				debug 
+					print (diagnostic_message)
+					print ("%N")
+				end
 			else
 				buffer_factory.create_buffers (cursor_description)
 				set_cursor (buffer_factory.last_buffer)

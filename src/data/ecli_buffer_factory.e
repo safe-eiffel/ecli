@@ -22,31 +22,13 @@ feature -- Access
 				Result := Default_precision_limit
 			end
 		end
-		
+
 	last_buffer : ARRAY [like value_anchor]
-	
-	value_factory : ECLI_VALUE_FACTORY is
-		once
-			!!Result.make
-		end
-	
-	value_anchor : ECLI_VALUE is
-			-- 
-		do
-			
-		end
-		
-		
+			-- last created buffer
+
 	last_index_table : DS_HASH_TABLE [INTEGER, STRING]
-	
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
+			-- last table mapping column name to column index in last_buffer 
+			
 feature -- Element change
 
 	set_precision_limit (p : INTEGER) is
@@ -132,6 +114,18 @@ feature {NONE} -- Implementation
 		end
 	
 	precision_limit_impl : INTEGER	
+	
+	value_factory : ECLI_VALUE_FACTORY is
+		once
+			!!Result.make
+		end
+	
+	value_anchor : ECLI_VALUE is
+			-- 
+		do
+			
+		end
+		
 	
 invariant
 	invariant_clause: -- Your invariant here

@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Objects that define a rowset cursor and allow sweeping through it.  Rows are physically retrieved `row_count' at a time, minimizing network traffic if any."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -30,6 +30,7 @@ feature -- Initialization
 	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_count : INTEGER) is
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
+			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
 			definition_exists: a_definition /= Void
 			row_count_valid: a_row_count >= 1
 		do
@@ -48,12 +49,12 @@ feature -- Initialization
 			-- make prepared cursor for `a_session' on `a_definition', for fetching at most `a_row_count' at a time
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
+			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
 			definition_exists: a_definition /= Void
 			row_count_valid: a_row_count >= 1
 		do
 			make (a_session, a_definition, a_row_count)
 			prepare
-
 		ensure
 			valid: is_valid
 			definition_set: definition = a_definition
@@ -89,10 +90,13 @@ feature -- Miscellaneous
 feature -- Basic operations
 		
 		start is
-				-- 
+				-- Execute query `definition', positioning on first available result row
 			do
 				physical_fetch_count := 0; fetch_increment := 0
 				Precursor
+			ensure then
+				cursor_exists: (is_executed and then has_results) implies (cursor /= Void and then cursor.count = result_columns_count)
+				fetched_columns_count_set: fetched_columns_count = result_columns_count.min (cursor.count)
 			end
 			
 feature -- Obsolete
@@ -109,7 +113,7 @@ feature {NONE} -- Implementation
 		end
 		
 	create_row_buffers is
-			-- 
+			-- Create `cursor' filled with ECLI_VALUE descendants
 		do
 			Precursor
 			if cursor /= Void then
@@ -118,15 +122,16 @@ feature {NONE} -- Implementation
 		end
 	
 	bind_results is
-			-- 
+			-- Bind results to cursor buffer values
 		local
 			index : INTEGER
 		do
+			--| Bind by column
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
+			--| Declare maximum number of retrieved values at a time
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_capacity))
+			--| Declare status indicator array
 			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.to_external, 0))
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $row_count, 0))
-			
 			from index := 1
 			until index > result_columns_count
 			loop
@@ -149,7 +154,7 @@ feature {NONE} -- Implementation
 	
 		
 	fill_cursor is
-			-- 
+			-- update 'count' of all values in cursor
 		local
 			index : INTEGER
 		do
@@ -159,6 +164,7 @@ feature {NONE} -- Implementation
 				cursor.item (index).set_count (row_count)
 				index := index + 1
 			end
+			fetched_columns_count := result_columns_count
 		end
 
 	fetch_next_row is
@@ -168,7 +174,14 @@ feature {NONE} -- Implementation
 					go_after
 			else
 				if fetch_increment \\ row_capacity = 0 then
+					--| protect from moving GC
+					collection_off
+					--| Bind `row_count' a getting the actual number of rows fetched
+					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $row_count, 0))			
+					--| Do actual fetch
 					Precursor
+					--| restore GC
+					collection_on
 					fill_status_array
 					start_values
 					physical_fetch_count := physical_fetch_count + 1
@@ -182,7 +195,7 @@ feature {NONE} -- Implementation
 		end
 		
 	start_values is
-			-- 
+			-- call 'start' on each value in cursor
 		local
 			index : INTEGER
 		do
@@ -195,7 +208,7 @@ feature {NONE} -- Implementation
 		end
 		
 	forth_values is
-			-- 
+			-- call 'forth' on each value in cursor
 		local
 			index : INTEGER
 		do

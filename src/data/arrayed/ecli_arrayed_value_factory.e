@@ -1,5 +1,8 @@
 indexing
-	description: "Factory of ECLI_VALUE descendant instances"
+	description: "Factory of ECLI_ARRAYED_VALUE descendant instances"
+	
+	note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
+	
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -13,6 +16,8 @@ inherit
 	ECLI_VALUE_FACTORY
 		rename
 			make as make_value
+		export {NONE}
+			make_value
 		redefine
 			last_result,
 			create_double_value, 
@@ -28,7 +33,7 @@ inherit
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (a_row_count : INTEGER) is
 		do
@@ -40,14 +45,24 @@ feature -- Initialization
 feature -- Access
 
 	last_result : ECLI_ARRAYED_VALUE
+			-- last result of `create_instance'
 
 feature -- Measurement
 
 	row_count : INTEGER
+			-- default capacity of arrayed values
 	
 feature -- Status report
 
 feature -- Miscellaneous
+
+feature -- Basic operations
+
+feature -- Obsolete
+
+feature -- Inapplicable
+
+feature {NONE} -- Implementation
 
 	create_double_value is
 		do
@@ -93,13 +108,6 @@ feature -- Miscellaneous
 			!ECLI_ARRAYED_TIME!last_result.make (row_count)
 		end
 
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
 
 invariant
 	invariant_clause: -- Your invariant here

@@ -1,6 +1,6 @@
 indexing
 	description: "Objects that create arrayed buffers for rowset commands"
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -16,7 +16,7 @@ inherit
 creation
 	make
 	
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (a_row_count : INTEGER) is
 			-- make buffer for 'a_row_count'
@@ -28,16 +28,6 @@ feature -- Initialization
 		
 feature -- Access
 	
-	value_factory : ECLI_ARRAYED_VALUE_FACTORY is
-		once
-			!!Result.make (row_count)
-		end
-	
-	value_anchor : ECLI_ARRAYED_VALUE is
-			-- 
-		do
-			
-		end
 		
 feature -- Measurement
 
@@ -70,6 +60,22 @@ feature -- Obsolete
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
+
+	impl_value_factory : like value_factory
+
+	value_factory : ECLI_ARRAYED_VALUE_FACTORY is
+		do
+			if impl_value_factory = Void then
+				create impl_value_factory.make (row_count)
+			end
+			Result := impl_value_factory
+		end
+	
+	value_anchor : ECLI_ARRAYED_VALUE is
+			-- 
+		do
+			
+		end
 	
 invariant
 	invariant_clause: -- Your invariant here

@@ -1,21 +1,8 @@
 indexing
-	description: "CLI DB type codes.  Use this class as a mix-in. Extracted from ODBC ver >= 3.5"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
-	licensing: "See notice at end of class"
-
-class
-	ECLI_TYPE_CONSTANTS
-
-feature {NONE} -- SQL data type indicators
-
+	description: "CLI DB type codes.  Use this class as a mix-in. Extracted from SQL.h, for ODBC ver >= 3.5	"
 --SQL_CHAR
 --SQL_VARCHAR
 --SQL_LONGVARCHAR
---unsupported* SQL_WCHAR
---unsupported* SQL_WVARCHAR
---unsupported* SQL_WLONGVARCHAR
 --SQL_DECIMAL
 --SQL_NUMERIC
 --SQL_SMALLINT
@@ -32,6 +19,10 @@ feature {NONE} -- SQL data type indicators
 --SQL_TYPE_DATE
 --SQL_TYPE_TIME
 --SQL_TYPE_TIMESTAMP
+--SQL_GUID
+--unsupported* SQL_WCHAR
+--unsupported* SQL_WVARCHAR
+--unsupported* SQL_WLONGVARCHAR
 --unsupported* SQL_INTERVAL_MONTH
 --unsupported* SQL_INTERVAL_YEAR
 --unsupported* SQL_INTERVAL_YEAR_TO_MONTH
@@ -45,7 +36,16 @@ feature {NONE} -- SQL data type indicators
 --unsupported* SQL_INTERVAL_HOUR_TO_MINUTE
 --unsupported* SQL_INTERVAL_HOUR_TO_SECOND
 --unsupported* SQL_INTERVAL_MINUTE_TO_SECOND
---SQL_GUID
+	author: "Paul G. Crismer"
+	date: "$Date$"
+	revision: "$Revision$"
+	licensing: "See notice at end of class"
+
+class
+	ECLI_TYPE_CONSTANTS
+
+feature {NONE} -- SQL data type indicators
+
 
 	Sql_all_types	:	INTEGER is	0
 		--  GetTypeInfo() request for all data types 
@@ -60,20 +60,13 @@ feature {NONE} -- SQL data type indicators
 	Sql_float	:	INTEGER is	6
 	Sql_real	:	INTEGER is	7
 	Sql_double	:	INTEGER is	8
---	Sql_datetime	:	INTEGER is	9
 	Sql_varchar	:	INTEGER is	12
 
-	--  One-parameter shortcuts for date/time data types 
-	 -- IF (ODBCVER >= 0x0300)
 	Sql_type_date	:	INTEGER is	91
 	Sql_type_time	:	INTEGER is	92
 	Sql_type_timestamp	:	INTEGER is	93
 
-	--  SQL extended datatypes 
---	Sql_date	:	INTEGER is	9
 	Sql_interval	:	INTEGER is	10 
---	Sql_time	:	INTEGER is	10
---	Sql_timestamp	:	INTEGER is	11
 	Sql_longvarchar	:	INTEGER is	-1
 	Sql_binary	:	INTEGER is	-2
 	Sql_varbinary	:	INTEGER is	-3
@@ -83,7 +76,9 @@ feature {NONE} -- SQL data type indicators
 	Sql_bit	:	INTEGER is	-7
 	Sql_guid	:	INTEGER is	-11 
 
-	 -- IF (ODBCVER >= 0x0300)
+feature {NONE} -- Not yet supported
+	
+	-- IF (ODBCVER >= 0x0300)
 	--  interval code 
 --	Sql_code_year	:	INTEGER is	1
 --	Sql_code_month	:	INTEGER is	2
@@ -149,9 +144,6 @@ feature {NONE} -- C data type indicators
 	Sql_signed_offset	:	INTEGER is	-20
 	Sql_unsigned_offset	:	INTEGER is	-22
 
---	Sql_c_date	:	INTEGER is do Result := Sql_date end
---	Sql_c_time	:	INTEGER is do Result := Sql_time end
---	Sql_c_timestamp	:	INTEGER is do Result := Sql_timestamp end
 
 	Sql_c_type_date	:	INTEGER is do Result := Sql_type_date end
 	Sql_c_type_time	:	INTEGER is do Result := Sql_type_time end

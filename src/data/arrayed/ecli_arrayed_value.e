@@ -32,8 +32,8 @@ inherit
 			set_item, set_null, length_indicator_pointer,
 			can_trace		
 		redefine
-			release_handle, to_external, length_indicator_pointer , is_null, out,
-			to_string
+			release_handle, to_external, length_indicator_pointer , is_null, 
+			out, set_null, to_string
 		end
 		
 feature -- Initialization
@@ -57,6 +57,7 @@ feature -- Access
 			-- item at `index'th position
 		require
 			valid_index: index >= lower and index <= count
+			not_null: not is_null_at (index)
 		deferred			
 		end
 		
@@ -134,6 +135,14 @@ feature -- Status report
 		end
 		
 feature -- Status setting
+		
+	set_null is
+			-- set current item to NULL
+		do
+			if not off then
+				set_null_at (cursor_index)
+			end
+		end
 		
 feature -- Cursor movement
 

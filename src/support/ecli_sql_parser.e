@@ -133,9 +133,9 @@ feature -- Basic operations
 						index := index + 1
 					else
 						parameter_end := index - 1
+						parameters_count := parameters_count + 1
 						if parameter_begin > 0 and then parameter_begin <= parameter_end then
 							parameter := original_sql.substring (parameter_begin, parameter_end)
-							parameters_count := parameters_count + 1
 							statement.add_new_parameter (parameter, parameters_count)
 							parameter_begin := 0
 							parameter_end := 0
@@ -146,9 +146,9 @@ feature -- Basic operations
 			end
 			if state = State_parameter then
 				parameter_end := index - 1
+				parameters_count := parameters_count + 1
 				if parameter_begin > 0 and then parameter_begin <= parameter_end then
 					parameter := original_sql.substring (parameter_begin, parameter_end)
-					parameters_count := parameters_count + 1
 					statement.add_new_parameter (parameter, parameters_count)
 					parameter_begin := 0
 					parameter_end := 0

@@ -1,5 +1,8 @@
 indexing
-	description: "Factory of ECLI_VALUE descendant instances"
+	description: "Factory of ECLI_VALUE descendant instances."
+	
+	note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
+	
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -20,7 +23,7 @@ inherit
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make is
 		do
@@ -29,6 +32,7 @@ feature -- Initialization
 feature -- Access
 
 	last_result : ECLI_VALUE
+			-- last result of `create_instance'
 
 feature -- Measurement
 
@@ -39,7 +43,7 @@ feature -- Status report
 			Result := array_routines.has(valid_types, type_code)
 		end
 
-feature -- Miscellaneous
+feature {NONE} -- Miscellaneous
 
 	create_double_value is
 		do
@@ -88,7 +92,7 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	create_instance (db_type, column_precision, decimal_digits : INTEGER)  is
-			-- create instance of an ECLI_VALUE descendant
+			-- create instance of an ECLI_VALUE descendant best matching `db_type', `column_precision', `decimal_digits'
 		require
 			db_type_ok: valid_type (db_type)
 		do

@@ -1,5 +1,5 @@
 indexing
-	description: "Abstraction of a cursor.  Used by 'query_assistant'-generated classes."
+	description: "Abstraction of a cursor."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

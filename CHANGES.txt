@@ -1,3 +1,11 @@
+2003-01-01
+	* Added ECLI_SESSION.is_bind_arrayed_results_capable + updated ECLI_ROWSET_CURSOR preconditions on 'open' and 'open_prepared'
+	* Corrected problem with ECLI_STATEMENT.parameters_count when there were parameters without name
+	* ECLI_ARRAYED_VALUE.set_null is now correctly redefined
+	* ECLI_ARRAYED_BUFFER_FACTORY.value_factory is not a 'once' function anymore.  It is now a simulated "once per object".
+	* ECLI_ROWSET_CURSOR.row_count is bound and updated within 'fetch_next_row'.  GC is temporarily disabled to avoid problems with moving GCs.
+	* Various pre/post-conditions fixed/updated
+	
 2002-09-28
 	* Added 'arrayed' operations (ECLI_ROWSET_CURSOR, ECLI_ROWSET_MODIFIER)
 	  and values (ECLI_ARRAYED_VALUE and descendants)

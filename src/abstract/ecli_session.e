@@ -205,6 +205,23 @@ feature -- Status report
 			Result := impl_is_bind_arrayed_parameters_capability = 1
 		end
 		
+	is_bind_arrayed_results_capable : BOOLEAN is
+			-- can arrayed results be used  ?
+		local
+			dummy_statement : ECLI_STATEMENT
+		do
+			if impl_is_bind_arrayed_results_capability < 0 then
+				!!dummy_statement.make (Current)
+				if dummy_statement.can_use_arrayed_results then
+					impl_is_bind_arrayed_results_capability := 1
+				else
+					impl_is_bind_arrayed_results_capability := 0
+				end
+				dummy_statement.close
+			end
+			Result := impl_is_bind_arrayed_results_capability = 1
+		end
+
 	is_tracing : BOOLEAN is
 			-- is this session tracing SQL statements ?
 		do
@@ -418,6 +435,7 @@ feature {NONE} -- Implementation
 			impl_transaction_capability := sql_tc_none - 1
 			impl_describe_parameters_capability := sql_false - 1
 			impl_is_bind_arrayed_parameters_capability := -1			
+			impl_is_bind_arrayed_results_capability := -1			
 		end
 		
 	release_handle is
@@ -460,6 +478,7 @@ feature {NONE} -- Implementation
 	impl_describe_parameters_capability : INTEGER
 	
 	impl_is_bind_arrayed_parameters_capability : INTEGER
+	impl_is_bind_arrayed_results_capability	: INTEGER
 	
 	allocate is
 			-- allocate HANDLE
