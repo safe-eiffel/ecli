@@ -8,32 +8,6 @@ indexing
 expanded class
 	ECLI_EXTERNAL_TOOLS
 
-feature -- Initialization
-
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 
 	string_to_pointer (s : STRING) : POINTER is
@@ -50,9 +24,6 @@ feature -- Basic operations
 		do
 			create Result.from_external_copy (p)
 		end
-
-	
-feature -- Obsolete
 
 feature -- Inapplicable
 

@@ -152,7 +152,6 @@ EIF_INTEGER ecli_c_bind_result (EIF_POINTER stmt,
 			(SQLPOINTER)		value,
 			(SQLINTEGER)		buffer_length,
 			(SQLINTEGER *)		len_indicator);
-
 }
 
 
@@ -163,13 +162,23 @@ EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
 							 EIF_POINTER  	sql_decimal_digits,
 							 EIF_POINTER  	sql_nullability)
 {
-		return (EIF_INTEGER) SQLDescribeParam (
+	SQLSMALLINT p_sql_type;
+	SQLUINTEGER p_sql_size;
+	SQLSMALLINT p_sql_decimal_digits;
+	SQLSMALLINT p_sql_nullability;
+	EIF_INTEGER res;
+	res = (EIF_INTEGER) SQLDescribeParam (
 								(SQLHSTMT) 		stmt,
 								(SQLUSMALLINT) 	column_number,
-								(SQLSMALLINT *)	sql_type,
-								(SQLUINTEGER *)	sql_size,
-								(SQLSMALLINT *)	sql_decimal_digits,
-								(SQLSMALLINT *)	sql_nullability);
+								(SQLSMALLINT *)	&p_sql_type,
+								(SQLUINTEGER *)	&p_sql_size,
+								(SQLSMALLINT *)	&p_sql_decimal_digits,
+								(SQLSMALLINT *)	&p_sql_nullability);
+	*((EIF_INTEGER*) sql_type)= p_sql_type;
+	*((EIF_INTEGER*) sql_size)= p_sql_size;
+	*((EIF_INTEGER*) sql_decimal_digits)= p_sql_decimal_digits;
+	*((EIF_INTEGER*) sql_nullability)= p_sql_nullability;
+	return res;
 }
 
 EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
@@ -182,16 +191,28 @@ EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 							 EIF_POINTER  	sql_decimal_digits,
 							 EIF_POINTER  	sql_nullability)
 {
-		return (EIF_INTEGER) SQLDescribeCol (
+	SQLSMALLINT p_sql_type;
+	SQLUINTEGER p_sql_size;
+	SQLSMALLINT p_sql_decimal_digits;
+	SQLSMALLINT p_sql_nullability;
+	SQLSMALLINT p_actual_name_length;
+	EIF_INTEGER res;
+	res = (EIF_INTEGER) SQLDescribeCol (
 								(SQLHSTMT) 		stmt,
 								(SQLUSMALLINT) 	column_number,
 								(SQLCHAR *)		col_name,
 								(SQLSMALLINT)	max_name_length,
-								(SQLSMALLINT *)	actual_name_length,
-								(SQLSMALLINT *)	sql_type,
-								(SQLUINTEGER *)	sql_size,
-								(SQLSMALLINT *)	sql_decimal_digits,
-								(SQLSMALLINT *)	sql_nullability);
+								(SQLSMALLINT *)	&p_actual_name_length,
+								(SQLSMALLINT *)	&p_sql_type,
+								(SQLUINTEGER *)	&p_sql_size,
+								(SQLSMALLINT *)	&p_sql_decimal_digits,
+								(SQLSMALLINT *)	&p_sql_nullability);
+	*((EIF_INTEGER*) actual_name_length)= p_actual_name_length;
+	*((EIF_INTEGER*) sql_type)= p_sql_type;
+	*((EIF_INTEGER*) sql_size)= p_sql_size;
+	*((EIF_INTEGER*) sql_decimal_digits)= p_sql_decimal_digits;
+	*((EIF_INTEGER*) sql_nullability)= p_sql_nullability;
+	return res;
 }
 
 
@@ -208,7 +229,6 @@ EIF_INTEGER ecli_c_get_data (EIF_POINTER stmt,
 		(SQLPOINTER)		target_pointer,
 		(SQLINTEGER)		buffer_length,
 		(SQLINTEGER *)		len_indicator_pointer);
-
 }
 
 EIF_INTEGER ecli_c_fetch (EIF_POINTER handle) {
@@ -220,46 +240,72 @@ EIF_INTEGER ecli_c_close_cursor (EIF_POINTER handle) {
 	return (EIF_INTEGER) SQLCloseCursor ((SQLHSTMT) handle);
 }
 
+static EIF_INTEGER ecli_c_get_error_diagnostic (SQLSMALLINT handle_type, EIF_POINTER handle,  EIF_INTEGER record_index, EIF_POINTER state, EIF_POINTER native_error, EIF_POINTER message, EIF_INTEGER buffer_length, EIF_POINTER length_indicator)  {
+	SQLSMALLINT	p_length_indicator;
+	EIF_INTEGER res;
+	res = (EIF_INTEGER) SQLGetDiagRec(
+		(SQLSMALLINT)		handle_type,
+		(SQLHANDLE)			handle,
+		(SQLSMALLINT)		record_index,
+		(SQLCHAR *)			state,
+		(SQLINTEGER *)		native_error,
+		(SQLCHAR *)			message,
+		(SQLSMALLINT)		buffer_length,
+		(SQLSMALLINT *)		&p_length_indicator);
+	*((EIF_INTEGER*) length_indicator)= p_length_indicator;
+	return res;
+}
+
 EIF_INTEGER ecli_c_environment_error (EIF_POINTER handle,
 				EIF_INTEGER record_index,
 				EIF_POINTER state,
 				EIF_POINTER native_error,
 				EIF_POINTER message,
 				EIF_INTEGER buffer_length,
-				EIF_POINTER length_indicator)  {
-	return (EIF_INTEGER) SQLGetDiagRec(
-		(SQLSMALLINT)		SQL_HANDLE_ENV,
-		(SQLHANDLE)			handle,
-		(SQLSMALLINT)		record_index,
-		(SQLCHAR *)			state,
-		(SQLINTEGER *)		native_error,
-		(SQLCHAR *)			message,
-		(SQLSMALLINT)		buffer_length,
-		(SQLSMALLINT *)		length_indicator);
+				EIF_POINTER length_indicator)
+{
+	return (EIF_INTEGER) ecli_c_get_error_diagnostic(
+		SQL_HANDLE_ENV,
+		handle,
+		record_index,
+		state,
+		native_error,
+		message,
+		buffer_length,
+		length_indicator);
 }
 
 EIF_INTEGER ecli_c_session_error (EIF_POINTER handle, EIF_INTEGER record_index, EIF_POINTER state, EIF_POINTER native_error, EIF_POINTER message, EIF_INTEGER buffer_length, EIF_POINTER length_indicator)  {
-	return (EIF_INTEGER) SQLGetDiagRec(
-		(SQLSMALLINT)		SQL_HANDLE_DBC,
-		(SQLHANDLE)			handle,
-		(SQLSMALLINT)		record_index,
-		(SQLCHAR *)			state,
-		(SQLINTEGER *)		native_error,
-		(SQLCHAR *)			message,
-		(SQLSMALLINT)		buffer_length,
-		(SQLSMALLINT *)		length_indicator);
+	return (EIF_INTEGER) ecli_c_get_error_diagnostic(
+		SQL_HANDLE_DBC,
+		handle,
+		record_index,
+		state,
+		native_error,
+		message,
+		buffer_length,
+		length_indicator);
 }
 
 EIF_INTEGER ecli_c_statement_error (EIF_POINTER handle, EIF_INTEGER record_index, EIF_POINTER state, EIF_POINTER native_error, EIF_POINTER message, EIF_INTEGER buffer_length, EIF_POINTER length_indicator)  {
-	return (EIF_INTEGER) SQLGetDiagRec(
-		(SQLSMALLINT)		SQL_HANDLE_STMT,
-		(SQLHANDLE)			handle,
-		(SQLSMALLINT)		record_index,
-		(SQLCHAR *)			state,
-		(SQLINTEGER *)		native_error,
-		(SQLCHAR *)			message,
-		(SQLSMALLINT)		buffer_length,
-		(SQLSMALLINT *)		length_indicator);
+	return (EIF_INTEGER) ecli_c_get_error_diagnostic(
+		SQL_HANDLE_STMT,
+		handle,
+		record_index,
+		state,
+		native_error,
+		message,
+		buffer_length,
+		length_indicator);
+}
+
+
+EIF_INTEGER ecli_c_transaction_capable (EIF_POINTER handle, EIF_POINTER capable) {
+	SQLUSMALLINT	capability;
+	EIF_INTEGER		res;
+	res = (EIF_INTEGER) SQLGetInfo ((SQLHSTMT) handle, SQL_TXN_CAPABLE, &capability, 0, NULL);
+	*((EIF_INTEGER*)capable)= (EIF_INTEGER) capability;
+	return res;
 }
 
 /* Accessors and Modifiers for struct ecli_c_value data type */
@@ -337,6 +383,12 @@ void ecli_c_timestamp_set_hour (EIF_POINTER tm, EIF_INTEGER v) { ((TIMESTAMP_STR
 void ecli_c_timestamp_set_minute (EIF_POINTER tm, EIF_INTEGER v) { ((TIMESTAMP_STRUCT*)tm)->minute = (SQLUSMALLINT) v;}
 void ecli_c_timestamp_set_second (EIF_POINTER tm, EIF_INTEGER v) { ((TIMESTAMP_STRUCT*)tm)->second = (SQLUSMALLINT) v;}
 void ecli_c_timestamp_set_fraction (EIF_POINTER tm, EIF_INTEGER v) { ((TIMESTAMP_STRUCT*)tm)->fraction = (SQLUINTEGER) v;}
+
+
+/* size of structures */
+EIF_INTEGER ecli_c_sizeof_date_struct () {return sizeof(DATE_STRUCT);}
+EIF_INTEGER ecli_c_sizeof_time_struct () {return sizeof(TIME_STRUCT);}
+EIF_INTEGER ecli_c_sizeof_timestamp_struct () {return sizeof(TIMESTAMP_STRUCT);}
 
 
 /* Return codes */
@@ -500,6 +552,14 @@ EIF_INTEGER ecli_c_sql_c_type_time () {
 EIF_INTEGER ecli_c_sql_c_type_timestamp () {
 	return (EIF_INTEGER) SQL_C_TYPE_TIMESTAMP   ;
 }
+
+/* transaction capability */
+
+EIF_INTEGER ecli_c_tc_none () { return (EIF_INTEGER) SQL_TC_NONE; }
+EIF_INTEGER ecli_c_tc_dml () {return (EIF_INTEGER) SQL_TC_DML;}
+EIF_INTEGER ecli_c_tc_ddl_commit () {return (EIF_INTEGER) SQL_TC_DDL_COMMIT;}
+EIF_INTEGER ecli_c_tc_ddl_ignore () {return (EIF_INTEGER) SQL_TC_DDL_IGNORE;}
+EIF_INTEGER ecli_c_tc_all () {return (EIF_INTEGER) SQL_TC_ALL;}
 
 
 
