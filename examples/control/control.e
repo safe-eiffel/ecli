@@ -5,9 +5,19 @@ creation
 	make
 	
 feature
+
 	make is
+		local
+			a, b : UNSIGNED_32
 		do
+			b := not a
+			z := b.from_hex ("FFE9")
+			print (b.out) print ("%N")
+			print (z.out) print ("%N")
+			t := b.from_integer (-1)
 		end
+		
+	z, t : UNSIGNED_32
 		
 feature
 

@@ -70,7 +70,8 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 		create_buffers (cursor_description :ARRAY [ECLI_COLUMN_DESCRIPTION]) is
-			-- create all ECLI_VALUE objects
+			-- Create all ECLI_VALUE objects.
+			-- Empty column names are replaced by the column index.
 		require
 			cursor_description_not_void: cursor_description /= Void
 			lower_is_one: cursor_description.lower = 1
@@ -79,6 +80,7 @@ feature -- Basic operations
 			factory : like value_factory
 			column : ECLI_COLUMN_DESCRIPTION
 			size : INTEGER
+			name : STRING
 		do
 			from
 				factory := value_factory
@@ -90,7 +92,12 @@ feature -- Basic operations
 				i > cols
 			loop
 				column := cursor_description @ i
-				map_name_to_index (i, column.name)
+				if column.name.is_empty then
+					name := i.out
+				else
+					name := column.name
+				end
+				map_name_to_index (i, name)
 				if column.size <= precision_limit then
 					size := column.size
 				else

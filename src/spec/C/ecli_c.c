@@ -89,6 +89,27 @@ EIF_INTEGER ecli_c_connect (EIF_POINTER con, EIF_POINTER data_source, EIF_POINTE
 		                        (SQLCHAR*) password, SQL_NTS);
 }
 
+EIF_INTEGER ecli_c_driver_connect (EIF_POINTER ConnectionHandle,
+     EIF_POINTER     WindowHandle,
+     EIF_POINTER     InConnectionString,
+     EIF_INTEGER     StringLength1,
+     EIF_POINTER     OutConnectionString,
+     EIF_INTEGER     BufferLength,
+     EIF_POINTER     StringLength2Ptr,
+     EIF_INTEGER     DriverCompletion)
+
+{
+	return (EIF_INTEGER) SQLDriverConnect(
+     (SQLHDBC)     ConnectionHandle,
+     (SQLHWND)     WindowHandle,
+     (SQLCHAR *)     InConnectionString,
+     (SQLSMALLINT)     StringLength1,
+     (SQLCHAR *)     OutConnectionString,
+     (SQLSMALLINT)     BufferLength,
+     (SQLSMALLINT *)     StringLength2Ptr,
+     (SQLUSMALLINT)     DriverCompletion);
+}
+
 EIF_INTEGER ecli_c_disconnect (EIF_POINTER con)  {
     /* disconnect 'con' */
 	return (EIF_INTEGER) SQLDisconnect((SQLHDBC)con);
@@ -163,6 +184,10 @@ EIF_INTEGER ecli_c_execute_direct (EIF_POINTER stmt, EIF_POINTER sql)  {
 
 EIF_INTEGER ecli_c_execute (EIF_POINTER stmt)  {
 	return (EIF_INTEGER) SQLExecute((SQLHSTMT)stmt);
+}
+
+EIF_INTEGER ecli_c_more_results (EIF_POINTER stmt) {
+	return (EIF_INTEGER) SQLMoreResults ((SQLHSTMT)stmt);
 }
 
 EIF_INTEGER ecli_c_bind_parameter (EIF_POINTER stmt,
@@ -523,6 +548,34 @@ EIF_INTEGER ecli_c_sql_get_functions (EIF_POINTER handle, EIF_INTEGER function, 
 	res = (EIF_INTEGER) SQLGetFunctions ((SQLHDBC) handle, (SQLUSMALLINT) function, (SQLUSMALLINT*) &support);
 	*((EIF_INTEGER*)supported)= (EIF_INTEGER) support;
 	return res;
+}
+
+EIF_INTEGER ecli_c_sql_drivers (EIF_POINTER handle,
+     EIF_INTEGER     Direction,
+     EIF_POINTER     DriverDescription,
+     EIF_INTEGER     BufferLength1,
+     EIF_POINTER     DescriptionLengthPtr,
+     EIF_POINTER     DriverAttributes,
+     EIF_INTEGER     BufferLength2,
+     EIF_POINTER     AttributesLengthPtr)
+
+{
+	return (EIF_INTEGER) SQLDrivers(
+     (SQLHENV)     handle,
+     (SQLUSMALLINT)     Direction,
+     (SQLCHAR *)     DriverDescription,
+     (SQLSMALLINT)     BufferLength1,
+     (SQLSMALLINT *)     DescriptionLengthPtr,
+     (SQLCHAR *)     DriverAttributes,
+     (SQLSMALLINT)     BufferLength2,
+     (SQLSMALLINT *)     AttributesLengthPtr);
+}
+
+/* Installation routines */
+
+EIF_BOOLEAN ecli_c_sql_config_datasource (EIF_POINTER hwndParent, EIF_INTEGER fRequest, EIF_POINTER lpszDriver, EIF_POINTER lpszAttributes)
+{
+	return (EIF_BOOLEAN) SQLConfigDataSource((HWND) hwndParent,(UINT) fRequest, (LPCSTR) lpszDriver, (LPCSTR) lpszAttributes);
 }
 
 /* Accessors and Modifiers for struct ecli_c_value data type */

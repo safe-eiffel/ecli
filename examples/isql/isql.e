@@ -26,6 +26,7 @@ feature {NONE} -- Initialization
 	make is
 			-- isql
 		local
+			simple_login : ECLI_SIMPLE_LOGIN
 			std : KL_STANDARD_FILES
 			sp : ECLI_STORED_PROCEDURE
 		do			
@@ -44,7 +45,9 @@ feature {NONE} -- Initialization
 					current_context.enable_echo_output
 				end	
 				if dsn /= Void and then user /= Void and then password /= Void then
-					!! session.make (dsn, user, password)
+					create session.make_default
+					create simple_login.make (dsn, user, password)
+					session.set_login_strategy (simple_login)
 					session.connect
 					current_context.set_session (session)
 					if session.is_connected then
@@ -227,6 +230,8 @@ feature {NONE} -- Implementation
 			create {ISQL_CMD_COMMIT}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_DISCONNECT}l_command
+			commands.put_last (l_command)
+			create {ISQL_CMD_DRIVERS}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_EDIT}l_command
 			commands.put_last (l_command)

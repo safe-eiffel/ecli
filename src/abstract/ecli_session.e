@@ -14,10 +14,14 @@ class ECLI_SESSION
 inherit
 
 	ECLI_STATUS
-
+		export
+			{ECLI_LOGIN_STRATEGY} set_status
+		end
+		
 	ECLI_HANDLE
 		export
-			{ANY} is_valid
+			{ANY} is_valid;
+			{ECLI_LOGIN_STRATEGY, ECLI_HANDLE} handle
 		end
 
 	ECLI_SHARED_ENVIRONMENT
@@ -51,62 +55,66 @@ inherit
 
 creation
 
-	make
+	make, make_default
 
 feature -- Initialization
 
 	make, open (a_data_source, a_user_name, a_password : STRING) is
-			-- Make session using `session_string'
+			-- Make session using `a_data_source', `a_user_name', `a_password'.
+		obsolete "[2005-01-04] Use `make_default' followed by `set_login_strategy' instead."
 		require
 			data_source_defined: a_data_source /= Void
 			user_name_defined: a_user_name/= Void
 			password_defined: a_password /= Void
 			closed: is_closed
 		do
-			-- Set data_source, user_name and password
-			set_data_source (a_data_source)
-			set_user_name(a_user_name)
-			set_password (a_password)
-			allocate
-			reset_implementation
+			make_default
+			create {ECLI_SIMPLE_LOGIN}login_strategy.make (a_data_source, a_user_name, a_password)
 		ensure
 			data_source_set : data_source.is_equal (a_data_source)
 			user_name_set : user_name.is_equal (a_user_name)
 			password_set : password.is_equal (a_password)
+			ready_to_connect: is_ready_to_connect
 			valid: is_valid
 			open:  not is_closed
 		end
 
-	attach is
-			-- Attach current session object to shared CLI environment
-		obsolete "Use open /close instead of attach/release"
+	make_default is
+			-- Default creation.
+		require
+			is_closed: is_closed
 		do
+			allocate
+			reset_implementation
+		ensure
+			valid: is_valid
+			open: not is_closed
 		end
-
-	release is
-			-- Release current session object from environment.  Ready for disposal
-		obsolete "Use open/close instead of attach/release"
-		do
-		end
-
+		
 feature -- Access
 
+	login_strategy : ECLI_LOGIN_STRATEGY
+			-- Login strategy used for connection.
+			
 	data_source : STRING is
 			-- Data source used for connection
+		obsolete "[2004-12-23]Use `login_strategy' instead."
 		do
-			Result := impl_data_source.as_string
+			Result := simple_login.datasource_name
 		end
 
 	user_name : STRING is
 			-- User name used for connection
+		obsolete "[2004-12-23]Use `login_strategy' instead."
 		do
-			Result := impl_user_name.as_string
+			Result := simple_login.user_name
 		end
 
 	password : STRING is
 			-- Password used for connection
+		obsolete "[2004-12-23]Use `login_strategy' instead."
 		do
-			Result := impl_password.as_string
+			Result := simple_login.password
 		end
 
 	transaction_capability : INTEGER is
@@ -162,9 +170,9 @@ feature -- Status report
 	is_ready_to_connect : BOOLEAN is
 			-- Is this session ready to be connected ?
 		do
-			Result := (data_source /= Void and then user_name/= Void and then password /= Void)
+			Result := (login_strategy /= Void)
 		ensure
-			definition: Result = (data_source /= Void and then user_name/= Void and then password /= Void)
+			definition: Result = (login_strategy /= Void)
 		end
 		
 	is_connected : BOOLEAN is
@@ -293,13 +301,24 @@ feature -- Status setting
 
 feature -- Element change
 
+	set_login_strategy (new_login : ECLI_LOGIN_STRATEGY) is
+			-- Change `login_strategy' to `new_login'.
+		require
+			not_connected: not is_connected
+			new_login_not_void: new_login /= Void
+		do
+			login_strategy := new_login
+		ensure
+			login_strategy_set: login_strategy = new_login
+		end
+		
 	set_user_name(a_user_name: STRING) is
 			-- Set `user' to `a_user'
 		require
 			not_connected: not is_connected
 			a_user_ok: a_user_name/= Void
 		do
-			create impl_user_name.make_from_string (a_user_name)
+			simple_login.set_user_name (a_user_name)
 		ensure
 			user_name_set: user_name.is_equal (a_user_name)
 		end
@@ -310,7 +329,7 @@ feature -- Element change
 			not_connected: not is_connected
 			a_data_source_ok: a_data_source /= Void
 		do
-			create impl_data_source.make_from_string (a_data_source)
+			simple_login.set_datasource_name (a_data_source)
 		ensure
 			data_source_set: data_source.is_equal (a_data_source)
 		end
@@ -321,7 +340,7 @@ feature -- Element change
 			not_connected: not is_connected
 			a_password_ok: a_password /= Void
 		do
-			create impl_password.make_from_string (a_password)
+			simple_login.set_password (a_password)
 		ensure
 			password_set: password.is_equal (a_password)
 		end
@@ -414,23 +433,33 @@ feature -- Basic Operations
 		end
 
 	connect is
-			-- Connect to `data_source' using `user_name' and `password'
+			-- Connect using `login_strategy'
 		require
 			is_valid: is_valid
 			not_connected: not is_connected
 			ready_to_connect: is_ready_to_connect
 		do
-			set_status (ecli_c_connect (handle,
-					impl_data_source.handle,
-					impl_user_name.handle,
-					impl_password.handle))
-			if is_ok then
+			login_strategy.connect (Current)
+			if is_ok and then status /= Sql_no_data then
 				set_connected
 			end
 		ensure
 			connected: is_connected implies is_ok
 		end
 
+	connect_with_strategy (new_strategy: ECLI_LOGIN_STRATEGY) is
+			-- Connect using `new_strategy'.
+		require
+			is_valid: is_valid
+			not_connected: not is_connected
+		do
+			login_strategy := new_strategy
+			connect
+		ensure
+			login_set: login_strategy = new_strategy
+			connected: is_connected implies is_ok
+		end
+		
 	disconnect is
 			-- Disconnect the session and close any remaining statement
 		require
@@ -493,6 +522,11 @@ feature {ECLI_ENVIRONMENT} --
 
 feature {NONE} -- Implementation
 
+	simple_login : ECLI_SIMPLE_LOGIN is
+		do
+			Result ?= login_strategy
+		end
+		
 	reset_implementation is
 			-- Reset all implementation values to default ones
 		do
@@ -512,12 +546,6 @@ feature {NONE} -- Implementation
 			end
 			set_handle ( default_pointer)
 		end
-
-	impl_data_source : XS_C_STRING
-
-	impl_user_name: XS_C_STRING
-
-	impl_password : XS_C_STRING
 
 	impl_has_pending_transaction : BOOLEAN
 

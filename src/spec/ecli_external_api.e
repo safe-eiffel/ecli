@@ -72,6 +72,18 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_driver_connect (ConnectionHandle : POINTER;
+				WindowHandle : POINTER;
+				InConnectionString : POINTER;
+				StringLength1 : INTEGER;
+				OutConnectionString : POINTER;
+				BufferLength : INTEGER;
+				StringLength2Ptr : POINTER;
+				DriverCompletion : INTEGER) : INTEGER is
+			-- connect directly to driver
+		external "C"
+		end
+
 	ecli_c_disconnect (con : POINTER) : INTEGER is
 			-- disconnect 'con'
 		external "C"
@@ -119,6 +131,10 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 	
+	ecli_c_more_results (stmt : POINTER) : INTEGER  is
+		external "C"
+		end
+
 	ecli_c_bind_parameter (stmt : POINTER;
 			index, direction, c_type, sql_type, sql_size, sql_decimal_digits : INTEGER;
 			value : POINTER; buffer_length : INTEGER; ptr_value_length : POINTER) : INTEGER  is
@@ -212,6 +228,24 @@ feature {NONE} -- Implementation
 		end
 
 	ecli_c_sql_get_functions (handle : POINTER; function : INTEGER; supported : POINTER) : INTEGER is
+		external "C"
+		end
+
+	ecli_c_sql_drivers (handle : POINTER;
+			Direction : INTEGER;
+			DriverDescription : POINTER;
+			BufferLength1 : INTEGER;
+			DescriptionLengthPtr : POINTER;
+			DriverAttributes : POINTER;
+			BufferLength2 : INTEGER
+			AttributesLengthPtr : POINTER) : INTEGER is
+     	external "C" 
+     	end
+     	
+
+feature {NONE} -- Data Srouce Configuration
+
+	ecli_c_sql_config_datasource (hwndParent : POINTER; fRequest : INTEGER; lpszDriver : POINTER; lpszAttributes : POINTER) : BOOLEAN is
 		external "C"
 		end
 

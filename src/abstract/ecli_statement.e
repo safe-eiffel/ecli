@@ -283,6 +283,9 @@ feature -- Status Report
 			Result := has_result_set
 		end
 
+	has_another_result_set : BOOLEAN
+			-- Has this statement another result-set ?
+			
 	has_result_set : BOOLEAN is
 			-- Has this statement a result-set ?
 		require
@@ -340,9 +343,9 @@ feature -- Status Report
 		require
 			valid_statement: is_valid
 		do
-			Result := cursor_status = cursor_after
+			Result := cursor_status = cursor_after or else cursor_status = cursor_closed
 		ensure
-			Result = (cursor_status = cursor_after)
+			Result = (cursor_status = cursor_after or else cursor_status = cursor_closed)
 		end
 
 	before : BOOLEAN is
@@ -430,16 +433,40 @@ feature -- Cursor movement
 			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (results.count)			
 		end
 
-	close_cursor, go_after, finish is
-			-- Finish iterating on result set, releasing internal resources
+	finish, close_cursor is
+			-- Finish iterating on all result sets, releasing internal resources.
 		require
 			valid_statement: is_valid
 			valid_state: is_executed
 			has_result_set: has_result_set
 		do
 			if not after then
-				set_status (ecli_c_close_cursor (handle))
 				set_cursor_after
+				has_another_result_set := False
+				set_status (ecli_c_close_cursor (handle))
+			end
+			fetched_columns_count := 0
+		ensure
+			after: after
+			fetched_columns: fetched_columns_count = 0
+		end
+		
+	go_after is
+			-- Finish iterating on current result set.
+		require
+			valid_statement: is_valid
+			valid_state: is_executed
+			has_result_set: has_result_set
+		do
+			if not after then
+				set_cursor_after
+				set_status (ecli_c_more_results (handle))
+				if is_ok and then not is_no_data then
+					has_another_result_set := True
+				else 
+					has_another_result_set := False
+					cursor_status := Cursor_closed
+				end
 			end
 			fetched_columns_count := 0
 		ensure
@@ -447,6 +474,21 @@ feature -- Cursor movement
 			fetched_columns: fetched_columns_count = 0
 		end
 
+	forth_result_set is
+			-- Advance to next result set.
+		require
+			has_another_result_set: has_another_result_set
+		do
+			cursor_status := cursor_before
+			impl_result_columns_count.put (-1)
+			get_result_columns_count
+			if not has_result_set then
+				get_row_count
+			end
+		ensure
+			before: before
+		end
+		
 feature -- Element change
 
 	set_sql (new_sql : STRING) is
@@ -568,7 +610,7 @@ feature -- Basic operations
 				trace (session.tracer)
 			end
 			if is_executed and then has_result_set and then not after then
-				close_cursor
+				finish
 			end
 			if is_prepared_execution_mode then
 				set_status (ecli_c_execute (handle) )
@@ -712,7 +754,7 @@ feature -- Basic operations
 			valid_statement: is_valid
 		do
 			if is_executed and then (has_result_set and  not after) then
-				close_cursor
+				finish
 			end
 			set_status (ecli_c_prepare (handle, impl_sql.handle))
 			if is_ok then
@@ -878,7 +920,7 @@ feature {NONE} -- Implementation
 		do
 			set_status (ecli_c_fetch (handle))
 			if status = sql_no_data then
-				close_cursor
+				go_after
 			else
 				fill_results
 			end
@@ -954,8 +996,10 @@ feature {NONE} -- Implementation
 	cursor_status : INTEGER
 			-- Cursor status
 
-	cursor_before, cursor_in, cursor_after : INTEGER is unique
-			-- Cursor status values
+	cursor_before : INTEGER is 1
+	cursor_in : INTEGER is 2
+	cursor_after : INTEGER is 3
+	cursor_closed : INTEGER is 4
 
 feature {NONE} -- Hooks for descendants
 

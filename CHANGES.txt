@@ -1,3 +1,11 @@
+2005-01-07
+	* Procedure calls are now fully tested.
+	* Support of multiple result sets : go_after finishes sweeping through the current result-set, finish finishes sweeping through all pending result sets.
+	* New connection protocol, using an ECLI_LOGIN_STRATEGY whith descendants
+	  - ECLI_SIMPLE_LOGIN (data source name, user name, password)
+	  - ECLI_DRIVER_LOGIN (using a connection string and possibly a windowed dialog)
+	 
+	
 2004-06-22
 	* License is now Eiffel Forum v2.
 	* New indexing clause format to standardize with the format of GOBO.
@@ -5,8 +13,6 @@
 2004-05-14
 	* Refactored ECLI_VALUE hierarchy
 	* Introduced sending/getting long data : ECLI_FILE_VALUE and descendants
-	* ECLI_STATEMENT.get_row_count is a hook that is called just after a statement has been executed.
-	  Descendants can redefine it, for getting multiple row_counts using SQLMoreResults.
 	  
 2004-05-05
 	* Bug fixes: 

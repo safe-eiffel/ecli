@@ -47,6 +47,7 @@ feature {NONE} -- boolean values
 	Sql_true: INTEGER is 1
 
 feature {NONE} -- fetch operations for SQLDataSources or SQLFetchScroll
+
 	Sql_fetch_next  : INTEGER is    1
 	Sql_fetch_first  : INTEGER is   2
 	Sql_fetch_first_user: INTEGER is 31
@@ -57,5 +58,24 @@ feature {NONE} -- Procedure types
 	Sql_pt_unknown: INTEGER is 0
 	Sql_pt_procedure: INTEGER is 1
 	Sql_pt_function: INTEGER is 2
+
+feature {NONE} -- Options for SQLDriverConnect
+
+	Sql_driver_noprompt : INTEGER is 0
+	Sql_driver_complete : INTEGER is 1
+	Sql_driver_prompt : INTEGER is 2
+	Sql_driver_complete_required : INTEGER is 3
+
+feature {NONE} -- Options for SQLConfigDatasource
+
+	Odbc_add_dsn : INTEGER is 1 --  Add data source
+	Odbc_config_dsn : INTEGER is 2 --  Configure (edit) data source
+	Odbc_remove_dsn : INTEGER is 3 --  Remove data source
+
+	Odbc_add_sys_dsn : INTEGER is 4 --  add a system DSN -- ODBCVER >= 0x0250
+	Odbc_config_sys_dsn : INTEGER is 5 --  Configure a system DSN  -- ODBCVER >= 0x0250
+	Odbc_remove_sys_dsn : INTEGER is 6 --  remove a system DSN -- ODBCVER >= 0x0250
+	
+	Odbc_remove_default_dsn : INTEGER is 7 --  remove the default DSN -- ODBCVER >= 0x0300
 
 end

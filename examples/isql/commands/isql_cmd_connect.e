@@ -37,6 +37,8 @@ feature -- Basic operations
 			worder : KL_WORD_INPUT_STREAM
 			source, user, password : STRING
 			session : ECLI_SESSION
+			driver_strategy : ECLI_DRIVER_LOGIN
+			simple_login : ECLI_SIMPLE_LOGIN
 		do
 			create worder.make (text, " %T")
 			user := ""
@@ -63,8 +65,17 @@ feature -- Basic operations
 					context.session.disconnect
 					context.session.close
 				end
-				create session.make (source, user, password)
-				session.connect
+				if source.has_substring ("DSN=") or else source.has_substring ("DRIVER=") then
+					create driver_strategy.make (source)
+					create session.make_default
+					session.set_login_strategy (driver_strategy)
+					session.connect
+				else
+					create session.make_default
+					create simple_login.make (source, user, password)
+					session.set_login_strategy (simple_login)
+					session.connect
+				end
 				if session.is_connected then
 					context.set_session (session)	
 				else

@@ -2,7 +2,7 @@ indexing
 
 	description:
 	
-			"Objects that iterate over data sources"
+			"Objects that iterate over installed data sources."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"

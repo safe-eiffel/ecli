@@ -51,23 +51,23 @@ feature {NONE} -- Initilization
 feature -- Access
 
 	description : STRING
-			-- description of procedure
+			-- Description of procedure.
 
 	type : INTEGER
-			-- type of procedure
+			-- Type of procedure.
 
 feature -- Measurement
 
 feature -- Status report
 
 	is_procedure :  BOOLEAN is
-			-- is this a procedure ?
+			-- Is this a procedure ?
 		do
 			Result := type = sql_pt_procedure
 		end
 
 	is_function : BOOLEAN is
-			-- is this a function (it has a return value) ?
+			-- Is this a function (it has a return value) ?
 		do
 			Result := type = sql_pt_function
 		end

@@ -120,7 +120,7 @@ possible, and has already been tested using
 <p>It currently has been tested with the following RDBMS drivers : MS-Access,
  Oracle 8, Oracle 8i, PostgreSQL, Interbase61, SQL Server.<p>
 <p>It has been built and run with the following
-OSes : Win98, WIN NT4, Windows 2000, Caldera Linux 2.3, Suse Linux, Debian Linux. </p>
+OSes : Windows 32bits (98, NT4, 2000, XP), Caldera Linux 2.3, Suse Linux, Debian Linux. </p>
 
 <h2>Related work</h2>
 
@@ -337,8 +337,8 @@ time literal.<br>
       <td valign="Top"><b>{call</b> <i>procedure_name</i> [ <b>(</b><i>parameter_list</i><b>
 )</b> ]<b> }</b><br>
       </td>
-      <td valign="Top">Procedures are not supported by databases. Procedure
-calls are not supported by all drivers.<br>
+      <td valign="Top">Procedures are not supported by all database systems. Procedure
+<em>calls</em> are not supported by all drivers.<br>
 Check before using them.<br>
       </td>
     </tr>
@@ -406,20 +406,23 @@ Architecture at first glance</h1>
 
 <p align="Left">The class ECLI_SESSION provides session-management features.
  A session object is created for accessing a specific <i>data-source</i>,
-by using authorization rights of a specific database <i>user</i>. &nbsp; </p>
+by using authorization rights of a specific database <i>user</i>. Connection is made by using a <em>login strategy</em> embodied by an ECLI_LOGIN_STRATEGY descendant class.</p>
 
 <div id="code">
 <pre>
 session : ECLI_SESSION
+login_strategy : ECLI_LOGIN_STRATEGY
 data_source_name , user_name, password : STRING
 
 ...
 
 -- create session object
-create session.<b>make</b> (data_source_name, user_name, password)
+create session.<b>make_default</b>
+create {ECLI_SIMPLE_LOGIN}login_strategy.make(data_source_name, user_name, password)
 
 -- actual connection
-session.connect
+session.<b>set_login_strategy</b> (login_strategy)
+session.<b>connect</b>
 
 -- verify everything is ok
 if session.<b>is_connected</b> then
@@ -442,12 +445,12 @@ session.<b>close</b>
             <td valign="Top" width="50%"><b>Description</b> </td>
         </tr>
         <tr>
-            <td valign="Top" width="50%"><i>make</i></td>
+            <td valign="Top" width="50%"><i>make_default</i></td>
             <td valign="Top" width="50%">creation</td>
         </tr>
         <tr>
-            <td><em>open</em></td>
-            <td>open a new database (synonym of make)</td>
+            <td><em>set_login_strategy</em></td>
+            <td>Sets the login strategy to be used</td>
         </tr>
         <tr>
             <td valign="Top" width="50%"><i>connect</i></td>
