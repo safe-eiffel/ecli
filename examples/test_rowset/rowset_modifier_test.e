@@ -171,7 +171,6 @@ feature -- Basic operations
 	test_update is
 			-- test if bulk update was ok
 		local
-			i : INTEGER
 			ok : BOOLEAN
 			index : INTEGER
 		do  
@@ -349,7 +348,4 @@ feature {NONE} -- Implementation
 			end
 		end
 		
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ROWSET_MODIFIER_TEST

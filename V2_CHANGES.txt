@@ -1,0 +1,102 @@
+NEW
+
+	Build automation
+		Usage of geant
+		File ecli.eant as build file ancestor.
+	
+	.NET Compatible
+		Removed all $ operators incompatible with .NET.
+		Usage of SAFE_KERNEL/external cluster, among which XS_C_STRING.
+
+	Transaction isolation
+		ECLI_TRANSACTION_ISOLATION
+		ECLI_SESSION.transaction_isolation
+		ECLI_SESSION.set_transaction_isolation
+
+	Arrayed transfer datatypes
+		ECLI_ARRAYED_VALUE and its descendants
+
+	Simplified cursor access
+		ECLI_ROW_CURSOR
+
+	Arrayed operations
+		ECLI_ROWSET_CURSOR
+		ECLI_ROWSET_MODIFIER
+
+	Stored Procedures
+		ECLI_STORED_PROCEDURES allows specifying
+		input, output and input/output parameters 
+		(while ECLI_STATEMENT only supports input parameters).
+
+	Datatypes
+		ECLI_BINARY,
+		ECLI_VARBINARY,
+		ECLI_LONGVARBINARY
+
+	Metadata
+		ECLI_COLUMNS_CURSOR, ECLI_COLUMN,
+		ECI_DATA_SOURCES_CURSOR, ECLI_DATA_SOURCE,
+		ECLI_FOREIGN_KEYS_CURSOR, ECLI_FOREIGN_KEY,
+		ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY,
+		ECLI_PROCEDURES_CURSOR, ECLI_PROCEDURE_METADATA, 
+		ECLI_PROCEDURE_COLUMNS_CURSOR, ECLI_PROCEDURE_COLUMN
+		ECLI_SQL_TYPES_CURSOR, ECLI_SQL_TYPE,
+		ECLI_TABLES_CURSOR, ECLI_TABLE
+
+	SAFE Kernel classes - common to other SAFE libraries.
+		Mainly access to external resources.
+		XS_C_STRING,
+		XS_C_UINT32,
+		XS_C_INT8,
+		XS_C_INT16,
+		XS_C_INT32,
+		XS_C_ARRAY_INT16,
+		XS_C_ARRAY_INT32,
+		XS_C_BOOLEAN,
+		XS_C_POINTER, ...
+	
+CHANGES
+
+	Renames
+		ECLI_VALUE conversion features have been renamed :
+		from 'to_*' to 'as_*' in order to be .NET friendly.
+		Example: ECLI_VALUE.to_integer becomes ECLI_VALUE.as_integer
+		ECLI_STATEMENT.results must be used instead of ECLI_STATEMENT.cursor
+		ECLI_STATEMENT.set_results must be used instead of ECLI_STATEMENT.set_cursor
+
+	Moving-GC-safety
+		Removed all $ operators.
+		.NET Friendly.
+
+	ECLI_VALUE
+		ECLI_VALUE does not provide access to 'item' anymore
+		New ECLI_GENERIC_VALUE[G] provides access to a generic `item'
+		Value semantics : ECLI_INTEGER inherit ECLI_GENERIC_VALUE[INTEGER]
+		Reference semantics : ECLI_VARCHAR inherit ECLI_GENERIC_VALUE[STRING]
+
+		For reference semantics, given an object of type ECLI_GENERIC_VALUE [R]
+		where R has reference semantics, it holds that `item' will always return
+		the *same* reference (aliasing); just like in FILE.last_string.
+		The content of `item' can change, but the reference remains the same.
+
+	isql is renamed 'clisql'
+		'clisql' is a new name; it's also a new applications.  It really is a
+		command line utility for ODBC.  It also can execute scripts.
+		In some way it mimics Oracle's SQL*Plus.
+
+	query_assistant
+		'query_assistant' has been completely reworked.
+		It now reads XML definition for 'access modules', tries statement execution
+		and generates classes for 'out-of-the-box' usage of wrapped queries.
+		Query_assistant is a sort of "precompiler" : applications that use the generated
+		classes bind parameters and results statically, no metadata querying is done. 
+
+	Tutorial
+		Tutorial document takes into account the most recent changes.
+		Advanced usage is not mentioned in the tutorial.
+
+TODO
+	Full testing of ECLI_STORED_PROCEDURE
+	Variable length datatypes from/to streams : descendants for
+	ECLI_VARCHAR, ECLI_LONGVARCHAR, ECLI_VARBINARY, ECLI_LONGVARBINARY
+	

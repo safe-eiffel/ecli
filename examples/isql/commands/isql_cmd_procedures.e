@@ -36,7 +36,7 @@ feature -- Basic operations
 		local
 			query : ECLI_NAMED_METADATA
 			cursor : ECLI_PROCEDURES_CURSOR
-			l_procedure : ECLI_PROCEDURE
+			l_procedure : ECLI_PROCEDURE_METADATA
 		do
 			create query.make (Void, Void, Void)
 			create cursor.make (query, context.session)

@@ -1,0 +1,21 @@
+SRCDIR=..\..\C
+CFLAGS=-I$(SMARTEIFFELDIR)\sys\runtime\c -I. -g2 
+CC=lcc.exe
+LINKER=lcclnk.exe
+LIBRARIAN=lcclib.exe
+OBJS=\
+	ecli_lcc.obj
+
+all: ecli_lcc.lib
+
+$(LIB):	$(OBJS) Makefile.lcc
+	$(LIBRARIAN) ecli_lcc.lib $(OBJS)
+
+ecli_lcc.obj: $(SRCDIR)\ecli_c.c
+	$(CC) -c -Foecli_lcc.obj $(CFLAGS) $(SRCDIR)\ecli_c.c
+
+ecli_lcc.lib: ecli_lcc.obj
+	$(LIBRARIAN) /out:ecli_lcc.lib $(OBJS)
+
+clean:
+	del $(OBJS)

@@ -167,6 +167,7 @@ EIF_INTEGER ecli_c_execute (EIF_POINTER stmt)  {
 
 EIF_INTEGER ecli_c_bind_parameter (EIF_POINTER stmt,
 								   EIF_INTEGER index,
+								   EIF_INTEGER direction,
 								   EIF_INTEGER c_type,
 								   EIF_INTEGER sql_type,
 								   EIF_INTEGER sql_size,
@@ -177,7 +178,7 @@ EIF_INTEGER ecli_c_bind_parameter (EIF_POINTER stmt,
 	return (EIF_INTEGER) SQLBindParameter(
 							(SQLHSTMT)stmt,
 							(SQLUSMALLINT)	index,
-							(SQLSMALLINT)	SQL_PARAM_INPUT,
+							(SQLSMALLINT)	direction,
 							(SQLSMALLINT)		c_type,
 							(SQLSMALLINT)		sql_type,
 							(SQLUINTEGER)		sql_size,
@@ -312,6 +313,23 @@ EIF_INTEGER ecli_c_get_columns (EIF_POINTER stmt,
 			(SQLSMALLINT)	schema_name_length,
 			(SQLCHAR *)		table_name,
 			(SQLSMALLINT)	table_name_length,
+			(SQLCHAR *)	column_name,
+			(SQLSMALLINT)	column_name_length
+		);
+}
+
+EIF_INTEGER ecli_c_get_procedure_columns (EIF_POINTER stmt,
+		EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+		EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+		EIF_POINTER procedure_name, EIF_INTEGER procedure_name_length,
+		EIF_POINTER column_name, EIF_INTEGER column_name_length) {
+	return (EIF_INTEGER) SQLProcedureColumns (	(SQLHSTMT)		stmt,
+			(SQLCHAR *)		catalog_name,
+			(SQLSMALLINT)	catalog_name_length,
+			(SQLCHAR *)		schema_name,
+			(SQLSMALLINT)	schema_name_length,
+			(SQLCHAR *)		procedure_name,
+			(SQLSMALLINT)	procedure_name_length,
 			(SQLCHAR *)	column_name,
 			(SQLSMALLINT)	column_name_length
 		);

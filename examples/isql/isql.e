@@ -27,6 +27,7 @@ feature {NONE} -- Initialization
 			-- isql
 		local
 			std : KL_STANDARD_FILES
+			sp : ECLI_STORED_PROCEDURE
 		do			
 			create_commands
 			create std
@@ -242,6 +243,8 @@ feature {NONE} -- Implementation
 			create {ISQL_CMD_PRIMARY_KEYS}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_PROCEDURES}l_command
+			commands.put_last (l_command)
+			create {ISQL_CMD_PROCEDURE_COLUMNS}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_QUIT}l_command
 			commands.put_last (l_command)			

@@ -181,14 +181,27 @@ feature {NONE} -- Basic operations
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
 			a_feature : EIFFEL_ATTRIBUTE
+			parameters_class_name, results_class_name : STRING
 		do
 			create feature_group.make ("-- Access")
 			
-			create a_feature.make ("parameters_object", module.parameters.name)
+			if module.parameters.parent_name /= Void and then
+			   module.parameters.local_items.count = 0 then
+			   	parameters_class_name := module.parameters.parent_name
+			else
+				parameters_class_name := module.parameters.name
+			end
+			create a_feature.make ("parameters_object", parameters_class_name)
 			feature_group.add_feature (a_feature)
 			
-			if module.has_results then
-				create a_feature.make ("item", module.results.name)
+			if module.has_result_set then
+				if module.results.parent_name /= Void and then 
+					module.results.local_items.count = 0 then
+					  results_class_name := module.results.parent_name
+				else
+					results_class_name := module.results.name
+				end
+				create a_feature.make ("item", results_class_name)
 				feature_group.add_feature (a_feature)
 			end			
 			
@@ -243,7 +256,7 @@ feature {NONE} -- Basic operations
 	put_invisible_features (module : ACCESS_MODULE) is
 			-- put invisible  features of `module' into `cursor_class'
 		do
-			if module.has_results then
+			if module.has_result_set then
 				put_create_buffers (module)
 			end
 		end
@@ -254,7 +267,7 @@ feature {NONE} -- Basic operations
 			parent_clause : STRING
 		do
 			if module.description /= Void then
-				cursor_class.add_indexing_clause (module.description)				
+				cursor_class.add_indexing_clause (module.description)
 			end
 			cursor_class.add_indexing_clause ("warning: %"Generated cursor '" +module.name +"' : DO NOT EDIT !%"")
 			cursor_class.add_indexing_clause ("author: %"QUERY_ASSISTANT%"")
@@ -263,7 +276,7 @@ feature {NONE} -- Basic operations
 			cursor_class.add_indexing_clause ("licensing: %"See notice at end of class%"")
 
 			create parent_clause.make (100)
-			if module.has_results then
+			if module.has_result_set then
 				parent_clause.append_string ("ECLI_CURSOR%N")
 			else
 				parent_clause.append_string ("ECLI_QUERY%N")
@@ -355,7 +368,7 @@ feature {NONE} -- Implementation
 			Result := clone (s)
 			Result.to_lower
 		end
-
+		
 invariant
 	invariant_clause: -- Your invariant here
 

@@ -192,17 +192,17 @@ feature -- Initialization
 		do
 			from
 				i := 1
-				cols := statement.result_column_count
+				cols := statement.result_columns_count
 				!! cursor.make (1, cols)
-				statement.describe_cursor
+				statement.describe_results
 			until
 				i > cols
 			loop
-				!! v.make (statement.cursor_description.item (i).column_precision)
+				!! v.make (statement.results_description.item (i).size)
 				cursor.put (v, i)
 				i := i + 1
 			end
-			statement.set_cursor (cursor)
+			statement.set_results (cursor)
 		end
 
 	show_initial_message is

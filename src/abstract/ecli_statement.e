@@ -181,7 +181,11 @@ feature -- Access
 			parameters_count: Result.count <= parameters_count
 		end
 
-	cursor : ARRAY[like value_anchor]
+	cursor : ARRAY[like value_anchor] is
+		obsolete "Use `results'"
+		do Result := results end
+		
+	results : ARRAY[like value_anchor]
 			-- container of result values (i.e. buffers for transferring
 			-- data from program to database) content is meaningful only
 			-- while sweeping through a result set, i.e. "not off"
@@ -192,9 +196,15 @@ feature -- Access
 	parameters_description : ARRAY[ECLI_PARAMETER_DESCRIPTION]
 			-- parameter metadata
 
-	cursor_description : ARRAY [ECLI_COLUMN_DESCRIPTION]
-			-- cursor values metadata 
+	results_description : ARRAY [ECLI_COLUMN_DESCRIPTION]
+			-- results values metadata 
 
+	cursor_description : like results_description is
+		obsolete "Use 'results_description'."
+		do
+			Result := results_description
+		end
+		
 	last_bound_parameter_index : INTEGER
 			-- index of last *successfuly* bound parameter after `bind_parameters'. Zero if none
 			
@@ -205,7 +215,7 @@ feature -- Measurement
 			-- invalid for query operations
 		require
 			executed: is_executed
-			not_a_query: not has_results
+			not_a_query: not has_result_set
 		do
 			if impl_row_count = Void then
 				create impl_row_count.make
@@ -260,6 +270,16 @@ feature -- Status Report
 		end
 		
 	has_results : BOOLEAN is
+			-- has this statement a result-set ?
+		obsolete "Use `has_result_set'." 
+		require
+			valid_statement: is_valid
+			executed_or_prepared: is_prepared or else is_executed
+		do
+			Result := has_result_set
+		end
+
+	has_result_set : BOOLEAN is
 			-- has this statement a result-set ?
 		require
 			valid_statement: is_valid
@@ -392,27 +412,27 @@ feature -- Cursor movement
 			valid_statement: is_valid
 			executed: is_executed and is_ok
 			before: before
-			cursor_ready: cursor /= Void and then not array_routines.has(cursor,Void)
+			results_ready: results /= Void and then not array_routines.has(results,Void)
 		do
 			set_cursor_in
 			fetch_next_row
 		ensure
-			results: not off implies (has_results and not before)
-			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (cursor.count)
+			results: not off implies (has_result_set and not before)
+			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (results.count)
 		end
 
 	forth is
 			-- get next result row
-			-- min (result_columns_count, cursor.count) items shall be retrieved
+			-- min (result_columns_count, results.count) items shall be retrieved
 		require
 			valid_statement: is_valid
 			executed: is_executed
 			result_pending: not off and not before
-			cursor_ready: cursor /= Void and then not array_routines.has (cursor,Void)
+			results_ready: results /= Void and then not array_routines.has (results,Void)
 		do
 			fetch_next_row
 		ensure
-			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (cursor.count)			
+			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (results.count)			
 		end
 
 	close_cursor, go_after is
@@ -420,7 +440,7 @@ feature -- Cursor movement
 		require
 			valid_statement: is_valid
 			valid_state: is_executed and not after
-			has_results: has_results
+			has_result_set: has_result_set
 		do
 			set_status (ecli_c_close_cursor (handle))
 			set_cursor_after
@@ -448,7 +468,7 @@ feature -- Element change
 			impl_result_columns_count.put (-1) -- do not know
 			is_executed := False
 			is_prepared := False
-			cursor_description := Void
+			results_description := Void
 			parameters_description := Void
 			parameters := Void
 			bound_parameters := False
@@ -459,7 +479,7 @@ feature -- Element change
 			not_prepared: not is_prepared
 			no_bound_parameters: not bound_parameters
 			no_more_parameters: parameters = Void
-			reset_descriptions: parameters_description = Void and cursor_description = Void
+			reset_descriptions: parameters_description = Void and results_description = Void
 			is_ok: is_ok
 		end
 
@@ -488,28 +508,21 @@ feature -- Element change
 			value_ok: value /= Void
 			key_ok : key /= Void
 			known_key: has_parameter (key)
-		local
-			plist : DS_LIST[INTEGER]
 		do
-			if parameters = Void then
-				!! parameters.make (1, parameters_count)
-			end
-			from plist := parameter_positions (key)
-				plist.start
-			until
-				plist.off
-			loop
-				parameters.put (value, plist.item_for_iteration)
-				plist.forth
-			end
-			bound_parameters := False
+			put_parameter_with_hint (value, key, Void)
 		ensure
-			parameter_set: True --for each i in parameter_positions(key) it_holds parameters.item (i) = value
+			parameter_set: parameter (key) = value --for each i in parameter_positions(key) it_holds parameters.item (i) = value
 			not_bound: not bound_parameters
 		end
 
 	set_cursor (row : like cursor) is -- ARRAY[like value_anchor]) is
-			-- set cursor container with 'row'
+		obsolete "Use `set_results' instead."
+		do
+			set_results (row)
+		end
+		
+	set_results (row : like results) is -- ARRAY[like value_anchor]) is
+			-- set `results' container with 'row'
 		require
 			valid_statement: is_valid
 			row_exist: row /= Void
@@ -517,9 +530,9 @@ feature -- Element change
 			row_count: row.count > 0
 			is_executed: is_executed
 		do
-			cursor := row
+			results := row
 		ensure
-			cursor_set: cursor = row
+			results_set: results = row
 		end
 
 feature {ECLI_SESSION} -- Miscellaneous
@@ -554,7 +567,7 @@ feature -- Basic operations
 			if session.is_tracing then
 				trace (session.tracer)
 			end
-			if is_executed and then has_results and then not after then
+			if is_executed and then has_result_set and then not after then
 				close_cursor
 			end
 			if is_prepared_execution_mode then
@@ -564,7 +577,7 @@ feature -- Basic operations
 			end
 			if is_ok then
 				is_executed := True
-				if has_results then
+				if has_result_set then
 					set_cursor_before
 				else
 					set_cursor_after
@@ -575,8 +588,8 @@ feature -- Basic operations
 		ensure
 			executed: is_executed implies is_ok
 			cursor_state: is_executed implies
-						((has_results implies before) or
-						(not has_results implies after))
+						((has_result_set implies before) or
+						(not has_result_set implies after))
 		end
 
 	trace (a_tracer : ECLI_TRACER) is
@@ -616,32 +629,38 @@ feature -- Basic operations
 		end
 
 	describe_cursor is
-			-- get metadata about current result-set in 'cursor_description'
+		obsolete "Use `describe_results'."
+		do
+			describe_results
+		end
+		
+	describe_results is
+			-- get metadata about current result-set in 'results_description'
 		require
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed 
-			has_results: has_results
+			has_result_set: has_result_set
 		local
 			count, limit : INTEGER
 			description : ECLI_COLUMN_DESCRIPTION
 		do
 			limit := result_columns_count
-			!! cursor_description.make (1, limit)
+			!! results_description.make (1, limit)
 			from
 				count := 1
 				reset_status
 			until count > limit or not is_ok
 			loop
 				!! description.make (Current, count, 100)
-				cursor_description.put (description, count)
+				results_description.put (description, count)
 				count := count + 1
 			end
 			if not is_ok then
-				cursor_description := Void
+				results_description := Void
 			end
 		ensure
 			description: is_ok implies
-				(cursor_description /= Void and then cursor_description.lower = 1 and then cursor_description.count = result_columns_count)
+				(results_description /= Void and then results_description.lower = 1 and then results_description.count = result_columns_count)
 		end
 
 	bind_parameters is
@@ -680,7 +699,7 @@ feature -- Basic operations
 		require
 			valid_statement: is_valid
 		do
-			if is_executed and then (has_results and  not after) then
+			if is_executed and then (has_result_set and  not after) then
 				close_cursor
 			end
 			set_status (ecli_c_prepare (handle, impl_sql.handle))
@@ -771,30 +790,30 @@ feature {NONE} -- Implementation
 			a_parameter.bind_as_parameter (Current, i)
 		end
 
-	fill_cursor is
+	fill_results is
 		require
 			valid_statement: is_valid
-			cursor_exists: cursor /= Void
-			-- cursor_arity: cursor.count >= result_columns_count
+			results_exists: results /= Void
+			-- results_arity: results.count >= result_columns_count
 		local
 			index, index_max : INTEGER
 			current_value : ECLI_VALUE
-			l_cursor : ARRAY[ECLI_VALUE]
+			l_results : ARRAY[ECLI_VALUE]
 		do
 			from
 				index := 1
-				index_max := result_columns_count.min (cursor.count)
-				l_cursor := cursor
+				index_max := result_columns_count.min (results.count)
+				l_results := results
 			until
 				index > index_max
 			loop
-				current_value := l_cursor.item (index)
+				current_value := l_results.item (index)
 				current_value.read_result (Current, index)
 				index := index + 1
 			end
-			fetched_columns_count := result_columns_count.min (cursor.count)
+			fetched_columns_count := result_columns_count.min (results.count)
 		ensure
-			fetched_columns_count_set: fetched_columns_count = result_columns_count.min (cursor.count)
+			fetched_columns_count_set: fetched_columns_count = result_columns_count.min (results.count)
 		end
 
 	session : ECLI_SESSION
@@ -850,7 +869,7 @@ feature {NONE} -- Implementation
 			if status = sql_no_data then
 				close_cursor
 			else
-				fill_cursor
+				fill_results
 			end
 		end
 
@@ -878,6 +897,50 @@ feature {NONE} -- Implementation
 		
 		parameters_count_impl : INTEGER
 
+	create_parameters is
+			-- 
+		require
+			parameters_void: parameters = Void
+		do
+			!! parameters.make (1, parameters_count)
+		ensure
+			parameters_exist: parameters /= Void
+		end
+
+	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ANY) is
+		do
+			parameters.put (value, position)
+		end
+
+	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ANY) is
+			-- set parameter 'key' with 'value'
+			-- WARNING : Case sensitive !
+		require
+			valid_statement: is_valid
+			has_parameters: parameters_count > 0
+			value_ok: value /= Void
+			key_ok : key /= Void
+			known_key: has_parameter (key)
+		local
+			plist : DS_LIST[INTEGER]
+		do
+			if parameters = Void then
+				create_parameters
+			end
+			from plist := parameter_positions (key)
+				plist.start
+			until
+				plist.off
+			loop
+				put_single_parameter_with_hint (value, plist.item_for_iteration, hint)
+				plist.forth
+			end
+			bound_parameters := False
+		ensure
+			parameter_set: True --for each i in parameter_positions(key) it_holds parameters.item (i) = value
+			not_bound: not bound_parameters
+		end
+		
 invariant
 	closed_is_no_session: session /= Void implies not is_closed
 

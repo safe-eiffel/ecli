@@ -61,8 +61,6 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	impl_value_factory : like value_factory
-
 	value_factory : ECLI_ARRAYED_VALUE_FACTORY is
 		do
 			if impl_value_factory = Void then
@@ -73,8 +71,7 @@ feature {NONE} -- Implementation
 	
 	value_anchor : ECLI_ARRAYED_VALUE is
 			-- 
-		do
-			
+		do			
 		end
 	
 invariant

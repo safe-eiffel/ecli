@@ -104,7 +104,7 @@ feature -- Cursor Movement
 	start is
 			-- advance cursor at first item if any
 		do
-			if cursor  = Void then
+			if results  = Void then
 				create_buffers
 			end
 			Precursor
@@ -149,7 +149,7 @@ feature {NONE} -- Implementation
 			if is_ok then
 				get_result_columns_count
 				is_executed := True
-				if has_results then
+				if has_result_set then
 					set_cursor_before
 					create_buffers
 				else

@@ -1,6 +1,8 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Time formats, ISO specification."
+	author: "Paul G. Crismer"
+	
+	library: "ECLI"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -70,9 +72,14 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	regex : RX_PCRE_REGULAR_EXPRESSION is
+		local
+			cli_regex : STRING
 		once
 			create Result.make
-			Result.compile ("\{t '([0-9]{2})\:([0-9]{2})\:([0-9]{2})(\.([0-9]+))'\}")
+			create cli_regex.make_from_string ("\{t '")
+			cli_regex.append_string (Time_regex)
+			cli_regex.append_string ("'\}")
+			Result.compile (cli_regex) -- "\{t '([0-9]{2})\:([0-9]{2})\:([0-9]{2})(\.([0-9]+))'\}")
 		end
 
 	ifmt : ECLI_FORMAT_INTEGER is
@@ -80,7 +87,4 @@ feature {NONE} -- Implementation
 	
 	regex_component_count : INTEGER is 4
 	
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_TIME_FORMAT

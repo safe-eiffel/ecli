@@ -1,18 +1,133 @@
-access 
-	A: name, type	
-	sql 		: STRING
-	description 	: STRING
-	parameter_set?  : parameter_set_type
-	result_set?	: result_set_type
-	
-parameter_set_type
-	A: name, extends
-	parameter +	: parameter_type
-	
-result_set_type
-	A: extends
-	
-parameter_type
-	A: name, table, column
-	
+Title: Basic description of Query Assistant
 
+Author: Paul G. Crismer
+Date: September 10, 2003
+Copyright: Paul G. Crismer
+License: Released under the Eiffel Forum License version 2
+
+Behavior
+
+	Query Assistant can be thought as a sort of SQL Precompiler.
+	One SQL is wrapped into one class, together with possible parameter-set and/or result-set classes.
+	
+	SQL is not embedded in Eiffel code : it is embedded in an XML access module definition file.
+	
+	Query Assistant reads the definitions of access modules.
+	
+	An access modules corresponds to a SQL DML statement.
+	
+	Access Module properties are :
+		* name
+		* description
+		* sql
+		* parameter set
+		* result set
+		
+	For each module, the corresponding sql is "tried" against a connected data source.
+	If the trial succeeds, wrapper classes are generated.
+	
+	Parameter set properties give information about the parameter data types.  The data type
+	of a parameter is given indirectly through a reference column (table-name, column-name).
+	Query Assistant get the actual datatype information by querying the catalog of the
+	connected datasource about the reference column.
+	Multiple SQL using the same set of parameters can share a same parameter-set class through
+	the definition of a parent (extends attribute).
+	The name of a parameter set can also be forced.
+	
+	Result set properties give information about the result set parent class if any.
+	Multiple SQL returning same result set virtual tables can thus share the same result-set class.
+	The name of the result set can also be forced.
+	
+XML Grammar (BNF style)
+
+	modules ::= parameter_map access+
+
+		Types:
+			parameter_map : parameter_map_type
+			access : access_type
+
+	parameter_map_type ::= parameter + 
+
+		Types:
+			parameter : parameter_type_in_map
+
+	access_type ::= sql description? parameter_set? result_set?
+
+		Attributes: 
+			name	mandatory	will be the name of the generated class.
+			
+		Types:
+			sql 		: STRING
+			description 	: STRING
+			parameter_set   : parameter_set_type
+			result_set	: result_set_type
+		
+		Comments :
+			sql must not be empty : it will be tried on the target data source;
+			if samples are provided for the parameter set, the sql will be executed
+			provided the data source supports transaction : a rollback is executed
+			immediately after executing the statement; it's just a trial that can
+			be executed even on production databases.
+			
+	parameter_set_type ::= parameter+
+
+		Attributes: 
+			name	optional	will be the name of the generated class
+			extends	optional	will be the name of the parent class.
+			
+		Types:
+			parameter	: parameter_type
+
+		Comments :
+			The parent class definition is inferred from the set of parameter-sets that
+			use it as parent class.  The features of the parent class are the intersection
+			of all the inheriting parameter-sets.
+
+	result_set_type ::= 
+
+		Attributes: 
+			name	optional	will be the name of the generated class
+			extends optional	will be the name of the parent class.
+			
+		Comments :
+			The parent class definition is inferred from the set of result-sets that
+			use it as parent class.  The features of the parent class are the intersection
+			of all the inheriting result-sets.
+			Actual content of result-set will be obtained through querying metadata information
+			about the tried sql statement.
+
+	parameter_type ::=
+
+		Attributes: 
+			name	mandatory	name that appears in the SQL DML statement.
+			table	see comment	
+			column	see comment
+			sample	optional	sample parameter value when statement will be tried against the database
+
+		Comments : 
+			(table,column) is a reference column whose type will be used when generating buffer type values
+			if no parameter of same name appears in the parameter map, those attributes are mandatory
+
+	parameter_type_in_map ::=
+		
+		Attributes: 
+			name	mandatory	name that appears in SQL DML statement.
+			table	mandatory 	see comment
+			column	mandatory 	see comment
+		
+		Comments : 
+		(table,column) is a reference column whose type will be used when generating buffer type values
+		
+Descriptions
+
+	parameter_map
+
+	Definition of parameters that occur in many access modules; 
+	prevents declaring them in each access module definition.
+	
+	access
+
+	Definition of an "access module" : encapsulation of a SQL DML statement.
+	Attributes: The name attribute is mandatory : it will be the name of the class.
+	
+	

@@ -34,15 +34,17 @@ feature -- Status report
 		local
 			sc : DS_SET_CURSOR[MODULE_PARAMETER]
 		do
-			from
-				sc := new_cursor
-				sc.start
-				Result := True
-			until
-				sc.off
-			loop
-				Result := Result and sc.item.has_sample
-				sc.forth
+			if count > 0 then
+				from
+					sc := new_cursor
+					sc.start
+					Result := True
+				until
+					sc.off
+				loop
+					Result := Result and sc.item.has_sample
+					sc.forth
+				end
 			end
 		end
 		

@@ -1,15 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="*utf-8*or*iso-8859-1*"?>
 <modules>
-<access  type="selection" name="*insert-module-name-here*">
-	<description>
-		description: "*insert-description-here*"
-	</description>
-	<sql>
-	*insert-sql-here*
-	</sql>
-	<parameter_set extends="*insert-parent-parameter-set-name-here*"/>
-		<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*"/> 
-	</parameter_set>
-	<result_set extends="*insert-parent-result-set-name-here*"/>
-</access>
+	<parameter_map>
+		*insert-optional-parameter-map-here*
+	</parameter_map>
+	<access name="*insert-module-name-here*">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
 </modules>

@@ -55,7 +55,7 @@ feature -- Basic operations
 					end
 				end
 				if cursor.is_prepared then 
-					if cursor.has_results then
+					if cursor.has_result_set then
 						from 
 							cursor.start
 							if cursor.has_information_message then

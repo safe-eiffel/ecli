@@ -16,7 +16,7 @@ inherit
 		export 
 			{NONE} row_cursor_make, row_cursor_open
 		redefine
-			start, value_anchor, create_row_buffers, fill_cursor, 
+			start, value_anchor, create_row_buffers, fill_results, 
 			fetch_next_row, buffer_factory, create_buffer_factory
 		end
 	
@@ -61,7 +61,7 @@ feature -- Initialization
 			definition_set: definition = a_definition
 			definition_is_sql: equal (definition, sql)
 			prepared_if_ok: is_ok implies is_prepared
-			definition_is_a_query:  is_ok implies has_results
+			definition_is_a_query:  is_ok implies has_result_set
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			row_count_set: row_capacity = a_row_capacity
 		end
@@ -96,8 +96,8 @@ feature -- Basic operations
 				physical_fetch_count := 0; fetch_increment := 0
 				Precursor
 			ensure then
-				cursor_exists: (is_executed and then has_results) implies (cursor /= Void and then cursor.count = result_columns_count)
-				fetched_columns_count_set: (is_executed and then has_results) implies (fetched_columns_count = result_columns_count.min (cursor.count))
+				results_exists: (is_executed and then has_result_set) implies (results /= Void and then results.count = result_columns_count)
+				fetched_columns_count_set: (is_executed and then has_result_set) implies (fetched_columns_count = result_columns_count.min (results.count))
 			end
 			
 feature -- Obsolete
@@ -114,10 +114,10 @@ feature {NONE} -- Implementation
 		end
 		
 	create_row_buffers is
-			-- Create `cursor' filled with ECLI_VALUE descendants
+			-- Create `cursor' array filled with ECLI_VALUE descendants
 		do
 			Precursor
-			if cursor /= Void then
+			if results /= Void then
 				bind_results
 			end
 		end
@@ -136,7 +136,7 @@ feature {NONE} -- Implementation
 			from index := 1
 			until index > result_columns_count
 			loop
-				cursor.item (index).bind_as_result (Current, index)
+				results.item (index).bind_as_result (Current, index)
 				index := index + 1
 			end
 		end
@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 			-- number of logical fetches since last physical one
 	
 		
-	fill_cursor is
+	fill_results is
 			-- update 'count' of all values in cursor
 		local
 			index : INTEGER
@@ -162,7 +162,7 @@ feature {NONE} -- Implementation
 			from index := 1
 			until index > result_columns_count
 			loop
-				cursor.item (index).set_count (row_count)
+				results.item (index).set_count (row_count)
 				index := index + 1
 			end
 			fetched_columns_count := result_columns_count
@@ -183,7 +183,7 @@ feature {NONE} -- Implementation
 					start_values
 					physical_fetch_count := physical_fetch_count + 1
 					fetch_increment := 1
-					fetched_columns_count := result_columns_count.min (cursor.count)
+					fetched_columns_count := result_columns_count.min (results.count)
 				else
 					forth_values
 					fetch_increment := fetch_increment + 1
@@ -199,7 +199,7 @@ feature {NONE} -- Implementation
 			from index := 1
 			until index > result_columns_count
 			loop
-				cursor.item (index).start
+				results.item (index).start
 				index := index + 1
 			end
 		end
@@ -212,7 +212,7 @@ feature {NONE} -- Implementation
 			from index := 1
 			until index > result_columns_count
 			loop
-				cursor.item (index).forth
+				results.item (index).forth
 				index := index + 1
 			end
 			

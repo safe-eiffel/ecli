@@ -19,6 +19,8 @@ inherit
 	SHARED_CATALOG_NAME
 	SHARED_SCHEMA_NAME
 	SHARED_COLUMNS_REPOSITORY
+
+	ACCESS_MODULE_XML_CONSTANTS
 	
 creation
 
@@ -133,7 +135,7 @@ feature -- Basic operations
 			tree_pipe_ok: not tree_pipe.error.has_error
 		local
 			root : XM_DOCUMENT
-			access : XM_ELEMENT
+			element : XM_ELEMENT
 			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
 			l_factory : ACCESS_MODULE_FACTORY
 			l_module : ACCESS_MODULE
@@ -150,24 +152,28 @@ feature -- Basic operations
 			until
 				a_cursor.off
 			loop
-				access ?= a_cursor.item
-				if access /= Void and then access.name.string.is_equal ("access") then
-					l_factory.create_access_module (access)
-					l_module := l_factory.last_module 
-					if not l_factory.is_error and then l_module /= Void then
-						modules.search (l_module.name)
-						if modules.found then
-							--| Error : module already exists
-							error_handler.report_error_message ("! [Error] Module %'"+l_module.name+"%' already exists!%N")
-						else
-							modules.force (l_module, l_module.name) 
-						parameter_sets.search (l_module.parameters.name)
-						if parameter_sets.found then
-							error_handler.report_error_message ("! [Error] Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
-						else
-							parameter_sets.force (l_module.parameters, l_module.parameters.name) 
+				element ?= a_cursor.item
+				if element /= Void then 
+					if element.name.string.is_equal (t_access) then
+						l_factory.create_access_module (element)
+						l_module := l_factory.last_module 
+						if not l_factory.is_error and then l_module /= Void then
+							modules.search (l_module.name)
+							if modules.found then
+								--| Error : module already exists
+								error_handler.report_error_message ("! [Error] Module %'"+l_module.name+"%' already exists!%N")
+							else
+								modules.force (l_module, l_module.name) 
+								parameter_sets.search (l_module.parameters.name)
+								if parameter_sets.found then
+									error_handler.report_error_message ("! [Error] Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
+								else
+									parameter_sets.force (l_module.parameters, l_module.parameters.name) 
+								end
+							end
 						end
-						end
+					elseif element.name.string.is_equal (t_parameter_map) then
+						l_factory.create_parameter_map (element)
 					end
 				end
 				a_cursor.forth
@@ -302,6 +308,17 @@ feature -- Basic operations
 					has_error := True
 					error_message.append_string ("No output directory specified.  Use option -output_dir.%N")					
 				end
+				if dsn /= Void and then user /= Void and then password /= Void then
+					create session.make (dsn, user,password)
+					session.connect
+					if session.is_connected then
+						create repository.make (session)
+						set_shared_columns_repository (repository)
+					else
+						error_message.append_string ("Failed to connect to database.%N")
+						has_error := True
+					end
+				end
 				if has_error then
 					error_handler.report_error_message (error_message)
 					error_handler.report_error (Usage_message)
@@ -362,21 +379,13 @@ feature {NONE} -- Implementation
 			-- check modules
 		local
 			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
-			session : ECLI_SESSION
 			l_name : STRING
-			repository : COLUMNS_REPOSITORY
 		do
 			from
 				cursor := modules.new_cursor
 				cursor.start
-				create session.make (dsn, user,password)
-				session.connect
-				if session.is_connected then
-					create repository.make (session)
-					set_shared_columns_repository (repository)
-				end
 			until
-				not session.is_connected or else cursor.off
+				cursor.off
 			loop
 				l_name := cursor.item.name
 				if class_filter = Void or else class_filter.is_equal (cursor.item.name) then
@@ -384,7 +393,7 @@ feature {NONE} -- Implementation
 					cursor.item.check_validity (session, error_handler)
 					if cursor.item.is_valid then
 						error_handler.report_info_message (". OK")
-						if cursor.item.has_results then
+						if cursor.item.has_result_set then
 							result_sets.force (cursor.item.results, cursor.item.results.name)
 						end
 					else
@@ -457,17 +466,24 @@ feature {NONE} -- Implementation
 			a_error_handler.report_info_message (" + " + module.name)
 			gen.create_cursor_class (module)
 			gen.write_class (gen.cursor_class,out_directory)
-			a_error_handler.report_info_message (" + " + module.parameters.name)
-			gen.create_parameters_class (module.parameters)
-			gen.write_class (gen.parameters_class, out_directory)
-			if module.has_results then
-				a_error_handler.report_info_message (" + " + module.results.name)
-				gen.create_results_class (module.results)
-				gen.write_class (gen.results_class, out_directory)
+			if module.parameters.parent_name = Void or else module.parameters.local_items.count > 0 then
+				a_error_handler.report_info_message (" + " + module.parameters.name)
+				gen.create_parameters_class (module.parameters)
+				gen.write_class (gen.parameters_class, out_directory)
+			end
+			if module.has_result_set then
+				if module.results.parent_name = Void or else module.results.local_items.count > 0 then
+					a_error_handler.report_info_message (" + " + module.results.name)
+					gen.create_results_class (module.results)
+					gen.write_class (gen.results_class, out_directory)
+				end
 			end
 		end
 
 	gen : ACCESS_MODULE_GENERATOR
+
+	session : ECLI_SESSION
+	repository : COLUMNS_REPOSITORY
 	
 invariant
 

@@ -58,7 +58,6 @@
 		</description>
 
 		<geant file="build.eant" target="${target}" dir="isql"/>
-		<geant file="build.eant" target="${target}" dir="library"/>
 		<geant file="build.eant" target="${target}" dir="qa_example"/>
 		<geant file="build.eant" target="${target}" dir="test_gc"/>
 		<geant file="build.eant" target="${target}" dir="test_rowset"/>

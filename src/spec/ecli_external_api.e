@@ -118,7 +118,7 @@ feature {NONE} -- Implementation
 		end
 	
 	ecli_c_bind_parameter (stmt : POINTER;
-			index, c_type, sql_type, sql_size, sql_decimal_digits : INTEGER;
+			index, direction, c_type, sql_type, sql_size, sql_decimal_digits : INTEGER;
 			value : POINTER; buffer_length : INTEGER; ptr_value_length : POINTER) : INTEGER  is
 		external "C"
 		end
@@ -148,6 +148,10 @@ feature {NONE} -- Implementation
 		end
 
 	ecli_c_get_columns ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER ; ColumnName : POINTER ;  NameLength4 : INTEGER) : INTEGER is
+		external "C"
+		end
+
+	ecli_c_get_procedure_columns ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; ProcedureName : POINTER ;  NameLength3 : INTEGER ; ColumnName : POINTER ;  NameLength4 : INTEGER) : INTEGER is
 		external "C"
 		end
 

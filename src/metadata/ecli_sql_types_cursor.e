@@ -125,7 +125,7 @@ feature -- Cursor Movement
 	start is
 			-- advance cursor to first position if any
 		do
-			if cursor  = Void then
+			if results  = Void then
 				create_buffers
 			end
 			Precursor
@@ -180,7 +180,7 @@ feature {ECLI_SQL_TYPE} -- Access
 feature {NONE} -- Implementation
 
 		create_buffers is
-				-- create buffers for cursor
+				-- create buffers for results
 		do
 			create buffer_type_name.make (40)
 			create buffer_literal_prefix.make (20)
@@ -203,7 +203,7 @@ feature {NONE} -- Implementation
 			create buffer_num_prec_radix.make
 			create buffer_interval_precision.make
 
-			set_cursor (<<
+			set_results (<<
 				buffer_type_name,
 				buffer_data_type,
 				buffer_column_size,
@@ -237,7 +237,7 @@ feature {NONE} -- Implementation
 			if is_ok then
 				get_result_columns_count
 				is_executed := True
-				if has_results then
+				if has_result_set then
 					set_cursor_before
 				else
 					set_cursor_after

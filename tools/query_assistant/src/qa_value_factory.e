@@ -229,9 +229,6 @@ feature {NONE} -- Implementation
 	fmt_time : ECLI_TIME_FORMAT is once create Result end
 	fmt_timestamp : ECLI_TIMESTAMP_FORMAT is once create Result end
 	
-invariant
-	invariant_clause: -- Your invariant here
-
 end -- class QA_VALUE_FACTORY
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

@@ -1,0 +1,40 @@
+Let
+
+access be the SQL access
+access_parameters be the parameter set
+access_results be the result_set
+
+
+Create
+
+<access> ([eiffel_signature (<parameter_set>)]) is
+	local
+		parameters : <access_parameters>
+		cursor : <access>
+	do
+		create cursor.make (session)
+		create parameters.make
+		[fill_parameter_set (<parameter_set>, parameters)]
+		cursor.set_parameters_object (parameters)
+		from
+			cursor.start
+		until
+			cursor.is_error or else cursor.off
+		loop
+			create_object_from_<access_results>
+			cursor.forth
+		end
+	end
+	
+create_object_from_<access_results> (row : <access_results>) is
+	deferred
+	end
+	
+Helper routines
+
+eiffel_signature (<parameter_set>) : STRING
+	-- eiffel signature from elements of parameter_set
+
+fill_parameter_set (<parameter_set>, parameters) 
+	-- for each p in parameter_set generate :
+	parameters.p.set_item (p)

@@ -73,7 +73,7 @@ feature -- Access
 			name_exists: name /= Void
 			has_column_by_name: has_column (name)
 		do
-			Result := cursor.item (name_to_index.item (name))
+			Result := results.item (name_to_index.item (name))
 		end
 
 --	item_by_index, infix "|index|" (index : INTEGER) : like value_anchor is
@@ -83,7 +83,7 @@ feature -- Access
 			is_executed: is_executed
 			valid_index: index >= lower and index <= upper
 		do
-			Result := cursor.item (index)
+			Result := results.item (index)
 		end
 
 	column_name (index : INTEGER) : STRING is
@@ -91,7 +91,7 @@ feature -- Access
 		require
 			valid_index: index >= lower and index <= upper
 		do
-			Result := cursor_description.item (index).name
+			Result := results_description.item (index).name
 		ensure
 			not_void: Result /= Void
 		end
@@ -103,15 +103,15 @@ feature -- Measurement
 		require
 			is_executed: is_executed
 		do
-			Result := cursor.lower
+			Result := results.lower
 		end
 
 	upper : INTEGER is
-			-- upper cursor index
+			-- upper cursor index; i.e. number of elements in result row
 		require
 			is_executed: is_executed
 		do
-			Result := cursor.upper
+			Result := results.upper
 		end
 
 
@@ -138,7 +138,7 @@ feature -- Cursor movement
 		do
 			execute
 			if is_ok then
-				if has_results then
+				if has_result_set then
 					create_row_buffers
 					statement_start
 				else
@@ -152,7 +152,7 @@ feature -- Cursor movement
 			end
 		ensure
 			executed: is_ok implies is_executed
-			off_if_not_query: is_ok implies (not has_results implies off)
+			off_if_not_query: is_ok implies (not has_result_set implies off)
 		end
 
 feature -- Element change
@@ -201,16 +201,16 @@ feature {NONE} -- Implementation
 	create_row_buffers is
 			-- create column buffers for cursor row
 		do
-			describe_cursor
-			cursor := Void
+			describe_results
+			results := Void
 			if not is_ok then
 				debug
 					print (diagnostic_message)
 					print ("%N")
 				end
 			else
-				buffer_factory.create_buffers (cursor_description)
-				set_cursor (buffer_factory.last_buffer)
+				buffer_factory.create_buffers (results_description)
+				set_results (buffer_factory.last_buffer)
 				name_to_index := buffer_factory.last_index_table
 			end
 		end

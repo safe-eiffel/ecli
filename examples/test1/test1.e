@@ -389,7 +389,7 @@ feature --  Basic operations
 				l_cursor.put (birthdate_result_value, 4)
 				l_cursor.put (price_result_value, 5)
 				
-				stmt.set_cursor (l_cursor)
+				stmt.set_results (l_cursor)
 				-- iterate on result-set
 				from
 					stmt.start
@@ -469,20 +469,19 @@ feature -- Miscellaneous
 		require
 			statement_exists: a_statement /= Void
 			statement_executed: a_statement.is_executed
-			statement_has_results: a_statement.has_results
+			statement_has_results: a_statement.has_result_set
 		local
-			i, width : INTEGER
-			s : STRING
+			i : INTEGER
 		do
 			from
 				i := 1
-				a_statement.describe_cursor
+				a_statement.describe_results
 			until
-				i > a_statement.cursor_description.count
+				i > a_statement.results_description.count
 			loop
-				io.put_string (formatted_column (a_statement.cursor_description.item (i).name,
-							a_statement.cursor_description.item (i)))
-				if i <= a_statement.cursor_description.count then
+				io.put_string (formatted_column (a_statement.results_description.item (i).name,
+							a_statement.results_description.item (i)))
+				if i <= a_statement.results_description.count then
 					io.put_character ('|')
 				end
 				i := i + 1
@@ -518,17 +517,15 @@ feature -- Miscellaneous
 			-- show values at current cursor position for `a_statement'
 		local
 			i : INTEGER
-			width : INTEGER
-			s : STRING
 		do
 			from
 				i := 1
 			until
-				i > a_statement.cursor.count
+				i > a_statement.results.count
 			loop
 				io.put_string (formatted_column (
-							a_statement.cursor.item (i).out,
-							a_statement.cursor_description.item (i)))
+							a_statement.results.item (i).out,
+							a_statement.results_description.item (i)))
 				io.put_character ('|')
 				i := i + 1
 			end

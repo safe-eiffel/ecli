@@ -97,7 +97,6 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 invariant
-	invariant_clause: True -- Your invariant here
 	table_not_void: table /= Void
 	column_not_void: column /= Void
 

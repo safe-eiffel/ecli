@@ -266,7 +266,7 @@ feature -- Basic operations
 		do
 			-- describe results
 			io.put_string ("+ Results metatada :%N")
-			if qacursor.has_results then
+			if qacursor.has_result_set then
 				qacursor.describe_cursor
 				qacursor.create_compatible_cursor
 				from
@@ -524,9 +524,6 @@ feature {NONE} -- Implementation
 	
 	parameters : ARRAY[QA_VALUE]
 		
-invariant
-	invariant_clause: -- Your invariant here
-
 end -- class QUERY_ASSISTANT
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

@@ -20,7 +20,7 @@ feature -- Basic Operations
 			end
 			execute
 			if is_ok then
-				if has_results then
+				if has_result_set then
 					create_buffers
 					statement_start
 				end
@@ -33,7 +33,7 @@ feature {NONE} -- Implementation
 			-- create all ECLI_VALUE objects
 		deferred
 		ensure
-			cursor_set: cursor /= Void
+			results_set: results /= Void
 		end
 	
 end -- class ECLI_CURSOR

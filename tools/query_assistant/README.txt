@@ -67,6 +67,7 @@ Query Assistant For ECLI
 	* some SQL verification is done by query_assistant through letting the database
 	  prepare the SQL statements.
 	  Unfortunately, the prepare operation does not check all errors.
+	  To overcome this problem, just specify a sample attribute for each parameter entity.
 	  
 	=> if you get bizarre generated classes (i.e. an ECLI_QUERY heir instead of an
 	  ECLI_CURSOR one), then check the SQL you provided : there may be some

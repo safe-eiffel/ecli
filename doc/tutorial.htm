@@ -109,10 +109,9 @@ available  on various platforms : Windows, Unix, Linux</DD>
 	<DT><b>Multicompiler</b></DT><DD>it uses as portable Eiffel   as
 possible, and has already been tested using
 		<UL>
-			<LI>ISE Eiffel and</LI>
-			<LI>SmartEiffel </LI>
-			<LI>VE 3.2. ** WARNING : On Win32 use external Microsoft Linker;
-default VE linker leads to execution errors **</LI>
+			<LI>ISE Eiffel 5.3 and</LI>
+			<LI>SmartEiffel, </LI>
+			<LI>Visual Eiffel 4.1.</LI>
 
 		</DD>
 </DL>
@@ -154,14 +153,22 @@ OSes : Win98, WIN NT4, Windows 2000, Caldera Linux 2.3, Suse Linux, Debian Linux
         <tr>
             <td>pgsql</td>
             <td>Open Source</td>
-            <td>SmallEiffel</td>
+            <td>SmartEiffel</td>
             <td>Unix, Linux, (Windows?)</td>
             <td>PostgreSQL</td>
         </tr>
+        <tr>
+            <td>elj project's database access</td>
+            <td>Open Source</td>
+            <td>SmartEiffel</td>
+            <td>Windows, (linux?)</td>
+            <td>Interbase, Isam, Berkeley DB, etc...</td>
+        </tr>
+
 </table>
 
-<p>Other database bindings exist : see in the <a href="http://www.eiffel-forum.org/">
-   Eiffel Forum</a>
+<p>Other database bindings exist : see in the <a href="http://efsa.sf.net/archive/">
+   Eiffel Forum Archive</a> (There is Wiki that unfortunately does not work).
    . </p>
 
 <p>None of them is truly multi-compiler and multi-platform. Many target only
@@ -938,7 +945,7 @@ convertible_as_real, convertible_as_timestamp, convertible_as_date, convertible_
 
       <p>Using ODBC/CLI, the execution of a SELECT statement implicitly opens
  a cursor on the result-set. Before reading individual results, data-transfer
- objects have to be provided. The <i>set_cursor</i> feature provides an array
+ objects have to be provided. The <i>set_results</i> feature provides an array
  of ECLI_VALUE objects to an ECLI_STATEMENT. After that, results can be fetched,
  one row (array of values) at a time. </p>
 
@@ -957,7 +964,7 @@ vnbr   : 	 ECLI_INTEGER
 stmt.set_sql ("SELECT * FROM ECLITRIAL")
 stmt.execute
 -- get results
-if stmt.is_ok and then stmt.<b>has_results</b> then
+if stmt.is_ok and then stmt.<b>has_result_set</b> then
 	 -- create result set 'value holders'
 	 create vname.make (20)
 	 create vnbr.make
@@ -965,7 +972,7 @@ if stmt.is_ok and then stmt.<b>has_results</b> then
 	 create vfname.make (20)
 	 create vbdate.make_first
 	 -- define the container of value holders
-	 stmt.<b>set_cursor</b> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
+	 stmt.<b>set_results</b> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
 	 -- iterate on result-set
 	 from
 		&nbsp; stmt.<b>start</b>
@@ -1000,7 +1007,7 @@ end
             <td valign="Top" width="71%">advance cursor forth</td>
         </tr>
         <tr>
-            <td valign="Top" width="29%"><i>set_cursor</i></td>
+            <td valign="Top" width="29%"><i>set_results</i></td>
             <td valign="Top" width="71%">set array of value objects   to
 be used as cursor storage</td>
         </tr>
@@ -1014,13 +1021,13 @@ be used as cursor storage</td>
 position  (either 'before' or 'after') ?</td>
         </tr>
         <tr>
-            <td valign="Top" width="29%"><i>has_results</i></td>
+            <td valign="Top" width="29%"><i>has_result_set</i></td>
             <td valign="Top" width="71%">does the last SQL execution    lead
 to a result-set (even empty) ? True for selection         queries or stored
 procedures. False for updates and         insertions.</td>
         </tr>
         <tr>
-            <td valign="Top" width="29%"><i>cursor</i></td>
+            <td valign="Top" width="29%"><i>results</i></td>
             <td valign="Top" width="71%">array of current result
 objects</td>
         </tr>
@@ -1044,15 +1051,15 @@ show_column_names (stmt : ECLI_STATEMENT) is
 		i, width : INTEGER
 		s : STRING
 	do
-		stmt.<b>describe_cursor</b>
+		stmt.<b>describe_results</b>
 		from
 			i := 1
 	 	until
-			i &gt; stmt.<b>cursor_description</b>.count
+			i &gt; stmt.<b>results_description</b>.count
 		loop
-			width := stmt.cursor_description.item (i).<em>column_precision</em>
+			width := stmt.results_description.item (i).<em>column_precision</em>
 			create s.make (width)
-			s.append (stmt.cursor_description.item (i).<em>name</em>)
+			s.append (stmt.results_description.item (i).<em>name</em>)
 			-- pad with blanks
 			from
 				width := width - s.count
@@ -1063,7 +1070,7 @@ show_column_names (stmt : ECLI_STATEMENT) is
 				width := width - 1
 			end
 			io.put_string (s)
-			if i &lt;= stmt.cursor_description.count then
+			if i &lt;= stmt.results_description.count then
 				 io.put_character ('|')
 			end
 			i := i + 1
@@ -1073,8 +1080,8 @@ show_column_names (stmt : ECLI_STATEMENT) is
 	</pre>
 </div>
 
-      <p>The feature <i>describe_cursor</i> of ECLI_STATEMENT produces an
- array, <i>cursor_description</i>, of objects. These objects are of type ECLI_COLUMN_DESCRIPTION.
+      <p>The feature <i>describe_results</i> of ECLI_STATEMENT produces an
+ array, <i>results_description</i>, of objects. These objects are of type ECLI_COLUMN_DESCRIPTION.
        </p>
 
       <p align="Left">ECLI_STATEMENT features related to result-set metadata
@@ -1089,7 +1096,7 @@ show_column_names (stmt : ECLI_STATEMENT) is
             <td valign="Top" width="71%"><b>Description</b> </td>
         </tr>
         <tr>
-            <td valign="Top" width="29%"><i>describe_cursor</i></td>
+            <td valign="Top" width="29%"><i>describe_results</i></td>
             <td valign="Top" width="71%">get metadata about current   result-set.</td>
         </tr>
         <tr>
@@ -1097,14 +1104,14 @@ show_column_names (stmt : ECLI_STATEMENT) is
             <td valign="Top" width="71%"><b>description</b> </td>
         </tr>
         <tr>
-            <td valign="Top" width="29%"><i>cursor_description</i></td>
+            <td valign="Top" width="29%"><i>results_description</i></td>
             <td valign="Top" width="71%">array of         ECLI_COLUMN_DESCRIPTION
- objects, describing the current         cursor columns.</td>
+ objects, describing the current cursor columns.</td>
         </tr>
         <tr>
-            <td valign="Top" width="29%"><i>result_column_count</i></td>
+            <td valign="Top" width="29%"><i>result_columns_count</i></td>
             <td valign="Top" width="71%">number of columns in the result-set.
- The size of the array passed by <i>set_cursor</i>         is checked against
+ The size of the array passed by <i>set_results</i>         is checked against
  this value.</td>
         </tr>
 
@@ -1644,7 +1651,7 @@ again. &nbsp; </p>
  in the examples, and with the tool application <i>query_assistant</i>. </p>
 
       <p>For example, we did not speak about the class ECLI_VALUE_FACTORY
- that allows to compose a cursor array with the good ECLI_VALUE descendant
+ that allows to compose a results array with the good ECLI_VALUE descendant
  objects. </p>
 
       <p>We also did not present <i>query_assistant</i>, a tool that generates

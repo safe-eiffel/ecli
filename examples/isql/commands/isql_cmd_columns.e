@@ -18,7 +18,7 @@ feature -- Access
 			Result.append_string ("List all columns in <table-name>.")
 		end
 
-	match_string : STRING is "col"
+	match_string : STRING is once Result := "col" end
 	
 feature -- Status report
 	
@@ -68,7 +68,7 @@ feature -- Basic operations
 					end
 				end
 				create query.make (l_catalog, l_schema, l_table)
-				create cursor.make (query, context.session)
+				cursor := new_cursor (query, context.session)
 				put_results (cursor, context)
 				cursor.close
 			end
@@ -76,6 +76,12 @@ feature -- Basic operations
 		
 feature {NONE} -- Implementation
 
+	new_cursor (a_table: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_COLUMNS_CURSOR is
+			-- 
+		do
+				create Result.make (a_table, a_session)
+		end
+		
 	put_results (a_cursor : ECLI_COLUMNS_CURSOR; context : ISQL_CONTEXT) is
 			-- 
 		local
@@ -85,20 +91,14 @@ feature {NONE} -- Implementation
 				from
 					a_cursor.start
 					context.filter.begin_heading
-					context.filter.put_heading ("COLUMN_NAME")
-					context.filter.put_heading ("TYPE")
-					context.filter.put_heading ("SIZE")
-					context.filter.put_heading ("DESCRIPTION")
+					put_heading (context.filter)
 					context.filter.end_heading
 				until
 					not a_cursor.is_ok or else a_cursor.off
 				loop
 					the_column := a_cursor.item
 					context.filter.begin_row
-					context.filter.put_column (nullable_string (the_column.name))
-					context.filter.put_column (nullable_string (the_column.type_name))
-					context.filter.put_column (nullable_string (the_column.size.out))
-					context.filter.put_column (nullable_string (the_column.description))
+					put_detail (the_column, context.filter)
 					context.filter.end_row
 					a_cursor.forth
 				end			
@@ -109,4 +109,29 @@ feature {NONE} -- Implementation
 			end
 		end
 
+	put_heading (filter : ISQL_FILTER) is
+			-- 
+		require
+			filter_exists: filter /= Void
+			filter_heading_begun: filter.is_in_heading
+		do
+			filter.put_heading ("COLUMN_NAME")
+			filter.put_heading ("TYPE")
+			filter.put_heading ("SIZE")
+			filter.put_heading ("DESCRIPTION")
+		end
+		
+	put_detail (the_column : ECLI_COLUMN; filter : ISQL_FILTER) is
+			-- 
+		require
+			the_column_exists: the_column /= Void
+			filter_exists: filter /= Void
+			filter_row_begun: filter.is_in_row
+		do
+			filter.put_column (nullable_string (the_column.name))
+			filter.put_column (nullable_string (the_column.type_name))
+			filter.put_column (nullable_string (the_column.size.out))
+			filter.put_column (nullable_string (the_column.description))
+		end
+		
 end -- class ISQL_CMD_COLUMNS

@@ -1,6 +1,8 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Date and Time ISO formats and corresponding helper functions."
+	author: "Paul G. Crismer"
+	
+	library: "ECLI"
 	date: "$Date$"
 	revision: "$Revision$"
 

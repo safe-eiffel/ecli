@@ -124,6 +124,15 @@ Compilers. </p>
     <li>Trace SQL statements that are issued by an application.</li>
 </ol>
 
+<h2>Advanced database access</h2>
+
+<ol>
+	<li>High performance through arrayed operations : they reduce network round trips.</li>
+	<li>Access to catalog data.</li>
+	<li>Access to installed ODBC datasources.</li>
+	<li>Transaction isolation.</li>
+</ol>
+
 <h2>Cursor framework and tool</h2>
 
 <p>Class ECLI_CURSOR provides basic cursor mechanisms. The
@@ -137,18 +146,18 @@ Compilers. </p>
 
 <p>&quot;Query Assistant&quot; also checks that the query is
 executable on your datasource before generating any encapsulating
-class. Result and parameters names are &quot;inferred&quot; by
-asking meta-data about the executed query. The generated class is
+class. Result and parameters names are &quot;inferred&quot; by querying
+meta-data about the executed query in the database catalog. The generated class is
 thus fully &quot;static&quot;, i.e. correct types are used and no
 meta-data are asked to the datasource, for the best possible
-performance. <br>
-The drawback is that, when the database schema changes, cursor
-classes may need to be re-generated. </p>
+performance. </p>
 
 <h2>Supported SQL data types</h2>
 
-<p>For the moment CHAR, VARCHAR, INTEGER, FLOAT, DOUBLE, DATE and
+<p>Simple : CHAR, VARCHAR, INTEGER, FLOAT, DOUBLE, DATE and
 TIMESTAMP data are supported. </p>
+
+<p>Advanced : LONGVARCHAR, BINARY, VARBINARY, LONGVARBINARY.</p>
 
 <p>If other datatypes are needed, they can easily be supported.
 For the moment, CHAR data can be used to map to other types,
@@ -162,8 +171,8 @@ current state of development. </p>
 
 <ul>
     <li>ISE Eiffel</li>
-    <li>SmallEiffel (tested with se -0.76b4)</li>
-    <li>Visual Eiffel 3.2</li>
+    <li>SmartEiffel (tested with se 1.1)</li>
+    <li>Visual Eiffel 4.1</li>
 </ul>
 
 <h3>Platforms</h3>
@@ -228,9 +237,6 @@ NOT Supported:
 <ul>
 <li>Stored procedures that return multiple result sets are NOT supported for the moment.
 </li>
-<li>
-Stored procedures that return a single value are not supported : calls of the form {CALL ?=procedure(parameters)}.
-</li>
 </ul>
 </p>
 
@@ -242,61 +248,14 @@ Stored procedures that return a single value are not supported : calls of the fo
 
 <h2>4.1. Structure</h2>
 
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>doc</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- documentation
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>examples</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- examples
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>test1</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- table creation, insertions, selection, drop
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>isql</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- interactive SQL
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>qa_example</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- sample application for cursor generator
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>test_Xaction</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- transaction test program
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>src
-</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>abstract</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- abstract ECLI data types
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>data</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- data transfer classes
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>pattern</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- used pattern classes
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; +-&nbsp; <b>spec</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- special classes
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>C</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- C wrappers
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>Ise</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- Ise specific
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>Windows</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Platform specific
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>linux
-</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>se</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- SmallEiffel specific
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>Windows</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>linux
-</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +- <b>tools
-</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-&nbsp;&nbsp; <b>query_assistant</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- cursor classes generator</pre>
-
-<p>&nbsp; </p>
+<p>Please refer to the file $ECLI/INSTALL_INFO.txt</p>
 
 <h2>4.2. Installation</h2>
 
-<p>NOTE for Linux/Unix (*n*x) users : This package uses unixodbc,
-avalaible at <a href="http://www.unixodbc.org/">http://www.unixodbc.org</a>.
-<br>
-It has been tested with PostgreSQL 7.0.2. </p>
-
-<h3>4.2.0 Define ECLI variable</h3>
-
-<p>Define the ECLI variable as the ECLI directory </p>
-
-<h3>4. 2.1. Building the C library.</h3>
-
-<p>A) go to the spec - compiler - platform directory of your
-choice </p>
-
-<p>B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library </p>
-
-<h3>4.2.2. Building the samples</h3>
-
-<dl>
-<dt>A) SmallEiffel</dt><dd>run the sebuild.bat (WIN32) or sebuild.sh
-(*n*x) command file </dd>
-
-<dt>B) ISE</dt><dd>use the Ace.ace file or linux.Ace file</dd>
-
-<dt>C) VE</dt><dd>use the specific project definitions</dd>
+<p>Please refer to the file $ECLI/INSTALL_INFO.txt</p>
 
 <h2>4.3. Known Problems</h2>
 
-<p>Memory management problems (segmentation violation) have been
-fixed, to our best knowledge. </p>
+<p>Please send bug reports through the sourceforge bug tracker in the <a href="http://sf.net/projects/safe">SAFE project page</a>.</p>
 </body>
 </html>

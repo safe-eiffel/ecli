@@ -388,7 +388,7 @@ feature {NONE} -- Implementation
 			Result := ecli_c_value_get_length_indicator_pointer (buffer)
 		end
 
-feature {ECLI_STATEMENT} -- Basic operations
+feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 
 	read_result (stmt : ECLI_STATEMENT; index : INTEGER) is
 			-- read value from current result column 'index' of 'stmt'
@@ -407,6 +407,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 		end
 
 	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
+			-- bind Current as a result value
 		require
 			stmt: stmt /= Void 
 			positive_index: index > 0
@@ -422,13 +423,50 @@ feature {ECLI_STATEMENT} -- Basic operations
 		end
 		
 	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
-			-- bind this value as parameter 'index' of 'stmt'
+			-- bind this value as input parameter 'index' of 'stmt'
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
 		do
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
 				index,
+				direction.Sql_param_input,
+				c_type_code,
+				sql_type_code,
+				size,
+				decimal_digits,
+				to_external,
+				transfer_octet_length,
+				length_indicator_pointer))
+		end
+
+	bind_as_input_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+			-- bind this value as input/output parameter 'index' of 'stmt'
+		require
+			stmt: stmt /= Void and then stmt.parameters_count > 0
+			positive_index: index > 0
+		do
+			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
+				index,
+				direction.Sql_param_input_output,
+				c_type_code,
+				sql_type_code,
+				size,
+				decimal_digits,
+				to_external,
+				transfer_octet_length,
+				length_indicator_pointer))
+		end
+
+	bind_as_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+			-- bind this value as output parameter 'index' of 'stmt'
+		require
+			stmt: stmt /= Void and then stmt.parameters_count > 0
+			positive_index: index > 0
+		do
+			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
+				index,
+				direction.Sql_param_output,
 				c_type_code,
 				sql_type_code,
 				size,
@@ -453,6 +491,12 @@ feature {NONE} -- Implementation values
 	
 	disposal_failure_reason : STRING is do	end
 	
+	direction : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
+			-- 
+		once
+			create Result
+		end
+		
 end -- class ECLI_VALUE
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

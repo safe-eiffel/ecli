@@ -14,20 +14,24 @@ inherit
 	ACCESS_MODULE_METADATA
 		undefine
 			is_equal
+		redefine
+			copy
 		end
 		
 	HASHABLE
+		undefine
+			copy
 		redefine
 			is_equal
 		end
 
 	SHARED_COLUMNS_REPOSITORY
 		undefine
-			is_equal
+			is_equal, copy
 		end
 		
 create
-	make
+	make, copy
 
 feature {NONE} -- Initialization
 
@@ -181,6 +185,21 @@ feature -- Comparison
 			Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
 		end
 
+feature -- Duplication
+
+	copy (other : like Current) is
+			-- 
+		do
+			create name.make_from_string (other.name)
+			create reference_column.make (other.reference_column.table, other.reference_column.column)
+			if other.metadata /= Void then
+				metadata := clone (other.metadata)
+			end
+			if other.sample /= Void then
+				create sample.make_from_string (other.sample)
+			end
+		end
+		
 invariant
 	name_not_void: name /= Void
 	reference_column_not_void: reference_column /= Void

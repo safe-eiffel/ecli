@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modules>
+<parameter_map>
+	<parameter name="last_name" table="PARTICIPANT" column="last_name"/> 
+	<parameter name="paid_amount" table="REGISTRATION" column="paid_amount"/> 
+</parameter_map>
 <access  type="selection" name="PARTICIPANTS_BY_NAME">
 	<description>
 		description: "Select participants matching a last name"
@@ -9,7 +13,7 @@
 		last_name = ?last_name
 	</sql>
 	<parameter_set>
-		<parameter name="last_name" table="PARTICIPANT" column="last_name" sample="foo"/> 
+		<parameter name="last_name" sample="foo"/> 
 	</parameter_set>
 	<result_set extends="PARTICIPANT_ROW"/>
 </access>
@@ -65,9 +69,6 @@
 		r.participant_id = p.identifier AND
 		r.paid_amount tutu ?paid_amount
 	</sql>
-	<parameter_set>
-		<parameter name="paid_amount" table="REGISTRATION" column="paid_amount"/> 
-	</parameter_set>
 	<result_set extends="PARTICIPANT_AMOUNT_ROW"/>
 </access>
 <access  type="selection" name="PARTICIPANTS_BY_REG_TIME">

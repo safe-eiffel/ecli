@@ -73,7 +73,7 @@ feature -- Status report
 			definition: Result = (is_query_valid and then is_parameters_valid and then is_results_valid)
 		end
 		
-	has_results : BOOLEAN is
+	has_result_set : BOOLEAN is
 			-- is this a query (if not, it is a command/modifying statement) ?
 		require
 			is_checked_query: is_checked_query
@@ -174,18 +174,18 @@ feature {NONE} -- Implementation
 			current_result : MODULE_RESULT
 		do
 			is_results_valid := True
-			if query_statement.has_results then
-				query_statement.describe_cursor
+			if query_statement.has_result_set then
+				query_statement.describe_results
 				if results = Void then 
 					create results.make (name+"_RESULTS")
 				end
 				from
-					index := query_statement.cursor_description.lower
+					index := query_statement.results_description.lower
 				until
-					not is_results_valid or else index > query_statement.cursor_description.upper
+					not is_results_valid or else index > query_statement.results_description.upper
 				loop
 					--| FIXME: verify that a same column does not exist...
-					current_result := create {MODULE_RESULT}.make(query_statement.cursor_description.item (index))
+					current_result := create {MODULE_RESULT}.make(query_statement.results_description.item (index))
 					if results.has (current_result) then
 						a_error_handler.report_error_message ("! [Error] Result set '"+results.name+"' has two columns named '"+current_result.metadata.name+"'")
 						is_results_valid := False
@@ -199,7 +199,7 @@ feature {NONE} -- Implementation
 				results := Void
 			end
 		ensure
-			results_count: results.count = query_statement.cursor_description.count
+			results_count: results.count = query_statement.results_description.count
 		end
 		
 	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
@@ -283,7 +283,7 @@ feature {NONE} -- Implementation
 			query_statement.set_sql (query)
 			query_statement.prepare
 			if query_statement.is_ok then
-				if parameters.has_samples then
+				if parameters.count = query_statement.parameter_names.count and then parameters.has_samples then
 					if session.is_transaction_capable then
 						-- create parameters
 						from

@@ -115,6 +115,12 @@ feature {NONE} -- Implementation
 	create_buffers is
 				-- create buffers for cursor
 		do
+			create_buffer_values
+			set_buffer_values_array
+		end
+		
+	create_buffer_values is
+		do
 			create buffer_table_cat.make (255)
 			create buffer_table_schem.make (255)
 			create buffer_table_name.make (255)
@@ -133,8 +139,11 @@ feature {NONE} -- Implementation
 			create buffer_char_octet_length.make
 			create buffer_ordinal_position.make
 			create buffer_is_nullable.make (255)
-
-			set_cursor (<<
+		end
+	
+	set_buffer_values_array is
+		do
+			set_results (<<
 				buffer_table_cat,
 				buffer_table_schem,
 				buffer_table_name,

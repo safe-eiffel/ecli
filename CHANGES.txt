@@ -1,3 +1,8 @@
+2003-09-10
+	* New class ECLI_STORED_PROCEDURE allowing usage of input, output and input/output parameters
+	* New metadata classes : ECLI_PROCEDURES_CURSOR, ECLI_PROCEDURE, ECLI_PROCEDURE_COLUMNS_CURSOR, ECLI_PROCEDURE_COLUMN
+	* New classes : ECLI_BINARY, ECLI_VARBINARY, ECLI_LONGVARBINARY
+	
 2003-07-04
 	* ECLI_VALUE.as_* replace now ECLI_VALUE.to_* conversion routines
 		Original routines are make obsolete
@@ -6,8 +11,9 @@
 	
 2003-05-05
 !!!	* ECLI_VALUE.as_string now *replaces* ECLI_VALUE.to_string to ensure .NET compatibility
-	* Transaction isolation read/write implemented by 
-	  ECLI_SESSION.transaction_isolation and ECLI_SESSION.set_transaction_isolation
+	* Transaction isolation
+		- new class ECLI_TRANSACTION_ISOLATION
+		- read/write implemented by ECLI_SESSION.transaction_isolation and ECLI_SESSION.set_transaction_isolation
 	* ECLI_TIMESTAMP.decimal_digits is now 0, unless specifically set through ECLI_TIMESTAMP.set_decimal_digits
 	* Prepared migration of ECLI to .NET : created support for external values
 	  with classes XS_C_*; This prevents using the '$' operator.

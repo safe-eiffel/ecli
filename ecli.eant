@@ -14,6 +14,7 @@
 		<parent location="${GOBO}/misc/eiffel.eant">
 			<redefine target="init"/>
 			<redefine target="prepare_compile"/>
+			<redefine target="help"/>
 		</parent>
 	</inherit>
 
@@ -26,10 +27,12 @@
 	</target>
 
 	<target name="check_ecli_variables">
+		<echo message="ERROR: GOBO_EIFFEL must be set." unless="${GOBO_EIFFEL}"/>
 		<echo message="WARNING: ECLI variable not set" unless="${ECLI}"/>
 		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
 		<echo message="WARNING: ECLI_C_BCC_DIR variable not set" if="${GOBO_CC}=bcc" unless="${ECLI_C_BCCDIR}"/>
-		<echo message="WARNING: SAFE variable not set" unless="${SAFE}"/>
+		<echo message="WARNING: SAFE_KERNEL variable not set" unless="${SAFE_KERNEL}"/>
+		<echo message="WARNING: SMARTEIFFELDIR variable not set" unless="${SMARTEIFFELDIR}" if="${GOBO_EIFFEL}=se"/>
 	</target>
 
 	<target name="prepare_compile" depend="init">
@@ -42,7 +45,25 @@
 		<!-- Compile them if necessary -->
 
 		<exec executable="nmake -f makefile.mak" dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
-		<exec executable="make -f makefile.bcc" if="${GOBO_CC}=bcc"/>
+		<exec executable="make -f makefile.bcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+		<exec executable="make"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
+		<exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>
 	</target>
 
+	<target name="compile_libs" depend="prepare_compile">
+	</target>
+	
+	<target name="help">
+		<echo message="   geant compile_libs"/>
+		<echo message="   geant install"/>
+		<echo message="   geant compile"/>
+		<echo message="   geant compile_ise"/>
+		<echo message="   geant compile_se"/>
+		<echo message="   geant compile_ve"/>
+		<echo message="   geant compile_debug_ise"/>
+		<echo message="   geant compile_debug_se"/>
+		<echo message="   geant compile_debug_ve"/>
+		<echo message="   geant clean"/>
+		<echo message="   geant clobber"/>
+	</target>
 </project>

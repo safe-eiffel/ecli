@@ -13,9 +13,10 @@ inherit
 			make as statement_make, open as statement_open, bind_parameters as statement_bind_parameters,
 			execute as statement_execute
 		export 
-			{NONE} cursor, cursor_description, start, forth, go_after, off, set_cursor, close_cursor, 
-				describe_cursor, after, before, cursor_status, Cursor_after, Cursor_before, Cursor_in,
-				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql
+			{NONE} results, results_description, start, forth, go_after, off, set_results, close_cursor, 
+				describe_results, after, before, cursor_status, Cursor_after, Cursor_before, Cursor_in,
+				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql, 
+				cursor, set_cursor
 		redefine
 			parameter_anchor--, execute
 		end
@@ -110,7 +111,7 @@ feature -- Basic operations
 		do
 			execute_count (a_count)
 		ensure
-			command: not has_results
+			command: not has_result_set
 		end
 
 	bind_parameters is
@@ -151,7 +152,7 @@ feature {NONE} -- Implementation
 			statement_execute
 			fill_status_array
 		ensure
-			command: not has_results
+			command: not has_result_set
 		end
 	
 	make_row_count_capable is

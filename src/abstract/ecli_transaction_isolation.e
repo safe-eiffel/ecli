@@ -42,8 +42,6 @@ feature -- Access
 
 	value : INTEGER
 
-feature -- Measurement
-
 feature -- Status report
 
 	is_read_uncommitted : BOOLEAN is
@@ -72,12 +70,7 @@ feature -- Status report
 		
 feature -- Status setting
 
-feature -- Cursor movement
-
-feature -- Element change
-
 	set_read_uncommitted is
-			-- 
 		do
 			value := Sql_transaction_read_uncommitted
 		ensure
@@ -85,7 +78,6 @@ feature -- Element change
 		end
 
 	set_read_committed is
-			-- 
 		do
 			value := Sql_transaction_read_committed 
 		ensure
@@ -93,7 +85,6 @@ feature -- Element change
 		end
 
 	set_repeatable_read is
-			-- 
 		do
 			value := Sql_transaction_repeatable_read 
 		ensure
@@ -101,31 +92,12 @@ feature -- Element change
 		end
 
 	set_serializable is
-			-- 
 		do
 			value := Sql_transaction_serializable 
 		ensure
 			definition: is_serializable
 		end
 
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-	
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
@@ -135,6 +107,6 @@ feature -- Comparison
 		end
 		
 invariant
-	invariant_clause: True -- Your invariant here
+	exclusive: is_read_uncommitted xor is_read_committed xor is_repeatable_read xor is_serializable
 
 end -- class ECLI_TRANSACTION_ISOLATION

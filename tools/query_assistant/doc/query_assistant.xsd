@@ -10,16 +10,7 @@
 				<xs:element ref="parameter_set"/>
 				<xs:element ref="result_set"/>
 			</xs:sequence>
-			<xs:attribute name="type" type="xs:string" use="required"/>
 			<xs:attribute name="name" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:NMTOKEN">
-						<xs:enumeration value="PARTICIPANTS_BY_AMOUNT"/>
-						<xs:enumeration value="PARTICIPANTS_BY_NAME"/>
-						<xs:enumeration value="PARTICIPANTS_BY_REMAINING"/>
-						<xs:enumeration value="PARTICIPANTS_BY_ZIP"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
@@ -35,30 +26,11 @@
 		<xs:complexType>
 			<xs:attribute name="name" use="required">
 				<xs:simpleType>
-					<xs:restriction base="xs:NMTOKEN">
-						<xs:enumeration value="last_name"/>
-						<xs:enumeration value="paid_amount"/>
-						<xs:enumeration value="remaining_amount"/>
-						<xs:enumeration value="zip"/>
-					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
 			<xs:attribute name="table" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:NMTOKEN">
-						<xs:enumeration value="PARTICIPANT"/>
-						<xs:enumeration value="REGISTRATION"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:attribute>
 			<xs:attribute name="column" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:NMTOKEN">
-						<xs:enumeration value="last_name"/>
-						<xs:enumeration value="paid_amount"/>
-						<xs:enumeration value="zip"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
@@ -72,12 +44,6 @@
 	<xs:element name="result_set">
 		<xs:complexType>
 			<xs:attribute name="extends" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:NMTOKEN">
-						<xs:enumeration value="PARTICIPANT_AMOUNT_ROW"/>
-						<xs:enumeration value="PARTICIPANT_ROW"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>

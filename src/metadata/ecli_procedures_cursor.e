@@ -46,7 +46,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_PROCEDURE is
+	item : ECLI_PROCEDURE_METADATA is
 			-- item at current cursor position
 		do
 			Result := impl_item
@@ -54,7 +54,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-feature {ECLI_PROCEDURE} -- Access
+feature {ECLI_PROCEDURE_METADATA} -- Access
 
 	buffer_catalog_name : ECLI_VARCHAR
 	buffer_schema_name : ECLI_VARCHAR
@@ -80,7 +80,7 @@ feature {NONE} -- Implementation
 			create buffer_na3.make (10)
 			create buffer_procedure_type.make
 
-			set_cursor (<<
+			set_results (<<
 					buffer_catalog_name,
 					buffer_schema_name,
 					buffer_procedure_name,
