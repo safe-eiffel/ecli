@@ -24,4 +24,17 @@ feature -- Constants
 	Sql_txn_serializable, 
 	Sql_transaction_serializable:		INTEGER is	8
 
+feature -- Status report
+
+	is_valid_transaction_isolation_option (a_value : INTEGER) : BOOLEAN is
+			-- 
+		do
+			inspect a_value
+			when 1,2,4,8 then
+				Result := True
+			else
+				Result := False
+			end
+		end
+		
 end -- class ECLI_TRANSACTION_ISOLATION_CONSTANTS

@@ -10,6 +10,9 @@ indexing
 class
 	MODULE_PARAMETER
 
+inherit
+	HASHABLE
+	
 create
 	make
 
@@ -39,6 +42,11 @@ feature -- Access
 	
 feature -- Measurement
 
+	hash_code : INTEGER is 
+		do
+			Result := name.hash_code
+		end
+		
 feature -- Status report
 
 	check_validity (a_session : ECLI_SESSION; a_catalog_name, a_schema_name : STRING) is

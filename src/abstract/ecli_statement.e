@@ -421,7 +421,7 @@ feature -- Element change
 			sql := a_sql
 			name_to_position.wipe_out
 			parser.parse (sql, Current)
-			impl_sql := parser.parsed_sql -- parsed_sql (sql)
+			create impl_sql.make_from_string (parser.parsed_sql) -- parsed_sql (sql)
 			set_parsed
 			parameters_count_impl := parser.parameters_count
 			impl_parameter_names := Void
@@ -430,9 +430,6 @@ feature -- Element change
 			is_prepared := False
 			cursor_description := Void
 			parameters_description := Void
-			check
-				impl_sql_different: sql /= impl_sql
-			end
 			parameters := Void
 			bound_parameters := False
 		ensure
@@ -533,22 +530,20 @@ feature -- Basic operations
 			parameters_set: parameters_count > 0 implies bound_parameters
 		local
 			tools : expanded ECLI_EXTERNAL_TOOLS
+			
 		do
 			if session.is_tracing then
 				trace (session.tracer)
 			end
+			if is_executed and then has_results and then not after then
+				close_cursor
+			end
 			if is_prepared_execution_mode then
 				set_status (ecli_c_execute (handle) )
 			else
-				if is_executed and then has_results and then not after then
-					close_cursor
-				end
-				tools.protect
-				set_status (ecli_c_execute_direct (handle, tools.string_to_pointer (impl_sql)))
-				tools.unprotect
+				set_status (ecli_c_execute_direct (handle, impl_sql.handle))
 			end
 			if is_ok then
---				get_result_columns_count
 				is_executed := True
 				if has_results then
 					set_cursor_before
@@ -567,7 +562,7 @@ feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
 		do
-			a_tracer.trace (impl_sql, parameters)
+			a_tracer.trace (impl_sql.item, parameters)
 		end
 		
 	describe_parameters is
@@ -668,9 +663,7 @@ feature -- Basic operations
 			if is_executed and then (has_results and  not after) then
 				close_cursor
 			end
-			tools.protect
-			set_status (ecli_c_prepare (handle, tools.string_to_pointer (impl_sql)))
-			tools.unprotect
+			set_status (ecli_c_prepare (handle, impl_sql.handle))
 			if is_ok then
 				is_prepared := True
 				set_prepared_execution_mode
@@ -888,7 +881,7 @@ feature {NONE} -- Implementation
 
 	impl_parameter_names : DS_LIST[STRING]
 
-	impl_sql : STRING
+	impl_sql : XS_C_STRING
 		-- SQL string without parameter names, only with '?' markers
 
 	impl_is_parsed : BOOLEAN

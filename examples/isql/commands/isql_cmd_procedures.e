@@ -71,7 +71,7 @@ feature -- Basic operations
 				end
 			else
 				context.filter.begin_error
-				context.filter.put_error ("Cannot get procedures metadata")
+				context.filter.put_error (sql_error_msg (cursor,"Cannot get procedures metadata"))
 				context.filter.end_error
 			end			
 			cursor.close

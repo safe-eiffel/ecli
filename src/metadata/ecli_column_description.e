@@ -27,6 +27,8 @@ inherit
 
 	KL_IMPORTED_STRING_ROUTINES
 
+	HASHABLE
+
 creation
 	make
 
@@ -66,6 +68,13 @@ feature -- Access
 	name : STRING
 			-- column name
 
+feature -- Measurement
+
+	hash_code : INTEGER is
+		do
+			Result := name.hash_code
+		end
+		
 feature {NONE} -- Implementation
 
 	ext_actual_name_length : XS_C_INT32 is once create Result.make end

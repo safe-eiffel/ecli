@@ -151,7 +151,7 @@ feature {NONE} -- Implementation
 				end			
 			else
 				context.filter.begin_error
-				context.filter.put_error ("Cannot get foreign key metadata%N" + a_cursor.diagnostic_message)
+				context.filter.put_error (sql_error_msg (a_cursor, "Cannot get foreign key metadata"))
 				context.filter.end_error
 			end
 		end

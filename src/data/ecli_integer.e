@@ -30,6 +30,9 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (4)
+			set_null
+		ensure
+			is_null: is_null
 		end
 
 feature -- Access

@@ -27,7 +27,7 @@ feature {NONE} -- Initialization
 		do
 			set_name (a_name.string)
 			set_query (a_query.string)
-			!DS_LINKED_LIST[MODULE_PARAMETER]!parameters.make
+--			!DS_LINKED_LIST[MODULE_PARAMETER]!parameters.make
 		ensure
 			name_assigned: name = a_name
 			query_assigned: query = a_query
@@ -38,10 +38,14 @@ feature -- Access
 	description: STRING
 			-- description of current module. Useful for documenting purposes
 
-	parameters: DS_LIST [MODULE_PARAMETER]
+--	parameters: DS_LIST [MODULE_PARAMETER]
 			-- formal parameters of `query'
 
-	results: DS_LIST[ECLI_COLUMN_DESCRIPTION]
+--	results: DS_LIST[ECLI_COLUMN_DESCRIPTION]
+
+	parameters : PARAMETER_SET
+	
+	results : RESULT_SET
 	
 	query: STRING
 			-- SQL query
@@ -56,9 +60,13 @@ feature -- Status report
 	is_error : BOOLEAN
 	
 	is_query_valid : BOOLEAN
+
+	is_checked_query : BOOLEAN
+	
 	is_parameters_valid : BOOLEAN
 
 	query_statement : ECLI_STATEMENT
+	query_session : ECLI_SESSION
 	
 feature -- Status setting
 
@@ -69,20 +77,23 @@ feature -- Status setting
 			a_session_connected: a_session.is_connected
 		do
 			create query_statement.make (a_session)
-			check_query (a_session, a_error_handler)
+			query_session := a_session
+			check_query (query_statement, a_error_handler)
 			if is_query_valid then
-				check_parameters (query_statement, a_session, a_error_handler)
+				describe_result_set (a_error_handler) 
+				check_parameters (a_error_handler)
 			end
 			query_statement.close
 		end
 
-	check_query (a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
+	check_query (a_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
 			-- 
 		require
-			a_session_not_void: a_session /= Void
-			a_session_connected: a_session.is_connected
+			a_statement_not_void: a_statement /= Void
+			a_error_handler_not_void: a_error_handler /= Void
 		do
 			is_query_valid := False
+			query_statement := a_statement
 			query_statement.set_sql (query)
 			query_statement.prepare
 			if query_statement.is_ok then
@@ -91,27 +102,52 @@ feature -- Status setting
 				a_error_handler.report_error_message ("Statement not valid : %N" +
 					query + "%N" + query_statement.diagnostic_message + "%N") 
 			end
+			is_checked_query := True
 		ensure
 			query_statement_valid: query_statement /= Void and then query_statement.is_valid
+			query_statement_set: query_statement = a_statement
 		end
 
-	check_parameters (a_statement : ECLI_STATEMENT; a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
+	describe_result_set (a_error_handler : UT_ERROR_HANDLER) is
+			-- 
+		require
+			a_error_handler_not_void: a_error_handler /= Void
+			checked_query: is_checked_query
+			query_statement_valid: query_statement.is_valid
+		local
+			index : INTEGER
+		do
+			query_statement.describe_cursor
+			create results.make (name+"_RESULTS")
+			from
+				index := query_statement.cursor_description.lower
+			until
+				index > query_statement.cursor_description.upper
+			loop
+				results.force (query_statement.cursor_description.item (index))
+				index := index + 1
+			end
+		ensure
+			results_count: results.count = query_statement.cursor_description.count
+		end
+		
+	check_parameters (a_error_handler : UT_ERROR_HANDLER) is
 			--| Check if declared parameters are the same as statement parameters
 		require
-			a_statement_valid: a_statement /= Void and then a_statement.is_valid
-			a_statement_is_prepared: a_statement.is_prepared
-			a_statement_sql_equals_query: a_statement.sql.is_equal (query)
+			a_error_handler_not_void: a_error_handler /= Void
+			checked_query: is_checked_query
+			query_statement_valid: query_statement.is_valid
 		local
 			sql_parameters : DS_LIST[STRING]
-			parameters_cursor : DS_LIST_CURSOR[MODULE_PARAMETER]
+			parameters_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
 			tester : KL_EQUALITY_TESTER [STRING]
 			l_catalog, l_schema : STRING
 		do
 			--| same number
-			is_parameters_valid := (a_statement.parameter_names.count = parameters.count)
+			is_parameters_valid := (query_statement.parameter_names.count = parameters.count)
 			if is_parameters_valid then
 				--| same names				
-				sql_parameters := a_statement.parameter_names
+				sql_parameters := query_statement.parameter_names
 				parameters_cursor := parameters.new_cursor
 				from
 					parameters_cursor.start
@@ -141,7 +177,7 @@ feature -- Status setting
 						if not shared_schema_name.is_empty then
 							l_schema := shared_schema_name
 						end
-						parameters_cursor.item.check_validity (a_session, l_catalog, l_schema)
+						parameters_cursor.item.check_validity (query_session, l_catalog, l_schema)
 						is_parameters_valid := is_parameters_valid and then parameters_cursor.item.is_valid
 						if is_parameters_valid then
 							parameters_cursor.forth
@@ -176,24 +212,24 @@ feature -- Element change
 			description_assigned: description = a_description
 		end
 
-	add_parameter (a_parameter: MODULE_PARAMETER) is
-			-- add `a_parameter' to `parameters'
+	set_parameters (a_parameters: PARAMETER_SET) is
+			-- set `a_parameters' as `parameters'
 		require
-			a_parameter_not_void: a_parameter /= Void
+			a_parameters_not_void: a_parameters /= Void
 		do
-			parameters.put_last (a_parameter)
+			parameters := a_parameters
 		ensure
-			parameter_inserted: parameters.has (a_parameter) and then parameters.count = old parameters.count + 1
+			parameters_set: parameters = a_parameters
 		end
 
-	add_result (a_result : ECLI_COLUMN_DESCRIPTION) is
-			-- 
+	set_results (a_results : RESULT_SET) is
+			-- set `a_results' as `results'
 		require
-			a_result_not_void: a_result /= Void
+			a_results_not_void: a_results /= Void
 		do
-			results.put_last (a_result)
+			results := a_results
 		ensure
-			result_inserted: results.has (a_result) and then results.count = old results.count + 1
+			result_set: results = a_results
 		end
 		
 feature {NONE} -- Element change

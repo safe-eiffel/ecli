@@ -154,7 +154,6 @@ feature {NONE} -- Implementation
 				from
 					count := 1
 					retcode := sql_success
-					protect
 				until 
 					retcode = sql_no_data or retcode = sql_invalid_handle or retcode = sql_error
 				loop
@@ -171,7 +170,6 @@ feature {NONE} -- Implementation
 					end	
 					count := count + 1
 				end
-				unprotect
 				need_diagnostics := False
 			end
 		end

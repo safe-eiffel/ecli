@@ -69,13 +69,12 @@ feature -- Basic operations
 					context.set_session (session)	
 				else
 					context.filter.begin_error
-					context.filter.put_error ("NOT Connected : ")
-					context.filter.put_error (session.diagnostic_message)
+					context.filter.put_error (sql_error_msg (session,"NOT Connected"))
 					context.filter.end_error
 				end
 			else
 				context.filter.begin_error
-				context.filter.put_error ("CONNECT : expecting a datasource name")
+				context.filter.put_error ("CONNECT : expecting a datasource name.")
 				context.filter.end_error			
 			end
 		end

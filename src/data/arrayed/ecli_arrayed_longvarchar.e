@@ -67,10 +67,8 @@ feature -- Access
 			if is_null_at (index) then
 				Result := Void
 			else
-				protect
 				string_copy_from_pointer (impl_item, ecli_c_array_value_get_value_at (buffer, index))
 				Result := impl_item
-				unprotect
 			end
 		end
 
@@ -127,7 +125,6 @@ feature -- Element change
 	set_item_at (value : like item; index : INTEGER) is
 		local
 			actual_length, transfer_length : INTEGER
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if value.count > content_capacity then
 				actual_length := content_capacity
@@ -137,10 +134,8 @@ feature -- Element change
 				transfer_length := actual_length - 1
 			end
 			create tools
-			tools.protect
-			ecli_c_array_value_set_value_at (buffer, tools.string_to_pointer (value), actual_length, index)
+			ecli_c_array_value_set_value_at (buffer, string_to_pointer (value), actual_length, index)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_length, index)
-			tools.unprotect
 		end
 
 feature -- Removal

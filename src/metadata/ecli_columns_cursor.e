@@ -48,7 +48,6 @@ feature {NONE} -- Initialization
 		do
 			!!search_criteria.make (Void, Void, a_table)
 			make (search_criteria, a_session)
-			queried_column := Void
 		ensure
 			executed: is_ok implies is_executed
 		end
@@ -57,7 +56,7 @@ feature {NONE} -- Initialization
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
-			queried_column := a_column_name
+			create queried_column_impl.make_from_string (a_column_name)
 			make (a_search_criteria, a_session)
 		end
 
@@ -69,9 +68,14 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	queried_column : STRING
+	queried_column : STRING is
 			-- queried column name; Void if all columns in a table
-
+		do
+			if queried_column_impl /= Void then
+				Result := queried_column_impl.item
+			end
+		end
+		
 	item : ECLI_COLUMN is
 			-- item at current cursor position
 		do
@@ -169,9 +173,8 @@ feature {NONE} -- Implementation
 			a_column : POINTER
 			a_column_length : INTEGER
 		do
-			check is_protected end
 			if queried_column /= Void then
-				a_column := string_to_pointer (queried_column)
+				a_column := queried_column_impl.handle
 				a_column_length := queried_column.count
 			end
 			Result := ecli_c_get_columns ( handle,
@@ -181,6 +184,8 @@ feature {NONE} -- Implementation
 				a_column, a_column_length)
 		end
 
+	queried_column_impl : XS_C_STRING
+	
 end -- class ECLI_COLUMNS_CURSOR
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

@@ -101,5 +101,27 @@ feature {NONE} -- Implementation
 		end
 		
 	command_width : INTEGER is 30
+	sql_error (stmt : ECLI_STATUS) : STRING is
+			-- 
+		do
+			Result := sql_error_msg (stmt, Void)
+		end
+		
+	sql_error_msg (stmt : ECLI_STATUS; msg : STRING) : STRING is
+		do
+			create Result.make (0)
+			Result.append_string ("* ERROR")
+			if msg /= Void then
+				Result.append_string (" : ")
+				Result.append_string (msg)
+			end
+			Result.append_string (" * ")
+			Result.append_string ("STATE:")
+			Result.append_string (stmt.cli_state)
+			Result.append_string (";CODE:")
+			Result.append_string (stmt.native_code.out)
+			Result.append_string (";MESSAGE:")
+			Result.append_string (stmt.diagnostic_message)
+		end
 	
 end -- class ISQL_COMMAND

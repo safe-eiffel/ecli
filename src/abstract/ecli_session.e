@@ -121,17 +121,17 @@ feature -- Access
 
 	data_source : STRING is
 		do
-			Result := impl_data_source
+			Result := impl_data_source.item
 		end
 
 	user_name : STRING is
 		do
-			Result := impl_user_name
+			Result := impl_user_name.item
 		end
 
 	password : STRING is
 		do
-			Result := impl_password
+			Result := impl_password.item
 		end
 
 	transaction_capability : INTEGER is
@@ -274,9 +274,9 @@ feature -- Status setting
 			not_connected: not is_connected
 			a_user_ok: a_user_name/= Void
 		do
-			impl_user_name:= a_user_name
+			create impl_user_name.make_from_string (a_user_name)
 		ensure
-			user_name= a_user_name
+			user_name_set: user_name.is_equal (a_user_name)
 		end
 
 	set_data_source (a_data_source : STRING) is
@@ -285,9 +285,9 @@ feature -- Status setting
 			not_connected: not is_connected
 			a_data_source_ok: a_data_source /= Void
 		do
-			impl_data_source := a_data_source
+			create impl_data_source.make_from_string (a_data_source)
 		ensure
-			data_source = a_data_source
+			data_source_set: data_source.is_equal (a_data_source)
 		end
 
 	set_password (a_password : STRING) is
@@ -296,9 +296,9 @@ feature -- Status setting
 			not_connected: not is_connected
 			a_password_ok: a_password /= Void
 		do
-			impl_password := a_password
+			create impl_password.make_from_string (a_password)
 		ensure
-			password = a_password
+			password_set: password.is_equal (a_password)
 		end
 
 	set_tracer (a_tracer : ECLI_TRACER) is
@@ -391,18 +391,14 @@ feature -- Basic Operations
 			is_valid: is_valid
 			not_connected: not is_connected
 			ready_to_connect: is_ready_to_connect
-		local
-			tools : expanded ECLI_EXTERNAL_TOOLS
 		do
-			tools.protect
 			set_status (ecli_c_connect (handle,
-					tools.string_to_pointer (data_source),
-					tools.string_to_pointer (user_name),
-					tools.string_to_pointer (password)))
+					impl_data_source.handle,
+					impl_user_name.handle,
+					impl_password.handle))
 			if is_ok then
 				set_connected
 			end
-			tools.unprotect
 		ensure
 			connected: is_connected implies is_ok
 		end
@@ -471,11 +467,11 @@ feature {NONE} -- Implementation
 			set_handle ( default_pointer)
 		end
 
-	impl_data_source : STRING
+	impl_data_source : XS_C_STRING
 
-	impl_user_name: STRING
+	impl_user_name: XS_C_STRING
 
-	impl_password : STRING
+	impl_password : XS_C_STRING
 
 	impl_has_pending_transaction : BOOLEAN
 

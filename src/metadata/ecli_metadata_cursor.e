@@ -38,48 +38,64 @@ feature --
 			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
 		local
-			l_catalog, l_schema, l_name : POINTER
 			catalog_length, schema_length, name_length : INTEGER
+			p_catalog, p_schema, p_name : POINTER
 		do
-			protect
 			cursor_make (a_session)
 			if a_name.catalog /= Void then
-				l_catalog := string_to_pointer (a_name.catalog)
+				create queried_catalog_impl.make_from_string (a_name.catalog)
 				catalog_length := a_name.catalog.count
+				p_catalog := queried_catalog_impl.handle
 			end
 			if a_name.schema /= Void then
-				l_schema := string_to_pointer (a_name.schema)
+				create queried_schema_impl.make_from_string (a_name.schema)
 				schema_length := a_name.schema.count
+				p_schema := queried_schema_impl.handle
 			end
 			if a_name.name /= Void then
-				l_name := string_to_pointer (a_name.name)
+				create queried_name_impl.make_from_string (a_name.name)
 				name_length := a_name.name.count
+				p_name := queried_name_impl.handle
 			end
-			queried_catalog := a_name.catalog
-			queried_schema := a_name.schema
-			queried_name := a_name.name
 			set_status (
-				do_query_metadata ( l_catalog, catalog_length, l_schema, schema_length, l_name, name_length))
-			unprotect
+				do_query_metadata ( 
+					p_catalog, catalog_length,
+					p_schema, schema_length, 
+					p_name, name_length))
 			update_state_after_execution
 		ensure
 			executed: is_ok implies is_executed
-			queried_catalog_set: queried_catalog = a_name.catalog
-			queried_schema_set: queried_schema = a_name.schema
-			queried_name_set: queried_name = a_name.name
+			queried_catalog_set: a_name.catalog /= Void implies queried_catalog.is_equal (a_name.catalog)
+			queried_schema_set: a_name.schema /= Void implies queried_schema.is_equal (a_name.schema)
+			queried_name_set: a_name.name /= Void implies queried_name.is_equal (a_name.name)
 		end
 
 feature -- Access
 
-	queried_catalog : STRING
+	queried_catalog : STRING is
 			-- queried catalog name
-
-	queried_schema : STRING
+		do
+			if queried_catalog_impl /= Void then
+				Result := queried_catalog_impl.item
+			end
+		end
+		
+	queried_schema : STRING is
 			-- queried schema name
-
-	queried_name : STRING
+		do
+			if queried_name_impl /= Void then
+				Result := queried_schema_impl.item
+			end	
+		end
+		
+	queried_name : STRING is
 			-- queried name (table, column or procedure)
-
+		do
+			if queried_name_impl /= Void then
+				Result := queried_name_impl.item
+			end
+		end
+		
 	item : ANY is
 			-- item at current cursor position
 		require
@@ -159,6 +175,10 @@ feature {NONE} -- Implementation
 		deferred
 		end
 
+	queried_catalog_impl : XS_C_STRING
+	queried_schema_impl : XS_C_STRING
+	queried_name_impl : XS_C_STRING
+	
 end -- class ECLI_METADATA_CURSOR
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

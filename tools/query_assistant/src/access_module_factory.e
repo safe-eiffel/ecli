@@ -103,6 +103,7 @@ feature -- Basic operations
 		do
 			is_error := False
 			last_module := Void
+			last_parameter_set := Void
 			if element.has_attribute_by_name ("name") then
 				name_att := element.attribute_by_name ("name")
 			end
@@ -119,24 +120,23 @@ feature -- Basic operations
 					if element.has_element_by_name ("sql") then
 						query := element.element_by_name ("sql")
 						create last_module.make (name, query.text.string)
-						parameter_cursor := element.new_cursor
 						if element.has_element_by_name ("description") then
 							description := element.element_by_name ("description")
 							last_module.set_description (description.text.string)
 						end
-						from
-							parameter_cursor.start
-						until
-							parameter_cursor.off
-						loop
-							parameter ?= parameter_cursor.item
-							if parameter /= Void and then parameter.name.string.is_equal ("parameter") then
-								create_parameter (parameter)
-								if last_parameter /= Void then
-									last_module.add_parameter (last_parameter)
-								end
+						if element.has_element_by_name ("parameter_set") then
+							if element.has_element_by_name ("parameter") then
+								error_handler.report_error_message ("Module '"+name+"' cannot have 'parameter' elements while having 'parameter_set' element")
+								is_error := True
+							else
+								create_parameter_set (element.element_by_name ("parameter_set"), parameter_set_name (name))
 							end
-							parameter_cursor.forth
+						else
+							create last_parameter_set.make (parameter_set_name (name))
+							populate_parameter_set (element)
+						end
+						if last_parameter_set /= Void then
+							last_module.set_parameters (last_parameter_set)
 						end
 					else
 						error_handler.report_error_message ("Module '"+name+"' does not have any <sql> element")
@@ -148,6 +148,33 @@ feature -- Basic operations
 			last_module_not_void_if_no_error: not is_error implies last_module /= Void
 		end
 
+	create_parameter_set (element : XM_ELEMENT; default_name : STRING) is
+			-- 
+		require
+			element_not_void: element /= Void
+			element_name_parameter_set: element.name.string.is_equal ("parameter_set")
+			default_name_not_void: default_name /= Void
+		local
+			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
+			parameter : XM_ELEMENT
+			name, parent : STRING
+		do
+			if element.has_attribute_by_name ("name") then
+				name := element.attribute_by_name ("name").value.string
+			else
+				name := default_name
+			end
+			if element.has_attribute_by_name ("extends") then
+				parent := element.attribute_by_name ("extends").value.string
+				create last_parameter_set.make_with_parent_name (name, parent)
+			else
+				create last_parameter_set.make (name)
+			end
+			populate_parameter_set (element)
+		end
+		
+	last_parameter_set: PARAMETER_SET
+	
 	last_parameter : MODULE_PARAMETER
 	
 	last_module : ACCESS_MODULE
@@ -158,6 +185,55 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
+	module_name (a_name : STRING) : STRING is
+			-- 
+		do
+			create Result.make_from_string (a_name)
+			Result.to_upper
+		end
+		
+	parameter_set_name (a_name : STRING) : STRING is
+			-- 
+		do
+			create Result.make_from_string (a_name)
+			Result.append_string ("_PARAMETERS")
+			Result.to_upper
+		end
+
+	result_set_name (a_name : STRING) : STRING is
+			-- 
+		do
+			create Result.make_from_string (a_name)
+			Result.append_string ("_RESULTS")
+			Result.to_upper
+		end
+
+	populate_parameter_set (element : XM_ELEMENT) is
+			-- iterate over "parameter" elements in `element'
+		require
+			element_not_void: element /= Void
+			element_has_parameter_element: element.has_element_by_name ("parameter")
+		local
+ 			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
+			parameter : XM_ELEMENT
+		do
+			from
+				parameter_cursor := element.new_cursor
+				parameter_cursor.start
+			until
+				parameter_cursor.off
+			loop
+				parameter ?= parameter_cursor.item
+				if parameter /= Void and then parameter.name.string.is_equal ("parameter") then
+					create_parameter (parameter)
+					if last_parameter /= Void then
+						last_parameter_set.force (last_parameter)
+					end
+				end
+				parameter_cursor.forth
+			end
+		end
+		
 invariant
 	invariant_clause: True -- Your invariant here
 

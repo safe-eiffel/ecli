@@ -12,9 +12,9 @@ inherit
 
 feature -- Status report
 
-	was_collecting : BOOLEAN
+--	was_collecting : BOOLEAN
 	
-	is_protected : BOOLEAN
+--	is_protected : BOOLEAN
 
 feature -- Basic operations
 
@@ -39,21 +39,21 @@ feature -- Basic operations
 		deferred
 		end
 		
-	protect is
-			-- protect memory against moving GC
-		do
-			was_collecting := collecting
-			collection_off
-			is_protected := True
-		end
+--	protect is
+--			-- protect memory against moving GC
+--		do
+--			was_collecting := collecting
+--			collection_off
+--			is_protected := True
+--		end
 		
-	unprotect is
-			-- unprotect memory
-		do
-			if was_collecting then
-				collection_on
-			end
-			is_protected := False
-		end
+--	unprotect is
+--			-- unprotect memory
+--		do
+--			if was_collecting then
+--				collection_on
+--			end
+--			is_protected := False
+--		end
 
 end -- class ECLI_EXTERNAL_TOOLS_COMMON

@@ -111,7 +111,7 @@ feature {NONE} -- Implementation
 				end			
 			else
 				context.filter.begin_error
-				context.filter.put_error ("Cannot get primary key metadata%N" + a_cursor.diagnostic_message)
+				context.filter.put_error (sql_error_msg (a_cursor, "Cannot get primary key metadata"))
 				context.filter.end_error
 			end
 		end

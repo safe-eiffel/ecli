@@ -102,30 +102,25 @@ feature {NONE} -- Implementation
 			context_not_void: context /= Void
 		local
 			value : ECLI_VARCHAR
-			cursor : DS_HASH_TABLE_CURSOR[STRING,STRING]
+			cursor : DS_LIST_CURSOR[STRING]
+			var : STRING
 		do
 			from
-				cursor := context.variables.new_cursor
+				cursor := stmt.parameter_names.new_cursor
 				cursor.start
 			until
 				cursor.off
 			loop
-				if stmt.has_parameter (cursor.key) then
-					!!value.make (cursor.item.count)
-					value.set_item (cursor.item)
-					stmt.put_parameter (value, cursor.key)
+				if context.has_variable (cursor.item) then
+					var := context.variable (cursor.item)
+					create value.make (var.count)
+					value.set_item (var)
+					stmt.put_parameter (value, cursor.item)
 				end
 				cursor.forth
 			end					
 		end
 
-	sql_error (stmt : ECLI_STATUS) : STRING is
-		do
-			create Result.make (0)
-			Result.append_string ("** ERROR **%N")
-			Result.append_string (stmt.diagnostic_message)
-			Result.append_character ('%N')
-		end
 
 	print_error (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT) is
 		do

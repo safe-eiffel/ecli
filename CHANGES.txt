@@ -1,31 +1,33 @@
 2003-05-05
 	* Prepared migration of ECLI to .NET : created support for external values
 	  with classes XS_C_*; This prevents using the '$' operator.
-	* Query assistant heavily reworked.
+	* Query assistant heavily reworked, still in alpha state.
 	
 2003-03-10
 	* ECLI_VALUE descendants implement correct 'copy' and 'is_equal' features.	  
 	
 2003-02-28
-	* **** WARNING ****
-	  *****************
+	* 'metadata' cluster provides various cursors on metadata : tables, columns, types, procedures,
+	  primary keys, foreign keys, data sources, ...
+
+	* clisql now is a real command line interactive sql, useful in production environments
+	
+	* ECLI_VALUE and its heirs have been revisited.  ECLI_GENERIC_VALUE [G] is a proper descendant
+	  with feature 'item' that can be expanded or not.  If 'item' is a reference, it always is the
+	  same reference -> beware of aliasing problems.
+	                  **** WARNING **** 
+	                  *****************
 	  ECLI_VALUE descendants 'item' features that return a reference
 	  always return the SAME reference. BEWARE OF ALIASING PROBLEMS.
-	  THIS IS A MAJOR CHANGE wirt respect to THE PREVIOUS SEMANTICS.
+	  THIS IS A MAJOR CHANGE with respect to THE PREVIOUS SEMANTICS.
 	
 	* Reviewed sample applications :
 		'test1' does not use manifest arrays anymore (to prevent runtime problems with SmartEiffel)
 		'test_rowset' has been revisited to show how error handling could be done; more useful messages.
 		'isql' has been renamed 'clisql' to prevent name clashes with other known tools.
-		clisql is a real command line interactive sql, useful in production environments
 		'test_values' can check good behavior of ECLI_VALUE and ECLI_ARRAYED_VALUE heir classes
 	* ECLI_ROWSET_MODIFIER : preconditions reviewed, various bug fixes
-	* ECLI_VALUE and its heirs have been revisited.  ECLI_GENERIC_VALUE [G] is a proper descendant
-	  with feature 'item' that can be expanded or not.  If 'item' is a reference, it always is the
-	  same reference -> beware of aliasing problems.
 	* STRING.append usage has been dropped; using ELKS feature 'append_string' now.
-	* 'metadata' cluster provides various cursors on metadata : tables, columns, types, procedures,
-	  primary keys, foreign keys, data sources, ...
 	
 2003-01-01
 	* Added ECLI_SESSION.is_bind_arrayed_results_capable + updated ECLI_ROWSET_CURSOR preconditions on 'open' and 'open_prepared'

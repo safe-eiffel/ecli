@@ -108,7 +108,10 @@ feature -- Basic operations
 			l_factory : ACCESS_MODULE_FACTORY
 			l_module : ACCESS_MODULE
 		do
-			!!modules.make (10)
+			create modules.make (10)
+			create parameter_sets.make (10)
+			create result_sets.make (10)
+			
 			from
 				root := tree_pipe.document
 				a_cursor := root.root_element.new_cursor
@@ -129,6 +132,12 @@ feature -- Basic operations
 						else
 							modules.force (l_module, l_module.name) 
 						end
+						parameter_sets.search (l_module.parameters.name)
+						if parameter_sets.found then
+							error_handler.report_error_message ("Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
+						else
+							parameter_sets.force (l_module.parameters, l_module.parameters.name) 
+						end
 					end
 				end
 				a_cursor.forth
@@ -136,6 +145,8 @@ feature -- Basic operations
 		end
 	
 	modules : DS_HASH_TABLE [ACCESS_MODULE, STRING]
+	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
+	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
 	
 	process_data_file is
 			-- Do the real work (parse and output).
@@ -335,7 +346,7 @@ feature {NONE} -- Implementation
 			a_module_not_void: a_module /= Void
 		local
 			cursor : QA_CURSOR
-			p_cursor : DS_LIST_CURSOR[MODULE_PARAMETER]
+			p_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
 		do
 			create cursor.make (a_session)
 			cursor.define (a_module.query)

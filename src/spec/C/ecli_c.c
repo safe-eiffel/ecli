@@ -669,14 +669,16 @@ EIF_DOUBLE c_memory_get_double (EIF_POINTER pointer) { return (EIF_DOUBLE) (*((d
 EIF_POINTER c_memory_get_pointer (EIF_POINTER pointer) { return (EIF_POINTER) (*((void**)pointer));};
 
 /* unsigned routines */
-EIF_INTEGER c_u_add32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 + e2);}
-EIF_INTEGER c_u_subtract32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 + e2);}
-EIF_INTEGER c_u_divide32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 / e2);}
-EIF_INTEGER c_u_remainder32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 % e2);}
-EIF_INTEGER c_u_left_shift32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 << e2);}
-EIF_INTEGER c_u_right_shift32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 >> e2);}
-EIF_INTEGER c_u_and32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 & e2);}
-EIF_INTEGER c_u_or32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 | e2);}
-EIF_INTEGER c_u_xor32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER (e1 ^ e2);}
-EIF_INTEGER c_u_not32  (unsigned long e1) { return (EIF_INTEGER (~ e1);}
+EIF_INTEGER c_u_add32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 + e2);}
+EIF_INTEGER c_u_subtract32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 + e2);}
+EIF_INTEGER c_u_divide32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 / e2);}
+EIF_INTEGER c_u_remainder32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 % e2);}
+EIF_INTEGER c_u_left_shift32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 << e2);}
+EIF_INTEGER c_u_right_shift32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 >> e2);}
+EIF_INTEGER c_u_and32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 & e2);}
+EIF_INTEGER c_u_or32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 | e2);}
+EIF_INTEGER c_u_xor32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 ^ e2);}
+EIF_INTEGER c_u_not32  (unsigned long e1) { return (EIF_INTEGER) (~ e1);}
+EIF_INTEGER c_u_lt32 (unsigned long e1, unsigned long e2) { return (EIF_INTEGER) (e1 < e2); }
+EIF_INTEGER c_u_eq32 (unsigned long e1, unsigned long e2) {return (EIF_INTEGER) (e1 == e2); }
 
