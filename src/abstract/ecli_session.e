@@ -138,6 +138,9 @@ feature -- Access
 				set_status (ecli_c_transaction_capable (handle, $impl_transaction_capability))
 			end
 			Result := impl_transaction_capability
+		ensure
+			definition: Result = Sql_tc_all or else Result = Sql_tc_ddl_commit or else Result = Sql_tc_ddl_ignore
+				or else Result = Sql_tc_dml or else Result = Sql_tc_none
 		end
 
 	tracer : ECLI_TRACER

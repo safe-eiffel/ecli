@@ -13,7 +13,7 @@ deferred class
 feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
-			-- trace current object through 'a_tracer'
+			-- Trace current object through 'a_tracer'
 		require
 			trace_possible: can_trace
 			tracer_writable: a_tracer /= Void
@@ -21,7 +21,7 @@ feature -- Basic operations
 		end
 
 	can_trace : BOOLEAN is
-			-- can Current trace itself ?
+			-- Can Current trace itself ?
 		deferred
 		end
 		

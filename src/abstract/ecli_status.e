@@ -33,7 +33,7 @@ inherit
 feature -- Access
 
 	status : INTEGER
-			-- status code of last CLI operation
+			-- Status code of last CLI operation
 
 	diagnostic_message : STRING is
 			-- Message describing the current status
@@ -44,14 +44,14 @@ feature -- Access
 		end
 
 	cli_state : STRING is
-			-- name of the internal CLI state
+			-- Name of the internal CLI state
 		do
 			get_diagnostics
 			Result := impl_cli_state.substring(1,5)
 		end
 
 	native_code : INTEGER is
-			-- native error code
+			-- Native error code
 		do
 			get_diagnostics
 			Result := impl_native_code
@@ -77,6 +77,7 @@ feature -- Status report
 		end
 
 	is_no_data : BOOLEAN is
+			-- Has the last data fetch command returned no data ?
 		do
 			Result := status = sql_no_data;
 		end
@@ -95,6 +96,7 @@ feature -- Status report
 feature -- Status setting
 
 	raise_exception_on_error is
+			-- Let an exception occur on any CLI operation failure
 		do
 			exception_on_error := True
 		ensure
@@ -102,6 +104,7 @@ feature -- Status setting
 		end
 	
 	disable_exception_on_error is
+			-- Disable exceptions for CLI operation failures
 		do
 			exception_on_error := False
 		ensure
@@ -131,6 +134,7 @@ feature {NONE} -- Implementation
 		end
 
 	get_diagnostics is
+			-- get error diganostics for latest CLI command
 		local
 			count : INTEGER
 			tools : ECLI_EXTERNAL_TOOLS

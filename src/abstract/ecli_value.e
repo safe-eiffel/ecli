@@ -38,7 +38,7 @@ inherit
 feature -- Access
 
 	item : ANY is
-			-- actual value : to be redefined in descendant classes
+			-- Actual value : to be redefined in descendant classes
 		require
 			not_null: not is_null
 		do
@@ -47,54 +47,54 @@ feature -- Access
 feature -- Status report
 
 	is_null : BOOLEAN is
-			-- is this a NULL value (in RDBMS sense) ?
+			-- Is this a NULL value (in RDBMS sense) ?
 		do
 			Result := ecli_c_value_get_length_indicator (buffer) = Sql_null_data
 		end
 
 	convertible_to_string : BOOLEAN is
-			-- is this value convertible to a string ?
+			-- Is this value convertible to a string ?
 		do
 			Result := True
 		end
 
 	convertible_to_character : BOOLEAN is
-			-- is this value convertible to a character ?
+			-- Is this value convertible to a character ?
 		do
 		end
 
 	convertible_to_boolean : BOOLEAN is
-			-- is this value convertible to a boolean ?
+			-- Is this value convertible to a boolean ?
 		do
 		end
 
 	convertible_to_integer : BOOLEAN is
-			-- is this value convertible to an integer ?
+			-- Is this value convertible to an integer ?
 		do
 		end
 
 	convertible_to_real : BOOLEAN is
-			-- is this value convertible to a real ?
+			-- Is this value convertible to a real ?
 		do
 		end
 
 	convertible_to_double : BOOLEAN is
-			-- is this value convertible to a double ?
+			-- Is this value convertible to a double ?
 		do
 		end
 
 	convertible_to_date : BOOLEAN is
-			-- is this value convertible to a date ?
+			-- Is this value convertible to a date ?
 		do
 		end
 
 	convertible_to_time : BOOLEAN is
-			-- is this value convertible to a time ?
+			-- Is this value convertible to a time ?
 		do
 		end
 
 	convertible_to_timestamp : BOOLEAN is
-			-- is this value convertible to a timestamp ?
+			-- Is this value convertible to a timestamp ?
 		do
 		end
 
@@ -138,6 +138,7 @@ feature -- Element change
 		do
 		ensure
 			item_set: equal (item, truncated (value))
+			not_null: not is_null
 		end;
 
 
