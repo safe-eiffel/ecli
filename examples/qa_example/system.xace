@@ -11,7 +11,7 @@
 		revision:    "$Revision$"
 	</description>
 
-	<root class="qa_example" creation="make"/>
+	<root class="QA_EXAMPLE" creation="make"/>
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
 		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>

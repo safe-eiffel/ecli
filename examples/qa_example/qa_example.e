@@ -1,5 +1,5 @@
 indexing
-	description: "Interactive SQL";
+	description: "Sample Application that use query assistant generated routines";
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -7,6 +7,9 @@ indexing
 class
 	QA_EXAMPLE
 
+inherit
+	KL_IMPORTED_STRING_ROUTINES
+	
 creation
 
 	make
@@ -43,7 +46,10 @@ feature -- Initialization
 		end
 				
 	do_session is
+		local
+			parameters : PARTICIPANTS_BY_REMAINING_PARAMETERS
 		do
+			create parameters.make
 			from
 				read_command
 			until
@@ -53,15 +59,17 @@ feature -- Initialization
 				io.put_string (last_command)
 				io.put_string (" to pay%N")
 				from
-					cursor.start (last_command.to_double)
+					parameters.remaining_amount.set_item (last_command.to_double)
+					cursor.set_parameters_object (parameters)
+					cursor.start
 				until
 					not cursor.is_ok or else cursor.off
 				loop
-					io.put_string (cursor.first_name.item)
+					io.put_string (cursor.item.first_name.out)
 					io.put_character ('%T')
-					io.put_string (cursor.remaining.to_double.out)
+					io.put_string (cursor.item.remaining.out)
 					io.put_character ('%T')
-					io.put_string (cursor.state.out)
+					io.put_string (cursor.item.state.out)
 					io.put_character ('%N')
 					cursor.forth
 				end
@@ -110,14 +118,14 @@ feature -- Basic Operations
 		end
 			
 			
-	formatting_buffer : MESSAGE_BUFFER is
+	formatting_buffer : STRING is
 		once
-			create Result.make (1000)
+			Result := STRING_.make (1000)
 		end
 	
 	session : ECLI_SESSION
 	
-	cursor : PARTICIPANT_BY_REMAINING_CURSOR
+	cursor : PARTICIPANTS_BY_REMAINING
 
 
 end -- class QA_EXAMPLE
