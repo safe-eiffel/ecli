@@ -24,13 +24,6 @@ inherit
 			item, impl_item, make
 		end
 
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose
-		end
-
 creation
 	make, make_query_column, make_all_columns
 

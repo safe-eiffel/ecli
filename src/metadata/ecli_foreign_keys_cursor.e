@@ -23,14 +23,6 @@ inherit
 			set_buffer_into_cursor, create_buffers, create_item
 		end
 
-
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose
-		end
-
 creation
 	make
 

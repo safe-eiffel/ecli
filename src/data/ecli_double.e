@@ -153,7 +153,7 @@ feature -- Basic operations
 			else
 				create message_buffer.make (50)
 				sprintf_double (message_buffer.handle, item.item)
-				Result := pointer_to_string(message_buffer.handle)
+				Result := message_buffer.as_string
 			end
 		end
 

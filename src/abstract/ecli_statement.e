@@ -17,8 +17,6 @@ inherit
 	ECLI_STATUS
 		export
 			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} set_status
-		undefine
-			dispose
 		end
 
 	ECLI_HANDLE

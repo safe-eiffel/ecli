@@ -30,9 +30,9 @@ inherit
 		export {NONE} all
 		end
 
-	ECLI_EXTERNAL_TOOLS
-		export {NONE} all
-		end
+--	XS_C_EXTERNAL_TOOLS
+--		export {NONE} all
+--		end
 		
 feature -- Access
 

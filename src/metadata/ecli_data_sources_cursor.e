@@ -19,15 +19,6 @@ inherit
 	ECLI_STATUS
 		export
 			{ANY} Sql_fetch_first, Sql_fetch_first_user, Sql_fetch_first_system
-		undefine
-			dispose
-		end
-
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose
 		end
 
 	KL_IMPORTED_STRING_ROUTINES

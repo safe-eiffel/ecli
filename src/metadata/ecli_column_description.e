@@ -20,13 +20,6 @@ inherit
 			is_equal
 		end
 
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose, is_equal
-		end
-
 	KL_IMPORTED_STRING_ROUTINES
 		undefine
 			is_equal

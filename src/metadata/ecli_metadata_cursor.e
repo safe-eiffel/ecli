@@ -22,14 +22,7 @@ inherit
 			start, forth, create_buffers, definition
 		end
 
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose
-		end
-
-feature --
+feature {NONE} -- Initialization
 
 	make (a_name : ECLI_NAMED_METADATA; a_session : ECLI_SESSION) is
 			-- Void values for a_name.catalog, a_name.schema, a_name.name can be Void are 'wildcards'
@@ -130,7 +123,6 @@ feature -- Cursor Movement
 				create_item
 			end
 		end
-
 
 feature {NONE} -- Implementation
 

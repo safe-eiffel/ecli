@@ -17,9 +17,6 @@ inherit
 	ECLI_EXTERNAL_API
 
 	ECLI_STATUS
-		undefine
-			dispose
-		end
 		
 	PAT_PUBLISHER [ECLI_SESSION]
 		rename

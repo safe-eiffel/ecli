@@ -25,13 +25,6 @@ inherit
 			item, impl_item
 		end
 
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose
-		end
-
 creation
 	make_all_tables, make_table, make
 

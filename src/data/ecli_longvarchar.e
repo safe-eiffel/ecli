@@ -33,6 +33,7 @@ feature {NONE} -- Initialization
 			create s.make (0)
 			impl_item := s
 			set_null
+			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), capacity)
 		ensure
 			is_null: is_null
 			capacity: capacity = n
@@ -45,7 +46,7 @@ feature -- Access
 			if is_null then
 				Result := Void
 			else
-				string_copy_from_pointer (impl_item,ecli_c_value_get_value (buffer))
+				ext_item.copy_to (impl_item)
 				Result := impl_item
 			end
 		end
@@ -136,7 +137,7 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
-			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_length)
+--			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_length)
 			ext_item.from_string (value)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 		end

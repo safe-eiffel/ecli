@@ -24,14 +24,6 @@ inherit
 			item, make, forth
 		end
 
-
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose
-		end
-
 creation
 	make
 

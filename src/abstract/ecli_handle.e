@@ -18,13 +18,6 @@ deferred class
 
 inherit
 
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		redefine
-			dispose
-		end
-
 	EXCEPTIONS
 		export
 			{NONE} all

@@ -20,13 +20,6 @@ inherit
 			as_double, convertible_as_double
 		end
 
-	ECLI_EXTERNAL_TOOLS
-		export
-			{NONE} all
-		undefine
-			dispose, out, copy, is_equal
-		end
-
 	KL_IMPORTED_STRING_ROUTINES
 		undefine
 			out, is_equal, copy
@@ -169,7 +162,7 @@ feature -- Basic operations
 			else
 				create message_buffer.make (50)
 				sprintf_real (message_buffer.handle, item.item)
-				Result := pointer_to_string(message_buffer.handle)
+				Result := message_buffer.as_string
 			end
 		end
 

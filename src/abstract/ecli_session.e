@@ -13,9 +13,6 @@ class
 
 inherit
 	ECLI_STATUS
-		undefine
-			dispose
-		end
 
 	ECLI_HANDLE
 		export

@@ -14,12 +14,6 @@ inherit
 	ECLI_DATA_DESCRIPTION
 		
 	-- begin mix-in
-	ECLI_EXTERNAL_TOOLS
-		export {NONE} all
-		undefine
-			is_equal
-		end
-
 	ECLI_EXTERNAL_API
 		undefine
 			is_equal
