@@ -32,7 +32,7 @@ inherit
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (a_session : ECLI_SESSION) is
 			-- create a statement for use on 'session'
@@ -422,6 +422,7 @@ feature -- Basic operations
 		end
 
 	describe_cursor is
+			-- get metadata about current result-set in 'cursor_description'
 		require
 			executed: is_executed
 			has_results: has_results
@@ -629,6 +630,7 @@ feature {NONE} -- Implementation
 	release_handle is
 		do
 			session.unregister_statement (Current)
+			session := Void
 			free_statement_handle
 		end
 

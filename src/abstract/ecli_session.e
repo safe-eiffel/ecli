@@ -43,7 +43,7 @@ inherit
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (a_data_source, a_user_name, a_password : STRING) is
 			-- Make session using 'session_string'
