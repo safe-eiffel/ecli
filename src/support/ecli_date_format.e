@@ -32,12 +32,14 @@ feature -- Element change
 	create_from_string (string : STRING) is
 		local
 			year, month, day : INTEGER
+			s : STRING
 		do
 			regex.match (string)
 			year := regex.captured_substring (1).to_integer
 			month := regex.captured_substring (2).to_integer
 			day := regex.captured_substring (3).to_integer 
 			create last_result.make (year, month , day)
+			s := formatted (last_result)
 		end
 		
 feature -- Removal
