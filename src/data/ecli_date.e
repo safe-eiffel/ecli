@@ -218,7 +218,7 @@ feature -- Conversion
 	out : STRING is
 		do
 			if is_null then
-				Result := "NULL"
+				Result := Precursor {ECLI_GENERIC_VALUE}
 			else
 				Result:= STRING_.make (10)
 				Result.append_string (integer_format.pad_integer_4 (year))

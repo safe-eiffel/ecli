@@ -209,9 +209,9 @@ feature -- Basic operations
 	out : STRING is
 		do
 			if is_null then
-				Result := "NULL"
+				Result := {ECLI_GENERIC_VALUE}Precursor
 			else
-				Result := item.item.out
+				Result := item.out
 			end
 		end
 

@@ -82,12 +82,12 @@ feature -- Initialization
 feature -- Obsolete
 
 	attach (a_session : ECLI_SESSION) is
-		obsolete "Use open/close instead of attach/unattach"
+		obsolete "Use open/close instead of attach/release"
 		do
 		end
 
 	release is
-		obsolete "Use open/close instead of attach/unattach"
+		obsolete "Use open/close instead of attach/release"
 		do
 		end
 
@@ -113,7 +113,7 @@ feature -- Basic Operations
 feature {ECLI_SESSION} -- Basic Operations
 
 	do_close is
-			-- 
+			-- close unconditionally without unregistering from the session
 		require
 			valid_statement: is_valid
 			not_closed: not is_closed
@@ -131,9 +131,8 @@ feature -- Access
 			-- sql statement to be executed
 
 	parameter_positions (name : STRING) : DS_LIST[INTEGER] is
-			-- positions of parameter 'name'
-			-- same <name> can occur at multiple places in a SQL statement
-			-- for example in a WHERE clause
+			-- Positions of parameter 'name' in the sql statement.
+			-- A `name' can occur at multiple places in a SQL statement.
 		require
 			valid_statement: is_valid
 			name_ok: name /= Void
@@ -158,7 +157,8 @@ feature -- Access
 		end
 
 	parameter_names : DS_LIST[STRING] is
-			-- names of parameters in `sql' query
+			-- unique names of parameters in `sql' query
+			--| FIXME: this should be a DS_SET[STRING] !
 		require
 			valid_statement: is_valid
 		local
@@ -188,16 +188,16 @@ feature -- Access
 	results : ARRAY[like value_anchor]
 			-- container of result values (i.e. buffers for transferring
 			-- data from program to database) content is meaningful only
-			-- while sweeping through a result set, i.e. "not off"
+			-- while sweeping through a result set, i.e. `not off and has_result_set'
 
 	parameters : ARRAY[like parameter_anchor]
 			-- current parameter values for the statement
 
 	parameters_description : ARRAY[ECLI_PARAMETER_DESCRIPTION]
-			-- parameter metadata
+			-- metadata for parameters, available after calling `describe_parameters' successfully
 
 	results_description : ARRAY [ECLI_COLUMN_DESCRIPTION]
-			-- results values metadata 
+			-- metadata for results, available after calling `describe_results'
 
 	cursor_description : like results_description is
 		obsolete "Use 'results_description'."
@@ -206,21 +206,22 @@ feature -- Access
 		end
 		
 	last_bound_parameter_index : INTEGER
-			-- index of last *successfuly* bound parameter after `bind_parameters'. Zero if none
+			-- Index of last *successfuly* bound parameter after `bind_parameters'. 
+			-- Zero if none has been bound.
 			
 feature -- Measurement
 
 	modified_row_count : INTEGER is
-			-- number of rows modified by some inserting, updating or deleting operation
-			-- invalid for query operations
+			-- Number of rows modified by some inserting, updating or deleting operation.
+			-- Invalid for query operations
 		require
 			executed: is_executed
 			not_a_query: not has_result_set
 		do
-			if impl_row_count = Void then
-				create impl_row_count.make
-			end
-			set_status (ecli_c_row_count (handle, impl_row_count.handle))
+--			if impl_row_count = Void then
+--				create impl_row_count.make
+--			end
+--			set_status (ecli_c_row_count (handle, impl_row_count.handle))
 			Result := impl_row_count.item
 		end
 		
@@ -234,7 +235,6 @@ feature -- Measurement
 			valid_statement: is_valid
 			request: sql /= Void
 		do
-			--Result := sql.occurrences ('?')
 			Result := parameters_count_impl
 		end
 
@@ -256,7 +256,7 @@ feature -- Measurement
 		end
 
 	fetched_columns_count : INTEGER
-			-- number of columns retrieved by latest start or forth operation
+			-- number of columns retrieved by latest `start' or `forth operation'
 		
 feature -- Status Report
 
@@ -406,8 +406,7 @@ feature -- Cursor movement
 
 
 	start is
-			-- get first result row, if available
-			-- min (result_columns_count, cursor.count) items shall be retrieved
+			-- Get first result row, if available
 		require
 			valid_statement: is_valid
 			executed: is_executed and is_ok
@@ -422,8 +421,7 @@ feature -- Cursor movement
 		end
 
 	forth is
-			-- get next result row
-			-- min (result_columns_count, results.count) items shall be retrieved
+			-- Get next result row
 		require
 			valid_statement: is_valid
 			executed: is_executed
@@ -435,7 +433,7 @@ feature -- Cursor movement
 			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (results.count)			
 		end
 
-	close_cursor, go_after is
+	close_cursor, go_after, finish is
 			-- go after the last result row and release internal cursor state
 		require
 			valid_statement: is_valid
@@ -452,13 +450,13 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_sql (a_sql : STRING) is
-			-- set 'sql' statement to 'a_sql'
+	set_sql (new_sql : STRING) is
+			-- set 'sql' statement to 'new_sql'
 		require
 			valid_statement: is_valid
 		do
 			reset_status
-			sql := a_sql
+			sql := new_sql
 			name_to_position.wipe_out
 			parser.parse (sql, Current)
 			create impl_sql.make_from_string (parser.parsed_sql) -- parsed_sql (sql)
@@ -473,7 +471,7 @@ feature -- Element change
 			parameters := Void
 			bound_parameters := False
 		ensure
-			has_sql: sql = a_sql
+			has_sql: sql = new_sql
 			parsed:  is_parsed
 			not_executed: not is_executed
 			not_prepared: not is_prepared
@@ -485,6 +483,7 @@ feature -- Element change
 
 	set_parameters (param : like parameters) is
 			-- set parameters value with 'param'
+			-- all parameters are considered as input parameters
 		require
 			valid_statement: is_valid
 			param_exist: param /= Void
@@ -556,7 +555,7 @@ feature {NONE} -- Miscellaneous
 feature -- Basic operations
 
 	execute is
-		-- execute sql statement
+			-- execute sql statement
 		require
 			valid_statement: is_valid
 			query_is_parsed: is_parsed
@@ -581,6 +580,11 @@ feature -- Basic operations
 					set_cursor_before
 				else
 					set_cursor_after
+					--| TODO: get row count
+					if impl_row_count = Void then
+						create impl_row_count.make
+					end
+					set_status (ecli_c_row_count (handle, impl_row_count.handle))
 				end
 			else
 				impl_result_columns_count.put (0)
@@ -593,12 +597,13 @@ feature -- Basic operations
 		end
 
 	trace (a_tracer : ECLI_TRACER) is
+			-- trace in `a_tracer'
 		do
 			a_tracer.trace (impl_sql.as_string, parameters)
 		end
 		
 	describe_parameters is
-			-- put description of parameters in 'parameters_description'
+			-- Get metadata about parameters in 'parameters_description'
 		require
 			valid_statement: is_valid
 			describe_capable: is_describe_parameters_capable
@@ -635,7 +640,7 @@ feature -- Basic operations
 		end
 		
 	describe_results is
-			-- get metadata about current result-set in 'results_description'
+			-- Get metadata about current result-set in `results_description'
 		require
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed 
@@ -898,13 +903,12 @@ feature {NONE} -- Implementation
 		parameters_count_impl : INTEGER
 
 	create_parameters is
-			-- 
 		require
 			parameters_void: parameters = Void
 		do
 			!! parameters.make (1, parameters_count)
 		ensure
-			parameters_exist: parameters /= Void
+			parameters_exist: parameters /= Void and then parameters.count = parameters_count
 		end
 
 	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ANY) is
@@ -913,7 +917,7 @@ feature {NONE} -- Implementation
 		end
 
 	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ANY) is
-			-- set parameter 'key' with 'value'
+			-- set all parameters named `key' occurring in `sql' with `value'
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid

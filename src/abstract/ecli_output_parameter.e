@@ -44,7 +44,7 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	bind (statement : ECLI_STATEMENT; position : INTEGER) is
-			-- 
+			-- Bind Current as `position'-th parameter in `statement'
 		do
 			item.bind_as_output_parameter (statement, position)
 		end
@@ -56,6 +56,6 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 invariant
-	invariant_clause: True -- Your invariant here
-
+	is_output: is_output
+	
 end -- class ECLI_OUTPUT_PARAMETER

@@ -14,6 +14,10 @@ inherit
 feature -- Basic Operations
 
 	start is
+			-- Start sweeping through cursor, after execution of `sql'
+		require
+			sql_set: sql /= Void
+			parameters_set: parameters.count = parameters_count and then not array_routines.has (parameters, Void)
 		do
 			if not bound_parameters then
 				bind_parameters
@@ -25,6 +29,9 @@ feature -- Basic Operations
 					statement_start
 				end
 			end
+		ensure
+			result_set_created_if_executed: (is_executed and then has_result_set) implies (results.count = result_columns_count and then not array_routines.has (results, Void))
+			not_before_if_executed: (is_executed and then has_result_set) implies not before
 		end
 
 feature {NONE} -- Implementation

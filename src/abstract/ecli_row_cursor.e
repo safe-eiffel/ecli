@@ -15,7 +15,7 @@ inherit
 			create_buffers as create_row_buffers,
 			start as cursor_start
 		export
-			{NONE} cursor_make;
+			{NONE} cursor_make, cursor_make_prepared;
 			{ANY}
 				is_valid, go_after, close, put_parameter, has_parameter,
 				has_parameters, parameters_count, bound_parameters,
@@ -23,7 +23,8 @@ inherit
 		end
 
 creation
-	make, open, make_prepared, open_prepared
+	make, open, make_prepared, open_prepared, make_with_buffer_factory,
+	make_prepared_with_buffer_factory
 
 feature {NONE} -- Initialization
 
@@ -33,14 +34,14 @@ feature {NONE} -- Initialization
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
 		do
-			definition := a_sql
-			cursor_make (a_session)
 			create_buffer_factory
 			buffer_factory.set_precision_limit (buffer_factory.Default_precision_limit)
+			make_with_buffer_factory (a_session, a_sql, buffer_factory)
 		ensure
 			valid: is_valid
 			definition_set: definition = a_sql
 			definition_is_sql: equal (definition, sql)
+			buffer_factory_created: buffer_factory /= Void
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 		end
 
@@ -56,10 +57,44 @@ feature {NONE} -- Initialization
 			valid: is_valid
 			definition_set: definition = a_sql
 			definition_is_sql: equal (definition, sql)
+			buffer_factory_created: buffer_factory /= Void
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			prepared_if_ok: is_ok implies is_prepared
 		end
 
+	make_with_buffer_factory (a_session : ECLI_SESSION; a_sql : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
+		require
+			a_session_exists: a_session /= Void
+			a_session_connected: a_session.is_connected
+			a_buffer_factory_exists: a_buffer_factory /= Void
+		do
+			definition := a_sql
+			cursor_make (a_session)
+			buffer_factory := a_buffer_factory
+		ensure
+			valid: is_valid
+			definition_set: definition = a_sql
+			definition_is_sql: equal (definition, sql)
+			buffer_factory_assigned: buffer_factory = a_buffer_factory
+		end
+		
+	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; a_sql : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
+			-- 
+		require
+			a_session_exists: a_session /= Void
+			a_session_connected: a_session.is_connected
+			a_buffer_factory_exists: a_buffer_factory /= Void
+		do
+			make_with_buffer_factory (a_session, a_sql, a_buffer_factory)
+			prepare
+		ensure
+			valid: is_valid
+			definition_set: definition = a_sql
+			definition_is_sql: equal (definition, sql)
+			buffer_factory_assigned: buffer_factory = a_buffer_factory
+			prepared_if_ok: is_ok implies is_prepared
+		end
+		
 feature -- Access
 
 	definition : STRING
@@ -210,7 +245,7 @@ feature {NONE} -- Implementation
 				end
 			else
 				buffer_factory.create_buffers (results_description)
-				set_results (buffer_factory.last_buffer)
+				set_results (buffer_factory.last_buffers)
 				name_to_index := buffer_factory.last_index_table
 			end
 		end

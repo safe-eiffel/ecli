@@ -10,6 +10,9 @@ indexing
 class
 	ECLI_BUFFER_FACTORY
 
+inherit
+	KL_IMPORTED_ARRAY_ROUTINES
+	
 feature -- Initialization
 
 feature -- Access
@@ -26,8 +29,15 @@ feature -- Access
 			end
 		end
 
-	last_buffer : ARRAY [like value_anchor]
-			-- last created buffer
+	last_buffers : ARRAY [like value_anchor]
+			-- last created buffers
+			
+	last_buffer : like last_buffers is
+			obsolete "Use `last_buffers' (plural) instead."
+			do
+				Result := last_buffers
+			end
+		
 
 	last_index_table : DS_HASH_TABLE [INTEGER, STRING]
 			-- last table mapping column name to column index in last_buffer 
@@ -73,7 +83,7 @@ feature -- Basic operations
 				factory := value_factory
 				i := 1
 				cols := cursor_description.upper
-				!!last_buffer.make (1, cols)
+				create last_buffers.make (1, cols)
 				create_name_to_index (cols)
 			until
 				i > cols
@@ -90,9 +100,15 @@ feature -- Basic operations
 					type_code := factory.sql_longvarchar
 				end
 				factory.create_instance (type_code, size, column.decimal_digits)
-				last_buffer.put (factory.last_result, i)
+				last_buffers.put (factory.last_result, i)
 				i := i + 1
 			end
+		ensure
+			last_buffers_created: last_buffers /= Void
+			same_buffers_count_as_cursor_description: last_buffers.count = cursor_description.count
+			same_buffers_lower_as_cursor_count: last_buffers.lower = 1
+			last_index_table_created: last_index_table /= Void and then last_index_table.count = cursor_description.count
+			no_void_in_buffers: not Any_array_.has (Void, last_buffers)			
 		end
 
 feature -- Obsolete

@@ -29,7 +29,7 @@ inherit
 
 	ANY
 	
-feature {NONE} -- Initialization
+feature -- Initialization
 
 	make (a_session : ECLI_SESSION) is
 		do
@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_prepared (a_session : ECLI_SESSION) is
-		require -- from ECLI_STATEMENT
+		require
 			a_session_exists: a_session /= void
 			a_session_connected: a_session.is_connected
 			not_valid: not is_valid
@@ -61,7 +61,8 @@ feature -- Access
 		end
 			
 invariant
-	inv_definition: definition /= Void
+	definition_exists: definition /= Void
+	sql_is_definition: sql /= Void and then sql.is_equal (definition)
 
 end -- class ECLI_QUERY
 --

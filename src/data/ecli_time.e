@@ -216,6 +216,8 @@ feature -- Conversion
 				Result.append_string (Integer_format.pad_integer_2 (minute))
 				Result.append_character (':')
 				Result.append_string (Integer_format.pad_integer_2 (second))
+			else
+				Result := Precursor
 			end
 		end
 			

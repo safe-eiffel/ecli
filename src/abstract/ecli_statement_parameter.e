@@ -33,7 +33,7 @@ feature -- Status report
 feature -- Basic operations
 
 	bind (statement : ECLI_STATEMENT; position : INTEGER) is
-			-- 
+			-- Bind Current as `position'-th parameter in `statement'
 		require
 			statement_exists: statement /= Void
 			positive_position: position > 0

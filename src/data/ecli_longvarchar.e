@@ -183,7 +183,7 @@ feature -- Conversion
 	out : STRING is
 		do
 			if is_null then
-				Result := "NULL"
+				Result := Precursor
 			else
 				Result := item
 			end

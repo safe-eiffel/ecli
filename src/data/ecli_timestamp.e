@@ -335,7 +335,7 @@ feature -- Conversion
 					Result.append_string (nanosecond.out)
 				end
 			else
-				Result := "NULL"
+				Result := Precursor {ECLI_GENERIC_VALUE}
 			end
 		end
 
