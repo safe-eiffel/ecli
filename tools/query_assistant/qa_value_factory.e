@@ -87,12 +87,12 @@ feature -- Miscellaneous
 
 	create_date_value is
 		do
-			create {QA_DATE}last_result.make_first
+			create {QA_DATE}last_result.make_default
 		end
 
 	create_timestamp_value is
 		do
-			create {QA_TIMESTAMP}last_result.make_first
+			create {QA_TIMESTAMP}last_result.make_default
 		end
 
 feature -- Basic operations

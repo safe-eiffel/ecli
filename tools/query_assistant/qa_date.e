@@ -14,7 +14,7 @@ inherit
 	QA_VALUE
 
 creation
-	make, make_first
+	make, make_default
 	
 feature
 

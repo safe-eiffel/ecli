@@ -27,7 +27,7 @@ feature -- Access
 
 	parameter_name_by_position (index : INTEGER) : STRING is
 		require
-			index: index > 0 and index < parameter_count
+			index: index > 0 and index < parameters_count
 		do
 			Result := impl_parameter_name_by_position.item (index)
 		end
@@ -72,13 +72,13 @@ feature -- Miscellaneous
 		do
 			from 
 				i := 1
-				count := result_column_count
+				count := result_columns_count
 				create cursor.make (1, count)
 			until 
 				i > count
 			loop
 				d := cursor_description.item (i)
-				value_factory.create_instance (d.db_type_code, d.column_precision , d.decimal_digits)
+				value_factory.create_instance (d.sql_type_code, d.size , d.decimal_digits)
 				if value_factory.last_result /= Void then
 					cursor.put (value_factory.last_result, i)
 				else
@@ -111,7 +111,7 @@ feature {NONE} -- Implementation
 		do
 			Precursor (a_name, a_position)
 			if impl_parameter_name_by_position = Void then
-				create impl_parameter_name_by_position.make (1, parameter_count)
+				create impl_parameter_name_by_position.make (1, parameters_count)
 			end
 		end
 

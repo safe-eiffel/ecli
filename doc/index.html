@@ -1,13 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-
 <head>
-<meta http-equiv="Content-Type"
-content="text/html; charset=iso-8859-1">
-<meta name="description" content="Documentation index">
-<meta name="Template"
-content="C:\Program Files\Microsoft Office\Office\html.dot">
-<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
-<title>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="Version" content="8.0.3410">
+  <meta name="Date" content="10/11/96">
+  <title>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</title>
+  <style type="text/css">
+  	body {color: black; background: white;
+  		font-family: Verdana, sans-serif;
+  		font-size: 10pt;
+		margin-left: 5%;
+		margin-right: 5%;
+  	}
+  	td {
+  		font-family: Verdana, sans-serif;
+  		font-size: 10pt;
+	}
+	table {
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+  	h1 {  		font-family: Verdana, sans-serif;
+				font-weight: bold; font-size: 16pt;}
+  	h2 {  		font-family: Verdana, sans-serif;
+				font-weight: bold; font-size: 13pt;}
+	h3 {  		font-family: Verdana, sans-serif;
+				font-weight: bold; font-size: 11pt;}
+  	#title p {
+  		text-align: center;}
+  	#title .title {font-size: 200%; font-weight: bold;}
+  	#title .author {font-size: 150%; font-weight: bold;}
+	#toc {
+		background: rgb(204,204,255);
+		padding: 0.5em;
+		border: none;
+		margin-left: 10%;
+		margin-right: 10%;
+	  }
+	#code {
+		background: rgb(255,255,204);
+		padding: 0.5em;
+		border: none;
+		font-family: courier, serif;
+		font-size: 10pt;
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+  </style>
 </head>
 
 <body>
@@ -27,14 +66,16 @@ Level Interface) API</b></font> </p>
 
 <h1>Table of contents</h1>
 
-<ul>
+<div id="toc">
+    <ul>
     <li>Abstract</li>
     <li><i>Section</i> 0 : Current Status</li>
     <li><i>Section</i> 1 : Design choices</li>
     <li><i>Section</i> 2 : Implementation notes</li>
     <li><i>Section</i> 3 : Architecture Diagram</li>
     <li><i>Section 4</i> : Installation and sample applications</li>
-</ul>
+    </ul>
+</div>
 
 <p>You'll find in another document a <a href="tutorial.htm">Tutorial
 and a comparison to related work</a>. </p>
@@ -62,8 +103,7 @@ Compilers. </p>
         has an ISO/CLI Implementation.</li>
     <li>Eiffel Compiler Portability : ECLI uses as
         &quot;standard&quot; Eiffel as possible.</li>
-    <li><br>
-        The GOBO Library is used for specific data structures.</li>
+    <li>The GOBO Library is used for specific data structures.</li>
 </ol>
 
 <h1>Section 0 : Current Status</h1>
@@ -246,12 +286,13 @@ choice </p>
 
 <h3>4.2.2. Building the samples</h3>
 
-<p>A) SmallEiffel - run the sebuild.bat (WIN32) or sebuild.sh
-(*n*x) command file </p>
+<dl>
+<dt>A) SmallEiffel</dt><dd>run the sebuild.bat (WIN32) or sebuild.sh
+(*n*x) command file </dd>
 
-<p>B) ISE - use the Ace.ace file or linux.Ace file</p>
+<dt>B) ISE</dt><dd>use the Ace.ace file or linux.Ace file</dd>
 
-<p>C) VE - use the specific project definitions</p>
+<dt>C) VE</dt><dd>use the specific project definitions</dd>
 
 <h2>4.3. Known Problems</h2>
 

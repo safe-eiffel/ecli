@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<system name="qa_example">
+	<description>
+		system:      "ECLI qa_example; sample usage of query_assistant."
+
+		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
+		copyright:   "Copyright (c) 2001, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date $"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="qa_example" creation="make"/>
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+
+	<cluster name="isql" location="${ECLI}/examples/qa_example"/>
+
+	<mount location="${ECLI}/library.xace"/>
+
+	<mount location="${GOBO}/library/time/library.xace"/>
+	<mount location="${GOBO}/library/kernel/library.xace"/>
+	<mount location="${GOBO}/library/structure/library.xace"/>
+	<mount location="${GOBO}/library/utility/library.xace"/>
+	<mount location="${GOBO}/library/pattern/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+
+
+</system>

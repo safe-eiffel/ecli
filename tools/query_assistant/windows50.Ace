@@ -1,32 +1,35 @@
 system
-	query_assistant
+	"query_assistant"
 
 root
-	QUERY_ASSISTANT (query_assistant): "make"
+	query_assistant: make
 
 default
-	assertion (all)
-	multithreaded (no)
-	console_application (yes)
-	dynamic_runtime (no)
-	dead_code_removal (yes)
-	profile (no)
+	assertion (check)
+	assertion (require)
+	assertion (ensure)
+	assertion (loop)
+	assertion (invariant)
+	debug (yes)
 	line_generation (no)
-	debug  (yes)
+	profile (no)
+	trace (no)
+	check_vape (yes)
+	console_application (yes)
 	array_optimization (no)
+	dead_code_removal (yes)
+	exception_trace (no)
 	inlining (no)
-	inlining_size ("4")
-	--precompiled ("$EIFFEL4\precomp\spec\$PLATFORM\base");
 
+
+--precompiled ("$EIFFEL4\precomp\spec\$PLATFORM\base");
+--	ecodegen (query_assistant) : "$/../ecodegen";
+-- Eiffel CLI DB library
 
 cluster
+	query_assistant:		"$ECLI/tools/query_assistant"
 
 
-	query_assistant : "$ECLI/tools/query_assistant";
-	
---	ecodegen (query_assistant) : "$/../ecodegen";
-	
-	-- Eiffel CLI DB library
 	ecli_ecli:		"${ECLI}/src"
 
 	ecli_abstract (ecli_ecli):		"$/abstract"
@@ -39,11 +42,13 @@ cluster
 
 	ecli_spec (ecli_ecli):		"$/spec"
 
+
 	ecli_compiler_ise (ecli_spec):		"$/ise"
 
 	ecli_metadata (ecli_ecli):		"$/metadata"
 
 	ecli_support (ecli_ecli):		"$/support"
+
 
 	dt_time:		"${GOBO}/library/time"
 
@@ -143,6 +148,12 @@ cluster
 
 	tree (structures):		"$/tree"
 
+	ecli_spec_constants (ecli_spec):		"$/constants"
+
 external
-	object: "ODBC32.lib",	"%%ECLI%%\src\spec\ise\windows\ecli_c.lib";
+
+	object:
+		"ODBC32.lib",
+		"%%ECLI%%\src\spec\ise\windows\ecli_c.lib"
+
 end

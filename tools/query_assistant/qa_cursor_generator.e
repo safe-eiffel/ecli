@@ -9,7 +9,7 @@ class
 	QA_CURSOR_GENERATOR
 
 inherit
-	ECLI_TYPE_CODES
+	ECLI_TYPE_CONSTANTS
 
 feature -- Initialization
 
@@ -291,7 +291,7 @@ feature -- Basic operations
 			indent
 			from
 				i := 1
-				count := current_cursor.result_column_count
+				count := current_cursor.result_columns_count
 			until
 				i > count
 			loop
@@ -337,7 +337,7 @@ feature -- Basic operations
 				indent
 				-- create cursor.make (1, <result_count>)
 				begin_line ("-- create cursor values array")
-				begin_line ("create cursor.make (1, "); put (current_cursor.result_column_count.out); 
+				begin_line ("create cursor.make (1, "); put (current_cursor.result_columns_count.out); 
 				put (")")
 
 				---- for each column in <column list>
@@ -347,7 +347,7 @@ feature -- Basic operations
 				begin_line ("-- setup result value object and put them in 'cursor' ")
 				from
 					i := 1
-					count := current_cursor.result_column_count
+					count := current_cursor.result_columns_count
 				until
 					i > count
 				loop
