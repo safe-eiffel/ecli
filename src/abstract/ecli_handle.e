@@ -68,9 +68,8 @@ feature {NONE} -- Implementation
 					debug ("ecli_check_closes")
 						raise (disposal_failure_reason)					
 					end
-				else
-					release_handle
 				end
+				release_handle
 			end
 		end
 

@@ -32,7 +32,9 @@ feature {NONE} -- Initialization
 			buffer := ecli_c_alloc_value (n+1)
 			create s.make (0)
 			impl_item := s
+			set_null
 		ensure
+			is_null: is_null
 			capacity: capacity = n
 		end
 		

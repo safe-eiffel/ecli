@@ -132,7 +132,63 @@ feature -- Access
 			end
 		end
 
+	c_type_code: INTEGER is
+		once
+			Result := sql_c_type_timestamp
+		end
+
+	sql_type_code: INTEGER is
+		once
+			Result := sql_type_timestamp
+		end
+
 feature -- Measurement
+
+	days_in_month (a_month, a_year : INTEGER) : INTEGER is
+			-- number of days in 'a_month' for 'a_year'
+			-- feature is delegated to a DT_GREGORIAN_CALENDAR object
+			-- Feature to be deleted when smalleiffel 075 has been fixed
+		require
+			month_ok: a_month >= 1 and a_month <= 12
+		do
+			Result := calendar.days_in_month(a_month, a_year)
+		end
+
+	size : INTEGER is
+		local
+			l_decimal_digits : INTEGER
+		do
+			l_decimal_digits := decimal_digits
+			if l_decimal_digits > 0 then
+				Result := 20 + l_decimal_digits
+			else
+				Result := 19
+			end
+		end
+
+	decimal_digits: INTEGER
+			-- number of digits allowed in the fractional seconds part
+
+	display_size: INTEGER is
+		do
+			Result := size
+		end
+
+feature -- Status report
+
+	convertible_as_string : BOOLEAN is
+			--
+		do
+			Result := True
+		end
+
+	convertible_as_timestamp : BOOLEAN is
+			-- is Current convertible to a timestamp ?
+		do
+			Result := True
+		end
+
+feature -- Element change
 
 	set_date (a_year, a_month, a_day : INTEGER ) is
 		require
@@ -209,62 +265,6 @@ feature -- Measurement
 			decimal_digits_set: decimal_digits = n
 		end
 		
-feature -- Measurement
-
-	days_in_month (a_month, a_year : INTEGER) : INTEGER is
-			-- number of days in 'a_month' for 'a_year'
-			-- feature is delegated to a DT_GREGORIAN_CALENDAR object
-			-- Feature to be deleted when smalleiffel 075 has been fixed
-		require
-			month_ok: a_month >= 1 and a_month <= 12
-		do
-			Result := calendar.days_in_month(a_month, a_year)
-		end
-
-feature -- Status report
-
-	c_type_code: INTEGER is
-		once
-			Result := sql_c_type_timestamp
-		end
-
-	size : INTEGER is
-		local
-			l_decimal_digits : INTEGER
-		do
-			l_decimal_digits := decimal_digits
-			if l_decimal_digits > 0 then
-				Result := 20 + l_decimal_digits
-			else
-				Result := 19
-			end
-		end
-
-	sql_type_code: INTEGER is
-		once
-			Result := sql_type_timestamp
-		end
-
-	decimal_digits: INTEGER
-			-- number of digits allowed in the fractional seconds part
-
-	display_size: INTEGER is
-		do
-			Result := size
-		end
-
-	convertible_as_string : BOOLEAN is
-			--
-		do
-			Result := True
-		end
-
-	convertible_as_timestamp : BOOLEAN is
-			-- is Current convertible to a timestamp ?
-		do
-			Result := True
-		end
-
 feature -- Conversion
 
 	as_string : STRING is

@@ -15,6 +15,7 @@ creation
 	make
 	
 feature -- Initialization
+
 	make (a_medium : like medium) is
 			-- Make tracer
 		require

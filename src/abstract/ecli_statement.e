@@ -43,6 +43,8 @@ inherit
 			{NONE} all
 		end
 	
+	ECLI_SQL_PARSER_CALLBACK
+	
 creation
 	make
 
@@ -581,7 +583,7 @@ feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
 		do
-			a_tracer.trace (impl_sql.item, parameters)
+			a_tracer.trace (impl_sql.as_string, parameters)
 		end
 		
 	describe_parameters is
@@ -685,8 +687,12 @@ feature -- Basic operations
 			end
 			set_status (ecli_c_prepare (handle, impl_sql.handle))
 			if is_ok then
-				is_prepared := True
-				set_prepared_execution_mode
+				get_result_columns_count
+				--| getting result columns count can get more error than a single prepare
+				if is_ok then
+					is_prepared := True
+					set_prepared_execution_mode
+				end
 			end
 
 		ensure
@@ -709,8 +715,6 @@ feature -- Inapplicable
 feature {ECLI_SQL_PARSER} -- Callback
 
 	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER) is
-		require
-			valid_statement: is_valid
 		local
 			position_list : DS_LIST[INTEGER]
 		do

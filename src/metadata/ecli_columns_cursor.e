@@ -72,7 +72,7 @@ feature -- Access
 			-- queried column name; Void if all columns in a table
 		do
 			if queried_column_impl /= Void then
-				Result := queried_column_impl.item
+				Result := queried_column_impl.as_string
 			end
 		end
 		

@@ -49,13 +49,22 @@ feature -- Comparison
 	is_equal (other : like Current) : BOOLEAN is
 			-- is Current equal to `other' ?
 		do
-			Result := (sql_type_code = other.sql_type_code 
-					and then size = other.size 
-					and then decimal_digits = other.decimal_digits)
+			Result := same_description (other)
 		ensure then
 			same_code: Result implies (sql_type_code = other.sql_type_code)
 			same_size: Result implies (size = other.size)
 			same_decimal_digits: Result implies (decimal_digits = other.decimal_digits)
+		end
+
+	same_description (other : like Current) : BOOLEAN is
+		require
+			other_exists: other /= Void
+		do
+			Result := (sql_type_code = other.sql_type_code 
+								and then size = other.size 
+								and then decimal_digits = other.decimal_digits)			
+		ensure
+			symmetry: Result implies other.same_description (Current)
 		end
 		
 end -- class ECLI_DATA_DESCRIPTION

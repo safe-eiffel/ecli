@@ -181,8 +181,8 @@ feature {NONE} -- Implementation
 		do
 			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, actual_name_length.handle, c_description.handle, max_source_description_length, actual_description_length.handle))
 			if is_ok and then not is_no_data then
-				name := c_name.item
-				description := c_description.item
+				name := c_name.as_string
+				description := c_description.as_string
 				!!item_.make (Current)
 			else
 				item_ := Void

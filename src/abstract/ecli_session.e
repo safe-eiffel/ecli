@@ -121,17 +121,17 @@ feature -- Access
 
 	data_source : STRING is
 		do
-			Result := impl_data_source.item
+			Result := impl_data_source.as_string
 		end
 
 	user_name : STRING is
 		do
-			Result := impl_user_name.item
+			Result := impl_user_name.as_string
 		end
 
 	password : STRING is
 		do
-			Result := impl_password.item
+			Result := impl_password.as_string
 		end
 
 	transaction_capability : INTEGER is

@@ -76,7 +76,7 @@ feature -- Access
 			-- queried catalog name
 		do
 			if queried_catalog_impl /= Void then
-				Result := queried_catalog_impl.item
+				Result := queried_catalog_impl.as_string
 			end
 		end
 		
@@ -84,7 +84,7 @@ feature -- Access
 			-- queried schema name
 		do
 			if queried_name_impl /= Void then
-				Result := queried_schema_impl.item
+				Result := queried_schema_impl.as_string
 			end	
 		end
 		
@@ -92,7 +92,7 @@ feature -- Access
 			-- queried name (table, column or procedure)
 		do
 			if queried_name_impl /= Void then
-				Result := queried_name_impl.item
+				Result := queried_name_impl.as_string
 			end
 		end
 		

@@ -14,7 +14,10 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DT_TIME]
 		redefine
-			as_time, is_equal, out, set_item, item, create_impl_item, impl_item
+			convertible_as_time, as_time, 
+			is_equal, out, 
+			set_item, item,
+			create_impl_item, impl_item
 		end
 		
 creation
@@ -82,16 +85,20 @@ feature -- Access
 			end
 		end
 
-feature -- Measurement
-
-
-
-feature -- Status report
-
 	c_type_code: INTEGER is
 		once
 			Result := sql_c_type_time
 		end
+
+feature -- Measurement
+
+	convertible_as_time : BOOLEAN is
+			-- is Current convertible as a time ?
+		do
+			Result := True
+		end
+		
+feature -- Status report
 
 	size : INTEGER is
 		do
@@ -168,16 +175,12 @@ feature -- Conversion
 				Result.append_string (Integer_format.pad_integer_2 (minute))
 				Result.append_character (':')
 				Result.append_string (Integer_format.pad_integer_2 (second))
---				if nanosecond > 0 then
---					Result.append_character ('.')
---					Result.append_string (nanosecond.out)
---				end
 			end
 		end
 			
 	as_time : DT_TIME is
 		do
-			Result := item
+			Result := clone (item)
 		end
 		
 feature -- Duplication

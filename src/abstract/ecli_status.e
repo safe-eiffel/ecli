@@ -51,7 +51,7 @@ feature -- Access
 			-- Name of the internal CLI state
 		do
 			get_diagnostics
-			Result := impl_cli_state.item.substring(1,5)
+			Result := impl_cli_state.as_string.substring(1,5)
 		end
 
 	native_code : INTEGER is
@@ -170,7 +170,7 @@ feature {NONE} -- Implementation
 							impl_buffer_length_indicator.handle)
 					if retcode = sql_success or else retcode = sql_success_with_info then	
 						impl_error_message.append_string (
-								impl_error_buffer.item)
+								impl_error_buffer.as_string)
 						impl_error_message.append_string ("%N")
 					end	
 					count := count + 1
