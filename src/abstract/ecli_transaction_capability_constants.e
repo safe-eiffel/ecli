@@ -7,39 +7,21 @@ indexing
 class
 	ECLI_TRANSACTION_CAPABILITY_CONSTANTS
 
-inherit
-	ECLI_EXTERNAL_API
-
 feature -- Status Report
 
-	tc_none: INTEGER is
+	Sql_tc_none	:	INTEGER is	0
 		-- no transaction support
-	once
-		Result := ecli_c_tc_none
-	end
 
-	tc_dml: INTEGER is
+	Sql_tc_dml	:	INTEGER is	1
 		-- DML transaction support, DDL cause an error
-	once
-		Result := ecli_c_tc_dml
-	end
 
-	tc_ddl_commit: INTEGER is
-		-- DML transaction support, DDL commits current transaction
-	once
-		Result := ecli_c_tc_ddl_commit
-	end
-
-	tc_ddl_ignore : INTEGER is
-		-- DML transaction support, DDL statements are ignored
-	once
-		Result := ecli_c_tc_ddl_ignore
-	end
-
-	tc_all : INTEGER is
+	Sql_tc_all	:	INTEGER is	2
 		-- DML and DDL statements are supported in transactions
-	once
-		Result := ecli_c_tc_all
-	end
+
+	Sql_tc_ddl_commit	:	INTEGER is	3
+		-- DML transaction support, DDL commits current transaction
+
+	Sql_tc_ddl_ignore	:	INTEGER is	4
+		-- DML transaction support, DDL statements are ignored
 
 end -- class ECLI_TRANSACTION_CAPABILITY_CONSTANTS
