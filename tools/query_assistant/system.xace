@@ -2,35 +2,34 @@
 
 <system name="query_assistant">
 	<description>
-		system:      "ECLI query assistant.  Helps you embed SQL in your code."
-
-		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
-		copyright:   "Copyright (c) 2000-2002, Paul G. Crismer and others"
-		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
-		date:        "$Date $"
-		revision:    "$Revision$"
+		system: "query_assistant: Access modules Generator"
+		copyright: "Copyright (c) 2002, Paul G. Crismer and others."
+		license: "Eiffel Forum License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
 	</description>
 
-	<root class="query_assistant" creation="make"/>
+	<root class="ACCESS_GEN" creation="make"/>
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
-		<option name="finalize" value="true"/>
+		<option name="garbage_collector" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
+		<option name="garbage_collector" value="none"/>
 		<option name="finalize" value="false"/>
 	</option>
+	<option if="${GOBO_DOTNET}">
+		<option name="msil_generation" value="true"/>
+		<option name="line_generation" value="true"/>
+	</option>
 
-	<cluster name="isql" location="${ECLI}/tools/query_assistant"/>
-
-	<mount location="${ECLI}/library.xace"/>
-
-	<mount location="${GOBO}/library/time/library.xace"/>
-	<mount location="${GOBO}/library/kernel/library.xace"/>
-	<mount location="${GOBO}/library/structure/library.xace"/>
-	<mount location="${GOBO}/library/utility/library.xace"/>
-	<mount location="${GOBO}/library/pattern/library.xace"/>
+	<cluster name="a_root_cluster" location="${ECLI}/tools/query_assistant/src"/>
+	
+	<mount location="${ECLI}/support/codegen/library.xace"/>
+	
+	<mount location="${ECLI}/library.xace"/>	
+	<mount location="${GOBO}/library/library.xace"/>
 	<mount location="${GOBO}/library/kernel.xace"/>
-
-
 </system>

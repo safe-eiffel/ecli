@@ -14,15 +14,14 @@ deferred class
 inherit
 	ECLI_VALUE
 		undefine
-			out, is_equal, item, set_item,
+			out, is_equal,
 			to_character, convertible_to_character,
 			to_double, convertible_to_double,
 			to_integer, convertible_to_integer,
 			to_string, convertible_to_string,
 			to_real, convertible_to_real,
 			to_date, convertible_to_date,
-			to_timestamp, convertible_to_timestamp,
-			truncated
+			to_timestamp, convertible_to_timestamp, copy
 		end
 
 
@@ -46,22 +45,22 @@ feature {NONE} -- implementation
 	make_call : STRING is
 		do
 			create Result.make (12)
-			Result.append_string ("make")
+			Result.append ("make")
 		end
 
 
 	make_call_with_precision : STRING is
 		do
 			create Result.make (12)
-			Result.append_string ("make (")
-			Result.append_string (column_precision.out)
-			Result.append_string (")")
+			Result.append ("make (")
+			Result.append (column_precision.out)
+			Result.append (")")
 		end
 
 	make_first_call : STRING is
 		do
 			create Result.make (12)
-			Result.append_string ("make_first")
+			Result.append ("make_first")
 		end
 		
 end -- class QA_VALUE

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<project name="query_assistant" default="help">
+
+	<description>
+		system: "query_assistant: Access Modules generator"
+		copyright: "Copyright (c) 2002, Paul G. Crismer"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="query_assistant"/>
+		<set name="system_dir" value="${ECLI}/tools/query_assistant"/>
+	</target>
+
+</project>

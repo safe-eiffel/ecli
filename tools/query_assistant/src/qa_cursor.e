@@ -15,7 +15,8 @@ inherit
 			set_sql as define
 		redefine
 			add_new_parameter,
-			value_anchor
+			value_anchor,
+			parameter_anchor
 		end
 
 creation
@@ -102,6 +103,12 @@ feature -- Inapplicable
 		do
 		end
 
+	parameter_anchor : QA_VALUE is
+			-- 
+		do
+			
+		end
+		
 feature {NONE} -- Implementation
 
 

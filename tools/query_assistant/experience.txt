@@ -1,0 +1,52 @@
+Expérience - Query Assistant
+
+Problèmes
+
+Redondance de code.  Les Result-set et Parameter-set ne sont pas "partageables".
+
+
+Nouveaux besoins
+
+* nommer le result-set
+* nommer le parameter-set
+* référencer/partager un result-set déjà nommé.
+* référencer/partager un parameter-set déjà nommé
+* étendre un result-set ou un parameter-set
+
+Nouvelles classes :
+
+QA_PARAMETER_SET
+QA_RESULT_SET
+
+Shopping-list:
+
+PARAMETER_SET
+** hérite de "SET"
+ancestor : ?
+name -- nom
+count -- nombre de paramètres
+add  (MODULE_PARAMETER)
+-- comparaison (égalité de la liste des paramètres, pas du nom)
+liste de paramètres
+liste plate de parametres
+
+RESULT_SET
+** hérite de "SET"
+ancestor : ?
+name -- nom
+count -- nombre de résultats
+add (?)
+-- comparaison
+liste de resultats
+liste plate de résultats
+
+syntaxe proposée : result_set, parameter_set
+
+<result_set name="toto" [extends="lulu"]>
+<parameter_set name ="toto" [extends="lulu"]>
+	<parameter .... >
+</parameter_set>
+
+Table de symboles:
+parameter_sets : HT
+result_sets : HT

@@ -110,7 +110,7 @@ feature -- Basic operations
 		do
 			Result := clone ("")
 			if db_type_code = sql_char or db_type_code = sql_varchar then
-				Result.append_string (" ("); Result.append_string (precision.out); Result.append_string (")")
+				Result.append (" ("); Result.append (precision.out); Result.append (")")
 			end
 		end
 

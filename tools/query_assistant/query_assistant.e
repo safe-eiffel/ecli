@@ -23,7 +23,10 @@ feature -- Initialization
 			print_prologue
 			parse_arguments
 			if parsed_arguments and arguments_ok then
-				read_query
+				--read_query
+				io.put_string ("QUERY> ")
+				io.read_line
+				query := clone (io.last_string)
 				if query /= Void then
 					connect_session
 					launch_qacursor
@@ -102,7 +105,7 @@ feature -- Access
 
 	target_directory_name : STRING
 
-	target_file : PLAIN_TEXT_FILE
+	target_file : KL_TEXT_OUTPUT_FILE
 
 	data_source_name : STRING
 
@@ -168,7 +171,6 @@ feature -- Basic operations
 				-- read file
 				from
 					ok := false
-
 				until
 					ok
 				loop
@@ -184,7 +186,7 @@ feature -- Basic operations
 						if qcount > 0 and then query.item (qcount) /= ' ' and then scount > 0 and then s.item (1) /= ' ' then
 						   query.append_character (' ')
 						end
-						query.append_string (query_file.last_string)
+						query.append (query_file.last_string)
 					end
 				end
 				query_file.close
@@ -302,11 +304,12 @@ feature -- Basic operations
 			-- generate class	
 			create gen
 			file_name := clone (target_directory_name)
-			file_name.append_string (class_name)
-			file_name.append_string (".e")
-			create target_file.make_open_write (file_name)
+			file_name.append (class_name)
+			file_name.append (".e")
+			create target_file.make (file_name)
+			target_file.open_write
 			qacursor.set_name (class_name)
-			gen.execute (qacursor, target_file)
+			gen.execute (qacursor, target_directory_name) -- target_file)
 			target_file.close	
 		end
 		
@@ -360,16 +363,16 @@ feature -- Basic operations
 
 	define_parameters is
 		local
-			a_parameter : QA_VALUE
-			a_char : QA_CHAR
-			a_varchar : QA_VARCHAR
-			a_float : QA_FLOAT
-			a_double : QA_DOUBLE
-			a_integer : QA_INTEGER
-			a_real : QA_REAL
-			a_date : QA_DATE
-			a_timestamp : QA_TIMESTAMP
-			pcursor : DS_LIST_CURSOR[STRING]
+			a_parameter : 	QA_VALUE
+			a_char : 		QA_CHAR
+			a_varchar : 	QA_VARCHAR
+			a_float : 		QA_FLOAT
+			a_double : 		QA_DOUBLE
+			a_integer : 	QA_INTEGER
+			a_real : 		QA_REAL
+			a_date : 		QA_DATE
+			a_timestamp : 	QA_TIMESTAMP
+			pcursor : 		DS_LIST_CURSOR[STRING]
 		do
 			io.put_string ("? Please give value to parameters so that the query can be executed.%N")
 			-- iterate on parameter names
@@ -517,7 +520,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 			
-	query_file : PLAIN_TEXT_FILE
+	query_file : KL_TEXT_INPUT_FILE
 	
 	parameters : ARRAY[QA_VALUE]
 		
