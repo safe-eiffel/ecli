@@ -1,7 +1,9 @@
 #include "ecli_c.h"
 #include <string.h>
 #include <stdio.h>
+#ifdef WIN32
 #include <io.h>
+#endif /* WIN32 */
 #include <errno.h>
 
 static void xstrerror(void);
