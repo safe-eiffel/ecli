@@ -19,6 +19,8 @@ inherit
 			to_integer, convertible_to_integer,
 			to_string, convertible_to_string,
 			to_real, convertible_to_real,
+			to_date, convertible_to_date,
+			to_timestamp, convertible_to_timestamp,
 			truncated
 		end
 
