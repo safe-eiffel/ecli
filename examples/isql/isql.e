@@ -29,6 +29,8 @@ feature {NONE} -- Initialization
 			simple_login : ECLI_SIMPLE_LOGIN
 			std : KL_STANDARD_FILES
 			sp : ECLI_STORED_PROCEDURE
+			tc : ECLI_TYPE_CATALOG
+			l : DS_LIST[ECLI_SQL_TYPE]
 		do			
 			create_commands
 			create std
@@ -58,6 +60,8 @@ feature {NONE} -- Initialization
 					else
 						print_error (session)
 					end
+					create tc.make(session)
+					l := tc.numeric_types
 				end
 				if session = Void or else session /= Void and then not session.is_connected then
 					current_context.filter.begin_error

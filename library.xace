@@ -40,6 +40,7 @@
 		<option unless="${GOBO_OS}=windows">
 			<option name="link" value="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libecli_c.a"/>
 			<option name="link" value="-lodbc"/>
+			<option name="link" value="-lodbcinst"/>
 		</option>
 		<option if="${GOBO_OS}=windows">
 			<option name="link" value="${ECLI}\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\ecli_${GOBO_CC}.lib"/>
@@ -59,4 +60,5 @@
 	<mount location="${GOBO}/library/time/library.xace"/>
 	<mount location="${GOBO}/library/utility/library.xace"/>
 	<mount location="${GOBO}/library/regexp/library.xace"/>
+	<mount location="${GOBO}/library/math/library.xace"/>
 </library>

@@ -4,7 +4,7 @@
 	* New connection protocol, using an ECLI_LOGIN_STRATEGY whith descendants
 	  - ECLI_SIMPLE_LOGIN (data source name, user name, password)
 	  - ECLI_DRIVER_LOGIN (using a connection string and possibly a windowed dialog)
-	 
+	* New ECLI_DRIVERS_CURSOR and ECLI_DRIVER classes. 
 	
 2004-06-22
 	* License is now Eiffel Forum v2.

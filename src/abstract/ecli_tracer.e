@@ -108,6 +108,17 @@ feature {ECLI_SESSION} -- Basic operations
 
 feature {ECLI_VALUE} -- Basic operations
 
+	put_decimal (a_decimal : ECLI_GENERIC_VALUE[MA_DECIMAL]) is
+			-- Put `a_value' as a decimal constant.
+		require
+			a_decimal_not_void: a_decimal /= Void
+			a_decimal_not_null: not a_decimal.is_null
+		do
+			medium.put_character ('%'')
+			medium.put_string (a_decimal.out)
+			medium.put_character ('%'')
+		end
+		
 	put_string (a_value : ECLI_GENERIC_VALUE[STRING]) is
 			-- Put 'a_value' as a string constant
 		require

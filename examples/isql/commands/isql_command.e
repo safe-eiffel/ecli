@@ -100,7 +100,7 @@ feature {NONE} -- Implementation
 			if s/= Void then
 				Result := s
 			else
-				Result := "NULL"
+				Result := null_constant
 			end
 		end
 		
@@ -127,5 +127,7 @@ feature {NONE} -- Implementation
 			Result.append_string (";MESSAGE:")
 			Result.append_string (stmt.diagnostic_message)
 		end
+	
+	null_constant : STRING is "NULL"
 	
 end -- class ISQL_COMMAND

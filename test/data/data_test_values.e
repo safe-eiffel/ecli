@@ -1,3 +1,14 @@
+indexing
+
+	description: 
+		
+		"Objects that test ECLI_VALUE descendants."
+		
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
 deferred class
 	DATA_TEST_VALUES
 	

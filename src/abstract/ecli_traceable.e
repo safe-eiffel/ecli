@@ -17,7 +17,7 @@ deferred class
 
 	ECLI_TRACEABLE
 
-feature -- Basic operations
+feature {ECLI_TRACER, ECLI_TRACEABLE} -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
 			-- Trace current object through 'a_tracer'

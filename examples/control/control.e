@@ -50,11 +50,10 @@ feature
 	ecli_date : ECLI_DATE
 	ecli_date_format : ECLI_DATE_FORMAT
 	ecli_date_time : ECLI_DATE_TIME
+	ecli_decimal : ECLI_DECIMAL
 	ecli_double : ECLI_DOUBLE
 	ecli_environment : ECLI_ENVIRONMENT
 	ecli_external_api : ECLI_EXTERNAL_API
-	ecli_external_tools : ECLI_EXTERNAL_TOOLS
-	ecli_external_tools_common : ECLI_EXTERNAL_TOOLS_COMMON
 	ecli_float : ECLI_FLOAT
 	ecli_foreign_key : ECLI_FOREIGN_KEY
 	ecli_foreign_key_constants : ECLI_FOREIGN_KEY_CONSTANTS

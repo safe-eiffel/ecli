@@ -117,7 +117,10 @@ feature {NONE} -- Implementation
 		do
 			filter.put_heading ("COLUMN_NAME")
 			filter.put_heading ("TYPE")
-			filter.put_heading ("SIZE")
+			filter.put_heading ("TRANSFER_LENGTH")
+			filter.put_heading ("PRECISION")
+			filter.put_heading ("DECIMAL_DIGITS")
+			filter.put_heading ("PRECISION_RADIX")
 			filter.put_heading ("DESCRIPTION")
 		end
 		
@@ -130,7 +133,26 @@ feature {NONE} -- Implementation
 		do
 			filter.put_column (nullable_string (the_column.name))
 			filter.put_column (nullable_string (the_column.type_name))
-			filter.put_column (nullable_string (the_column.size.out))
+			if the_column.is_transfer_length_applicable then
+				filter.put_column (the_column.transfer_length.out)
+			else
+				filter.put_column (null_constant)
+			end
+			if the_column.is_size_applicable then
+				filter.put_column (the_column.size.out)
+			else
+				filter.put_column (null_constant)
+			end
+			if the_column.is_decimal_digits_applicable then
+				filter.put_column (the_column.decimal_digits.out)
+			else
+				filter.put_column (null_constant)
+			end
+			if the_column.is_precision_radix_applicable then
+				filter.put_column (the_column.precision_radix.out)
+			else
+				filter.put_column (null_constant)
+			end
 			filter.put_column (nullable_string (the_column.description))
 		end
 	

@@ -1,8 +1,13 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+
+	description: 
+	
+		"Objects that test ECLI_ARRAYED_VALUE descendants."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 deferred class
 	DATA_TEST_ARRAYED_VALUES

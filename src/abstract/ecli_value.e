@@ -167,18 +167,19 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 		end
 
 	transfer_octet_length : INTEGER is
-			-- actual transfer length in bytes
+			-- Actual buffer capacity for underlying data transfer.
 			-- (redefine in descendant classes)
 		deferred
 		end
 
 	display_size : INTEGER is
-			-- display size
+			-- Display size.
 			-- (redefine in descendant classes)
 		deferred
 		end
 
 	length_indicator : INTEGER is
+			-- Length indicator for database Xfer.
 		do
 			Result := ecli_c_value_get_length_indicator (buffer)
 		end
@@ -186,7 +187,7 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 feature -- Element change
 
 	set_null is
-			-- set item to null
+			-- Set item to null.
 		do
 			ecli_c_value_set_length_indicator (buffer, Sql_null_data)
 		ensure
@@ -198,7 +199,7 @@ feature -- Transformation
 feature -- Conversion
 
 	as_string : STRING is
-			-- Current converted to STRING
+			-- Current converted to STRING.
 		require
 			convertible: convertible_as_string
 			not_null: not is_null
@@ -208,7 +209,7 @@ feature -- Conversion
 		end
 
 	as_character : CHARACTER is
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER .
 		require
 			convertible: convertible_as_character
 			not_null: not is_null
@@ -216,7 +217,7 @@ feature -- Conversion
 		end
 
 	as_boolean : BOOLEAN is
-			-- Current converted to BOOLEAN
+			-- Current converted to BOOLEAN.
 		require
 			convertible: convertible_as_boolean
 			not_null: not is_null
@@ -224,7 +225,7 @@ feature -- Conversion
 		end
 
 	as_integer : INTEGER is
-			-- Current converted to INTEGER
+			-- Current converted to INTEGER.
 		require
 			convertible: convertible_as_integer
 			not_null: not is_null
@@ -232,7 +233,7 @@ feature -- Conversion
 		end
 
 	as_real : REAL is
-			-- Current converted to REAL
+			-- Current converted to REAL.
 		require
 			convertible: convertible_as_real
 			not_null: not is_null
@@ -240,7 +241,7 @@ feature -- Conversion
 		end
 
 	as_double : DOUBLE is
-			-- Current converted to DOUBLE
+			-- Current converted to DOUBLE.
 		require
 			convertible: convertible_as_double
 			not_null: not is_null
@@ -248,7 +249,7 @@ feature -- Conversion
 		end
 
 	as_date : DT_DATE is
-			-- Current converted to DATE
+			-- Current converted to DATE.
 		require
 			convertible: convertible_as_date
 			not_null: not is_null
@@ -258,7 +259,7 @@ feature -- Conversion
 		end
 
 	as_time : DT_TIME is
-			-- Current converted to DT_TIME
+			-- Current converted to DT_TIME.
 		require
 			convertible: convertible_as_time
 			not_null: not is_null
@@ -268,7 +269,7 @@ feature -- Conversion
 		end
 
 	as_timestamp : DT_DATE_TIME is
-			-- Current converted to DT_DATE_TIME
+			-- Current converted to DT_DATE_TIME.
 		require
 			convertible: convertible_as_timestamp
 			not_null: not is_null
@@ -279,7 +280,7 @@ feature -- Conversion
 
 	frozen to_character : CHARACTER is 
 		obsolete "Use `as_character' instead"
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER .
 		require
 			convertible: convertible_to_character
 			not_null: not is_null
@@ -289,7 +290,7 @@ feature -- Conversion
 
 	frozen to_boolean : BOOLEAN is 
 		obsolete "Use `as_boolean' instead"
-			-- Current converted to BOOLEAN
+			-- Current converted to BOOLEAN.
 		require
 			convertible: convertible_to_boolean
 			not_null: not is_null
@@ -299,7 +300,7 @@ feature -- Conversion
 
 	frozen to_integer : INTEGER is 
 		obsolete "Use `as_integer' instead"
-			-- Current converted to INTEGER
+			-- Current converted to INTEGER.
 		require
 			convertible: convertible_to_integer
 			not_null: not is_null
@@ -309,7 +310,7 @@ feature -- Conversion
 
 	frozen to_real : REAL is 
 		obsolete "Use `as_real' instead"
-			-- Current converted to REAL
+			-- Current converted to REAL.
 		require
 			convertible: convertible_to_real
 			not_null: not is_null
@@ -319,7 +320,7 @@ feature -- Conversion
 
 	frozen to_double : DOUBLE is 
 		obsolete "Use `as_double' instead"
-			-- Current converted to DOUBLE
+			-- Current converted to DOUBLE.
 		require
 			convertible: convertible_to_double
 			not_null: not is_null
@@ -329,7 +330,7 @@ feature -- Conversion
 
 	frozen to_date : DT_DATE is 
 		obsolete "Use `as_date' instead"
-			-- Current converted to DATE
+			-- Current converted to DATE.
 		require
 			convertible: convertible_to_date
 			not_null: not is_null
@@ -341,7 +342,7 @@ feature -- Conversion
 
 	frozen to_time : DT_TIME is 
 		obsolete "Use `as_time' instead"
-			-- Current converted to DT_TIME
+			-- Current converted to DT_TIME.
 		require
 			convertible: convertible_to_time
 			not_null: not is_null
@@ -353,7 +354,7 @@ feature -- Conversion
 
 	frozen to_timestamp : DT_DATE_TIME is 
 		obsolete "Use `as_timestamp' instead"
-			-- Current converted to DT_DATE_TIME
+			-- Current converted to DT_DATE_TIME.
 		require
 			convertible: convertible_to_timestamp
 			not_null: not is_null
@@ -372,7 +373,7 @@ feature {NONE} -- Implementation
 		end
 
 	to_external : POINTER is
-			-- external 'C' address of value
+			-- External 'C' address of value.
 		do
 			Result := ecli_c_value_get_value (buffer)
 		ensure
@@ -380,7 +381,7 @@ feature {NONE} -- Implementation
 		end
 
 	length_indicator_pointer : POINTER is
-			-- external 'C' address of length indicator
+			-- External 'C' address of length indicator.
 		do
 			Result := ecli_c_value_get_length_indicator_pointer (buffer)
 		end
@@ -388,7 +389,7 @@ feature {NONE} -- Implementation
 feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 
 	read_result (stmt : ECLI_STATEMENT; index : INTEGER) is
-			-- read value from current result column 'index' of 'stmt'
+			-- Read value from current result column 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then (stmt.is_executed and not stmt.off)
 			positive_index: index > 0
@@ -404,7 +405,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		end
 
 	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
-			-- bind Current as a result value
+			-- Bind Current as a result value.
 		require
 			stmt: stmt /= Void 
 			positive_index: index > 0
@@ -420,7 +421,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		end
 		
 	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
-			-- bind this value as input parameter 'index' of 'stmt'
+			-- Bind this value as input parameter 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
@@ -438,7 +439,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		end
 
 	bind_as_input_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
-			-- bind this value as input/output parameter 'index' of 'stmt'
+			-- Bind this value as input/output parameter 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
@@ -456,7 +457,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		end
 
 	bind_as_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
-			-- bind this value as output parameter 'index' of 'stmt'
+			-- Bind this value as output parameter 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
@@ -474,8 +475,8 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		end
 
 	put_parameter (stmt : ECLI_STATEMENT; index : INTEGER) is
-			-- put parameter 'index' data at execution of 'stmt'
-			-- Redefine in descendant classes if needed
+			-- Put parameter 'index' data at execution of 'stmt'.
+			-- Redefine in descendant classes if needed.
 		require
 			stmt: stmt /= Void
 			positive_index: index > 0
@@ -489,7 +490,7 @@ feature {NONE} -- Implementation values
 	disposal_failure_reason : STRING is do	end
 	
 	parameter_directions : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
-			-- parameter direction constants
+			-- Parameter direction constants.
 		once
 			create Result
 		end
