@@ -34,6 +34,7 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
+			check_valid
 		end
 		
 feature -- Access

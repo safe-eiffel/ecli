@@ -65,6 +65,10 @@ feature -- Access
 		end
 
 	is_once : BOOLEAN
+
+	is_require_else : BOOLEAN
+	
+	is_ensure_then : BOOLEAN
 	
 feature -- Status setting
 
@@ -118,8 +122,20 @@ feature -- Status setting
 			end
 			body.force_last (line)
 		end
-
-	add_precondition (precondition: DS_PAIR [STRINg, STRING]) is
+		
+	add_refined_precondition (precondition: DS_PAIR [STRING, STRING]) is
+			-- Add a precondition with the expression 'precondition.first' and
+			-- label 'precondition.second' to this routine.
+		require
+			precondition_exists: precondition /= Void		
+		do
+			is_require_else := True
+			add_precondition (precondition)
+		ensure
+			is_require_else: is_require_else
+		end
+		
+	add_precondition (precondition: DS_PAIR [STRING, STRING]) is
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
 		require
@@ -130,7 +146,19 @@ feature -- Status setting
 			end
 			preconditions.force_last (precondition)
 		end
-	
+
+	add_refined_postcondition	(postcondition: DS_PAIR [STRING, STRING]) is
+			-- Add a postcondition with the expression 'postcondition.first' and
+			-- label 'postcondition.second' to this routine.
+		require
+			postcondition_exists: postcondition /= Void		
+		do
+			is_ensure_then := True
+			add_postcondition (postcondition)
+		ensure
+			is_ensure_then: is_ensure_then
+		end
+		
 	add_postcondition (postcondition: DS_PAIR [STRING, STRING]) is
 			-- Add a postcondition with the expression 'postcondition.first' and
 			-- label 'postcondition.second' to this routine.
@@ -239,6 +267,9 @@ feature {NONE} -- Implementation
 	write_preconditions (output: KI_TEXT_OUTPUT_STREAM) is
 		do
 			output.put_string ("%T%Trequire")
+			if is_require_else then
+				output.put_string (" else")
+			end
 			output.put_new_line
 			from
 				preconditions.start
@@ -255,6 +286,9 @@ feature {NONE} -- Implementation
 	write_postconditions (output: KI_TEXT_OUTPUT_STREAM) is
 		do
 			output.put_string ("%T%Tensure")
+			if is_ensure_then then
+				output.put_string (" then")
+			end
 			output.put_new_line
 			from
 				postconditions.start

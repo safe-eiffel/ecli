@@ -23,12 +23,17 @@ create
 
 feature {NONE} -- Initialization
 
-	make (the_metadata : ECLI_COLUMN_DESCRIPTION) is
+	make (the_metadata : ECLI_COLUMN_DESCRIPTION; maximum_length : INTEGER) is
 			-- Initialize `Current'.
 		require
 			the_metadata_exist: the_metadata /= Void
 		do
 			metadata := the_metadata
+			if maximum_length > 0 then
+				size_impl := maximum_length.min (metadata.size)
+			else
+				size_impl := metadata.size
+			end
 		ensure
 			metadata_assigned: metadata = the_metadata
 		end
@@ -47,7 +52,7 @@ feature -- Access
 		
 	size : INTEGER is
 		do
-			Result := metadata.size
+			Result := size_impl -- metadata.size
 		end
 		
 	decimal_digits : INTEGER is
@@ -68,12 +73,9 @@ feature -- Status report
 			Result := metadata /= Void
 		end
 		
-feature -- Inapplicable
+feature {NONE} -- implementation
 
---	is_equal (other : like Current) : BOOLEAN is
---		do
---			Result := metadata.is_equal (other.metadata)
---		end
+	size_impl : INTEGER
 
 end -- class MODULE_RESULT
 --

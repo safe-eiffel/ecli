@@ -19,7 +19,8 @@ inherit
 	SHARED_CATALOG_NAME
 	SHARED_SCHEMA_NAME
 	SHARED_COLUMNS_REPOSITORY
-
+	SHARED_MAXIMUM_LENGTH
+	
 	ACCESS_MODULE_XML_CONSTANTS
 	
 creation
@@ -96,7 +97,13 @@ feature -- Access (Command line arguments)
 	default_schema : STRING
 			-- default schema for metadata queries
 	
-	
+	maximum_length_string : STRING
+			-- maximum length for long data without length limit
+
+feature -- Constants
+
+	reasonable_maximum_length : INTEGER is 1_000_000
+
 feature -- Access (generation)
 
 	error_handler: UT_ERROR_HANDLER
@@ -318,6 +325,9 @@ feature -- Basic operations
 					elseif key.is_equal ("-access_routines_prefix") then
 						access_routines_prefix := value
 						arg_index := arg_index + 2
+					elseif key.is_equal ("-max_length") then
+						maximum_length_string := value
+						arg_index := arg_index + 2
 					else
 						arg_index := arg_index + 1
 						error_handler.report_error_message ("! [Error] Invalid argument name : "+key)
@@ -365,6 +375,19 @@ feature -- Basic operations
 						has_error := True
 					end
 				end
+				if maximum_length_string /= Void then
+					if not maximum_length_string.is_double then
+						has_error := True
+						error_message.append_string ("Maximum length is not a number in option -max_length.%N")
+					else
+						if maximum_length_string.to_double > reasonable_maximum_length then
+							has_error := True
+							error_message.append_string ("Maximum length is not reasonable : the value provided is greater than "+reasonable_maximum_length.out+"!%N")
+						else
+							set_maximum_length (maximum_length_string.to_integer)
+						end
+					end
+				end
 				if has_error then
 					error_handler.report_error_message (error_message)
 					error_handler.report_error (Usage_message)
@@ -389,7 +412,7 @@ feature {NONE} -- Implementation
 			end
 			a_message.append_string ("-eiffel) -input <input-file> -output_dir <output-directory> %
 			 % -dsn <data-source-name> -user <user-name> -pwd <password> -catalog <catalog> -schema <schema> %
-			 % [-access_routines_prefix <prefix>]")
+			 % [-access_routines_prefix <prefix>] [-max_length <max_length_for_long_data>]")
 			!! Result.make (a_message)
 		ensure
 			usage_message_not_void: Result /= Void
@@ -470,7 +493,7 @@ feature {NONE} -- Implementation
 				l_name := cursor.item.name
 				if class_filter = Void or else class_filter.is_equal (cursor.item.name) then
 					error_handler.report_info_message ("- Analyzing "+cursor.item.name)
-					cursor.item.check_validity (session, error_handler)
+					cursor.item.check_validity (session, error_handler, Reasonable_maximum_length)
 					if cursor.item.is_valid then
 						error_handler.report_info_message (". OK")
 						if cursor.item.has_result_set then
@@ -565,9 +588,11 @@ feature {NONE} -- Implementation
 			gen.create_cursor_class (module)
 			gen.write_class (gen.cursor_class,out_directory)
 			if module.parameters.parent_name = Void or else module.parameters.local_items.count > 0 then
-				a_error_handler.report_info_message (" + " + module.parameters.name)
-				gen.create_parameters_class (module.parameters)
-				gen.write_class (gen.parameters_class, out_directory)
+				if module.parameters.count > 0 then
+					a_error_handler.report_info_message (" + " + module.parameters.name)
+					gen.create_parameters_class (module.parameters)
+					gen.write_class (gen.parameters_class, out_directory)
+				end
 			end
 			if module.has_result_set then
 				if module.results.parent_name = Void or else module.results.local_items.count > 0 then

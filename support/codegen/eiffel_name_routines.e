@@ -1,5 +1,5 @@
 indexing
-	description: "Name routines that follow the Eiffel style"
+	description: "Name routines that help follow the Eiffel style rules"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

@@ -35,7 +35,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_name: STRING; a_reference_column: REFERENCE_COLUMN) is
+	make (a_name: STRING; a_reference_column: REFERENCE_COLUMN; maximum_length : INTEGER) is
 			-- Initialize `Current'.
 		require
 			a_name_not_void: a_name /= Void
@@ -43,9 +43,13 @@ feature {NONE} -- Initialization
 		do
 			set_name (a_name)
 			set_reference_column (a_reference_column)
+			if maximum_length > 0 then
+				size_impl := maximum_length
+			end
 		ensure
 			name_assigned: name = a_name
-			reference_column_assigned: reference_column = a_reference_column			
+			reference_column_assigned: reference_column = a_reference_column
+			size_impl_assigned: maximum_length > 0 implies size_impl = maximum_length
 		end
 
 feature -- Access
@@ -66,7 +70,11 @@ feature -- Access
 	size : INTEGER is
 			-- 
 		do
-			Result := metadata.size
+			if size_impl > 0 then
+				Result := size_impl
+			else
+				Result := metadata.size
+			end
 		end
 		
 	decimal_digits : INTEGER is
@@ -122,13 +130,17 @@ feature -- Status setting
 --				valid_and_metadata: is_valid implies metadata /= Void
 --			end
 
-	check_validity (a_catalog_name, a_schema_name : STRING) is
+	check_validity (a_catalog_name, a_schema_name : STRING; error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 				-- check validity of module wrt (`a_catalog_name', `a_schema_name')
 			local
 			do
 				shared_columns_repository.search (a_catalog_name, a_schema_name, reference_column.table, reference_column.column)
 				if shared_columns_repository.found then
 					metadata := shared_columns_repository.last_column
+					if size > reasonable_maximum_size then
+						error_handler.report_warning_message ("![Warning] Is the size of the parameter reasonable? Size = "+size.out+" > "+reasonable_maximum_size.out+"%N")
+						error_handler.report_warning_message ("-> use command line parameter -max_length <length>%N")
+					end
 					is_valid := True
 				else
 					metadata := Void
@@ -194,7 +206,9 @@ feature -- Duplication
 				create sample.make_from_string (other.sample)
 			end
 		end
-		
+
+	size_impl : INTEGER
+	
 invariant
 	name_not_void: name /= Void
 	reference_column_not_void: reference_column /= Void

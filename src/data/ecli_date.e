@@ -15,15 +15,13 @@ inherit
 	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
 			item, set_item, out, is_equal, 
---			convertible_as_date, as_date,
---			convertible_as_timestamp, as_timestamp, 
 			create_impl_item, impl_item
 		end
 		
-	KL_IMPORTED_STRING_ROUTINES
-		undefine
-			out, is_equal, copy
-		end
+--	KL_IMPORTED_STRING_ROUTINES
+--		undefine
+--			out, is_equal, copy
+--		end
 
 creation
 	make, make_default
@@ -218,9 +216,9 @@ feature -- Conversion
 	out : STRING is
 		do
 			if is_null then
-				Result := Precursor {ECLI_GENERIC_VALUE}
+				Result := Precursor
 			else
-				Result:= STRING_.make (10)
+				create Result.make (10)
 				Result.append_string (integer_format.pad_integer_4 (year))
 				Result.append_character ('-')
 				Result.append_string (integer_format.pad_integer_2 (month))
@@ -298,6 +296,7 @@ feature {NONE} -- Implementation
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_value (transfer_octet_length)
+				check_valid
 			end
 		end
 	

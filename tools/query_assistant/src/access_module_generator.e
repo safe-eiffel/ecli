@@ -100,9 +100,10 @@ feature -- Basic operations
 		local
 			l_class_name : STRING
 			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE, STRING]
-			basic_operations, implementation : EIFFEL_FEATURE_GROUP
+			basic_operations, implementation, status_report, access : EIFFEL_FEATURE_GROUP
 			deferred_session : EIFFEL_ROUTINE
 			access_create_object_routine_names : DS_HASH_TABLE [BOOLEAN,STRING]
+			routine : EIFFEL_ROUTINE
 		do
 			create access_create_object_routine_names.make (modules.count)
 			--| class name
@@ -116,11 +117,27 @@ feature -- Basic operations
 			access_routines_class.add_parent ("PO_STATUS_USE")
 			access_routines_class.add_parent ("PO_STATUS_MANAGEMENT")
 			--| feature groups
+			create access.make ("Access")
+			create status_report.make ("Status report")
 			create basic_operations.make ("Basic operations")
 			create implementation.make ("Implementation")
 			implementation.add_export ("NONE")
+			access_routines_class.add_feature_group (access)
+			access_routines_class.add_feature_group (status_report)
 			access_routines_class.add_feature_group (basic_operations)
 			access_routines_class.add_feature_group (implementation)
+			--| access
+			create routine.make ("last_object")
+			routine.set_type ("PO_PERSISTENT")
+			access.add_feature (routine)
+			create routine.make ("last_cursor")
+			routine.set_type ("PO_CURSOR[like last_object]")
+			access.add_feature (routine)
+			--| status report
+			create routine.make ("is_error")
+			routine.set_type ("BOOLEAN")
+			routine.set_comment ("did last operation produce an error?")
+			status_report.add_feature (routine)
 			from
 				cursor := modules.new_cursor
 				cursor.start
@@ -246,14 +263,16 @@ feature {NONE} -- Basic operations
 		do
 			create feature_group.make ("-- Access")
 			
---			if module.parameters.parent_name /= Void and then
---			   module.parameters.local_items.count = 0 then
-			   	parameters_class_name := module.parameters.type
---			else
---				parameters_class_name := module.parameters.name
---			end
-			create a_feature.make ("parameters_object", parameters_class_name)
-			feature_group.add_feature (a_feature)
+			if module.parameters.count > 0 then
+	--			if module.parameters.parent_name /= Void and then
+	--			   module.parameters.local_items.count = 0 then
+				   	parameters_class_name := module.parameters.type
+	--			else
+	--				parameters_class_name := module.parameters.name
+	--			end
+				create a_feature.make ("parameters_object", parameters_class_name)
+				feature_group.add_feature (a_feature)
+			end			
 			
 			if module.has_result_set then
 --				if module.results.parent_name /= Void and then 
@@ -279,39 +298,41 @@ feature {NONE} -- Basic operations
 			pname : STRING
 			l_parameters_name : STRING
 		do
-			create feature_group.make ("-- Element change")
-			
-			create a_feature.make ("set_parameters_object")
-			a_feature.set_comment ("set `parameters_object' to `a_parameters_object'")
-			--| parameters
-			create parameter.make ("a_parameters_object", module.parameters.type)
-			a_feature.add_param (parameter)
-			--| precondition
-			create pre.make ("a_parameters_object_not_void","a_parameters_object /= Void")
-			a_feature.add_precondition (pre)
-			create pre.make ("has_parameters", "has_parameters")
-			--| body
-			a_feature.add_body_line ("parameters_object := a_parameters_object")
-			--|   foreach item in parameters_object, put_parameter
-			from
-				cursor := module.parameters.new_cursor
-				cursor.start
-			until
-				cursor.off
-			loop
-				pname := cursor.item.name				
-				a_feature.add_body_line ("put_parameter (parameters_object." + pname + ",%"" + pname + "%")")
-				cursor.forth
+			if module.parameters.count > 0 then
+				create feature_group.make ("-- Element change")
+				
+				create a_feature.make ("set_parameters_object")
+				a_feature.set_comment ("set `parameters_object' to `a_parameters_object'")
+				--| parameters
+				create parameter.make ("a_parameters_object", module.parameters.type)
+				a_feature.add_param (parameter)
+				--| precondition
+				create pre.make ("a_parameters_object_not_void","a_parameters_object /= Void")
+				a_feature.add_precondition (pre)
+				create pre.make ("has_parameters", "has_parameters")
+				--| body
+				a_feature.add_body_line ("parameters_object := a_parameters_object")
+				--|   foreach item in parameters_object, put_parameter
+				from
+					cursor := module.parameters.new_cursor
+					cursor.start
+				until
+					cursor.off
+				loop
+					pname := cursor.item.name				
+					a_feature.add_body_line ("put_parameter (parameters_object." + pname + ",%"" + pname + "%")")
+					cursor.forth
+				end
+				--| bind parameters
+				a_feature.add_body_line ("bind_parameters")
+				--| ensure
+				create post.make ("bound_parameters", "bound_parameters")
+				a_feature.add_postcondition (post)
+				
+				feature_group.add_feature (a_feature)
+				
+				cursor_class.add_feature_group (feature_group)
 			end
-			--| bind parameters
-			a_feature.add_body_line ("bind_parameters")
-			--| ensure
-			create post.make ("bound_parameters", "bound_parameters")
-			a_feature.add_postcondition (post)
-			
-			feature_group.add_feature (a_feature)
-			
-			cursor_class.add_feature_group (feature_group)
 		end
 
 	put_invisible_features (module : ACCESS_MODULE) is
@@ -490,37 +511,42 @@ feature {NONE} -- Implementation
 			create routine_precondition.make ("cursor_exists", "cursor /= Void")
 			eiffel_routine.add_precondition (routine_precondition)
 		
-			--	local
-			--		parameters : <access_parameters>
-			create local_parameters.make ("parameters",  as_upper (module.parameters.type))
-			eiffel_routine.add_local (local_parameters)
-			--	do
-			--		create parameters.make
-			eiffel_routine.add_body_line ("create parameters.make")
-			--		[fill_parameter_set (<parameter_set>, parameters)]
-			from 
-				p_cursor := module.parameters.new_cursor
-				p_cursor.start
-			until 
-				p_cursor.off
-			loop
-				create parameter_setting_line.make_from_string ("parameters.")
-				parameter_setting_line.append_string (p_cursor.item.eiffel_name)
-				parameter_setting_line.append_string (".set_item (")
-				parameter_setting_line.append_string (p_cursor.item.eiffel_name)
-				parameter_setting_line.append_string (")")
-				eiffel_routine.add_body_line (parameter_setting_line)
-				p_cursor.forth
+			if module.parameters.count > 0 then
+					
+				--	local
+				--		parameters : <access_parameters>
+				create local_parameters.make ("parameters",  as_upper (module.parameters.type))
+				eiffel_routine.add_local (local_parameters)
 			end
-			--		cursor.set_parameters_object (parameters)
-			eiffel_routine.add_body_line ("cursor.set_parameters_object (parameters)")
+			--	do
+			--		[fill_parameter_set (<parameter_set>, parameters)]
+			if module.parameters.count > 0 then
+				--		create parameters.make
+				eiffel_routine.add_body_line ("create parameters.make")
+				from 
+					p_cursor := module.parameters.new_cursor
+					p_cursor.start
+				until 
+					p_cursor.off
+				loop
+					create parameter_setting_line.make_from_string ("parameters.")
+					parameter_setting_line.append_string (p_cursor.item.eiffel_name)
+					parameter_setting_line.append_string (".set_item (")
+					parameter_setting_line.append_string (p_cursor.item.eiffel_name)
+					parameter_setting_line.append_string (")")
+					eiffel_routine.add_body_line (parameter_setting_line)
+					p_cursor.forth
+				end
+				--		cursor.set_parameters_object (parameters)
+				eiffel_routine.add_body_line ("cursor.set_parameters_object (parameters)")
+			end
 			--		from
 			--			cursor.start
 			--			status.reset
 			--		until
 			--			status.is_error or else cursor.is_error or else cursor.off
 			--		loop
-			--			create_object_from_<access_results>
+			--			extend_cursor_from_<access_results>
 			--			cursor.forth
 			--		end
 			--      if cursor.is_error then
@@ -535,7 +561,7 @@ feature {NONE} -- Implementation
 			eiffel_routine.add_body_line ("until")
 			eiffel_routine.add_body_line ("%Tstatus.is_error or else not cursor.is_ok or else cursor.off")
 			eiffel_routine.add_body_line ("loop")
-			eiffel_routine.add_body_line ("%Tcreate_object_from_"+as_lower (module.results.final_set.name)+" (cursor.item)")
+			eiffel_routine.add_body_line ("%Textend_cursor_from_"+as_lower (module.results.final_set.name)+" (cursor.item)")
 			eiffel_routine.add_body_line ("%Tcursor.forth")
 			eiffel_routine.add_body_line ("end")
 			eiffel_routine.add_body_line ("if cursor.is_error then")
@@ -554,13 +580,13 @@ feature {NONE} -- Implementation
 			access_create_object_routine_names_exists: access_create_object_routine_names /= Void
 		local
 			routine_name : STRING
-			routine_parameter, routine_precondition : DS_PAIR [STRING,STRING]
+			routine_parameter, routine_precondition, routine_postcondition : DS_PAIR [STRING,STRING]
 			eiffel_routine : EIFFEL_ROUTINE
 		do
 			--create_object_from_<access_results> (row : <access_results>) is
 			--	deferred
 			--	end
-			create routine_name.make_from_string ("create_object_from_")
+			create routine_name.make_from_string ("extend_cursor_from_")
 			routine_name.append_string (as_lower (module.results.final_set.name))
 			
 			if not access_create_object_routine_names.has (routine_name) then
@@ -569,6 +595,10 @@ feature {NONE} -- Implementation
 				eiffel_routine.add_param (routine_parameter)
 				create routine_precondition.make ("row_exists", "row /= Void")
 				eiffel_routine.add_precondition (routine_precondition)
+				create routine_precondition.make ("last_cursor_exists", "last_cursor /= Void")
+				eiffel_routine.add_precondition (routine_precondition)
+				create routine_postcondition.make ("last_cursor_extended", "not is_error implies (last_cursor.count = old (last_cursor.count) + 1)")
+				eiffel_routine.add_postcondition (routine_postcondition)
 				group.add_feature (eiffel_routine)
 				access_create_object_routine_names.force (True, routine_name)
 			end

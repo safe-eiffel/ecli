@@ -31,6 +31,7 @@ feature -- Initialization
 			create parents.make
 			create creation_procedure_names.make
 			create feature_groups.make
+			create invariants.make
 		end
 
 feature -- Access
@@ -50,6 +51,8 @@ feature -- Access
 	feature_groups: DS_LINKED_LIST [EIFFEL_FEATURE_GROUP]
 			-- Feature groups
 
+	invariants : DS_LINKED_LIST [DS_PAIR[STRING, STRING]]
+	
 feature -- Status report
 
 	is_deferred : BOOLEAN
@@ -96,6 +99,16 @@ feature -- Status setting
 		do
 			feature_groups.force_last (new_group)
 		end
+
+	add_invariant (new_invariant_clause : DS_PAIR[STRING,STRING]) is
+			-- Add `new_invariant_clause' to the invariants of this class.
+		require
+			new_invariant_clause_exists: new_invariant_clause /= Void
+			invariant_parts_exist: new_invariant_clause.first /= Void and then new_invariant_clause.second /= Void
+			invariant_parts_significatn: not (new_invariant_clause.first.is_empty or new_invariant_clause.second.is_empty)
+		do
+			invariants.put_last (new_invariant_clause)
+		end
 		
 	set_deferred is
 			-- set this a deferred class
@@ -122,6 +135,9 @@ feature -- Basic operations
 			end
 			if not feature_groups.is_empty then
 				write_feature_groups (output)
+			end
+			if not invariants.is_empty then
+				write_invariants (output)
 			end
 			write_end (output)
 		end
@@ -203,6 +219,26 @@ feature {NONE} -- Implementation
 				feature_groups.item_for_iteration.write (output)
 				feature_groups.forth
 			end
+		end
+
+	write_invariants (output: KI_TEXT_OUTPUT_STREAM) is
+		do
+			output.put_string ("invariant")
+			output.put_new_line
+			output.put_new_line
+			from
+				invariants.start
+			until
+				invariants.off
+			loop
+				output.put_string ("%T")
+				output.put_string (invariants.item_for_iteration.first)
+				output.put_string (": ")
+				output.put_string (invariants.item_for_iteration.second)
+				invariants.forth
+				output.put_new_line
+			end
+			output.put_new_line
 		end
 
 	write_end (output: KI_TEXT_OUTPUT_STREAM) is

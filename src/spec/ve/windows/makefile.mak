@@ -1,6 +1,6 @@
 CC = cl
 PLATFORM=windows
-CFLAGS = -c -Ox -W3 -Zl -Id:\user\programs\ObjectTools\VisualEiffel\bin -I.
+CFLAGS = -c -Ox -W3 -Zl -I$(VE_BIN) -I.
 OBJ = ecli_c.obj
 
 all:: ecli_msc.lib

@@ -33,6 +33,7 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (4)
+			check_valid
 			set_null
 		ensure
 			is_null: is_null
@@ -209,7 +210,7 @@ feature -- Basic operations
 	out : STRING is
 		do
 			if is_null then
-				Result := {ECLI_GENERIC_VALUE}Precursor
+				Result := Precursor {ECLI_GENERIC_VALUE}
 			else
 				Result := item.out
 			end

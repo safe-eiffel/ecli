@@ -291,6 +291,7 @@ feature -- Obsolete
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_value (transfer_octet_length)
+				check_valid
 			end
 		end
 

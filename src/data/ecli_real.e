@@ -14,15 +14,7 @@ class
 inherit
 	ECLI_GENERIC_VALUE [REAL]
 		redefine
-			item, set_item, out --,
---			as_real, convertible_as_real,
---			as_integer, convertible_as_integer,
---			as_double, convertible_as_double
-		end
-
-	KL_IMPORTED_STRING_ROUTINES
-		undefine
-			out, is_equal, copy
+			item, set_item, out
 		end
 
 	XS_C_MEMORY_ROUTINES
@@ -39,6 +31,7 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
+			check_valid
 		end
 
 feature -- Access

@@ -13,6 +13,7 @@ class
 inherit 
 	ACCESS_MODULE_XML_CONSTANTS
 	ECLI_SQL_PARSER_CALLBACK
+	SHARED_MAXIMUM_LENGTH
 	
 creation
 	make
@@ -300,7 +301,7 @@ feature {NONE} -- Implementation
 				end
 				if l_name /= Void and then l_table /= Void and then l_column /= Void then
 					create l_reference.make (l_table, l_column)
-					create last_parameter.make (l_name, l_reference)
+					create last_parameter.make (l_name, l_reference, maximum_length)
 					if element.has_attribute_by_name (t_sample) then
 						last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
 					end
@@ -337,7 +338,7 @@ feature {NONE} -- Implementation
 			end
 			if l_name /= Void and then l_table /= Void and then l_column /= Void then
 				create l_reference.make (l_table, l_column)
-				create last_parameter.make (l_name, l_reference)
+				create last_parameter.make (l_name, l_reference, maximum_length)
 				if element.has_attribute_by_name (t_sample) then
 					last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
 				elseif template.sample /= Void then

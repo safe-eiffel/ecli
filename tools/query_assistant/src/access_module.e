@@ -13,6 +13,7 @@ class
 inherit
 	SHARED_SCHEMA_NAME
 	SHARED_CATALOG_NAME
+	SHARED_MAXIMUM_LENGTH
 	
 create
 	make
@@ -87,7 +88,7 @@ feature -- Status report
 		
 feature -- Status setting
 
-	check_validity (a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
+	check_validity (a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			-- check if query is a valid sql, and if all parameters have a description
 		require
 			a_session_not_void: a_session /= Void
@@ -100,8 +101,8 @@ feature -- Status setting
 			query_session := a_session
 			check_query (query_statement, a_session, a_error_handler)
 			if is_query_valid then
-				describe_result_set (query_statement, a_error_handler) 
-				check_parameters (query_statement, query_session, a_error_handler)
+				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size) 
+				check_parameters (query_statement, query_session, a_error_handler, reasonable_maximum_size)
 			end
 			query_statement.close
 		ensure
@@ -184,7 +185,7 @@ feature {NONE} -- Implementation
 
 	statement : ECLI_STATEMENT
 
-	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
+	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			-- 
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -193,6 +194,7 @@ feature {NONE} -- Implementation
 		local
 			index : INTEGER
 			current_result : MODULE_RESULT
+			current_description : ECLI_COLUMN_DESCRIPTION
 		do
 			is_results_valid := True
 			if query_statement.has_result_set then
@@ -206,7 +208,16 @@ feature {NONE} -- Implementation
 					not is_results_valid or else index > query_statement.results_description.upper
 				loop
 					--| FIXME: verify that a same column does not exist...
-					current_result := create {MODULE_RESULT}.make(query_statement.results_description.item (index))
+					current_description :=  query_statement.results_description.item (index)
+					if current_description.size > reasonable_maximum_size then
+						if  (maximum_length > 0 and then current_description.size > maximum_length) then
+							a_error_handler.report_warning_message ("! [Warning] Result column "+current_description.name+" has been truncated from "+current_description.size.out+" to "+maximum_length.out+" bytes")
+						else
+							a_error_handler.report_warning_message ("![Warning] Is the lenght of result column '"+current_description.name+"' reasonable :"+current_description.size.out+" ?%N")
+							a_error_handler.report_warning_message ("-> use command line parameter -max_length <length>%N")
+						end
+					end
+					create current_result.make(current_description, maximum_length)
 					if results.has (current_result) then
 						a_error_handler.report_error_message ("! [Error] Result set '"+results.name+"' has two columns named '"+current_result.name+"'")
 						is_results_valid := False
@@ -223,7 +234,7 @@ feature {NONE} -- Implementation
 			results_count: results.count = query_statement.results_description.count
 		end
 		
-	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
+	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			--| Check if declared parameters are the same as statement parameters
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -269,7 +280,7 @@ feature {NONE} -- Implementation
 						if not shared_schema_name.is_empty then
 							l_schema := shared_schema_name
 						end
-						parameters_cursor.item.check_validity (l_catalog, l_schema)
+						parameters_cursor.item.check_validity (l_catalog, l_schema, a_error_handler, reasonable_maximum_size)
 						is_parameters_valid := is_parameters_valid and then parameters_cursor.item.is_valid
 						if is_parameters_valid then
 							parameters_cursor.forth

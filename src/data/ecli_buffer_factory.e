@@ -129,7 +129,7 @@ feature {NONE} -- Implementation
 	create_name_to_index (size : INTEGER) is
 			-- hook: create name to index map
 		do
-			!!last_index_table.make (size)					
+			create last_index_table.make (size)					
 		end
 	
 	precision_limit_impl : INTEGER	

@@ -63,6 +63,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_with_buffer_factory (a_session : ECLI_SESSION; a_sql : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
+			-- make cursor on `a_session' for `a_sql', using `a_buffer_factory'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
@@ -79,7 +80,7 @@ feature {NONE} -- Initialization
 		end
 		
 	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; a_sql : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
-			-- 
+			-- make cursor on `a_session' for prepared `a_sql', using `a_buffer_factory'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
@@ -149,7 +150,6 @@ feature -- Measurement
 			Result := results.upper
 		end
 
-
 feature -- Status report
 
 	has_column (name : STRING) : BOOLEAN is
@@ -159,8 +159,6 @@ feature -- Status report
 		do
 			Result := name_to_index.has (name)
 		end
-
-feature -- Status setting
 
 feature -- Cursor movement
 
@@ -190,26 +188,6 @@ feature -- Cursor movement
 			off_if_not_query: is_ok implies (not has_result_set implies off)
 		end
 
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	name_to_index : DS_HASH_TABLE [INTEGER, STRING]
@@ -223,18 +201,18 @@ feature {NONE} -- Implementation
 	create_name_to_index (size : INTEGER) is
 			-- hook: create name to index map
 		do
-			!!name_to_index.make (size)
+			create name_to_index.make (size)
 		end
 
 	buffer_factory : ECLI_BUFFER_FACTORY
 
 	create_buffer_factory is
 		do
-			!!buffer_factory
+			create buffer_factory
 		end
 
 	create_row_buffers is
-			-- create column buffers for cursor row
+			-- create data-transfer buffers for row
 		do
 			describe_results
 			results := Void
@@ -249,8 +227,5 @@ feature {NONE} -- Implementation
 				name_to_index := buffer_factory.last_index_table
 			end
 		end
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class ECLI_ROW_CURSOR

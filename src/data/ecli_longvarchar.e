@@ -35,6 +35,7 @@ feature {NONE} -- Initialization
 			s : STRING
 		do
 			buffer := ecli_c_alloc_value (n+1)
+			check_valid
 			create s.make (0)
 			impl_item := s
 			set_null

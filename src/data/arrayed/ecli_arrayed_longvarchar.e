@@ -16,7 +16,6 @@ inherit
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
 			set_item, transfer_octet_length--, 
---			as_string, convertible_as_string
 		redefine
 			item, content_capacity, content_count
 		end
@@ -25,7 +24,7 @@ inherit
 		rename
 			make as make_arrayed
 		redefine
-			set_item, out_item_at, as_string
+			set_item, out_item_at
 		select
 			is_equal, copy
 		end

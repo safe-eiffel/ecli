@@ -81,7 +81,18 @@ feature {NONE} -- Implementation
 		ensure
 			invalid:    not is_valid
 		end
-	
+
+	check_valid is
+			-- check if memory has been allocated; if not, raise an exception
+		local
+			e : EXCEPTIONS
+		do
+			if handle = default_pointer then
+				create e
+				e.raise ("No more memory")
+			end
+		end
+		
 end -- class ECLI_HANDLE
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

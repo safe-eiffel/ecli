@@ -27,9 +27,10 @@ feature -- Access
 	parsed_sql : STRING
 	
 	parameter_marker : CHARACTER
-			-- parameter marker in input sql
+		-- parameter marker in input sql
 
-	name_to_position : DS_HASH_TABLE [DS_LIST[INTEGER], STRING]
+--	name_to_position : DS_HASH_TABLE [DS_LIST[INTEGER], STRING]
+--		-- map between parameter names and their position(s) in the sql query
 	
 feature -- Measurement
 
@@ -163,6 +164,10 @@ feature -- Basic operations
 			check
 				state=state_sql or else state=state_parameter
 			end
+		ensure
+			original_sql_set: original_sql = sql
+			parsed_sql_set: parsed_sql /= Void -- and then parsed sql is equivalent to original sql
+--			name_to_position_set: name_to_position /= Void
 		end
 		
 feature {NONE} -- Implementation
