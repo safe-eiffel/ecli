@@ -9,8 +9,7 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class
-	QA_USAGE_MESSAGE
+class QA_USAGE_MESSAGE
 
 inherit
 	QA_ERROR
@@ -32,48 +31,15 @@ feature -- Initialization
 			end
 		end
 		
-feature -- Access
+feature {NONE} -- Implementation
 
 	usage_template : STRING is "usage: $0 $2 $1"
 	
 	argument_list : STRING is "-input <input-file> -output_dir <output-directory> %
-			 % -dsn <data-source-name> -user <user-name> -pwd <password> -catalog <catalog> -schema <schema> %
+			 % -dsn <data-source-name> -user <user-name> -pwd <password> [-catalog <catalog>] [-schema <schema>] %
 			 % [-access_routines_prefix <prefix>] [-max_length <max_length_for_long_data>]"
 	
 	has_expat_option : STRING is "(-expat|-eiffel)"
 	without_expat_option : STRING is "-eiffel"
-	
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class QA_USAGE_MESSAGE

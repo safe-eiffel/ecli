@@ -56,12 +56,17 @@ feature -- Status report
 
 	is_prepared: BOOLEAN
 
+	is_validity_checked : BOOLEAN
+	
 	is_query_valid : BOOLEAN
 			-- is query executable ?
 
-	is_checked_query : BOOLEAN
-			-- has the query been checked for validity?
-	
+	is_checked_query_trial : BOOLEAN
+			-- has the query been tried for validity?
+
+	is_checked_query_prepare : BOOLEAN
+			-- has the query been checked for preparation ?
+			
 	is_parameters_valid : BOOLEAN
 			-- are the parameters valid ?
 
@@ -71,7 +76,7 @@ feature -- Status report
 	is_valid : BOOLEAN is
 			-- is this query valid ?
 		require
-			is_checked_query: is_checked_query
+			is_validity_checked: is_validity_checked
 		do
 			Result := is_query_valid and then is_parameters_valid and then is_results_valid
 		ensure
@@ -81,14 +86,14 @@ feature -- Status report
 	has_result_set : BOOLEAN is
 			-- is this a query (if not, it is a command/modifying statement) ?
 		require
-			is_checked_query: is_checked_query
+			is_query_valid: is_query_valid
 		do
 			Result := results /= Void
 		end
 		
 feature -- Status setting
 
-	check_validity (a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	check_validity (a_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			-- check if query is a valid sql, and if all parameters have a description
 		require
 			a_session_not_void: a_session /= Void
@@ -99,14 +104,20 @@ feature -- Status setting
 		do
 			create query_statement.make (a_session)
 			query_session := a_session
-			check_query (query_statement, a_session, a_error_handler)
-			if is_query_valid then
+			is_query_valid := False
+			query_statement.set_sql (query)
+			prepare_query (query_statement, a_error_handler)
+			if query_statement.is_ok then
 				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size) 
 				check_parameters (query_statement, query_session, a_error_handler, reasonable_maximum_size)
+				if is_parameters_valid and is_results_valid then
+					try_query (query_statement, a_session, a_error_handler)
+				end
 			end
+			is_validity_checked := True
 			query_statement.close
 		ensure
-			is_checked_query: is_checked_query
+			is_validity_checked: is_validity_checked
 		end
 
 feature -- Element change
@@ -185,11 +196,11 @@ feature {NONE} -- Implementation
 
 	statement : ECLI_STATEMENT
 
-	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			-- 
 		require
 			a_error_handler_not_void: a_error_handler /= Void
-			checked_query: is_checked_query
+			checked_query_prepare: is_checked_query_prepare
 			query_statement_valid: query_statement.is_valid
 		local
 			index : INTEGER
@@ -211,17 +222,16 @@ feature {NONE} -- Implementation
 					current_description :=  query_statement.results_description.item (index)
 					if current_description.size > reasonable_maximum_size then
 						if  (maximum_length > 0 and then current_description.size > maximum_length) then
-							a_error_handler.report_warning_message ("! [Warning] Result column "+current_description.name+" has been truncated from "+current_description.size.out+" to "+maximum_length.out+" bytes")
+							a_error_handler.report_column_length_truncated (name, current_description.name, current_description.size, False)
 						else
-							a_error_handler.report_warning_message ("![Warning] Is the lenght of result column '"+current_description.name+"' reasonable :"+current_description.size.out+" ?%N")
-							a_error_handler.report_warning_message ("-> use command line parameter -max_length <length>%N")
+							a_error_handler.report_column_length_too_large (name, current_description.name, current_description.size, False)
 						end
 						create current_result.make(current_description, maximum_length)
 					else
 						create current_result.make(current_description, current_description.size)
 					end
 					if results.has (current_result) then
-						a_error_handler.report_error_message ("! [Error] Result set '"+results.name+"' has two columns named '"+current_result.name+"'")
+						a_error_handler.report_already_exists (results.name, current_result.name, "result column")
 						is_results_valid := False
 						results := Void
 					else
@@ -237,43 +247,67 @@ feature {NONE} -- Implementation
 			results_count: results /= Void implies results.count = query_statement.results_description.count
 		end
 		
-	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			--| Check if declared parameters are the same as statement parameters
 		require
 			a_error_handler_not_void: a_error_handler /= Void
-			checked_query: is_checked_query
+			checked_query_prepare: is_checked_query_prepare
 			query_statement_valid: query_statement.is_valid
 		local
-			sql_parameters : DS_LIST[STRING]
+			sql_parameters : DS_HASH_SET [STRING]
+			symdif : DS_SET [STRING]
+			parameter_set_names : DS_SET [STRING]
+			undefined_parameters : DS_SET [STRING]
+			unknown_parameters : DS_SET [STRING]
+			cursor_string : DS_SET_CURSOR [STRING]
 			parameters_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
 			tester : KL_EQUALITY_TESTER [STRING]
 			l_catalog, l_schema : STRING
+
 		do
 			--| same number
 			is_parameters_valid := (query_statement.parameter_names.count = parameters.count)
-			if is_parameters_valid then
-				--| same names				
-				sql_parameters := query_statement.parameter_names
-				parameters_cursor := parameters.new_cursor
-				from
-					parameters_cursor.start
-					create tester
-					sql_parameters.set_equality_tester (tester)
-				until
-					not is_parameters_valid or else parameters_cursor.off
-				loop
-					is_parameters_valid := is_parameters_valid and sql_parameters.has (parameters_cursor.item.name)
-					parameters_cursor.forth
-				end
+			if not is_parameters_valid then
+				--| Error : number of declared parameters not the same as query parameters
+				a_error_handler.report_parameter_count_mismatch (name)
+			else
+				--| same names	?		
+				create sql_parameters.make (10)
+				sql_parameters.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+				sql_parameters.extend (query_statement.parameter_names)
+				parameter_set_names := parameters.as_set_name
+				symdif := sql_parameters.symdifference (parameter_set_names)
+				undefined_parameters := symdif.intersection (sql_parameters)
+				unknown_parameters := symdif.intersection (parameter_set_names)
+--				
+--				parameters_cursor := parameters.new_cursor
+--				from
+--					parameters_cursor.start
+--					create tester
+--					sql_parameters.set_equality_tester (tester)
+--				until
+--					not is_parameters_valid or else parameters_cursor.off
+--				loop
+--					is_parameters_valid := is_parameters_valid and sql_parameters.has (parameters_cursor.item.name)
+--					parameters_cursor.forth
+--				end
+				is_parameters_valid := is_parameters_valid and undefined_parameters.count = 0
 				if not is_parameters_valid then
-					--| Error : parameters_cursor.item.name not in sql_parameters
-					a_error_handler.report_error_message ("! [Error] In module '"+name+"'%NSQL parameter '"+parameters_cursor.item.name + "' is not defined in any <parameter> element")
+					from
+						cursor_string := undefined_parameters.new_cursor
+						cursor_string.start
+					until
+						cursor_string.off
+					loop
+						a_error_handler.report_parameter_not_described (name, cursor_string.item)
+						cursor_string.forth
+					end
 				else
 					--| check for parameter reference columns
 					from
+						parameters_cursor := parameters.new_cursor
 						parameters_cursor.start
 						create tester
-						sql_parameters.set_equality_tester (tester)
 					until
 						not is_parameters_valid or else parameters_cursor.off
 					loop
@@ -291,20 +325,40 @@ feature {NONE} -- Implementation
 					end
 					if not is_parameters_valid then
 						--| Error: invalid column reference
-					a_error_handler.report_error_message ("! [Error] In module '"+ name +"'%NReference column for '"+
-						parameters_cursor.item.name + "' not found => " + 
-						parameters_cursor.item.reference_column.table + "." + parameters_cursor.item.reference_column.column
-					)
+						a_error_handler.report_invalid_reference_column (name, parameters_cursor.item.name, parameters_cursor.item.reference_column.table, parameters_cursor.item.reference_column.column)
+					end
+				end
+				-- Report unknown parameters
+				if unknown_parameters.count > 0 then
+					from
+						cursor_string := unknown_parameters.new_cursor
+						cursor_string.start
+					until
+						cursor_string.off
+					loop
+						a_error_handler.report_parameter_unknown (name, cursor_string.item)
+						cursor_string.forth
 					end
 				end				
-			else
-				--| Error : number of declared parameters not the same as query parameters
-					a_error_handler.report_error_message ("! [Error] In module '"+ name +
-					"'%NNumber of declared parameters does not match number of SQL parameters")
 			end
 		end
 
-	check_query (query_statement : ECLI_STATEMENT; session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
+	prepare_query (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER) is
+			-- prepare `query_statement'
+		require
+			query_statement_not_void: query_statement /= Void
+			a_error_handler_not_void: a_error_handler /= Void
+		do
+			query_statement.prepare
+			if not query_statement.is_ok then
+				a_error_handler.report_prepare_query_failed (query_statement.sql, query_statement.diagnostic_message,name)
+			end
+			is_checked_query_prepare := True
+		ensure
+			is_checked_query_prepare: is_checked_query_prepare
+		end
+		
+	try_query (query_statement : ECLI_STATEMENT; session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER) is
 			-- 
 		require
 			query_statement_not_void: query_statement /= Void
@@ -312,12 +366,11 @@ feature {NONE} -- Implementation
 		local
 			cs : DS_SET_CURSOR[MODULE_PARAMETER]
 			factory : QA_VALUE_FACTORY
+			is_error : BOOLEAN
+			parameters_put : INTEGER
 		do
 			create factory.make
-			is_query_valid := False
-			query_statement.set_sql (query)
-			query_statement.prepare
-			if query_statement.is_ok then
+			if query_statement.is_ok and then query_statement.is_prepared then
 				if parameters.count = 0 or else (parameters.count = query_statement.parameter_names.count and then parameters.has_samples) then
 					if session.is_transaction_capable then
 						-- create parameters
@@ -325,47 +378,52 @@ feature {NONE} -- Implementation
 							cs := parameters.new_cursor
 							cs.start
 						until
-							cs.off
+							cs.off or else is_error
 						loop
-							-- créer paramètre
-							factory.create_value_from_sample (cs.item.sample)
-							if factory.last_error /= Void then
-								a_error_handler.report_error_message ("Parameter '"+cs.item.name+"' :"+factory.last_error+". Could not create sample value.")
+							if query_statement.has_parameter (cs.item.name) then
+								-- créer paramètre
+								factory.create_value_from_sample (cs.item.sample)
+								if factory.last_error /= Void then
+									is_error := True
+									a_error_handler.report_could_not_create_parameter (name, cs.item.name, factory.last_error)
+								else
+									query_statement.put_parameter (factory.last_result, cs.item.name)
+									parameters_put := parameters_put + 1
+								end
+							else
+								is_error := True
+								a_error_handler.report_parameter_unknown (name, cs.item.name)
 							end
-							query_statement.put_parameter (factory.last_result, cs.item.name)
 							cs.forth
 						end
-						
-						-- begin transaction
-						session.begin_transaction
-						-- try query
-						if query_statement.parameters_count > 0 then
-							query_statement.bind_parameters
+						if not is_error and then parameters_put = query_statement.parameters_count then
+							-- begin transaction
+							session.begin_transaction
+							-- try query
+							if query_statement.parameters_count > 0 then
+								query_statement.bind_parameters
+							end
+							query_statement.execute
+							if query_statement.is_ok then
+								is_query_valid := True
+							else						
+								a_error_handler.report_query_execution_failed (query_statement.sql, query_statement.diagnostic_message, name)
+							end
+							-- rollback
+							session.rollback
 						end
-						query_statement.execute
-						if query_statement.is_ok then
-							is_query_valid := True
-						else
-							a_error_handler.report_error_message ("! [Error] "+query_statement.diagnostic_message)
-						end
-						-- rollback
-						session.rollback
 					end
 				else
 					is_query_valid := True
-					a_error_handler.report_warning_message ("! [Warning] Statement '"+name+"' has been *prepared* successfully;%N   unfortunately statement preparation does not catch all SQL errors.")
+					a_error_handler.report_query_only_prepared (name)
 				end
 			else
-				a_error_handler.report_error_message ("! [Error] SQL Statement not valid : %N" +
-					query + "%N" + query_statement.diagnostic_message + "%N") 
+				a_error_handler.report_query_execution_failed (query_statement.sql, query_statement.diagnostic_message, name)
 			end
-			is_checked_query := True
+			is_checked_query_trial := True
 		ensure
-			is_checked_query: is_checked_query
+			is_checked_query_trial: is_checked_query_trial
 		end
-	
---	query_statement : ECLI_STATEMENT
---	query_session : ECLI_SESSION
 
 invariant
 	name_not_void: name /= Void

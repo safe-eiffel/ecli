@@ -1,13 +1,18 @@
 indexing
-	description: "Error handlers."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	QA_ERROR_HANDLER
+	description: 
+	
+		"Error handlers."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class QA_ERROR_HANDLER
 
 inherit
+
 	UT_ERROR_HANDLER
 		export
 			{NONE} report_error_message, report_info_message, report_warning_message,
@@ -17,6 +22,17 @@ inherit
 create
 	make_standard, make_null
 	
+feature -- Status report
+	
+feature -- Status setting
+
+	disable_verbose is
+		do
+			info_file := Null_output_stream
+		ensure
+			not_verbose: not is_verbose
+		end
+		
 feature -- Arguments
 
 	report_missing_argument (argument_name, explanation: STRING) is
@@ -117,7 +133,7 @@ feature -- Information
 			error : QA_INFORMATION
 		do
 			create error.make_copyright (author, period)
-			report_error (error)
+			report_info (error)
 		end
 
 	report_banner (version: STRING) is
@@ -140,7 +156,7 @@ feature -- Information
 			error : QA_INFORMATION
 		do
 			create error.make_license  (license_name, version)
-			report_error (error)
+			report_info (error)
 		end
 
 	report_start (process: STRING) is
@@ -151,7 +167,18 @@ feature -- Information
 			error : QA_INFORMATION
 		do
 			create error.make_start (process)
-			report_error (error)
+			report_info (error)
+		end
+
+	report_generating (generated: STRING) is
+			-- Report  information on starting `generated'.
+		require
+			generated_not_void: generated /= void
+		local
+			error : QA_INFORMATION
+		do
+			create error.make_generating (generated)
+			report_info (error)
 		end
 
 	report_end (process: STRING; success: BOOLEAN) is
@@ -162,19 +189,21 @@ feature -- Information
 			error : QA_INFORMATION
 		do
 			create error.make_end (process, success)
-			report_error (error)
+			report_info (error)
 		end
 
 feature -- Internal
 
-	report_could_not_create_parameter (name, module: STRING) is
-			-- Could not create parameter `name' in `module'.
+	report_could_not_create_parameter (module, name, diagnostic : STRING) is
+			-- Could not create parameter `name' in `module' because of `diagnostic'.
 		require
 			name_not_void: name /= void
+			module_not_void: module /= Void
+			diagnostic_not_void: diagnostic /= Void
 		local
 			error : QA_INTERNAL_ERROR
 		do
-			create error.make_could_not_create_parameter (name, module)
+			create error.make_could_not_create_parameter (module, name, diagnostic)
 			report_error (error) 
 		end
 
@@ -230,7 +259,7 @@ feature -- Syntax
 			report_error (error) 
 		end
 
-	report_exclusive_element (module, element_a, element_b, parent: STRING) is
+report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			-- Report `element_a' exclusive of `element_b' in `parent' for `module'.
 		require
 			module_not_void: module /= void
@@ -326,6 +355,32 @@ feature -- Validity
 			report_error (error)
 		end
 
+	report_parameter_already_defined (module, name, attribute_name : STRING) is
+			-- Report parameter `name' in `module' has an already defined `attribute_name' attribute.
+		require
+			module_not_void: module /= void
+			name_not_void: name /= Void
+			attribute_name_not_void: name /= void
+		local
+			error : QA_VALIDITY_ERROR
+		do
+			create error.make_parameter_already_defined (module, name, attribute_name)
+			report_error (error)
+		end
+		
+	report_parameter_unknown (module, name : STRING) is
+			-- Report parameter `name' in `module' is unknown but defined.
+		require
+			module_not_void: module /= Void
+			name_not_void: name /= Void
+		local
+			error : QA_VALIDITY_ERROR
+		do
+			create error.make_parameter_unknown (module, name)
+			report_error (error)
+		end
+		
+	
 	report_parameter_count_mismatch (module: STRING) is
 			-- Report  parameter count mismatch in `module'.
 		require

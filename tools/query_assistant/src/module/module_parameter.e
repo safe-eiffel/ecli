@@ -130,7 +130,7 @@ feature -- Status setting
 --				valid_and_metadata: is_valid implies metadata /= Void
 --			end
 
-	check_validity (a_catalog_name, a_schema_name : STRING; error_handler : UT_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	check_validity (a_catalog_name, a_schema_name : STRING; error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 				-- check validity of module wrt (`a_catalog_name', `a_schema_name')
 			local
 			do
@@ -138,8 +138,11 @@ feature -- Status setting
 				if shared_columns_repository.found then
 					metadata := shared_columns_repository.last_column
 					if size > reasonable_maximum_size then
-						error_handler.report_warning_message ("![Warning] Is the size of the parameter reasonable? Size = "+size.out+" > "+reasonable_maximum_size.out+"%N")
-						error_handler.report_warning_message ("-> use command line parameter -max_length <length>%N")
+						error_handler.report_column_length_too_large (
+							" ",
+							name, 
+							size, 
+							True)
 					end
 					is_valid := True
 				else

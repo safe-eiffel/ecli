@@ -9,17 +9,10 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class
-	QA_VALIDITY_ERROR
+class QA_VALIDITY_ERROR
 
 inherit
 	QA_ERROR
-
---validity	e_already_exists - who, what, where | module, name, type {module, parameter_set, column, parameter}
---validity	e_sql_invalid_reference_column - module, name, table, column
---validity	e_sql_parameter_not_described - name, module
---validity	e_sql_parameters_count_mismatch - module
---validity	w_parent_class_empty - parent
 
 creation
 	
@@ -27,8 +20,10 @@ creation
 	make_invalid_reference_column,
 	make_parameter_not_described,
 	make_parameter_count_mismatch,
-	make_parent_class_empty
-	
+	make_parent_class_empty,
+	make_parameter_already_defined,
+	make_parameter_unknown
+
 feature {NONE} -- Initializaiton
 
 	make_already_exists (who, what, type : STRING) is
@@ -88,6 +83,32 @@ feature {NONE} -- Initializaiton
 			parameters.put (parent, 1)
 		end
 
+	make_parameter_already_defined (module, name, attribute_name : STRING) is
+			-- Make redundant description of `attribute_name' for `name' in `module'.
+		require
+			module_not_void: module /= Void
+			name_not_void: name /= Void
+			attribute_name_not_void: attribute_name /= Void
+		do
+			default_template := alrdyde_template
+			create parameters.make (1, 3)
+			parameters.put (module, 1)
+			parameters.put (name, 2)
+			parameters.put (attribute_name, 3)
+		end
+
+	make_parameter_unknown (module, name : STRING) is
+			-- Report parameter `name' in `module' is unknown but defined.
+		require
+			module_not_void: module /= Void
+			name_not_void: name /= Void
+		do
+			default_template := parunknown_template
+			create parameters.make (1,2)
+			parameters.put (module, 1)
+			parameters.put (name, 2)
+		end
+
 feature {NONE} -- Implementation
 
 	alex_template : STRING is       "[E-VAL-ALRDYEX] Module $1 : $3 `$2' already exists."
@@ -95,12 +116,7 @@ feature {NONE} -- Implementation
 	misdesc_template : STRING is    "[E-VAL-MISDESC] Module $1 : missing description for SQL parameter `$2'."
 	countmis_template : STRING is   "[E-VAL-CNTMISM] Module $1 : Mismatch between count of SQL parameters and of declared parameters."
 	parclempty_template : STRING is "[W-VAL-CLEMPTY] Parent class `$1' is empty."
-
---validity	e_already_exists - who, what, where | module, name, type {module, parameter_set, column, parameter}
---validity	e_sql_invalid_reference_column - module, name, table, column
---validity	e_sql_parameter_not_described - name, module
---validity	e_sql_parameters_count_mismatch - module
---validity	w_parent_class_empty - parent
-
-
+	alrdyde_template : STRING is 	"[E-VAL-ALRDYDF] Module $1 : Parameter $2 must not have a '$3' attribute, since it already has one from a template."
+	parunknown_template : STRING is "[E-VAL-PARUNKN] Module $1 : Parameter $2 has been defined but does not appear in SQL."
+	
 end -- class QA_VALIDITY_ERROR

@@ -9,10 +9,10 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class
-	QA_INTERNAL_ERROR
+class QA_INTERNAL_ERROR
 
 inherit
+
 	QA_ERROR
 
 creation
@@ -24,15 +24,18 @@ creation
 	
 feature {NONE} -- Initialization
 
-	make_could_not_create_parameter (name, module : STRING) is
+	make_could_not_create_parameter (module, name, diagnostic : STRING) is
 			-- Could not create parameter `name' in `module'.
 		require
 			name_not_void: name /= Void
+			module_not_void: module /= Void
+			diagnostic_not_void: diagnostic /= Void
 		do
 			default_template := Cncp_template
-			create parameters.make (1, 2)
+			create parameters.make (1, 3)
 			parameters.put (name, 1)
 			parameters.put (module, 2)
+			parameters.put (diagnostic, 3)
 		end
 		
 	make_xml_parser_unavailable (name : STRING) is
@@ -83,39 +86,9 @@ feature {NONE} -- Initialization
 			end
 		end
 		
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
-	cncp_template : STRING is   "[E-INT-CNCRPAR] Could not create parameter $1 in module $2."
+	cncp_template : STRING is   "[E-INT-CNCRPAR] Could not create parameter $1 in module $2. $3."
 	xpunvl_template : STRING is "[E-INT-PARSNVL] XML parser $1 not available. Please choose another one."
 	ctool_template : STRING is  "[W-INT-COLNTOL] Length of `$1' $4 in `$2' is too large : `$3' bytes."
 	ctrunc_template : STRING is "[W-INT-COLNTRC] Length of `$1' $4 in `$2' has been truncated to `$3' bytes."
@@ -123,7 +96,4 @@ feature {NONE} -- Implementation
 	parameter_constant : STRING is "parameter"
 	result_constant : STRING is "result"
 	
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class QA_INTERNAL_ERROR

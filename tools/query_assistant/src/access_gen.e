@@ -15,6 +15,7 @@ inherit
 
 	KL_SHARED_ARGUMENTS
 	KL_SHARED_STANDARD_FILES
+	KL_SHARED_FILE_SYSTEM
 
 	SHARED_CATALOG_NAME
 	SHARED_SCHEMA_NAME
@@ -100,6 +101,10 @@ feature -- Access (Command line arguments)
 	maximum_length_string : STRING
 			-- maximum length for long data without length limit
 
+feature -- Status report
+
+	is_verbose : BOOLEAN
+	
 feature -- Constants
 
 	reasonable_maximum_length : INTEGER is 1_000_000
@@ -243,6 +248,7 @@ feature -- Basic operations
 		local
 			in: KL_TEXT_INPUT_FILE
 		do
+			has_error := False
 			error_handler.report_start ("Parsing XML file")
 			!! in.make (in_filename)
 			in.open_read
@@ -259,7 +265,7 @@ feature -- Basic operations
 				else
 				end
 			end
-			error_handler.report_end ("Parsing XML file", has_error)
+			error_handler.report_end ("Parsing XML file", not has_error)
 		end
 
 	process_arguments is
@@ -270,10 +276,10 @@ feature -- Basic operations
 			value : STRING
 			error_message : STRING
 		do
-			if Arguments.argument_count < 2 then
-				error_handler.report_usage (Fact.is_expat_parser_available)
-				has_error := True
-			else
+--			if Arguments.argument_count < 2 then
+--				error_handler.report_usage (Fact.is_expat_parser_available)
+--				has_error := True
+--			else
 				from 
 					arg_index := 1
 				until 
@@ -297,7 +303,10 @@ feature -- Basic operations
 						end
 						arg_index := arg_index + 1
 					elseif key.is_equal ("-eiffel") then
-						!XM_EIFFEL_PARSER! event_parser.make
+						create {XM_EIFFEL_PARSER} event_parser.make
+						arg_index := arg_index + 1
+					elseif key.is_equal ("-verbose") then
+						is_verbose := True
 						arg_index := arg_index + 1
 					elseif key.is_equal ("-dsn") then
 						dsn := value
@@ -308,7 +317,7 @@ feature -- Basic operations
 					elseif key.is_equal ("-pwd") then
 						password := value
 						arg_index := arg_index + 2
-					elseif key.is_equal ("-output_dir") then
+					elseif key.is_equal ("-output_dir") or else key.is_equal ("-output") then
 						out_directory := value
 						arg_index := arg_index + 2
 					elseif key.is_equal ("-class") then
@@ -357,16 +366,23 @@ feature -- Basic operations
 				if in_filename = Void then
 					has_error := True
 					error_handler.report_missing_argument ("-input", "an input file name must be specified")
+				elseif not File_system.file_exists (in_filename) then
+					has_error := True
+					error_handler.report_invalid_argument ("-input", "file '"+in_filename+"' does not exist")
 				end
 				if out_directory = Void then
 					has_error := True
 					error_handler.report_missing_argument ("-output", "an output directory must be specified")
+				elseif not File_system.directory_exists (out_directory) then
+					has_error := True
+					error_handler.report_invalid_argument ("-output", "directory '"+out_directory+"' does not exist")
+				
 				end
 				if dsn /= Void and then user /= Void and then password /= Void then
 					create session.make (dsn, user,password)
 					session.connect
 					if session.is_connected then
-						session.raise_exception_on_error
+--						session.raise_exception_on_error
 						create repository.make (session)
 						set_shared_columns_repository (repository)
 					else
@@ -390,7 +406,10 @@ feature -- Basic operations
 				if has_error then
 					error_handler.report_usage (Fact.is_expat_parser_available)
 				end
-			end
+				if not is_verbose then
+					error_handler.disable_verbose
+				end
+--			end
 		ensure
 			in_filename_not_void: not has_error implies in_filename /= Void
 			parser_not_void: not has_error implies event_parser /= Void
@@ -540,25 +559,25 @@ feature {NONE} -- Implementation
 			error_handler.report_end ("Class generation", True)
 		end
 		
-	generate (module : ACCESS_MODULE;a_error_handler : UT_ERROR_HANDLER) is
+	generate (module : ACCESS_MODULE;a_error_handler : QA_ERROR_HANDLER) is
 			-- generate classes for `module', query + parameter_set + result_set classes
 		require
 			module_not_void: module /= Void
 		do
 			create gen
-			a_error_handler.report_info_message (" + " + module.name)
+			a_error_handler.report_generating (module.name)
 			gen.create_cursor_class (module)
 			gen.write_class (gen.cursor_class,out_directory)
 			if module.parameters.parent_name = Void or else module.parameters.local_items.count > 0 then
 				if module.parameters.count > 0 then
-					a_error_handler.report_info_message (" + " + module.parameters.name)
+					a_error_handler.report_generating (module.parameters.name)
 					gen.create_parameters_class (module.parameters)
 					gen.write_class (gen.parameters_class, out_directory)
 				end
 			end
 			if module.has_result_set then
 				if module.results.parent_name = Void or else module.results.local_items.count > 0 then
-					a_error_handler.report_info_message (" + " + module.results.name)
+					a_error_handler.report_generating (module.results.name)
 					gen.create_results_class (module.results)
 					gen.write_class (gen.results_class, out_directory)
 				end

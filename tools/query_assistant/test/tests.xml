@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<modules>
+	<access name="INVALID_SQL" type="read">
+		<description>
+			description: "Invalid SQL"
+		</description>
+		<sql>
+QSDFGHJKLM
+		</sql>
+	</access>
+
+	<access name="PREPARED_SQL">
+		<description>
+			description: "Prepared SQL"
+		</description>
+		<sql>
+SELECT * FROM TTABLE WHERE CINTEGER=?p
+		</sql>
+		<parameter_set name="PREPARED_SQL_PARAMETERS">
+			<parameter name="p" table="TTABLE" column="cinteger"/> 
+		</parameter_set>
+		<result_set name="PREPARED_SQL_RESULTS"/>
+	</access>
+
+	<access name="EXECUTED_SQL">
+		<description>
+			description: "Executedd SQL"
+		</description>
+		<sql>
+SELECT * FROM TTABLE WHERE CINTEGER=?p
+		</sql>
+		<parameter_set name="EXECUTED_SQL_PARAMETERS">
+			<parameter name="p" table="TTABLE" column="cinteger" sample="3"/> 
+		</parameter_set>
+		<result_set name="EXECUTED_SQL_RESULTS"/>
+	</access>
+	
+	<access name="INVALID_REFERENCE_COLUMN">
+		<description>
+			description: "Invalid reference column"
+		</description>
+		<sql>
+SELECT * FROM TTABLE WHERE CINTEGER =?p
+		</sql>
+		<parameter_set name="INVALID_REFERENCE_COLUMN_PARAMETERS">
+			<parameter name="p" table="TTABLE" column="couteger" sample="3"/> 
+		</parameter_set>
+		<result_set name="INVALID_REFERENCE_COLUMN_RESULTS"/>
+	</access>
+
+	<access name="PARAMETER_NOT_DESCRIBED">
+		<description>
+			description: "Parameter not described"
+		</description>
+		<sql>
+SELECT * FROM TTABLE WHERE CINTEGER =?p and CVARCHAR=?v
+		</sql>
+		<parameter_set name="PARAMETER_NOT_DESCRIBED_PARAMETERS">
+			<parameter name="z" table="TTABLE" column="cvarchar" sample="abcde"/> 
+			<parameter name="t" table="TTABLE" column="cvarchar" sample="abcde"/> 
+		</parameter_set>
+		<result_set name="PARAMETER_NOT_DESCRIBED_RESULTS"/>
+	</access>
+
+	<access name="PARAMETER_COUNT_MISMATCH">
+		<description>
+			description: "Parameter not described"
+		</description>
+		<sql>
+SELECT * FROM TTABLE WHERE CINTEGER =?p
+		</sql>
+		<parameter_set name="PARAMETER_COUNT_MISMATCH_PARAMETERS">
+			<parameter name="p" table="TTABLE" column="cinteger" sample="3"/> 
+			<parameter name="z" table="TTABLE" column="cvarchar" sample="abcde"/> 
+		</parameter_set>
+		<result_set name="PARAMETER_COUNT_MISMATCH_RESULTS"/>
+	</access>
+
+</modules>

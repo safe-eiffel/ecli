@@ -9,10 +9,10 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class
-	QA_INFORMATION
+class QA_INFORMATION
 
 inherit
+	
 	QA_ERROR
 
 creation
@@ -21,7 +21,8 @@ creation
 	make_banner,
 	make_license,
 	make_start,
-	make_end
+	make_end,
+	make_generating
 
 feature {NONE} -- Initialization
 
@@ -72,6 +73,15 @@ feature {NONE} -- Initialization
 			parameters.put (process, 1)
 		end
 		
+	make_generating (generated : STRING) is
+			-- Make information on generating `generated'.
+		require
+			generated_not_void: generated /= Void
+		do
+			default_template := generating_template
+			create parameters.make (1, 1)
+			parameters.put (generated, 1)
+		end
 	
 	make_end (process : STRING; success : BOOLEAN) is
 			-- Make information on ending `process' with `success'.
@@ -125,5 +135,5 @@ feature {NONE} -- Implementation
 	cprght_template : STRING is    "***        Copyright $2 by $1."
 	license_template : STRING is   "***        Released under $1 license, version $2."
 	banner_template : STRING is    "***        $0 Application $1."
-
+    generating_template : STRING is "+ Generating $1."
 end -- class QA_INFORMATION

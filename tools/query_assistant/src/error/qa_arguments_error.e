@@ -9,10 +9,10 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class
-	QA_ARGUMENTS_ERROR
+class QA_ARGUMENTS_ERROR
 
 inherit
+
 	QA_ERROR
 
 creation

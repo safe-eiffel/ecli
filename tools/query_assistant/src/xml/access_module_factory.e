@@ -20,7 +20,7 @@ creation
 	
 feature {NONE} -- Initialization
 
-	make (a_error_handler : UT_ERROR_HANDLER) is
+	make (a_error_handler : QA_ERROR_HANDLER) is
 			-- creation using `a_error_handler'
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -33,7 +33,7 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
-	error_handler : UT_ERROR_HANDLER
+	error_handler : QA_ERROR_HANDLER
 
 	last_result_set : RESULT_SET
 	
@@ -76,7 +76,7 @@ feature -- Basic operations
 				type_att := element.attribute_by_name (t_type)
 			end
 			if name_att = Void then
-				error_handler.report_error_message ("! [Error] Module should have a 'name' attribute")
+				error_handler.report_missing_attribute ("?", "name", "access")
 				is_error := True
 			else
 				name := name_att.value
@@ -91,14 +91,16 @@ feature -- Basic operations
 						end
 						if element.has_element_by_name (t_parameter_set) then
 							if element.has_element_by_name (t_parameter) then
-								error_handler.report_error_message ("! [Error] Module '"+name+"' cannot have 'parameter' elements while having 'parameter_set' element")
+								error_handler.report_exclusive_element (name, "parameter", "parameter_set", "access")
 								is_error := True
 							else
 								create_parameter_set (element.element_by_name (t_parameter_set), parameter_set_name (name))
 							end
 						else
 							create last_parameter_set.make (parameter_set_name (name))
-							populate_parameter_set (element)
+							if element.has_element_by_name (T_parameter) then
+								populate_parameter_set (element)
+							end
 						end
 						if element.has_element_by_name (t_result_set) then
 							create_result_set (element.element_by_name (t_result_set), result_set_name (name))
@@ -116,7 +118,7 @@ feature -- Basic operations
 							last_module.set_type (module_type)
 						end
 					else
-						error_handler.report_error_message ("! [Error] Module '"+name+"' does not have any <sql> element")
+						error_handler.report_missing_element (name, "sql", "access")
 						is_error := True
 					end
 				end
@@ -146,7 +148,9 @@ feature -- Basic operations
 			else
 				create last_parameter_set.make (name)
 			end
-			populate_parameter_set (element)
+			if element.has_element_by_name (T_parameter) then
+				populate_parameter_set (element)
+			end
 		end
 		
 	create_result_set (element : XM_ELEMENT; default_name : STRING) is
@@ -255,7 +259,7 @@ feature {NONE} -- Implementation
 					if last_parameter /= Void then
 						if parameter_map.has (last_parameter.name) then
 							is_error := True
-							error_handler.report_error_message ("Parameter map already as a `"+last_parameter.name+"element")
+							error_handler.report_duplicate_element ("?", last_parameter.name, element.name)
 						else
 							parameter_map.force (last_parameter, last_parameter.name)
 						end
@@ -280,7 +284,7 @@ feature {NONE} -- Implementation
 			if element.has_attribute_by_name (t_name) then
 				l_name := element.attribute_by_name (t_name).value.string
 			else
-				error_handler.report_error_message ("Parameter must have a 'name' attribute")
+				error_handler.report_missing_attribute (last_module.name, T_name, element.name)
 				is_error := True
 			end
 			if not is_error and then parameter_map /= Void and then parameter_map.has (l_name) then
@@ -290,13 +294,13 @@ feature {NONE} -- Implementation
 				if element.has_attribute_by_name (t_table) then
 					l_table := element.attribute_by_name (t_table).value.string 
 				else
-					error_handler.report_error_message ("Parameter must have a 'table' attribute") 
+					error_handler.report_missing_attribute (last_module.name, t_table, element.name)
 					is_error := True
 				end
 				if element.has_attribute_by_name (t_column) then
 					l_column := element.attribute_by_name (t_column).value.string
 				else
-					error_handler.report_error_message ("Parameter must have a 'column' attribute")
+					error_handler.report_missing_attribute (last_module.name, T_column, element.name)
 					is_error := True
 				end
 				if l_name /= Void and then l_table /= Void and then l_column /= Void then
@@ -329,11 +333,11 @@ feature {NONE} -- Implementation
 			l_column := template.reference_column.column
 			l_name := template.name
 			if element.has_attribute_by_name (t_table) then
-				error_handler.report_error_message ("Parameter must not have a 'table' attribute, since it already has one from a template.") 
+				error_handler.report_parameter_already_defined (last_module.name, template.name, t_table)
 				is_error := True
 			end
 			if element.has_attribute_by_name (t_column) then
-				error_handler.report_error_message ("Parameter must not have a 'column' attribute, since it already has one from a template.")
+				error_handler.report_parameter_already_defined (last_module.name, template.name, T_column)
 				is_error := True
 			end
 			if l_name /= Void and then l_table /= Void and then l_column /= Void then

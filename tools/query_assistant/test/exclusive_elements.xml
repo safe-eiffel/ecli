@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<modules>
+	<access name="INVALID_SQL">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
+
+	<access name="PREPARED_SQL">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
+
+	<access name="EXECUTED_SQL">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
+	
+	<access name="INVALID_REFERENCE_COLUMN">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
+	<access name="PARAMETER_NOT_DESCRIBED">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
+
+	<access name="PARAMETER_COUNT_MISMATCH">
+		<description>
+			description: "*insert-description-here*"
+		</description>
+		<sql>
+		*insert-sql-here*
+		</sql>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
+		</parameter_set>
+		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
+	</access>
+
+</modules>
