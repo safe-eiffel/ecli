@@ -8,7 +8,7 @@ indexing
 	revision: "$Revision$"
 
 class
-	PARENT_COLUMN_SET [G->HASHABLE]
+	PARENT_COLUMN_SET [G->ACCESS_MODULE_METADATA]
 
 inherit
 	COLUMN_SET[G]
@@ -25,6 +25,7 @@ feature {NONE} -- Initialization
 		do
 			create {DS_LINKED_LIST[like column_set_anchor]} descendants.make
 			Precursor (a_name)
+			create local_items.make (10)
 		end
 		
 feature -- Access
@@ -72,6 +73,19 @@ feature -- Basic operations
 			end
 		end
 
+feature {NONE} -- Implementation
+
+	item_eiffel_type (an_item : like item) : STRING is
+		do
+			Result := an_item.value_type
+		end
+		
+	item_eiffel_name (an_item : like item) : STRING is
+			-- 
+		do
+			Result := an_item.eiffel_name
+		end
+		
 end -- class PARENT_COLUMN_SET
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

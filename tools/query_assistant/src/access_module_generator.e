@@ -24,6 +24,10 @@ feature -- Access
 	
 	results_class : EIFFEL_CLASS
 
+	set_class : EIFFEL_CLASS
+	
+	access_routines_class : EIFFEL_CLASS
+	
 feature -- Basic operations
 
 	write_class (a_class : EIFFEL_CLASS; a_target_directory : STRING) is
@@ -78,6 +82,61 @@ feature -- Basic operations
 			results_class_generated: results_class /= Void and then results_class.name.is_equal (result_set.name)
 		end
 
+	create_set_class (set : COLUMN_SET[ACCESS_MODULE_METADATA]) is 
+			-- create class from `result_set' and write it into `directory_name'
+		require
+			set_exists: set /= Void
+		do
+			set_class := virtual_row_class (set)
+		ensure
+			set_class_generated: set_class /= Void and then set_class.name.is_equal (set.name)
+		end
+
+	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[ACCESS_MODULE, STRING]) is
+			-- create deferred access routines helper class
+		require
+			prefix_exists: name_prefix /= Void
+			modules_exist: modules /= Void
+		local
+			l_class_name : STRING
+			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE, STRING]
+			basic_operations, implementation : EIFFEL_FEATURE_GROUP
+			deferred_session : EIFFEL_ROUTINE
+			access_create_object_routine_names : DS_HASH_TABLE [BOOLEAN,STRING]
+		do
+			create access_create_object_routine_names.make (modules.count)
+			
+			create l_class_name.make_from_string (name_prefix)
+			l_class_name.append_string ("_ACCESS_ROUTINES")
+			l_class_name.to_upper
+			
+			create access_routines_class.make (l_class_name)
+			access_routines_class.set_deferred
+			create basic_operations.make ("Basic operations")
+			create implementation.make ("Implementation")
+			implementation.add_export ("NONE")
+			access_routines_class.add_feature_group (basic_operations)
+			access_routines_class.add_feature_group (implementation)
+			create deferred_session.make ("session")
+			deferred_session.set_type ("ECLI_SESSION")
+			implementation.add_feature (deferred_session)
+			from
+				cursor := modules.new_cursor
+				cursor.start
+			until
+				cursor.off
+			loop
+				if cursor.item.is_valid and then cursor.item.has_result_set then
+					put_access_routine (cursor.item, basic_operations)
+					put_access_create_object (cursor.item, implementation, access_create_object_routine_names)
+				end
+				cursor.forth
+			end
+			access_routines_class.add_indexing_clause ("description: %"generated access routines%"")
+			access_routines_class.add_indexing_clause ("usage: %"mix-in%"")
+			
+		end
+		
 feature {NONE} -- Basic operations
 
 	virtual_row_class (column_set : COLUMN_SET[ACCESS_MODULE_METADATA]) : EIFFEL_CLASS is
@@ -185,22 +244,22 @@ feature {NONE} -- Basic operations
 		do
 			create feature_group.make ("-- Access")
 			
-			if module.parameters.parent_name /= Void and then
-			   module.parameters.local_items.count = 0 then
-			   	parameters_class_name := module.parameters.parent_name
-			else
-				parameters_class_name := module.parameters.name
-			end
+--			if module.parameters.parent_name /= Void and then
+--			   module.parameters.local_items.count = 0 then
+			   	parameters_class_name := module.parameters.type
+--			else
+--				parameters_class_name := module.parameters.name
+--			end
 			create a_feature.make ("parameters_object", parameters_class_name)
 			feature_group.add_feature (a_feature)
 			
 			if module.has_result_set then
-				if module.results.parent_name /= Void and then 
-					module.results.local_items.count = 0 then
-					  results_class_name := module.results.parent_name
-				else
-					results_class_name := module.results.name
-				end
+--				if module.results.parent_name /= Void and then 
+--					module.results.local_items.count = 0 then
+					  results_class_name := module.results.type
+--				else
+--					results_class_name := module.results.name
+--				end
 				create a_feature.make ("item", results_class_name)
 				feature_group.add_feature (a_feature)
 			end			
@@ -216,14 +275,14 @@ feature {NONE} -- Basic operations
 			parameter, pre,post : DS_PAIR[STRING,STRING]
 			cursor : DS_HASH_SET_CURSOR[MODULE_PARAMETER]
 			pname : STRING
+			l_parameters_name : STRING
 		do
 			create feature_group.make ("-- Element change")
 			
 			create a_feature.make ("set_parameters_object")
-			create parameter.make ("a_parameters_object", module.parameters.name)
 			a_feature.set_comment ("set `parameters_object' to `a_parameters_object'")
 			--| parameters
-			create parameter.make ("a_parameters_object", module.parameters.name)
+			create parameter.make ("a_parameters_object", module.parameters.type)
 			a_feature.add_param (parameter)
 			--| precondition
 			create pre.make ("a_parameters_object_not_void","a_parameters_object /= Void")
@@ -368,7 +427,131 @@ feature {NONE} -- Implementation
 			Result := clone (s)
 			Result.to_lower
 		end
+
+	as_upper (s : STRING) : STRING is
+		do
+			Result := clone (s)
+			Result.to_upper
+		end
+
+	put_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
+			-- put access routines for `module' into `group'
+		require
+			module_exists: module /= Void
+			group_exists: group /= Void
+		local
+			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
+			eiffel_routine : EIFFEL_ROUTINE
+			new_parameter, local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
+			l_name, parameter_setting_line : STRING
+		do
+			--| routine name: read_<access> 
+			create l_name.make_from_string ("read_")
+			l_name.append_string (module.name)
+			l_name.to_lower
+			--| eiffel routine
+			create eiffel_routine.make (l_name)
+			--| routine signature : ([eiffel_signature (<parameter_set>)]) is
+			put_signature_to_routine (module.parameters, eiffel_routine)
+			create routine_precondition.make ("refine_in_descendants", "False")
+			eiffel_routine.add_precondition (routine_precondition)
+			--	local
+			--		parameters : <access_parameters>
+			--		cursor : <access>
+			create local_parameters.make ("parameters",  as_upper (module.parameters.type))
+			eiffel_routine.add_local (local_parameters)
+			create local_cursor.make ("cursor", as_upper (module.name))
+			eiffel_routine.add_local (local_cursor)
+			--	do
+			--		create cursor.make (session)
+			--		create parameters.make
+			eiffel_routine.add_body_line ("create cursor.make (session)")
+			eiffel_routine.add_body_line ("create parameters.make")
+			--		[fill_parameter_set (<parameter_set>, parameters)]
+			from 
+				p_cursor := module.parameters.new_cursor
+				p_cursor.start
+			until 
+				p_cursor.off
+			loop
+				create parameter_setting_line.make_from_string ("parameters.")
+				parameter_setting_line.append_string (p_cursor.item.eiffel_name)
+				parameter_setting_line.append_string (".set_item (")
+				parameter_setting_line.append_string (p_cursor.item.eiffel_name)
+				parameter_setting_line.append_string (")")
+				eiffel_routine.add_body_line (parameter_setting_line)
+				p_cursor.forth
+			end
+			--		cursor.set_parameters_object (parameters)
+			eiffel_routine.add_body_line ("cursor.set_parameters_object (parameters)")
+			--		from
+			--			cursor.start
+			--		until
+			--			cursor.is_error or else cursor.off
+			--		loop
+			--			create_object_from_<access_results>
+			--			cursor.forth
+			--		end
+			--		cursor.close
+			--	end
+			eiffel_routine.add_body_line ("from")
+			eiffel_routine.add_body_line ("%Tcursor.start")
+			eiffel_routine.add_body_line ("until")
+			eiffel_routine.add_body_line ("%Tnot cursor.is_ok or else cursor.off")
+			eiffel_routine.add_body_line ("loop")
+			eiffel_routine.add_body_line ("%Tcreate_object_from_"+as_lower (module.results.final_set.name)+" (cursor.item)")
+			eiffel_routine.add_body_line ("%Tcursor.forth")
+			eiffel_routine.add_body_line ("end")
+			eiffel_routine.add_body_line ("cursor.close")
+			group.add_feature (eiffel_routine)
+		end
 		
+	put_access_create_object (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP; access_create_object_routine_names : DS_HASH_TABLE[BOOLEAN,STRING]) is
+			-- put `create_object_from_<module.results>' into `group'
+		require
+			module_exists: module /= Void
+			group_exists: group /= Void
+			access_create_object_routine_names_exists: access_create_object_routine_names /= Void
+		local
+			routine_name : STRING
+			routine_parameter, routine_precondition : DS_PAIR [STRING,STRING]
+			eiffel_routine : EIFFEL_ROUTINE
+		do
+			--create_object_from_<access_results> (row : <access_results>) is
+			--	deferred
+			--	end
+			create routine_name.make_from_string ("create_object_from_")
+			routine_name.append_string (as_lower (module.results.final_set.name))
+			
+			if not access_create_object_routine_names.has (routine_name) then
+				create eiffel_routine.make (routine_name)
+				create routine_parameter.make ("row", as_upper (module.results.final_set.name))
+				eiffel_routine.add_param (routine_parameter)
+				create routine_precondition.make ("row_exists", "row /= Void")
+				eiffel_routine.add_precondition (routine_precondition)
+				group.add_feature (eiffel_routine)
+				access_create_object_routine_names.force (True, routine_name)
+			end
+		end
+		
+	put_signature_to_routine (set : COLUMN_SET[ACCESS_MODULE_METADATA]; eiffel_routine : EIFFEL_ROUTINE) is
+			-- 
+		local
+			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
+			new_parameter : DS_PAIR[STRING,STRING]
+		do
+			from 
+				p_cursor := set.new_cursor
+				p_cursor.start
+			until 
+				p_cursor.off
+			loop
+				create new_parameter.make (p_cursor.item.eiffel_name, p_cursor.item.value_type)
+				eiffel_routine.add_param (new_parameter) 
+				p_cursor.forth
+			end
+		end
+	
 invariant
 	invariant_clause: -- Your invariant here
 

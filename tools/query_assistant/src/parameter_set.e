@@ -47,6 +47,20 @@ feature -- Status report
 				end
 			end
 		end
+
+feature {NONE} -- Implementation
+
+	item_eiffel_type (an_item : like item) : STRING is
+		do
+			Result := an_item.value_type
+		end
+		
+	item_eiffel_name (an_item : like item) : STRING is
+			-- 
+		do
+			Result := an_item.eiffel_name
+		end
+		
 		
 end -- class PARAMETER_SET
 --

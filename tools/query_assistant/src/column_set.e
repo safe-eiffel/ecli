@@ -7,8 +7,8 @@ indexing
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
-	COLUMN_SET[G->HASHABLE]
+deferred class
+	COLUMN_SET[G->ACCESS_MODULE_METADATA]
 
 inherit
 	DS_HASH_SET[G]
@@ -16,8 +16,8 @@ inherit
 			make as make_set
 		end
 
-creation
-	make, make_with_parent_name
+--creation
+--	make, make_with_parent_name
 	
 feature {NONE} -- Initialization
 
@@ -29,6 +29,7 @@ feature {NONE} -- Initialization
 			name := a_name
 			make_set (initial_size)
 			set_equality_tester (create {KL_EQUALITY_TESTER [like item]})
+			create local_items.make (10)
 		ensure
 			name_set: name = a_name
 		end
@@ -48,6 +49,16 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
+	type : STRING is
+			-- 
+		do
+			if parent_name /= Void and then local_items.count = 0 then
+				Result := parent_name
+			else
+				Result := name
+			end
+		end
+		
 	name : STRING
 	
 	parent_name : STRING
@@ -57,6 +68,38 @@ feature -- Access
 	local_items : DS_HASH_SET[G]
 		-- local items : difference between Current and parent
 
+	final_set : like Current is
+			-- 
+		do
+			if parent /= Void and then local_items /= Void and then local_items.count = 0 then
+				Result := parent
+			else
+				Result := Current
+			end
+		end
+
+	eiffel_signature : STRING is
+			-- 
+		local
+			cursor : like new_cursor
+		do
+			create Result.make (count * 10)
+			from
+				cursor := new_cursor
+				cursor.start
+			until
+				cursor.off
+			loop
+				Result.append_string (item_eiffel_name (cursor.item))
+				Result.append_string (" : ")
+				Result.append_string (item_eiffel_type (cursor.item)) 
+				cursor.forth
+				if not cursor.off then
+					Result.append_string (";")
+				end
+			end
+		end
+		
 feature -- Status report
 
 	is_flattened : BOOLEAN
@@ -103,6 +146,24 @@ feature {NONE} -- Implementation
 
 	initial_size : INTEGER is 5
 	
+	item_eiffel_name (an_item : G) : STRING is
+			-- 
+		require
+			an_item_exists: an_item /= Void
+		deferred
+		ensure
+			result_exists: Result /= Void
+		end
+
+	item_eiffel_type (an_item : G) : STRING is
+			-- 
+		require
+			an_item_exists: an_item /= Void
+		deferred
+		ensure
+			result_exists: Result /= Void
+		end
+		
 invariant
 	equality_tester_exists: equality_tester /= Void 
 

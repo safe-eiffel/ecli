@@ -78,11 +78,6 @@ feature -- Access
 	sample : STRING 
 	
 feature -- Measurement
-
-	hash_code : INTEGER is 
-		do
-			Result := name.hash_code
-		end
 		
 feature -- Status report
 	

@@ -12,12 +12,9 @@ class
 
 inherit
 	ACCESS_MODULE_METADATA
-		undefine
-			is_equal
-		end
 		
 	HASHABLE
-		redefine
+		undefine
 			is_equal
 		end
 		
@@ -36,15 +33,12 @@ feature {NONE} -- Initialization
 			metadata_assigned: metadata = the_metadata
 		end
 
-feature -- Access
+feature {NONE}-- Access
 
 	metadata : ECLI_COLUMN_DESCRIPTION
 	
-	hash_code : INTEGER is
-			-- 
-		do
-			Result := metadata.name.hash_code
-		end
+feature -- Access
+
 			
 	sql_type_code : INTEGER is
 		do
@@ -63,7 +57,8 @@ feature -- Access
 	
 	name : STRING is
 		do
-			Result := metadata.name
+			Result := clone(metadata.name)
+			Result.to_lower
 		end
 
 feature -- Status report
@@ -75,10 +70,10 @@ feature -- Status report
 		
 feature -- Inapplicable
 
-	is_equal (other : like Current) : BOOLEAN is
-		do
-			Result := metadata.is_equal (other.metadata)
-		end
+--	is_equal (other : like Current) : BOOLEAN is
+--		do
+--			Result := metadata.is_equal (other.metadata)
+--		end
 
 end -- class MODULE_RESULT
 --

@@ -52,6 +52,21 @@ feature {NONE} -- Initialization
 			end
 		end
 
+feature -- Access
+
+	access_routines_prefix: STRING
+			-- prefix for naming the access_routines class
+
+feature -- Element change
+
+	set_access_routines_prefix (a_access_routines_prefix: STRING) is
+			-- Set `access_routines_prefix' to `a_access_routines_prefix'.
+		do
+			access_routines_prefix := a_access_routines_prefix
+		ensure
+			access_routines_prefix_assigned: access_routines_prefix = a_access_routines_prefix
+		end
+
 feature -- Access (Command line arguments)
 
 	in_filename: STRING
@@ -97,6 +112,34 @@ feature -- Access (generation)
 
 	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
 
+--	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING] is
+--			-- 
+--		local
+--			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+--		once
+--			create Result.make (result_sets.count + parameter_sets.count)
+--			from
+--				cursor := result_sets.new_cursor
+--				cursor.start
+--			until
+--				cursor.off
+--			loop
+--				result.force (cursor.item, cursor.key)
+--				cursor.forth
+--			end
+--			from
+--				cursor := parameter_sets.new_cursor
+--				cursor.start
+--			until
+--				cursor.off
+--			loop
+--				Result.force (cursor.item, cursor.key)
+--				cursor.forth
+--			end
+--		end
+
+	all_parents_set : DS_HASH_TABLE[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+	
 feature -- Status report
 
 	has_error: BOOLEAN
@@ -123,7 +166,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_info_message ("** ECLI Query Assistant v1.0alpha**")
+			error_handler.report_info_message ("** ECLI Query Assistant v1.0beta**")
 			error_handler.report_info_message ("*  Copyright (c) 2001-2003 Paul G. Crismer and others.")
 			error_handler.report_info_message ("*  Released under the Eiffel Forum license version 1.%N")
 		end
@@ -272,6 +315,9 @@ feature -- Basic operations
 					elseif key.is_equal ("-catalog") then
 						default_catalog := value
 						arg_index := arg_index + 2
+					elseif key.is_equal ("-access_routines_prefix") then
+						access_routines_prefix := value
+						arg_index := arg_index + 2
 					else
 						arg_index := arg_index + 1
 						error_handler.report_error_message ("! [Error] Invalid argument name : "+key)
@@ -342,7 +388,8 @@ feature {NONE} -- Implementation
 				a_message.append_string ("-expat|")
 			end
 			a_message.append_string ("-eiffel) -input <input-file> -output_dir <output-directory> %
-			 % -dsn <data-source-name> -user <user-name> -pwd <password> -catalog <catalog> -schema <schema>")
+			 % -dsn <data-source-name> -user <user-name> -pwd <password> -catalog <catalog> -schema <schema> %
+			 % [-access_routines_prefix <prefix>]")
 			!! Result.make (a_message)
 		ensure
 			usage_message_not_void: Result /= Void
@@ -351,8 +398,9 @@ feature {NONE} -- Implementation
 	resolve_parent_classes is
 			-- resolve parent classes for parameters and result sets
 		do
-			resolve_parent_parameter_sets
-			resolve_parent_result_sets
+--			resolve_parent_parameter_sets
+--			resolve_parent_result_sets
+			resolve_all_sets
 		end
 		
 	resolve_parent_parameter_sets is
@@ -374,7 +422,39 @@ feature {NONE} -- Implementation
 			parent_result_sets := resolver.resolve_parents (result_sets, error_handler)
 			resolver.resolve_descendants (result_sets)
 		end
-	
+
+	resolve_all_sets is
+			-- 
+		local
+			resolver : REFERENCE_RESOLVER[ACCESS_MODULE_METADATA]
+			all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
+			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+		do
+			create all_sets.make (result_sets.count + parameter_sets.count)
+			from
+				cursor := result_sets.new_cursor
+				cursor.start
+			until
+				cursor.off
+			loop
+				all_sets.force (cursor.item, cursor.key)
+				cursor.forth
+			end
+			from
+				cursor := parameter_sets.new_cursor
+				cursor.start
+			until
+				cursor.off
+			loop
+				all_sets.force (cursor.item, cursor.key)
+				cursor.forth
+			end
+			create resolver
+			all_parents_set := resolver.resolve_parents (all_sets, error_handler)
+			resolver.resolve_descendants (all_parents_set)
+		end
+		
+		
 	check_modules is
 			-- check modules
 		local
@@ -416,6 +496,7 @@ feature {NONE} -- Implementation
 			c : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
 			p : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
 			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_RESULT], STRING]
+			s : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
 		do
 			error_handler.report_info_message ("- Generating classes ... ")
 			--| classes for modules
@@ -431,29 +512,46 @@ feature {NONE} -- Implementation
 				c.forth
 			end
 			create gen
-			--| classes for parent parameters
-			from
-				p := parent_parameter_sets.new_cursor
-				p.start
-			until
-				p.off
-			loop
-				error_handler.report_info_message (" + " + p.item.name)
-				gen.create_parameters_class (p.item)
-				gen.write_class (gen.parameters_class, out_directory)
-				p.forth
-			end
+--			--| classes for parent parameters
+--			from
+--				p := parent_parameter_sets.new_cursor
+--				p.start
+--			until
+--				p.off
+--			loop
+--				error_handler.report_info_message (" + " + p.item.name)
+--				gen.create_parameters_class (p.item)
+--				gen.write_class (gen.parameters_class, out_directory)
+--				p.forth
+--			end
+--			--| classes for parent results
+--			from
+--				r := parent_result_sets.new_cursor
+--				r.start
+--			until
+--				r.off
+--			loop
+--				error_handler.report_info_message (" + " + r.item.name)
+--				gen.create_results_class (r.item)
+--				gen.write_class (gen.results_class, out_directory)
+--				r.forth
+--			end
 			--| classes for parent results
 			from
-				r := parent_result_sets.new_cursor
-				r.start
+				s := all_parents_set.new_cursor
+				s.start
 			until
-				r.off
+				s.off
 			loop
-				error_handler.report_info_message (" + " + r.item.name)
-				gen.create_results_class (r.item)
-				gen.write_class (gen.results_class, out_directory)
-				r.forth
+				error_handler.report_info_message (" + " + s.item.name)
+				gen.create_set_class (s.item)
+				gen.write_class (gen.set_class, out_directory)
+				s.forth
+			end
+			if access_routines_prefix /= Void then
+				--| generate access routines
+				gen.create_access_routines_class (access_routines_prefix, modules)
+				gen.write_class (gen.access_routines_class, out_directory)
 			end
 		end
 		

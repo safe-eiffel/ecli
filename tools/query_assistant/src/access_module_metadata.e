@@ -12,7 +12,10 @@ deferred class
 
 inherit
 	HASHABLE
-	
+		redefine
+			is_equal, hash_code
+		end
+		
 feature -- Access
 
 	name : STRING is
@@ -24,11 +27,28 @@ feature -- Access
 	
 	eiffel_name : STRING is
 			-- name of eiffel entity
+		local
+			index : INTEGER
 		do
-			create Result.make_from_string (name)
+			create Result.make (name.count)
+			from
+				index := 1
+			until
+				index > name.count
+			loop
+				inspect name.item (index)
+				when 'a'..'z', 'A'..'Z', '0'..'9', '_' then
+					Result.append_character (name.item (index))
+				else
+					Result.append_character ('_')
+				end
+				index := index + 1
+			end
 			Result.to_lower
 		end
-		
+	
+	value_type : STRING is do Result := implementation.value_type end	
+	
 	creation_call : STRING is
 			-- call for creating a corresponding eiffel entity
 		require
@@ -72,6 +92,15 @@ feature -- Status report
 			-- 
 		deferred
 		end
+	
+	is_equal (other : like Current) : BOOLEAN is
+			-- 
+		do
+			Result := (sql_type_code = other.sql_type_code and then
+				size = other.size and then
+				decimal_digits = other.decimal_digits and then
+				name.is_equal (other.name))
+		end
 		
 feature {NONE} -- Implementation
 
@@ -99,6 +128,12 @@ feature {NONE} -- Implementation
 			Result := impl_value
 		end
 	
+	hash_code : INTEGER is
+			-- 
+		do
+			Result := name.hash_code
+		end
+		
 invariant
 	name_exists: name /= Void
 

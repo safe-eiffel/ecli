@@ -277,7 +277,10 @@ feature {NONE} -- Implementation
 				error_handler.report_error_message ("Parameter must have a 'name' attribute")
 				is_error := True
 			end
-			if not is_error and then (is_template or else parameter_map /= Void and then not parameter_map.has (l_name)) then
+			if not is_error and then parameter_map /= Void and then parameter_map.has (l_name) then
+				template := parameter_map.item (l_name)
+				create_parameter_from_template (element, template)
+			elseif not is_error then -- and then (is_template or else (parameter_map /= Void and then not parameter_map.has (l_name))) then
 				if element.has_attribute_by_name (t_table) then
 					l_table := element.attribute_by_name (t_table).value.string 
 				else
@@ -297,9 +300,9 @@ feature {NONE} -- Implementation
 						last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
 					end
 				end
-			elseif not is_error and then parameter_map /= Void and then parameter_map.has (l_name) then
-				template := parameter_map.item (l_name)
-				create_parameter_from_template (element, template)
+			else
+				-- impossible
+				do_nothing
 			end	
 		ensure
 			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void

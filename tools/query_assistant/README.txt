@@ -1,5 +1,11 @@
 Query Assistant For ECLI
 
+Content
+1. Purpose
+2. Usage
+3. Known problems
+4. Changes
+
 1. Purpose
 
 	'Query Assistant' for ECLI allows a developer to generate classes
@@ -74,7 +80,10 @@ Query Assistant For ECLI
 	  uncaught SQL syntax error.
 
 			
-		
+4. Changes
 
-		
+2003-10-01
+	Parameter_sets and result_sets can "extend" the same class, i.e. have a same parent class.
+	This way it is possible to share the same transfer buffers.
+	
 	

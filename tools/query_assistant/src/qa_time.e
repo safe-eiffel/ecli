@@ -20,7 +20,7 @@ feature
 
 	ecli_type : STRING is "ECLI_TIME"
 		
-	value_type : STRING is "ECLI_TIME"
+	value_type : STRING is "DT_TIME"
 
 	creation_call : STRING is
 		do

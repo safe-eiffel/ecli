@@ -21,7 +21,7 @@ feature
 
 	ecli_type : STRING is "ECLI_DATE"
 			
-	value_type : STRING is "ECLI_DATE"		
+	value_type : STRING is "DT_DATE"		
 
 	creation_call : STRING is
 		do

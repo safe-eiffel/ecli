@@ -45,7 +45,7 @@ feature -- Element change
 			column_rank_positive: column_rank > 0
 		do
 			put_set (column)
-			rank.put (column_rank, column.metadata.name)
+			rank.put (column_rank, column.name)
 		end
 
 	force (column : like item; column_rank : INTEGER) is
@@ -55,9 +55,22 @@ feature -- Element change
 			column_rank_positive: column_rank > 0
 		do
 			force_set (column)
-			rank.force (column_rank, column.metadata.name)
+			rank.force (column_rank, column.name)
 		end
 
+feature {NONE} -- Implementation
+
+	item_eiffel_type (an_item : like item) : STRING is
+		do
+			Result := an_item.value_type
+		end
+		
+	item_eiffel_name (an_item : like item) : STRING is
+			-- 
+		do
+			Result := an_item.eiffel_name
+		end
+		
 end -- class RESULT_SET
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
