@@ -18,7 +18,9 @@ inherit
 			start, value_anchor, create_row_buffers, fill_cursor, 
 			fetch_next_row, buffer_factory, create_buffer_factory
 		end
-		
+	
+	ECLI_ROWSET_CAPABLE
+	
 creation
 	make
 	
@@ -40,18 +42,6 @@ feature -- Initialization
 feature -- Access
 
 	value_anchor : ECLI_ARRAYED_VALUE
-	
-feature -- Measurement
-
-	row_count : INTEGER
-	
-feature -- Status report
-
-	item_status (index : INTEGER) : INTEGER is
-			-- status of `index'th value in current rowset
-		do
-			Result := rowset_status.item (index)
-		end
 		
 feature -- Status setting
 
@@ -111,7 +101,7 @@ feature {NONE} -- Implementation
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_count))
 			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.to_external, 0))
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $fetched_rows_count, 0))
+			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $processed_row_count, 0))
 			
 			from index := 1
 			until index > result_column_count
@@ -121,30 +111,9 @@ feature {NONE} -- Implementation
 			end
 		end
 		
-	fetched_rows_count : INTEGER
-			-- number of rows retrieved by last fetch operation
-
 	fetch_count : INTEGER
 			-- number of actual fetch operations
-	
-	rowset_status : ECLI_ROWSET_STATUS
-	
-	status_array : ARRAY[INTEGER]
-	
-	fill_status_array is
-			-- 
-		local
-			index: INTEGER
-		do
-			from index := 1
-				!!status_array.make (1, fetched_rows_count)
-			until index > fetched_rows_count
-			loop
-				status_array.put (rowset_status.item (index), index)
-				index := index + 1
-			end
-		end
-		
+
 	fill_cursor is
 			-- 
 		local
@@ -153,7 +122,7 @@ feature {NONE} -- Implementation
 			from index := 1
 			until index > result_column_count
 			loop
-				cursor.item (index).set_count (fetched_rows_count)
+				cursor.item (index).set_count (processed_row_count)
 				index := index + 1
 			end
 		end
@@ -161,7 +130,7 @@ feature {NONE} -- Implementation
 	fetch_next_row is
 			-- 
 		do
-			if fetch_count > 0 and then fetch_count \\ row_count >= fetched_rows_count and then fetched_rows_count < row_count then
+			if fetch_count > 0 and then fetch_count \\ row_count >= processed_row_count and then processed_row_count < row_count then
 					go_after
 			else
 				if fetch_count \\ row_count = 0 then
