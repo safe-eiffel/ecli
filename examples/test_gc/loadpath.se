@@ -1,0 +1,3 @@
+./
+${ECLI}/src/loadpath.se
+${GOBO}/library/loadpath.se
