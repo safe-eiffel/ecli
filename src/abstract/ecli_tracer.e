@@ -30,7 +30,7 @@ feature -- Access
 
 	medium : KI_CHARACTER_OUTPUT_STREAM
 
-feature {ECLI_STATEMENT} -- Basic operations
+feature {ECLI_ABSTRACT_STATEMENT} -- Basic operations
 	
 	trace (a_sql : STRING; a_parameters : ARRAY[ECLI_VALUE]) is
 			-- Trace 'a_sql', substituting parameter markers by 'a_parameters'

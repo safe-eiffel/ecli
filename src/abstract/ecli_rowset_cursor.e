@@ -8,23 +8,23 @@ class
 	ECLI_ROWSET_CURSOR
 
 inherit
-	
-	ECLI_ROW_CURSOR
+
+	ECLI_ABSTRACT_ROW_CURSOR [ECLI_ARRAYED_VALUE, ECLI_VALUE]
 		rename
-			make as row_cursor_make, open as row_cursor_open, 
+			make as row_cursor_make, open as row_cursor_open,
 			make_prepared as row_cursor_make_prepared, open_prepared as row_cursor_open_prepared
-		export 
+		export
 			{NONE} row_cursor_make, row_cursor_open
 		redefine
-			start, value_anchor, create_row_buffers, fill_cursor, 
-			fetch_next_row, buffer_factory, create_buffer_factory
+			start, create_row_buffers, fill_cursor,
+			fetch_next_row, buffer_factory
 		end
-	
+
 	ECLI_ROWSET_CAPABLE
-	
+
 creation
 	make, make_prepared, open, open_prepared
-	
+
 feature -- Initialization
 
 	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_count : INTEGER) is
@@ -64,11 +64,9 @@ feature -- Initialization
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			row_count_set: row_capacity = a_row_count
 		end
-		
+
 feature -- Access
 
-	value_anchor : ECLI_ARRAYED_VALUE
-		
 feature -- Status setting
 
 feature -- Cursor movement
@@ -88,7 +86,7 @@ feature -- Duplication
 feature -- Miscellaneous
 
 feature -- Basic operations
-		
+
 		start is
 				-- Execute query `definition', positioning on first available result row
 			do
@@ -98,7 +96,7 @@ feature -- Basic operations
 				cursor_exists: (is_executed and then has_results) implies (cursor /= Void and then cursor.count = result_columns_count)
 				fetched_columns_count_set: (is_executed and then has_results) implies (fetched_columns_count = result_columns_count.min (cursor.count))
 			end
-			
+
 feature -- Obsolete
 
 feature -- Inapplicable
@@ -106,12 +104,12 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
-	
+
 	create_buffer_factory is
 		do
 			!!buffer_factory.make (row_capacity)
 		end
-		
+
 	create_row_buffers is
 			-- Create `cursor' filled with ECLI_VALUE descendants
 		do
@@ -120,7 +118,7 @@ feature {NONE} -- Implementation
 				bind_results
 			end
 		end
-	
+
 	bind_results is
 			-- Bind results to cursor buffer values
 		local
@@ -139,20 +137,20 @@ feature {NONE} -- Implementation
 				index := index + 1
 			end
 		end
-		
+
 	logical_fetch_count : INTEGER is
 			-- logical number of fetch operations
 		do
 			Result := physical_fetch_count * row_capacity + fetch_increment
 		end
-		
+
 	physical_fetch_count : INTEGER
-			-- physical number of fetches (with database transfers) 
-	
+			-- physical number of fetches (with database transfers)
+
 	fetch_increment : INTEGER
 			-- number of logical fetches since last physical one
-	
-		
+
+
 	fill_cursor is
 			-- update 'count' of all values in cursor
 		local
@@ -177,7 +175,7 @@ feature {NONE} -- Implementation
 					--| protect from moving GC
 					collection_off
 					--| Bind `row_count' a getting the actual number of rows fetched
-					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $row_count, 0))			
+					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, $row_count, 0))
 					--| Do actual fetch
 					Precursor
 					--| restore GC
@@ -193,7 +191,7 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
-		
+
 	start_values is
 			-- call 'start' on each value in cursor
 		local
@@ -206,7 +204,7 @@ feature {NONE} -- Implementation
 				index := index + 1
 			end
 		end
-		
+
 	forth_values is
 			-- call 'forth' on each value in cursor
 		local
@@ -218,9 +216,9 @@ feature {NONE} -- Implementation
 				cursor.item (index).forth
 				index := index + 1
 			end
-			
+
 		end
-		
+
 invariant
 	invariant_clause: True -- Your invariant here
 

@@ -28,7 +28,7 @@ creation
 
 feature {NONE} -- Initialization
 
-	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER) is
+	make (stmt : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]; index : INTEGER; max_name_length : INTEGER) is
 			-- Describe `index'th column of current result-set of `stmt', limiting the name length to `max_name_length'
 		require
 			stmt_prepared_or_executed : stmt /= Void and then stmt.is_prepared or stmt.is_executed

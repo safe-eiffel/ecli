@@ -13,22 +13,7 @@ class
 
 inherit
 
-	ECLI_VALUE_FACTORY
-		rename
-			make as make_value
-		export {NONE}
-			make_value
-		redefine
-			last_result,
-			create_double_value, 
-			create_real_value, 
-			create_integer_value, 
-			create_time_value, 
-			create_timestamp_value,
-			create_date_value,
-			create_char_value,
-			create_varchar_value
-		end
+	ECLI_ABSTRACT_VALUE_FACTORY [ECLI_ARRAYED_VALUE]
 			
 creation
 	make
@@ -41,11 +26,6 @@ feature {NONE} -- Initialization
 		ensure
 			row_count_set: row_count = a_row_count
 		end
-
-feature -- Access
-
-	last_result : ECLI_ARRAYED_VALUE
-			-- last result of `create_instance'
 
 feature -- Measurement
 

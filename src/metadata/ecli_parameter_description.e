@@ -26,7 +26,7 @@ creation
 
 feature {NONE} -- Initialization
 	
-	make (stmt : ECLI_STATEMENT; index : INTEGER) is
+	make (stmt : ECLI_ABSTRACT_STATEMENT [ECLI_VALUE,ECLI_VALUE]; index : INTEGER) is
 		do
 			stmt.set_status (
 				ecli_c_describe_parameter (stmt.handle,

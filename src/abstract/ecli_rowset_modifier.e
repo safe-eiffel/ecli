@@ -8,7 +8,7 @@ class
 	ECLI_ROWSET_MODIFIER
 
 inherit
-	ECLI_STATEMENT
+	ECLI_ABSTRACT_STATEMENT [ECLI_VALUE,ECLI_ARRAYED_VALUE]
 		rename
 			make as statement_make, open as statement_open, bind_parameters as statement_bind_parameters,
 			execute as statement_execute
@@ -16,8 +16,6 @@ inherit
 			{NONE} cursor, cursor_description, start, forth, go_after, off, set_cursor, close_cursor, 
 				describe_cursor, after, before, cursor_status, Cursor_after, Cursor_before, Cursor_in,
 				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql
-		redefine
-			parameter_anchor--, execute
 		end
 	
 	ECLI_ROWSET_CAPABLE
@@ -45,14 +43,9 @@ feature {NONE} -- Initialization
 			registered: session.is_registered_statement (Current)
 			valid: 	is_valid
 		end
-
-feature -- Access
-	
-	parameter_anchor : ECLI_ARRAYED_VALUE is do end
 	
 feature -- Measurement
 
---	bound_rows_count : INTEGER
 	
 feature -- Status report
 

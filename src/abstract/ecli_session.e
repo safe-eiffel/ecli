@@ -24,7 +24,7 @@ inherit
 
 	ECLI_SHARED_ENVIRONMENT
 
-	PAT_PUBLISHER [ECLI_STATEMENT]
+	PAT_PUBLISHER [ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]]
 		rename
 			subscribe as register_statement,
 			unsubscribe as unregister_statement,
@@ -33,7 +33,7 @@ inherit
 			impl_subscribers as impl_statements,
 			count as statements_count
 		export
-			{ECLI_STATEMENT}
+			{ECLI_ABSTRACT_STATEMENT}
 				register_statement,
 				unregister_statement,
 				is_registered_statement

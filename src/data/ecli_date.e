@@ -32,10 +32,13 @@ feature {NONE} -- Initialization
 		require
 			month: a_month >= 1 and a_month <= 12
 			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
+		local
+			date : DT_DATE
 		do
 			allocate_buffer
 			set (a_year, a_month, a_day)
-			create impl_item.make (a_year,a_month,a_day)
+			create date.make (a_year,a_month,a_day)
+			impl_item := date
 		ensure
 			year_set: year = a_year
 			month_set: month = a_month

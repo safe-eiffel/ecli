@@ -267,9 +267,9 @@ feature {NONE} -- Implementation
 			Result := ecli_c_value_get_length_indicator_pointer (buffer)
 		end
 
-feature {ECLI_STATEMENT} -- Basic operations
+feature {ECLI_ABSTRACT_STATEMENT} -- Basic operations
 
-	read_result (stmt : ECLI_STATEMENT; index : INTEGER) is
+	read_result (stmt : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]; index : INTEGER) is
 			-- read value from current result column 'index' of 'stmt'
 		require
 			stmt: stmt /= Void and then (stmt.is_executed and not stmt.off)
@@ -285,7 +285,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 				)
 		end
 
-	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_result  (stmt : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]; index: INTEGER) is
 		require
 			stmt: stmt /= Void 
 			positive_index: index > 0
@@ -300,7 +300,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 				)
 		end
 		
-	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_parameter (stmt : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]; index: INTEGER) is
 			-- bind this value as parameter 'index' of 'stmt'
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0

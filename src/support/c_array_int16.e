@@ -9,10 +9,10 @@ class
 
 inherit
 	C_ARRAY [INTEGER]
-	
+
 creation
 	make
-			
+
 feature -- Access
 
 	item (index : INTEGER) : INTEGER is
@@ -23,24 +23,22 @@ feature -- Access
 			item_ptr := item_pointer (index)
 			Result := c_memory_short_to_integer (item_ptr)
 		end
-		
+
 feature -- Measurement
-	
+
 	item_size : INTEGER is do Result := 2 end
 
 feature -- Element change
 
-	put (value : like item; index : INTEGER) is
-			-- 
-		require
-			valid_index: index > 0 and index <= capacity
+	put (value : INTEGER; index : INTEGER) is
+			--
 		local
 			item_ptr : POINTER
 		do
 			item_ptr := item_pointer (index)
 			c_memory_copy (item_ptr, $value, item_size)
-		ensure
+		ensure then
 			item_set: item (index).is_equal (value)
 		end
-		
+
 end -- class C_ARRAY_INT16

@@ -49,7 +49,7 @@ feature -- Status setting
 
 feature -- Basic operations
 
-	parse (sql : STRING; statement : ECLI_STATEMENT) is
+	parse (sql : STRING; statement : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]) is
 			-- parse s, replacing every parameter by the ODBC/CLI marker '?'
 		local
 			index, sql_count : INTEGER

@@ -36,14 +36,14 @@ feature -- Basic operations
 	execute (text : STRING; context : ISQL_CONTEXT) is
 			-- execute a sql command
 		local
-			cursor : ECLI_ROW_CURSOR
+			cursor : ECLI_ABSTRACT_ROW_CURSOR[ECLI_VALUE,ECLI_VALUE]
 			after_first : BOOLEAN
-			a_statement : ECLI_STATEMENT
+			a_statement : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]
 		do
 			if context.session.is_bind_arrayed_results_capable then
 				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (context.session, text , 20)	
 			else
-				create cursor.make_prepared (context.session, text)
+				create {ECLI_ROW_CURSOR}cursor.make_prepared (context.session, text)
 			end
 			if cursor.is_ok then
 				if cursor.has_parameters then
@@ -94,7 +94,7 @@ feature {NONE} -- Implementation
 	
 	current_context : ISQL_CONTEXT
 	
-	set_parameters (stmt : ECLI_STATEMENT) is
+	set_parameters (stmt : ECLI_ABSTRACT_STATEMENT[ECLI_VALUE,ECLI_VALUE]) is
 		local
 			value : ECLI_VARCHAR
 			cursor : DS_HASH_TABLE_CURSOR[STRING,STRING]
@@ -122,14 +122,14 @@ feature {NONE} -- Implementation
 			Result.append_character ('%N')
 		end
 
-	print_error (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT) is
+	print_error (cursor : ECLI_STATUS; context : ISQL_CONTEXT) is
 		do
 			context.filter.begin_error
 			context.filter.put_error (sql_error (cursor)) 
 			context.filter.end_error			
 		end
 		
-	show_column_names (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT) is
+	show_column_names (cursor : ECLI_ABSTRACT_ROW_CURSOR[ECLI_VALUE,ECLI_VALUE]; context : ISQL_CONTEXT) is
 		local
 			i : INTEGER
 		do
@@ -146,7 +146,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	show_one_row (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT) is
+	show_one_row (cursor : ECLI_ABSTRACT_ROW_CURSOR[ECLI_VALUE,ECLI_VALUE]; context : ISQL_CONTEXT) is
 		require
 			cursor /= Void and then not cursor.off
 		local

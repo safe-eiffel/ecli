@@ -9,11 +9,11 @@ deferred class
 
 inherit
 	C_MEMORY
-	
+
 feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
-			-- 
+			--
 		require
 			valid_capacity: a_capacity > 0
 		do
@@ -22,7 +22,7 @@ feature {NONE} -- Initialization
 		ensure
 			capacity_set: capacity = a_capacity
 		end
-		
+
 feature -- Access
 
 	item (index : INTEGER) : G is
@@ -38,12 +38,12 @@ feature -- Measurement
 	capacity : INTEGER
 			-- capacity of array
 
-	count : INTEGER is 
+	count : INTEGER is
 			-- number of elements
-		do 
-			Result := capacity 
+		do
+			Result := capacity
 		end
-	
+
 	item_size : INTEGER is
 			-- size in bytes of an item
 		deferred
@@ -53,7 +53,7 @@ feature -- Measurement
 
 	lower : INTEGER is 1
 			-- lower index
-			
+
 	upper : INTEGER is
 			-- upper index
 		do
@@ -64,7 +64,7 @@ feature -- Measurement
 feature -- Element change
 
 	put (value : G; index : INTEGER) is
-			-- 
+			--
 		require
 			valid_index: index >= lower and index <= upper
 		deferred
@@ -75,12 +75,12 @@ feature -- Element change
 feature {NONE} -- Implementation
 
 	item_pointer (index : INTEGER) : POINTER is
-			-- 
+			--
 		do
 			Result := c_memory_pointer_plus (handle, (index - 1) * item_size)
 		end
-		
+
 invariant
 	invariant_clause: True -- Your invariant here
 
-end -- class C_ARRAY_INT16
+end -- class C_ARRAY
