@@ -37,7 +37,7 @@ feature -- Initialization
 			row_capacity := a_row_capacity
 			!!rowset_status.make (row_capacity)
 			row_cursor_make (a_session, a_definition)
-			create impl_row_count.make
+			make_row_count_capable
 		ensure
 			valid: is_valid
 			definition_set: definition = a_definition

@@ -3,12 +3,12 @@ PLATFORM=windows
 CFLAGS = -c -Ox -W3 -Zl -Id:\user\programs\ObjectTools\VisualEiffel\bin -I.
 OBJ = ecli_c.obj
 
-all:: ecli_c.lib
+all:: ecli_msc.lib
 
 .c.obj:
 	$(CC) $(CFLAGS) ..\..\C\$< 
 
-ecli_c.lib: $(OBJ) ..\..\C\ecli_c.h
+ecli_msc.lib: $(OBJ) ..\..\C\ecli_c.h
 	-del $@
 	lib /OUT:$@ $(OBJ)
 

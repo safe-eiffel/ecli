@@ -10,14 +10,20 @@ class
 inherit
 	
 	ANY
+		redefine
+			is_equal
+		end
+			
 	
 	ECLI_TRANSACTION_ISOLATION_CONSTANTS
 		export
 			{NONE} all
+		undefine
+			is_equal
 		end
 		
 creation
-	make
+	make, set_read_committed, set_read_uncommitted, set_repeatable_read, set_serializable
 	
 feature {NONE} -- Initialization
 
@@ -28,8 +34,10 @@ feature {NONE} -- Initialization
 		do
 			value := a_value
 		end
-		
+			
 feature -- Access
+
+	value : INTEGER
 
 feature -- Measurement
 
@@ -65,6 +73,38 @@ feature -- Cursor movement
 
 feature -- Element change
 
+	set_read_uncommitted is
+			-- 
+		do
+			value := Sql_transaction_read_uncommitted
+		ensure
+			definition: is_read_uncommitted
+		end
+
+	set_read_committed is
+			-- 
+		do
+			value := Sql_transaction_read_committed 
+		ensure
+			definition: is_read_committed
+		end
+
+	set_repeatable_read is
+			-- 
+		do
+			value := Sql_transaction_repeatable_read 
+		ensure
+			definition: is_repeatable_read
+		end
+
+	set_serializable is
+			-- 
+		do
+			value := Sql_transaction_serializable 
+		ensure
+			definition: is_serializable
+		end
+
 feature -- Removal
 
 feature -- Resizing
@@ -82,11 +122,15 @@ feature -- Basic operations
 feature -- Obsolete
 
 feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-	value : INTEGER
 	
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			-- 
+		do
+			Result := (value = other.value)
+		end
+		
 invariant
 	invariant_clause: True -- Your invariant here
 

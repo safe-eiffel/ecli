@@ -153,12 +153,6 @@ feature {NONE} -- Implementation
 			io.put_string (stmt.diagnostic_message)
 			io.put_character ('%N')
 		end
---
---			
---	formatting_buffer : MESSAGE_BUFFER is
---		once
---			!!Result.make (1000)
---		end
 		
 end -- class TEST_ROWSET
 --

@@ -50,7 +50,13 @@ feature {NONE} -- implementation
 		end
 		
 	impl_row_count : XS_C_INT32
-	
+
+	make_row_count_capable is
+			-- 
+		do
+			create impl_row_count.make
+		end
+		
 invariant
 	row_capacity_valid: row_capacity >= 1
 	row_count_valid: row_count <= row_capacity

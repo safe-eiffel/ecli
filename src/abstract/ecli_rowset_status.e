@@ -44,12 +44,6 @@ feature -- Status report
 
 feature -- Conversion
 
-	to_external : POINTER is
-			--
-		do
-			Result := handle
-		end
-
 feature {NONE} -- Implementation
 
 invariant

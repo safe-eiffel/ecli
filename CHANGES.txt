@@ -1,4 +1,8 @@
 2003-05-05
+!!!	* ECLI_VALUE.as_string now *replaces* ECLI_VALUE.to_string to ensure .NET compatibility
+	* Transaction isolation read/write implemented by 
+	  ECLI_SESSION.transaction_isolation and ECLI_SESSION.set_transaction_isolation
+	* ECLI_TIMESTAMP.decimal_digits is now 0, unless specifically set through ECLI_TIMESTAMP.set_decimal_digits
 	* Prepared migration of ECLI to .NET : created support for external values
 	  with classes XS_C_*; This prevents using the '$' operator.
 	* Query assistant heavily reworked, still in alpha state.
@@ -12,7 +16,7 @@
 
 	* clisql now is a real command line interactive sql, useful in production environments
 	
-	* ECLI_VALUE and its heirs have been revisited.  ECLI_GENERIC_VALUE [G] is a proper descendant
+!!!	* ECLI_VALUE and its heirs have been revisited.  ECLI_GENERIC_VALUE [G] is a proper descendant
 	  with feature 'item' that can be expanded or not.  If 'item' is a reference, it always is the
 	  same reference -> beware of aliasing problems.
 	                  **** WARNING **** 

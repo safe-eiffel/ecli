@@ -1,19 +1,20 @@
 CC = cl
 ISE_PLATFORM=windows
 CFLAGS = -c -Ox -W3 -I$(ISE_EIFFEL)\studio\spec\$(ISE_PLATFORM)\include -I.
-OBJ = ecli_c.obj
+OBJ = ecli_msc.obj
 
-all:: ecli_var clean ecli_c.lib
+all:: ecli_var clean ecli_msc.lib
 
 .c.obj:
 	$(CC) $(CFLAGS) ..\..\C\$< 
 
-ecli_c.lib: $(OBJ) ..\..\C\ecli_c.h
+ecli_msc.lib: $(OBJ) ..\..\C\ecli_c.h
 	-del $@
 	lib /OUT:$@ $(OBJ)
 
-ecli_c.obj: ecli_var ..\..\C\ecli_c.c ..\..\C\ecli_c.h
+ecli_msc.obj: ecli_var ..\..\C\ecli_c.c ..\..\C\ecli_c.h
 	$(CC) $(CFLAGS) ..\..\C\ecli_c.c
+	-rename ecli_c.obj ecli_msc.obj
 
 clean:
 	-del *.obj
@@ -25,4 +26,7 @@ ecli_var:
 ! ENDIF
 ! IFNDEF ISE_EIFFEL
 !    ERROR ISE_EIFFEL environment variable not set ! Set it first, then make the build.
+! ENDIF
+! IFNDEF ISE_EIFFEL
+!    ERROR ISE_EIFFEL environment variable not set ! Set it first, then make the build. Valid values are windows, linux.
 ! ENDIF

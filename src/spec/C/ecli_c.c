@@ -45,12 +45,37 @@ EIF_INTEGER ecli_c_set_integer_statement_attribute (EIF_POINTER StatementHandle,
 				(SQLHSTMT)		StatementHandle,
 				(SQLINTEGER)	Attribute,
 				(SQLPOINTER)	ValuePtr,
-				(SQLINTEGER)	0);
+				(SQLINTEGER)	SQL_IS_UINTEGER);
 }
 
 EIF_INTEGER ecli_c_set_pointer_statement_attribute (EIF_POINTER StatementHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr, EIF_INTEGER StringLength) {
 	return (EIF_INTEGER) SQLSetStmtAttr (
 				(SQLHSTMT)		StatementHandle,
+				(SQLINTEGER)	Attribute,
+				(SQLPOINTER)	ValuePtr,
+				(SQLINTEGER)	StringLength);
+}
+
+EIF_INTEGER ecli_c_set_integer_connection_attribute (EIF_POINTER ConnectionHandle, EIF_INTEGER Attribute, EIF_INTEGER ValuePtr) {
+	return (EIF_INTEGER) SQLSetConnectAttr (
+				(SQLHDBC)		ConnectionHandle,
+				(SQLINTEGER)	Attribute,
+				(SQLPOINTER)	ValuePtr,
+				(SQLINTEGER)	SQL_IS_UINTEGER);
+}
+
+EIF_INTEGER ecli_c_get_integer_connection_attribute (EIF_POINTER ConnectionHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr) {
+	return (EIF_INTEGER) SQLGetConnectAttr (
+				(SQLHDBC)		ConnectionHandle,
+				(SQLINTEGER)	Attribute,
+				(SQLPOINTER)	ValuePtr,
+				(SQLINTEGER)	SQL_IS_UINTEGER,
+				NULL);
+}
+
+EIF_INTEGER ecli_c_set_pointer_connection_attribute (EIF_POINTER ConnectionHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr, EIF_INTEGER StringLength) {
+	return (EIF_INTEGER) SQLSetConnectAttr (
+				(SQLHDBC)		ConnectionHandle,
 				(SQLINTEGER)	Attribute,
 				(SQLPOINTER)	ValuePtr,
 				(SQLINTEGER)	StringLength);
