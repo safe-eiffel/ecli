@@ -115,10 +115,6 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 			Result := ecli_c_value_get_length_indicator (buffer)
 		end
 
-feature -- Status setting
-
-feature -- Cursor movement
-
 feature -- Element change
 
 
@@ -138,10 +134,6 @@ feature -- Element change
 		ensure
 			null_value: is_null 
 		end
-
-feature -- Removal
-
-feature -- Resizing
 
 feature -- Transformation
 
