@@ -8,7 +8,11 @@ deferred class
 	ISQL_COMMAND
 
 inherit
+	
 	ANY
+		export
+			{ANY} all
+		end
 	
 	ECLI_STRING_ROUTINES
 		export {NONE} all

@@ -219,7 +219,7 @@ feature -- Element change
 			command_stream_assigned: command_stream = a_command_stream
 		end
 
-	set_output_file (a_file: LIKE OUTPUT_FILE) is
+	set_output_file (a_file: like OUTPUT_FILE) is
 			-- set `output_file' to `a_file'
 		require
 			a_file_not_void: a_file /= Void
