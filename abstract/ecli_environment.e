@@ -82,17 +82,15 @@ feature {NONE} -- Implementation
 
 	release_handle is
 			-- release environment handle
-		local
-			cursor : DS_LIST_CURSOR [ECLI_SESSION]
 		do
-			from
-				cursor := sessions.new_cursor
-				cursor.start
-			until
-				cursor.off
-			loop
-				cursor.item.environment_release (Current)
-				cursor.forth
+			-- | Do not use iterator here, since ECLI_SESSION.environment_release
+			-- | unsubscribes the session, thereby modifying the sessions list.
+			-- | Using an iterator would raise an precondition-exception.
+			from 
+			until 
+				sessions.is_empty 
+			loop 
+				sessions.first.environment_release (Current) 
 			end
 			-- | actual release of the handle.
 			set_status (ecli_c_free_environment (handle))
