@@ -60,6 +60,9 @@
   <li><a href="#ParameterizedStmts">Parameterized statements</a>
      </li>
     
+  <li><a href="#Tracing_">Tracing</a>
+    <br>
+  </li>
   <li><a href="#OptimizingforPerformance">Optimizing for         "performance"</a>
      </li>
     
@@ -95,9 +98,7 @@ has  implementations on other platforms like Unix and Linux. </p>
   
 <p>If you want a simple access to relational databases, ECLI is for you. It
 allows writing Eiffel database applications that have the following characteristics 
- : <br>
-    &nbsp; <br>
-    &nbsp; </p>
+ : &nbsp;</p>
   
 <table border="0" cellpadding="3" cellspacing="0" width="640">
         <tbody>
@@ -1247,8 +1248,92 @@ bound.</td>
           
         </tbody>       
       </table>
-    </center>
+      <br>
+      <br>
+      </center>
+      <div align="Left">
+      <h1>
+      <center></center>
+      <a name="Tracing_"></a>
+Tracing</h1>
+When your application goes wrong, it is desirable to determine "what is wrong".
+&nbsp;Is it the application logic ? &nbsp;Is it the SQL ?<br>
+When your application is slow : is it related to the application logic, or
+is it related to accessing data ?<br>
+      <br>
+Tracing issued SQL statements can help a lot in this respect.<br>
+      <br>
+Tracing occurs at the ECLI_SESSION level. &nbsp;You have to provide an instance
+of ECLI_TRACER, that takes care of the tracing process.<br>
+      <br>
+ECLI_SESSION features related to tracing :<br>
+      <br>
+      <table border="1" cellpadding="5" cellspacing="0" width="640" align="Center">
+        <tbody>
+          <tr>
+            <td valign="Top" width="29%"><b>Commands</b></td>
+            <td valign="Top" width="71%"><b>Description</b></td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>set_tracer</i></td>
+            <td valign="Top" width="71%">Sets the instance of ECLI_TRACER
+used for tracing.</td>
+          </tr>
+          <tr>
+            <td width="29%"><i>disable_tracing</i></td>
+            <td width="71%">Disable tracing. &nbsp;Previous tracer reference
+is lost.<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><b>Queries</b></td>
+            <td valign="Top" width="71%"><b>description</b></td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>is_tracing</i></td>
+            <td valign="Top" width="71%">True when the session has a tracer
+object.</td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>tracer</i></td>
+            <td valign="Top" width="71%">Current tracer object</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+ECLI_TRACER features :<br>
+      <br>
+      <table border="1" cellpadding="5" cellspacing="0" width="640" align="Center">
+        <tbody>
+          <tr>
+            <td valign="Top" width="29%"><b>Commands</b></td>
+            <td valign="Top" width="71%"><b>Description</b></td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>make</i></td>
+            <td valign="Top" width="71%">Creation feature. &nbsp;Needs an
+IO_MEDIUM instance that <i>is_open_write</i>.</td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><b>Queries</b></td>
+            <td valign="Top" width="71%"><b>description</b></td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>medium</i></td>
+            <td valign="Top" width="71%">Medium written by the tracer.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+The trace file can be read and executed by the <i>isql</i> sample application.
+&nbsp;For example, let <i>/tmp/trace.sql</i> be the tracefile; the batch
+of SQL statements can be executed using this command : <i>isql &lt;datasource&gt;
+&lt;username&gt; &lt;password&gt; /tmp/trace.sql</i>.<br>
+      <br>
+      <center>    </center>
          </div>
+      </div>
         
       <h1><a name="OptimizingforPerformance"></a>
    Optimizing for "performance"</h1>
