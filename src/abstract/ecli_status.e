@@ -29,10 +29,6 @@ inherit
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
 		end
-
---	XS_C_EXTERNAL_TOOLS
---		export {NONE} all
---		end
 		
 feature -- Access
 
@@ -167,8 +163,16 @@ feature {NONE} -- Implementation
 		do
 			if need_diagnostics then
 				--impl_cli_state := STRING_.make_buffer (6)
-				if impl_cli_state = Void then create impl_cli_state.make (6) end
-				if impl_error_buffer = Void then create impl_error_buffer.make (512) end -- SQL_MAX_MSG_LEN
+				if impl_cli_state = Void then 
+					create impl_cli_state.make (6) 
+				else
+					impl_cli_state.wipe_out
+				end
+				if impl_error_buffer = Void then 
+					create impl_error_buffer.make (512) -- SQL_MAX_MSG_LEN
+				else
+					impl_error_buffer.wipe_out
+				end
 				if impl_native_code = Void then create impl_native_code.make end
 				if impl_buffer_length_indicator = Void then create impl_buffer_length_indicator.make end
 				create impl_error_message.make(0)
