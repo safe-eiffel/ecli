@@ -1,7 +1,0 @@
-./
-./abstract/
-./data/
-./pattern/
-./spec/
-./spec/se/
-${GOBO}/library/loadpath.se
