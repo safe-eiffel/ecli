@@ -72,6 +72,8 @@ feature -- Access
 	statement : ECLI_STATEMENT
 		
 	error_message : STRING
+
+	rowset_cursor: ECLI_ROWSET_CURSOR
 	
 feature -- Status Report
 
