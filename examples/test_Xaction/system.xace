@@ -14,22 +14,16 @@
 	<root class="TRANSACT" creation="make"/>
 
 	<option unless="${DEBUG}">
-		<option name="require" value="False"/>
-		<option name="ensure" value="False"/>
-		<option name="invariant" value="False"/>
-		<option name="loop" value="False"/>
-		<option name="check" value="False"/>
-		<option name="optimize" value="True"/>
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
 	<option if="${DEBUG}">
-		<option name="require" value="True"/>
-		<option name="ensure" value="True"/>
-		<option name="invariant" value="True"/>
-		<option name="loop" value="True"/>
-		<option name="check" value="True"/>
-		<option name="optimize" value="False"/>
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
 	</option>
-	<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
 
 	<cluster name="transact" location="${ECLI}/examples/test_Xaction"/>
 

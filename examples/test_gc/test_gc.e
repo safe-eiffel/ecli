@@ -15,8 +15,6 @@ feature -- Initialization
 
 	make is
 			-- test_gc			
-		local
-			ex : expanded EXCEPTIONS
 		do
 			-- session opening
 			if args.argument_count < 3 then
@@ -35,8 +33,6 @@ feature -- Initialization
 				create statement.make (session)
 				test_gc
 			end;
-		rescue
-			print (ex.exception_trace)
 		end
 	
 	test_gc is

@@ -108,7 +108,7 @@ feature -- Basic operations
 			valid_parameters_count: valid_parameters_count (a_count)
 		do
 			execute_count (a_count)
-		ensure then
+		ensure
 			command: not has_results
 		end
 
@@ -149,7 +149,7 @@ feature {NONE} -- Implementation
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, a_count))
 			statement_execute
 			fill_status_array
-		ensure then
+		ensure
 			command: not has_results
 		end
 

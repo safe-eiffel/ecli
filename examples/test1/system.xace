@@ -21,7 +21,9 @@
 		<option name="assertion" value="all"/>
 		<option name="finalize" value="false"/>
 	</option>
-	<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
 
 	<cluster name="test1" location="${ECLI}/examples/test1"/>
 
