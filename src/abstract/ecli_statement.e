@@ -307,8 +307,8 @@ feature -- Cursor movement
 			fetch_next_row
 		end
 
-	close_cursor is
-			-- close cursor
+	close_cursor, go_after is
+			-- go after the last result row
 		require
 			valid_statement: is_valid
 			valid_state: is_executed and not after
