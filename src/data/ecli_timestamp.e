@@ -18,7 +18,8 @@ inherit
 			make_first, item, set_item, 
 			set_date, octet_size,
 			c_type_code, column_precision, db_type_code, 
-			decimal_digits, display_size, out, is_equal
+			decimal_digits, display_size, out, is_equal,
+			to_timestamp
 		select
 		end
 
@@ -206,6 +207,11 @@ feature -- Conversion
 			end
 		end
 			
+	to_timestamp : DT_DATE_TIME is
+		do
+			Result := item
+		end
+		
 feature -- Duplication
 
 feature -- Miscellaneous

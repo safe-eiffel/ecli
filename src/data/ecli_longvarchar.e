@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_VALUE
 		redefine
-			item, set_item,convertible_to_string, out
+			item, set_item,convertible_to_string, to_string, out
 		end
 
 creation
@@ -63,8 +63,10 @@ feature -- Measurement
 
 feature -- Status report
 
-	convertible_to_string : BOOLEAN is True
-
+	convertible_to_string : BOOLEAN is 
+		do
+			Result := True
+		end
 
 	c_type_code: INTEGER is
 		once
@@ -129,6 +131,12 @@ feature -- Transformation
 
 feature -- Conversion
 
+	to_string : STRING is
+			-- Conversion to STRING value
+		do
+			Result := item
+		end
+		
 feature -- Duplication
 
 feature -- Miscellaneous

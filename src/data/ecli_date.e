@@ -14,7 +14,8 @@ inherit
 		export
 		undefine
 		redefine
-			item, set_item, out, is_equal
+			item, set_item, out, is_equal, convertible_to_date, to_date,
+			convertible_to_timestamp, to_timestamp
 		select
 		end
 
@@ -87,6 +88,17 @@ feature -- Measurement
 
 feature -- Status report
 
+	convertible_to_date : BOOLEAN is 
+		do
+			Result := True
+		end
+	
+	convertible_to_timestamp : BOOLEAN is
+			-- is Current convertible to timestamp ?
+		do 
+			Result := True
+		end
+		
 	c_type_code: INTEGER is
 		once
 			Result := sql_c_type_date
@@ -162,6 +174,18 @@ feature -- Conversion
 			end
 		end
 
+	to_date : DT_DATE is
+			-- Current converted to date
+		do
+			Result := item
+		end
+		
+	to_timestamp : DT_DATE_TIME is
+			-- Current converted to timestamp
+		do
+			!!Result.make(year, month, day, 0, 0, 0)
+		end
+		
 feature -- Basic operations
 
 	is_equal (other : like Current) : BOOLEAN is
