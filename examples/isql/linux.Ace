@@ -44,14 +44,18 @@ cluster
 
 		-- Gobo Eiffel Structure Library
 	ds_container:		"$GOBO/library/structure/container";
-	ds_cursor:			"$GOBO/library/structure/cursor";
 	ds_dispenser:		"$GOBO/library/structure/dispenser";
 	ds_list:			"$GOBO/library/structure/list";
 	ds_sort:			"$GOBO/library/structure/sort";
 	ds_support:			"$GOBO/library/structure/support";
 	ds_table:			"$GOBO/library/structure/table";
 
-
+		-- Gobo Eiffel Time Library 
+	dt_clock:			"$GOBO/library/time/clock"; 
+	dt_date:			"$GOBO/library/time/date"; 
+	dt_spec:			"$GOBO/library/time/spec/ise"; 
+	dt_time_zone:		"$GOBO/library/time/time_zone"; 
+ 
 	kernel:			"$EIFFEL4/library/base/kernel";
 	support:		"$EIFFEL4/library/base/support";
 	access:			"$EIFFEL4/library/base/structures/access";
@@ -68,5 +72,9 @@ cluster
 	tree:			"$EIFFEL4/library/base/structures/tree";
 
 external
+	include_path: 
+		"$GOBO/library/kernel/include", 
+		"$GOBO/library/time/include";
+
 	object: "-lodbc", "$(ECLI)/src/spec/Ise/linux/libecli_c.a";
 end

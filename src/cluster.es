@@ -29,30 +29,26 @@ Mask=spec/ve/*.e
 
 [ECLI.Bindings]
 Clusters=ECLI.Clusters
+Systems=ECLI.Systems
 
 [ECLI.Clusters]
 VE.Kernel=
-VE.Pool=
-VE.gArgs=
-VE.WinLib=
-VE.TimeDate=
 
 [VE.Kernel]
 Name=Kernel
 Path=$VE_Lib/Kernel
 
-[VE.Pool]
-Name=Pool
-Path=$VE_LIB/Misc/Pool
+[ECLI.Systems]
+ECLI.System=
 
-[VE.gArgs]
-Name=gArgs
-Path=$VE_LIB/Tools/gArgs
+[ECLI.System]
+Link_options=ECLI.Link_options.$VE_OS
 
-[VE.WinLib]
-Name=WinLib
-Path=$VE_LIB/WinLibs/WinLib
+[ECLI.Link_options.Win32]
+$ECLI\src\spec\ve\windows\ecli_c.lib=
 
-[VE.TimeDate]
-Name=TimeDate
-Path=$VE_LIB/TimeDate
+[ECLI.Link_options.Linux]
+-L$ECLI/src/spec/ve/linux=
+-lecli_c=
+-lodbc=
+
