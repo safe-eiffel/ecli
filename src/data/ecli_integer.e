@@ -16,14 +16,7 @@ inherit
 	ECLI_GENERIC_VALUE [INTEGER]
 		redefine
 			item, 
-			set_item, 
-			out--,
---			as_integer, 
---			convertible_as_integer,
---			as_real, 
---			convertible_as_real,
---			as_double, 
---			convertible_as_double
+			out
 		end
 
 	XS_C_MEMORY_ROUTINES

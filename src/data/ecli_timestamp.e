@@ -16,7 +16,7 @@ inherit
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
 			create_impl_item, impl_item, is_equal, out, 
-			set_item, item
+			item
 		end
 		
 creation

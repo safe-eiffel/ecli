@@ -15,10 +15,7 @@ inherit
 
 	ECLI_GENERIC_VALUE [DOUBLE]
 		redefine
-			item, set_item, out --,
---			as_double, convertible_as_double, 
---			as_integer, convertible_as_integer,
---			as_real, convertible_as_real
+			item, out 
 		end
 
 	XS_C_MEMORY_ROUTINES

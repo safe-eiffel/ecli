@@ -35,12 +35,12 @@ feature -- Element change
 	set_item (value: G) is
 			-- Set `item' with content of `value'
 		require
-			value_not_void: value /= Void
-		do
+			value_valid: valid_item (value)
+		deferred
 		ensure
 			item_set: equal (item, formatted (value))
 			not_null: not is_null
-		end;
+		end
 
 feature -- Conversion
 
@@ -78,6 +78,16 @@ feature -- Comparison
 			do
 				Result := (is_null and then other.is_null) or else (item.is_equal (other.item))
 			end
+
+feature -- Contract support
+
+	valid_item (value : G) : BOOLEAN is
+			-- Is `value' valid as an item ?
+		do
+			Result := value /= Void
+		ensure
+			definition: Result implies value /= Void
+		end
 		
 feature {NONE} -- Implementation
 

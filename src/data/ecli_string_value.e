@@ -2,7 +2,7 @@ indexing
 
 	description:
 	
-			"Objects that ..."
+			"Buffers for exchanging string-based values between application and database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
@@ -15,7 +15,7 @@ inherit
 
 	ECLI_GENERIC_VALUE[STRING]
 		redefine
-			item, set_item,
+			item,
 			out, 
 			impl_item
 		end

@@ -17,7 +17,7 @@ inherit
 		redefine
 --			convertible_as_time, as_time, 
 			is_equal, out, 
-			set_item, item,
+			item,
 			create_impl_item, impl_item
 		end
 		

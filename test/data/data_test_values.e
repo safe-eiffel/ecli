@@ -15,6 +15,8 @@ feature -- Access
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
 		
+	string_binary : STRING is "%/000/%/001/%/002/%/003/%/004/%/005/%/006/%/255/"
+	
 feature -- Basic operations
 
 	test_char is
@@ -76,17 +78,17 @@ feature -- Basic operations
 		local
 			v, z : ECLI_BINARY
 		do
---			create v.make (10)
---			assert ("is_null", v.is_null)
---			assert_equal ("capacity", 10, v.capacity)
---			v.set_null
---			assert ("set_null", v.is_null)
---			v.set_item (string_foo)
---			assert_char_equal ("set_item",string_foo,v.item)
---			
---			create z.make (10)
---			z.copy (v)
---			assert_equal("copy", v, z)
+			create v.make (8)
+			assert ("is_null", v.is_null)
+			assert_equal ("capacity", 8, v.capacity)
+			v.set_null
+			assert ("set_null", v.is_null)
+			v.set_item (string_binary)
+			assert_char_equal ("set_item",string_binary,v.item)
+			
+			create z.make (8)
+			z.copy (v)
+			assert_equal("copy", v, z)
 		end
 
 	test_varbinary is

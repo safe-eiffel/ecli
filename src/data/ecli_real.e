@@ -15,7 +15,7 @@ inherit
 
 	ECLI_GENERIC_VALUE [REAL]
 		redefine
-			item, set_item, out
+			item, out
 		end
 
 	XS_C_MEMORY_ROUTINES
