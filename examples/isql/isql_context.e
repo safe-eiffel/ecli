@@ -25,7 +25,7 @@ feature {NONE} -- Initialization
 			output_file := an_output_file
 			create variables.make (10)
 			commands := a_commands
-			create {ISQL_CONFIGURABLE_TEXT_FILTER} filter.make (Current)
+			create_filter
 			filter.set_output_file (output_file)
 			create history.make
 			sql_command := an_sql_command
@@ -351,7 +351,14 @@ feature -- Constants
 	var_column_separator : STRING is "_column_separator"
 	var_editor : STRING is "_editor"
 	var_no_heading : STRING is "_no_heading"
-	
+
+feature {NONE} -- Implementation
+
+	create_filter is
+		do
+			create {ISQL_CONFIGURABLE_TEXT_FILTER} filter.make (Current)			
+		end
+		
 invariant
 
 	output_file_not_void: output_file /= Void

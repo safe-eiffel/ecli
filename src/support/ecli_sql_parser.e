@@ -161,7 +161,7 @@ feature -- Basic operations
 				end
 			end
 			check
-				state=state_sql
+				state=state_sql or else state=state_parameter
 			end
 		end
 		

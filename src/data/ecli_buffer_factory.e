@@ -108,7 +108,7 @@ feature -- Basic operations
 			same_buffers_count_as_cursor_description: last_buffers.count = cursor_description.count
 			same_buffers_lower_as_cursor_count: last_buffers.lower = 1
 			last_index_table_created: last_index_table /= Void and then last_index_table.count = cursor_description.count
-			no_void_in_buffers: not Any_array_.has (Void, last_buffers)			
+			no_void_in_buffers: not Any_array_.has (last_buffers,Void)			
 		end
 
 feature -- Obsolete

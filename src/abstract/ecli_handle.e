@@ -19,6 +19,8 @@ deferred class
 inherit
 
 	MEMORY
+		export
+			{NONE} all
 		redefine
 			dispose
 		end

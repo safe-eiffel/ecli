@@ -1,0 +1,33 @@
+# ecli_gcc.lib
+# Set SMARTEIFFELDIR to install dir of SmartEiffel
+# Set ECLI to install dir of ecli
+# Marcelo Modolo
+
+SMARTEIFFELDIR = D:/SmartEiffel
+ECLI = C:/ecli
+
+CC   = gcc.exe
+OBJ  = ecli_c.o
+LINKOBJ  = ecli_c.o
+
+INCS =  -I"$(ECLI)/ecli/src/spec/se/windows"  \
+        -I"$(ECLI)/ecli/src/spec/c"  \
+        -I"$(SMARTEIFFELDIR)/sys/runtime/c" \
+        -I.
+
+BIN  = ecli_gcc.lib
+CFLAGS = $(INCS) -O2
+
+.PHONY: all clean clean-custom
+
+all: $(BIN)
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(LINKOBJ)
+	ar r $(BIN) $(LINKOBJ)
+	ranlib $(BIN)
+
+ecli_c.o: ../../C/ecli_c.c
+	$(CC) -c ../../C/ecli_c.c -o ecli_c.o $(CFLAGS)

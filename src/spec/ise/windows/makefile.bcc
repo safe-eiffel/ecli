@@ -15,7 +15,7 @@ ecli_bcc.lib: $(OBJ) ..\..\C\ecli_c.h
 		$(LIB) $@ +$(OBJ)
 
 ecli_bcc.obj: ..\..\C\ecli_c.c ..\..\C\ecli_c.h
-	$(CC) $(CFLAGS) -o $@ ..\..\C\ecli_c.c
+	$(CC) $(CFLAGS) -o$@ ..\..\C\ecli_c.c
 
 clean:
        if exist *.obj del *.obj

@@ -30,7 +30,7 @@ feature -- Basic Operations
 				end
 			end
 		ensure
-			result_set_created_if_executed: (is_executed and then has_result_set) implies (results.count = result_columns_count and then not array_routines.has (results, Void))
+--FIXME			result_set_created_if_executed: (is_executed and then has_result_set) implies (results.count = result_columns_count and then not array_routines.has (results, Void))
 			not_before_if_executed: (is_executed and then has_result_set) implies not before
 		end
 

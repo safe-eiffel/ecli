@@ -66,6 +66,8 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 	SAFE_KERNEL	-  should point to the 'kernel' directory; this SAFE_KERNEL provides
 	
 	SMARTEIFFELDIR	- Installation directory of SmartEiffel
+	ECLI_C_BCCDIR	- For users of borland compiler, this variable should point to the root path of the
+			  borland compiler tools; it helps finding the odbc32.lib library
 	
   2.1. Building the C libraries.
   

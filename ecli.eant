@@ -18,7 +18,6 @@
 		</parent>
 	</inherit>
 
-
 <!-- Implementation -->
 
 	<target name="init">
@@ -35,7 +34,7 @@
 		<echo message="WARNING: SMARTEIFFELDIR variable not set" unless="${SMARTEIFFELDIR}" if="${GOBO_EIFFEL}=se"/>
 	</target>
 
-	<target name="prepare_compile" depend="init">
+	<target unless="${GOBO_OS}=windows" name="prepare_compile" depend="init">
 		<description>
 			Prepare compilation : check for C libraries, and compile them if necessary
 		</description>
@@ -43,14 +42,32 @@
 		<!-- Check for C libraries -->
 		
 		<!-- Compile them if necessary -->
+                <exec executable="make"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}"/>
+                <exec executable="make"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}"/>
+        </target>
 
-		<exec executable="nmake -f makefile.mak" dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
-		<exec executable="make -f makefile.bcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
-		<exec executable="make"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
-		<exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>
-	</target>
+	<target if="${GOBO_OS}=windows" name="prepare_compile_windows" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- safe kernel lib Compile them if necessary -->
+                <exec executable="nmake -f makefile.mak" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+                <exec executable="make -f makefile.bcc"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+                <exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>                
+                <exec executable="make -f Makefile.gcc"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
+                
+		<!-- Compile them if necessary -->
+                <exec executable="nmake -f makefile.mak" dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+                <exec executable="make -f makefile.bcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+                <exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>                
+                <exec executable="make -f Makefile.gcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
 
-	<target name="compile_libs" depend="prepare_compile">
+        </target>
+
+        <target name="compile_libs" depend="prepare_compile, prepare_compile_windows">
 	</target>
 	
 	<target name="help">
