@@ -1,0 +1,40 @@
+Project Goanna Library
+----------------------
+
+Eiffel Code Generator
+---------------------
+
+This library provides a simple framework for generating Eiffel class texts
+using an object representation of the class with the ability to stream
+representative Eiffel code.
+
+
+Usage
+-----
+
+Create instances of Eiffel structures starting with an EIFFEL_CLASS and
+any required EIFFEL_FEATURE_GROUPS, EIFFEL_FEATURES and so on. The class text
+of the structure can then be written to any IO_MEDIUM by calling the 'write'
+operation on the EIFFEL_CLASS.
+
+For example, to create a class with one feature 'test' we could write:
+
+----------------------------------------------------------------------
+build_class is
+	local
+		my_class: EIFFEL_CLASS
+		group: EIFFEL_FEATURE_GROUP
+		feat: EIFFEL_ROUTINE
+	do
+		create my_class.make ("MY_CLASS")
+		create group.make ("Basic Operations")
+		my_class.add_feature_group (group)
+		create feat.make ("test")
+		feat.add_body_line ("print (%"Hello there.%")")
+		group.add_feature (feat)
+		-- write the structure to stdout
+		my_class.write (io.output)
+	end
+----------------------------------------------------------------------
+
+

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<cluster name="codegen" location="${GOANNA}/library/utility/codegen">
+
+	<description>
+		description: "Cluster definition for Goanna Eiffel code generation classes"
+		project: "Project Goanna [http://sourceforge.net/projects/goanna]"
+		date: "$Date$"
+		revision: "$Revision$"
+		author: "Glenn Maughan [glennmaughan@optushome.com.au]"
+		copyright: "Copyright (c) 2001 Glenn Maughan and others"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)."
+		thanks: "Modified version of GOBO cluster.xace files"
+	</description>
+
+</cluster>
