@@ -164,7 +164,7 @@ feature {NONE} -- Implementation
 	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- to be redefined in descendant classes
 		do
-			set_status (ecli_c_environment_error (Shared_environment.handle, record_index, state, native_error, message, buffer_length, length_indicator))
+			Result := ecli_c_environment_error (Shared_environment.handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
 
 	do_fetch (direction : INTEGER) is
