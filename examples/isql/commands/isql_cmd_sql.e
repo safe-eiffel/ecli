@@ -43,7 +43,7 @@ feature -- Basic operations
 --			if context.session.is_bind_arrayed_results_capable then
 --				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (context.session, text , 20)	
 --			else
-				create cursor.make_prepared (context.session, text)
+				create cursor.make (context.session, text)
 --			end
 			if cursor.is_ok then
 				if cursor.has_parameters then
@@ -54,10 +54,10 @@ feature -- Basic operations
 						end
 					end
 				end
-				if cursor.is_prepared then 
+				cursor.start
+				if cursor.is_executed then 
 					if cursor.has_result_set then
 						from 
-							cursor.start
 							if cursor.has_information_message then
 								print_error (cursor, context)
 							end
