@@ -30,13 +30,13 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
-
 		
 	session : ECLI_SESSION
 			-- session on which Current gives metadata information
 
 	tables : ARRAY [ECLI_TABLE] is
 			-- tables defined in curret session repository
+			-- they are cached, unless reset has been called
 		local
 			cursor : ECLI_TABLES_CURSOR
 			item : ECLI_TABLE
@@ -64,11 +64,12 @@ feature -- Access
 		end
 		
 	procedures : ARRAY [ECLI_PROCEDURE] is
-			-- tables defined in curret session repository
+			-- procedures defined in curret session repository
+			-- they are cached, unless reset has been called
 		local
 			cursor : ECLI_PROCEDURES_CURSOR
 		do
-			if tables_ = Void then
+			if procedures_ = Void then
 				!!cursor.make_all_procedures (session)
 				!!procedures_.make (1, 0)
 				if cursor.is_ok then
@@ -77,7 +78,7 @@ feature -- Access
 					until
 						cursor.off
 					loop
-						procedures_.force (cursor.item, tables_.count+1)
+						procedures_.force (cursor.item, procedures_.count+1)
 						cursor.forth
 					end
 				else
@@ -91,9 +92,9 @@ feature -- Access
 
 	types : DS_HASH_TABLE[ECLI_SQL_TYPE, INTEGER] is
 			-- types supported by current session repository
+			-- they are cached, unless reset has been called
 		local
 			cursor : ECLI_SQL_TYPES_CURSOR
-			index : INTEGER
 		do
 			if types_ = Void then
 				!!types_.make (10)
@@ -124,6 +125,15 @@ feature -- Cursor movement
 		
 feature -- Element change
 
+	reset is
+			-- force reading information from server
+		do
+			tables_ := Void
+			procedures_ := Void
+			types_ := Void
+			
+		end
+		
 feature -- Removal
 
 feature -- Resizing

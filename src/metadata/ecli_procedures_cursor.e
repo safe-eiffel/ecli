@@ -30,7 +30,7 @@ feature {NONE} -- Initialization
 			session_opened: a_session /= Void and then a_session.is_connected
 		do
 			make (a_session)
-			set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
+--			set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
 			set_status (ecli_c_get_procedures ( handle, 
 				default_pointer, 0, default_pointer, 0, default_pointer, 0))
 			if is_ok then
@@ -38,13 +38,13 @@ feature {NONE} -- Initialization
 				is_executed := True
 				if has_results then
 					set_cursor_before
+					create_buffers
 				else
 					set_cursor_after
 				end
 	         else
 	         	impl_result_column_count := 0
 			end
-			create_buffers
 		ensure
 			executed: is_ok implies is_executed
 		end
@@ -56,7 +56,6 @@ feature -- Access
 		do
 			Result := impl_item
 		end
-		
 	
 feature -- Cursor Movement
 
@@ -66,19 +65,19 @@ feature -- Cursor Movement
 				create_buffers
 			end
 			Precursor
---			if not off then
---				!!impl_item.make (Current)
---			end	
+			if not off then
+				!!impl_item.make (Current)
+			end	
 		end
 		
 	forth is
 		do
 			Precursor
---			if not off then
---				!!impl_item.make (Current)
---			else
---				impl_item := Void				
---			end
+			if not off then
+				!!impl_item.make (Current)
+			else
+				impl_item := Void				
+			end
 		end
 
 feature {ECLI_PROCEDURE} -- Access
