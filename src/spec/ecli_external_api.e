@@ -167,7 +167,16 @@ feature {NONE} -- Implementation
 	ecli_c_transaction_capable (handle : POINTER;  capable : POINTER) : INTEGER is
 		external "C"
 		end
-		
+
+	ecli_c_sql_get_functions (handle : POINTER; function : INTEGER; supported : POINTER) : INTEGER is
+		external "C"
+		end
+
+--ConnectionHandle	:	SQLHDBC;
+--		   InfoType	:	INTEGER ; -- SQLUSMALLINT
+--		 InfoValue	:	SQLPOINTER;
+--		   BufferLength	:	INTEGER ; -- SQLSMALLINT
+--		 StringLength	:	POINTER -- *POINTER -- *SQLSMALLINT			
 feature {NONE} -- Value handling functions
 
 	ecli_c_alloc_value (buffer_length : INTEGER) : POINTER is
