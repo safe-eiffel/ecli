@@ -109,6 +109,8 @@ it uses as portable Eiffel as possible, and has already been tested using&nbsp;<
 <br>&nbsp;
 <br>&nbsp;
 <br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
 <p>* ISE Eiffel and&nbsp;
 <br>* SmallEiffel ( -076b4 and better).&nbsp;
 <dd>
@@ -1305,6 +1307,31 @@ falling in prepared execution mode.</td>
 </tr>
 </table></center>
 
+<h2>
+Garbage Collection of ECLI objects</h2>
+
+<p><br>ECLI objects are tightly associated with corresponding ODBC/CLI
+handles and datastructures.&nbsp; Objects are arranged in a "uses-relationship"
+: ECLI_ENVIRONMENT -> ECLI_SESSION -> ECLI_STATEMENT.&nbsp; That is to
+say : when an ECLI_ENVIRONMENT is collected, the corresponding sessions
+have to be closed first; when an ECLI_SESSION is collected, it has to "free"
+or release the attached ECLI_STATEMENTs.
+<br>The links are bidirectional so that once an ECLI object is created,
+there are no chance for them to be collected except at the end of the application.
+<br>That is why, two special features are implemented in ECLI_SESSION and
+ECLI_STATEMENT : <i>attach, unattached</i> and <i>release</i>.
+<h3>
+Attachment</h3>
+When an ECLI_SESSION is created, it is automatically attached to the corresponding
+ECLI_ENVIRONMENT.&nbsp; This works also for an ECLI_STATEMENT with respect
+to its associated ECLI_SESSION.
+<p>An ECLI object cannot be attached until it is <i>unattached</i>.
+<h3>
+Release</h3>
+When you are done with an ECLI object, it is possible to release it.&nbsp;
+That is to say such an object (in 'unattached' state) is ready for garbage
+collection.&nbsp; Such an unattached object is not usable any more ...
+except when it is attached again.
 <br>&nbsp;
 <h1>
 <a NAME="Conclusion"></a>Conclusion</h1>
