@@ -1,5 +1,5 @@
 indexing
-	description: "Date and time objects; synonym of ECLI_TIMESTAMP"
+	description: "Date and time objects - SQL: DATETIME"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -10,10 +10,20 @@ class
 
 inherit
 	ECLI_TIMESTAMP
-
+		redefine
+			sql_type_code
+		end
+		
 creation
 	make, make_first
 
+feature
+
+	sql_type_code : INTEGER is
+		once
+			Result := Sql_datetime
+		end
+		
 end -- class ECLI_DATE_TIME
 --
 -- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>

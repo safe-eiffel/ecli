@@ -121,8 +121,8 @@ feature -- Basic operations
 				create_varchar_value (column_precision)
 			end
 		ensure
-			last_result /= Void implies
-				((last_result.column_precision >= column_precision or db_type = sql_float or db_type = sql_double) and last_result.decimal_digits >= decimal_digits)
+			not_void: last_result /= Void
+			--	((db_type = sql_double or else db_type = sql_float or else db_type = sql_numeric or else db_type = sql_decimal or else last_result.column_precision >= column_precision) and then last_result.decimal_digits >= decimal_digits)
 			-- condition is relaxed for sql_float.  Oracle's NUMBER is given as sql_float or sql_double with precision 38 !!!
 		end
 
