@@ -1,5 +1,0 @@
-adt_io_medium.e io_medium.e
-adt_file.e file.e
-adt_plain_text_file.e plain_text_file.e
-adt_std_files.e std_files.e
-
