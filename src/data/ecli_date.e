@@ -19,13 +19,15 @@ inherit
 		select
 		end
 
-	DT_GREGORIAN_CALENDAR 
-		export 
-			{NONE} all;
-			{ANY} days_in_month
-		undefine
-			is_equal, out
-		end
+--| FIXME: uncomment when SmallEiffel 075 has been fixed
+--
+--	DT_GREGORIAN_CALENDAR 
+--		export 
+--			{NONE} all;
+--			{ANY} days_in_month
+--		undefine
+--			is_equal, out
+--		end
 		
 creation
 	make, make_first
@@ -86,6 +88,18 @@ feature -- Access
 
 feature -- Measurement
 
+	days_in_month (a_month, a_year : INTEGER) : INTEGER is
+			-- number of days in 'a_month' for 'a_year'
+			-- feature is delegated to a DT_GREGORIAN_CALENDAR object
+			-- Feature to be deleted when smalleiffel 075 has been fixed
+		require
+			month_ok: a_month >= 1 and a_month <= 12
+		local
+			calendar : expanded DT_GREGORIAN_CALENDAR
+		do
+			Result := calendar.days_in_month(a_month, a_year)
+		end
+		
 feature -- Status report
 
 	convertible_to_date : BOOLEAN is 
