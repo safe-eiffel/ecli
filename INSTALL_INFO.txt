@@ -28,10 +28,10 @@ ECLI --
 
 2. Installation
 
-	NOTE for Linux/Unix (*n*x) users : 
+  NOTE for Linux/Unix (*n*x) users : 
 	This package uses unixodbc, avalaible at http://www.unixodbc.org
 	It has been tested with PostgreSQL 7.0.2.
-	Under SmallEiffel the program ends with a signal 11 exception (???)
+	PLEASE, use the LATEST version available, to get the best benefits of this library.
 	
   2.0 Define ECLI variable
 	Define the ECLI variable as the ECLI directory
@@ -40,13 +40,14 @@ ECLI --
 	A) go to the spec - compiler - platform directory of your choice
 	B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library 
 
-  2.2. Building the sample
+  2.2. Building the samples
 
 	A) SmallEiffel - run the sebuild.bat (WIN32) or sebuild.sh (*n*x) command file
 	B) ISE - use the Ace.ace file or linux.Ace file
 
 
-3. Problems
+3. Known Problems
 
-*** Still having problems with Unix Makefiles ... stupid error I do not find
-the solution.  Have to build libraries and SmallEiffel example by hand...
+Some memory management problems (segmentation violation) can occur.
+This is under investigation.  They can be caused either by the ODBC library version you are using
+(UnixOdbc on Unix/Linux).  They also can appear at garbage collection.
