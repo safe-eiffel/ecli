@@ -1,5 +1,8 @@
 indexing
-	description: "ISO CLI LONGVARCHAR (n) values"
+	description: 
+	
+		"SQL LONGVARCHAR (n) values"
+		
 	author: "Paul-G.Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -11,8 +14,8 @@ class
 inherit
 	ECLI_GENERIC_VALUE [STRING]
 		redefine
-			item, set_item,convertible_to_string, as_string, out, convertible_to_character, to_character,
-			convertible_to_integer, to_integer, convertible_to_double, to_double, impl_item
+			item, set_item,convertible_as_string, as_string, out, convertible_as_character, as_character,
+			convertible_as_integer, as_integer, convertible_as_double, as_double, impl_item
 		end
 	
 creation
@@ -67,22 +70,22 @@ feature -- Measurement
 
 feature -- Status report
 
-	convertible_to_string : BOOLEAN is 
+	convertible_as_string : BOOLEAN is 
 		do
 			Result := True
 		end
 
-	convertible_to_integer : BOOLEAN is 
+	convertible_as_integer : BOOLEAN is 
 		do
 			Result := not is_null and then item.is_integer
 		end
 
-	convertible_to_double : BOOLEAN is 
+	convertible_as_double : BOOLEAN is 
 		do
 			Result := not is_null and then item.is_double
 		end
 
-	convertible_to_character : BOOLEAN is
+	convertible_as_character : BOOLEAN is
 		do
 			Result := count > 0
 		end
@@ -144,7 +147,7 @@ feature -- Conversion
 			Result := clone (item)
 		end
 
-	to_character : CHARACTER is
+	as_character : CHARACTER is
 			-- Conversion to CHARACTER value
 		do
 			Result := item @ 1
@@ -152,13 +155,13 @@ feature -- Conversion
 			result_is_first_character: Result = item @ 1
 		end
 
-	to_integer : INTEGER is
+	as_integer : INTEGER is
 			-- 
 		do
 			Result := item.to_integer
 		end
 		
-	to_double : DOUBLE is
+	as_double : DOUBLE is
 			-- 
 		do
 			Result := item.to_double
@@ -194,7 +197,7 @@ feature {NONE} -- Implementation
 	
 end -- class ECLI_LONGVARCHAR
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

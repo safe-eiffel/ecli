@@ -1,8 +1,8 @@
 Query Assistant
 
-Query Assistant generate access modules from "access descriptions".
+Query Assistant generates access modules from "access descriptions".
 
-An "access module" has a name and is desbribed by associating of SQL query, a comment, and hints
+An "access module" has a name and is desbribed by associating an SQL query, a comment, and hints
 about the content of the parameter set and the content of the result set.
 
 Why give hints about the SQL query ?  
@@ -13,13 +13,13 @@ Most ODBC drivers are unable to describe query parameters reliably.
 Each parameter has a name and is described through a reference column (table, column). 
 
 Many different SQL related to the same tables or views do have parameter sets
-with many commonalities.  Parameter sets can be factored out through an "extend" attribute.
+with many commonalities.  Parameter sets can be factored out through an "extends" attribute.
 They extend a common virtual parameter set.
 
 Result set
 
 Result sets can be described automatically by ODBC drivers.
-Their commonalities can be factored out trough an "extend" attribute.
+Their commonalities can be factored out trough an "extends" attribute.
 Those result sets extend a common virtual result set.
 
 Generated classes

@@ -24,7 +24,7 @@ feature -- Access
 
 	handle : POINTER
 	
-	to_external : POINTER is do Result := handle end
+	as_external : POINTER is do Result := handle end
 	
 feature {NONE} -- Implementation
 

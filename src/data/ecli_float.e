@@ -1,5 +1,8 @@
 indexing
-	description: "CLI SQL FLOAT value"
+	description: 
+		
+		"SQL FLOAT values"
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -75,7 +78,7 @@ feature {NONE} -- Implementation
 
 end -- class ECLI_FLOAT
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

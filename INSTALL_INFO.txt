@@ -50,14 +50,18 @@ ECLI --
   2.0 Define environment variables :
   	ECLI 		-  the ECLI directory
   	GOBO_OS 	-  DO NOT FORGET to set it especially under linux (set it to 'linux')  
-
+	GOBO_CC		-  Windows specific: the C compiler you've used to compile the C wrapper library.
+			   Supported 'keys' : lcc, msc, gcc.
+			   
   2.1. Building the C library.
 	
 	** DO NOT TRUST libraries you would get from an archive; maybe they have not been
           built with a compiler compatible with your system **
 	
 	A) go to the src/spec/<eiffel_compiler>/<platform> - compiler - platform directory of your choice
-	B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library
+	B) make the C wrapper library
+		WIN32: ecli_${GOBO_CC}.lib  or 
+		Unix/Linux: libecli_c.a
 	
 	Known problems : makefiles or .bat files are known to work, but problems may still remain.
 
@@ -66,10 +70,6 @@ ECLI --
 	Run the following command : geant compile_<eiffel_compiler>
 	where <eiffel_compiler> is 'se', 've', 'ise'
 	
-	(obsolete) 
-	A) SmallEiffel - run the sebuild.bat (WIN32) or sebuild.sh (*n*x) command file
-	B) ISE - use the Ace.ace file or linux.Ace file
-
 
 3. Known Problems
 

@@ -1,5 +1,8 @@
 indexing
-	description: "ISO CLI TIMESTAMP values"
+	description: 
+	
+		"SQL TIMESTAMP values"
+		
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -11,7 +14,7 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
-			create_impl_item, impl_item, is_equal,to_timestamp, out, as_string, convertible_to_string, set_item, item
+			create_impl_item, impl_item, is_equal,as_timestamp, out, as_string, convertible_as_string, set_item, item
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
@@ -247,7 +250,7 @@ feature -- Status report
 			Result := size
 		end
 
-	convertible_to_string : BOOLEAN is
+	convertible_as_string : BOOLEAN is
 			--
 		do
 			Result := True
@@ -285,7 +288,7 @@ feature -- Conversion
 			end
 		end
 
-	to_timestamp : DT_DATE_TIME is
+	as_timestamp : DT_DATE_TIME is
 		do
 			Result := clone (item)
 		end
@@ -349,7 +352,7 @@ feature {NONE} -- Implementation
 	
 end -- class ECLI_TIMESTAMP
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

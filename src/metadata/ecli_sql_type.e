@@ -29,9 +29,9 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 			current_exists: not type_cursor.off
 		do
 			impl_name := type_cursor.buffer_type_name.as_string
-			impl_sql_type_code := type_cursor.buffer_data_type.to_integer
+			impl_sql_type_code := type_cursor.buffer_data_type.as_integer
 			if not type_cursor.buffer_column_size.is_null then
-				impl_size := type_cursor.buffer_column_size.to_integer
+				impl_size := type_cursor.buffer_column_size.as_integer
 				is_size_applicable := True
 			end
 			if not type_cursor.buffer_literal_prefix.is_null then
@@ -46,15 +46,15 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 				impl_create_params := type_cursor.buffer_create_params.as_string
 				is_create_params_applicable := True
 			end
-			nullability := type_cursor.buffer_nullable.to_integer
-			impl_searchable := type_cursor.buffer_searchable.to_integer
+			nullability := type_cursor.buffer_nullable.as_integer
+			impl_searchable := type_cursor.buffer_searchable.as_integer
 			if not type_cursor.buffer_unsigned_attribute.is_null then
-				impl_unsigned := type_cursor.buffer_unsigned_attribute.to_integer
+				impl_unsigned := type_cursor.buffer_unsigned_attribute.as_integer
 				is_unsigned_applicable := True
 			end
-			impl_fixed_precision_scale := type_cursor.buffer_fixed_prec_scale.to_integer
+			impl_fixed_precision_scale := type_cursor.buffer_fixed_prec_scale.as_integer
 			if not type_cursor.buffer_auto_unique_value.is_null then
-				impl_auto_unique_value := type_cursor.buffer_auto_unique_value.to_integer
+				impl_auto_unique_value := type_cursor.buffer_auto_unique_value.as_integer
 				is_auto_unique_value_applicable := True
 			end
 			if not type_cursor.buffer_local_type_name.is_null then
@@ -62,28 +62,28 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 				is_local_type_name_applicable := True
 			end
 			if not type_cursor.buffer_minimum_scale.is_null then
-				impl_minimum_scale := type_cursor.buffer_minimum_scale.to_integer
+				impl_minimum_scale := type_cursor.buffer_minimum_scale.as_integer
 				is_minimum_scale_applicable := True
 			end
 			if not type_cursor.buffer_maximum_scale.is_null then
-				impl_maximum_scale := type_cursor.buffer_maximum_scale.to_integer
+				impl_maximum_scale := type_cursor.buffer_maximum_scale.as_integer
 				is_maximum_scale_applicable := True
 			end
 			if type_cursor.is_odbc_v3 then
 				if not type_cursor.buffer_sql_data_type.is_null then
-					impl_sql_data_type := type_cursor.buffer_sql_data_type.to_integer
+					impl_sql_data_type := type_cursor.buffer_sql_data_type.as_integer
 					exists_sql_data_type := True
 				end
 				if not type_cursor.buffer_sql_date_time_sub.is_null then
-					impl_sql_date_time_sub := type_cursor.buffer_sql_date_time_sub.to_integer
+					impl_sql_date_time_sub := type_cursor.buffer_sql_date_time_sub.as_integer
 					exists_sql_date_time_sub := True
 				end
 				if not type_cursor.buffer_num_prec_radix.is_null then
-					impl_num_prec_radix := type_cursor.buffer_num_prec_radix.to_integer
+					impl_num_prec_radix := type_cursor.buffer_num_prec_radix.as_integer
 					exists_num_prec_radix := True
 				end
 				if not type_cursor.buffer_interval_precision.is_null then
-					impl_interval_precision := type_cursor.buffer_interval_precision.to_integer
+					impl_interval_precision := type_cursor.buffer_interval_precision.as_integer
 					exists_interval_precision := True
 				end
 			end

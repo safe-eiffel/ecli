@@ -21,18 +21,18 @@ inherit
 
 	ECLI_VALUE
 		undefine
-			to_character, convertible_to_character,
-			to_boolean, convertible_to_boolean,
-			to_integer, convertible_to_integer,
-			to_real, convertible_to_real,
-			to_double, convertible_to_double,
-			to_date, convertible_to_date,
-			to_time, convertible_to_time,
-			to_timestamp, convertible_to_timestamp,
+			as_character, convertible_as_character,
+			as_boolean, convertible_as_boolean,
+			as_integer, convertible_as_integer,
+			as_real, convertible_as_real,
+			as_double, convertible_as_double,
+			as_date, convertible_as_date,
+			as_time, convertible_as_time,
+			as_timestamp, convertible_as_timestamp,
 			set_null, length_indicator_pointer,
 			can_trace
 		redefine
-			release_handle, to_external, is_null,
+			release_handle, as_external, is_null,
 			as_string
 		end
 
@@ -196,7 +196,7 @@ feature -- Conversion
 			Result := out_item_at (cursor_index)
 		end
 
-	to_external : POINTER is
+	as_external : POINTER is
 			-- external 'C' address of value array
 			-- contiguous memory block of 'capacity' * 'transfer_octet_length'
 			-- use at your own risks !

@@ -45,25 +45,25 @@ feature {NONE} -- Initialization
 				table := cursor.buffer_table_name.as_string
 			end
 			set_name (cursor.buffer_column_name)
-			type_code := cursor.buffer_data_type.to_integer
+			type_code := cursor.buffer_data_type.as_integer
 			type_name := cursor.buffer_type_name.as_string
 			if not cursor.buffer_column_size.is_null then
-				size := cursor.buffer_column_size.to_integer
+				size := cursor.buffer_column_size.as_integer
 				is_size_applicable := True
 			end
 			if not cursor.buffer_buffer_length.is_null then
-				transfer_length := cursor.buffer_buffer_length.to_integer
+				transfer_length := cursor.buffer_buffer_length.as_integer
 				is_transfer_length_applicable := True
 			end
 			if not cursor.buffer_decimal_digits.is_null then
-				decimal_digits := cursor.buffer_decimal_digits.to_integer
+				decimal_digits := cursor.buffer_decimal_digits.as_integer
 				is_decimal_digits_applicable := True
 			end
 			if not cursor.buffer_num_prec_radix.is_null then
-				precision_radix := cursor.buffer_num_prec_radix.to_integer
+				precision_radix := cursor.buffer_num_prec_radix.as_integer
 				is_precision_radix_applicable := True
 			end
-			nullability := cursor.buffer_nullable.to_integer
+			nullability := cursor.buffer_nullable.as_integer
 			if not cursor.buffer_remarks.is_null then
 				description := cursor.buffer_remarks.as_string
 			end

@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI LONGVARCHAR (n) arrayed values"
+	description: "SQL LONGVARCHAR (n) arrayed values"
 	author: "Paul-G.Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -14,8 +14,8 @@ inherit
 			make as make_single, capacity as content_capacity, max_capacity as max_content_capacity,
 			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
-			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
-			set_item, transfer_octet_length, as_string, convertible_to_string
+			release_handle, length_indicator_pointer, as_external, is_null, set_null, out, trace,
+			set_item, transfer_octet_length, as_string, convertible_as_string
 		redefine
 			item, content_capacity, content_count
 		end

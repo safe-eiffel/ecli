@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI TIMESTAMP arrayed values"
+	description: "SQL TIMESTAMP arrayed values"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -19,15 +19,15 @@ inherit
 		undefine
 			c_type_code,
 			column_precision,
-			convertible_to_string,
+			convertible_as_string,
 			sql_type_code,
 			decimal_digits,
 			display_size,
 			item,
-			to_time,
-			to_timestamp,
+			as_time,
+			as_timestamp,
 			trace,
-			transfer_octet_length, convertible_to_timestamp , convertible_to_date, days_in_month,
+			transfer_octet_length, convertible_as_timestamp , convertible_as_date, days_in_month,
 			Integer_format, Calendar
 		redefine
 --			is_equal, copy, 
@@ -55,9 +55,9 @@ inherit
 			release_handle,
 			set_date,
 			set_item,
-			to_external,
+			as_external,
 			as_string,
-			year, hour, minute, second, nanosecond, to_date
+			year, hour, minute, second, nanosecond, as_date
 --		redefine
 --			trace, hour, minute, second, nanosecond
 		redefine
@@ -308,7 +308,7 @@ invariant
 
 end -- class ECLI_ARRAYED_TIMESTAMP
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -42,7 +42,7 @@ feature {NONE} -- Initilization
 				description := cursor.buffer_description.as_string
 			end
 			if not cursor.buffer_procedure_type.is_null then
-				type := cursor.buffer_procedure_type.to_integer
+				type := cursor.buffer_procedure_type.as_integer
 			end
 		end
 

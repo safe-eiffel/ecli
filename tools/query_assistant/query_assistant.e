@@ -475,13 +475,13 @@ feature -- Basic operations
 			loop
 				io.put_string ("?   max length%T: ")
 				io.read_line
-				if io.last_string.is_integer and io.last_string.to_integer > 0 then
+				if io.last_string.is_integer and io.last_string.as_integer > 0 then
 					ok := true
 				else
 					io.put_string (" ! - Invalid precision, try again %N")
 				end
 			end
-			Result := io.last_string.to_integer
+			Result := io.last_string.as_integer
 		end
 
 	date_from_string (s: STRING) : DT_DATE is
@@ -495,9 +495,9 @@ feature -- Basic operations
 			sy := s.substring (1,4)
 			sm := s.substring (6,7)
 			sd := s.substring (9,10)
-			y := sy.to_integer
-			m := sm.to_integer
-			d := sd.to_integer
+			y := sy.as_integer
+			m := sm.as_integer
+			d := sd.as_integer
 			!! Result.make (y, m, d)
 		end
 
@@ -508,9 +508,9 @@ feature -- Basic operations
 			date : DT_DATE
 		do
 			date := date_from_string (s)
-			hh := s.substring (12,13).to_integer
-			mm := s.substring (15,16).to_integer
-			ss := s.substring (18,19).to_integer
+			hh := s.substring (12,13).as_integer
+			mm := s.substring (15,16).as_integer
+			ss := s.substring (18,19).as_integer
 			!! Result.make(date.year, date.month, date.day, hh, mm, ss)
 		end
 						
@@ -529,7 +529,7 @@ invariant
 
 end -- class QUERY_ASSISTANT
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

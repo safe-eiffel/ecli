@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI TIME arrayed value"
+	description: "SQL TIME arrayed value"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -23,7 +23,7 @@ inherit
 		export
 			{NONE} make_single, set_single, make_default_single
 		undefine
-			release_handle, length_indicator_pointer, to_external, 
+			release_handle, length_indicator_pointer, as_external, 
 			is_null, set_null, 
 			-- is_equal, 
 			out, set_item, as_string
@@ -250,7 +250,7 @@ invariant
 
 end -- class ECLI_ARRAYED_TIME
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -1,5 +1,5 @@
 indexing
-	description: "Properties of an ECLI data item"
+	description: "Objects that describe SQL properties of data items; Usually got from catalog queries."
 	author: "Paul G. Crismer"
 	
 	library: "ECLI"

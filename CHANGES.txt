@@ -1,3 +1,9 @@
+2003-07-04
+	* ECLI_VALUE.as_* replace now ECLI_VALUE.to_* conversion routines
+		Original routines are make obsolete
+	* ECLI_VALUE.convertible_as_* replace now ECLI_VALUE.convertible_to* routines
+		Original routines are made obsolete
+	
 2003-05-05
 !!!	* ECLI_VALUE.as_string now *replaces* ECLI_VALUE.to_string to ensure .NET compatibility
 	* Transaction isolation read/write implemented by 

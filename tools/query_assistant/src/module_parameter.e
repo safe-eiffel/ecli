@@ -148,3 +148,8 @@ invariant
 	reference_column_not_void: reference_column /= Void
 
 end -- class MODULE_PARAMETER
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

@@ -1,68 +1,38 @@
 ** TODO **
 
-	** DONE : 2003-04 Starting to create an eiffel.eant file that checks for various variable names and for external libraries
-
-
 FUNCTIONALITY
 
-Getting various metadata
-	** DONE 2000-07-28 : Result-set metadata, 
-	** DONE 2002-07 : Tables/Columns metadata
-	** DONE 2002-07 : SQL Datatypes metadata.
-	** DONE 2003-03 : Primary/Foreign-keys catalog metadata,
+	Getting various metadata :
+	* Table statistics (information on indexes)
 
-Table statistics (information on indexes)
-
-Allow Bulk data transfers
-	** DONE 2002-09-26 : A cursor is not a single line, but an array of lines. 
-	   This is interesting for performance reasons. (Nice to have).
 
 DEPLOYMENT
 
-Portability
-  * Compiler
-	** DONE: 2003-01 Port to Visual Eiffel - make changes so that the error with an anchored declaration can be avoided.
-
-  * Platform
-	Unix/Linux
-		** DONE 2000-06-22 ** using UnixODBC : www.unixodbc.org
-
-	Test 'query_assistant' on Linux
-	Test 'test_Xaction' on Linux
-
+	Portability
+	* Test 'query_assistant' on Linux
+	* Test 'test_Xaction' on Linux
 
 DOCUMENTATION
 
-Tutorial
-		** DONE 2000-10-14 : Tutorial
-Examples 
-		** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
-		More examples to do (???)
+	More examples to do (???)
 
 DATA TYPES/VALUES
 
-Long Variable Data as streams (file)
-        LONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
-	one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
-	Those ECLI_LONGVARCHAR and ECLI_LONGVARBINARY classes should provide an interface that allows
-	reading/writing data to a file. For example, 'item' would be of FILE type.
-	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
+	Long Variable Data as streams (file)
 
-Implement other data values
+        * LONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
+	  one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
+	  Those ECLI_LONGVARCHAR and ECLI_LONGVARBINARY classes should provide an interface that allows
+	  reading/writing data to a file. For example, 'item' would be of FILE type.
 
-- BINARY, VARBINARY , LONGVARBINARY, ...
-	Note : Those data values should serve for data transfer, not as implementation of corresponding Abstract Data Types.
-	ADT should be defined as clients or extension by inheritance.
+	Implement other data values
 
-- TINYINT, BIGINT
-
-- DECIMAL
-
-- BIT
-
-	** DONE 2002-07 : Time, 
-	** DONE 2000-08-10 LONGVARCHAR has been implemented
-
+	* BINARY, VARBINARY , LONGVARBINARY, ...
+		Note : Those data values should serve for data transfer, not as implementation of corresponding Abstract Data Types.
+		ADT should be defined as clients or extension by inheritance.
+	* TINYINT, BIGINT
+	* DECIMAL
+	* BIT
 
 TESTING
 
@@ -72,10 +42,45 @@ Test cases
 REFACTORING/IMPROVEMENTS
 
 Refactoring
-	** DONE 2000-07-28 : 
-		(+) ECLI_VALUE gets/puts itself to an active statement, 
-		(+) cursor state, class contracts... **
 
- 	** 2001-05-11  :
-		External Memory + object disposal : prevent segmentation violation.
-		Usage of open/close on ECLI_SESSION and ECLI_STATEMENT
+
+********* DONE **************
+
+General
+	** DONE 2003-04 Starting to create an eiffel.eant file that checks for various variable names and for external libraries
+
+Functionality
+
+	** DONE 2000-07-28 : Result-set metadata, 
+	** DONE 2002-07 : Tables/Columns metadata
+	** DONE 2002-07 : SQL Datatypes metadata.
+	** DONE 2003-03 : Primary/Foreign-keys catalog metadata,
+
+	** DONE 2002-09-26 : Allow Bulk data transfers
+	   A cursor is not a single line, but an array of lines. 
+	   This is interesting for performance reasons. (Nice to have).
+	   
+Portability 
+
+	** DONE: 2003-01 Port to Visual Eiffel - make changes so that the error with an anchored declaration can be avoided.
+	** DONE 2000-06-22 ** using UnixODBC : www.unixodbc.org
+
+Documentation
+
+	** DONE 2000-10-14 : Tutorial
+	** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
+
+Data types/values
+
+	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
+	** DONE 2002-07 : Time, 
+	** DONE 2000-08-10 LONGVARCHAR has been implemented
+
+Refactoring
+	** DONE 2000-07-28 : 
+	(+) ECLI_VALUE gets/puts itself to an active statement, 
+	(+) cursor state, class contracts... **
+
+	** 2001-05-11  :
+	External Memory + object disposal : prevent segmentation violation.
+	Usage of open/close on ECLI_SESSION and ECLI_STATEMENT

@@ -16,7 +16,7 @@ feature -- Basic operations
 	string_to_pointer (s : STRING) : POINTER is
 			-- pointer to "C" version of 's'
 		do
-			Result := s.to_external
+			Result := s.as_external
 		end
 
 	pointer_to_string (p : POINTER) : STRING is
@@ -44,7 +44,7 @@ invariant
 
 end -- class ECLI_EXTERNAL_TOOLS
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

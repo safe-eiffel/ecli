@@ -103,3 +103,8 @@ invariant
 	name_exists: name /= Void
 
 end -- class ACCESS_MODULE_METADATA
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

@@ -6,7 +6,9 @@ VUAR4: $feature valid only if not constant feature.
 	SE : Does not work for local entities.
 	ISE: Works for local entities (is it valid?)
     => 'dummy' private attributes have been used to overcome this problem.
-	
+
+Note: $ usage has been avoided for .NET compatibility
+
 Libraries
 ---------
 

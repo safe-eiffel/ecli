@@ -1,7 +1,7 @@
 indexing
 	description: 
 	
-		"ISO CLI DATE value"
+		"SQL DATE values"
 
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -14,8 +14,8 @@ class
 inherit
 	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
-			item, set_item, out, is_equal, convertible_to_date, to_date,
-			convertible_to_timestamp, to_timestamp, create_impl_item, impl_item
+			item, set_item, out, is_equal, convertible_as_date, as_date,
+			convertible_as_timestamp, as_timestamp, create_impl_item, impl_item
 		end
 		
 	KL_IMPORTED_STRING_ROUTINES
@@ -98,12 +98,12 @@ feature -- Measurement
 		
 feature -- Status report
 
-	convertible_to_date : BOOLEAN is 
+	convertible_as_date : BOOLEAN is 
 		do
 			Result := True
 		end
 	
-	convertible_to_timestamp : BOOLEAN is
+	convertible_as_timestamp : BOOLEAN is
 			-- is Current convertible to timestamp ?
 		do 
 			Result := True
@@ -185,13 +185,13 @@ feature -- Conversion
 			end
 		end
 
-	to_date : DT_DATE is
+	as_date : DT_DATE is
 			-- Current converted to date
 		do
 			Result := clone (item)
 		end
 		
-	to_timestamp : DT_DATE_TIME is
+	as_timestamp : DT_DATE_TIME is
 			-- Current converted to timestamp
 		do
 			!!Result.make(year, month, day, 0, 0, 0)
@@ -249,7 +249,7 @@ invariant
 
 end -- class ECLI_DATE
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -58,50 +58,99 @@ feature -- Status report
 			Result := ecli_c_value_get_length_indicator (buffer) = Sql_null_data
 		end
 
-	convertible_to_string : BOOLEAN is
+	convertible_as_string : BOOLEAN is
 			-- Is this value convertible to a string ?
 		do
 			Result := True
 		end
 
-	convertible_to_character : BOOLEAN is
+	convertible_as_character : BOOLEAN is
 			-- Is this value convertible to a character ?
 		do
 		end
 
-	convertible_to_boolean : BOOLEAN is
+	convertible_as_boolean : BOOLEAN is
 			-- Is this value convertible to a boolean ?
 		do
 		end
 
-	convertible_to_integer : BOOLEAN is
+	convertible_as_integer : BOOLEAN is
 			-- Is this value convertible to an integer ?
 		do
 		end
 
-	convertible_to_real : BOOLEAN is
+	convertible_as_real : BOOLEAN is
 			-- Is this value convertible to a real ?
 		do
 		end
 
-	convertible_to_double : BOOLEAN is
+	convertible_as_double : BOOLEAN is
 			-- Is this value convertible to a double ?
 		do
 		end
 
-	convertible_to_date : BOOLEAN is
+	convertible_as_date : BOOLEAN is
 			-- Is this value convertible to a date ?
 		do
 		end
 
-	convertible_to_time : BOOLEAN is
+	convertible_as_time : BOOLEAN is
 			-- Is this value convertible to a time ?
 		do
 		end
 
-	convertible_to_timestamp : BOOLEAN is
+	convertible_as_timestamp : BOOLEAN is
 			-- Is this value convertible to a timestamp ?
 		do
+		end
+
+
+	frozen convertible_to_character : BOOLEAN is
+		obsolete "Use `convertible_as_character' instead"
+		do
+			Result := convertible_as_character
+		end
+
+	frozen convertible_to_boolean : BOOLEAN is
+		obsolete "Use `convertible_as_boolean' instead"
+		do
+			Result := convertible_as_boolean
+		end
+
+	frozen convertible_to_integer : BOOLEAN is
+		obsolete "Use `convertible_as_integer' instead"
+		do
+			Result := convertible_as_integer
+		end
+
+	frozen convertible_to_real : BOOLEAN is
+		obsolete "Use `convertible_as_real' instead"
+		do
+			Result := convertible_as_real
+		end
+
+	frozen convertible_to_double : BOOLEAN is
+		obsolete "Use `convertible_as_double' instead"
+		do
+			Result := convertible_as_double
+		end
+
+	frozen convertible_to_date : BOOLEAN is
+		obsolete "Use `convertible_as_date' instead"
+		do
+			Result := convertible_as_date
+		end
+
+	frozen convertible_to_time : BOOLEAN is
+		obsolete "Use `convertible_as_time' instead"
+		do
+			Result := convertible_as_time
+		end
+
+	frozen convertible_to_timestamp : BOOLEAN is
+		obsolete "Use `convertible_as_timestamp' instead"
+		do
+			Result := convertible_as_timestamp		
 		end
 
 	can_trace : BOOLEAN is
@@ -153,7 +202,7 @@ feature -- Conversion
 	as_string : STRING is
 			-- Current converted to STRING
 		require
-			convertible: convertible_to_string
+			convertible: convertible_as_string
 			not_null: not is_null
 		do
 			Result := out
@@ -161,72 +210,158 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	to_character : CHARACTER is
+	as_character : CHARACTER is
+			-- Current converted to CHARACTER 
+		require
+			convertible: convertible_as_character
+			not_null: not is_null
+		do
+		end
+
+	as_boolean : BOOLEAN is
+			-- Current converted to BOOLEAN
+		require
+			convertible: convertible_as_boolean
+			not_null: not is_null
+		do
+		end
+
+	as_integer : INTEGER is
+			-- Current converted to INTEGER
+		require
+			convertible: convertible_as_integer
+			not_null: not is_null
+		do
+		end
+
+	as_real : REAL is
+			-- Current converted to REAL
+		require
+			convertible: convertible_as_real
+			not_null: not is_null
+		do
+		end
+
+	as_double : DOUBLE is
+			-- Current converted to DOUBLE
+		require
+			convertible: convertible_as_double
+			not_null: not is_null
+		do
+		end
+
+	as_date : DT_DATE is
+			-- Current converted to DATE
+		require
+			convertible: convertible_as_date
+			not_null: not is_null
+		do
+		ensure
+			no_aliasing: True -- Result /= old Result
+		end
+
+	as_time : DT_TIME is
+			-- Current converted to DT_TIME
+		require
+			convertible: convertible_as_time
+			not_null: not is_null
+		do
+		ensure
+			no_aliasing: True -- Result /= old Result
+		end
+
+	as_timestamp : DT_DATE_TIME is
+			-- Current converted to DT_DATE_TIME
+		require
+			convertible: convertible_as_timestamp
+			not_null: not is_null
+		do
+		ensure
+			no_aliasing: True -- Result /= old Result
+		end
+
+	frozen to_character : CHARACTER is 
+		obsolete "Use `as_character' instead"
 			-- Current converted to CHARACTER 
 		require
 			convertible: convertible_to_character
 			not_null: not is_null
 		do
+			Result := as_character
 		end
 
-	to_boolean : BOOLEAN is
+	frozen to_boolean : BOOLEAN is 
+		obsolete "Use `as_boolean' instead"
 			-- Current converted to BOOLEAN
 		require
 			convertible: convertible_to_boolean
 			not_null: not is_null
 		do
+			Result := as_boolean
 		end
 
-	to_integer : INTEGER is
+	frozen to_integer : INTEGER is 
+		obsolete "Use `as_integer' instead"
 			-- Current converted to INTEGER
 		require
 			convertible: convertible_to_integer
 			not_null: not is_null
 		do
+			Result := as_integer
 		end
 
-	to_real : REAL is
+	frozen to_real : REAL is 
+		obsolete "Use `as_real' instead"
 			-- Current converted to REAL
 		require
 			convertible: convertible_to_real
 			not_null: not is_null
 		do
+			Result := as_real
 		end
 
-	to_double : DOUBLE is
+	frozen to_double : DOUBLE is 
+		obsolete "Use `as_double' instead"
 			-- Current converted to DOUBLE
 		require
 			convertible: convertible_to_double
 			not_null: not is_null
 		do
+			Result := as_double
 		end
 
-	to_date : DT_DATE is
+	frozen to_date : DT_DATE is 
+		obsolete "Use `as_date' instead"
 			-- Current converted to DATE
 		require
 			convertible: convertible_to_date
 			not_null: not is_null
 		do
+			Result := as_date
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end
 
-	to_time : DT_TIME is
+	frozen to_time : DT_TIME is 
+		obsolete "Use `as_time' instead"
 			-- Current converted to DT_TIME
 		require
 			convertible: convertible_to_time
 			not_null: not is_null
 		do
+			Result := as_time
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end
 
-	to_timestamp : DT_DATE_TIME is
+	frozen to_timestamp : DT_DATE_TIME is 
+		obsolete "Use `as_timestamp' instead"
 			-- Current converted to DT_DATE_TIME
 		require
 			convertible: convertible_to_timestamp
 			not_null: not is_null
 		do
+			Result := as_timestamp
 		ensure
 			no_aliasing: True -- Result /= old Result
 		end
@@ -320,7 +455,7 @@ feature {NONE} -- Implementation values
 	
 end -- class ECLI_VALUE
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

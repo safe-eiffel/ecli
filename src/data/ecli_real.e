@@ -1,5 +1,8 @@
 indexing
-	description: "CLI SQL REAL value"
+	description: 
+	
+		"SQL REAL values"
+		
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -12,9 +15,9 @@ inherit
 	ECLI_GENERIC_VALUE [REAL]
 		redefine
 			item, set_item, out,
-			to_real, convertible_to_real,
-			to_integer, convertible_to_integer,
-			to_double, convertible_to_double
+			as_real, convertible_as_real,
+			as_integer, convertible_as_integer,
+			as_double, convertible_as_double
 		end
 
 	ECLI_EXTERNAL_TOOLS
@@ -49,24 +52,24 @@ feature -- Access
 
 	item : REAL is
 		do
-				Result := to_real
+				Result := as_real
 		end
 
 feature -- Measurement
 
 feature -- Status report
 
-	convertible_to_real : BOOLEAN is
+	convertible_as_real : BOOLEAN is
 		do
 			Result := True
 		end
 
-	convertible_to_double : BOOLEAN is
+	convertible_as_double : BOOLEAN is
 		do
 			Result := True
 		end
 
-	convertible_to_integer : BOOLEAN is
+	convertible_as_integer : BOOLEAN is
 		do
 			Result := True
 		end
@@ -123,7 +126,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	to_real : REAL is
+	as_real : REAL is
 		do
 			if not is_null then
 				--ecli_c_value_copy_value (buffer, $impl_item)
@@ -132,17 +135,17 @@ feature -- Conversion
 			end
 		end
 
-	to_double : DOUBLE is
+	as_double : DOUBLE is
 		do
 			if not is_null then
-				Result := to_real
+				Result := as_real
 			end
 		end
 
-	to_integer : INTEGER is
+	as_integer : INTEGER is
 		do
 			if not is_null then
-				Result := to_real.truncated_to_integer
+				Result := as_real.truncated_to_integer
 			end
 		end
 
@@ -187,7 +190,7 @@ feature {NONE} -- Implementation
 
 end -- class ECLI_REAL
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

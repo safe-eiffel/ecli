@@ -15,14 +15,14 @@ inherit
 	ECLI_VALUE
 		undefine
 			out,
-			to_character, convertible_to_character,
-			to_double, convertible_to_double,
-			to_integer, convertible_to_integer,
-			as_string, convertible_to_string,
-			to_real, convertible_to_real,
-			to_date, convertible_to_date,
-			to_timestamp, convertible_to_timestamp,
-			to_time, convertible_to_time,
+			as_character, convertible_as_character,
+			as_double, convertible_as_double,
+			as_integer, convertible_as_integer,
+			as_string, convertible_as_string,
+			as_real, convertible_as_real,
+			as_date, convertible_as_date,
+			as_timestamp, convertible_as_timestamp,
+			as_time, convertible_as_time,
 			copy
 		end
 
@@ -73,7 +73,7 @@ feature {NONE} -- implementation
 		
 end -- class QA_VALUE
 --
--- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

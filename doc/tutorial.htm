@@ -144,13 +144,6 @@ OSes : Win98, WIN NT4, Windows 2000, Caldera Linux 2.3, Suse Linux, Debian Linux
             <td>ODBC, Oracle, Informix</td>
         </tr>
         <tr>
-            <td>ISS-Store</td>
-            <td>Halstenbach</td>
-            <td>ISS-bench</td>
-            <td>Windows, (Unix ?)</td>
-            <td>ODBC</td>
-        </tr>
-        <tr>
             <td>DALE</td>
             <td>Object-Tools</td>
             <td>Visual Eiffel</td>
@@ -396,8 +389,6 @@ else
 end
 session.<b>disconnect</b>
 session.<b>close</b>
-<pre>
-
 </pre>
 </div>
 
@@ -725,70 +716,70 @@ users  from database idiosyncrasies.</i><i><br>
             <td valign="Top" width="33%">ECLI_CHAR</td>
             <td valign="Top" width="33%">CHAR (n); 1 &lt;= n &lt; 255</td>
             <td valign="Top" width="33%">STRING</td>
-             <td valign="Top"><i>to_string</i><br>
+             <td valign="Top"><i>as_string</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_VARCHAR</td>
             <td valign="Top" width="33%">VARCHAR (n); 1 &lt;= n &lt;    255</td>
             <td valign="Top" width="33%">STRING</td>
-             <td valign="Top"><i>to_string</i><br>
+             <td valign="Top"><i>as_string</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_INTEGER</td>
             <td valign="Top" width="33%">INTEGER</td>
             <td valign="Top" width="33%">INTEGER</td>
-             <td valign="Top"><i>to_integer</i><br>
+             <td valign="Top"><i>as_integer</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_FLOAT</td>
             <td valign="Top" width="33%">FLOAT</td>
             <td valign="Top" width="33%">DOUBLE</td>
-             <td valign="Top"><i>to_double</i><br>
+             <td valign="Top"><i>as_double</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_DOUBLE</td>
             <td valign="Top" width="33%">DOUBLE</td>
             <td valign="Top" width="33%">DOUBLE</td>
-             <td valign="Top"><i>to_double</i><br>
+             <td valign="Top"><i>as_double</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_REAL</td>
             <td valign="Top" width="33%">REAL</td>
             <td valign="Top" width="33%">REAL</td>
-             <td valign="Top"><i>to_real</i><br>
+             <td valign="Top"><i>as_real</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_DATE</td>
             <td valign="Top" width="33%">DATE</td>
             <td valign="Top" width="33%">DT_DATE (Gobo)</td>
-             <td valign="Top"><i>to_date</i><br>
+             <td valign="Top"><i>as_date</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_TIMESTAMP</td>
             <td valign="Top" width="33%">TIMESTAMP</td>
             <td valign="Top" width="33%">DT_DATE_TIME (Gobo)</td>
-             <td valign="Top"><i>to_timestamp</i><br>
+             <td valign="Top"><i>as_timestamp</i><br>
              </td>
         </tr>
         <tr>
             <td>ECLI_TIME</td>
             <td>TIME</td>
             <td>DT_TIME (Gobo)</td>
-             <td valign="Top"><i>to_time</i><br>
+             <td valign="Top"><i>as_time</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_LONGVARCHAR</td>
             <td valign="Top" width="33%">LONGVARCHAR</td>
             <td valign="Top" width="33%">STRING</td>
-             <td valign="Top"><i>to_string</i><br>
+             <td valign="Top"><i>as_string</i><br>
              </td>
         </tr>
       </table>
@@ -825,17 +816,17 @@ Eiffel object correspondance.</td>
 value  ?</td>
         </tr>
            <tr>
-             <td valign="Top"><i>to_string, to_integer, to_real, to_double, to_date, to_time,
-to_timestamp</i><br>
+             <td valign="Top"><i>as_string, as_integer, as_real, as_double, as_date, as_time,
+as_timestamp</i><br>
              </td>
              <td valign="Top">conversion to Eiffel object<br>
              </td>
            </tr>
            <tr>
-             <td valign="Top"><i>convertible_to_string, convertible_to_double,
-convertible_to_real, convertible_to_timestamp, convertible_to_date, convertible_to_integer</i><br>
+             <td valign="Top"><i>convertible_as_string, convertible_as_double,
+convertible_as_real, convertible_as_timestamp, convertible_as_date, convertible_as_integer</i><br>
              </td>
-             <td valign="Top">True if corresponding to_* feature can be called
+             <td valign="Top">True if corresponding as_* feature can be called
              </td>
            </tr>
       </table>
@@ -856,7 +847,7 @@ convertible_to_real, convertible_to_timestamp, convertible_to_date, convertible_
             <td valign="Top" width="50%"><i>item</i></td>
             <td valign="Top" width="50%">Eiffel object corresponding to current value.
             	If G is a reference type, this always is the <i>same</i> object whose state can differ.
-            	BEWARE of aliasing problems. Using the to_* corresponding feature always create a new object : no aliasing.</td>
+            	BEWARE of aliasing problems. Using the as_* corresponding feature always create a new object : no aliasing.</td>
         </tr>
         <tr>
             <td valign="Top" width="50%"><b>Commands</b> </td>
