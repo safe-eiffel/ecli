@@ -468,13 +468,14 @@ feature -- Element change
 			results_description := Void
 			parameters_description := Void
 			parameters := Void
+			last_bound_parameter_index := 0
 			bound_parameters := False
 		ensure
 			has_sql: sql = new_sql
 			parsed:  is_parsed
 			not_executed: not is_executed
 			not_prepared: not is_prepared
-			no_bound_parameters: not bound_parameters
+			no_bound_parameters: not bound_parameters and then last_bound_parameter_index = 0
 			no_more_parameters: parameters = Void
 			reset_descriptions: parameters_description = Void and results_description = Void
 			is_ok: is_ok
@@ -974,7 +975,7 @@ feature {NONE} -- Hooks for descendants
 		
 invariant
 	existing_session_implies_not_closed: session /= Void implies not is_closed
-	parameter_index_bounds: last_bound_parameter_index >= 0 and (parameters /= Void implies last_bound_parameter_index <= parameters.upper)
+	parameter_index_bounds: last_bound_parameter_index >= 0 and then (parameters /= Void implies last_bound_parameter_index <= parameters.upper)
 	parameters_description_without_void: parameters_description /= Void implies not array_routines.has (parameters_description,Void)
 
 end
