@@ -18,9 +18,12 @@ inherit
 		redefine
 			start, forth
 		end
+
+	ECLI_EXTERNAL_TOOLS
+		export{NONE} all end
 		
 create
-	make_all_tables -- , make_by_type
+	make_all_tables, make_table
 	
 feature {NONE} -- Initialization
 
@@ -30,24 +33,25 @@ feature {NONE} -- Initialization
 			session_opened: a_session /= Void and then a_session.is_connected
 		do
 			make (a_session)
-			--set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
+			-- set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
 			set_status (ecli_c_get_tables ( handle, default_pointer, 0, default_pointer, 0, default_pointer, 0, default_pointer, 0))
-			if is_ok then
-				get_result_column_count
-				is_executed := True
-				if has_results then
-					set_cursor_before
-				else
-					set_cursor_after
-				end
-	         else
-	         	impl_result_column_count := 0
-			end
-			create_buffers
+			update_state_after_execution
 		ensure
 			executed: is_ok implies is_executed
 		end
-	
+
+	make_table (a_table_name : STRING; a_session : ECLI_SESSION) is
+			-- make for `a_table_name'
+		require
+			a_table_name_not_void: a_table_name /= Void
+			a_sessin_not_void: a_session /= Void
+		do
+			make (a_session)
+			--set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
+			set_status (ecli_c_get_tables ( handle, default_pointer, 0, default_pointer, 0, string_to_pointer (a_table_name), a_table_name.count, default_pointer, 0 ))
+			update_state_after_execution			
+		end
+		
 feature -- Access
 
 --	item : ECLI_TABLE is
@@ -117,5 +121,23 @@ feature {NONE} -- Implementation
 	impl_item : ECLI_TABLE
 	
 	definition : STRING is once Result := "SQLTables" end
+	
+	update_state_after_execution is
+			-- post_make action
+		do
+			if is_ok then
+				get_result_columns_count
+				is_executed := True
+				if has_results then
+					set_cursor_before
+				else
+					set_cursor_after
+				end
+	         else
+	         	impl_result_columns_count := 0
+			end
+			create_buffers		
+		end
+		
 
 end -- class ECLI_TABLES_CURSOR
