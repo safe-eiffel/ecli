@@ -26,35 +26,57 @@ inherit
 		redefine
 			start, forth
 		end
+
+	ECLI_TYPE_CODES
+		export {NONE} all;
+		{ANY}
+				sql_char,
+				sql_numeric,
+				sql_decimal,
+				sql_integer,
+				sql_smallint,
+				sql_float,
+				sql_real,
+				sql_double,
+				sql_varchar,
+				sql_type_date,
+				sql_type_time,
+				sql_type_timestamp,
+				sql_longvarchar
+		end
 		
 create
-	make_all_types -- , make_by_type
+	open_all_types, open_by_type
 	
-feature {NONE} -- Initialization
+feature -- Initialization
 
-	make_all_types (a_session : ECLI_SESSION) is
-			-- make cursor for all types of session
+	open_all_types (a_session : ECLI_SESSION) is
+			-- make cursor for all types supported by `a_session'
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
+			closed: is_closed
 		do
 			make (a_session)
-			set_status (ecli_c_get_type_info ( handle, ecli_c_sql_all_types))
-			if is_ok then
-				get_result_column_count
-				is_executed := True
-				if has_results then
-					set_cursor_before
-				else
-					set_cursor_after
-				end
-	         else
-	         	impl_result_column_count := 0
-			end
-			create_buffers
+			get_type_info (ecli_c_sql_all_types)
 		ensure
 			executed: is_ok implies is_executed
+			open: not is_closed
 		end
-	
+
+	open_by_type (a_session : ECLI_SESSION; a_type : INTEGER) is
+		require
+			session_opened: a_session /= Void and then a_session.is_connected
+			valid_type: supported_types.has (a_type)
+			closed: is_closed
+		do
+			make (a_session)
+			get_type_info (a_type)
+		ensure
+			executed: is_ok implies is_executed
+			open: not is_closed
+		end
+		
+		
 feature -- Access
 
 	item : ECLI_SQL_TYPE is
@@ -65,6 +87,26 @@ feature -- Access
 			Result := impl_item
 		ensure
 			definition: Result /= Void
+		end
+
+	supported_types : ARRAY[INTEGER] is
+			-- 
+		once
+			Result := <<
+				sql_char,
+				sql_numeric,
+				sql_decimal,
+				sql_integer,
+				sql_smallint,
+				sql_float,
+				sql_real,
+				sql_double,
+				sql_varchar,
+				sql_type_date,
+				sql_type_time,
+				sql_type_timestamp,
+				sql_longvarchar
+			>>
 		end
 		
 feature -- Cursor Movement
@@ -175,6 +217,24 @@ feature {NONE} -- Implementation
 	
 	definition : STRING is once Result := "SQLGetTypeInfo" end
 	
+	get_type_info (type : INTEGER) is
+			-- 
+		do
+			set_status (ecli_c_get_type_info ( handle, type))
+			if is_ok then
+				get_result_column_count
+				is_executed := True
+				if has_results then
+					set_cursor_before
+				else
+					set_cursor_after
+				end
+	         else
+	         	impl_result_column_count := 0
+			end
+			create_buffers
+		end
+		
 invariant
 	invariant_clause: True -- Your invariant here
 

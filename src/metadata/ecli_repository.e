@@ -7,6 +7,11 @@ indexing
 class
 	ECLI_REPOSITORY
 
+--inherit
+--	ECLI_TYPE_CODES
+--		export {NONE} all
+--		end
+		
 creation
 	make
 	
@@ -88,24 +93,15 @@ feature -- Access
 			-- types supported by current session repository
 		local
 			cursor : ECLI_SQL_TYPES_CURSOR
+			index : INTEGER
 		do
 			if types_ = Void then
 				!!types_.make (10)
-				!!cursor.make_all_types (session)
-				if cursor.is_ok then
-					from 
-						cursor.start
-					until
-						cursor.off
-					loop
-						types_.force (cursor.item, cursor.item.sql_type_code)
-						cursor.forth
-					end
-				else
-					diagnostic_message := clone (cursor.diagnostic_message)
-				end
+				!!cursor.open_all_types (session)
+				-- get all types information, included unsupported ones
+				fill_from_types_cursor (cursor)
+				cursor.close				
 				is_ok := cursor.is_ok
-				cursor.close
 			end	
 			Result := types_
 		end
@@ -178,6 +174,41 @@ feature {NONE} -- Implementation
 	procedures_ : ARRAY [ECLI_PROCEDURE]
 	types_ : DS_HASH_TABLE [ECLI_SQL_TYPE, INTEGER]
 		
+	fill_from_types_cursor (cursor : ECLI_SQL_TYPES_CURSOR) is
+		do
+			if cursor.is_ok then
+				from 
+					cursor.start
+				until
+					cursor.off
+				loop
+					types_.force (cursor.item, cursor.item.sql_type_code)
+					cursor.forth
+				end
+			else
+				diagnostic_message := clone (cursor.diagnostic_message)
+			end
+		end
+		
+--	supported_types : ARRAY[INTEGER] is 
+--		once
+--			Result := << 	
+--				sql_char,
+--				sql_numeric,
+--				sql_decimal,
+--				sql_integer,
+--				sql_smallint,
+--				sql_float,
+--				sql_real,
+--				sql_double,
+--				sql_varchar,
+--				sql_type_date,
+--				sql_type_time,
+--				sql_type_timestamp,
+--				sql_longvarchar	
+--		>>
+--		end
+
 invariant
 	session_exists: session /= Void and then session.is_connected
 

@@ -189,10 +189,10 @@ EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
 								(SQLUINTEGER *)	&p_sql_size,
 								(SQLSMALLINT *)	&p_sql_decimal_digits,
 								(SQLSMALLINT *)	&p_sql_nullability);
-	*((EIF_INTEGER*) sql_type)= p_sql_type;
-	*((EIF_INTEGER*) sql_size)= p_sql_size;
-	*((EIF_INTEGER*) sql_decimal_digits)= p_sql_decimal_digits;
-	*((EIF_INTEGER*) sql_nullability)= p_sql_nullability;
+	*((EIF_INTEGER*) sql_type)= (EIF_INTEGER) p_sql_type;
+	*((EIF_INTEGER*) sql_size)= (EIF_INTEGER) p_sql_size;
+	*((EIF_INTEGER*) sql_decimal_digits)= (EIF_INTEGER) p_sql_decimal_digits;
+	*((EIF_INTEGER*) sql_nullability)= (EIF_INTEGER) p_sql_nullability;
 	return res;
 }
 
@@ -206,15 +206,15 @@ EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 							 EIF_POINTER  	sql_decimal_digits,
 							 EIF_POINTER  	sql_nullability)
 {
+	SQLSMALLINT p_actual_name_length;
 	SQLSMALLINT p_sql_type;
 	SQLUINTEGER p_sql_size;
 	SQLSMALLINT p_sql_decimal_digits;
 	SQLSMALLINT p_sql_nullability;
-	SQLSMALLINT p_actual_name_length;
 	EIF_INTEGER res;
 	res = (EIF_INTEGER) SQLDescribeCol (
 								(SQLHSTMT) 		stmt,
-								(SQLUSMALLINT) 	column_number,
+								(SQLSMALLINT) 	column_number,
 								(SQLCHAR *)		col_name,
 								(SQLSMALLINT)	max_name_length,
 								(SQLSMALLINT *)	&p_actual_name_length,
@@ -222,12 +222,13 @@ EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 								(SQLUINTEGER *)	&p_sql_size,
 								(SQLSMALLINT *)	&p_sql_decimal_digits,
 								(SQLSMALLINT *)	&p_sql_nullability);
-	*((EIF_INTEGER*) actual_name_length)= p_actual_name_length;
-	*((EIF_INTEGER*) sql_type)= p_sql_type;
-	*((EIF_INTEGER*) sql_size)= p_sql_size;
-	*((EIF_INTEGER*) sql_decimal_digits)= p_sql_decimal_digits;
-	*((EIF_INTEGER*) sql_nullability)= p_sql_nullability;
-	return res;
+	*((EIF_INTEGER*) actual_name_length) = 	(EIF_INTEGER) p_actual_name_length;
+	*((EIF_INTEGER*) sql_type) = 			(EIF_INTEGER) p_sql_type;
+	*((EIF_INTEGER*) sql_size) = 			(EIF_INTEGER) p_sql_size;
+	*((EIF_INTEGER*) sql_decimal_digits) = 	(EIF_INTEGER) p_sql_decimal_digits;
+	*((EIF_INTEGER*) sql_nullability) = 	(EIF_INTEGER) p_sql_nullability;
+
+return res;
 }
 
 EIF_INTEGER ecli_c_get_type_info (EIF_POINTER stmt, EIF_INTEGER data_type) {
