@@ -247,6 +247,7 @@ feature {NONE} -- Implementation
 		do
 			ecli_c_free_value (buffer)
 			buffer := default_pointer
+			ready_for_disposal := True
 		end
 
 	to_external : POINTER is

@@ -4,8 +4,9 @@ indexing
 		"Objects that use an implementation (external) handle. This can be used %
 	   % in any case where an allocate/free scheme is needed.%
 	   % Safety  note: %NIn case of using this handle for storing externally allocated memory,%
-	   % descendant classes should also inherit from memory and redefine dispose so that they call 'release_handle',%
-	   % in order to free externally allocated memory."
+	   % descendant classes should redefine 'release_handle',%
+	   % in order to free externally allocated memory. `prepare_for_disposal' is executed before `release_handle'%
+	   % and should also be redefined by descendant classes."
 
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -35,6 +36,9 @@ feature -- Status report
 
 	handle : POINTER
 
+	ready_for_disposal : BOOLEAN
+			-- is this object ready for disposal ?
+
 feature {NONE} -- Implementation
 
 	set_handle (h : POINTER) is
@@ -46,6 +50,7 @@ feature {NONE} -- Implementation
 
 	dispose is
 		do
+			prepare_for_disposal
 			if is_valid then
 				release_handle
 			end
@@ -55,8 +60,19 @@ feature {NONE} -- Implementation
 			-- release the CLI handle
 		deferred
 		ensure
-			not is_valid
+			invalid:    not is_valid
+			disposable: ready_for_disposal
 		end
+
+	prepare_for_disposal is
+			-- actions that must be performed before releasing the handle
+			-- to be redefined in descendants
+		do
+		end
+
+invariant
+
+	valid_not_disposable: ready_for_disposal xor is_valid
 
 end -- class ECLI_HANDLE
 --

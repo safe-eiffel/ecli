@@ -7,4 +7,4 @@ test1		e_cli_db		Your first sample application : create table,
 					insert tuples, select tuples, drop table
 test_Xaction	transact		Tests data source transaction capabilities
 qa_example	qa_example		Tests 'query_assistant' generated cursor classes
-
+test_gc		test_gc			Exercices the disposal of ECLI objects

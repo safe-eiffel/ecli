@@ -13,6 +13,9 @@ class
 
 inherit
 	ECLI_HANDLE
+		redefine
+			prepare_for_disposal
+		end
 
 	ECLI_EXTERNAL_API
 		export 
@@ -48,57 +51,36 @@ feature -- Initialization
 			set_status (ecli_c_allocate_environment ($handle))
 		end
 
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
+
+	prepare_for_disposal is
+		local
+			session_cursor : DS_LIST_CURSOR [ECLI_SESSION]
+		do
+			-- 
+			from 
+				session_cursor := sessions.new_cursor
+				session_cursor.start
+			until 
+				session_cursor.off 
+			loop 
+				session_cursor.item.environment_release (Current)
+				session_cursor.forth 
+			end
+			sessions.wipe_out
+		end
 
 	release_handle is
 			-- release environment handle
 		do
-			-- | Do not use iterator here, since ECLI_SESSION.environment_release
-			-- | unsubscribes the session, thereby modifying the sessions list.
-			-- | Using an iterator would raise an precondition-exception.
-			from 
-			until 
-				sessions.is_empty 
-			loop 
-				sessions.first.environment_release (Current) 
-			end
 			-- | actual release of the handle.
 			set_status (ecli_c_free_environment (handle))
-			handle := default_pointer
+			set_handle ( default_pointer)
+			ready_for_disposal := True
 		end
 
-
-		get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- to be redefined in descendant classes
 		do
 			Result := ecli_c_environment_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)

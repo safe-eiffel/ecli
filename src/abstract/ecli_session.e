@@ -15,6 +15,9 @@ inherit
 	ECLI_STATUS
 
 	ECLI_HANDLE
+		redefine
+			prepare_for_disposal
+		end
 
 	ECLI_SHARED_ENVIRONMENT
 
@@ -35,7 +38,9 @@ inherit
 	PAT_SUBSCRIBER
 		rename
 			publisher as environment,
-			published as environment_release
+			published as environment_release,
+			has_publisher as has_environment,
+			unsubscribed as unattached
 		redefine	
 			environment_release
 		end
@@ -51,23 +56,54 @@ feature {NONE} -- Initialization
 			data_source_defined: a_data_source /= Void
 			user__name_defined: a_user_name/= Void
 			password_defined: a_password /= Void
+		do
+			-- set data_source, user_name and password
+			set_data_source (a_data_source)
+			set_user_name(a_user_name)
+			set_password (a_password)
+			unattached := True
+			attach
+		ensure
+			data_source_shared : data_source = a_data_source
+			user_name_shared : user_name= a_user_name
+			password_shared : password = a_password
+			valid: is_valid
+			attached: not unattached
+		end
+
+feature -- Initialization
+
+	attach is
+			-- attach current session object to shared CLI environment
+		require
+			unattached: unattached
 		local
 			henv : pointer
 		do
 			-- | Allocate session handle
 			henv := environment.handle
 			set_status (ecli_c_allocate_connection(henv, $handle))
-			-- set data_source, user_name and password
-			set_data_source (a_data_source)
-			set_user_name(a_user_name)
-			set_password (a_password)
 			--| register with environment
 			environment.register_session (Current)
+			unattached := False
 		ensure
-			data_source_shared : data_source = a_data_source
-			user_name_shared : user_name= a_user_name
-			password_shared : password = a_password
+			attached: not unattached
+			registered: environment.is_registered_session (Current) and not unattached
+			valid: is_valid
 		end
+
+	release is
+			-- releases current session object from environment.  Ready for disposal.
+		require
+			valid: is_valid
+		do
+			prepare_for_disposal
+			release_handle
+		ensure
+			unattached: unattached and not (old environment).is_registered_session (Current)
+			not_valid:  not is_valid
+		end
+
 
 feature -- Access
 
@@ -92,13 +128,12 @@ feature -- Access
 			Result := impl_password
 		end
 
-feature -- Measurement
-
 feature -- Status report
 
 	is_manual_commit : BOOLEAN is
 			-- Is this session in 'manual commit mode' ?
 		require
+			valid: is_valid
 			connected: is_connected
 		do
 			set_status (ecli_c_is_manual_commit (handle, $impl_is_manual_commit))
@@ -118,6 +153,7 @@ feature -- Status setting
 	set_manual_commit is
 			-- Set commit mode to 'manual'
 		require
+			valid: is_valid
 			connected: is_connected
 		do
 			--| actual setting of manual commit
@@ -129,6 +165,7 @@ feature -- Status setting
 	set_automatic_commit is
 			-- Set commit mode to 'automatic'
 		require
+			valid: is_valid
 			connected: is_connected
 		do
 			--| actual setting of automatic commit
@@ -189,6 +226,7 @@ feature -- Basic Operations
 	commit is
 			-- commit current transaction
 		require
+			valid: is_valid
 			connected: is_connected
 			manual_commit: is_manual_commit
 			pending_transaction: has_pending_transaction
@@ -206,6 +244,7 @@ feature -- Basic Operations
 	rollback is
 			-- rollback current transaction
 		require
+			valid: is_valid
 			connected: is_connected
 			manual_commit: is_manual_commit
 			pending_transaction: has_pending_transaction
@@ -245,18 +284,20 @@ feature -- Basic Operations
 	disconnect is
 			-- disconnect the session
 		require
+			is_valid: is_valid
 			connected: is_connected
+		local
+			statements_cursor : DS_LIST_CURSOR [ECLI_STATEMENT]
 		do
-			-- | Do not use list iterator, since ECLI_STATEMENT.session_disconnect
-			-- | unsubscribes the statement, removing it from the statements list.
-			-- | Using an iterator would raise an precondition-exception.
-			from 
+			from
+				statements_cursor := statements.new_cursor
+				statements_cursor.start 
 			until 
-				statements.is_empty 
+				statements_cursor.off 
 			loop 
-				statements.first.session_disconnect (Current) 
+				statements_cursor.item.session_disconnect (Current) 
+				statements_cursor.forth
 			end
-
 			statements.wipe_out
 			--| actual disconnect
 			set_status (ecli_c_disconnect (handle))
@@ -269,50 +310,42 @@ feature -- Basic Operations
 			-- statements.empty
 		end
 
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {ECLI_ENVIRONMENT} --
 
 	environment_release (env : ECLI_ENVIRONMENT) is
 			-- environment is being released
 		do
-			disconnect
+			unattached := True
+			if is_connected then
+				disconnect
+			end
 			release_handle
+		ensure then
+			released_environment: unattached = True
 		end 
 
 feature {NONE} -- Implementation
 
-	release_handle is
+	prepare_for_disposal is
 		do
 			if is_connected then
 				disconnect
 			end
-			environment.unregister_session (Current)
-			set_status (ecli_c_free_connection (handle))
-			handle := default_pointer
+			if not unattached then
+				environment.unregister_session (Current)
+			end
+			unattached := True
 		ensure then
 			not_connected: not is_connected
-			not_referenced_by_environment: not environment.is_registered_session (Current)
+			not_referenced_by_environment: unattached or else not environment.is_registered_session (Current)
+		end
+
+	release_handle is
+		do
+			set_status (ecli_c_free_connection (handle))
+			set_handle ( default_pointer)
+			ready_for_disposal := True
 		end
 
 	impl_data_source : STRING

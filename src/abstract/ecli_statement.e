@@ -20,11 +20,16 @@ inherit
 		end
 
 	ECLI_HANDLE
+		redefine
+			prepare_for_disposal
+		end
 
 	PAT_SUBSCRIBER
 		rename
 			publisher as session,
-			published as session_disconnect
+			published as session_disconnect,
+			has_publisher as has_session,
+			unsubscribed as unattached
 		redefine
 			session, session_disconnect
 		end
@@ -40,15 +45,43 @@ feature {NONE} -- Initialization
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
 		do
+			unattached := True
+			attach (a_session)
+		ensure
+			session_ok: session = a_session and not unattached
+			registered: session.is_registered_statement (Current)
+			valid: is_valid
+		end
+
+feature -- 
+
+	attach (a_session : ECLI_SESSION) is
+		require
+			unattached: unattached
+			a_session_exists: a_session /= Void
+			a_session_connected: a_session.is_connected
+		do
 			session := a_session
 			set_status (ecli_c_allocate_statement (session.handle, $handle))
 			if is_valid then
 				session.register_statement (Current)
 			end
+			unattached := False
 		ensure
-			session_ok: session = a_session
-			registered: session.is_registered_statement (Current)
+			attached: session = a_session and not unattached
+			registered: session.is_registered_statement (Current) and not unattached
 			valid: is_valid
+		end
+
+	release is
+		require
+			valid_statement: is_valid
+		do
+			prepare_for_disposal
+			release_handle
+		ensure
+			unattached: unattached and not (old session).is_registered_statement (Current)
+			not_valid:  not is_valid
 		end
 
 feature -- Access
@@ -60,6 +93,7 @@ feature -- Access
 			-- same <name> can occur at multiple places in a SQL statement
 			-- for example in a WHERE clause
 		require
+			valid_statement: is_valid
 			name_ok: name /= Void
 			has_parameter: parameter_count > 0
 			defined_parameter: has_parameter (name)
@@ -71,6 +105,7 @@ feature -- Access
 
 	parameter (name : STRING) : like value_anchor is
 		require
+			valid_statement: is_valid
 			name_ok: name /= Void
 			has_parameter: parameter_count > 0
 			defined_parameter: has_parameter (name)
@@ -81,6 +116,8 @@ feature -- Access
 		
 	parameter_names : DS_LIST[STRING] is
 			-- names of parameters of query
+		require
+			valid_statement: is_valid
 		local
 			table_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[INTEGER],STRING]
 		do
@@ -116,6 +153,7 @@ feature -- Measurement
 	parameter_count : INTEGER is
 			-- number of parameters in 'sql'
 		require
+			valid_statement: is_valid
 			request: sql /= Void
 		do
 			Result := sql.occurrences ('?')
@@ -125,6 +163,7 @@ feature -- Measurement
 			-- number of columns in result-set
 			-- 0 if no result set is available
 		require
+			valid_statement: is_valid
 			executed: is_executed
 		do
 			get_result_column_count
@@ -134,6 +173,7 @@ feature -- Measurement
 	has_results : BOOLEAN is
 			-- has this statement a result-set ?
 		require
+			valid_statement: is_valid
 			executed: is_executed
 		do
 			Result := result_column_count > 0
@@ -144,6 +184,7 @@ feature -- Measurement
 	has_parameters : BOOLEAN is
 			-- has this statement some parameters ?
 		require
+			valid_statement: is_valid
 			request: sql /= Void
 		do
 			Result := (parameter_count > 0)
@@ -155,6 +196,8 @@ feature -- Status report
 
 	is_parsed : BOOLEAN is
 			-- is the 'sql' statement parsed for parameters ?
+		require
+			valid_statement: is_valid
 		do
 			Result := impl_is_parsed
 		end
@@ -171,6 +214,8 @@ feature -- Status report
 
 	off : BOOLEAN is
 			-- is there no current item ?
+		require
+			valid_statement: is_valid
 		do
 			Result := (before or after)
 		ensure
@@ -179,6 +224,8 @@ feature -- Status report
 
 	after : BOOLEAN is
 			-- is there no valid position to the right of current cursor position ?
+		require
+			valid_statement: is_valid
 		do
 			Result := cursor_status = cursor_after
 		ensure
@@ -187,6 +234,8 @@ feature -- Status report
 
 	before : BOOLEAN is
 			-- is cursor 'before' results (no results or not yet started reading) ?
+		require
+			valid_statement: is_valid
 		do
 			Result := cursor_status = cursor_before
 		ensure
@@ -196,6 +245,7 @@ feature -- Status report
 	has_parameter (name : STRING) : BOOLEAN is
 			-- has the statement a 'name' parameter ?
 		require
+			valid_statement: is_valid
 			name_ok: name /= Void
 		do
 			Result := name_to_position.has (name)
@@ -211,6 +261,8 @@ feature -- Status setting
 	set_prepared_execution_mode is
 			-- set prepared execution mode
 			-- statement execution occurs in two steps
+		require
+			valid_statement: is_valid
 		do
 			is_prepared_execution_mode := True
 		ensure
@@ -218,6 +270,8 @@ feature -- Status setting
 		end
 
 	set_immediate_execution_mode is
+		require
+			valid_statement: is_valid
 		do
 			is_prepared_execution_mode := False
 		ensure
@@ -230,6 +284,7 @@ feature -- Cursor movement
 	start is
 			-- get first result row, if available
 		require
+			valid_statement: is_valid
 			executed: is_executed
 			before: before
 		do
@@ -242,6 +297,7 @@ feature -- Cursor movement
 	forth is
 			-- get next result row
 		require
+			valid_statement: is_valid
 			executed: is_executed
 			result_pending: not off and not before
 		do
@@ -251,6 +307,7 @@ feature -- Cursor movement
 	close_cursor is
 			-- close cursor
 		require
+			valid_statement: is_valid
 			valid_state: is_executed and not after
 			has_results: has_results			
 		do
@@ -264,6 +321,8 @@ feature -- Element change
 
 	set_sql (a_sql : STRING) is
 			-- set 'sql' statement to 'a_sql'
+		require
+			valid_statement: is_valid
 		do
 			sql := a_sql
 			impl_sql := parsed_sql (sql)
@@ -288,6 +347,7 @@ feature -- Element change
 	set_parameters (param : ARRAY[like value_anchor]) is
 			-- set parameters value with 'param'
 		require
+			valid_statement: is_valid
 			param_exist: param /= Void
 			param_count: param.count = parameter_count
 			params_not_void: True -- foreach p in param it_holds p /= Void
@@ -303,6 +363,7 @@ feature -- Element change
 			-- set parameter 'key' with 'value'
 			-- WARNING : Case sensitive !
 		require
+			valid_statement: is_valid
 			has_parameters: parameter_count > 0
 			value_ok: value /= Void
 			key_ok : key /= Void
@@ -330,6 +391,7 @@ feature -- Element change
 	set_cursor (row : ARRAY[like value_anchor]) is
 			-- set cursor container with 'row'
 		require
+			valid_statement: is_valid
 			row_exist: row /= Void
 			row_count: row.count = result_column_count
 			is_executed: is_executed
@@ -354,9 +416,30 @@ feature {ECLI_SESSION} -- Miscellaneous
 
 	session_disconnect (a_session : ECLI_SESSION) is
 		do
+			unattached := True
 			release_handle
+			session := Void
 		ensure then
 			not is_valid
+		end
+
+feature {NONE} -- Miscellaneous
+
+
+	prepare_for_disposal is
+		do
+			if not unattached then
+				session.unregister_statement (Current)
+			end
+			session := Void
+			unattached := True
+		end
+
+	release_handle is
+		do
+			set_status (ecli_c_free_statement (handle))
+			set_handle ( default_pointer)
+			ready_for_disposal := True
 		end
 
 feature -- Basic operations
@@ -364,6 +447,7 @@ feature -- Basic operations
 	execute is
 		-- execute sql statement
 		require
+			valid_statement: is_valid
 			query_is_parsed: is_parsed
 			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
 			parameters_set: parameter_count > 0 implies bound_parameters
@@ -396,6 +480,7 @@ feature -- Basic operations
 	describe_parameters is
 			-- put description of parameters in 'parameters_description'
 		require
+			valid_statement: is_valid
 			prepared: is_prepared
 			has_parameters: parameter_count > 0
 		local
@@ -424,6 +509,7 @@ feature -- Basic operations
 	describe_cursor is
 			-- get metadata about current result-set in 'cursor_description'
 		require
+			valid_statement: is_valid
 			executed: is_executed
 			has_results: has_results
 		local
@@ -451,6 +537,7 @@ feature -- Basic operations
 	bind_parameters is
 			-- bind parameters
 		require
+			valid_statement: is_valid
 			parameters_exist: parameters /= Void and then parameters.count >= parameter_count
 		local
 			parameter_index : INTEGER
@@ -470,6 +557,8 @@ feature -- Basic operations
 
 	prepare is
 			-- prepare the sql statement
+		require
+			valid_statement: is_valid
 		local
 			tools : ECLI_EXTERNAL_TOOLS
 		do
@@ -588,16 +677,22 @@ feature {NONE} -- Implementation
 	name_to_position : DS_HASH_TABLE [DS_LIST[INTEGER], STRING]
 	
 	set_parsed is
+		require
+			valid_statement: is_valid
 		do
 			impl_is_parsed := True
 		end
 
 	get_result_column_count is
+		require
+			valid_statement: is_valid
 		do
 			set_status (ecli_c_result_column_count (handle, $impl_result_column_count))
 		end
 
 	bind_one_parameter (i : INTEGER) is
+		require
+			valid_statement: is_valid
 		local
 			a_parameter : ECLI_VALUE
 		do
@@ -607,6 +702,7 @@ feature {NONE} -- Implementation
 
 	fill_cursor is
 		require
+			valid_statement: is_valid
 			cursor_exists: cursor /= Void
 			cursor_arity: cursor.count = result_column_count
 		local
@@ -627,21 +723,10 @@ feature {NONE} -- Implementation
 
 	session : ECLI_SESSION
 
-	release_handle is
-		do
-			session.unregister_statement (Current)
-			session := Void
-			free_statement_handle
-		end
-
-	free_statement_handle is
-		do
-			set_status (ecli_c_free_statement (handle))
-			handle := default_pointer
-		end
-
 	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- Implementation of deferred feature 
+		require else
+			valid_statement: is_valid
 		do
 			Result := ecli_c_statement_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
@@ -676,6 +761,8 @@ feature {NONE} -- Implementation
 		end
 
 	fetch_next_row is
+		require
+			valid_statement: is_valid
 		do
 			set_status (ecli_c_fetch (handle))
 			if status = cli_no_data then
@@ -686,6 +773,8 @@ feature {NONE} -- Implementation
 		end
 
 	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER) is
+		require
+			valid_statement: is_valid
 		local
 			position_list : DS_LIST[INTEGER]
 		do

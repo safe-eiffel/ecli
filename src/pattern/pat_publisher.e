@@ -48,7 +48,7 @@ feature -- Removal
 			-- de-subscribe statement 's'
 		require
 			valid_statement: subscriber /= Void
-			subscribeed: has_subscribed (subscriber)
+			subscribed: has_subscribed (subscriber)
 		do
 			subscribers.delete (subscriber)
 		ensure
