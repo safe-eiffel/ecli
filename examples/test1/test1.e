@@ -114,6 +114,8 @@ feature --  Basic operations
 				--
 				-- | Uncomment next line for using Oracle 8 driver, and comment previous one
 				--stmt.set_sql ("CREATE TABLE ECLIESSAI (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")
+				-- | Uncomment next line for using Interbase driver, and comment previous one
+				--stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
 				show_query ("Table creation : ",stmt)
 
 				stmt.execute
@@ -196,6 +198,7 @@ feature --  Basic operations
 			!!last_name_parameter.make (20)
 			last_name_parameter.set_item ("Archibald")
 			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
+
 			-- set parameters by "tuple" i.e. ARRAY[ECLI_VALUE]
 			-- order *matters* !!!
 
@@ -400,9 +403,13 @@ feature -- Miscellaneous
 
 	print_status (status : ECLI_STATUS) is
 		do
+			print ("State         : ")
 			print (status.cli_state)
+			print ("%NNative code : ")
 			print (status.native_code)
+			print ("%NDiagnostic  : ")
 			print (status.diagnostic_message)
+			print ("%N")
 		end
 
 invariant
