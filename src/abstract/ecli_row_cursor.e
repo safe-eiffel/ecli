@@ -11,6 +11,7 @@ inherit
 	ECLI_CURSOR
 		rename
 			make as cursor_make, open as statement_open,
+			make_prepared as cursor_make_prepared,
 			close as cursor_close, statement_close as close,
 			create_buffers as create_row_buffers
 		export 
@@ -27,7 +28,7 @@ create
 feature {NONE} -- Initialization
 
 	make, open (a_session : ECLI_SESSION; a_sql : STRING) is
-			-- 
+			-- make cursor for `a_session' on `a_sql'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
@@ -40,9 +41,24 @@ feature {NONE} -- Initialization
 			valid: is_valid
 			definition_set: definition = a_sql
 			definition_is_sql: equal (definition, sql)
-			ok: is_ok implies is_prepared
-			definition_is_a_query:  has_results or else not is_ok
+--			definition_is_a_query:  has_results or else not is_ok
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
+		end
+
+	make_prepared, open_prepared (a_session : ECLI_SESSION; a_sql : STRING) is
+			-- make prepared cursor for `a_session' on `a_sql'
+		require
+			a_session_exists: a_session /= Void
+			a_session_connected: a_session.is_connected
+		do
+			make (a_session, a_sql)
+			prepare
+		ensure
+			valid: is_valid
+			definition_set: definition = a_sql
+			definition_is_sql: equal (definition, sql)
+			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
+			prepared_if_ok: is_ok implies is_prepared
 		end
 		
 feature -- Access
@@ -121,6 +137,8 @@ feature -- Cursor movement
 				if has_results then
 					create_row_buffers
 					statement_start
+				else
+					cursor_status := Cursor_after
 				end
 			else
 				debug
@@ -130,6 +148,7 @@ feature -- Cursor movement
 			end
 		ensure
 			executed: is_executed
+			off_if_not_query: not has_results implies off
 		end
 		
 feature -- Element change

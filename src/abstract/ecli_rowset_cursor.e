@@ -11,7 +11,8 @@ inherit
 	
 	ECLI_ROW_CURSOR
 		rename
-			make as row_cursor_make, open as row_cursor_open
+			make as row_cursor_make, open as row_cursor_open, 
+			make_prepared as row_cursor_make_prepared, open_prepared as row_cursor_open_prepared
 		export 
 			{NONE} row_cursor_make, row_cursor_open
 		redefine
@@ -36,7 +37,31 @@ feature -- Initialization
 			!!rowset_status.make (row_capacity)
 			row_cursor_make (a_session, a_definition)
 		ensure
+			valid: is_valid
+			definition_set: definition = a_definition
+			definition_is_sql: equal (definition, sql)
+			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			row_count_set: row_capacity = a_row_count
+		end
+
+	make_prepared, open_prepared (a_session : ECLI_SESSION; a_definition : STRING; a_row_count : INTEGER) is
+			-- make prepared cursor for `a_session' on `a_definition', for fetching at most `a_row_count' at a time
+		require
+			session_connected: a_session /= Void and then a_session.is_connected
+			definition_exists: a_definition /= Void
+			row_count_valid: a_row_count >= 1
+		do
+			make (a_session, a_definition, a_row_count)
+			prepare
+
+		ensure
+			valid: is_valid
+			definition_set: definition = a_definition
+			definition_is_sql: equal (definition, sql)
+			definition_is_a_query:  has_results or else not is_ok
+			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
+			row_count_set: row_capacity = a_row_count
+			prepared_if_ok: is_ok implies is_prepared
 		end
 		
 feature -- Access
@@ -82,7 +107,6 @@ feature {NONE} -- Implementation
 		do
 			!!buffer_factory.make (row_capacity)
 		end
-		
 		
 	create_row_buffers is
 			-- 
