@@ -80,7 +80,7 @@ feature {NONE} -- Implementation
 			s_not_void: s /= Void
 		do
 			if s.count > count then
-				s.head (capacity)
+				s.keep_head (capacity)
 			else
 				pad (s)
 			end

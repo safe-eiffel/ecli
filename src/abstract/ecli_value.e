@@ -23,11 +23,16 @@ inherit
 
 	ECLI_EXTERNAL_API
 
-	ECLI_TYPE_CODES
+	ECLI_TYPE_CONSTANTS
 
 	ECLI_DATA_DESCRIPTION
 		export
 			{ANY} all
+		end
+
+	ECLI_LENGTH_INDICATOR_CONSTANTS
+		export 
+			{NONE} all
 		end
 		
 feature -- Access
@@ -311,11 +316,6 @@ feature {ECLI_STATEMENT} -- Basic operations
 		end
 
 feature {NONE} -- Implementation values
-	
-	Sql_null_data : INTEGER is
-		once
-			Result := ecli_c_null_data
-		end
 
 	is_ready_for_disposal : BOOLEAN is True
 	

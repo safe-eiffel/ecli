@@ -2,7 +2,11 @@
 	* Added 'arrayed' operations (ECLI_ROWSET_CURSOR, ECLI_ROWSET_MODIFIER)
 	  and values (ECLI_ARRAYED_VALUE and descendants)
 	* Reviewed parsing of SQL to find parameters.
-
+	* X/OPEN CLI/ODBC constants are now defined in Eiffel constant classes
+	  see $ECLI/src/spec/constants
+	* class ECLI_TYPE_CODES renamed ECLI_TYPES_CONSTANTS
+	* usage of ELKS STRING.keep_head
+	
 2001-09-15
 	* TEST1 now traces its output if asked on the command line.
 	* SmallEiffel-build systems now report error messages (error fixed).

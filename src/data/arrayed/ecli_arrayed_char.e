@@ -100,7 +100,7 @@ feature {NONE} -- Implementation
 			s_not_void: s /= Void
 		do
 			if s.count > content_count then
-				s.head (content_capacity)
+				s.keep_head (content_capacity)
 			else
 				pad (s, content_capacity)
 			end

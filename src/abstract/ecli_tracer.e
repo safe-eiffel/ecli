@@ -12,7 +12,7 @@ creation
 	make
 	
 feature -- Initialization
-	make (a_medium : IO_MEDIUM) is
+	make (a_medium : like medium) is
 			-- make tracer
 		require
 			medium_exists: a_medium /= Void
@@ -25,7 +25,7 @@ feature -- Initialization
 		
 feature -- Access
 
-	medium : IO_MEDIUM
+	medium : KI_CHARACTER_OUTPUT_STREAM
 
 feature {ECLI_STATEMENT} -- Basic operations
 	
@@ -78,6 +78,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 				index := index + 1
 			end		
 			medium.put_string(";%N")
+			medium.flush
 		end
 		
 feature {ECLI_SESSION} -- Basic operations

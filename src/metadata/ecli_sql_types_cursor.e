@@ -26,7 +26,7 @@ inherit
 			start, forth
 		end
 
-	ECLI_TYPE_CODES
+	ECLI_TYPE_CONSTANTS
 		export {NONE} all;
 		{ANY}
 				sql_char,
@@ -56,7 +56,7 @@ feature -- Initialization
 			closed: is_closed
 		do
 			make (a_session)
-			get_type_info (ecli_c_sql_all_types)
+			get_type_info (sql_all_types)
 		ensure
 			executed: is_ok implies is_executed
 			open: not is_closed

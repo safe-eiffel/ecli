@@ -31,6 +31,7 @@
 		<cluster name="pattern"/>
 		<cluster name="spec">
 			<cluster name="${GOBO_EIFFEL}" prefix="compiler_"/>
+			<cluster name="constants"/>
 		</cluster>
 		<cluster name="metadata"/>
 		<cluster name="support"/>

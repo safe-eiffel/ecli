@@ -10,9 +10,19 @@ class
 
 inherit
 	ECLI_ARRAYED_TIMESTAMP
+		redefine
+			sql_type_code			
+		end
 
 creation
-	make, make_first
+	make
+
+feature -- Access
+
+	sql_type_code : INTEGER is
+		once
+			Result := Sql_datetime
+		end
 
 end -- class ECLI_ARRAYED_DATE_TIME
 --

@@ -18,6 +18,10 @@ inherit
 		export {NONE}	all
 		end
 
+	ECLI_STATUS_CONSTANTS
+		export {NONE} all
+		end
+		
 	EXCEPTIONS
 		export {NONE} all
 		end
@@ -59,7 +63,7 @@ feature -- Status report
 			-- Is the last CLI command ok, 
 			-- but with an available information message ?
 		do
-			Result := status = cli_ok_with_info
+			Result := status = sql_success_with_info
 		ensure
 			Result implies is_ok
 		end
@@ -67,20 +71,20 @@ feature -- Status report
 	is_ok : BOOLEAN is
 			-- Is the last CLI command ok ?
 		do
-			Result := status = cli_ok or else has_information_message 
-				or else  status = cli_no_data 
-			    	or else status = cli_need_data;
+			Result := status = sql_success or else has_information_message 
+				or else  status = sql_no_data 
+			    	or else status = sql_need_data;
 		end
 
 	is_no_data : BOOLEAN is
 		do
-			Result := status = cli_no_data;
+			Result := status = sql_no_data;
 		end
 		
 	is_error : BOOLEAN is
 			-- Is the last CLI command in error
 		do
-			Result := status = cli_error
+			Result := status = sql_error
 		end
 
 feature -- Status report
@@ -106,42 +110,12 @@ feature -- Status setting
 
 feature {NONE} -- Implementation
 
-	cli_ok : INTEGER is
-			-- 
-		once
-			Result := ecli_c_ok
-		end
-
-	cli_ok_with_info : INTEGER is
-		once
-			Result := ecli_c_ok_with_info
-		end
-
-	cli_no_data : INTEGER is
-		once
-			Result := ecli_c_no_data
-		end
-
-	cli_error : INTEGER is
-		once
-			Result := ecli_c_error
-		end
-
-	cli_invalid_handle : INTEGER is
-		once
-			Result := ecli_c_invalid_handle
-		end
-
-	cli_need_data : INTEGER is
-		once
-			Result := ecli_c_need_data
-		end
 
 	set_status (v : INTEGER) is
 		do
 			status := v
 			need_diagnostics := True
-			if status = cli_invalid_handle then
+			if status = sql_invalid_handle then
 				raise ("[ECLI][Internal] Invalid Handle")
 			elseif exception_on_error and then not is_ok then
 				raise (diagnostic_message)
@@ -168,9 +142,9 @@ feature {NONE} -- Implementation
 				!!impl_error_message.make(0)
 				from 
 					count := 1
-					retcode := cli_ok
+					retcode := sql_success
 				until 
-					retcode = cli_no_data or retcode = cli_invalid_handle or retcode = cli_error
+					retcode = sql_no_data or retcode = sql_invalid_handle or retcode = sql_error
 				loop
 					retcode := get_error_diagnostic (count, 
 							tools.string_to_pointer (impl_cli_state),
@@ -178,7 +152,7 @@ feature {NONE} -- Implementation
 							tools.string_to_pointer (impl_error_buffer),
 							255,
 							$impl_buffer_length_indicator)
-					if retcode = cli_ok or else retcode = cli_ok_with_info then	
+					if retcode = sql_success or else retcode = sql_success_with_info then	
 						impl_error_message.append (
 								tools.pointer_to_string (
 									tools.string_to_pointer (impl_error_buffer)))

@@ -207,6 +207,15 @@ feature -- Measurement
 		
 feature -- Status Report
 
+	is_describe_parameters_capable : BOOLEAN is
+			-- can `describe_parameters' be called ?
+		require
+			valid_statement: is_valid
+			open: not is_closed
+		do
+			Result := session.is_describe_parameters_capable
+		end
+		
 	has_results : BOOLEAN is
 			-- has this statement a result-set ?
 		require
@@ -537,6 +546,7 @@ feature -- Basic operations
 			-- put description of parameters in 'parameters_description'
 		require
 			valid_statement: is_valid
+			describe_capable: is_describe_parameters_capable
 			prepared: is_prepared
 			has_parameters: parameters_count > 0
 		local
@@ -659,6 +669,17 @@ feature {ECLI_SQL_PARSER} -- Callback
 				position_list.put_right (a_position)
 				name_to_position.force (position_list, a_parameter_name)
 			end
+		end
+
+feature {ECLI_STATUS} -- Inapplicable
+
+	can_use_arrayed_parameters : BOOLEAN is
+			-- can we use arrayed parameters ?
+		do
+			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 2))
+			Result := is_ok
+			--| get back to original situation
+			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 1))
 		end
 
 feature {NONE} -- Implementation
@@ -846,7 +867,7 @@ feature {NONE} -- Implementation
 			valid_statement: is_valid
 		do
 			set_status (ecli_c_fetch (handle))
-			if status = cli_no_data then
+			if status = sql_no_data then
 				close_cursor
 			else
 				fill_cursor

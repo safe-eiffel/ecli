@@ -15,7 +15,7 @@ inherit
 		end
 		
 creation
-	make, make_first
+	make, make_first, make_default
 
 feature
 

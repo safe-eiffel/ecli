@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "Objects that search the database repository for tables."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

@@ -556,7 +556,7 @@ feature {NONE} -- Implementation
 				if width > s.count then
 					pad (s, width)
 				else
-					s.head (width)
+					s.keep_head (width)
 				end
 				io.put_string (s)
 				if i <= cursor.upper then
@@ -589,7 +589,7 @@ feature {NONE} -- Implementation
 				if precision > formatting_buffer.count then
 					pad (formatting_buffer, precision)
 				else
-					formatting_buffer.head (precision)
+					formatting_buffer.keep_head (precision)
 				end
 				io.put_string (formatting_buffer)
 				io.put_character ('|')

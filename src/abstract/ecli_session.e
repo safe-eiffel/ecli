@@ -66,6 +66,7 @@ feature -- Initialization
 			set_user_name(a_user_name)
 			set_password (a_password)
 			allocate
+			reset_implementation
 		ensure
 			data_source_shared : data_source = a_data_source
 			user_name_shared : user_name= a_user_name
@@ -132,6 +133,10 @@ feature -- Access
 
 	transaction_capability : INTEGER is
 		do
+			--| evaluate capability
+			if impl_transaction_capability < sql_tc_none then
+				set_status (ecli_c_transaction_capable (handle, $impl_transaction_capability))
+			end
 			Result := impl_transaction_capability
 		end
 
@@ -161,13 +166,40 @@ feature -- Status report
 		require
 			connected: is_connected
 		do
-			set_status (ecli_c_transaction_capable (handle, $impl_transaction_capability))
-			Result := impl_transaction_capability /= sql_tc_none
+			Result := transaction_capability /= sql_tc_none
 		ensure
 			capability: Result implies (transaction_capability = sql_tc_all or
 				transaction_capability = sql_tc_dml or
 				transaction_capability = sql_tc_ddl_commit or
 				transaction_capability = sql_tc_ddl_ignore )
+		end
+	
+	is_describe_parameters_capable : BOOLEAN is
+			-- can 'ECLI_STATEMENT.describe_parameters' be called ?
+		local
+			functions : expanded ECLI_FUNCTIONS_CONSTANTS
+		do
+			if impl_transaction_capability < sql_false then
+				set_status (ecli_c_sql_get_functions (handle, functions.Sql_api_sqldescribeparam, $ impl_describe_parameters_capability))
+			end
+			Result := impl_transaction_capability = sql_true
+		end
+
+	is_bind_arrayed_parameters_capable : BOOLEAN is
+			-- can arrayed parameters be used in rowset operations ?
+		local
+			dummy_statement : ECLI_STATEMENT
+		do
+			if impl_is_bind_arrayed_parameters_capability < 0 then
+				!!dummy_statement.make (Current)
+				if dummy_statement.can_use_arrayed_parameters then
+					impl_is_bind_arrayed_parameters_capability := 1
+				else
+					impl_is_bind_arrayed_parameters_capability := 0
+				end
+				dummy_statement.close
+			end
+			Result := impl_is_bind_arrayed_parameters_capability = 1
 		end
 		
 	is_tracing : BOOLEAN is
@@ -377,6 +409,14 @@ feature {ECLI_ENVIRONMENT} --
 
 feature {NONE} -- Implementation
 
+	reset_implementation is
+			-- reset all implementation values to default ones
+		do
+			impl_transaction_capability := sql_tc_none - 1
+			impl_describe_parameters_capability := sql_false - 1
+			impl_is_bind_arrayed_parameters_capability := -1			
+		end
+		
 	release_handle is
 		do
 			set_status (ecli_c_free_connection (handle))
@@ -414,6 +454,10 @@ feature {NONE} -- Implementation
 
 	impl_transaction_capability : INTEGER
 
+	impl_describe_parameters_capability : INTEGER
+	
+	impl_is_bind_arrayed_parameters_capability : INTEGER
+	
 	allocate is
 			-- allocate HANDLE
 		require

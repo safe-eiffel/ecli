@@ -10,7 +10,7 @@ class
 
 inherit
 
-	ECLI_TYPE_CODES
+	ECLI_TYPE_CONSTANTS
 		export {ANY}
 			sql_char, sql_varchar, sql_longvarchar,
 			sql_type_timestamp, sql_type_date, sql_type_time,
@@ -80,6 +80,11 @@ feature -- Miscellaneous
 			!ECLI_TIMESTAMP!last_result.make_default
 		end
 
+	create_datetime_value is
+		do
+			!ECLI_DATE_TIME!last_result.make_default
+		end
+		
 	create_time_value is
 		do
 			!ECLI_TIME!last_result.make_default
@@ -115,6 +120,8 @@ feature -- Basic operations
 					end
 			elseif db_type = sql_type_date then
 					create_date_value
+			elseif db_type = Sql_datetime then
+					create_datetime_value	
 			elseif db_type = sql_type_timestamp then
 					create_timestamp_value
 			else

@@ -29,6 +29,7 @@
 	<cluster name="pattern"/>
 	<cluster name="spec">
 		<cluster name="compiler" location="${ECLI}/src/spec/${GOBO_EIFFEL}"/>
+		<cluster name="constants"/>
 	</cluster>
 	<cluster name="metadata"/>
 	<cluster name="support"/>

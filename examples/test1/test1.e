@@ -84,11 +84,12 @@ feature --  Basic operations
 
 	trace_if_necessary is
 		local
-			f : PLAIN_TEXT_FILE
+			f : KL_TEXT_OUTPUT_FILE
 			tracer : ECLI_TRACER
 		do
 			if trace_file_name /= Void then
-				!!f.make_open_write (trace_file_name)
+				!!f.make (trace_file_name)
+				f.open_write
 				if f.is_open_write then
 					!!tracer.make (f)
 					session.set_tracer (tracer)
@@ -137,12 +138,12 @@ feature --  Basic operations
 				io.put_string (" - DDL - Create sample table%N")
 				-- DDL statement
 				-- | Uncomment next line for using MS Access driver or PostgreSQL
-				--stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
+				stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
 				--
 				-- | Uncomment next line for using Oracle 8 driver, and comment previous one
 				--stmt.set_sql ("CREATE TABLE ECLIESSAI (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")
 				-- | Uncomment next line for using Interbase driver, and comment previous one
-				stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
+				--stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
 				show_query ("Table creation : ",stmt)
 
 				stmt.execute
@@ -177,7 +178,7 @@ feature --  Basic operations
 
 	parameterized_insert is
 		local
-			p_birthdate : 	ECLI_TIMESTAMP
+			p_birthdate : 	ECLI_DATE_TIME
 			first_name_parameter, last_name_parameter : 	ECLI_CHAR
 			p_nbr : ECLI_INTEGER
 			price : DOUBLE
@@ -282,7 +283,7 @@ feature --  Basic operations
 		local
 			name_result_value : 	ECLI_CHAR
 			price_result_value : 	ECLI_DOUBLE
-			birthdate_result_value : 	ECLI_TIMESTAMP
+			birthdate_result_value : 	ECLI_DATE_TIME
 			firstname_result_value : 	ECLI_VARCHAR
 			number_result_value : 		ECLI_INTEGER
 		do
@@ -299,7 +300,7 @@ feature --  Basic operations
 				!! name_result_value.make (20)
 				!! firstname_result_value.make (20)
 				!! number_result_value.make
-				!! birthdate_result_value.make_first
+				!! birthdate_result_value.make_default
 				!! price_result_value.make
 				-- define the container of value holders
 				stmt.set_cursor (<<name_result_value, firstname_result_value, number_result_value, birthdate_result_value, price_result_value>>)
@@ -383,7 +384,7 @@ feature -- Miscellaneous
 			until
 				i > astmt.cursor_description.count
 			loop
-				width := astmt.cursor_description.item (i).column_precision
+				width := astmt.cursor_description.item (i).size
 				!! s.make (width)
 				s.append (astmt.cursor_description.item (i).name)
 				-- pad with blanks
