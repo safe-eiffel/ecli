@@ -20,7 +20,6 @@ inherit
 			create_integer_value, 
 			create_time_value, 
 			create_timestamp_value,
-			create_datetime_value,
 			create_date_value,
 			create_char_value,
 			create_varchar_value
@@ -87,11 +86,6 @@ feature -- Miscellaneous
 	create_timestamp_value is
 		do
 			!ECLI_ARRAYED_TIMESTAMP!last_result.make (row_count)
-		end
-
-	create_datetime_value is
-		do
-			!ECLI_ARRAYED_DATE_TIME!last_result.make (row_count)
 		end
 		
 	create_time_value is

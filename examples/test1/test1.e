@@ -178,8 +178,9 @@ feature --  Basic operations
 
 	parameterized_insert is
 		local
-			p_birthdate : 	ECLI_DATE_TIME
-			first_name_parameter, last_name_parameter : 	ECLI_CHAR
+			p_birthdate : 	ECLI_TIMESTAMP
+			first_name_parameter : ECLI_CHAR
+			last_name_parameter : 	ECLI_VARCHAR
 			p_nbr : ECLI_INTEGER
 			price : DOUBLE
 			p_price : ECLI_DOUBLE
@@ -243,11 +244,9 @@ feature --  Basic operations
 			show_parameter_names (stmt)
 			-- describe_parameters is not supported by all drivers
 
-			stmt.describe_parameters
-
-			-- verify if `describe_parameters' is supported or not
-
-			if not stmt.is_ok then
+			if stmt.is_describe_parameters_capable then
+				stmt.describe_parameters
+			else
 				io.put_string ("* Parameter description not possible !!! *%N")
 			end
 
