@@ -50,6 +50,11 @@ feature -- Access
 	feature_groups: DS_LINKED_LIST [EIFFEL_FEATURE_GROUP]
 			-- Feature groups
 
+feature -- Status report
+
+	is_deferred : BOOLEAN
+			-- is this a deferred class ?
+			
 feature -- Status setting
 
 	set_name (new_name: like name) is
@@ -90,6 +95,14 @@ feature -- Status setting
 			new_group_exists: new_group /= Void
 		do
 			feature_groups.force_last (new_group)
+		end
+		
+	set_deferred is
+			-- set this a deferred class
+		do
+			is_deferred := True
+		ensure
+			is_deferred
 		end
 		
 feature -- Basic operations
@@ -134,6 +147,9 @@ feature {NONE} -- Implementation
 	
 	write_header (output: KI_TEXT_OUTPUT_STREAM) is
 		do
+			if is_deferred then
+				output.put_string ("deferred ")
+			end
 			output.put_string ("class " + name)
 			output.put_new_line
 			output.put_new_line
