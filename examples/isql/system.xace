@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<system name="isql">
+<system name="clisql">
 	<description>
 		system:      "ECLI interactive SQL example"
 
