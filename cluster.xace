@@ -30,6 +30,7 @@
 	<cluster name="spec">
 		<cluster name="compiler" location="${ECLI}/src/spec/${GOBO_EIFFEL}"/>
 	</cluster>
+	<cluster name="metadata"/>
 	<external unless="${GOBO_OS}=windows">
 		<link_library location="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libecli_c.a"/>
 		<link_library location="-lodbc"/>
