@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<project name="data" default="help">
+
+	<description>
+		system: "ECLI Library Data Tester"
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/test.eant">
+			<redefine target="other_clean"/>
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="other_clean" depend="init">
+		<description>
+			Remove other intermediary generated files.
+		</description>
+
+		<delete directory="Tdata"/>
+	</target>
+
+	<target name="init_system">
+		<set name="system" value="xdata"/>
+		<set name="library" value="data"/>
+		<set name="system_dir" value="${ECLI}/test/${library}"/>
+	</target>
+
+</project>
