@@ -34,8 +34,8 @@ feature {NONE} -- implementation
 			index: INTEGER
 		do
 			from index := 1
-				!!status_array.make (1, processed_row_count)
-			until index > processed_row_count
+				!!status_array.make (1, row_count)
+			until index > row_count
 			loop
 				status_array.put (rowset_status.item (index), index)
 				index := index + 1
