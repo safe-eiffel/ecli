@@ -23,7 +23,7 @@ inherit
 		export
 			{NONE} make_single, set_single, make_default_single
 		undefine
-			release_handle, length_indicator_pointer, as_external, 
+			release_handle, length_indicator_pointer, to_external, 
 			is_null, set_null, 
 			-- is_equal, 
 			out, set_item, as_string

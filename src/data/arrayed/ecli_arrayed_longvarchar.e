@@ -14,7 +14,7 @@ inherit
 			make as make_single, capacity as content_capacity, max_capacity as max_content_capacity,
 			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
-			release_handle, length_indicator_pointer, as_external, is_null, set_null, out, trace,
+			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
 			set_item, transfer_octet_length, as_string, convertible_as_string
 		redefine
 			item, content_capacity, content_count
@@ -181,7 +181,7 @@ invariant
 
 end -- class ECLI_ARRAYED_LONGVARCHAR
 --
--- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -4,7 +4,7 @@ indexing
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
+deferred class
 	ECLI_ROWSET_CAPABLE
 
 feature -- Measurement
@@ -49,12 +49,11 @@ feature {NONE} -- implementation
 			end
 		end
 		
-	impl_row_count : XS_C_INT32
+	impl_row_count : XS_C_INT32 is deferred end
 
 	make_row_count_capable is
 			-- 
-		do
-			create impl_row_count.make
+		deferred
 		end
 		
 invariant

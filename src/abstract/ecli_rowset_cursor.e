@@ -132,7 +132,7 @@ feature {NONE} -- Implementation
 			--| Declare maximum number of retrieved values at a time
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_capacity))
 			--| Declare status indicator array
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.as_external, 0))
+			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.to_external, 0))
 			from index := 1
 			until index > result_columns_count
 			loop
@@ -216,6 +216,12 @@ feature {NONE} -- Implementation
 				index := index + 1
 			end
 			
+		end
+
+	make_row_count_capable is
+			-- 
+		do
+			create impl_row_count.make
 		end
 		
 invariant

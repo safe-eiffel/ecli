@@ -3,7 +3,7 @@ indexing
 	
 		"Objects that reflect status of rowset operations. They basically are an array of integer."
 
-	author: "Paul G. Crismer <pgcrism at pi.be>"
+	author: "Paul G. Crismer "
 	date: "$Date$"
 	revision: "$Revision$"
 

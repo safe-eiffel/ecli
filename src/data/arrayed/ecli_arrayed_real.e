@@ -22,7 +22,7 @@ inherit
 			make as make_single,
 			copy as copy_item, is_equal as is_equal_item
 		undefine
-			release_handle, length_indicator_pointer, as_external,
+			release_handle, length_indicator_pointer, to_external,
 			is_null, set_null, out, item, transfer_octet_length, set_item, as_string
 		end
 
@@ -112,7 +112,7 @@ feature {NONE} -- Implementation
 
 end -- class ECLI_ARRAYED_REAL
 --
--- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

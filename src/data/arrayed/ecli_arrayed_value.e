@@ -32,7 +32,7 @@ inherit
 			set_null, length_indicator_pointer,
 			can_trace
 		redefine
-			release_handle, as_external, is_null,
+			release_handle, to_external, is_null,
 			as_string
 		end
 
@@ -196,7 +196,7 @@ feature -- Conversion
 			Result := out_item_at (cursor_index)
 		end
 
-	as_external : POINTER is
+	to_external : POINTER is
 			-- external 'C' address of value array
 			-- contiguous memory block of 'capacity' * 'transfer_octet_length'
 			-- use at your own risks !

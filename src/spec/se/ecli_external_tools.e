@@ -16,7 +16,7 @@ feature -- Basic operations
 	string_to_pointer (s : STRING) : POINTER is
 			-- pointer to "C" version of 's'
 		do
-			Result := s.as_external
+			Result := s.to_external
 		end
 
 	pointer_to_string (p : POINTER) : STRING is
