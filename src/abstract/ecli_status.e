@@ -64,8 +64,7 @@ feature -- Access
 feature -- Status report
 
 	has_information_message : BOOLEAN is
-			-- Is the last CLI command ok, 
-			-- but with an available information message ?
+			-- Is last CLI command successful, but with an information message ?
 		do
 			Result := status = sql_success_with_info
 		ensure
@@ -73,7 +72,7 @@ feature -- Status report
 		end
 
 	is_ok : BOOLEAN is
-			-- Is the last CLI command ok ?
+			-- Is last CLI command ok ?
 		do
 			Result := status = sql_success or else has_information_message 
 				or else  status = sql_no_data 
@@ -81,26 +80,39 @@ feature -- Status report
 		end
 
 	is_no_data : BOOLEAN is
-			-- Has the last data fetch command returned no data ?
+			-- Is last fetch indicating there is no data anymore ?
 		do
 			Result := status = sql_no_data;
 		end
 		
 	is_error : BOOLEAN is
-			-- Is the last CLI command in error
+			-- Is last CLI command in error ?
 		do
 			Result := status = sql_error
 		end
 
+	valid_status (code : INTEGER) : BOOLEAN is
+			-- Is `code' a valid status ?
+		do
+			Result := True
+			inspect code
+			when Sql_success, Sql_success_with_info then
+			when Sql_no_data, Sql_need_data, Sql_still_executing then
+			when Sql_error, Sql_invalid_handle then					
+			else
+				Result := False
+			end
+		end
+		
 feature -- Status report
 
 	exception_on_error : BOOLEAN
-		-- When true, an exception is raised if not is_ok
+		-- Is an exception raised when not `is_ok' ?
 
 feature -- Status setting
 
 	raise_exception_on_error is
-			-- Let an exception occur on any CLI operation failure
+			-- Enable exceptions for CLI operation failure
 		do
 			exception_on_error := True
 		ensure
@@ -118,12 +130,16 @@ feature -- Status setting
 feature {NONE} -- Implementation
 
 	reset_status is
-			-- 
+			-- reset status to `is_ok'
 		do
 			set_status (Sql_success)
+		ensure
+			is_ok: is_ok
 		end
 		
 	set_status (v : INTEGER) is
+		require
+			valid_status_v: valid_status (v)
 		do
 			status := v
 			need_diagnostics := True
@@ -132,7 +148,6 @@ feature {NONE} -- Implementation
 			elseif exception_on_error and then not is_ok then
 				raise (diagnostic_message)
 			end
-
 		ensure
 			status: status = v
 		end
@@ -143,7 +158,7 @@ feature {NONE} -- Implementation
 		end
 
 	get_diagnostics is
-			-- get error diganostics for latest CLI command
+			-- get error diagnostics for latest CLI command
 		local
 			count : INTEGER
 			retcode : INTEGER
@@ -156,7 +171,7 @@ feature {NONE} -- Implementation
 				if impl_error_buffer = Void then create impl_error_buffer.make (512) end -- SQL_MAX_MSG_LEN
 				if impl_native_code = Void then create impl_native_code.make end
 				if impl_buffer_length_indicator = Void then create impl_buffer_length_indicator.make end
-				!!impl_error_message.make(0)
+				create impl_error_message.make(0)
 				from
 					count := 1
 					retcode := sql_success
@@ -195,7 +210,7 @@ feature {NONE} -- Implementation
 	impl_buffer_length_indicator : XS_C_INT32
 	
 invariant
-	invariant_clause: -- Your invariant here
+	valid_status: valid_status (status)
 
 end -- class ECLI_STATUS
 --

@@ -56,7 +56,7 @@ feature -- Initialization
 feature -- Access
 
 	definition : STRING	is
-			-- cursor definition (i.e. SQL text); remains constant.
+			-- Cursor definition (i.e. SQL text); remains constant.
 		deferred
 		end
 			

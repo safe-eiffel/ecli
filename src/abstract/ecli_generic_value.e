@@ -32,7 +32,7 @@ feature -- Access
 feature -- Element change
 
 	set_item (value: G) is
-			-- set `item' with content of `value'
+			-- Set `item' with content of `value'
 		require
 			value_exists: value /= Void
 		do
@@ -54,7 +54,7 @@ feature -- Conversion
 	out : STRING is
 		do
 			if is_null then
-				Result := "<NULL>"
+				Result := out_null
 			else
 				Result := item.out
 			end
@@ -81,15 +81,21 @@ feature -- Comparison
 feature {NONE} -- Implementation
 
 	impl_item : G is
-			-- reference to actual item this is always the same item !
+			-- Reference to actual item this is always the same item !
 		do
 		end
 		
 	create_impl_item is
-			-- create impl_item
+			-- Create impl_item
 		do
 		end
-		
+	
+	out_null : STRING is 
+			-- Default `out' when value `is_null'
+		once 
+			Result := "<NULL>"
+		end
+	
 end -- class ECLI_GENERIC_VALUE
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

@@ -49,7 +49,7 @@ creation
 feature -- Initialization
 
 	make, open (a_session : ECLI_SESSION) is
-			-- create a statement for use on 'session'
+			-- Create a statement for use on `session'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
@@ -91,10 +91,10 @@ feature -- Obsolete
 		do
 		end
 
-feature -- Basic Operations
+feature -- Basic operations
 
 	close is
-			-- close statement and release external resources
+			-- Close statement and release external resources
 		require
 			valid_statement: is_valid
 			not_closed: not is_closed
@@ -113,7 +113,7 @@ feature -- Basic Operations
 feature {ECLI_SESSION} -- Basic Operations
 
 	do_close is
-			-- close unconditionally without unregistering from the session
+			-- Close unconditionally without unregistering from the session
 		require
 			valid_statement: is_valid
 			not_closed: not is_closed
@@ -128,36 +128,37 @@ feature {ECLI_SESSION} -- Basic Operations
 feature -- Access
 
 	sql : STRING
-			-- sql statement to be executed
+			-- Sql statement to be executed
 
-	parameter_positions (name : STRING) : DS_LIST[INTEGER] is
-			-- Positions of parameter 'name' in the sql statement.
-			-- A `name' can occur at multiple places in a SQL statement.
+	parameter_positions (parameter_name : STRING) : DS_LIST[INTEGER] is
+			-- Positions of parameter `parameter_name' in `sql' statement.
 		require
 			valid_statement: is_valid
-			name_ok: name /= Void
+			parameter_name_ok: parameter_name /= Void
 			has_parameter: parameters_count > 0
-			defined_parameter: has_parameter (name)
+			defined_parameter: has_parameter (parameter_name)
 		do
-			Result := name_to_position.item (name)
+			Result := name_to_position.item (parameter_name)
 		ensure
-			good_position: Result /= Void and not Result.is_empty
+			Result_not_empty: Result /= Void and not Result.is_empty
 		end
 
-	parameter (name : STRING) : like parameter_anchor is
-			-- parameter value of `name'
+	parameter (parameter_name : STRING) : like parameter_anchor is
+			-- Parameter value of `parameter_name'
 		require
 			valid_statement: is_valid
-			name_ok: name /= Void
+			parameter_name_ok: parameter_name /= Void
 			has_parameter: parameters_count > 0
-			defined_parameter: has_parameter (name)
+			defined_parameter: has_parameter (parameter_name)
 			parameters_exist: parameters /= Void
 		do
-			Result := parameters.item (parameter_positions (name).first)
+			Result := parameters.item (parameter_positions (parameter_name).first)
+		ensure
+			Result_exists: Result /= Void
 		end
 
 	parameter_names : DS_LIST[STRING] is
-			-- unique names of parameters in `sql' query
+			-- Unique names of parameters in `sql' query
 			--| FIXME: this should be a DS_SET[STRING] !
 		require
 			valid_statement: is_valid
@@ -178,7 +179,8 @@ feature -- Access
 			end
 			Result := impl_parameter_names
 		ensure
-			parameters_count: Result.count <= parameters_count
+			Result_exists: Result /= Void
+			Result_count_less_or_equal_parameters_count: Result.count <= parameters_count
 		end
 
 	cursor : ARRAY[like value_anchor] is
@@ -186,21 +188,21 @@ feature -- Access
 		do Result := results end
 		
 	results : ARRAY[like value_anchor]
-			-- container of result values (i.e. buffers for transferring
+			-- Container of result values (i.e. buffers for transferring
 			-- data from program to database) content is meaningful only
 			-- while sweeping through a result set, i.e. `not off and has_result_set'
 
 	parameters : ARRAY[like parameter_anchor]
-			-- current parameter values for the statement
+			-- Current parameter values for the statement
 
 	parameters_description : ARRAY[ECLI_PARAMETER_DESCRIPTION]
-			-- metadata for parameters, available after calling `describe_parameters' successfully
+			-- Metadata for parameters, available after calling `describe_parameters' successfully
 
 	results_description : ARRAY [ECLI_COLUMN_DESCRIPTION]
-			-- metadata for results, available after calling `describe_results'
+			-- Metadata for results, available after calling `describe_results'
 
 	cursor_description : like results_description is
-		obsolete "Use 'results_description'."
+		obsolete "Use `results_description'."
 		do
 			Result := results_description
 		end
@@ -226,24 +228,24 @@ feature -- Measurement
 		end
 		
 	parameter_count : INTEGER is
-		obsolete "Please use 'parameters_count' instead (note 'parameters' is plural)."
+		obsolete "Please use `parameters_count' instead (note `parameters' is plural)."
 		do Result := parameters_count end
 		
 	parameters_count : INTEGER is
-			-- number of parameters in 'sql'
+			-- Number of parameters in `sql'
 		require
 			valid_statement: is_valid
-			request: sql /= Void
+			sql_exists: sql /= Void
 		do
 			Result := parameters_count_impl
 		end
 
 	result_column_count : INTEGER is 
-		obsolete "Please use 'result_columns_count' instead (note 'columns' is plural)." 
+		obsolete "Please use `result_columns_count' instead (note `columns' is plural)." 
 		do Result := result_columns_count end
 	
 	result_columns_count : INTEGER is
-			-- number of columns in result-set
+			-- Number of columns in result-set
 			-- 0 if no result set is available
 		require
 			valid_statement: is_valid
@@ -256,12 +258,12 @@ feature -- Measurement
 		end
 
 	fetched_columns_count : INTEGER
-			-- number of columns retrieved by latest `start' or `forth operation'
+			-- Number of columns retrieved by latest `start' or `forth' operation
 		
 feature -- Status Report
 
 	is_describe_parameters_capable : BOOLEAN is
-			-- can `describe_parameters' be called ?
+			-- Can `describe_parameters' be called ?
 		require
 			valid_statement: is_valid
 			open: not is_closed
@@ -270,7 +272,7 @@ feature -- Status Report
 		end
 		
 	has_results : BOOLEAN is
-			-- has this statement a result-set ?
+			-- Has this statement a result-set ?
 		obsolete "Use `has_result_set'." 
 		require
 			valid_statement: is_valid
@@ -280,7 +282,7 @@ feature -- Status Report
 		end
 
 	has_result_set : BOOLEAN is
-			-- has this statement a result-set ?
+			-- Has this statement a result-set ?
 		require
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed
@@ -291,7 +293,7 @@ feature -- Status Report
 		end
 
 	has_parameters : BOOLEAN is
-			-- has this statement some parameters ?
+			-- Has this statement some parameters ?
 		require
 			valid_statement: is_valid
 			request: sql /= Void
@@ -302,7 +304,7 @@ feature -- Status Report
 		end
 
 	is_parsed : BOOLEAN is
-			-- is the 'sql' statement parsed for parameters ?
+			-- Is the `sql' statement parsed for parameters ?
 		require
 			valid_statement: is_valid
 		do
@@ -310,19 +312,19 @@ feature -- Status Report
 		end
 
 	is_prepared : BOOLEAN
-			-- is current `sql' query plan prepared by database server ?
+			-- Is current `sql' query plan prepared by database server ?
 
 	is_executed : BOOLEAN
-			-- is current `sql' executed ?
+			-- Is current `sql' executed ?
 
 	is_prepared_execution_mode : BOOLEAN
-			-- is it a 'prepared' execution mode ?
+			-- Is it a `prepared' execution mode ?
 
 	bound_parameters :  BOOLEAN
-			-- have the parameters been bound ?
+			-- Have the parameters been bound ?
 
 	off : BOOLEAN is
-			-- is there no current cursor content ?
+			-- Is there no current cursor content ?
 		require
 			valid_statement: is_valid
 		do
@@ -332,7 +334,7 @@ feature -- Status Report
 		end
 
 	after : BOOLEAN is
-			-- is there no valid position to the right of current cursor position ?
+			-- Is there no valid position to the right of current cursor position ?
 		require
 			valid_statement: is_valid
 		do
@@ -342,7 +344,7 @@ feature -- Status Report
 		end
 
 	before : BOOLEAN is
-			-- is cursor 'before' results (no results or not yet started reading) ?
+			-- Is cursor `before' results (no results or not yet started reading) ?
 		require
 			valid_statement: is_valid
 		do
@@ -352,7 +354,7 @@ feature -- Status Report
 		end
 
 	has_parameter (name : STRING) : BOOLEAN is
-			-- has the statement a `name' parameter ?
+			-- Has the statement a `name' parameter ?
 		require
 			valid_statement: is_valid
 			name_ok: name /= Void
@@ -360,14 +362,8 @@ feature -- Status Report
 			Result := name_to_position.has (name)
 		end
 
-	cursor_status : INTEGER
-			-- cursor status
-
-	cursor_before, cursor_in, cursor_after : INTEGER is unique
-			-- cursor status values
-
 	can_trace : BOOLEAN is
-			-- can Current trace itself ?
+			-- Can Current trace itself ?
 		do
 			Result := (is_valid and is_parsed and 
 				 (is_prepared_execution_mode implies is_prepared) and
@@ -382,8 +378,8 @@ feature -- Status Report
 feature -- Status setting
 
 	set_prepared_execution_mode is
-			-- set prepared execution mode
-			-- `sql' must be prepared before being executed
+			-- Set execution mode where `prepare' evaluates the query plan of `sql' once
+			-- and where `execute' just executes the query plan
 		require
 			valid_statement: is_valid
 		do
@@ -393,7 +389,7 @@ feature -- Status setting
 		end
 
 	set_immediate_execution_mode is
-			-- query plan is evaluated each time `sql' is executed
+			-- Set execution mode where `execute' (1) evaluates and (2) executes the query plan of `sql'
 		require
 			valid_statement: is_valid
 		do
@@ -406,7 +402,7 @@ feature -- Cursor movement
 
 
 	start is
-			-- Get first result row, if available
+			-- Start iterating on result set
 		require
 			valid_statement: is_valid
 			executed: is_executed and is_ok
@@ -421,7 +417,7 @@ feature -- Cursor movement
 		end
 
 	forth is
-			-- Get next result row
+			-- Advance cursor in result set
 		require
 			valid_statement: is_valid
 			executed: is_executed
@@ -434,7 +430,7 @@ feature -- Cursor movement
 		end
 
 	close_cursor, go_after, finish is
-			-- go after the last result row and release internal cursor state
+			-- Finish iterating on result set, releasing internal resources
 		require
 			valid_statement: is_valid
 			valid_state: is_executed
@@ -453,7 +449,7 @@ feature -- Cursor movement
 feature -- Element change
 
 	set_sql (new_sql : STRING) is
-			-- set 'sql' statement to 'new_sql'
+			-- Set `sql' statement to `new_sql'
 		require
 			valid_statement: is_valid
 		do
@@ -461,7 +457,7 @@ feature -- Element change
 			sql := new_sql
 			name_to_position.wipe_out
 			parser.parse (sql, Current)
-			create impl_sql.make_from_string (parser.parsed_sql) -- parsed_sql (sql)
+			create impl_sql.make_from_string (parser.parsed_sql)
 			set_parsed
 			parameters_count_impl := parser.parameters_count
 			impl_parameter_names := Void
@@ -483,36 +479,35 @@ feature -- Element change
 			is_ok: is_ok
 		end
 
-	set_parameters (param : like parameters) is
-			-- set parameters value with 'param'
-			-- all parameters are considered as input parameters
+	set_parameters (parameters_array : like parameters) is
+			-- Set `parameters' value with `parameters_array'
+			-- all parameters are taken as input parameters
 		require
 			valid_statement: is_valid
-			param_exist: param /= Void
-			param_lower: param.lower = 1
-			param_count: param.count = parameters_count
-			params_not_void: not array_routines.has (param, Void)
+			parameters_array_exist: parameters_array /= Void
+			parameters_array_valid_bounds: parameters_array.lower = 1 and then parameters_array.count = parameters_count
+			no_void_parameter: not array_routines.has (parameters_array, Void)
 		do
-			parameters := param
+			parameters := parameters_array
 			bound_parameters := False
 		ensure
-			parameters_set: parameters = param
+			parameters_set: parameters = parameters_array
 			not_bound: not bound_parameters
 		end
 
-	put_parameter (value : like parameter_anchor; key : STRING) is
-			-- set parameter 'key' with 'value'
+	put_parameter (value : like parameter_anchor; parameter_name : STRING) is
+			-- Put `value' as `parameter_name' 
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid
-			has_parameters: parameters_count > 0
-			value_ok: value /= Void
-			key_ok : key /= Void
-			known_key: has_parameter (key)
+			statement_has_parameters: has_parameters
+			value_exists: value /= Void
+			parameter_name_exists : parameter_name /= Void
+			known_parameter_name: has_parameter (parameter_name)
 		do
-			put_parameter_with_hint (value, key, Void)
+			put_parameter_with_hint (value, parameter_name, Void)
 		ensure
-			parameter_set: parameter (key) = value --for each i in parameter_positions(key) it_holds parameters.item (i) = value
+			parameter_set: parameter (parameter_name) = value --for each i in parameter_positions(key) it_holds parameters.item (i) = value
 			not_bound: not bound_parameters
 		end
 
@@ -522,8 +517,8 @@ feature -- Element change
 			set_results (row)
 		end
 		
-	set_results (row : like results) is -- ARRAY[like value_anchor]) is
-			-- set `results' container with 'row'
+	set_results (row : like results) is
+			-- Set `results' container with `row'
 		require
 			valid_statement: is_valid
 			row_exist: row /= Void
@@ -557,7 +552,7 @@ feature {NONE} -- Miscellaneous
 feature -- Basic operations
 
 	execute is
-			-- execute sql statement
+			-- Execute sql statement
 		require
 			valid_statement: is_valid
 			query_is_parsed: is_parsed
@@ -599,13 +594,13 @@ feature -- Basic operations
 		end
 
 	trace (a_tracer : ECLI_TRACER) is
-			-- trace in `a_tracer'
+			-- Trace in `a_tracer'
 		do
 			a_tracer.trace (impl_sql.as_string, parameters)
 		end
 		
 	describe_parameters is
-			-- Get metadata about parameters in 'parameters_description'
+			-- Get metadata about parameters in `parameters_description'
 		require
 			valid_statement: is_valid
 			describe_capable: is_describe_parameters_capable
@@ -630,7 +625,7 @@ feature -- Basic operations
 				parameters_description := Void
 			end
 		ensure
-			description: is_ok implies
+			parameter_description_updated: is_ok implies
 				(parameters_description /= Void and then
 				 parameters_description.count = parameters_count)
 		end
@@ -671,7 +666,7 @@ feature -- Basic operations
 		end
 
 	bind_parameters is
-			-- bind parameters
+			-- Bind parameters
 		require
 			valid_statement: is_valid
 			parameters_exist: parameters /= Void and then parameters.count >= parameters_count
@@ -698,11 +693,10 @@ feature -- Basic operations
 			bound_parameters: is_ok implies bound_parameters
 			parameter_index_less: not is_ok implies last_bound_parameter_index < parameters.upper  
 			parameter_index_n: is_ok implies last_bound_parameter_index = parameters.upper
-			parameter_index_bounds: last_bound_parameter_index >= 0 and last_bound_parameter_index <= parameters.upper
 		end
 
 	prepare is
-			-- prepare the sql statement
+			-- Prepare the sql statement
 		require
 			valid_statement: is_valid
 		do
@@ -754,7 +748,7 @@ feature {ECLI_SQL_PARSER} -- Callback
 feature {ECLI_STATUS} -- Inapplicable
 
 	can_use_arrayed_parameters : BOOLEAN is
-			-- can we use arrayed parameters ?
+			-- Can we use arrayed parameters ?
 		do
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 2))
 			Result := is_ok
@@ -763,7 +757,7 @@ feature {ECLI_STATUS} -- Inapplicable
 		end
 
 	can_use_arrayed_results : BOOLEAN is
-			-- can we use arrayed results ?
+			-- Can we use arrayed results ?
 		do
 			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
 			Result := is_ok
@@ -835,7 +829,7 @@ feature {NONE} -- Implementation
 
 
 	impl_row_count : XS_C_INT32
-		-- buffer for storing number of rows affected
+		-- Buffer for storing number of rows affected
 		
 	impl_result_columns_count : XS_C_INT32
 		-- -1 : do not know; must call `get_result_column_count'
@@ -881,13 +875,13 @@ feature {NONE} -- Implementation
 		end
 
 	is_ready_for_disposal : BOOLEAN is
-			-- is this object ready for disposal ?
+			-- Is this object ready for disposal ?
 		do
 			Result := is_closed
 		end
 
 	disposal_failure_reason : STRING is
-			-- why is this object not ready_for_disposal
+			-- Why is this object not ready_for_disposal
 		once
 			Result := "ECLI_STATEMENT must be closed te be disposable."
 		end
@@ -919,7 +913,7 @@ feature {NONE} -- Implementation
 		end
 
 	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ANY) is
-			-- set all parameters named `key' occurring in `sql' with `value'
+			-- Set all parameters named `key' occurring in `sql' with `value'
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid
@@ -946,9 +940,17 @@ feature {NONE} -- Implementation
 			parameter_set: True --for each i in parameter_positions(key) it_holds parameters.item (i) = value
 			not_bound: not bound_parameters
 		end
+
+	cursor_status : INTEGER
+			-- Cursor status
+
+	cursor_before, cursor_in, cursor_after : INTEGER is unique
+			-- Cursor status values
 		
 invariant
-	closed_is_no_session: session /= Void implies not is_closed
+	existing_session_implies_not_closed: session /= Void implies not is_closed
+	parameter_index_bounds: last_bound_parameter_index >= 0 and last_bound_parameter_index <= parameters.upper
+	parameters_description_without_void: parameters_description /= Void implies not array_routines.has (parameters_description,Void)
 
 end -- class ECLI_STATEMENT
 --

@@ -112,7 +112,7 @@ feature -- Basic operations
 			until i > count
 			loop
 				if is_null_at (i) then
-					Result.append_string ("NULL")
+					Result.append_string (out_null)
 				else
 					Result.append_string (item_at (i).out)
 				end

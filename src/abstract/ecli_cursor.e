@@ -11,7 +11,7 @@ deferred class
 inherit
 	ECLI_QUERY
 			
-feature -- Basic Operations
+feature -- Cursor movement
 
 	start is
 			-- Start sweeping through cursor, after execution of `sql'

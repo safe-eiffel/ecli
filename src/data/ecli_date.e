@@ -216,7 +216,7 @@ feature -- Conversion
 	out : STRING is
 		do
 			if is_null then
-				Result := Precursor
+				Result := out_null
 			else
 				create Result.make (10)
 				Result.append_string (integer_format.pad_integer_4 (year))

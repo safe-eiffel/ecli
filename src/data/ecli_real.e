@@ -210,7 +210,7 @@ feature -- Basic operations
 			message_buffer : XS_C_STRING
 		do
 			if is_null then
-				Result := Precursor {ECLI_GENERIC_VALUE}
+				Result := out_null
 			else
 				create message_buffer.make (50)
 				sprintf_real (message_buffer.handle, item.item)

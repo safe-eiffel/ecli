@@ -428,7 +428,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		do
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
 				index,
-				direction.Sql_param_input,
+				Parameter_directions.Sql_param_input,
 				c_type_code,
 				sql_type_code,
 				size,
@@ -446,7 +446,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		do
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
 				index,
-				direction.Sql_param_input_output,
+				Parameter_directions.Sql_param_input_output,
 				c_type_code,
 				sql_type_code,
 				size,
@@ -464,7 +464,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 		do
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
 				index,
-				direction.Sql_param_output,
+				Parameter_directions.Sql_param_output,
 				c_type_code,
 				sql_type_code,
 				size,
@@ -489,12 +489,15 @@ feature {NONE} -- Implementation values
 	
 	disposal_failure_reason : STRING is do	end
 	
-	direction : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
-			-- 
+	parameter_directions : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
+			-- parameter direction constants
 		once
 			create Result
 		end
-		
+
+invariant
+	is_valid: is_valid
+	
 end -- class ECLI_VALUE
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

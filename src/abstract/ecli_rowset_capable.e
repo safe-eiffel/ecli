@@ -1,5 +1,9 @@
 indexing
-	description: "Objects that are capable of operating on a rowset."
+	description: "Objects that are able of operating on a rowset%N%
+		% A rowset is an array  of `row_capacity' rows.%N%
+		% Database operations occur one rowset at a time.%N%
+		% Status information is available for each row in the rowset."
+		
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -7,38 +11,36 @@ indexing
 deferred class
 	ECLI_ROWSET_CAPABLE
 
-feature -- Measurement
-
-	row_capacity : INTEGER
-			-- maximum number of rows in this rowset
-	
-feature -- Status report
+feature -- Access
 
 	item_status (index : INTEGER) : INTEGER is
-			-- status of `index'th value in current rowset
+			-- Status of `index'-th value in current rowset
 		require
 			index_within_bounds: index >= 1 and then index <= row_capacity
 		do
 			Result := rowset_status.item (index)
 		end
 
+	rowset_status : ECLI_ROWSET_STATUS
+			-- Status of last operation, one per row in the set
+	
+feature -- Measurement
+
+	row_capacity : INTEGER
+			-- Maximum number of rows in this rowset
+	
 	row_count : INTEGER is
-			-- number of rows processed by rowset operation
+			-- Number of rows processed by rowset operation
 		do
 			Result := impl_row_count.item
 		end
 		
-	rowset_status : ECLI_ROWSET_STATUS
-			-- status of last operation, one per row in the set
-	
-feature {NONE} -- implementation
-	
+feature {NONE} -- Implementation
 	
 	status_array : ARRAY[INTEGER]
-			-- for debugging purposes : rowset_status content cannot be viewed in the debugger
+			-- For debugging purposes : rowset_status content cannot be viewed in the debugger
 	
 	fill_status_array is
-			-- fill status array
 		local
 			index: INTEGER
 		do

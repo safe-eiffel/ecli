@@ -70,6 +70,8 @@ feature -- Access
 
 	value_anchor : ECLI_ARRAYED_VALUE
 		
+	buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
+	
 feature -- Status setting
 
 feature -- Cursor movement
@@ -90,15 +92,15 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 		
-		start is
-				-- Execute query `definition', positioning on first available result row
-			do
-				physical_fetch_count := 0; fetch_increment := 0
-				Precursor
-			ensure then
-				results_exists: (is_executed and then has_result_set) implies (results /= Void and then results.count = result_columns_count)
-				fetched_columns_count_set: (is_executed and then has_result_set) implies (fetched_columns_count = result_columns_count.min (results.count))
-			end
+	start is
+			-- Execute query `definition', positioning cursor on first available result row
+		do
+			physical_fetch_count := 0; fetch_increment := 0
+			Precursor
+		ensure then
+			results_exists: (is_executed and then has_result_set) implies (results /= Void and then results.count = result_columns_count)
+			fetched_columns_count_set: (is_executed and then has_result_set) implies (fetched_columns_count = result_columns_count.min (results.count))
+		end
 			
 feature -- Obsolete
 
@@ -106,8 +108,6 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
-	
 	create_buffer_factory is
 		do
 			!!buffer_factory.make (row_capacity)

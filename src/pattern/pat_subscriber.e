@@ -16,11 +16,21 @@ feature -- Access
 		deferred
 		end
 
+feature -- Status report
+
 	unsubscribed : BOOLEAN is
 		do
 			Result := (publisher = Void)
+		ensure
+			definition: Result = (publisher = Void)
 		end
-		
+
+	has_publisher : BOOLEAN is
+		do
+			Result := (publisher /= Void)
+		ensure
+			definition: Result = (publisher /= Void)
+		end
 
 feature -- Basic operations
 
@@ -30,10 +40,6 @@ feature -- Basic operations
 		do
 		end
 
-	has_publisher : BOOLEAN is
-		do
-			Result := (publisher /= Void)
-		end
 	
 invariant
 

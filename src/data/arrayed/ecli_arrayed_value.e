@@ -69,6 +69,7 @@ feature -- Measurement
 		do
 			Result := count
 		end
+		
 feature -- Status report
 
 	is_null_at (index : INTEGER) : BOOLEAN is

@@ -333,7 +333,7 @@ feature -- Conversion
 					Result.append_string (nanosecond.out)
 				end
 			else
-				Result := Precursor
+				Result := out_null
 			end
 		end
 

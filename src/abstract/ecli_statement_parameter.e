@@ -30,7 +30,7 @@ feature -- Status report
 		deferred
 		end
 		
-feature -- Basic operations
+feature {ECLI_STATEMENT} -- Basic operations
 
 	bind (statement : ECLI_STATEMENT; position : INTEGER) is
 			-- Bind Current as `position'-th parameter in `statement'

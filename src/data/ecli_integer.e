@@ -210,7 +210,7 @@ feature -- Basic operations
 	out : STRING is
 		do
 			if is_null then
-				Result := Precursor {ECLI_GENERIC_VALUE}
+				Result := out_null
 			else
 				Result := item.out
 			end

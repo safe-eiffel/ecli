@@ -30,6 +30,15 @@ inherit
 			{NONE} all
 		end
 
+feature {ECLI_HANDLE} -- Access
+
+	handle : POINTER
+
+	disposal_failure_reason : STRING is
+			-- Why is this object not ready_for_disposal
+		deferred
+		end
+		
 feature {ANY} -- Status report
 
 	is_valid : BOOLEAN is
@@ -40,15 +49,8 @@ feature {ANY} -- Status report
 
 feature {ECLI_HANDLE} -- Status report
 
-	handle : POINTER
-
 	is_ready_for_disposal : BOOLEAN is
-			-- is this object ready for disposal ?
-		deferred
-		end
-
-	disposal_failure_reason : STRING is
-			-- why is this object not ready_for_disposal
+			-- Is this object ready for disposal ?
 		deferred
 		end
 
@@ -74,7 +76,7 @@ feature {NONE} -- Implementation
 		end
 
 	release_handle is
-			-- release the CLI handle
+			-- Release the CLI handle
 		require
 			ready_for_disposal: is_ready_for_disposal
 		deferred
@@ -83,13 +85,13 @@ feature {NONE} -- Implementation
 		end
 
 	check_valid is
-			-- check if memory has been allocated; if not, raise an exception
+			-- Check if memory has been allocated; if not, raise an exception
 		local
 			e : EXCEPTIONS
 		do
 			if handle = default_pointer then
 				create e
-				e.raise ("No more memory")
+				e.raise ("Unable to allocate handle. What to do: Check if there is no more memory.")
 			end
 		end
 		

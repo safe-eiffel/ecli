@@ -41,10 +41,9 @@ feature -- Duplication
 
 feature -- Miscellaneous
 
-feature -- Basic operations
+feature {ECLI_STATEMENT} -- Basic operations
 
 	bind (statement : ECLI_STATEMENT; position : INTEGER) is
-			-- Bind Current as `position'-th parameter in `statement'
 		do
 			item.bind_as_parameter (statement, position)
 		end
@@ -56,6 +55,6 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 invariant
-	input_parameter: is_input
+	is_input: is_input
 
 end -- class ECLI_INPUT_PARAMETER

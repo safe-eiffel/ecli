@@ -217,7 +217,7 @@ feature -- Conversion
 				Result.append_character (':')
 				Result.append_string (Integer_format.pad_integer_2 (second))
 			else
-				Result := Precursor
+				Result := out_null
 			end
 		end
 			

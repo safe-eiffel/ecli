@@ -18,7 +18,7 @@ inherit
 				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql, 
 				cursor, set_cursor
 		redefine
-			parameter_anchor--, execute
+			parameter_anchor
 		end
 	
 	ECLI_ROWSET_CAPABLE
@@ -53,8 +53,6 @@ feature -- Access
 	parameter_anchor : ECLI_ARRAYED_VALUE is do end
 	
 feature -- Measurement
-
---	bound_rows_count : INTEGER
 	
 feature -- Status report
 

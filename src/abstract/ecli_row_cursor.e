@@ -28,69 +28,73 @@ creation
 
 feature {NONE} -- Initialization
 
-	make, open (a_session : ECLI_SESSION; a_sql : STRING) is
-			-- make cursor for `a_session' on `a_sql'
+	make, open (a_session : ECLI_SESSION; sql_definition : STRING) is
+			-- Make cursor for `a_session' on `sql_definition'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
+			sql_definition_exists: sql_definition /= Void
 		do
 			create_buffer_factory
 			buffer_factory.set_precision_limit (buffer_factory.Default_precision_limit)
-			make_with_buffer_factory (a_session, a_sql, buffer_factory)
+			make_with_buffer_factory (a_session, sql_definition, buffer_factory)
 		ensure
 			valid: is_valid
-			definition_set: definition = a_sql
+			definition_set: definition = sql_definition
 			definition_is_sql: equal (definition, sql)
 			buffer_factory_created: buffer_factory /= Void
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 		end
 
-	make_prepared, open_prepared (a_session : ECLI_SESSION; a_sql : STRING) is
-			-- make prepared cursor for `a_session' on `a_sql'
+	make_prepared, open_prepared (a_session : ECLI_SESSION; sql_definition : STRING) is
+			-- Make prepared cursor for `a_session' on `sql_definition'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
+			sql_definition_exists: sql_definition /= Void
 		do
-			make (a_session, a_sql)
+			make (a_session, sql_definition)
 			prepare
 		ensure
 			valid: is_valid
-			definition_set: definition = a_sql
+			definition_set: definition = sql_definition
 			definition_is_sql: equal (definition, sql)
 			buffer_factory_created: buffer_factory /= Void
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			prepared_if_ok: is_ok implies is_prepared
 		end
 
-	make_with_buffer_factory (a_session : ECLI_SESSION; a_sql : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
-			-- make cursor on `a_session' for `a_sql', using `a_buffer_factory'
+	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
+			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
+			sql_definition_exists: sql_definition /= Void
 			a_buffer_factory_exists: a_buffer_factory /= Void
 		do
-			definition := a_sql
+			definition := sql_definition
 			cursor_make (a_session)
 			buffer_factory := a_buffer_factory
 		ensure
 			valid: is_valid
-			definition_set: definition = a_sql
+			definition_set: definition = sql_definition
 			definition_is_sql: equal (definition, sql)
 			buffer_factory_assigned: buffer_factory = a_buffer_factory
 		end
 		
-	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; a_sql : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
-			-- make cursor on `a_session' for prepared `a_sql', using `a_buffer_factory'
+	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory : ECLI_BUFFER_FACTORY) is
+			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
 			a_session_exists: a_session /= Void
 			a_session_connected: a_session.is_connected
+			sql_definition_exists: sql_definition /= Void
 			a_buffer_factory_exists: a_buffer_factory /= Void
 		do
-			make_with_buffer_factory (a_session, a_sql, a_buffer_factory)
+			make_with_buffer_factory (a_session, sql_definition, a_buffer_factory)
 			prepare
 		ensure
 			valid: is_valid
-			definition_set: definition = a_sql
+			definition_set: definition = sql_definition
 			definition_is_sql: equal (definition, sql)
 			buffer_factory_assigned: buffer_factory = a_buffer_factory
 			prepared_if_ok: is_ok implies is_prepared
@@ -98,12 +102,14 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
-	definition : STRING
-			-- definition as an SQL query
+	buffer_factory : ECLI_BUFFER_FACTORY
+			-- Buffer factory for automatic creation of result buffers
 
---	item, infix "@" (name : STRING) : like value_anchor is
+	definition : STRING
+			-- Definition as an SQL query
+
 	item (name : STRING) : like value_anchor is
-			-- column item by `name'
+			-- Column item by `name'
 		require
 			is_executed: is_executed
 			name_exists: name /= Void
@@ -112,9 +118,8 @@ feature -- Access
 			Result := results.item (name_to_index.item (name))
 		end
 
---	item_by_index, infix "|index|" (index : INTEGER) : like value_anchor is
 	item_by_index (index : INTEGER) : like value_anchor is
-			-- column item by `index'
+			-- Column item by `index'
 		require
 			is_executed: is_executed
 			valid_index: index >= lower and index <= upper
@@ -123,7 +128,7 @@ feature -- Access
 		end
 
 	column_name (index : INTEGER) : STRING is
-			-- column name by `index'
+			-- Column name by `index'
 		require
 			valid_index: index >= lower and index <= upper
 		do
@@ -135,7 +140,7 @@ feature -- Access
 feature -- Measurement
 
 	lower : INTEGER is
-			-- lower cursor index
+			-- Lower cursor index
 		require
 			is_executed: is_executed
 		do
@@ -143,7 +148,7 @@ feature -- Measurement
 		end
 
 	upper : INTEGER is
-			-- upper cursor index; i.e. number of elements in result row
+			-- Upper cursor index; i.e. number of elements in result row
 		require
 			is_executed: is_executed
 		do
@@ -163,7 +168,7 @@ feature -- Status report
 feature -- Cursor movement
 
 	start is
-			-- start at first row of dataset
+			-- Execute and start iterating on result set
 		require
 			prepared: is_prepared_execution_mode implies is_prepared
 			bound_parameters: has_parameters implies bound_parameters
@@ -185,26 +190,14 @@ feature -- Cursor movement
 			end
 		ensure
 			executed: is_ok implies is_executed
+			results_created_by_factory: is_ok implies results /= Void
 			off_if_not_query: is_ok implies (not has_result_set implies off)
 		end
 
 feature {NONE} -- Implementation
 
 	name_to_index : DS_HASH_TABLE [INTEGER, STRING]
-
-	map_name_to_index (index : INTEGER; name : STRING) is
-			-- hook: map column `name' to column `index'
-		do
-			name_to_index.put (index, name)
-		end
-
-	create_name_to_index (size : INTEGER) is
-			-- hook: create name to index map
-		do
-			create name_to_index.make (size)
-		end
-
-	buffer_factory : ECLI_BUFFER_FACTORY
+			-- Table mapping column name to column index
 
 	create_buffer_factory is
 		do
@@ -212,7 +205,7 @@ feature {NONE} -- Implementation
 		end
 
 	create_row_buffers is
-			-- create data-transfer buffers for row
+			-- Describe results and create data-transfer buffers using `buffer_factory'
 		do
 			describe_results
 			results := Void
@@ -226,6 +219,10 @@ feature {NONE} -- Implementation
 				set_results (buffer_factory.last_buffers)
 				name_to_index := buffer_factory.last_index_table
 			end
+		ensure then
+			results_set_described: is_ok implies results_description /= Void
+			results_set: is_ok implies  results = buffer_factory.last_buffers
+			name_to_index_set: is_ok implies name_to_index = buffer_factory.last_index_table
 		end
 
 end -- class ECLI_ROW_CURSOR

@@ -64,7 +64,7 @@ inherit
 			is_null, set_null,
 			length_indicator_pointer,
 			month,
-			out,
+			out, out_null,
 			release_handle,
 			set_date,
 			set_item,
