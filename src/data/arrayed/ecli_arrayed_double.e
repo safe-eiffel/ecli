@@ -41,8 +41,6 @@ feature -- Initialization
 feature -- Access
 
 	item : DOUBLE_REF is
-		local
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			Result := item_at (cursor_index)
 		end

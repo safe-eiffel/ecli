@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_LONGVARCHAR
 		redefine
-			max_capacity, db_type_code
+			max_capacity, sql_type_code
 		end
 
 creation
@@ -26,7 +26,7 @@ feature -- Access
 
 feature -- Status report
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_varchar
 		end

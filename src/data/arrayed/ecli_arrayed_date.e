@@ -41,8 +41,6 @@ feature {NONE} -- Initialization
 		
 	make_default (a_capacity : INTEGER) is
 			-- make default date as first day of Christian Era : January 1st, 1
-		local
-			i : INTEGER
 		do
 			capacity := a_capacity
 			count := capacity

@@ -291,7 +291,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
 				index,
 				c_type_code,
-				db_type_code,
+				sql_type_code,
 				column_precision,
 				decimal_digits,
 				to_external,

@@ -60,7 +60,7 @@ feature -- Status setting
 			Result := 7
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_real
 		end

@@ -21,7 +21,7 @@ feature {NONE} -- Initialization
 
 	make (n : INTEGER) is
 		require
-			n > 0 and n < max_capacity
+			n > 0 and n <= max_capacity
 		do
 			buffer := ecli_c_alloc_value (n+1)
 		ensure
@@ -78,7 +78,7 @@ feature -- Status report
 			Result := display_size
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_longvarchar
 		end

@@ -52,8 +52,6 @@ feature -- Access
 
 	item_at (index : INTEGER) : like item is
 			-- 
-		local
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if is_null_at (index) then
 				Result := Void

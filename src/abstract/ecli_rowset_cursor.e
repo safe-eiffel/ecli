@@ -15,7 +15,8 @@ inherit
 		export 
 			{NONE} row_cursor_make, row_cursor_open
 		redefine
-			value_anchor, new_value_factory, create_row_buffers, fill_cursor, fetch_next_row
+			start, value_anchor, create_row_buffers, fill_cursor, 
+			fetch_next_row, buffer_factory, create_buffer_factory
 		end
 		
 creation
@@ -29,9 +30,9 @@ feature -- Initialization
 			definition_exists: a_definition /= Void
 			row_count_valid: a_row_count >= 1
 		do
-			row_cursor_make (a_session, a_definition)
 			row_count := a_row_count
 			!!rowset_status.make (row_count)
+			row_cursor_make (a_session, a_definition)
 		ensure
 			row_count_set: row_count = a_row_count
 		end
@@ -46,6 +47,12 @@ feature -- Measurement
 	
 feature -- Status report
 
+	item_status (index : INTEGER) : INTEGER is
+			-- status of `index'th value in current rowset
+		do
+			Result := rowset_status.item (index)
+		end
+		
 feature -- Status setting
 
 feature -- Cursor movement
@@ -65,24 +72,35 @@ feature -- Duplication
 feature -- Miscellaneous
 
 feature -- Basic operations
-
-	new_value_factory : ECLI_ARRAYED_VALUE_FACTORY is
-			-- 
-		do
-			!!Result.make (row_count)
-		end
 		
+		start is
+				-- 
+			do
+				fetch_count := 0
+				Precursor
+			end
+			
 feature -- Obsolete
 
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
+	buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
+	
+	create_buffer_factory is
+		do
+			!!buffer_factory.make (row_count)
+		end
+		
+		
 	create_row_buffers is
 			-- 
 		do
 			Precursor
-			bind_results
+			if cursor /= Void then
+				bind_results
+			end
 		end
 	
 	bind_results is
@@ -104,11 +122,29 @@ feature {NONE} -- Implementation
 		end
 		
 	fetched_rows_count : INTEGER
+			-- number of rows retrieved by last fetch operation
 
 	fetch_count : INTEGER
+			-- number of actual fetch operations
 	
 	rowset_status : ECLI_ROWSET_STATUS
 	
+	status_array : ARRAY[INTEGER]
+	
+	fill_status_array is
+			-- 
+		local
+			index: INTEGER
+		do
+			from index := 1
+				!!status_array.make (1, fetched_rows_count)
+			until index > fetched_rows_count
+			loop
+				status_array.put (rowset_status.item (index), index)
+				index := index + 1
+			end
+		end
+		
 	fill_cursor is
 			-- 
 		local
@@ -126,10 +162,11 @@ feature {NONE} -- Implementation
 			-- 
 		do
 			if fetch_count > 0 and then fetch_count \\ row_count >= fetched_rows_count and then fetched_rows_count < row_count then
-					set_cursor_after
+					go_after
 			else
 				if fetch_count \\ row_count = 0 then
 					Precursor
+					fill_status_array
 					start_values
 				else
 					forth_values

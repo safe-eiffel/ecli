@@ -11,7 +11,8 @@ class
 inherit
 	ECLI_VARCHAR
 		redefine
-			make, count, db_type_code, item, truncated
+			make, count, sql_type_code, item, truncated
+		select
 		end
 
 creation
@@ -45,7 +46,7 @@ feature -- Access
 
 feature -- Status report
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_varchar
 		end

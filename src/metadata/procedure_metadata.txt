@@ -1,0 +1,20 @@
+Column name	Column number	Data type	Comments
+PROCEDURE_CAT
+(ODBC 2.0)	1	Varchar	Procedure catalog identifier; NULL if not applicable to the data source. If a driver supports catalogs for some procedures but not for others, such as when the driver retrieves data from different DBMSs, it returns an empty string ("") for those procedures that do not have catalogs.
+PROCEDURE_SCHEM
+(ODBC 2.0)	2	Varchar	Procedure schema identifier; NULL if not applicable to the data source. If a driver supports schemas for some procedures but not for others, such as when the driver retrieves data from different DBMSs, it returns an empty string ("") for those procedures that do not have schemas.
+PROCEDURE_NAME
+(ODBC 2.0)	3	Varchar
+not NULL	Procedure identifier.
+NUM_INPUT_
+PARAMS
+(ODBC 2.0)	4	N/A	Reserved for future use. Applications should not rely on the data returned in these result columns.
+NUM_OUTPUT_
+PARAMS
+(ODBC 2.0)	5	N/A	Reserved for future use. Applications should not rely on the data returned in these result columns.
+NUM_RESULT_SETS
+(ODBC 2.0)	6	N/A	Reserved for future use. Applications should not rely on the data returned in these result columns.
+REMARKS
+(ODBC 2.0)	7	Varchar	A description of the procedure.
+ PROCEDURE_TYPE
+(ODBC 2.0)	8	Smallint	Defines the procedure type:SQL_PT_UNKNOWN: It cannot be determined whether the procedure returns a value.SQL_PT_PROCEDURE: The returned object is a procedure; that is, it does not have a return value.SQL_PT_FUNCTION: The returned object is a function; that is, it has a return value.

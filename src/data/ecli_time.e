@@ -129,7 +129,7 @@ feature -- Status report
 			Result := ecli_c_value_get_length (buffer)
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_type_time
 		end

@@ -17,7 +17,7 @@ inherit
 		redefine
 			make_default, item, set_item, 
 			set_date, octet_size,
-			c_type_code, column_precision, db_type_code, 
+			c_type_code, column_precision, sql_type_code, 
 			decimal_digits, display_size, out, is_equal,
 			to_timestamp, trace, to_string, convertible_to_string
 		select
@@ -164,7 +164,7 @@ feature -- Status report
 			Result := 20+decimal_digits
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_type_timestamp
 		end

@@ -1,0 +1,16 @@
+Column name	Column number	Data type	Comments
+TABLE_CAT
+(ODBC 1.0)	1	Varchar	Primary key table catalog name; NULL if not applicable to the data source. If a driver supports catalogs for some tables but not for others, such as when the driver retrieves data from different DBMSs, it returns an empty string ("") for those tables that do not have catalogs.
+TABLE_SCHEM
+(ODBC 1.0)	2	Varchar	Primary key table schema name; NULL if not applicable to the data source. If a driver supports schemas for some tables but not for others, such as when the driver retrieves data from different DBMSs, it returns an empty string ("") for those tables that do not have schemas.
+TABLE_NAME
+(ODBC 1.0)	3	Varchar
+not NULL	Primary key table name.
+COLUMN_NAME
+(ODBC 1.0)	4	Varchar
+not NULL	Primary key column name. The driver returns an empty string for a column that does not have a name.
+KEY_SEQ
+(ODBC 1.0)	5	Smallint
+not NULL	Column sequence number in key (starting with 1).
+PK_NAME
+(ODBC 2.0)	6	Varchar	Primary key name. NULL if not applicable to the data source.

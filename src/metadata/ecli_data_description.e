@@ -10,7 +10,7 @@ deferred class
 
 feature -- Status report
 
-	db_type_code : INTEGER is
+	sql_type_code : INTEGER is
 			-- (redefine in descendant classes)
 		deferred
 		end

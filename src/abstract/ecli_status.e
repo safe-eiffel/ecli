@@ -72,6 +72,11 @@ feature -- Status report
 			    	or else status = cli_need_data;
 		end
 
+	is_no_data : BOOLEAN is
+		do
+			Result := status = cli_no_data;
+		end
+		
 	is_error : BOOLEAN is
 			-- Is the last CLI command in error
 		do

@@ -71,7 +71,7 @@ feature -- Status setting
 			Result := 15
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_double
 		end

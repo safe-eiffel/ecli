@@ -234,6 +234,69 @@ EIF_INTEGER ecli_c_get_type_info (EIF_POINTER stmt, EIF_INTEGER data_type) {
 	return (EIF_INTEGER) SQLGetTypeInfo( (SQLHSTMT) stmt, (SQLSMALLINT) data_type);
 }
 
+EIF_INTEGER ecli_c_get_tables (EIF_POINTER stmt,
+	EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+	EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+	EIF_POINTER table_name, EIF_INTEGER table_name_length,
+	EIF_POINTER table_type, EIF_INTEGER table_type_length) {
+	return (EIF_INTEGER) SQLTables (	(SQLHSTMT)		stmt,
+	(SQLCHAR *)		catalog_name,
+	(SQLSMALLINT)	catalog_name_length,
+	(SQLCHAR *)		schema_name,
+	(SQLSMALLINT)	schema_name_length,
+	(SQLCHAR *)		table_name,
+	(SQLSMALLINT)	table_name_length,
+	(SQLCHAR *)	table_type,
+	(SQLSMALLINT)	table_type_length
+	);
+}
+
+EIF_INTEGER ecli_c_get_procedures (EIF_POINTER stmt,
+	EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+	EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+	EIF_POINTER procedure_name, EIF_INTEGER procedure_name_length) {
+	return (EIF_INTEGER) SQLProcedures (	(SQLHSTMT)		stmt,
+	(SQLCHAR *)		catalog_name,
+	(SQLSMALLINT)	catalog_name_length,
+	(SQLCHAR *)		schema_name,
+	(SQLSMALLINT)	schema_name_length,
+	(SQLCHAR *)		procedure_name,
+	(SQLSMALLINT)	procedure_name_length
+	);
+}
+
+EIF_INTEGER ecli_c_get_columns (EIF_POINTER stmt,
+	EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+	EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+	EIF_POINTER table_name, EIF_INTEGER table_name_length,
+	EIF_POINTER column_name, EIF_INTEGER column_name_length) {
+	return (EIF_INTEGER) SQLColumns (	(SQLHSTMT)		stmt,
+	(SQLCHAR *)		catalog_name,
+	(SQLSMALLINT)	catalog_name_length,
+	(SQLCHAR *)		schema_name,
+	(SQLSMALLINT)	schema_name_length,
+	(SQLCHAR *)		table_name,
+	(SQLSMALLINT)	table_name_length,
+	(SQLCHAR *)	column_name,
+	(SQLSMALLINT)	column_name_length
+	);
+}
+
+EIF_INTEGER ecli_c_get_datasources (EIF_POINTER env,
+	EIF_INTEGER operation, EIF_POINTER source_name, EIF_INTEGER source_name_length, EIF_POINTER actual_source_name_length,
+	EIF_POINTER description, EIF_INTEGER description_length, EIF_POINTER actual_description_length) {
+	return (EIF_INTEGER) SQLDataSources (
+		(SQLHENV)		env,
+		(SQLUSMALLINT) operation,
+		(SQLCHAR *)		source_name,
+		(SQLSMALLINT)	source_name_length,
+		(SQLSMALLINT*)  actual_source_name_length,
+		(SQLCHAR *)		description,
+		(SQLSMALLINT)	description_length,
+		(SQLSMALLINT*)	actual_description_length
+	);
+}
+
 EIF_INTEGER ecli_c_get_data (EIF_POINTER stmt,
 							 EIF_INTEGER column_number,
 							 EIF_INTEGER c_type,
@@ -696,4 +759,26 @@ void ecli_c_sprintf_double (EIF_POINTER p_result, EIF_DOUBLE d) {
 
 void ecli_c_sprintf_real (EIF_POINTER p_result, EIF_REAL r) {
 	sprintf ((char *) p_result, "%.7g", r);
+}
+
+/* memory and address routines */
+
+EIF_POINTER c_memory_pointer_plus (EIF_POINTER pointer, EIF_INTEGER offset) {
+	return (EIF_POINTER) (((char *)pointer) + (long)offset);
+}
+
+void c_memory_copy (EIF_POINTER destination, EIF_POINTER source, EIF_INTEGER length) {
+	memcpy ((char *)destination, (char *)source, (long) length);
+}
+
+EIF_POINTER c_memory_allocate (EIF_INTEGER size) {
+	return (EIF_POINTER) malloc ((long) size);
+}
+
+void c_memory_free (EIF_POINTER pointer) {
+	free ((char *)pointer);
+}
+
+EIF_INTEGER c_memory_short_to_integer (EIF_POINTER pointer) {
+	return (EIF_INTEGER) (*((short *)pointer));
 }

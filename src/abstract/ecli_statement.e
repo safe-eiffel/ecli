@@ -305,7 +305,7 @@ feature -- Cursor movement
 			-- get first result row, if available
 		require
 			valid_statement: is_valid
-			executed: is_executed
+			executed: is_executed and is_ok
 			before: before
 			cursor_ready: cursor /= Void and then not array_routines.has(cursor,Void)
 		do
@@ -418,7 +418,7 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			row_exist: row /= Void
-			row_count: row.count = result_column_count
+		--	row_count: row.count >= result_column_count
 			is_executed: is_executed
 		do
 			cursor := row
@@ -723,16 +723,16 @@ feature {NONE} -- Implementation
 		require
 			valid_statement: is_valid
 			cursor_exists: cursor /= Void
-			cursor_arity: cursor.count = result_column_count
+			-- cursor_arity: cursor.count >= result_column_count
 		local
 			index, index_max : INTEGER
 			current_value : ECLI_VALUE
 		do
 			from
 				index := 1
-				index_max := result_column_count
+				index_max := result_column_count.min (cursor.count)
 			until
-				index > result_column_count
+				index > index_max
 			loop
 				current_value := cursor.item (index)
 				current_value.read_result (Current, index)

@@ -17,7 +17,7 @@ inherit
 			c_type_code,
 			column_precision, 
 			convertible_to_string,
-			db_type_code, 
+			sql_type_code, 
 			decimal_digits, 
 			display_size, 
 			item,  

@@ -8,6 +8,9 @@ indexing
 class
 	ECLI_EXTERNAL_API
 
+inherit
+	ECLI_API_CONSTANTS
+	
 feature {NONE} -- Implementation
 
 	ecli_c_allocate_environment (penv : POINTER) : INTEGER is
@@ -121,6 +124,22 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 		
+	ecli_c_get_tables ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER ; TableType : POINTER ;  NameLength4 : INTEGER) : INTEGER is
+		external "C"
+		end
+		
+	ecli_c_get_procedures ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; ProcedureName : POINTER ;  NameLength3 : INTEGER) : INTEGER is
+		external "C"
+		end
+
+	ecli_c_get_columns ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER ; ColumnName : POINTER ;  NameLength4 : INTEGER) : INTEGER is
+		external "C"
+		end
+
+	ecli_c_get_datasources ( env : POINTER ;  operation : INTEGER ;  source_name : POINTER; source_name_length : INTEGER ; actual_source_name_length : POINTER ; description : POINTER ;  description_length : INTEGER; actual_description_length : POINTER) : INTEGER is
+		external "C"
+		end
+
 	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER; len_indicator_pointer : POINTER) : INTEGER is
 		external "C"
 		end
@@ -538,25 +557,6 @@ feature {NONE} -- transaction capabilities
 	external "C"
 	end
 
-feature {NONE} -- statement attributes
-
-	Sql_attr_row_bind_type : INTEGER is 5
-	Sql_attr_row_bind_offset_ptr: INTEGER is 23
-	Sql_attr_row_operation_ptr: INTEGER is 24
-	Sql_attr_row_status_ptr: INTEGER is 25
-	Sql_attr_rows_fetched_ptr: INTEGER is 26
-	Sql_attr_row_array_size: INTEGER is 27
-
-feature {NONE} -- row status
-
-	Sql_row_success: INTEGER is 0
-	Sql_row_deleted: INTEGER is 1
-	Sql_row_updated: INTEGER is 2
-	Sql_row_norow: INTEGER is 3
-	Sql_row_added: INTEGER is 4
-	Sql_row_error: INTEGER is 5
-	Sql_row_success_with_info: INTEGER is 6
-	Sql_bind_by_column : INTEGER is 0
 end -- class ECLI_EXTERNAL_API
 --
 -- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>

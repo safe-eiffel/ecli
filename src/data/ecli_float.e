@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_DOUBLE
 		redefine
-			column_precision, db_type_code, decimal_digits, display_size, transfer_octet_length
+			column_precision, sql_type_code, decimal_digits, display_size, transfer_octet_length
 		end
 
 creation
@@ -37,7 +37,7 @@ feature -- Status setting
 			Result := 15
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_float
 		end

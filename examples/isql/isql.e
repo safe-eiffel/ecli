@@ -163,6 +163,14 @@ feature -- Basic Operations
 					do_set (command.text)
 				elseif command.is_query  then
 					do_execute_query (command.text)
+				elseif command.is_tables then
+					do_tables
+				elseif command.is_types then
+					do_types
+				elseif command.is_sources then
+					do_sources
+				elseif command.is_columns then
+					do_columns (command.text)
 				else
 					do_execute_sql (command.text)
 				end
@@ -261,6 +269,108 @@ feature -- Basic Operations
 			cursor.close
 		end
 		
+
+	do_tables is
+			-- show tables of current datasource
+		local
+			index : INTEGER
+			table : ECLI_TABLE
+		do
+			from index := 1
+				print ("CATALOG%T SCHEMA%T TABLE_NAME%T TYPE%T DESCRIPTION%N")
+			until
+				not repository.is_ok or else index > repository.tables.upper
+			loop
+				table := repository.tables.item (index)
+				print (table.catalog) print ("%T")
+				print (table.schema) print ("%T")
+				print (table.name) print ("%T")
+				print (table.type) print ("%T")
+				print (table.description) print ("%N")
+				index := index + 1
+			end
+			if not repository.is_ok then
+				print ("Error getting tables metadata : '")
+				print (repository.diagnostic_message)
+				print ("'%N")
+			end
+		end
+		
+	do_types is
+			-- show types supported by current datasource
+		local
+			cursor : DS_HASH_TABLE_CURSOR [ECLI_SQL_TYPE, INTEGER]
+			type : ECLI_SQL_TYPE
+		do
+			from cursor := repository.types.new_cursor
+				cursor.start
+				print ("TYPE_NAME%T CODE%T SIZE%T CREATE_PARAMETERS%N")
+			until not repository.is_ok or else cursor.off
+			loop
+				type := cursor.item
+				print (type.name) print ("%T")
+				print (type.sql_type_code.out) print ("%T")
+				print (type.size.out) print ("%T") 
+				print (type.create_params) print ("%N")
+				cursor.forth
+			end	
+		end
+		
+	do_sources is
+			-- show data sources on this computer
+		local
+			cursor : ECLI_DATA_SOURCES_CURSOR
+		do
+			!!cursor
+			from
+				cursor.start
+				print ("SOURCE_NAME%T DESCRIPTION%N")
+			until
+				cursor.off
+			loop
+				print (cursor.item.name) print ("%T")
+				print (cursor.item.description) print ("%N")
+				cursor.forth
+			end
+		end
+		
+	do_columns (s : STRING) is
+			-- show columns of a table
+		local
+			word_index : INTEGER
+			table_name : STRING
+			string_routines : ECLI_STRING_ROUTINES
+			columns : ARRAY[ECLI_COLUMN]
+			index : INTEGER
+			the_column : ECLI_COLUMN
+		do
+			!!string_routines
+			word_index := s.index_of (' ',1)
+			if word_index > 0 then
+				table_name := string_routines.trimmed (s.substring (word_index + 1, s.count))
+				repository.find_table (table_name) 
+				if repository.is_table_found then
+					columns := repository.found_table.columns
+					from
+						index := columns.lower
+						print ("COLUMN_NAME%T TYPE%T SIZE %T DESCRIPTION%N")
+					until
+						index < 1 or else index > columns.upper
+					loop
+						the_column := columns.item (index)
+						print (the_column.name) print ("%T")
+						print (the_column.type_name) print ("%T")
+						print (the_column.size) print ("%T")
+						print (the_column.description) print ("%N")
+						index := index + 1
+					end
+				end
+			else
+				io.put_string ("Usage: COLUMNS <TABLE_NAME>; please provide a <TABLE_NAME>%N")
+			end
+		end
+		
+
 	do_set (s : STRING) is
 			-- handle a 'set <var-name>=<value>'
 		local
@@ -468,6 +578,12 @@ feature {NONE} -- Implementation
 	formatting_buffer : MESSAGE_BUFFER is
 		once
 			!!Result.make (1000)
+		end
+
+	repository : ECLI_REPOSITORY is
+			-- current repository
+		once 
+			!!Result.make(session)
 		end
 		
 end -- class ISQL

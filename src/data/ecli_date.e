@@ -135,7 +135,7 @@ feature -- Status report
 			Result := 10
 		end
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_type_date
 		end

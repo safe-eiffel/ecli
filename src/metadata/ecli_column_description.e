@@ -21,6 +21,11 @@ creation
 feature {NONE} -- Initialization
 
 	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER) is
+			-- Describe `index'th column of current result-set of `stmt', limiting the name length to `max_name_length'
+		require
+			stmt_prepared_or_executed : stmt /= Void and then stmt.is_prepared or stmt.is_executed
+			valid_index: index > 0
+			valid_maximum: max_name_length > 0
 		local
 			temp_name : STRING
 			p_temp_name : POINTER
@@ -33,16 +38,19 @@ feature {NONE} -- Initialization
 					p_temp_name,
 					max_name_length,
 					pointer ($actual_name_length),
-					pointer ($db_type_code),
+					pointer ($sql_type_code),
 					pointer ($column_precision),
 					pointer ($decimal_digits),
 					pointer ($nullability)))
 			name := pointer_to_string (p_temp_name)
 		end
 
-feature -- Status report
+feature -- Access
 
 	name : STRING
+			-- column name
+
+feature {NONE} -- Implementation
 
 	actual_name_length : INTEGER
 

@@ -14,7 +14,7 @@ inherit
 		export
 		undefine
 		redefine
-			make, content_count, db_type_code, item_at, truncated
+			make, content_count, sql_type_code, item_at, truncated
 		select
 		end
 
@@ -57,7 +57,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	db_type_code: INTEGER is
+	sql_type_code: INTEGER is
 		once
 			Result := sql_varchar
 		end
