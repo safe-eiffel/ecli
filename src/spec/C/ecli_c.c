@@ -236,51 +236,100 @@ EIF_INTEGER ecli_c_get_type_info (EIF_POINTER stmt, EIF_INTEGER data_type) {
 }
 
 EIF_INTEGER ecli_c_get_tables (EIF_POINTER stmt,
-	EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
-	EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
-	EIF_POINTER table_name, EIF_INTEGER table_name_length,
-	EIF_POINTER table_type, EIF_INTEGER table_type_length) {
+		EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+		EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+		EIF_POINTER table_name, EIF_INTEGER table_name_length,
+		EIF_POINTER table_type, EIF_INTEGER table_type_length) {
 	return (EIF_INTEGER) SQLTables (	(SQLHSTMT)		stmt,
-	(SQLCHAR *)		catalog_name,
-	(SQLSMALLINT)	catalog_name_length,
-	(SQLCHAR *)		schema_name,
-	(SQLSMALLINT)	schema_name_length,
-	(SQLCHAR *)		table_name,
-	(SQLSMALLINT)	table_name_length,
-	(SQLCHAR *)	table_type,
-	(SQLSMALLINT)	table_type_length
-	);
+			(SQLCHAR *)		catalog_name,
+			(SQLSMALLINT)	catalog_name_length,
+			(SQLCHAR *)		schema_name,
+			(SQLSMALLINT)	schema_name_length,
+			(SQLCHAR *)		table_name,
+			(SQLSMALLINT)	table_name_length,
+			(SQLCHAR *)	table_type,
+			(SQLSMALLINT)	table_type_length
+		);
 }
 
 EIF_INTEGER ecli_c_get_procedures (EIF_POINTER stmt,
-	EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
-	EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
-	EIF_POINTER procedure_name, EIF_INTEGER procedure_name_length) {
+		EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+		EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+		EIF_POINTER procedure_name, EIF_INTEGER procedure_name_length) {
 	return (EIF_INTEGER) SQLProcedures (	(SQLHSTMT)		stmt,
-	(SQLCHAR *)		catalog_name,
-	(SQLSMALLINT)	catalog_name_length,
-	(SQLCHAR *)		schema_name,
-	(SQLSMALLINT)	schema_name_length,
-	(SQLCHAR *)		procedure_name,
-	(SQLSMALLINT)	procedure_name_length
-	);
+			(SQLCHAR *)		catalog_name,
+			(SQLSMALLINT)	catalog_name_length,
+			(SQLCHAR *)		schema_name,
+			(SQLSMALLINT)	schema_name_length,
+			(SQLCHAR *)		procedure_name,
+			(SQLSMALLINT)	procedure_name_length
+		);
 }
 
 EIF_INTEGER ecli_c_get_columns (EIF_POINTER stmt,
-	EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
-	EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
-	EIF_POINTER table_name, EIF_INTEGER table_name_length,
-	EIF_POINTER column_name, EIF_INTEGER column_name_length) {
+		EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+		EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+		EIF_POINTER table_name, EIF_INTEGER table_name_length,
+		EIF_POINTER column_name, EIF_INTEGER column_name_length) {
 	return (EIF_INTEGER) SQLColumns (	(SQLHSTMT)		stmt,
-	(SQLCHAR *)		catalog_name,
-	(SQLSMALLINT)	catalog_name_length,
-	(SQLCHAR *)		schema_name,
-	(SQLSMALLINT)	schema_name_length,
-	(SQLCHAR *)		table_name,
-	(SQLSMALLINT)	table_name_length,
-	(SQLCHAR *)	column_name,
-	(SQLSMALLINT)	column_name_length
-	);
+			(SQLCHAR *)		catalog_name,
+			(SQLSMALLINT)	catalog_name_length,
+			(SQLCHAR *)		schema_name,
+			(SQLSMALLINT)	schema_name_length,
+			(SQLCHAR *)		table_name,
+			(SQLSMALLINT)	table_name_length,
+			(SQLCHAR *)	column_name,
+			(SQLSMALLINT)	column_name_length
+		);
+}
+
+EIF_INTEGER ecli_c_get_statistics (EIF_POINTER stmt,
+		EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+		EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+		EIF_POINTER table_name, EIF_INTEGER table_name_length,
+		EIF_INTEGER unique_or_all, EIF_INTEGER reserved ) {
+	return SQLStatistics(
+		 (SQLHSTMT)     	stmt,
+		 (SQLCHAR *)     	catalog_name,
+		 (SQLSMALLINT)     	catalog_name_length,
+		 (SQLCHAR *)     	schema_name,
+		 (SQLSMALLINT)     	schema_name_length,
+		 (SQLCHAR *)     	table_name,
+		 (SQLSMALLINT)     	table_name_length,
+		 (SQLUSMALLINT)     unique_or_all,
+		 (SQLUSMALLINT)     reserved);
+}
+
+EIF_INTEGER ecli_c_get_primary_keys (EIF_POINTER stmt,
+		EIF_POINTER catalog_name, EIF_INTEGER catalog_name_length,
+		EIF_POINTER schema_name, EIF_INTEGER schema_name_length,
+		EIF_POINTER table_name, EIF_INTEGER table_name_length) {
+	return (EIF_INTEGER) SQLPrimaryKeys (	(SQLHSTMT)		stmt,
+			(SQLCHAR *)		catalog_name,
+			(SQLSMALLINT)	catalog_name_length,
+			(SQLCHAR *)		schema_name,
+			(SQLSMALLINT)	schema_name_length,
+			(SQLCHAR *)		table_name,
+			(SQLSMALLINT)	table_name_length
+		);
+}
+
+EIF_INTEGER ecli_c_get_foreign_keys (EIF_POINTER stmt,
+		EIF_POINTER PKcatalog_name, EIF_INTEGER PKcatalog_name_length,
+		EIF_POINTER PKschema_name, EIF_INTEGER PKschema_name_length,
+		EIF_POINTER PKtable_name, EIF_INTEGER PKtable_name_length,
+		EIF_POINTER FKcatalog_name, EIF_INTEGER FKcatalog_name_length,
+		EIF_POINTER FKschema_name, EIF_INTEGER FKschema_name_length,
+		EIF_POINTER FKtable_name, EIF_INTEGER FKtable_name_length)
+		{
+	return (EIF_INTEGER) SQLForeignKeys (	(SQLHSTMT)		stmt,
+			(SQLCHAR *)		PKcatalog_name, (SQLSMALLINT)	PKcatalog_name_length,
+			(SQLCHAR *)		PKschema_name,  (SQLSMALLINT)	PKschema_name_length,
+			(SQLCHAR *)		PKtable_name,   (SQLSMALLINT)	PKtable_name_length,
+			(SQLCHAR *)		FKcatalog_name, (SQLSMALLINT)	FKcatalog_name_length,
+			(SQLCHAR *)		FKschema_name,  (SQLSMALLINT)	FKschema_name_length,
+			(SQLCHAR *)		FKtable_name,   (SQLSMALLINT)	FKtable_name_length
+		);
 }
 
 EIF_INTEGER ecli_c_get_datasources (EIF_POINTER env,
