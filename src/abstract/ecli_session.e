@@ -46,6 +46,8 @@ inherit
 			environment_release
 		end
 
+	ECLI_TRANSACTION_CAPABILITY_CONSTANTS
+
 creation
 	make
 
@@ -128,6 +130,11 @@ feature -- Access
 			Result := impl_password
 		end
 
+	transaction_capability : INTEGER is
+		do
+			Result := impl_transaction_capability
+		end
+
 feature -- Status report
 
 	is_manual_commit : BOOLEAN is
@@ -148,6 +155,19 @@ feature -- Status report
 			connected_valid: Result implies is_valid
 		end
 
+	is_transaction_capable : BOOLEAN is
+		require
+			connected: is_connected
+		do
+			set_status (ecli_c_transaction_capable (handle, $impl_transaction_capability))
+			Result := impl_transaction_capability /= tc_none
+		ensure
+			capability: Result implies (transaction_capability = tc_all or
+				transaction_capability = tc_dml or
+				transaction_capability = tc_ddl_commit or
+				transaction_capability = tc_ddl_ignore )
+		end
+		
 feature -- Status setting
 
 	set_manual_commit is
@@ -155,6 +175,7 @@ feature -- Status setting
 		require
 			valid: is_valid
 			connected: is_connected
+			capable : is_transaction_capable
 		do
 			--| actual setting of manual commit
 			set_status (ecli_c_set_manual_commit (handle, True))
@@ -213,6 +234,7 @@ feature -- Basic Operations
 			-- begin a new transaction
 		require
 			connected: is_connected
+			capable : is_transaction_capable
 		do
 			set_manual_commit
 			if is_ok then
@@ -348,6 +370,8 @@ feature {NONE} -- Implementation
 		end
 
 	impl_is_manual_commit : BOOLEAN
+
+	impl_transaction_capability : INTEGER
 
 	allocate is
 			-- allocate HANDLE
