@@ -21,8 +21,6 @@ inherit
 				  Sql_row_deleted, Sql_row_updated,	Sql_row_norow, Sql_row_added
 		end
 	
-	ANY
-	
 creation
 	make
 
@@ -44,18 +42,6 @@ feature -- Status report
 			Result := (item (index) = Sql_row_error)
 		end
 
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	to_external : POINTER is
@@ -63,16 +49,6 @@ feature -- Conversion
 		do
 			Result := handle
 		end
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 

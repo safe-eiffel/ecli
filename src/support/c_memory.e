@@ -80,6 +80,6 @@ feature {NONE} -- Implementation
 		end	
 
 invariant
-	invariant_clause: True -- Your invariant here
+	memory_allocated: handle /= default_pointer
 
 end -- class C_MEMORY
