@@ -98,12 +98,6 @@ feature -- Status report
 			Result := ecli_c_value_get_length (buffer)
 		end
 
-feature -- Status setting
-
-
-feature -- Cursor movement
-
-
 feature -- Element change
 
 	set_item (value : like item) is
@@ -123,12 +117,6 @@ feature -- Element change
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 		end
 			
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	to_string : STRING is
@@ -137,12 +125,7 @@ feature -- Conversion
 			Result := item
 		end
 		
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
-
 
 	out : STRING is
 		do
@@ -152,17 +135,6 @@ feature -- Basic operations
 				Result := item
 			end
 		end
-
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: -- Your invariant here
-
 
 end -- class ECLI_LONGVARCHAR
 --

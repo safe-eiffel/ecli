@@ -10,12 +10,8 @@ class
 
 inherit
 	ECLI_VARCHAR
-		rename
-		export
-		undefine
 		redefine
 			make, count, db_type_code, item, truncated
-		select
 		end
 
 creation
@@ -47,24 +43,12 @@ feature -- Access
 			Result.count = count
 		end
 
-feature -- Measurement
-
 feature -- Status report
 
 	db_type_code: INTEGER is
 		once
 			Result := sql_varchar
 		end
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
 
 feature -- Transformation
 
@@ -73,18 +57,6 @@ feature -- Transformation
 			Result := clone (v)
 			format (Result)
 		end
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
