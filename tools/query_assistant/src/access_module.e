@@ -329,6 +329,9 @@ feature {NONE} -- Implementation
 						loop
 							-- créer paramètre
 							factory.create_value_from_sample (cs.item.sample)
+							if factory.last_error /= Void then
+								a_error_handler.report_error_message ("Parameter '"+cs.item.name+"' :"+factory.last_error+". Could not create sample value.")
+							end
 							query_statement.put_parameter (factory.last_result, cs.item.name)
 							cs.forth
 						end

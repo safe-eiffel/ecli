@@ -25,6 +25,7 @@ feature {NONE} -- Initialization
 			-- creation using `a_name'
 		require
 			a_name_not_void: a_name /= Void
+			a_name_meaningful: a_name.count > 2
 		do
 			name := a_name
 			make_set (initial_size)
@@ -38,6 +39,7 @@ feature {NONE} -- Initialization
 			-- creation using `a_name' and `a_parent_name'
 		require
 			a_name_not_void: a_name /= Void
+			a_name_meaningful: a_name.count > 2
 			a_parent_name_not_void: a_parent_name /= Void
 		do
 			parent_name := a_parent_name
@@ -165,8 +167,9 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
-	equality_tester_not_void: equality_tester /= Void
-
+	
+	name_not_void: name /= Void
+	name_meaningful: name.count > 2
 end -- class COLUMN_SET
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
