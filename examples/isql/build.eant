@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="clisql" default="help">
+<project name="isql" default="help">
 
 	<description>
 		system: "Command Line Interactive SQL for ODBC datasources."
@@ -20,7 +20,7 @@
 <!-- Implementation -->
 
 	<target name="init_system">
-		<set name="system" value="clisql"/>
+		<set name="system" value="isql"/>
 		<set name="system_dir" value="${ECLI}/examples/isql"/>
 	</target>
 
