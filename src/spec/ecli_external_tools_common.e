@@ -1,6 +1,6 @@
 indexing
 	description: "Objects handle cpmmunication with external objects"
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

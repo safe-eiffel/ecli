@@ -1,6 +1,6 @@
 indexing
 	description: "Constants accepted by SQLGetFunctions;"
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

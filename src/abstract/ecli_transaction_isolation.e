@@ -1,6 +1,9 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Object that abstract a transaction isolation type"
+	
+	library: "ECLI"
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

@@ -19,7 +19,8 @@ inherit
 				is_closed,is_ok, is_prepared, is_prepared_execution_mode, is_executed, is_valid, 
 				off, before, after, has_information_message, diagnostic_message, sql, cursor,
 				go_after, array_routines, has_results, cursor_status, Cursor_after, Cursor_before, Cursor_in,
-				has_parameters,execute, bind_parameters, put_parameter, prepare
+				has_parameters,execute, bind_parameters, put_parameter, prepare, parameters_count, bound_parameters,
+				is_parsed, parameters, has_parameter
 		redefine
 			make
 		end

@@ -1,6 +1,6 @@
 indexing
 	description: "Objects that test bulk operations."
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

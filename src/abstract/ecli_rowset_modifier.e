@@ -1,6 +1,6 @@
 indexing
 	description: "Objects that modify the database one rowset at a time."
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

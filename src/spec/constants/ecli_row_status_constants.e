@@ -1,6 +1,9 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Objects that group row status constants"
+	
+	library: "ECLI"
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -18,40 +21,5 @@ inherit
 					Sql_row_success,
 					Sql_row_success_with_info
 			end
-			
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class ECLI_ROW_STATUS_CONSTANTS
