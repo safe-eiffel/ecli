@@ -18,6 +18,11 @@ deferred class
 
 inherit
 
+	MEMORY
+		redefine
+			dispose
+		end
+		
 	EXCEPTIONS
 		export
 			{NONE} all
