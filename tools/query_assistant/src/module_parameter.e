@@ -11,6 +11,11 @@ class
 	MODULE_PARAMETER
 
 inherit
+	ACCESS_MODULE_METADATA
+		undefine
+			is_equal
+		end
+		
 	HASHABLE
 		redefine
 			is_equal
@@ -43,8 +48,24 @@ feature -- Access
 
 	metadata : ECLI_COLUMN
 
-	implementation : QA_VALUE
-	
+	sql_type_code : INTEGER is
+			-- 
+		do
+			Result := metadata.type_code
+		end
+		
+	size : INTEGER is
+			-- 
+		do
+			Result := metadata.size
+		end
+		
+	decimal_digits : INTEGER is
+			-- 
+		do
+			Result := metadata.decimal_digits
+		end
+		
 feature -- Measurement
 
 	hash_code : INTEGER is 
@@ -53,8 +74,19 @@ feature -- Measurement
 		end
 		
 feature -- Status report
+	
+	metadata_available : BOOLEAN is
+			-- 
+		do
+			Result := metadata /= Void
+		end
+
+	is_valid : BOOLEAN
+			
+feature -- Status setting
 
 	check_validity (a_session : ECLI_SESSION; a_catalog_name, a_schema_name : STRING) is
+				-- check validity of module wrt `a_session', using metadata in (`a_catalog_name', `a_schema_name')
 			require
 				a_session_not_void: a_session /= Void
 				a_session_connected: a_session.is_connected
@@ -81,13 +113,6 @@ feature -- Status report
 			ensure
 				valid_and_metadata: is_valid implies metadata /= Void
 			end
-			
-	is_valid : BOOLEAN
-
-			
-feature -- Status setting
-
-feature -- Cursor movement
 
 feature {NONE} -- Element change
 
@@ -110,32 +135,6 @@ feature {NONE} -- Element change
 		ensure
 		end
 
-feature -- Element change
-
-	set_implementation (value : QA_VALUE) is
-			-- 
-		require
-			value_exists: value /= Void
-		do
-			implementation := value
-		ensure
-			implementation_assigned: implementation = value
-		end
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
@@ -143,14 +142,8 @@ feature -- Comparison
 		do
 			Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
 		end
-		
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
 
 invariant
-	invariant_clause: True -- Your invariant here
 	name_not_void: name /= Void
 	reference_column_not_void: reference_column /= Void
 

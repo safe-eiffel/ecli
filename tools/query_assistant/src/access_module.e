@@ -28,43 +28,53 @@ feature {NONE} -- Initialization
 			set_name (a_name.string)
 			set_query (a_query.string)
 		ensure
-			name_assigned: name = a_name
-			query_assigned: query = a_query
+			name_assigned: name.is_equal (a_name)
+			query_assigned: query.is_equal (a_query)
 		end
 
 feature -- Access
 
 	description: STRING
 			-- description of current module. Useful for documenting purposes
-
-	query_statement : ECLI_STATEMENT
-	query_session : ECLI_SESSION
-
+			
 	parameters : PARAMETER_SET
+			-- parameters metadata
 	
 	results : RESULT_SET
+			-- results metadata
 	
 	query: STRING
 			-- SQL query
 
 	name: STRING
 			-- Name of current acces module. Generated names shall include it
-
-	parameter_positions : string
-	
-feature -- Measurement
-
+			
 feature -- Status report
 
---	is_error : BOOLEAN
-	
 	is_query_valid : BOOLEAN
+			-- is query executable ?
 
 	is_checked_query : BOOLEAN
+			-- has the query been checked for validity?
 	
 	is_parameters_valid : BOOLEAN
+			-- are the parameters valid ?
 
+	is_results_valid : BOOLEAN
+			-- are the results valid ?
+	
+	is_valid : BOOLEAN is
+			-- is this query valid ?
+		require
+			is_checked_query: is_checked_query
+		do
+			Result := is_query_valid and then is_parameters_valid and then is_results_valid
+		ensure
+			definition: Result = (is_query_valid and then is_parameters_valid and then is_results_valid)
+		end
+		
 	has_results : BOOLEAN is
+			-- is this a query (if not, it is a command/modifying statement) ?
 		require
 			is_checked_query: is_checked_query
 		do
@@ -74,25 +84,25 @@ feature -- Status report
 feature -- Status setting
 
 	check_validity (a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
-			-- check is query is a valid sql, and if all parameters have a description
+			-- check if query is a valid sql, and if all parameters have a description
 		require
 			a_session_not_void: a_session /= Void
 			a_session_connected: a_session.is_connected
+		local
+			query_statement : ECLI_STATEMENT
+			query_session : ECLI_SESSION
 		do
 			create query_statement.make (a_session)
 			query_session := a_session
 			check_query (query_statement, a_error_handler)
 			if is_query_valid then
-				describe_result_set (a_error_handler) 
-				check_parameters (a_error_handler)
+				describe_result_set (query_statement, a_error_handler) 
+				check_parameters (query_statement, query_session, a_error_handler)
 			end
 			query_statement.close
 		ensure
-			query_session_affected: query_session = a_session
-			query_statement_exists: query_statement /= Void
+			is_checked_query: is_checked_query
 		end
-
-feature -- Cursor movement
 
 feature {ACCESS_MODULE_FACTORY}-- Element change
 
@@ -148,29 +158,11 @@ feature {NONE} -- Element change
 			name_assigned: name = a_name
 		end
 
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	statement : ECLI_STATEMENT
 
-	describe_result_set (a_error_handler : UT_ERROR_HANDLER) is
+	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
 			-- 
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -178,7 +170,9 @@ feature {NONE} -- Implementation
 			query_statement_valid: query_statement.is_valid
 		local
 			index : INTEGER
+			current_result : MODULE_RESULT
 		do
+			is_results_valid := True
 			if query_statement.has_results then
 				query_statement.describe_cursor
 				if results = Void then 
@@ -187,10 +181,17 @@ feature {NONE} -- Implementation
 				from
 					index := query_statement.cursor_description.lower
 				until
-					index > query_statement.cursor_description.upper
+					not is_results_valid or else index > query_statement.cursor_description.upper
 				loop
 					--| FIXME: verify that a same column does not exist...
-					results.force (create {MODULE_RESULT}.make(query_statement.cursor_description.item (index), index), index)
+					current_result := create {MODULE_RESULT}.make(query_statement.cursor_description.item (index))
+					if results.has (current_result) then
+						a_error_handler.report_error_message ("Result set '"+results.name+"' has two columns named '"+current_result.metadata.name+"'")
+						is_results_valid := False
+						results := Void
+					else
+						results.force (current_result, index)
+					end
 					index := index + 1
 				end
 			else
@@ -200,7 +201,7 @@ feature {NONE} -- Implementation
 			results_count: results.count = query_statement.cursor_description.count
 		end
 		
-	check_parameters (a_error_handler : UT_ERROR_HANDLER) is
+	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
 			--| Check if declared parameters are the same as statement parameters
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -267,14 +268,13 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	check_query (a_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
+	check_query (query_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
 			-- 
 		require
-			a_statement_not_void: a_statement /= Void
+			query_statement_not_void: query_statement /= Void
 			a_error_handler_not_void: a_error_handler /= Void
 		do
 			is_query_valid := False
-			query_statement := a_statement
 			query_statement.set_sql (query)
 			query_statement.prepare
 			if query_statement.is_ok then
@@ -285,15 +285,15 @@ feature {NONE} -- Implementation
 			end
 			is_checked_query := True
 		ensure
-			query_statement_valid: query_statement /= Void and then query_statement.is_valid
-			query_statement_set: query_statement = a_statement
+			is_checked_query: is_checked_query
 		end
-
 	
+--	query_statement : ECLI_STATEMENT
+--	query_session : ECLI_SESSION
+
 invariant
-	invariant_clause: True -- Your invariant here
 	name_not_void: name /= Void
 	query_not_void: query /= Void
-	parameters_not_void: parameters /= Void
+--	parameters_not_void: parameters /= Void
 
 end -- class ACCESS_MODULE

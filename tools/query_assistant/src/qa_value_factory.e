@@ -1,5 +1,8 @@
 indexing
-	description: "Objects that ..."
+	description: "Factories of ECLI_VALUEs that offer introspection/generation facilities."
+
+	library: "Access_gen : Access Modules Generators utilities"
+	
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -21,6 +24,7 @@ inherit
 			create_varchar_value,
 			create_date_value,
 			create_timestamp_value,
+			create_time_value,
 			last_result
 		select
 		end
@@ -95,7 +99,13 @@ feature -- Miscellaneous
 			create {QA_TIMESTAMP}last_result.make_default
 		end
 
+	create_time_value is
+		do
+			create {QA_TIME}last_result.make_default
+		end
+
 feature -- Basic operations
+
 	code2eiffel_type (db_type_code : INTEGER) : STRING is
 		do
 			Result := c2e.item (db_type_code)

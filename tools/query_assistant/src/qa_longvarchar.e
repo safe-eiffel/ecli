@@ -1,6 +1,6 @@
 indexing
 	description: "ISO CLI LONGVARCHAR (n) values"
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

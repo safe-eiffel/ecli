@@ -1,0 +1,18 @@
+access 
+	A: name, type	
+	sql 		: STRING
+	description 	: STRING
+	parameter_set?  : parameter_set_type
+	result_set?	: result_set_type
+	
+parameter_set_type
+	A: name, extends
+	parameter +	: parameter_type
+	
+result_set_type
+	A: extends
+	
+parameter_type
+	A: name, table, column
+	
+

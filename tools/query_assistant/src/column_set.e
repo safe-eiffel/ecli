@@ -1,5 +1,8 @@
 indexing
-	description: "Set of columns"
+	description: "Column sets (parameters or results) of an SQL access module"
+
+	library: "Access_gen : Access Modules Generators utilities"
+	
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -19,7 +22,7 @@ creation
 feature {NONE} -- Initialization
 
 	make (a_name : STRING) is
-			-- 
+			-- creation using `a_name'
 		require
 			a_name_not_void: a_name /= Void
 		do
@@ -31,7 +34,7 @@ feature {NONE} -- Initialization
 		end
 		
 	make_with_parent_name (a_name : STRING; a_parent_name : STRING) is
-			-- 
+			-- creation using `a_name' and `a_parent_name'
 		require
 			a_name_not_void: a_name /= Void
 			a_parent_name_not_void: a_parent_name /= Void
@@ -52,17 +55,12 @@ feature -- Access
 	parent : PARENT_COLUMN_SET[G]
 	
 	local_items : DS_HASH_SET[G]
-
-feature -- Measurement
+		-- local items : difference between Current and parent
 
 feature -- Status report
 
 	is_flattened : BOOLEAN
 	
-feature -- Status setting
-
-feature -- Cursor movement
-
 feature -- Element change
 
 	set_parent (a_parent : like parent) is
@@ -80,18 +78,6 @@ feature -- Element change
 			parent_set : parent = a_parent
 		end
 		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 
 	flatten is
@@ -106,20 +92,18 @@ feature -- Basic operations
 					local_items.merge (Current)
 					local_items.symdif (parent)
 				end
+				is_flattened := True
 			end
 		ensure
 			is_flattened: is_flattened
+			local_items_when_parent_not_void: parent /= Void implies local_items /= Void
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
 	initial_size : INTEGER is 5
 	
 invariant
-	local_items_when_flattened: local_items /= Void implies is_flattened
 	equality_tester_exists: equality_tester /= Void 
+
 end -- class COLUMN_SET

@@ -33,70 +33,18 @@ feature -- Access
 	
 	last_parameter_set: PARAMETER_SET
 	
-	last_parameter : MODULE_PARAMETER
-	
 	last_module : ACCESS_MODULE
 	
-	
-feature -- Measurement
+feature {NONE} -- Access
+
+	last_parameter : MODULE_PARAMETER
 
 feature -- Status report
 
 	is_error : BOOLEAN
+		-- has the last creation resulted to an error ?
 	
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
-
-	create_parameter (element : XM_ELEMENT) is
-			-- create parameter based on `element'
-		local
-			l_name, l_table, l_column : STRING
-			l_reference : REFERENCE_COLUMN
-		do
-			is_error := False
-			last_parameter := Void
-			if element.has_attribute_by_name ("name") then
-				l_name := element.attribute_by_name ("name").value.string
-			else
-				error_handler.report_error_message ("Parameter must have a 'name' attribute")
-				is_error := True
-			end
-			if element.has_attribute_by_name ("table") then
-				l_table := element.attribute_by_name ("table").value.string 
-			else
-				error_handler.report_error_message ("Parameter must have a 'table' attribute") 
-				is_error := True
-			end
-			if element.has_attribute_by_name ("column") then
-				l_column := element.attribute_by_name ("column").value.string
-			else
-				error_handler.report_error_message ("Parameter must have a 'column' attribute")
-				is_error := True
-			end
-			if l_name /= Void and then l_table /= Void and then l_column /= Void then
-				create l_reference.make (l_table, l_column)
-				create last_parameter.make (l_name, l_reference)
-			end
-		ensure
-			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void
-		end
 
 	create_access_module (element : XM_ELEMENT) is
 			-- process `element' as access module
@@ -127,7 +75,7 @@ feature -- Basic operations
 				if name /= Void and type /= Void then
 					if element.has_element_by_name ("sql") then
 						query := element.element_by_name ("sql")
-						create last_module.make (name, query.text.string)
+						create last_module.make (module_name (name), query.text.string)
 						if element.has_element_by_name ("description") then
 							description := element.element_by_name ("description")
 							last_module.set_description (description.text.string)
@@ -163,7 +111,7 @@ feature -- Basic operations
 		end
 
 	create_parameter_set (element : XM_ELEMENT; default_name : STRING) is
-			-- 
+			-- create parameter set from `element' into `last_parameter_set'
 		require
 			element_not_void: element /= Void
 			element_name_parameter_set: element.name.string.is_equal ("parameter_set")
@@ -186,7 +134,7 @@ feature -- Basic operations
 		end
 		
 	create_result_set (element : XM_ELEMENT; default_name : STRING) is
-			-- 
+			-- create result set from `element' into `last_result_set'
 		require
 			element_not_void: element /= Void
 			element_name_result_set: element.name.string.is_equal ("result_set")
@@ -206,10 +154,6 @@ feature -- Basic operations
 				create last_result_set.make (name)
 			end
 		end
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
@@ -261,6 +205,44 @@ feature {NONE} -- Implementation
 				parameter_cursor.forth
 			end
 		end
+
+	create_parameter (element : XM_ELEMENT) is
+			-- create parameter based on `element'
+		require
+			element_exists: element /= Void
+			element_name_is_parameter: element.name.string.is_equal ("parameter")
+		local
+			l_name, l_table, l_column : STRING
+			l_reference : REFERENCE_COLUMN
+		do
+			is_error := False
+			last_parameter := Void
+			if element.has_attribute_by_name ("name") then
+				l_name := element.attribute_by_name ("name").value.string
+			else
+				error_handler.report_error_message ("Parameter must have a 'name' attribute")
+				is_error := True
+			end
+			if element.has_attribute_by_name ("table") then
+				l_table := element.attribute_by_name ("table").value.string 
+			else
+				error_handler.report_error_message ("Parameter must have a 'table' attribute") 
+				is_error := True
+			end
+			if element.has_attribute_by_name ("column") then
+				l_column := element.attribute_by_name ("column").value.string
+			else
+				error_handler.report_error_message ("Parameter must have a 'column' attribute")
+				is_error := True
+			end
+			if l_name /= Void and then l_table /= Void and then l_column /= Void then
+				create l_reference.make (l_table, l_column)
+				create last_parameter.make (l_name, l_reference)
+			end
+		ensure
+			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void
+		end
+
 		
 invariant
 	invariant_clause: True -- Your invariant here

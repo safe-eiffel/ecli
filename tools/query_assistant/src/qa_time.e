@@ -14,14 +14,18 @@ inherit
 	QA_VALUE
 
 creation
-	make
+	make_default
 	
 feature
-
 
 	ecli_type : STRING is "ECLI_TIME"
 		
 	value_type : STRING is "ECLI_TIME"
+
+	creation_call : STRING is
+		do
+			Result := make_default_call
+		end
 		
 end -- class QA_TIME
 --

@@ -1,6 +1,9 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Objects that share a same catalog name"
+
+	library: "Access_gen : Access Modules Generators utilities"
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

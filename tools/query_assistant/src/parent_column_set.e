@@ -1,6 +1,9 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Column sets with descendants"
+
+	library: "Access_gen : Access Modules Generators utilities"
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -19,7 +22,6 @@ creation
 feature {NONE} -- Initialization
 
 	make (a_name: STRING) is
-			-- 
 		do
 			create {DS_LINKED_LIST[like column_set_anchor]} descendants.make
 			Precursor (a_name)
@@ -31,32 +33,9 @@ feature -- Access
 	
 	column_set_anchor : COLUMN_SET[G] is do end
 	
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 
 	copy (other : like Current) is
-			-- 
 		do
 			Precursor (other)
 			if other.descendants /= Void then
@@ -68,7 +47,6 @@ feature -- Basic operations
 		end
 
 	flatten is
-			-- 
 		local
 			cursor : DS_LIST_CURSOR [like column_set_anchor]
 			set : DS_HASH_SET [G]
@@ -82,24 +60,16 @@ feature -- Basic operations
 				loop
 					if set = Void then
 						create set.make (capacity)
-						set.merge (cursor.item)
 						set.set_equality_tester (equality_tester)
+						set.merge (cursor.item)
 					else
 						set.intersect (cursor.item)
 					end
 					cursor.forth
 				end
+				is_flattened := True
+				merge (set)
 			end
-			merge (set)
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class PARENT_COLUMN_SET

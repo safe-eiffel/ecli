@@ -1,7 +1,7 @@
 indexing
 	description: 
 
-		"  "
+		"ECLI_VALUE with eiffel generation metadata"
 
 	author: 	"Paul G. Crismer"
 	date: 		"$Date$"
@@ -21,7 +21,9 @@ inherit
 			as_string, convertible_to_string,
 			to_real, convertible_to_real,
 			to_date, convertible_to_date,
-			to_timestamp, convertible_to_timestamp, copy
+			to_timestamp, convertible_to_timestamp,
+			to_time, convertible_to_time,
+			copy
 		end
 
 
@@ -58,9 +60,15 @@ feature {NONE} -- implementation
 		end
 
 	make_first_call : STRING is
-		do
+		once
 			create Result.make (12)
 			Result.append ("make_first")
+		end
+		
+	make_default_call : STRING is
+			-- 
+		once
+			create Result.make_from_string ("make_default")
 		end
 		
 end -- class QA_VALUE

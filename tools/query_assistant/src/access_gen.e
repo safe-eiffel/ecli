@@ -26,7 +26,7 @@ creation
 feature {NONE} -- Initialization
 
 	make is
-			-- Run.
+			-- generate access modules
 		do
 			Arguments.set_program_name ("query_assistant")
 			!! error_handler.make_standard
@@ -39,7 +39,7 @@ feature {NONE} -- Initialization
 				if default_schema /= Void then
 					set_shared_schema_name (default_schema)
 				end
-				process_data_file
+				parse_xml_input_file
 				process_document
 				check_modules
 				resolve_parent_classes
@@ -47,7 +47,7 @@ feature {NONE} -- Initialization
 			end
 		end
 
-feature -- Access
+feature -- Access (Command line arguments)
 
 	in_filename: STRING
 			-- Name of the input file
@@ -56,17 +56,17 @@ feature -- Access
 			-- Name of the output file (see use_std_out)
 
 	dsn : STRING
+			-- data source name
 	
 	user : STRING
+			-- user name
 	
 	password : STRING
-	
-	has_error: BOOLEAN
-			-- Error during processing?
+			-- password
 
-	error_handler: UT_ERROR_HANDLER
-			-- Error handler
-	
+--| FIXME: consider removing the filter option since parent classes for parameters
+--| 	   or results could ne be properly handled
+
 	class_filter : STRING
 			-- class name to generate
 			
@@ -76,6 +76,27 @@ feature -- Access
 	default_schema : STRING
 			-- default schema for metadata queries
 	
+	
+feature -- Access (generation)
+
+	error_handler: UT_ERROR_HANDLER
+			-- Error handler
+	
+	modules : DS_HASH_TABLE [ACCESS_MODULE, STRING]
+
+	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
+
+	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
+	
+	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
+
+	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
+
+feature -- Status report
+
+	has_error: BOOLEAN
+			-- has an error occurred during processing?
+
 feature -- Parser
 
 	fact: XM_EXPAT_PARSER_FACTORY is
@@ -95,14 +116,18 @@ feature -- Parser
 feature -- Basic operations
 
 	print_prologue is
+			-- print application prologue
 		do
-			error_handler.report_info_message ("** ECLI Query Assistant **")
+			error_handler.report_info_message ("** ECLI Query Assistant v1.0alpha**")
 			error_handler.report_info_message ("*  Copyright (c) 2001-2003 Paul G. Crismer and others.")
 			error_handler.report_info_message ("*  Released under the Eiffel Forum license version 1.%N")
 		end
 
 	process_document is
-			-- 
+			-- process XML document
+		require
+			parser_ok: event_parser.is_correct
+			tree_pipe_ok: not tree_pipe.error.has_error
 		local
 			root : XM_DOCUMENT
 			access : XM_ELEMENT
@@ -144,14 +169,14 @@ feature -- Basic operations
 				end
 				a_cursor.forth
 			end
+		ensure
+			modules_exist: modules /= Void
+			parameter_sets_exist: parameter_sets /= Void
+			result_sets_exist: result_sets /= Void
 		end
 	
-	modules : DS_HASH_TABLE [ACCESS_MODULE, STRING]
-	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
-	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
-	
-	process_data_file is
-			-- Do the real work (parse and output).
+	parse_xml_input_file is
+			-- Do the real work of parsing the XML
 		require
 			in_filename_not_void: in_filename /= Void
 			parser_not_void: event_parser /= Void
@@ -304,14 +329,16 @@ feature {NONE} -- Implementation
 		end
 
 	resolve_parent_classes is
+			-- resolve parent classes for parameters and result sets
 		do
 			resolve_parent_parameter_sets
 			resolve_parent_result_sets
 		end
 		
 	resolve_parent_parameter_sets is
+			-- resolve parent classes for parameter sets
 		local
-			resolver : PARENT_RESOLVER[MODULE_PARAMETER]
+			resolver : REFERENCE_RESOLVER[MODULE_PARAMETER]
 		do
 			create resolver
 			parent_parameter_sets := resolver.resolve_parents (parameter_sets)
@@ -319,17 +346,14 @@ feature {NONE} -- Implementation
 		end
 		
 	resolve_parent_result_sets is
-			--
+			-- resolve parent classes for parameter sets
 		local
-			resolver : PARENT_RESOLVER[MODULE_RESULT]
+			resolver : REFERENCE_RESOLVER[MODULE_RESULT]
 		do
 			create resolver
 			parent_result_sets := resolver.resolve_parents (result_sets)
 			resolver.resolve_descendants (result_sets)
 		end
-	
-	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
-	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
 	
 	check_modules is
 			-- check modules
@@ -349,7 +373,7 @@ feature {NONE} -- Implementation
 				l_name := cursor.item.name
 				if class_filter = Void or else class_filter.is_equal (cursor.item.name) then
 					cursor.item.check_validity (session, error_handler)
-					if cursor.item.is_query_valid and then cursor.item.is_parameters_valid then
+					if cursor.item.is_valid then
 						print (cursor.item.name)
 						print (" is OK%N")
 						if cursor.item.has_results then
@@ -370,13 +394,14 @@ feature {NONE} -- Implementation
 		end
 
 	generate_modules is
-			-- 
+			-- generate modules
 		local
 			c : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
 			p : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
 			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_RESULT], STRING]
 
 		do
+			--| classes for modules
 			from
 				c := modules.new_cursor
 				c.start
@@ -387,79 +412,47 @@ feature {NONE} -- Implementation
 				c.forth
 			end
 			create gen
+			--| classes for parent parameters
 			from
 				p := parent_parameter_sets.new_cursor
 				p.start
 			until
 				p.off
 			loop
-				gen.create_parameters_class (p.item, out_directory)
+				gen.create_parameters_class (p.item)
+				gen.write_class (gen.parameters_class, out_directory)
 				p.forth
 			end
+			--| classes for parent results
 			from
 				r := parent_result_sets.new_cursor
 				r.start
 			until
 				r.off
 			loop
-				gen.create_results_class (r.item, out_directory)
+				gen.create_results_class (r.item)
+				gen.write_class (gen.results_class, out_directory)
 				r.forth
 			end
 		end
 		
 	generate (module : ACCESS_MODULE;a_error_handler : UT_ERROR_HANDLER) is
-			-- 
+			-- generate classes for `module', query + parameter_set + result_set classes
 		require
 			module_not_void: module /= Void
-		local
-			factory : QA_VALUE_FACTORY
-			p_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
-			r_cursor : DS_SET_CURSOR[MODULE_RESULT]
-			parameters : DS_HASH_TABLE[QA_VALUE,STRING]
-			results : DS_HASH_TABLE[QA_VALUE,STRING]
 		do
-			create factory.make
-			from
-				p_cursor := module.parameters.new_cursor
-				create parameters.make (module.parameters.count)
-				p_cursor.start
-			until
-				p_cursor.off
-			loop
-				factory.create_instance (
-					p_cursor.item.metadata.type_code,
-					p_cursor.item.metadata.size,
-					p_cursor.item.metadata.decimal_digits)
-				p_cursor.item.set_implementation (factory.last_result)
-				p_cursor.forth
-			end
-			if module.has_results then
-				from
-					r_cursor := module.results.new_cursor
-					create results.make (module.results.count)
-					r_cursor.start
-				until
-					r_cursor.off
-				loop
-					factory.create_instance (
-						r_cursor.item.metadata.sql_type_code ,
-						r_cursor.item.metadata.size,
-						r_cursor.item.metadata.decimal_digits)
-					r_cursor.item.set_implementation (factory.last_result)
-					r_cursor.forth
-				end
-			end
-			--| a ce stade, on peut exploiter 
-			--| cursor.parameters, cursor.cursor
-			--|
 			create gen
-			gen.create_cursor_class (module, out_directory)
-			gen.create_parameters_class (module.parameters, out_directory)
-			gen.create_results_class (module.results, out_directory)
+			gen.create_cursor_class (module)
+			gen.write_class (gen.cursor_class,out_directory)
+			gen.create_parameters_class (module.parameters)
+			gen.write_class (gen.parameters_class, out_directory)
+			if module.has_results then
+				gen.create_results_class (module.results)
+				gen.write_class (gen.results_class, out_directory)
+			end
 		end
 
 	gen : ACCESS_MODULE_GENERATOR
-
 	
 invariant
 

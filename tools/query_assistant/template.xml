@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modules>
+<access  type="selection" name="*insert-module-name-here*">
+	<description>
+		description: "*insert-description-here*"
+	</description>
+	<sql>
+	*insert-sql-here*
+	</sql>
+	<parameter_set extends="*insert-parent-parameter-set-name-here*"/>
+		<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*"/> 
+	</parameter_set>
+	<result_set extends="*insert-parent-result-set-name-here*"/>
+</access>
+</modules>

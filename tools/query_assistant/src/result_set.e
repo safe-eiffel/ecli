@@ -1,6 +1,9 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Result sets"
+
+	library: "Access_gen : Access Modules Generators utilities"
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -21,7 +24,7 @@ creation
 feature {NONE} -- Initialization
 
 		make (a_name: STRING) is
-			-- 
+			-- create result set with `a_name'
 		do
 			Precursor (a_name)
 			create rank.make (capacity)
@@ -31,19 +34,12 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	rank : DS_HASH_TABLE[INTEGER, STRING]
-	
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
+			-- rank of each item in result set
+			
 feature -- Element change
 
 	put (column : like item; column_rank : INTEGER) is
-			-- 
+			-- put `column' with position `column_rank'
 		require
 			column_exists: column /= Void
 			column_rank_positive: column_rank > 0
@@ -53,7 +49,7 @@ feature -- Element change
 		end
 
 	force (column : like item; column_rank : INTEGER) is
-			-- 
+			-- force `column' with position `column_rank'
 		require
 			column_exists: column /= Void
 			column_rank_positive: column_rank > 0
@@ -61,28 +57,5 @@ feature -- Element change
 			force_set (column)
 			rank.force (column_rank, column.metadata.name)
 		end
-			
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class RESULT_SET

@@ -1,40 +1,19 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Objects that resolve access module metadata references to parents or descendants"
+
+	library: "Access_gen : Access Modules Generators utilities"
+	
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	PARENT_RESOLVER [G->HASHABLE]
-
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
+	REFERENCE_RESOLVER [G -> ACCESS_MODULE_METADATA]
 
 feature -- Basic operations
 
 	resolve_parents (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]) : DS_HASH_TABLE [PARENT_COLUMN_SET [G], STRING] is
-			--
+			-- extract parent information from `items' and create collection of parent object into Result
 		local
 			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET [G],STRING]
 			set : COLUMN_SET [G]
@@ -74,7 +53,7 @@ feature -- Basic operations
 		end
 
 	resolve_descendants (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]) is
-			-- 
+			-- infer local content of each item in `items' wrt to their respective parent if any
 		local
 			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET [G],STRING]
 		do
@@ -89,14 +68,4 @@ feature -- Basic operations
 			end
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
-
-end -- class PARENT_RESOLVER
+end -- class REFERENCE_RESOLVER
