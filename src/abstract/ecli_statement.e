@@ -361,6 +361,7 @@ feature -- Cursor movement
 		do
 			set_status (ecli_c_close_cursor (handle))
 			set_cursor_after
+			fetched_columns_count := 0
 		ensure
 			after: after
 			fetched_columns: fetched_columns_count = 0

@@ -30,7 +30,7 @@ feature -- Access
 			-- array of names
 		once
 			Result := <<
-				"a",
+				"a very long name",
 				"b",
 				"c",
 				"d",
@@ -79,7 +79,7 @@ feature -- Access
 
 feature -- Constants
 
-	sql_create : STRING is "CREATE TABLE ROWSETSAMPLE (NAME VARCHAR(30), AGE INTEGER)"
+	sql_create : STRING is "CREATE TABLE ROWSETSAMPLE (NAME VARCHAR(5), AGE INTEGER)"
 	
 	sql_insert : STRING is "INSERT INTO ROWSETSAMPLE VALUES (?name, ?age)"
 	
