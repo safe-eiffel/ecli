@@ -48,7 +48,7 @@ to use ECLI in the current state of development for common RDBMS access.
 
 	Platforms :
 * Windows
-( Linux to come ...)
+* Linux
 
  
 Section 1 : Design choices
@@ -108,7 +108,7 @@ T3. Test cases
 
 T4. Examples
 
-T5. Port to Unix/Linux.  This should be fairly easy using UnixODBC : www.unixodbc.org
+T5. ** DONE *** Port to Unix/Linux.  This should be fairly easy using UnixODBC : www.unixodbc.org
 
 T6. Getting various metadata : Result-set metadata, Tables/Columns/Indexes catalog metadata,
 SQL Datatypes metadata.
