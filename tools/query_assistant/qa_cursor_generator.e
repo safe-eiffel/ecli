@@ -13,7 +13,7 @@ inherit
 
 feature -- Initialization
 
-	execute (a_cursor : QA_CURSOR; a_file : FILE) is
+	execute (a_cursor : QA_CURSOR; a_file : KL_TEXT_INPUT_FILE) is
 		require
 			cursor: a_cursor /= Void and then a_cursor.name /= Void
 			cursor_executed: a_cursor.is_executed
@@ -33,7 +33,7 @@ feature -- Access
 
 	current_cursor : QA_CURSOR
 	
-	current_file : FILE
+	current_file : KL_TEXT_INPUT_FILE
 	
 feature -- Measurement
 

@@ -31,11 +31,6 @@ feature -- Status report
 			Result := sql_varchar
 		end
 
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: -- Your invariant here
-
 end -- class ECLI_VARCHAR
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>

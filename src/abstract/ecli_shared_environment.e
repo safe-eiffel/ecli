@@ -1,5 +1,8 @@
 indexing
-	description: "Shared CLI environment"
+	description: 
+	
+		"Shared CLI environment"
+	
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

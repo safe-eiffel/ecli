@@ -1,7 +1,12 @@
 indexing
-	description: "Objects that are traceable through an ECLI_TRACER"
-	rationale: "Usage of visitor pattern.  This way it is possible to customize tracers without impacting %
+	description: 
+	
+		"Objects that are traceable through an ECLI_TRACER"
+	
+	rationale: "Usage of visitor pattern.%
+			% This way it is possible to customize tracers without impacting %
 			% other traceable classes."
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

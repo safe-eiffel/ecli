@@ -1,5 +1,5 @@
 indexing
-	description: "Encapsulation of CLI environment.  %
+	description: "Encapsulation of CLI environment.%
 				% There should be a single object of this type in a system.%
 				% This object is a handle to the CLI facilities : it is the first%
 				% CLI object to be created, and the last to be deleted."
@@ -17,7 +17,10 @@ inherit
 	ECLI_EXTERNAL_API
 
 	ECLI_STATUS
-
+		undefine
+			dispose
+		end
+		
 	PAT_PUBLISHER [ECLI_SESSION]
 		rename
 			subscribe as register_session,
@@ -35,7 +38,6 @@ inherit
 
 creation
 	make
-
 
 feature -- Initialization
 

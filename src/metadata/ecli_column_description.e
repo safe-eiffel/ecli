@@ -15,6 +15,13 @@ inherit
 		export {NONE} make_parameter
 		end
 
+	ECLI_EXTERNAL_TOOLS
+		export
+			{NONE} all
+		undefine
+			dispose
+		end
+
 	KL_IMPORTED_STRING_ROUTINES
 creation
 	make
@@ -30,6 +37,7 @@ feature {NONE} -- Initialization
 		local
 			stat : INTEGER
 		do
+			protect
 			name := STRING_.make_buffer (max_name_length + 1)
 			stat := ecli_c_describe_column (stmt.handle,
 				index,
@@ -42,6 +50,7 @@ feature {NONE} -- Initialization
 				pointer ($nullability))
 			stmt.set_status (stat)
 			name := pointer_to_string (string_to_pointer(name))
+			unprotect
 		end
 
 feature -- Access

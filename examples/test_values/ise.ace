@@ -5,10 +5,8 @@ root
 	test_values: make
 
 default
-	assertion (check)
 	assertion (require)
 	assertion (ensure)
-	assertion (loop)
 	assertion (invariant)
 	msil_generation (yes)
 	disabled_debug (yes)
@@ -100,12 +98,6 @@ cluster
 	ut_command (ut_utility):		"$/command"
 
 	ut_support (ut_utility):		"$/support"
-
-	dp_pattern:		"${GOBO}/library/pattern"
-
-	dp_command (dp_pattern):		"$/command"
-
-	dp_bridge (dp_pattern):		"$/bridge"
 
 	ise:		"${ISE_EIFFEL}/library"
 

@@ -15,19 +15,19 @@ inherit
 		redefine
 			out
 		end
-	
+
 	ECLI_API_CONSTANTS
 		undefine
 			out
 		end
-	
+
 creation
 	make
-	
+
 feature {NONE} -- Initilization
 
 	make (cursor : ECLI_PROCEDURES_CURSOR) is
-			-- 
+			--
 		require
 			cursor_valid: cursor /= Void and then not cursor.off
 		do
@@ -41,29 +41,29 @@ feature {NONE} -- Initilization
 				type := cursor.buffer_procedure_type.to_integer
 			end
 		end
-		
+
 feature -- Access
-	
+
 	description : STRING
-	
+
 	type : INTEGER
-	
+
 feature -- Measurement
 
 feature -- Status report
 
 	is_procedure :  BOOLEAN is
-			-- 
+			--
 		do
 			Result := type = sql_pt_procedure
 		end
-		
+
 	is_function : BOOLEAN is
-			-- 
+			--
 		do
 			Result := type = sql_pt_function
 		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -79,10 +79,9 @@ feature -- Transformation
 feature -- Conversion
 
 	out : STRING is
-			-- 
+			--
 		do
-			!!Result.make (0)
-			Result.append ({ECLI_NAMED_METADATA}Precursor)
+			Result :=  Precursor {ECLI_NAMED_METADATA}
 			Result.append ("%T")
 			append_to_string(Result, description); Result.append ("%T")
 			if type = sql_pt_procedure then
@@ -93,7 +92,7 @@ feature -- Conversion
 				Result.append ("Unknown type")
 			end
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous

@@ -459,7 +459,7 @@ EIF_INTEGER ecli_c_sql_get_functions (EIF_POINTER handle, EIF_INTEGER function, 
 EIF_POINTER ecli_c_alloc_value (EIF_INTEGER c_buffer_length) {
 	struct ecli_c_value *res;
 
-	res = (struct ecli_c_value *) malloc(sizeof(struct ecli_c_value)+c_buffer_length);
+	res = (struct ecli_c_value *) calloc(sizeof(struct ecli_c_value)+c_buffer_length, 1);
 	if (res)
 		res->length = (long) c_buffer_length;
 	return (EIF_POINTER) res;
@@ -501,7 +501,7 @@ void ecli_c_value_copy_value (EIF_POINTER v, EIF_POINTER dest) {
 EIF_POINTER ecli_c_alloc_array_value (EIF_INTEGER c_buffer_length, EIF_INTEGER a_count) {
 	struct ecli_c_array_value *res;
 
-	res = (struct ecli_c_array_value *) malloc(sizeof(struct ecli_c_array_value)+ (c_buffer_length * a_count+ sizeof(long)* a_count));
+	res = (struct ecli_c_array_value *) calloc(sizeof(struct ecli_c_array_value)+ (c_buffer_length * a_count+ sizeof(long)* a_count), 1);
 	if (res) {
 		res->length = (long) c_buffer_length;
 		res->count = (long) a_count;
@@ -643,7 +643,7 @@ void c_memory_copy (EIF_POINTER destination, EIF_POINTER source, EIF_INTEGER len
 }
 
 EIF_POINTER c_memory_allocate (EIF_INTEGER size) {
-	return (EIF_POINTER) malloc ((long) size);
+	return (EIF_POINTER) calloc ((long) size, 1);
 }
 
 void c_memory_free (EIF_POINTER pointer) {

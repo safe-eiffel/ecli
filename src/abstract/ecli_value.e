@@ -42,6 +42,8 @@ feature -- Access
 		require
 			not_null: not is_null
 		do
+		ensure
+			aliasing: Result = old item
 		end
 
 feature -- Status report
@@ -133,6 +135,7 @@ feature -- Element change
 
 
 	set_item (value: like item) is
+			-- set `item' with content of `value'
 		require
 			value /= Void
 		do
@@ -162,16 +165,18 @@ feature -- Transformation
 feature -- Conversion
 
 	to_string : STRING is
-			-- ...
+			-- Current converted to STRING
 		require
 			convertible: convertible_to_string
 			not_null: not is_null
 		do
 			Result := out
+		ensure
+			no_aliasing: Result /= old to_string
 		end
 
 	to_character : CHARACTER is
-			-- ...
+			-- Current converted to CHARACTER 
 		require
 			convertible: convertible_to_character
 			not_null: not is_null
@@ -179,7 +184,7 @@ feature -- Conversion
 		end
 
 	to_boolean : BOOLEAN is
-			-- ...
+			-- Current converted to BOOLEAN
 		require
 			convertible: convertible_to_boolean
 			not_null: not is_null
@@ -187,7 +192,7 @@ feature -- Conversion
 		end
 
 	to_integer : INTEGER is
-			-- ...
+			-- Current converted to INTEGER
 		require
 			convertible: convertible_to_integer
 			not_null: not is_null
@@ -195,7 +200,7 @@ feature -- Conversion
 		end
 
 	to_real : REAL is
-			-- ...
+			-- Current converted to REAL
 		require
 			convertible: convertible_to_real
 			not_null: not is_null
@@ -203,7 +208,7 @@ feature -- Conversion
 		end
 
 	to_double : DOUBLE is
-			-- ...
+			-- Current converted to DOUBLE
 		require
 			convertible: convertible_to_double
 			not_null: not is_null
@@ -211,27 +216,33 @@ feature -- Conversion
 		end
 
 	to_date : DT_DATE is
-			-- ...
+			-- Current converted to DATE
 		require
 			convertible: convertible_to_date
 			not_null: not is_null
 		do
+		ensure
+			no_aliasing: Result /= old to_date
 		end
 
 	to_time : DT_TIME is
-			-- ...
+			-- Current converted to DT_TIME
 		require
 			convertible: convertible_to_time
 			not_null: not is_null
 		do
+		ensure
+			no_aliasing: Result /= old to_time
 		end
 
 	to_timestamp : DT_DATE_TIME is
-			-- ...
+			-- Current converted to DT_DATE_TIME
 		require
 			convertible: convertible_to_timestamp
 			not_null: not is_null
 		do
+		ensure
+			no_aliasing: Result /= old to_timestamp
 		end
 
 feature {NONE} -- Implementation
@@ -257,7 +268,6 @@ feature {NONE} -- Implementation
 		end
 
 feature {ECLI_STATEMENT} -- Basic operations
-
 
 	read_result (stmt : ECLI_STATEMENT; index : INTEGER) is
 			-- read value from current result column 'index' of 'stmt'
@@ -321,10 +331,10 @@ feature {NONE} -- Implementation values
 	is_ready_for_disposal : BOOLEAN is True
 	
 	disposal_failure_reason : STRING is do	end
-		
-invariant
-	invariant_clause: is_valid
 
+	impl_item : like item
+			-- reference to actual item this is always the same item !
+	
 end -- class ECLI_VALUE
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>

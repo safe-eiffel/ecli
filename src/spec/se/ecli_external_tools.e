@@ -5,8 +5,11 @@ indexing
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
 
-expanded class
+class
 	ECLI_EXTERNAL_TOOLS
+
+inherit
+	ECLI_EXTERNAL_TOOLS_COMMON
 
 feature -- Basic operations
 
@@ -23,6 +26,12 @@ feature -- Basic operations
 			good_pointer: p /= default_pointer
 		do
 			create Result.from_external_copy (p)
+		end
+
+	string_copy_from_pointer (s : STRING; p : POINTER) is
+			-- copy 'C' string at `p' into `s'
+		do
+			s.from_external_copy (p)
 		end
 
 feature -- Inapplicable

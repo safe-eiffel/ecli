@@ -5,15 +5,16 @@ indexing
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
 
-expanded class
+class
 	ECLI_EXTERNAL_TOOLS
+
+inherit
+	ECLI_EXTERNAL_TOOLS_COMMON
 
 feature -- Basic operations
 
 	string_to_pointer (s : STRING) : POINTER is
 			-- pointer to "C" version of 's'
-		require
-			good_string: s /= Void
 		local
 			a : ANY
 		do
@@ -22,13 +23,17 @@ feature -- Basic operations
 		end
 
 	pointer_to_string (p : POINTER) : STRING is
-		require
-			good_pointer: p /= default_pointer
 		do
 			create Result.make (0)
 			Result.from_c (p)
 		end
 
+	string_copy_from_pointer (s : STRING; p : POINTER) is
+			-- copy 'C' string at `p' into `s'
+		do
+			s.from_c (p)
+		end
+		
 feature {NONE} -- Implementation
 
 		pointer (ptr : POINTER) : POINTER is

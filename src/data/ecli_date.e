@@ -1,5 +1,8 @@
 indexing
-	description: "ISO CLI DATE value"
+	description: 
+	
+		"ISO CLI DATE value"
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -46,6 +49,7 @@ feature {NONE} -- Initialization
 		do
 			allocate_buffer
 			set (a_year, a_month, a_day)
+			create impl_item.make (a_year,a_month,a_day)
 		ensure
 			year_set: year = a_year
 			month_set: month = a_month
@@ -62,8 +66,9 @@ feature {NONE} -- Initialization
 	make_default is
 			-- make default date as first day of Christian Era : January 1st, 1
 		do
-			allocate_buffer
-			set (1,1,1)
+--			allocate_buffer
+--			set (1,1,1)
+			make (1, 1, 1)
 		ensure
 			not_null: not is_null
 			year_set: year = 1
@@ -75,7 +80,8 @@ feature -- Access
 
 	item : DT_DATE is
 		do
-			!!Result.make (year, month, day)
+			impl_item.set_year_month_day (year,month,day)
+			Result := impl_item
 		end
 
 	year : INTEGER is
@@ -205,7 +211,7 @@ feature -- Conversion
 	to_date : DT_DATE is
 			-- Current converted to date
 		do
-			Result := item
+			Result := clone (item)
 		end
 		
 	to_timestamp : DT_DATE_TIME is

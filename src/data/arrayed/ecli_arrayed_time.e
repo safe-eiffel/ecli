@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_ARRAYED_VALUE
 		redefine
-			to_time, is_equal, item, out_item_at
+			is_equal, item, out_item_at --to_time, 
 		end
 
 	ECLI_TIME
@@ -22,12 +22,12 @@ inherit
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, is_equal, out, set_item, to_string
 		redefine
-			item, out, trace, allocate_buffer, hour, minute, second --, nanosecond --transfer_octet_length, 
+			item, trace, allocate_buffer, hour, minute, second --out, , nanosecond --transfer_octet_length,
 		end
-	
+
 creation
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
@@ -46,16 +46,10 @@ feature -- Access
 		end
 
 	item_at (index : INTEGER) : like item is
-		local
-			save_index : INTEGER
 		do
---			save_index := cursor_index
---			cursor_index := index
---			Result := item
---			cursor_index := save_index
 			!! Result.make (hour_at (index), minute_at (index), second_at (index))
 		end
-		
+
 	hour : INTEGER is
 		local
 			time_pointer : POINTER
@@ -98,7 +92,7 @@ feature -- Access
 
 	hour_at (index : INTEGER) : INTEGER is
 		require
-			valid_index: index >= 1 and index <= count		
+			valid_index: index >= 1 and index <= count
 		local
 			time_pointer : POINTER
 		do
@@ -110,7 +104,7 @@ feature -- Access
 
 	minute_at (index : INTEGER) : INTEGER is
 		require
-			valid_index: index >= 1 and index <= count		
+			valid_index: index >= 1 and index <= count
 		local
 			time_pointer : POINTER
 		do
@@ -122,7 +116,7 @@ feature -- Access
 
 	second_at (index : INTEGER) : INTEGER is
 		require
-			valid_index: index >= 1 and index <= count		
+			valid_index: index >= 1 and index <= count
 		local
 			time_pointer : POINTER
 		do
@@ -134,7 +128,7 @@ feature -- Access
 
 --	nanosecond_at (index : INTEGER) : INTEGER is
 --		require
---			valid_index: index >= 1 and index <= count		
+--			valid_index: index >= 1 and index <= count
 --		local
 --			time_pointer : POINTER
 --		do
@@ -161,7 +155,7 @@ feature -- Measurement
 			ecli_c_time_set_minute (time_pointer, a_minute)
 			ecli_c_time_set_second (time_pointer, a_second)
 --			ecli_c_time_set_hour (time_pointer, a_nanosecond)
-			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)			
+			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		ensure
 			hour_set: hour_at (index) = a_hour
 			minute_set: minute_at (index) = a_minute
@@ -190,7 +184,7 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Conversion
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -208,7 +202,7 @@ feature -- Basic operations
 				minute = other.minute and
 				second = other.second
 		end
-			
+
 feature -- Obsolete
 
 	allocate_buffer is
@@ -243,11 +237,11 @@ feature {NONE} -- Implementation
 			end
 			cursor_index := save_index
 		end
-		
+
 invariant
 	invariant_clause: -- Your invariant here
 
-end -- class ECLI_TIME
+end -- class ECLI_ARRAYED_TIME
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>

@@ -46,6 +46,7 @@ feature {NONE} -- Initialization
 			count := capacity
 			allocate_buffer
 			set_all_null
+			create_impl_item
 		end
 		
 feature -- Access
@@ -62,40 +63,45 @@ feature -- Access
 		
 	item : DT_DATE is
 		do
-			!!Result.make (year, month, day)
+			--!!Result.make (year, month, day)
+			impl_item.set_year_month_day (year, month, day)
+			Result := impl_item
 		end
 
 	year : INTEGER is
 			-- year_at (cursor_index)
-		require
-			not_off: not off
 		do
-			Result := year_at (cursor_index)
-		ensure
-			value_at_cursor_index: not is_null implies Result = year_at (cursor_index)
+			if not off then
+				Result := year_at (cursor_index)
+			end
+		ensure then
+			value_at_cursor_index: (not (is_null or else off)) implies Result = year_at (cursor_index)
 			zero_when_null: is_null implies Result = 0
+			zero_when_off: off implies Result = 0
 		end
 
 	month : INTEGER is
 			-- month_at (cursor_index)
-		require
-			not_off: not off
 		do
-			Result := month_at (cursor_index)
-		ensure
-			value_at_cursor_index: not is_null implies Result = month_at (cursor_index)
+			if not off then
+				Result := month_at (cursor_index)
+			end
+		ensure then
+			value_at_cursor_index: (not (is_null or else off)) implies Result = month_at (cursor_index)
 			zero_when_null: is_null implies Result = 0
+			zero_when_off: off implies Result = 0
 		end
 
 	day : INTEGER is
 			-- day_at (cursor_index)
-		require
-			not_off: not off
 		do
-			Result := day_at (cursor_index)
-		ensure
-			value_at_cursor_index: not is_null implies Result = day_at (cursor_index)
+			if not off then
+				Result := day_at (cursor_index)
+			end
+		ensure then
+			value_at_cursor_index: (not (is_null or else off)) implies Result = day_at (cursor_index)
 			zero_when_null: is_null implies Result = 0
+			zero_when_off: off implies Result = 0
 		end
 
 	year_at (index : INTEGER) : INTEGER is
@@ -154,14 +160,7 @@ feature -- Element change
 		end
 
 	set_item_at (other : like item; index : INTEGER) is
-		local
-			date_pointer : POINTER
 		do
---			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
---			ecli_c_date_set_year (date_pointer, other.year)
---			ecli_c_date_set_month (date_pointer, other.month)
---			ecli_c_date_set_day (date_pointer, other.day)			
---			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 			set_date_at (other.year, other.month, other.day, index)
 		end
 
@@ -235,6 +234,11 @@ feature {NONE} -- Implementation
 			end
 		end
 
+	create_impl_item is
+		do
+			create impl_item.make (1,1,1)
+		end
+		
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)
 	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))

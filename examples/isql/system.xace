@@ -21,7 +21,9 @@
 		<option name="finalize" value="false"/>
 	</option>
 
-	<cluster name="isql" location="${ECLI}/examples/isql"/>
+	<cluster name="isql" location="${ECLI}/examples/isql">
+		<cluster name="commands"/>
+	</cluster>
 
 	<mount location="${ECLI}/library.xace"/>
 

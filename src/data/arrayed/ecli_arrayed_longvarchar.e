@@ -41,6 +41,7 @@ feature {NONE} -- Initialization
 			capacity := a_capacity
 			count := capacity
 			set_all_null
+			create impl_item.make (0)
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
 			capacity_set: capacity = a_capacity
@@ -57,13 +58,14 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item_at (index : INTEGER) : STRING is
-		local
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if is_null_at (index) then
 				Result := Void
 			else
-				Result := tools.pointer_to_string (ecli_c_array_value_get_value_at (buffer, index))
+				protect
+				string_copy_from_pointer (impl_item, ecli_c_array_value_get_value_at (buffer, index))
+				Result := impl_item
+				unprotect
 			end
 		end
 
@@ -127,8 +129,11 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
+			create tools
+			tools.protect
 			ecli_c_array_value_set_value_at (buffer, tools.string_to_pointer (value), actual_length, index)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_length, index)			
+			tools.unprotect
 		end
 		
 feature -- Removal

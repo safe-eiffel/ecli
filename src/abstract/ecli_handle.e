@@ -18,9 +18,11 @@ deferred class
 
 inherit
 
-	MEMORY
+	ANY 
+	
+	ECLI_EXTERNAL_TOOLS
 		export
-			{NONE} all
+			{NONE} all;
 		redefine
 			dispose
 		end
@@ -64,7 +66,7 @@ feature {NONE} -- Implementation
 			if is_valid then
 				if not is_ready_for_disposal then
 					exception.raise (disposal_failure_reason)
-					print (disposal_failure_reason)
+--					print (disposal_failure_reason)
 				else
 					release_handle
 				end

@@ -10,56 +10,56 @@ class
 
 inherit
 	ECLI_ARRAYED_DATE
-		rename 
-			make_single as make_single_date, make_default_single as make_default_1_date, 
+		rename
+			make_single as make_single_date, make_default_single as make_default_1_date,
 			set_item as set_date_item
 		undefine
 			c_type_code,
-			column_precision, 
+			column_precision,
 			convertible_to_string,
-			sql_type_code, 
-			decimal_digits, 
-			display_size, 
-			item,  
-			to_time, 
-			to_timestamp, 
-			trace, 
+			sql_type_code,
+			decimal_digits,
+			display_size,
+			item,
+			to_time,
+			to_timestamp,
+			trace,
 			transfer_octet_length, convertible_to_timestamp , convertible_to_date
 		redefine
-			is_equal, out_item_at, set_item_at--, set_item, set_item_at, 
+			is_equal, out_item_at, set_item_at, create_impl_item --, set_item, set_item_at,
 		select
 			make_default_1_date, make_single_date, set_date_item--, set_item_at-- to_date
 		end
 
-	
+
 	ECLI_TIMESTAMP
 		rename
 			make as make_single, make_default as make_default_2, set as set_single_timestamp
 		export
 			{NONE} make_single, set_single_timestamp, make_default_2
 		undefine
-			allocate_buffer, 
-			day, 
+			allocate_buffer,
+			day,
 			is_equal,
-			is_null, set_null, 
+			is_null, set_null,
 			length_indicator_pointer,
-			month, 
-			out, 
-			release_handle, 
+			month,
+			out,
+			release_handle,
 			set_date,
-			set_item, 
-			to_external, 
-			to_string, 
+			set_item,
+			to_external,
+			to_string,
 			year, hour, minute, second, nanosecond, to_date
 --		redefine
 --			trace, hour, minute, second, nanosecond
 		end
-	
+
 creation
 	make
 
 feature {NONE} -- Initialization
-		
+
 feature -- Access
 
 	hour : INTEGER is
@@ -199,20 +199,20 @@ feature -- Measurement
 
 	set_item (other : like item) is
 		do
-			set_at (other.year, other.month, other.day, 
-				other.hour, other.minute, other.second, 
+			set_at (other.year, other.month, other.day,
+				other.hour, other.minute, other.second,
 				other.millisecond * 1_000_000,
 				cursor_index)
 		end
 
 	set_item_at (other : like item; index : INTEGER) is
 		do
-			set_at (other.year, other.month, other.day, 
-				other.hour, other.minute, other.second, 
+			set_at (other.year, other.month, other.day,
+				other.hour, other.minute, other.second,
 				other.millisecond * 1_000_000,
-				index)			
+				index)
 		end
-		
+
 feature -- Status report
 
 feature -- Status setting
@@ -235,7 +235,7 @@ feature -- Conversion
 		do
 			save_index := cursor_index
 			cursor_index := index
-			Result := {ECLI_ARRAYED_DATE}Precursor (index)
+			Result := Precursor {ECLI_ARRAYED_DATE} (index)
 			if not is_null then
 				Result.append_character (' ')
 				Result.append (pad_integer_2 (hour))
@@ -250,7 +250,7 @@ feature -- Conversion
 			end
 			cursor_index := save_index
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -264,15 +264,20 @@ feature -- Basic operations
 
 	is_equal (other : like Current) : BOOLEAN is
 		do
-			
+
 		end
-			
+
 feature -- Obsolete
 
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
-			
+
+	create_impl_item is
+			do
+				create impl_item.make (1,1,1, 0,0,0)
+			end
+		
 invariant
 	invariant_clause: -- Your invariant here
 

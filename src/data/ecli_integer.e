@@ -25,6 +25,7 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (4)
+			create impl_item
 		end
 
 feature -- Access
@@ -34,9 +35,8 @@ feature -- Access
 			if is_null then
 				Result := Void
 			else
-				ecli_c_value_copy_value (buffer, $actual_value)
-				!! Result
-				Result.set_item (actual_value)
+				impl_item.set_item (to_integer)
+				Result := impl_item
 			end
 		end
 
@@ -90,7 +90,7 @@ feature -- Access
 	transfer_octet_length: INTEGER is
 		do
 			Result := 4
-		ensure
+		ensure then
 			integer_32: Result = 4
 		end
 
@@ -117,21 +117,22 @@ feature -- Conversion
 	to_integer : INTEGER is
 		do
 			if not is_null then
-				Result := item.item
+				ecli_c_value_copy_value (buffer, $actual_value)
+				Result := actual_value
 			end
 		end
 
 	to_real : REAL is
 		do
 			if not is_null then
-				Result := item.item
+				Result := to_integer
 			end
 		end
 		
 	to_double : DOUBLE is
 		do
 			if not is_null then
-				Result := item.item
+				Result := to_integer
 			end
 		end
 		

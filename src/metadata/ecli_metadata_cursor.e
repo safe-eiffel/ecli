@@ -21,6 +21,8 @@ inherit
 	ECLI_EXTERNAL_TOOLS
 		export
 			{NONE} all
+		undefine
+			dispose
 		end
 		
 feature -- 
@@ -35,6 +37,7 @@ feature --
 			l_catalog, l_schema, l_name : POINTER
 			catalog_length, schema_length, name_length : INTEGER
 		do
+			protect
 			cursor_make (a_session)
 			if a_name.catalog /= Void then
 				l_catalog := string_to_pointer (a_name.catalog)
@@ -53,6 +56,7 @@ feature --
 			queried_name := a_name.name
 			set_status (
 				do_query_metadata ( l_catalog, catalog_length, l_schema, schema_length, l_name, name_length))
+			unprotect
 			update_state_after_execution
 		ensure
 			executed: is_ok implies is_executed
@@ -71,8 +75,12 @@ feature -- Access
 	
 	item : ANY is
 			-- 
+		require
+			not_off: not off
 		do
 			Result := impl_item
+		ensure
+			definition: Result /= Void
 		end
 	
 feature -- Cursor Movement
@@ -104,8 +112,6 @@ feature {NONE} -- Implementation
 	create_buffers is
 				-- create buffers for cursor
 		deferred
-		ensure
-			cursor_set: cursor /= Void
 		end
 
 	create_item is
@@ -144,4 +150,4 @@ feature {NONE} -- Implementation
 		deferred
 		end
 		
-end -- class ECLI_PROCEDURES_CURSOR
+end -- class ECLI_METADATA_CURSOR

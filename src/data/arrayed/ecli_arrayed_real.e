@@ -23,7 +23,12 @@ inherit
 			release_handle, length_indicator_pointer, to_external, 
 			is_null, set_null, out, item, transfer_octet_length, set_item, to_string
 		end
-		
+
+	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			out
+		end
+	
 creation
 	make
 
@@ -92,43 +97,18 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
---	trace (a_tracer : ECLI_TRACER) is
---		do
---			a_tracer.put_real (Current)
---		end
---		
---	out : STRING is
---		local
---			ext : expanded ECLI_EXTERNAL_TOOLS
---			message_buffer : MESSAGE_BUFFER
---			i : INTEGER
---		do
---			from i := 1 
---			until i > count
---			loop
---				if is_null_at (i) then
---					Result := "NULL"
---				else
---					!!message_buffer.make (50)
---					message_buffer.fill_blank
---					sprintf_real (ext.string_to_pointer(message_buffer), item_at (i).item)
---					Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
---				end
---				i := i + 1
---			end
---		end
-
 	out_item_at (index : INTEGER) : STRING is
 			-- 
 		local
-			message_buffer : MESSAGE_BUFFER
+			message_buffer : STRING
 			ext : ECLI_EXTERNAL_TOOLS
 		do
 			!!ext
-			!!message_buffer.make (50)
-			message_buffer.fill_blank
+			message_buffer.make_filled (' ', 50)
+			ext.protect
 			sprintf_real (ext.string_to_pointer(message_buffer), item_at (index).item)
 			Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
+			ext.unprotect
 		end
 		
 feature {NONE} -- Implementation

@@ -24,6 +24,7 @@ feature {NONE} -- Initialization
 			n > 0 and n <= max_capacity
 		do
 			buffer := ecli_c_alloc_value (n+1)
+			create impl_item.make (0)
 		ensure
 			capacity: capacity = n
 		end
@@ -31,13 +32,14 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : STRING is
-		local
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if is_null then
 				Result := Void
 			else
-				Result := tools.pointer_to_string (ecli_c_value_get_value (buffer))
+				protect
+				string_copy_from_pointer (impl_item,ecli_c_value_get_value (buffer))
+				Result := impl_item
+				unprotect
 			end
 		end
 
@@ -109,7 +111,6 @@ feature -- Element change
 			-- set item to 'value', truncating if necessary
 		local
 			actual_length, transfer_length : INTEGER
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if value.count > capacity then
 				actual_length := capacity
@@ -118,8 +119,10 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
-			ecli_c_value_set_value (buffer, tools.string_to_pointer (value), actual_length)
+			protect
+			ecli_c_value_set_value (buffer, string_to_pointer (value), actual_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
+			unprotect
 		end
 			
 feature -- Conversion
@@ -127,7 +130,7 @@ feature -- Conversion
 	to_string : STRING is
 			-- Conversion to STRING value
 		do
-			Result := item
+			Result := clone (item)
 		end
 
 	to_character : CHARACTER is

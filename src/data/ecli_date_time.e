@@ -1,5 +1,8 @@
 indexing
-	description: "Date and time objects - SQL: DATETIME"
+	description: 
+	
+		"Date and time objects - SQL: DATETIME"
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

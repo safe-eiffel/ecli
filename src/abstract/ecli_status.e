@@ -29,7 +29,11 @@ inherit
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
 		end
-	
+
+	ECLI_EXTERNAL_TOOLS
+		export {NONE} all
+		end
+		
 feature -- Access
 
 	status : INTEGER
@@ -137,7 +141,6 @@ feature {NONE} -- Implementation
 			-- get error diganostics for latest CLI command
 		local
 			count : INTEGER
-			tools : ECLI_EXTERNAL_TOOLS
 			retcode : INTEGER
 		do
 			if need_diagnostics then
@@ -147,23 +150,25 @@ feature {NONE} -- Implementation
 				from 
 					count := 1
 					retcode := sql_success
+					protect
 				until 
 					retcode = sql_no_data or retcode = sql_invalid_handle or retcode = sql_error
 				loop
 					retcode := get_error_diagnostic (count, 
-							tools.string_to_pointer (impl_cli_state),
+							string_to_pointer (impl_cli_state),
 							$impl_native_code, 
-							tools.string_to_pointer (impl_error_buffer),
+							string_to_pointer (impl_error_buffer),
 							255,
 							$impl_buffer_length_indicator)
 					if retcode = sql_success or else retcode = sql_success_with_info then	
 						impl_error_message.append (
-								tools.pointer_to_string (
-									tools.string_to_pointer (impl_error_buffer)))
+								pointer_to_string (
+									string_to_pointer (impl_error_buffer)))
 						impl_error_message.append ("%N")
 					end	
 					count := count + 1
 				end
+				unprotect
 				need_diagnostics := False
 			end
 		end

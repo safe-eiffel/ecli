@@ -17,6 +17,8 @@ inherit
 	ECLI_STATUS
 		export
 			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} set_status
+		undefine
+			dispose
 		end
 
 	ECLI_HANDLE
@@ -512,7 +514,7 @@ feature -- Basic operations
 			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
 			parameters_set: parameters_count > 0 implies bound_parameters
 		local
-			tools : ECLI_EXTERNAL_TOOLS
+			tools : expanded ECLI_EXTERNAL_TOOLS
 		do
 			if session.is_tracing then
 				trace (session.tracer)
@@ -523,7 +525,9 @@ feature -- Basic operations
 				if is_executed and then has_results and then not after then
 					close_cursor
 				end
+				tools.protect
 				set_status (ecli_c_execute_direct (handle, tools.string_to_pointer (impl_sql)))
+				tools.unprotect
 			end
 			if is_ok then
 --				get_result_columns_count
@@ -641,12 +645,14 @@ feature -- Basic operations
 		require
 			valid_statement: is_valid
 		local
-			tools : ECLI_EXTERNAL_TOOLS
+			tools : expanded ECLI_EXTERNAL_TOOLS
 		do
 			if is_executed and then (has_results and  not after) then
 				close_cursor
 			end
+			tools.protect
 			set_status (ecli_c_prepare (handle, tools.string_to_pointer (impl_sql)))
+			tools.unprotect
 			if is_ok then
 				is_prepared := True
 				set_prepared_execution_mode

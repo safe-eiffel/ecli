@@ -14,12 +14,14 @@ inherit
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
 		end
-		
+	
+	KL_SHARED_OPERATING_SYSTEM
+	
 creation
 
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make is
 			-- isql
@@ -29,298 +31,96 @@ feature -- Initialization
 			create_commands
 			create std
 			output_file := std.output
-			create vars.make (10)
-			create current_context.make (output_file, vars, commands) 
-			create_default_system_variables
+			create current_context.make (output_file, commands, sql_command) 
+			create_default_system_variables (current_context)
 			print_banner
 			-- session opening
 			parse_arguments
 			if error_message /= Void then
 				print_usage
 			else
-				-- check for mandatory parameters
-				if user = Void then
-					set_error ("Missing user.  Specify parameter","-user")
-					print_usage
-				elseif password = Void then
-					set_error ("Missing password. Specify parameter","-pwd")
-					print_usage
-				elseif dsn = Void then
-					set_error ("Missign data source name. Specify parameter", "-dsn")
-					print_usage
-				else
-					if sql /= Void then
-						create_input_file (sql)
-						!!command.make_file (input_file)
-					else
-						!!command.make_interactive
-					end
-					--	
+				if echo_output then
+					current_context.enable_echo_output
+				end	
+				if dsn /= Void and then user /= Void and then password /= Void then
 					!! session.make (dsn, user, password)
 					session.connect
 					current_context.set_session (session)
 					if session.is_connected then
-						-- definition of statement on session
-						!! statement.make (session)
 						--| create default values for system variables
 						current_context.filter.begin_error
 						current_context.filter.put_error ("Connected %N")
 						current_context.filter.end_error
-						do_session	
-						-- closing statement
-						statement.close
-						-- disconnecting and closing session
-						session.disconnect
 					else
 						print_error (session)
 					end
-					session.close
+				end
+				if session = Void or else session /= Void and then not session.is_connected then
+					current_context.filter.begin_error
+					current_context.filter.put_error ("WARNING : NO session connected !%N%
+						%Commands usage is restricted. Type HELP more information.%N%
+						%Please connect first using 'CONNECT' command.%N")
+					current_context.filter.end_error
+				end
+				execute_command.execute ("execute", current_context)	
+				-- disconnecting and closing session
+				if current_context.session /= Void then
+					if current_context.session.is_connected then
+						current_context.session.disconnect
+					end
+					current_context.session.close
 				end
 			end;
 		end
 
-	create_default_system_variables is
-			-- create default system variables and their value
-		do
-			vars.put ("", current_context.var_heading_begin)
-			vars.put ("%N", current_context.var_heading_end)
-			vars.put (",", current_context.var_heading_separator)
-			vars.put ("", current_context.var_row_begin)
-			vars.put (",", current_context.var_column_separator)
-			vars.put ("%N", current_context.var_row_end)
-		end		
-	test_match is
-			-- 
-		local
-			t : KL_WORD_INPUT_STREAM
-		do
-			create t.make ("   %"tabulations%"  ", " %T%N%R")
-			t.read_quoted_word
-			create t.make ("%T%R'tabulations'", " %T%N%R")
-			t.read_quoted_word
-		end
-		
-
 feature -- Access
 
 	dsn : STRING
+				-- Data source name
+				
 	user: STRING
+				-- User name
+				
 	password : STRING
-	sql : STRING
-
-	vars: DS_HASH_TABLE[STRING, STRING]
+				-- Password
+				
+	sql_file_name : STRING
+				-- clisql script filename
 	
 	error_message : STRING
+				-- current error message
 	
 	session : ECLI_SESSION
-	
-	statement : ECLI_STATEMENT
-		
-	input_file : KI_TEXT_INPUT_STREAM -- PLAIN_TEXT_FILE
+				-- database session
 
 	output_file : KI_TEXT_OUTPUT_STREAM
+				-- output file of the application
 	
 	current_context : ISQL_CONTEXT
+				-- current execution context
 	
 feature -- Status Report
 
-	is_session_done : BOOLEAN is
-			-- 
-		do
-			Result := current_context.must_quit or else command.end_of_input
-		end
-
 	echo_output : BOOLEAN
-
-		
-	command : 	ISQL_COMMAND_STREAM
-
-feature -- Status setting
 
 feature -- Element change
 
-feature -- Basic Operations
-
-	do_session is
+	create_default_system_variables (a_context : ISQL_CONTEXT) is
+			-- create default system variables and their value
 		do
-			from
-				read_command
-			until
-				is_session_done
-			loop
-				if not command.is_interactive and echo_output then
-					current_context.output_file.put_string (command.text)
-					current_context.output_file.put_string ("%N")
-				end
-				execute_command (command.text)
-				if not current_context.must_quit then
-					read_command
-				end
-			end
-		end
-
-	execute_command (a_text : STRING) is
-			-- 
-		do
-			from
-				commands.start
-			until
-				commands.off or else commands.item_for_iteration.matches (a_text)
-			loop
-				commands.forth
-			end
-			if not commands.off then
-				commands.item_for_iteration.execute (a_text, current_context)
+			a_context.set_variable ("", a_context.var_heading_begin)
+			a_context.set_variable ("%N", a_context.var_heading_end)
+			a_context.set_variable (",", a_context.var_heading_separator)
+			a_context.set_variable ("", a_context.var_row_begin)
+			a_context.set_variable (",", a_context.var_column_separator)
+			a_context.set_variable ("%N", a_context.var_row_end)
+			if Operating_system.is_windows or else Operating_system.Is_dotnet then
+				a_context.set_variable ("notepad", a_context.Var_editor)
 			else
-				current_context.filter.begin_error
-				current_context.filter.put_error ("Unknown command : " + command.text)
-				current_context.filter.end_error
-			end			
-		end
-		
-	read_command is
-			-- read command and prompt if necessary
-		do
-			if command.is_interactive then
-				print ("ISQL> ")
+				a_context.set_variable ("vi", a_context.Var_editor)
 			end
-			command.read
-		end
-		
-	create_input_file (file_name : STRING) is
-			-- create and open file `file_name' for reading
-		require
-			file_name_exists : file_name /= Void
-		local
-			rescued : BOOLEAN
-			file : KL_TEXT_INPUT_FILE
-		do
-			if not rescued then
-				--!!input_file.make_open_read (file_name)
-				create file.make (file_name)
-				file.open_read
-				input_file := file
-				if not input_file.is_open_read then
-					io.put_string ("Error : cannot open '")
-					io.put_string (file_name)
-					io.put_string ("' for reading.%N")
-					input_file := Void
-				end
-			end
-		ensure
-			input_file /= Void implies input_file.is_open_read
-		rescue
-			rescued := True
-			input_file := Void
-			retry
-		end
-	
---	do_execute_sql (s : STRING) is
---			-- 
---		do
---			statement.set_sql (s)
---			if statement.has_parameters then
---				if vars /= Void then
---					set_parameters (statement)
---					statement.bind_parameters
---				end
---			end
---			statement.execute
---			if not statement.is_ok or else statement.has_information_message then
---				print_error (statement)
---			else
---				io.put_string ("OK%N")
---			end
---		end
---
---	do_execute_query (s : STRING) is
---			-- execute query 's' -- must be a SELECT or a procedure call that returns a result-set
---		local
---			cursor : ECLI_ROWSET_CURSOR
---			after_first : BOOLEAN
---		do
---			!!cursor.make (session, s, 20)
---			if cursor.is_ok then
---				if cursor.has_parameters then
---					if vars /= Void then
---						set_parameters (cursor)
---						cursor.bind_parameters
---					end
---				end
---				from 
---					cursor.start
---					if cursor.has_information_message then
---						print_error (cursor)                                            
---					end
---				until 
---					not cursor.is_ok or else cursor.off
---				loop
---					if not after_first then
---						show_column_names (cursor)
---						after_first := True
---					end	
---					show_one_row (cursor)
---					cursor.forth
---				end
---				if not cursor.is_ok then
---					print_error (cursor)
---				else
---					io.put_string ("OK%N")				
---				end				
---			else
---				print_error (cursor)                                          
---			end
---			cursor.close
---		end
---		
+		end		
 
---	do_tables is
---			-- show tables of current datasource
---		local
---			index : INTEGER
---			table : ECLI_TABLE
---		do
---			from index := 1
---				print ("CATALOG%T SCHEMA%T TABLE_NAME%T TYPE%T DESCRIPTION%N")
---			until
---				not repository.is_ok or else index > repository.tables.upper
---			loop
---				table := repository.tables.item (index)
---				print (table.catalog) print ("%T")
---				print (table.schema) print ("%T")
---				print (table.name) print ("%T")
---				print (table.type) print ("%T")
---				print (table.description) print ("%N")
---				index := index + 1
---			end
---			if not repository.is_ok then
---				print ("Error getting tables metadata : '")
---				print (repository.diagnostic_message)
---				print ("'%N")
---			end
---		end
---		
---	do_sources is
---			-- show data sources on this computer
---		local
---			cursor : ECLI_DATA_SOURCES_CURSOR
---		do
---			debug
---				!!cursor.make_all
---			end
---			from
---				cursor.start
---				print ("SOURCE_NAME%T DESCRIPTION%N")
---			until
---				cursor.off
---			loop
---				print (cursor.item.name) print ("%T")
---				print (cursor.item.description) print ("%N")
---				cursor.forth
---			end
---		end		
-		
-		
 feature {NONE} -- Implementation
 
 	parse_arguments is
@@ -343,8 +143,8 @@ feature {NONE} -- Implementation
 							user := Arguments.argument (index + 1)
 						elseif current_argument.is_equal ("-pwd") then
 							password := Arguments.argument (index + 1)
-						elseif current_argument.is_equal ("-sql") then
-							sql := Arguments.argument (index + 1)
+						elseif current_argument.is_equal ("-sql_file_name") then
+							sql_file_name := Arguments.argument (index + 1)
 						elseif current_argument.is_equal ("-set") then
 							do_assign (Arguments.argument (index + 1))
 						end
@@ -363,18 +163,19 @@ feature {NONE} -- Implementation
 		end		
 	
 	set_error (message, value : STRING) is
+			-- set error_message to "<message> '<value>' "
 		do
-						!!error_message.make (0)
-						error_message.append (message)
-						error_message.append (" '")
-						error_message.append (value)
-						error_message.append ("'")		
+			!!error_message.make (0)
+			error_message.append (message)
+			error_message.append (" '")
+			error_message.append (value)
+			error_message.append ("'")		
 		ensure
 			error_message /= Void
 		end
-		
 
 	print_banner is
+			-- print banner
 		do
 			current_context.output_file.put_string (
 				"CLISQL - Command Line Interactive SQL for ODBC datasources.%N%N%
@@ -388,144 +189,83 @@ feature {NONE} -- Implementation
 		end
 		
 	print_usage is
+			-- print command usage
 		do
 			if error_message /= Void then
 				current_context.output_file.put_string (error_message)
 				current_context.output_file.put_new_line
 			end
-			execute_command ("usage")
+			usage_command.execute ("usage", current_context)
 		end
 
 		
-	print_error (stmt : ECLI_STATUS) is
+	print_error (status : ECLI_STATUS) is
+			-- print error message relative to `status'
 		do
 			current_context.filter.begin_error
-			current_context.filter.put_error (stmt.diagnostic_message)
+			current_context.filter.put_error (status.diagnostic_message)
 			current_context.filter.end_error
 		end
---
---	show_column_names (cursor : ECLI_ROW_CURSOR) is
---		local
---			i, width : INTEGER
---			s : STRING
---		do
---			from
---				i := 1
---			until
---				i > cursor.upper
---			loop
---				width := (cursor @i i).column_precision
---				!! s.make (width)
---				s.append (cursor.column_name (i))
---				-- pad with blanks
---				if width > s.count then
---					pad (s, width)
---				else
---					s.head (width)
---				end
---				io.put_string (s)
---				if i <= cursor.upper then
---					io.put_character ('|')
---				end
---				i := i + 1
---			end
---			io.put_character ('%N')
---		end
---
---
---	show_one_row (cursor : ECLI_ROW_CURSOR) is
---		require
---			cursor /= Void and then not cursor.off
---		local
---			index, precision : INTEGER
---		do
---			from
---				index := cursor.lower
---			until
---				index > cursor.upper
---			loop
---				formatting_buffer.clear_content
---				if (cursor @i index).is_null then
---					formatting_buffer.append ("NULL")
---				else
---					formatting_buffer.append ((cursor @i index).to_string)
---				end
---				precision := (cursor @i (index)).column_precision				
---				if precision > formatting_buffer.count then
---					pad (formatting_buffer, precision)
---				else
---					formatting_buffer.head (precision)
---				end
---				io.put_string (formatting_buffer)
---				io.put_character ('|')
---				index := index + 1
---			end
---			--
---			io.put_character ('%N')
---		end
---					
---	formatting_buffer : MESSAGE_BUFFER is
---		once
---			!!Result.make (1000)
---		end
-
---	repository : ECLI_REPOSITORY is
---			-- current repository
---		once 
---			!!Result.make(session)
---		end
 
 	create_commands is
-			-- create command set
+			-- create command_stream set
 		local
 			l_command : ISQL_COMMAND
 		do
+			create {ISQL_CMD_SQL}sql_command
+			--| the SQL command is not part of the list
 			create commands.make
-			create {ISQL_CMD_COMMENT}l_command
-			commands.put_last (l_command)
+			create {ISQL_CMD_BEGIN}l_command
+			commands.put_last (l_command)			
 			create {ISQL_CMD_COLUMNS}l_command
 			commands.put_last (l_command)
-			create {ISQL_CMD_PRIMARY_KEYS}l_command
+--			create {ISQL_CMD_COMMENT}l_command
+--			commands.put_last (l_command)
+			create {ISQL_CMD_CONNECT}l_command
 			commands.put_last (l_command)
-			create {ISQL_CMD_FOREIGN_KEYS}l_command
+			create {ISQL_CMD_COMMIT}l_command
+			commands.put_last (l_command)
+			create {ISQL_CMD_DISCONNECT}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_EDIT}l_command
 			commands.put_last (l_command)
-			create {ISQL_CMD_EXECUTE}l_command
+			create {ISQL_CMD_EXECUTE} execute_command
+			commands.put_last (execute_command)
+			create {ISQL_CMD_FOREIGN_KEYS}l_command
 			commands.put_last (l_command)
-			create set_command
-			commands.put_last (set_command)
-			create {ISQL_CMD_COMMIT}l_command
-			commands.put_last (l_command)
+			create {ISQL_CMD_HELP} l_command
+			commands.put_last (l_command)			
+			create {ISQL_CMD_HISTORY} l_command
+			commands.put_last (l_command)			
 			create {ISQL_CMD_OUTPUT} l_command
+			commands.put_last (l_command)
+			create {ISQL_CMD_PRIMARY_KEYS}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_PROCEDURES}l_command
 			commands.put_last (l_command)
+			create {ISQL_CMD_QUIT}l_command
+			commands.put_last (l_command)			
+			create {ISQL_CMD_RECALL}l_command
+			commands.put_last (l_command)
+			create {ISQL_CMD_ROLLBACK}l_command
+			commands.put_last (l_command)
+			create set_command
+			commands.put_last (set_command)
 			create {ISQL_CMD_SOURCES}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_TABLES}l_command
 			commands.put_last (l_command)
 			create {ISQL_CMD_TYPES}l_command
 			commands.put_last (l_command)
-			create {ISQL_CMD_ROLLBACK}l_command
-			commands.put_last (l_command)
-			create {ISQL_CMD_BEGIN}l_command
-			commands.put_last (l_command)			
-			create {ISQL_CMD_QUIT}l_command
-			commands.put_last (l_command)			
-			create {ISQL_CMD_HELP} help_command
-			commands.put_last (help_command)			
-			create {ISQL_CMD_USAGE} l_command
-			commands.put_last (l_command) 
-			create {ISQL_CMD_SQL}l_command
-			commands.put_last (l_command)
+			create {ISQL_CMD_USAGE} usage_command
+			commands.put_last (usage_command) 
 		end
 		
 	commands : DS_LINKED_LIST [ISQL_COMMAND]
+				-- list of supported commands
 
-	help_command : ISQL_CMD_HELP
-	
 	do_assign (text : STRING) is
+			-- execute the command 'set <variable>=<value>'
 		require
 			set_command_not_void: set_command /= Void
 		do
@@ -533,6 +273,14 @@ feature {NONE} -- Implementation
 		end
 		
 	set_command : ISQL_CMD_SET
+			-- shortcut to the 'set' command
+
+	execute_command : ISQL_CMD_EXECUTE
+			-- shortcut to the 'execute' command
+	
+	sql_command : ISQL_CMD_SQL
+	
+	usage_command : ISQL_CMD_USAGE
 	
 end -- class ISQL
 --

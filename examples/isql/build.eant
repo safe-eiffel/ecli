@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<project name="clisql" default="help">
+
+	<description>
+		system: "Command Line Interactive SQL for ODBC datasources."
+		copyright: "Copyright (c) 2002, Paul G. Crismer"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="clisql"/>
+		<set name="system_dir" value="${ECLI}/examples/isql"/>
+	</target>
+
+</project>

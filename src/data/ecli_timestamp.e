@@ -39,6 +39,7 @@ feature {NONE} -- Initialization
 		do
 			allocate_buffer
 			set (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond)
+			create impl_item.make_precise (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond // 1_000_000)
 		ensure
 			not_null: not is_null
 			year_set: year = a_year
@@ -53,8 +54,9 @@ feature {NONE} -- Initialization
 	make_default is
 			-- make default time_stamp value
 		do
-			allocate_buffer
-			set_date (1,1,1)
+			--allocate_buffer
+			--set_date (1,1,1)
+			make (1, 1, 1, 0,0,0,0)
 		ensure then
 			hour_set: hour = 0
 			minute_set: minute = 0
@@ -66,8 +68,10 @@ feature -- Access
 
 	item : DT_DATE_TIME is
 		do
-			!!Result.make_precise (year,month,day,hour, minute, second,nanosecond // 1_000_000)
-		end
+			impl_item.set_year_month_day (year,month,day)
+			impl_item.set_precise_hour_minute_second (hour, minute, second,nanosecond // 1_000_000)
+			Result := impl_item
+		end 
 
 	hour : INTEGER is
 		do
@@ -204,18 +208,6 @@ feature -- Status report
 			Result := True
 		end
 		
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	to_string : STRING is
@@ -243,13 +235,9 @@ feature -- Conversion
 			
 	to_timestamp : DT_DATE_TIME is
 		do
-			Result := item
+			Result := clone (item)
 		end
 		
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
@@ -266,8 +254,6 @@ feature -- Basic operations
 				nanosecond = other.nanosecond
 		end
 			
-feature -- Obsolete
-
 feature -- Inapplicable
 
 	transfer_octet_length : INTEGER is
@@ -283,9 +269,6 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 			
-invariant
-	invariant_clause: -- Your invariant here
-
 end -- class ECLI_TIMESTAMP
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>

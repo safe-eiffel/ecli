@@ -4,7 +4,7 @@
 
 	<description>
 		system: "ECLI test for rowset operations."
-		copyright: "Copyright (c) 2002, Paul G. Crismer"
+		copyright: "Copyright (c) 2002-2003, Paul G. Crismer"
 		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
 		date: "$Date$"
 		revision: "$Revision$"

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<project name="qa_example" default="help">
+
+	<description>
+		system: "qa_example test application."
+		copyright: "Copyright (c) 2002-2003, Paul G. Crismer"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="qa_example"/>
+		<set name="system_dir" value="${ECLI}/examples/${system}"/>
+	</target>
+
+</project>

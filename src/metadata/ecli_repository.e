@@ -50,7 +50,7 @@ feature -- Access
 					until
 						cursor.off
 					loop
-						!!item.make (cursor, Current)
+						!!item.make (cursor)--, Current)
 						tables_.force (item, tables_.count+1)
 						cursor.forth
 					end
@@ -98,7 +98,7 @@ feature -- Access
 		do
 			if types_ = Void then
 				!!types_.make (10)
-				!!cursor.open_all_types (session)
+				!!cursor.make_all_types (session)
 				-- get all types information, included unsupported ones
 				fill_from_types_cursor (cursor)
 				cursor.close				

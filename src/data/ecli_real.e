@@ -17,6 +17,18 @@ inherit
 			to_double, convertible_to_double
 		end
 
+	ECLI_EXTERNAL_TOOLS
+		export
+			{NONE} all
+		undefine
+			dispose, out
+		end
+
+	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			out
+		end
+		
 creation
 	make
 
@@ -25,6 +37,7 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
+			create impl_item
 		end
 		
 feature -- Access
@@ -34,9 +47,8 @@ feature -- Access
 			if is_null then
 				Result := Void
 			else
-				ecli_c_value_copy_value (buffer, $actual_value)
-				!! Result
-				Result.set_item (actual_value)
+				impl_item.set_item (to_real)
+				Result := impl_item
 			end
 		end
 
@@ -115,21 +127,22 @@ feature -- Conversion
 	to_real : REAL is
 		do
 			if not is_null then
-				Result := item.item
+				ecli_c_value_copy_value (buffer, $actual_value)
+				Result := actual_value
 			end
 		end
 	
 	to_double : DOUBLE is
 		do
 			if not is_null then
-				Result := item.item
+				Result := to_real
 			end
 		end
 		
 	to_integer : INTEGER is
 		do
 			if not is_null then
-				Result := item.truncated_to_integer
+				Result := to_real.truncated_to_integer
 			end
 		end
 		
@@ -146,16 +159,16 @@ feature -- Basic operations
 
 	out : STRING is
 		local
-			ext : expanded ECLI_EXTERNAL_TOOLS
-			message_buffer : MESSAGE_BUFFER
+			message_buffer : STRING
 		do
 			if is_null then
 				Result := "NULL"
 			else
-				!!message_buffer.make (50)
-				message_buffer.fill_blank
-				sprintf_real (ext.string_to_pointer(message_buffer), item.item)
-				Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
+				protect
+				message_buffer := STRING_.make_filled (' ', 50)
+				sprintf_real (string_to_pointer(message_buffer), item.item)
+				Result := pointer_to_string(string_to_pointer (message_buffer))
+				unprotect
 			end
 		end
 

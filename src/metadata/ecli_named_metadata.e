@@ -131,7 +131,4 @@ feature {NONE} -- Implementation
 			end
 		end
 
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_NAMED_METADATA

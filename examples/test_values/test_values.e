@@ -64,9 +64,11 @@ feature
 			-- 
 		local
 			v : ECLI_VARCHAR
+			b : BOOLEAN
 		do
 			create v.make (10)
 			v.set_item (string_foo)
+			b := v.item.is_equal (string_foo)
 		end
 
 	test_longvarchar is
@@ -173,9 +175,11 @@ feature
 			-- 
 		local
 			v : ECLI_ARRAYED_CHAR
+			b : BOOLEAN
 		do
 			create v.make (10, 3)
 			v.set_item_at (string_foo, 1)
+			b := v.item_at (1).is_equal (string_foo)
 			v.set_item_at (string_foo, 2)
 			v.set_item_at (string_foo, 3)
 			v.set_null_at (2)

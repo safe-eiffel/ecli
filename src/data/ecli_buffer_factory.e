@@ -1,6 +1,9 @@
 indexing
-	description: "Objects that create buffers for DB to application information exchange."
-	author: ""
+	description: 
+		
+		"Objects that create buffers for DB to application information exchange."
+
+	author: "Paul G. Crismer."
 	date: "$Date$"
 	revision: "$Revision$"
 

@@ -95,7 +95,7 @@ feature -- Status report
 			else
 				Result := is_null_at (cursor_index)
 			end
-		ensure
+		ensure then
 			null_when_off: off implies Result
 			definition: (not off) implies (Result = is_null_at (cursor_index))
 		end

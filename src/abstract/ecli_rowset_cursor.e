@@ -60,7 +60,7 @@ feature -- Initialization
 			definition_set: definition = a_definition
 			definition_is_sql: equal (definition, sql)
 			prepared_if_ok: is_ok implies is_prepared
---			definition_is_a_query:  is_ok implies has_results
+			definition_is_a_query:  is_ok implies has_results
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			row_count_set: row_capacity = a_row_count
 		end

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<system name="test_gc">
+	<description>
+		system:      "ECLI test for garbage collection."
+
+		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
+		copyright:   "Copyright (c) 2001-2003, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date$"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="TEST_GC" creation="make"/>
+
+
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+
+	<cluster name="test_rowset" location="${ECLI}/examples/test_gc"/>
+
+	<mount location="${ECLI}/library.xace"/>
+
+	<mount location="${GOBO}/library/time/library.xace"/>
+	<mount location="${GOBO}/library/kernel/library.xace"/>
+	<mount location="${GOBO}/library/structure/library.xace"/>
+	<mount location="${GOBO}/library/utility/library.xace"/>
+	<mount location="${GOBO}/library/pattern/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+</system>

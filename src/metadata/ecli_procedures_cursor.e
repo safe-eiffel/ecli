@@ -1,10 +1,10 @@
 indexing
-	description: 
-	
+	description:
+
 		"Objects that search the database repository for procedures. %
 		%Search criterias are (1) catalog name, (2) schema name, (3) procedure name.%
 		%A Void criteria is considered as a wildcard."
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -24,11 +24,13 @@ inherit
 	ECLI_EXTERNAL_TOOLS
 		export
 			{NONE} all
+		undefine
+			dispose
 		end
-		
-create
+
+creation
 	make_all_procedures, make -- , make_by_type
-	
+
 feature {NONE} -- Initialization
 
 	make_all_procedures (a_session : ECLI_SESSION) is
@@ -44,15 +46,15 @@ feature {NONE} -- Initialization
 			executed: is_ok implies is_executed
 		end
 
-	
+
 feature -- Access
 
 	item : ECLI_PROCEDURE is
-			-- 
+			--
 		do
 			Result := impl_item
 		end
-	
+
 feature -- Cursor Movement
 
 feature {ECLI_PROCEDURE} -- Access
@@ -61,9 +63,9 @@ feature {ECLI_PROCEDURE} -- Access
 			buffer_schema_name,
 			buffer_procedure_name,
 			buffer_description, buffer_na1, buffer_na2, buffer_na3 : ECLI_VARCHAR
-	
+
 		buffer_procedure_type : ECLI_INTEGER
-			
+
 feature {NONE} -- Implementation
 
 		create_buffers is
@@ -77,7 +79,7 @@ feature {NONE} -- Implementation
 			create buffer_na2.make (10)
 			create buffer_na3.make (10)
 			create buffer_procedure_type.make
-			
+
 			set_cursor (<<
 					buffer_catalog_name,
 					buffer_schema_name,
@@ -91,7 +93,7 @@ feature {NONE} -- Implementation
 		end
 
 	create_item is
-			-- 
+			--
 		do
 			if not off then
 				!!impl_item.make (Current)
@@ -99,18 +101,18 @@ feature {NONE} -- Implementation
 				impl_item := Void
 			end
 		end
-		
+
 	impl_item : ECLI_PROCEDURE
-	
+
 	definition : STRING is once Result := "SQLProcedures" end
 
-	do_query_metadata (l_catalog : POINTER; catalog_length : INTEGER; 
-		l_schema : POINTER; schema_length : INTEGER; 
+	do_query_metadata (l_catalog : POINTER; catalog_length : INTEGER;
+		l_schema : POINTER; schema_length : INTEGER;
 		l_name : POINTER; name_length : INTEGER) : INTEGER is
-			-- 
+			--
 		do
-			Result := ecli_c_get_procedures ( handle, 
+			Result := ecli_c_get_procedures ( handle,
 				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
 		end
-		
+
 end -- class ECLI_PROCEDURES_CURSOR

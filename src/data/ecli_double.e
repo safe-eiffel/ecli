@@ -1,5 +1,8 @@
 indexing
-	description: "CLI SQL DOUBLE value"
+	description: 
+	
+		"CLI SQL DOUBLE value"
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -16,6 +19,18 @@ inherit
 			to_real, convertible_to_real
 		end
 
+	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			out
+		end
+	
+	ECLI_EXTERNAL_TOOLS
+		export
+			{NONE} all
+		undefine
+			dispose, out
+		end
+	
 creation
 	make
 
@@ -24,6 +39,7 @@ feature -- Initialization
 	make is
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
+			create impl_item
 		end
 		
 feature -- Access
@@ -33,9 +49,8 @@ feature -- Access
 			if is_null then
 				Result := Void
 			else
-				ecli_c_value_copy_value (buffer, $actual_value)
-				!! Result
-				Result.set_item (actual_value)
+				impl_item.set_item (to_double)
+				Result := impl_item
 			end
 		end
 
@@ -114,21 +129,22 @@ feature -- Conversion
 	to_double : DOUBLE is
 		do
 			if not is_null then
-				Result := item.item
+				ecli_c_value_copy_value (buffer, $actual_value)
+				Result := actual_value
 			end
 		end
 
 	to_integer : INTEGER is
 		do
 			if not is_null then
-				Result := item.truncated_to_integer
+				Result := to_double.truncated_to_integer
 			end
 		end
 
 	to_real : REAL is
 		do
 			if not is_null then
-				Result := item.truncated_to_real
+				Result := to_double.truncated_to_real
 			end
 		end
 		
@@ -145,16 +161,16 @@ feature -- Basic operations
 
 	out : STRING is
 		local
-			ext : expanded ECLI_EXTERNAL_TOOLS
-			message_buffer : MESSAGE_BUFFER
+			message_buffer : STRING
 		do
 			if is_null then
 				Result := "NULL"
 			else
-				!!message_buffer.make (50)
-				message_buffer.fill_blank
-				sprintf_double (ext.string_to_pointer(message_buffer), item.item)
-				Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
+				message_buffer := STRING_.make_filled (' ', 50)
+				protect
+				sprintf_double (string_to_pointer(message_buffer), item.item)
+				Result := pointer_to_string(string_to_pointer (message_buffer))
+				unprotect
 			end
 		end
 
@@ -167,9 +183,6 @@ feature {NONE} -- Implementation
 		external "C" 
 		alias "ecli_c_sprintf_double"
 		end
-		
-invariant
-	invariant_clause: -- Your invariant here
 
 end -- class ECLI_DOUBLE
 --

@@ -33,6 +33,7 @@ feature {NONE} -- Initialization
 		do
 			allocate_buffer
 			set (a_hour, a_minute, a_second) --, a_nanosecond)
+			create impl_item.make (a_hour,a_minute,a_second)
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
@@ -42,8 +43,9 @@ feature {NONE} -- Initialization
 
 	make_default is
 		do
-			allocate_buffer
-			set (0, 0, 0)
+--			allocate_buffer
+--			set (0, 0, 0)
+			make (0,0,0)
 		ensure
 			hour_set: hour = 0
 			minute_set: minute = 0
@@ -55,7 +57,8 @@ feature -- Access
 
 	item : DT_TIME is
 		do
-			!!Result.make_precise (hour, minute, second,0)
+			impl_item.set_hour_minute_second (hour,minute,second)
+			Result := impl_item
 		ensure then
 			no_millisecond: Result.millisecond = 0
 		end
@@ -81,40 +84,9 @@ feature -- Access
 			end
 		end
 
---	nanosecond : INTEGER is
---		do
---			if not is_null then
---				Result := ecli_c_timestamp_get_fraction (to_external)
---			end
---		end
-
 feature -- Measurement
 
 
-	set (a_hour, a_minute, a_second : INTEGER) is
-		require
-			hour: a_hour >= 0 and a_hour <= 23
-			minute: a_minute >= 0 and a_minute <= 59
-			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
---			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
-
-		do
-			ecli_c_time_set_hour (to_external, a_hour)
-			ecli_c_time_set_minute (to_external, a_minute)
-			ecli_c_time_set_second (to_external, a_second)
---			ecli_c_timestamp_set_fraction (to_external, a_nanosecond)
-			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
-		ensure
-			hour_set: hour = a_hour
-			minute_set: minute = a_minute
-			second_set: second = a_second
---			nanosecond_set: nanosecond = a_nanosecond
-		end
-
-	set_item (other : like item) is
-		do
-			set (other.hour, other.minute, other.second)
-		end
 
 feature -- Status report
 
@@ -153,6 +125,32 @@ feature -- Status setting
 feature -- Cursor movement
 
 feature -- Element change
+
+	set (a_hour, a_minute, a_second : INTEGER) is
+			-- set from `a_hour', `a_minute', `a_second'
+		require
+			hour: a_hour >= 0 and a_hour <= 23
+			minute: a_minute >= 0 and a_minute <= 59
+			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
+--			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
+
+		do
+			ecli_c_time_set_hour (to_external, a_hour)
+			ecli_c_time_set_minute (to_external, a_minute)
+			ecli_c_time_set_second (to_external, a_second)
+--			ecli_c_timestamp_set_fraction (to_external, a_nanosecond)
+			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
+		ensure
+			hour_set: hour = a_hour
+			minute_set: minute = a_minute
+			second_set: second = a_second
+--			nanosecond_set: nanosecond = a_nanosecond
+		end
+
+	set_item (other : like item) is
+		do
+			set (other.hour, other.minute, other.second)
+		end
 
 feature -- Removal
 

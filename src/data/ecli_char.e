@@ -1,5 +1,8 @@
 indexing
-	description: "ISO CLI CHAR (n) values"
+	description: 
+	
+		"ISO CLI CHAR (n) values"
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -32,7 +35,6 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	count : INTEGER
-	
 
 	item : STRING is
 		do

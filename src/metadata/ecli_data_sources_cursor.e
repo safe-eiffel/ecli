@@ -1,6 +1,6 @@
 indexing
 	description: "Objects that iterate over data sources"
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -15,8 +15,17 @@ inherit
 	ECLI_STATUS
 		export
 			{ANY} Sql_fetch_first, Sql_fetch_first_user, Sql_fetch_first_system
+		undefine
+			dispose
 		end
-	
+
+	ECLI_EXTERNAL_TOOLS
+		export
+			{NONE} all
+		undefine
+			dispose
+		end
+		
 creation
 	make_all, make_user, make_system
 	
@@ -180,22 +189,22 @@ feature {NONE} -- Implementation
 			name_ptr : POINTER
 			description_ptr : POINTER
 		do
-			name_ptr := tools.string_to_pointer (name_buffer)
-			description_ptr := tools.string_to_pointer (description_buffer)
+			protect
+			name_ptr := string_to_pointer (name_buffer)
+			description_ptr := string_to_pointer (description_buffer)
 			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, name_ptr, 100, $actual_name_length, description_ptr, 300, $actual_description_length))
 			if is_ok and then not is_no_data then
-				name := tools.pointer_to_string (name_ptr)
-				description := tools.pointer_to_string (description_ptr)
+				name := pointer_to_string (name_ptr)
+				description := pointer_to_string (description_ptr)
 				!!item_.make (Current)
 			else
 				item_ := Void
 				after := True
-			end			
+			end
+			unprotect
 		end
 		
 	item_ : ECLI_DATA_SOURCE
-	
-	tools : ECLI_EXTERNAL_TOOLS
 	
 invariant
 	invariant_clause: True -- Your invariant here

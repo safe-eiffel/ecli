@@ -15,8 +15,8 @@ inherit
 		redefine
 			out
 		end
-		
-create
+
+creation
 	make
 
 feature {NONE} -- Initialization
@@ -37,15 +37,15 @@ feature {NONE} -- Initialization
 				description := tables_cursor.buffer_description.to_string
 			end
 		end
-		
+
 feature -- Access
-	
+
 	type : STRING
 			-- table type
-	
+
 	description : STRING
-			-- description, comment or remarks		
-	
+			-- description, comment or remarks
+
 feature -- Measurement
 
 feature -- Status report
@@ -65,7 +65,7 @@ feature -- Transformation
 feature -- Conversion
 
 	out : STRING is
-			-- 
+			--
 		do
 			!!Result.make (128)
 			Result.append (Precursor)
@@ -73,7 +73,7 @@ feature -- Conversion
 			append_to_string (Result, type) Result.append ("%T")
 			append_to_string (Result, description)
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -85,7 +85,7 @@ feature -- Obsolete
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
-	
+
 invariant
 	invariant_clause: True -- Your invariant here
 

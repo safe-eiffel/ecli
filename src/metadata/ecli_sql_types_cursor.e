@@ -12,7 +12,7 @@ inherit
 	ECLI_CURSOR
 		rename
 			statement_start as start, make as cursor_make
-		export 
+		export
 			{ANY} close
 		redefine
 			start, forth
@@ -35,10 +35,10 @@ inherit
 				sql_type_timestamp,
 				sql_longvarchar
 		end
-		
-create
+
+creation
 	make_all_types, make_by_type
-	
+
 feature -- Initialization
 
 	make_all_types, open_all_types (a_session : ECLI_SESSION) is
@@ -65,7 +65,7 @@ feature -- Initialization
 		ensure
 			executed: is_ok implies is_executed
 			open: not is_closed
-		end		
+		end
 
 	make (a_type : INTEGER; a_session : ECLI_SESSION) is
 			-- make cursor for `a_type'
@@ -79,8 +79,8 @@ feature -- Initialization
 		ensure
 			executed: is_ok implies is_executed
 			open: not is_closed
-		end		
-		
+		end
+
 feature -- Access
 
 	item : ECLI_SQL_TYPE is
@@ -94,7 +94,7 @@ feature -- Access
 		end
 
 	supported_types : ARRAY[INTEGER] is
-			-- 
+			--
 		once
 			Result := <<
 				sql_char,
@@ -113,7 +113,7 @@ feature -- Access
 				sql_all_types
 			>>
 		end
-		
+
 feature -- Cursor Movement
 
 	start is
@@ -124,16 +124,16 @@ feature -- Cursor Movement
 			Precursor
 			if not off then
 				!!impl_item.make (Current)
-			end	
+			end
 		end
-		
+
 	forth is
 		do
 			Precursor
 			if not off then
 				!!impl_item.make (Current)
 			else
-				impl_item := Void				
+				impl_item := Void
 			end
 		end
 
@@ -141,7 +141,7 @@ feature -- Cursor Movement
 feature {ECLI_SQL_TYPE} -- Status
 
 	is_odbc_v3 : BOOLEAN is
-			-- 
+			--
 		do
 			Result := result_columns_count > 15
 		end
@@ -168,7 +168,7 @@ feature {ECLI_SQL_TYPE} -- Access
 			buffer_sql_date_time_sub,
 			buffer_num_prec_radix,
 			buffer_interval_precision : ECLI_INTEGER
-	
+
 feature {NONE} -- Implementation
 
 		create_buffers is
@@ -179,7 +179,7 @@ feature {NONE} -- Implementation
 			create buffer_literal_suffix.make (20)
 			create buffer_create_params.make (40)
 			create buffer_local_type_name.make (40)
-			
+
 			create buffer_data_type.make
 			create buffer_column_size.make
 			create buffer_nullable.make
@@ -187,14 +187,14 @@ feature {NONE} -- Implementation
 			create buffer_searchable.make
 			create buffer_unsigned_attribute.make
 			create buffer_fixed_prec_scale.make
-			create buffer_auto_unique_value.make 
+			create buffer_auto_unique_value.make
 			create buffer_minimum_scale.make
 			create buffer_maximum_scale.make
 			create buffer_sql_data_type.make
 			create buffer_sql_date_time_sub.make
 			create buffer_num_prec_radix.make
 			create buffer_interval_precision.make
-			
+
 			set_cursor (<<
 				buffer_type_name,
 				buffer_data_type,
@@ -219,11 +219,11 @@ feature {NONE} -- Implementation
 		end
 
 	impl_item : ECLI_SQL_TYPE
-	
+
 	definition : STRING is once Result := "SQLGetTypeInfo" end
-	
+
 	get_type_info (type : INTEGER) is
-			-- 
+			--
 		do
 			set_status (ecli_c_get_type_info ( handle, type))
 			if is_ok then
@@ -239,7 +239,7 @@ feature {NONE} -- Implementation
 			end
 			create_buffers
 		end
-		
+
 invariant
 	invariant_clause: True -- Your invariant here
 

@@ -1,5 +1,8 @@
 indexing
-	description: "Objects that trace SQL execution on an output medium"
+	description: 
+	
+		"Objects that trace SQL execution on an output medium"
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
