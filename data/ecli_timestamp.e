@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "ISO CLI TIMESTAMP values"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
