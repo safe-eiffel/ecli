@@ -1,6 +1,9 @@
 indexing
-	description: "System's root class";
-	note: "Initial version automatically generated"
+	description: "E_CLI_DB sample application";
+	author: "Paul G. Crismer"
+	date: "$Date$"
+	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 
 class
@@ -16,14 +19,14 @@ feature -- Initialization
 			-- Output a welcome message.
 			--| (Automatically generated.)
 		local
-			session : ECLI_SESSION
-			stmt : ECLI_STATEMENT
-			vname : ECLI_CHAR
-			vprice : ECLI_DOUBLE
-			vbdate : ECLI_TIMESTAMP
-			vfname : ECLI_VARCHAR
-			pname : ECLI_CHAR
-			vnbr : ECLI_INTEGER
+			session : 	ECLI_SESSION
+			stmt : 		ECLI_STATEMENT
+			vname : 	ECLI_CHAR
+			vprice : 	ECLI_DOUBLE
+			vbdate : 	ECLI_TIMESTAMP
+			vfname : 	ECLI_VARCHAR
+			pname : 	ECLI_CHAR
+			vnbr : 		ECLI_INTEGER
 		do
 			-- session opening
 			create session.make ("ecli_db", "user", "password")
@@ -38,25 +41,31 @@ feature -- Initialization
 			-- definition of statement on session
 			create stmt.make (session)
 			-- DDL statement
-			stmt.set_sql ("CREATE TABLE ESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
+			-- | Uncomment next line for using MS Access driver
+			-- stmt.set_sql ("CREATE TABLE ESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
+			-- 
+			-- | Next line for using Oracle 8 driver
+			stmt.set_sql ("CREATE TABLE ECLIESSAI (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")
 			stmt.execute
 			if stmt.is_ok then
-				io.put_string ("Table ESSAI created")
+				io.put_string ("Table ECLIESSAI created")
+			else
+				io.put_string (stmt.cli_state) 
+				io.put_string (stmt.diagnostic_message)
 			end
 			-- DML statements
-			stmt.set_sql ("INSERT INTO ESSAI VALUES ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
+			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
 			stmt.execute
-			stmt.set_sql ("INSERT INTO ESSAI VALUES ('Lulu', 'Jimmy', 20, {ts '2000-06-25 09:34:00.00'}, 12.2)")
+			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Lulu', 'Jimmy', 20, {ts '2000-06-25 09:34:00.00'}, 12.2)")
 			stmt.execute
-			stmt.set_sql ("INSERT INTO ESSAI VALUES ('Didi', 'Anticonstitutionnellement', 30, {ts '2000-07-26 23:59:59.99'}, 42.4)")
+			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Didi', 'Anticonstitutionnellement', 30, {ts '2000-07-26 23:59:59.99'}, 42.4)")
 			stmt.execute
 			-- parameterized statement
-			stmt.set_sql ("INSERT INTO ESSAI VALUES (?some_name, ?some_name, 40, ?some_date, 89.02)")
+			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES (?some_name, ?some_name, 40, ?some_date, 89.02)")
+			-- create and setup parameters
 			create pname.make (20)
 			pname.set_item ("Coco")
-				create vbdate.make (1964, 9, 17, 14, 30, 02, 999999998)
-				print (vbdate.out)
-				print ("%N")
+			create vbdate.make (1964, 9, 17, 14, 30, 02, 999999998)
 			stmt.set_parameters (<<pname, pname, vbdate>>)
 			stmt.bind_parameters
 			-- using 'prepare' sets prepared_execution_mode
@@ -66,9 +75,11 @@ feature -- Initialization
 				io.put_character ('%N')
 			end
 			stmt.execute
+			-- Change parameter value
 			pname.set_null
+			-- show how it is possible to bind a parameter 'by name'
 			stmt.put_parameter (pname, "some_name")
-			-- put_parameter 'unbind' previously bound parameters; they have to be bound before execution
+			-- put_parameter 'unbind' previously bound parameters; they have to be bound again before execution
 			stmt.bind_parameters
 			stmt.execute
 			if not stmt.is_ok then
@@ -77,7 +88,7 @@ feature -- Initialization
 			else
 				-- change execution mode to immediate (no need to prepare)
 				stmt.set_immediate_execution_mode
-				stmt.set_sql ("SELECT * FROM ESSAI")
+				stmt.set_sql ("SELECT * FROM ECLIESSAI")
 				stmt.execute
 				-- create result set 'value holders'
 				create vname.make (20)
@@ -112,7 +123,7 @@ feature -- Initialization
 				stmt.finish
 			end
 			-- DDL statement
-			stmt.set_sql  ("DROP TABLE ESSAI")
+			stmt.set_sql  ("DROP TABLE ECLIESSAI")
 			stmt.execute 
 			-- session disconnection
 			session.disconnect
@@ -122,3 +133,8 @@ feature -- Initialization
 		end;
 invariant
 end -- class E_CLI_DB
+--
+-- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--
