@@ -285,7 +285,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- bind this value as parameter 'index' of 'stmt'
 		require
-			stmt: stmt /= Void and then stmt.parameter_count > 0
+			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
 		do
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
