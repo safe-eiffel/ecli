@@ -93,6 +93,7 @@ feature -- Basic Operations
 feature -- Access
 
 	sql : STRING
+			-- sql statement to be executed
 
 	parameter_positions (name : STRING) : DS_LIST[INTEGER] is
 			-- positions of parameter 'name'
@@ -101,7 +102,7 @@ feature -- Access
 		require
 			valid_statement: is_valid
 			name_ok: name /= Void
-			has_parameter: parameter_count > 0
+			has_parameter: parameters_count > 0
 			defined_parameter: has_parameter (name)
 		do
 			Result := name_to_position.item (name)
@@ -110,10 +111,11 @@ feature -- Access
 		end
 
 	parameter (name : STRING) : like value_anchor is
+			-- parameter value of `name'
 		require
 			valid_statement: is_valid
 			name_ok: name /= Void
-			has_parameter: parameter_count > 0
+			has_parameter: parameters_count > 0
 			defined_parameter: has_parameter (name)
 			parameters_exist: parameters /= Void
 		do
@@ -121,7 +123,7 @@ feature -- Access
 		end
 
 	parameter_names : DS_LIST[STRING] is
-			-- names of parameters of query
+			-- names of parameters in `sql' query
 		require
 			valid_statement: is_valid
 		local
@@ -141,22 +143,29 @@ feature -- Access
 			end
 			Result := impl_parameter_names
 		ensure
-			parameter_count: Result.count <= parameter_count
+			parameters_count: Result.count <= parameters_count
 		end
 
 	cursor : ARRAY[like value_anchor]
-			-- container where result fields are stored
+			-- container of result values (i.e. buffers for transferring data from program to database)
+			-- content is meaningful only while sweeping through a result set, i.e. "not off"
 
 	parameters : ARRAY[like parameter_anchor]
 			-- current parameter values for the statement
 
 	parameters_description : ARRAY[ECLI_PARAMETER_DESCRIPTION]
+			-- parameter metadata
 
 	cursor_description : ARRAY [ECLI_COLUMN_DESCRIPTION]
+			-- cursor values metadata 
 
 feature -- Measurement
 
 	parameter_count : INTEGER is
+		obsolete "Please use 'parameters_count' instead (note 'parameters' is plural)."
+		do Result := parameters_count end
+		
+	parameters_count : INTEGER is
 			-- number of parameters in 'sql'
 		require
 			valid_statement: is_valid
@@ -165,19 +174,26 @@ feature -- Measurement
 			Result := sql.occurrences ('?')
 		end
 
-	result_column_count : INTEGER is
+	result_column_count : INTEGER is 
+		obsolete "Please use 'result_columns_count' instead (note 'columns' is plural)." 
+		do Result := result_columns_count end
+	
+	result_columns_count : INTEGER is
 			-- number of columns in result-set
 			-- 0 if no result set is available
 		require
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed
 		do
-			if impl_result_column_count = -1 then
-				get_result_column_count
+			if impl_result_columns_count = -1 then
+				get_result_columns_count
 			end
-			Result := impl_result_column_count
+			Result := impl_result_columns_count
 		end
 
+	fetched_columns_count : INTEGER
+			-- number of columns retrieved by latest start or forth operation
+		
 feature -- Status Report
 
 	has_results : BOOLEAN is
@@ -186,9 +202,9 @@ feature -- Status Report
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed
 		do
-			Result := result_column_count > 0
+			Result := result_columns_count > 0
 		ensure
-			results: Result = (result_column_count > 0)
+			results: Result = (result_columns_count > 0)
 		end
 
 	has_parameters : BOOLEAN is
@@ -197,9 +213,9 @@ feature -- Status Report
 			valid_statement: is_valid
 			request: sql /= Void
 		do
-			Result := (parameter_count > 0)
+			Result := (parameters_count > 0)
 		ensure
-			Result = (parameter_count > 0)
+			Result = (parameters_count > 0)
 		end
 
 	is_parsed : BOOLEAN is
@@ -211,8 +227,10 @@ feature -- Status Report
 		end
 
 	is_prepared : BOOLEAN
+			-- is current `sql' query plan prepared by database server ?
 
 	is_executed : BOOLEAN
+			-- is current `sql' executed ?
 
 	is_prepared_execution_mode : BOOLEAN
 			-- is it a 'prepared' execution mode ?
@@ -221,7 +239,7 @@ feature -- Status Report
 			-- have the parameters been bound ?
 
 	off : BOOLEAN is
-			-- is there no current item ?
+			-- is there no current cursor content ?
 		require
 			valid_statement: is_valid
 		do
@@ -251,7 +269,7 @@ feature -- Status Report
 		end
 
 	has_parameter (name : STRING) : BOOLEAN is
-			-- has the statement a 'name' parameter ?
+			-- has the statement a `name' parameter ?
 		require
 			valid_statement: is_valid
 			name_ok: name /= Void
@@ -260,27 +278,29 @@ feature -- Status Report
 		end
 
 	cursor_status : INTEGER
+			-- cursor status
 
 	cursor_before, cursor_in, cursor_after : INTEGER is unique
+			-- cursor status values
 
 	can_trace : BOOLEAN is
 			-- can Current trace itself ?
 		do
 			Result := (is_valid and is_parsed and 
 				 (is_prepared_execution_mode implies is_prepared) and
-				 (parameter_count > 0 implies bound_parameters))
+				 (parameters_count > 0 implies bound_parameters))
 		ensure then
 			definition : Result implies 
 				(is_valid and is_parsed and 
 				 (is_prepared_execution_mode implies is_prepared) and
-				 (parameter_count > 0 implies bound_parameters))
+				 (parameters_count > 0 implies bound_parameters))
 		end
 
 feature -- Status setting
 
 	set_prepared_execution_mode is
 			-- set prepared execution mode
-			-- statement execution occurs in two steps
+			-- `sql' must be prepared before being executed
 		require
 			valid_statement: is_valid
 		do
@@ -290,6 +310,7 @@ feature -- Status setting
 		end
 
 	set_immediate_execution_mode is
+			-- qery plan is evaluated each time `sql' is executed
 		require
 			valid_statement: is_valid
 		do
@@ -303,6 +324,7 @@ feature -- Cursor movement
 
 	start is
 			-- get first result row, if available
+			-- min (result_columns_count, cursor.count) items shall be retrieved
 		require
 			valid_statement: is_valid
 			executed: is_executed and is_ok
@@ -313,10 +335,12 @@ feature -- Cursor movement
 			fetch_next_row
 		ensure
 			results: not off implies (has_results and not before)
+			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (cursor.count)
 		end
 
 	forth is
 			-- get next result row
+			-- min (result_columns_count, cursor.count) items shall be retrieved
 		require
 			valid_statement: is_valid
 			executed: is_executed
@@ -324,10 +348,12 @@ feature -- Cursor movement
 			cursor_ready: cursor /= Void and then not array_routines.has (cursor,Void)
 		do
 			fetch_next_row
+		ensure
+			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (cursor.count)			
 		end
 
 	close_cursor, go_after is
-			-- go after the last result row
+			-- go after the last result row and release internal cursor state
 		require
 			valid_statement: is_valid
 			valid_state: is_executed and not after
@@ -337,6 +363,7 @@ feature -- Cursor movement
 			set_cursor_after
 		ensure
 			after: after
+			fetched_columns: fetched_columns_count = 0
 		end
 
 feature -- Element change
@@ -349,7 +376,7 @@ feature -- Element change
 			sql := a_sql
 			impl_sql := parsed_sql (sql)
 			impl_parameter_names := Void
-			impl_result_column_count := -1 -- do not know
+			impl_result_columns_count := -1 -- do not know
 			is_executed := False
 			is_prepared := False
 			cursor_description := Void
@@ -374,8 +401,8 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			param_exist: param /= Void
-			param_count: param.count = parameter_count
-			params_not_void: True -- foreach p in param it_holds p /= Void
+			param_count: param.count = parameters_count
+			params_not_void: not array_routines.has (param, Void)
 		do
 			parameters := param
 			bound_parameters := False
@@ -389,7 +416,7 @@ feature -- Element change
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid
-			has_parameters: parameter_count > 0
+			has_parameters: parameters_count > 0
 			value_ok: value /= Void
 			key_ok : key /= Void
 			known_key: has_parameter (key)
@@ -397,7 +424,7 @@ feature -- Element change
 			plist : DS_LIST[INTEGER]
 		do
 			if parameters = Void then
-				!! parameters.make (1, parameter_count)
+				!! parameters.make (1, parameters_count)
 			end
 			from plist := parameter_positions (key)
 				plist.start
@@ -418,7 +445,7 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			row_exist: row /= Void
-		--	row_count: row.count >= result_column_count
+		--	row_count: row.count >= result_columns_count
 			is_executed: is_executed
 		do
 			cursor := row
@@ -452,7 +479,7 @@ feature -- Basic operations
 			valid_statement: is_valid
 			query_is_parsed: is_parsed
 			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
-			parameters_set: parameter_count > 0 implies bound_parameters
+			parameters_set: parameters_count > 0 implies bound_parameters
 		local
 			tools : ECLI_EXTERNAL_TOOLS
 		do
@@ -468,7 +495,7 @@ feature -- Basic operations
 				set_status (ecli_c_execute_direct (handle, tools.string_to_pointer (impl_sql)))
 			end
 			if is_ok then
---				get_result_column_count
+--				get_result_columns_count
 				is_executed := True
 				if has_results then
 					set_cursor_before
@@ -476,7 +503,7 @@ feature -- Basic operations
 					set_cursor_after
 				end
          else
-         	impl_result_column_count := 0
+         	impl_result_columns_count := 0
 			end
 		ensure
 			executed: is_executed implies is_ok
@@ -495,12 +522,12 @@ feature -- Basic operations
 		require
 			valid_statement: is_valid
 			prepared: is_prepared
-			has_parameters: parameter_count > 0
+			has_parameters: parameters_count > 0
 		local
 			count, limit : INTEGER
 			description : ECLI_PARAMETER_DESCRIPTION
 		do
-			limit := parameter_count
+			limit := parameters_count
 			!! parameters_description.make (1, limit)
 			from
 				count := 1
@@ -516,7 +543,7 @@ feature -- Basic operations
 		ensure
 			description: is_ok implies
 				(parameters_description /= Void and then
-				 parameters_description.count = parameter_count)
+				 parameters_description.count = parameters_count)
 		end
 
 	describe_cursor is
@@ -529,7 +556,7 @@ feature -- Basic operations
 			count, limit : INTEGER
 			description : ECLI_COLUMN_DESCRIPTION
 		do
-			limit := result_column_count
+			limit := result_columns_count
 			!! cursor_description.make (1, limit)
 			from
 				count := 1
@@ -544,14 +571,14 @@ feature -- Basic operations
 			end
 		ensure
 			description: is_ok implies
-				(cursor_description /= Void and then cursor_description.count = result_column_count)
+				(cursor_description /= Void and then cursor_description.count = result_columns_count)
 		end
 
 	bind_parameters is
 			-- bind parameters
 		require
 			valid_statement: is_valid
-			parameters_exist: parameters /= Void and then parameters.count >= parameter_count
+			parameters_exist: parameters /= Void and then parameters.count >= parameters_count
 		local
 			parameter_index : INTEGER
 		do
@@ -702,11 +729,11 @@ feature {NONE} -- Implementation
 			impl_is_parsed := True
 		end
 
-	get_result_column_count is
+	get_result_columns_count is
 		require
 			valid_statement: is_valid
 		do
-			set_status (ecli_c_result_column_count (handle, $impl_result_column_count))
+			set_status (ecli_c_result_column_count (handle, $impl_result_columns_count))
 		end
 
 	bind_one_parameter (i : INTEGER) is
@@ -723,14 +750,14 @@ feature {NONE} -- Implementation
 		require
 			valid_statement: is_valid
 			cursor_exists: cursor /= Void
-			-- cursor_arity: cursor.count >= result_column_count
+			-- cursor_arity: cursor.count >= result_columns_count
 		local
 			index, index_max : INTEGER
 			current_value : ECLI_VALUE
 		do
 			from
 				index := 1
-				index_max := result_column_count.min (cursor.count)
+				index_max := result_columns_count.min (cursor.count)
 			until
 				index > index_max
 			loop
@@ -738,6 +765,7 @@ feature {NONE} -- Implementation
 				current_value.read_result (Current, index)
 				index := index + 1
 			end
+			fetched_columns_count := result_columns_count.min (cursor.count)
 		end
 
 	session : ECLI_SESSION
@@ -751,7 +779,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	impl_result_column_count : INTEGER
+	impl_result_columns_count : INTEGER
 		-- -1 : do not know; must call `get_result_column_count'
 		--  0 : no result-set
 		-- >0  :number of columns in result-set
