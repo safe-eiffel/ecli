@@ -1,3 +1,6 @@
+2001-07-19
+	* is_transaction_capable, ECLI_TRANSACTION_CAPABILITY_CONSTANTS
+
 2001-05-11
 	* attach/release are now obsolete, use open/close instead
 	* port to Visual Eiffel 3.2
