@@ -85,7 +85,11 @@ feature -- Basic Operations
 		local
 			test : ROWSET_MODIFIER_TEST
 		do
-				!!test.make (session)
+				if session.is_bind_arrayed_parameters_capable then
+					!!test.make (session)
+				else
+					io.put_string ("The current datasource does not support operations with arrayed parameters%N")
+				end
 		end
 		
 feature {NONE} -- Implementation

@@ -53,18 +53,18 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
---	item : ECLI_TABLE is
---			-- current type description
---		require
---			not_off: not off
---		do
---			if impl_item = Void then
---				!!impl_item.make (Current, repository)
---			end
---			Result := impl_item
---		ensure
---			definition: Result /= Void
---		end
+	item : ECLI_TABLE is
+			-- current type description
+		require
+			not_off: not off
+		do
+			if impl_item = Void then
+				!!impl_item.make (Current)
+			end
+			Result := impl_item
+		ensure
+			definition: Result /= Void
+		end
 		
 feature -- Cursor Movement
 
@@ -74,19 +74,19 @@ feature -- Cursor Movement
 				create_buffers
 			end
 			Precursor
---			if not off then
---				!!impl_item.make (Current)
---			end	
+			if not off then
+				!!impl_item.make (Current)
+			end	
 		end
 		
 	forth is
 		do
 			Precursor
---			if not off then
---				!!impl_item.make (Current)
---			else
---				impl_item := Void				
---			end
+			if not off then
+				!!impl_item.make (Current)
+			else
+				impl_item := Void				
+			end
 		end
 
 feature {ECLI_TABLE} -- Access

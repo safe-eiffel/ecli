@@ -27,9 +27,11 @@ feature {NONE} -- Initialization
 		do
 			fetch_first_operation := Sql_fetch_first
 			is_all_datasources := True
+			before := True
 		ensure
 			all_sources: is_all_datasources
 			fetch_first: fetch_first_operation = Sql_fetch_first
+			before: before
 		end
 		
 	make_user is
@@ -37,9 +39,11 @@ feature {NONE} -- Initialization
 		do
 			fetch_first_operation := Sql_fetch_first_user
 			is_user_datasources := True
+			before := True
 		ensure
 			user_sources: is_user_datasources
 			fetch_first: fetch_first_operation = Sql_fetch_first_user
+			before: before
 		end
 		
 	make_system is
@@ -47,9 +51,11 @@ feature {NONE} -- Initialization
 		do
 			fetch_first_operation := Sql_fetch_first_system
 			is_system_datasources := True
+			before := True
 		ensure
 			system_sources: is_system_datasources
 			fetch_first: fetch_first_operation = Sql_fetch_first_system
+			before: before
 		end
 		
 
@@ -131,6 +137,12 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
+	close is
+			-- close cursor
+		do
+			--| do nothing; defined just to be consistent with other cursors
+		end
+		
 feature -- Obsolete
 
 feature -- Inapplicable

@@ -14,7 +14,7 @@ inherit
 		export 
 			{ANY} close
 		redefine
-			start, forth, close
+			start, forth
 		end
 
 	ECLI_EXTERNAL_TOOLS
@@ -24,7 +24,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make_all_columns (a_session : ECLI_SESSION; a_table : ECLI_TABLE) is
+	make_all_columns (a_session : ECLI_SESSION; a_table : STRING) is
 			-- make cursor on all columns of `a_table'
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
@@ -36,18 +36,18 @@ feature {NONE} -- Initialization
 			schema_length, catalog_length, table_name_length : INTEGER
 		do
 			make (a_session)
-			if a_table.catalog /= Void then
-				catalog_pointer := string_to_pointer (a_table.catalog)
-				catalog_length := a_table.catalog.count
-			end
-			if a_table.schema /= Void then
-				schema_pointer := string_to_pointer (a_table.schema)
-				schema_length := a_table.schema.count
-			end
-			if a_table.name /= Void then
-				table_name_pointer := string_to_pointer (a_table.name)
-				table_name_length := a_table.name.count
-			end
+--			if a_table.catalog /= Void then
+--				catalog_pointer := string_to_pointer (a_table.catalog)
+--				catalog_length := a_table.catalog.count
+--			end
+--			if a_table.schema /= Void then
+--				schema_pointer := string_to_pointer (a_table.schema)
+--				schema_length := a_table.schema.count
+--			end
+--			if a_table.name /= Void then
+			table_name_pointer := string_to_pointer (a_table)
+			table_name_length := a_table.count
+--			end
 			--set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, sql_true))
 			set_status (ecli_c_get_columns ( handle, 
 				catalog_pointer, catalog_length,
@@ -66,7 +66,6 @@ feature {NONE} -- Initialization
 	         	impl_result_columns_count := 0
 			end
 			create_buffers
-			table := a_table
 		ensure
 			executed: is_ok implies is_executed
 		end
@@ -82,8 +81,6 @@ feature -- Access
 		ensure
 			definition: Result /= Void
 		end
-		
-	table : ECLI_TABLE
 	
 feature -- Cursor Movement
 
@@ -130,13 +127,6 @@ feature {ECLI_COLUMN} -- Access
 		buffer_is_nullable : ECLI_VARCHAR
 	
 feature -- Basic operations
-
-	close is
-			-- 
-		do
-			table := Void
-			Precursor
-		end
 		
 feature {NONE} -- Implementation
 

@@ -146,8 +146,8 @@ feature -- Cursor movement
 				end
 			end
 		ensure
-			executed: is_executed
-			off_if_not_query: not has_results implies off
+			executed: is_ok implies is_executed
+			off_if_not_query: is_ok implies (not has_results implies off)
 		end
 		
 feature -- Element change

@@ -277,23 +277,27 @@ feature -- Basic Operations
 		local
 			index : INTEGER
 			table : ECLI_TABLE
+			cursor : ECLI_TABLES_CURSOR
 		do
-			from index := 1
+			from 
+				!!cursor.make_all_tables (session)
+				cursor.start
 				print ("CATALOG%T SCHEMA%T TABLE_NAME%T TYPE%T DESCRIPTION%N")
 			until
-				not repository.is_ok or else index > repository.tables.upper
+				not cursor.is_ok or else cursor.off
 			loop
-				table := repository.tables.item (index)
+				table := cursor.item
 				print (table.catalog) print ("%T")
 				print (table.schema) print ("%T")
 				print (table.name) print ("%T")
 				print (table.type) print ("%T")
 				print (table.description) print ("%N")
-				index := index + 1
+				cursor.forth
 			end
-			if not repository.is_ok then
+			cursor.close
+			if not cursor.is_ok then
 				print ("Error getting tables metadata : '")
-				print (repository.diagnostic_message)
+				print (cursor.diagnostic_message)
 				print ("'%N")
 			end
 		end
@@ -301,13 +305,14 @@ feature -- Basic Operations
 	do_types is
 			-- show types supported by current datasource
 		local
-			cursor : DS_HASH_TABLE_CURSOR [ECLI_SQL_TYPE, INTEGER]
-			type : ECLI_SQL_TYPE
+			cursor : ECLI_SQL_TYPES_CURSOR
+			type : ECLI_SQL_TYPE			
 		do
-			from cursor := repository.types.new_cursor
+			from 
+				!!cursor.make_all_types (session)
 				cursor.start
 				print ("TYPE_NAME%T CODE%T SIZE%T CREATE_PARAMETERS%N")
-			until not repository.is_ok or else cursor.off
+			until not cursor.is_ok or else cursor.off
 			loop
 				type := cursor.item
 				print (type.name) print ("%T")
@@ -315,7 +320,13 @@ feature -- Basic Operations
 				print (type.size.out) print ("%T") 
 				print (type.create_params) print ("%N")
 				cursor.forth
-			end	
+			end
+			if not cursor.is_ok then
+				print ("Error getting types metadata : '")
+				print (cursor.diagnostic_message)
+				print ("'%N")
+			end
+			cursor.close
 		end
 		
 	do_sources is
@@ -323,39 +334,48 @@ feature -- Basic Operations
 		local
 			cursor : ECLI_DATA_SOURCES_CURSOR
 		do
-			debug
-				!!cursor.make_all
-			end
 			from
+				!!cursor.make_all
 				cursor.start
 				print ("SOURCE_NAME%T DESCRIPTION%N")
 			until
-				cursor.off
+				not cursor.is_ok or else cursor.off
 			loop
 				print (cursor.item.name) print ("%T")
 				print (cursor.item.description) print ("%N")
 				cursor.forth
 			end
+			if not cursor.is_ok then
+				print ("Error getting data sources metadata : '")
+				print (cursor.diagnostic_message)
+				print ("'%N")
+			end
+			cursor.close
 		end
 		
 	do_procedures is
 			-- show procedures
 		local
 			i : INTEGER
-			procedures : ARRAY[ECLI_PROCEDURE]
+			cursor : ECLI_PROCEDURES_CURSOR
 		do
 			from
-				procedures := repository.procedures
-				i := procedures.lower
+				!! cursor.make_all_procedures (session)
+				cursor.start
 			until
-				i > procedures.upper
+				not cursor.is_ok or else cursor.off
 				
 			loop
-				print (procedures.item (i))
+				print (cursor.item)
 				print ("%N")
-				i := i + 1	
+				cursor.forth	
 			end
-		
+			if not cursor.is_ok then
+				print ("Error getting procedures metadata : '")
+				print (cursor.diagnostic_message)
+				print ("'%N")
+			end
+			cursor.close
 		end
 		
 	do_columns (s : STRING) is
@@ -364,7 +384,7 @@ feature -- Basic Operations
 			word_index : INTEGER
 			table_name : STRING
 			string_routines : ECLI_STRING_ROUTINES
-			columns : ARRAY[ECLI_COLUMN]
+			cursor : ECLI_COLUMNS_CURSOR
 			index : INTEGER
 			the_column : ECLI_COLUMN
 		do
@@ -372,23 +392,26 @@ feature -- Basic Operations
 			word_index := s.index_of (' ',1)
 			if word_index > 0 then
 				table_name := string_routines.trimmed (s.substring (word_index + 1, s.count))
-				repository.find_table (table_name) 
-				if repository.is_table_found then
-					columns := repository.found_table.columns
-					from
-						index := columns.lower
-						print ("COLUMN_NAME%T TYPE%T SIZE %T DESCRIPTION%N")
-					until
-						index < 1 or else index > columns.upper
-					loop
-						the_column := columns.item (index)
-						print (the_column.name) print ("%T")
-						print (the_column.type_name) print ("%T")
-						print (the_column.size) print ("%T")
-						print (the_column.description) print ("%N")
-						index := index + 1
-					end
+				from
+					!!cursor.make_all_columns (session,table_name)
+					cursor.start
+					print ("COLUMN_NAME%T TYPE%T SIZE %T DESCRIPTION%N")
+				until
+					not cursor.is_ok or else cursor.off
+				loop
+					the_column := cursor.item
+					print (the_column.name) print ("%T")
+					print (the_column.type_name) print ("%T")
+					print (the_column.size) print ("%T")
+					print (the_column.description) print ("%N")
+					cursor.forth
 				end
+				if not cursor.is_ok then
+					print ("Error getting columns metadata : '")
+					print (cursor.diagnostic_message)
+					print ("'%N")
+				end
+				cursor.close
 			else
 				io.put_string ("Usage: COLUMNS <TABLE_NAME>; please provide a <TABLE_NAME>%N")
 			end
@@ -604,11 +627,11 @@ feature {NONE} -- Implementation
 			!!Result.make (1000)
 		end
 
-	repository : ECLI_REPOSITORY is
-			-- current repository
-		once 
-			!!Result.make(session)
-		end
+--	repository : ECLI_REPOSITORY is
+--			-- current repository
+--		once 
+--			!!Result.make(session)
+--		end
 		
 end -- class ISQL
 --
