@@ -1,0 +1,10 @@
+ECLI sample applications
+
+Directory	Application name	Description
+---------	----------------	-------------------------------------------------------
+isql		isql			Interactive SQL
+test1		e_cli_db		Your first sample application : create table, 
+					insert tuples, select tuples, drop table
+test_Xaction	transact		Tests data source transaction capabilities
+qa_example	qa_example		Tests 'query_assistant' generated cursor classes
+
