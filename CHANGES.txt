@@ -1,3 +1,27 @@
+2001-05-11
+	* attach/release are now obsolete, use open/close instead
+	* port to Visual Eiffel 3.2
+	* updated tutorial
+	* usage of GOBO 2.0 and its time cluster : DT_DATE, DT_TIME, DT_DATE_TIME
+	
+2000-11-03
+	* fixed segmentation violation problems
+	* added features 'attach' and 'release' to ECLI_SESSION and ECLI_STATEMENT
+	* updated tutorial
+
+2000-10-14
+	* added a tutorial - tutorial.html
+
+2000-09-06
+
+	* eclibuild.sh	- Helps compile projects using SmallEiffel on Unix
+	* all examples applications have been revisited
+	
+2000-08-10
+	* ECLIBUILD.BAT - Helps compile projects that use ECLI and SmallEiffel
+	* test_Xaction	- Exercises transaction capabilities
+	* added support for LONGVARCHAR, in memory (no stream).
+
 ** ECLI 0001 Beta 5 **
 
    !!!  Query assistant - 'Query Assistant' for ECLI allows a developer to generate classes

@@ -20,19 +20,30 @@ feature -- Initialization
 
 	make is
 		do
+			print_prologue
 			parse_arguments
 			if parsed_arguments and arguments_ok then
-				read_sql
-				connect_session
-				launch_qacursor
-				if qacursor.is_executed then
-					generate
-				end				
+				read_query
+				if query /= Void then
+					connect_session
+					launch_qacursor
+					if qacursor.is_executed then
+						generate
+					end
+				end
 			else
 				print_usage
 			end
 		end
 
+	print_prologue is
+		do
+			io.put_string ("** ECLI Query Assistant **%N")
+			io.put_string ("*  Generates a class encapsulation of a SQL SELECT statement.%N")
+			io.put_string ("*  The statement is first 'tried' on the target database.%N")
+			io.put_string ("*  Then the cursor class is generated.%N**%N")
+		end
+		
 	parse_arguments is
 		local
 			arg_index : INTEGER
@@ -71,9 +82,6 @@ feature -- Initialization
 
 	print_usage is
 		do
-			io.put_string ("'query_assistant' generates a class encapsulation of a SQL SELECT statement.%N")
-			io.put_string ("The statement is first 'tried' on the target database before the class is%N")
-			io.put_string ("generated.%N%N")
 			io.put_string ("Usage :%N")
 			io.put_string ("%Tquery_assistant  -class <class> -sql <sql> -dsn <dsn> -user <user> -pwd <pwd> -dir <dir>%N")
 			io.put_string ("where%N")
@@ -144,30 +152,45 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	read_sql is
+	read_query is
 		local
 			s : STRING
 			qcount, scount : INTEGER
+			ok : BOOLEAN
 		do
-			create query_file.make_open_read (query_file_name);
-			create query.make (1000)
-			-- read file
-			from
-				query_file.read_line
-			until
-				query_file.end_of_file
-			loop
-				s := query_file.last_string
-				-- prevent concatenation of separate words
-				qcount := query.count
-				scount := s.count
-				if qcount > 0 and then query.item (qcount) /= ' ' and then scount > 0 and then s.item (s.count) /= ' ' then
-				   query.append_character (' ')
+			create query_file.make (query_file_name)
+			if query_file.exists then
+				query_file.open_read
+				create query.make (1000)
+				-- read file
+				from
+					ok := false
+
+				until
+					ok
+				loop
+					query_file.read_line
+					if query_file.end_of_file then
+						ok := true
+					end
+					s := query_file.last_string
+					if s.count > 0 then
+						-- prevent concatenation of separate words
+						qcount := query.count
+						scount := s.count
+						if qcount > 0 and then query.item (qcount) /= ' ' and then scount > 0 and then s.item (1) /= ' ' then
+						   query.append_character (' ')
+						end
+						query.append (query_file.last_string)
+					end
 				end
-				query.append (query_file.last_string)
-				query_file.read_line
+				query_file.close
+			else
+				io.put_string ("* ERROR - file '")
+				io.put_string (query_file_name)
+				io.put_string ("' does not exist%N")
+				query := Void
 			end
-			query_file.close				
 		end
 
 	connect_session is
@@ -182,7 +205,7 @@ feature -- Basic operations
 		do
 			create qacursor.make (session)
 			qacursor.define (query)
-			io.put_string ("Cursor definition :%N%T")
+			io.put_string ("+ Cursor definition :%N%T")
 			io.put_string (qacursor.definition)
 			io.put_character ('%N')
 			qacursor.prepare
@@ -219,9 +242,11 @@ feature -- Basic operations
 
 	print_error (action : STRING; cursor : QA_CURSOR) is
 		do
-			io.put_string (" ! - '" + action + " failed%N")
+			io.put_string ("  * Error : '")
+			io.put_string (action)
+			io.put_string (" failed%N")
 			io.put_string (qacursor.diagnostic_message)
-			io.put_string ("%N - on query : ")
+			io.put_string ("%N  * - on query : ")
 			io.put_string (qacursor.definition)
 			io.put_character ('%N')
 		end
@@ -231,9 +256,10 @@ feature -- Basic operations
 			i : INTEGER
 			d : ECLI_COLUMN_DESCRIPTION
 			e : QA_VALUE
+			file_name : STRING
 		do
 			-- describe results
-			io.put_string ("Results description%N")
+			io.put_string ("+ Results metatada :%N")
 			if qacursor.has_results then
 				qacursor.describe_cursor
 				qacursor.create_compatible_cursor
@@ -271,7 +297,10 @@ feature -- Basic operations
 			end
 			-- generate class	
 			create gen
-			create target_file.make_open_write (target_directory_name + class_name + ".e")
+			file_name := clone (target_directory_name)
+			file_name.append (class_name)
+			file_name.append (".e")
+			create target_file.make_open_write (file_name)
 			qacursor.set_name (class_name)
 			gen.execute (qacursor, target_file)
 			target_file.close	
@@ -284,8 +313,8 @@ feature -- Basic operations
 			pcursor : DS_LIST_CURSOR [STRING]
 			ptype, pprecision : INTEGER
 		do
-			io.put_string ("Please describe parameters%N")
-			io.put_string ("Allowed types are (VARCHAR, CHAR, INTEGER, FLOAT, REAL, DOUBLE, DATE, TIMESTAMP)%N")
+			io.put_string ("? Please describe parameters%N")
+			io.put_string ("    Allowed types : VARCHAR, CHAR, INTEGER, FLOAT, REAL, DOUBLE, DATE, TIMESTAMP.%N")
 			-- iterate on parameter names
 			pcursor := qacursor.parameter_names.new_cursor
 			from
@@ -293,7 +322,9 @@ feature -- Basic operations
 			until
 				pcursor.off
 			loop
-				io.put_string ("Parameter " + pcursor.item + "%N")
+				io.put_string ("? Type of '")
+				io.put_string (pcursor.item)
+				io.put_string ("'%N")
 				ptype := asked_type
 				if ptype = sql_char or ptype = sql_varchar then
 					pprecision := asked_precision
@@ -336,7 +367,7 @@ feature -- Basic operations
 			a_timestamp : QA_TIMESTAMP
 			pcursor : DS_LIST_CURSOR[STRING]
 		do
-			io.put_string ("Please give value to parameters so that the query can be executed.%N")
+			io.put_string ("? Please give value to parameters so that the query can be executed.%N")
 			-- iterate on parameter names
 			pcursor := qacursor.parameter_names.new_cursor
 			from
@@ -344,7 +375,9 @@ feature -- Basic operations
 			until
 				pcursor.off
 			loop
-				io.put_string ("Parameter " + pcursor.item + " : ")
+				io.put_string ("? Value of '")
+				io.put_string (pcursor.item)
+				io.put_string ("' : ")
 				a_parameter := qacursor.parameter (pcursor.item)
 				a_char ?= a_parameter
 				if a_char /= Void then
@@ -373,10 +406,13 @@ feature -- Basic operations
 								else
 									a_date ?= a_parameter
 									if a_date /= Void then
+										io.put_string ("YYYY-MM-DD >")
+										io.read_line
 										a_date.set_item (date_from_string (io.last_string))
 									else
 										a_timestamp ?= a_parameter
 										if a_timestamp /= Void then
+											io.read_line
 											a_timestamp.set_item (timestamp_from_string (io.last_string))
 										end
 									end
@@ -398,7 +434,7 @@ feature -- Basic operations
 			until
 				ok
 			loop
-				io.put_string ("   Data type%T: ")
+				io.put_string ("?   Data type%T: ")
 				io.read_line
 				ok := true
 				inspect io.last_string.item (1)
@@ -430,7 +466,7 @@ feature -- Basic operations
 			until
 				ok
 			loop
-				io.put_string ("   max length%T: ")
+				io.put_string ("?   max length%T: ")
 				io.read_line
 				if io.last_string.is_integer and io.last_string.to_integer > 0 then
 					ok := true

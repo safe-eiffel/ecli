@@ -1,0 +1,1210 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="Version" content="8.0.3410">
+<meta name="Date" content="10/11/96">
+<meta name="Template"
+content="C:\Program Files\Microsoft Office\Office\html.dot">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>ECLI Tutorial</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF"
+vlink="#800080">
+
+<p align="center"><font size="6"><b>ECLI Tutorial</b></font> </p>
+
+<p align="center"><font size="4"><b>Paul G. Crismer</b></font> </p>
+
+<p align="center"><b>pgcrism@attglobal.net</b> </p>
+
+<pre>$Date$</pre>
+
+<pre>$Revision$</pre>
+
+<ol>
+    <li><a href="#Introduction">Introduction</a></li>
+    <li><a href="#ODBCCLI">ODBC/CLI Background</a></li>
+    <li><a href="#Yourfirstdatabase">Your first database session</a></li>
+    <li><a href="#Statuscheckinganderror">Status checking and
+        error handling</a></li>
+    <li><a href="#StatementExec">Statement execution</a></li>
+    <li><a href="#GettingResults">Getting results</a></li>
+    <li><a href="#Getting esult-setmetadata">Getting result-set
+        metadata</a></li>
+    <li><a href="#ParameterizedStmts">Parameterized statements</a></li>
+    <li><a href="#OptimizingforPerformance">Optimizing for
+        &quot;performance&quot;</a></li>
+    <li><a href="#Conclusion">Conclusion</a></li>
+</ol>
+
+<h1><a name="Introduction"></a>Introduction</h1>
+
+<h2>What is ECLI ?</h2>
+
+<p>ECLI is an Eiffel wrapper around the X/Open ISO/CLI (Call
+Level Interface). <br>
+This interfaces defines an API to RDBMS drivers, and uses SQL92. <br>
+ISO/CLI is also known as ODBC under MS-Windows.&nbsp; This
+interface has implementations on other platforms like Unix and
+Linux. </p>
+
+<p>&nbsp;Recommended readings : </p>
+
+<ul>
+    <li><a href="index.html">ECLI presentation</a></li>
+    <li><a href="http://www.unixodbc.org/">UnixODBC</a> provides
+        information about ODBC and its Unix/Linux implementation.</li>
+</ul>
+
+<h2>Why use ECLI ?</h2>
+
+<p>If you want a simple access to relational databases, ECLI is
+for you. It allows writing Eiffel database applications that have
+the following characteristics : <br>
+&nbsp; <br>
+&nbsp; </p>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="28%"><ul>
+            <li>multiplatform&nbsp;</li>
+        </ul>
+        </td>
+        <td valign="top" width="72%">it uses a standard API,
+        available on various platforms : Windows, Unix, Linux</td>
+    </tr>
+    <tr>
+        <td valign="top" width="28%"><ul>
+            <li>multicompiler&nbsp;</li>
+        </ul>
+        </td>
+        <td valign="top" width="72%">it uses as portable Eiffel
+        as possible, and has already been tested using&nbsp;<ul
+        type="circle">
+            <li type="circle">ISE Eiffel and&nbsp; </li>
+            <li>SmallEiffel ( -076b4 and better).&nbsp; </li>
+            <li>VE 3.2. ** WARNING : use external Microsoft
+                Linker; default VE linker leads to execution
+                errors **</li>
+        </ul>
+        </td>
+    </tr>
+</table>
+
+<p>It currently has been tested with the following RDBMS drivers
+: MS-Access, Oracle 8, PostgreSQL. </p>
+
+<h2>Related work</h2>
+
+<p align="left">Many vendor specific libraries exist. Open-source
+libraries exist and are either compiler-specific or
+platform-specific. The best known are presented in the following
+table : &nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="780">
+    <tr>
+        <td valign="top" width="20%"><b>Product</b> </td>
+        <td valign="top" width="20%"><b>Vendor</b> </td>
+        <td valign="top" width="20%"><b>Compiler</b> </td>
+        <td valign="top" width="20%"><b>Platform</b> </td>
+        <td valign="top" width="20%"><b>RDBMS</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="20%">EiffelStore</td>
+        <td valign="top" width="20%">ISE</td>
+        <td valign="top" width="20%">ISE</td>
+        <td valign="top" width="20%">Windows (ODBC), some Unixes</td>
+        <td valign="top" width="20%">ODBC, Oracle, Informix</td>
+    </tr>
+    <tr>
+        <td valign="top" width="20%">ISS-Store</td>
+        <td valign="top" width="20%">Halstenbach</td>
+        <td valign="top" width="20%">ISS-bench</td>
+        <td valign="top" width="20%">Windows, (Unix ?)</td>
+        <td valign="top" width="20%">ODBC</td>
+    </tr>
+    <tr>
+        <td valign="top" width="20%">DALE</td>
+        <td valign="top" width="20%">Object-Tools</td>
+        <td valign="top" width="20%">Visual Eiffel</td>
+        <td valign="top" width="20%">Windows, (Linux ?)</td>
+        <td valign="top" width="20%">ODBC</td>
+    </tr>
+    <tr>
+        <td valign="top" width="20%">pgsql</td>
+        <td valign="top" width="20%">Open Source</td>
+        <td valign="top" width="20%">SmallEiffel</td>
+        <td valign="top" width="20%">Unix, Linux, (Windows?)</td>
+        <td valign="top" width="20%">PostgreSQL</td>
+    </tr>
+</table>
+</center></div>
+
+<p>Other database bindings exist : see in the <a
+href="http://www.eiffel-forum.org/">Eiffel Forum</a>. </p>
+
+<p>None of them is truly multi-compiler and multi-platform. Many
+target only one RDBMS system like MySQL, mSQL or PostgreSQL. </p>
+
+<p>The originality of ECLI is that it uses a standardized API as
+underlying layer, and that it is designed to be as multi-compiler
+as possible. </p>
+
+<h2>About this tutorial</h2>
+
+<p>This tutorial introduces the basics of using ECLI. It is not a
+tutorial on Relational Database modeling, nor on RDBMS systems
+management. </p>
+
+<p>We assume that the reader has at least basic knowledge in
+database applications and is familiar with relational databases
+and SQL. </p>
+
+<h1><a name="ODBCCLI"></a>ODBC/CLI Background</h1>
+
+<h2>Layers</h2>
+
+<p>ODBC/CLI applications have 3 layers </p>
+
+<ol>
+    <li>Application</li>
+    <li>Driver Management</li>
+    <li>Driver</li>
+</ol>
+
+<p align="center">You provide the first layer. The second and
+third layers are provided by ODBC/CLI run-time and configuration.
+</p>
+
+<p align="center"><img src="Image1.gif" width="391" height="257">
+</p>
+
+<h2>Data Sources</h2>
+
+<p>When you want to access a specific database, you have to
+provide some configuration information </p>
+
+<ul>
+    <li>A driver</li>
+    <li>A host-name or file-name</li>
+    <li>A port number</li>
+    <li>Some authorization information</li>
+</ul>
+
+<p align="center">ODBC/CLI associates a name with a set of
+configuration information. This is known as the <i>data source
+name</i>. ODBC/CLI configuration is generally stored in a file : <tt>ODBC.INI</tt>.
+<br>
+&nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="50%"><b>Data source name</b> </td>
+        <td valign="top" width="50%"><b>Driver + parameters</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%">Students</td>
+        <td valign="top" width="50%">Access (msjet.dll);
+        file=X:\AccessDB\Students.mdb</td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%">Library</td>
+        <td valign="top" width="50%">PostgreSQL Driver
+        (/usr/local/bin/pgsql.so); port=8032;
+        host=&quot;Titan&quot;</td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%">Oracle Test</td>
+        <td valign="top" width="50%">Oracle
+        (D:\ORANT\WIN32\oraodbc.dll); database=otst01;
+        rowprefetch=20</td>
+    </tr>
+</table>
+</center></div>
+
+<p align="center">The above table shows some sample data source
+configurations. </p>
+
+<h1><a name="Yourfirstdatabase"></a>Your first database session</h1>
+
+<p align="left">The class ECLI_SESSION provides
+session-management features. A session object is created for
+accessing a specific <i>data-source</i>, by using authorization
+rights of a specific database <i>user</i>. &nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="7" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre><tt>session : ECLI_SESSION
+data_source_name , user_name, password : STRING
+
+...
+
+-- create session object
+create session.</tt><b><tt>make</tt></b><tt> (data_source_name, user_name, password)
+
+-- actual connection
+session.</tt><b><tt>connect
+</tt></b><tt>-- verify everything is ok
+if session.</tt><b><tt>is_connected</tt></b><tt> then
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do_session
+else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; handle_error (session)
+end
+session.</tt><strong><tt>disconnect
+</tt></strong><tt>session.</tt><strong><tt>close</tt></strong></pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p align="center">ECLI_SESSION features introduced so far : <br>
+&nbsp; <br>
+&nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="50%"><b>Command</b> </td>
+        <td valign="top" width="50%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><i>make</i></td>
+        <td valign="top" width="50%">creation</td>
+    </tr>
+    <tr>
+        <td><em>open</em></td>
+        <td>open a new database (synonym of make)</td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><i>connect</i></td>
+        <td valign="top" width="50%">actual connection to
+        database</td>
+    </tr>
+    <tr>
+        <td><em>disconnect</em></td>
+        <td>disconnect from database</td>
+    </tr>
+    <tr>
+        <td><em>close</em></td>
+        <td>be ready for a new opening</td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><b>Queries</b> </td>
+        <td valign="top" width="50%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><i>is_connected</i></td>
+        <td valign="top" width="50%">is the session connected ?</td>
+    </tr>
+</table>
+</center></div>
+
+<p><br>
+&nbsp; </p>
+
+<h1><a name="Statuscheckinganderror"></a>Status checking and
+error handling</h1>
+
+<p>All sensible ECLI classes inherit from the ECLI_STATUS class,
+which provides status checking and error handling. </p>
+
+<p>Standard ODBC error handling information provides : <br>
+&nbsp; <br>
+&nbsp; </p>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="29%"><ul>
+            <li>State&nbsp;</li>
+        </ul>
+        </td>
+        <td valign="top" width="71%"><dl>
+            <dd>ODBC/CLI works as a state machine. The state
+                information is a five character string that
+                identifies the current state.</dd>
+        </dl>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><ul>
+            <li>Native code&nbsp;</li>
+        </ul>
+        </td>
+        <td valign="top" width="71%"><dl>
+            <dd>Integer code which is the native database error
+                code. Codes from an Oracle driver are different
+                from codes from a PostgreSQL driver.</dd>
+        </dl>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><ul>
+            <li>Diagnostic&nbsp;</li>
+        </ul>
+        </td>
+        <td valign="top" width="71%"><dl>
+            <dd>String that &quot;explains&quot; what happened.
+                Beware : with some drivers this message can be
+                empty, even if an error occurred.</dd>
+        </dl>
+        </td>
+    </tr>
+</table>
+
+<p align="center">A basic error handling routine would look like
+this : &nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre><tt>handle_error (status : ECLI_STATUS) is
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if status.</tt><b><tt>has_information_message</tt></b><tt> or status.</tt><b><tt>is_error</tt></b><tt> then
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print (status.</tt><b><tt>cli_state</tt></b><tt>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print (status.</tt><b><tt>native_code</tt></b><tt>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print (status.</tt><b><tt>diagnostic_message</tt></b><tt>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end</tt></pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p align="center">ECLI_STATUS features introduced so far : &nbsp;
+</p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="29%"><b>Queries</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>is_ok</i></td>
+        <td valign="top" width="71%">is there no error ?</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>has_information_message</i></td>
+        <td valign="top" width="71%">there is no error, but an
+        information message is available</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>is_error</i></td>
+        <td valign="top" width="71%">is there an error ?</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>cli_state</i></td>
+        <td valign="top" width="71%">5-character string- ODBC/CLI
+        state code</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>native_code</i></td>
+        <td valign="top" width="71%">integer status code, from
+        the native underlying library</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>diagnostic_message</i></td>
+        <td valign="top" width="71%">string that represent the
+        driver's error diagnostic message</td>
+    </tr>
+</table>
+</center></div>
+
+<p>The classes ECLI_SESSION and ECLI_STATEMENT (see next chapter)
+inherit from ECLI_STATUS, and can be used the same way. </p>
+
+<h1><a name="StatementExec"></a>Statement execution</h1>
+
+<p>Execution of a SQL request is done through an ECLI_STATEMENT
+object. The ECLI_STATEMENT class provides all the features needed
+to execute SQL requests and get the associated results. </p>
+
+<p align="left">The next example shows the execution of 2 types
+of SQL queries : (1) Data Definition Language (DDL) used for
+table creation or structure modification, and (2) Data
+Manipulation Language (DML) used for selection, insertion, and
+update of table content. <br>
+&nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre><tt>stmt : ECLI_STATEMENT
+
+...
+
+create stmt.</tt><strong><tt>make</tt></strong><tt> (session)
+-- DDL statement
+-- | Uncomment next line for using MS Access driver or PostgreSQL
+stmt.</tt><b><tt>set_sql</tt></b><tt> (&quot;CREATE TABLE ECLIESSAI ( %
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % name CHAR(20), fname VARCHAR (20), nbr INTEGER,%
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % bdate DATETIME, price FLOAT)&quot;)
+
+stmt.</tt><b><tt>execute
+</tt></b><tt>if stmt.is_ok then
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; io.put_string (&quot;Table ECLIESSAI created%N&quot;)
+else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; handle_error (stmt)
+end
+</tt>-- DML statements
+
+stmt.<b>set_sql</b> (&quot;INSERT INTO ECLIESSAI VALUES %
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % </tt>('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)&quot;)
+stmt.<b>execute</b></pre>
+        <pre><b>...</b></pre>
+        <pre>stmt.<strong>close</strong></pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p>The first query creates a table whose name is 'ECLIESSAI'. The
+second one shows an insertion, where actual values are provided
+as constants. ODBC/CLI introduces a standard notation to express
+constant values for specific types like dates ( <b>{d
+'yyyy-mm-dd'}</b> ) and timestamps ( <b>{ts 'yyyy-mm-dd
+hh:mm:ss.cc'}</b> ). </p>
+
+<p>As you can notice, the same statement object has been used to
+execute two different queries. When you are finished with one
+query, <i>set_sql</i> allows you to change the query and go
+further with statement execution. </p>
+
+<p align="center">The ECLI_STATEMENT features introduced so far
+are : &nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="29%"><b>Commands</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td><em>make, open</em></td>
+        <td>make, open the statement</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>set_sql</i></td>
+        <td valign="top" width="71%">set SQL string to execute</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>execute</i></td>
+        <td valign="top" width="71%">execute sql string</td>
+    </tr>
+    <tr>
+        <td><em>close</em></td>
+        <td>close the statement. It is not related anymore to the
+        session on which it was open</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><b>Qeries</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>sql</i></td>
+        <td valign="top" width="71%">current sql string</td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="GettingResults"></a>Getting results</h1>
+
+<p>A database selection returns a virtual table known as a <i>result-set</i>.
+This is an actual table since it also can be queried. A
+result-set can be explored by opening a cursor that provides
+access to each row in turn. A row is a set (tuple) of values
+whose characteristics (type, name) correspond to the selected
+table columns. </p>
+
+<p>A database driver needs some specific storage to transfer data
+to and from the database. This storage is <i>typed</i>, i.e. it
+must correspond to a database-specific datatype. </p>
+
+<p>Let us first speak about those data types before actually
+getting results. </p>
+
+<h2>About database data types</h2>
+
+<p>Databases have their own datatypes. They slightly differ from
+one database to another; they also are different from the basic
+Eiffel classes. The ODBC/CLI supports the SQL92 standardized
+datatypes. ECLI only supports the most common data types. This
+could be easily extended in the future. </p>
+
+<p>Low-level data transfer is done using database-oriented values
+that are directly used by the driver as a buffer. A conversion is
+or can be necessary between the driver's buffers and Eiffel
+objects. </p>
+
+<p>ECLI clearly separates objects that are used for data transfer
+from the ones that are used by the application. The data-transfer
+objects inherit from class ECLI_VALUE. Those classes provide
+transfer-specific features while giving access to a preferred
+(default) Eiffel class. </p>
+
+<p align="left">The ECLI_VALUE classes closely model the
+ECLI-supported SQL92 data values, they also provide what we call
+a 'preferred' (default?) Eiffel object. &nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="33%"><b>ECLI</b> </td>
+        <td valign="top" width="33%"><b>SQL92</b> </td>
+        <td valign="top" width="33%"><b>preferred Eiffel</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_CHAR</td>
+        <td valign="top" width="33%">CHAR (n); 1 &lt;= n &lt; 255</td>
+        <td valign="top" width="33%">STRING</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_VARCHAR</td>
+        <td valign="top" width="33%">VARCHAR (n); 1 &lt;= n &lt;
+        255</td>
+        <td valign="top" width="33%">STRING</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_INTEGER</td>
+        <td valign="top" width="33%">INTEGER</td>
+        <td valign="top" width="33%">INTEGER</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_FLOAT</td>
+        <td valign="top" width="33%">FLOAT</td>
+        <td valign="top" width="33%">DOUBLE</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_DOUBLE</td>
+        <td valign="top" width="33%">DOUBLE</td>
+        <td valign="top" width="33%">DOUBLE</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_REAL</td>
+        <td valign="top" width="33%">REAL</td>
+        <td valign="top" width="33%">REAL</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_DATE</td>
+        <td valign="top" width="33%">DATE</td>
+        <td valign="top" width="33%">DT_DATE (Gobo)</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_TIMESTAMP</td>
+        <td valign="top" width="33%">TIMESTAMP</td>
+        <td valign="top" width="33%">DT_DATE_TIME (Gobo)</td>
+    </tr>
+    <tr>
+        <td>ECLI_TIME</td>
+        <td>TIME</td>
+        <td>DT_TIME (Gobo)</td>
+    </tr>
+    <tr>
+        <td valign="top" width="33%">ECLI_LONGVARCHAR</td>
+        <td valign="top" width="33%">LONGVARCHAR</td>
+        <td valign="top" width="33%">STRING</td>
+    </tr>
+</table>
+</center></div>
+
+<p>The originality of this model is to allow for database NULL
+value detection. While other database libraries provide default
+Eiffel values for a NULL database value, ECLI allows reading or
+writing such a NULL value. </p>
+
+<p align="left">The important ECLI_VALUE features are :&nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="50%"><b>Commands</b> </td>
+        <td valign="top" width="50%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><i>set_null</i></td>
+        <td valign="top" width="50%">set value to NULL. There is
+        no Eiffel object correspondance.</td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><b>Queries</b> </td>
+        <td valign="top" width="50%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><i>is_null</i></td>
+        <td valign="top" width="50%">is this a NULL database
+        value ?</td>
+    </tr>
+    <tr>
+        <td valign="top" width="50%"><i>item</i></td>
+        <td valign="top" width="50%">gives access to the
+        preferred Eiffel object correspondance, only when the
+        value is not null.</td>
+    </tr>
+</table>
+</center></div>
+
+<h2>Scanning a result-set</h2>
+
+<p>Using ODBC/CLI, the execution of a SELECT statement implicitly
+opens a cursor on the result-set. Before reading individual
+results, data-transfer objects have to be provided. The <i>set_cursor</i>
+feature provides an array of ECLI_VALUE objects to an
+ECLI_STATEMENT. After that, results can be fetched, one row
+(array of values) at a time. </p>
+
+<p align="left">ECLI_STATEMENT sweeps through the result-set as
+if it were a linear collection (features <i>start</i>, <i>forth</i>,
+<i>off</i>).&nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre>vname :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_CHAR
+vprice :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_DOUBLE
+vbdate :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP
+vfname :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_VARCHAR
+vnbr :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_INTEGER
+<tt>-- selection of tuples
+stmt.set_sql (&quot;SELECT * FROM ECLIESSAI&quot;)
+stmt.execute
+-- get results
+if stmt.is_ok and then stmt.</tt><b><tt>has_results</tt></b><tt> then
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- create result set 'value holders'
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create vname.make (20)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create vnbr.make
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create vprice.make
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create vfname.make (20)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create vbdate.make_first
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- define the container of value holders
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stmt.</tt><b><tt>set_cursor</tt></b><tt> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- iterate on result-set
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stmt.</tt><b><tt>start
+</tt></b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show_column_names (stmt)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; until
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stmt.</tt><b><tt>off
+</tt></b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; loop
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show_result_row (stmt)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stmt.</tt><b><tt>forth
+</tt></b><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end
+end</tt></pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p align="left">ECLI_STATEMENT features related to getting
+results : &nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="29%"><b>Commands</b> </td>
+        <td valign="top" width="71%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>start</i></td>
+        <td valign="top" width="71%">position cursor to first row</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>forth</i></td>
+        <td valign="top" width="71%">advance cursor forth</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>set_cursor</i></td>
+        <td valign="top" width="71%">set array of value objects
+        to be used as cursor storage</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><b>Queries</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>off</i></td>
+        <td valign="top" width="71%">is cursor off any valid
+        position (either 'before' or 'after') ?</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>has_results</i></td>
+        <td valign="top" width="71%">does the last SQL execution
+        lead to a result-set (even empty) ? True for selection
+        queries or stored procedures. False for updates and
+        insertions.</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>cursor</i></td>
+        <td valign="top" width="71%">array of current result
+        objects</td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="Getting esult-setmetadata"></a>Getting result-set
+metadata</h1>
+
+<p align="left">It is often interesting to get a <i>description</i>
+of a result-set, known as metadata. The following example shows
+how it is possible to get the names of the resulting
+rows&nbsp;:&nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre>show_column_names (stmt : ECLI_STATEMENT) is
+&nbsp;&nbsp;&nbsp; local
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i, width : INTEGER
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s : STRING
+&nbsp;&nbsp;&nbsp; do
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stmt.<b>describe_cursor
+</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i := 1
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; until
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i&nbsp; stmt.<b>cursor_description</b>.count
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; loop
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width := stmt.cursor_description.item (i).<em>column_precision</em>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create s.make (width)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s.append (stmt.cursor_description.item (i).<em>name</em>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- pad with blanks
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width := width - s.count
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; until
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width &lt;= 0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; loop
+&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s.append_character (' ')
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width := width - 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; io.put_string (s)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if i &lt;= stmt.cursor_description.count then
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; io.put_character ('|')
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i := i + 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; io.put_character ('%N')
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end</pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p>The feature <i>describe_cursor</i> of ECLI_STATEMENT produces
+an array, <i>cursor_description</i>, of objects. These objects
+are of type ECLI_COLUMN_DESCRIPTION. </p>
+
+<p align="left">ECLI_STATEMENT features related to result-set
+metadata are :</p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="29%"><b>Commands</b> </td>
+        <td valign="top" width="71%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>describe_cursor</i></td>
+        <td valign="top" width="71%">get metadata about current
+        result-set.</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><b>Queries</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>cursor_description</i></td>
+        <td valign="top" width="71%">array of
+        ECLI_COLUMN_DESCRIPTION objects, describing the current
+        cursor columns.</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>result_column_count</i></td>
+        <td valign="top" width="71%">number of columns in the
+        result-set. The size of the array passed by <i>set_cursor</i>
+        is checked against this value.</td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="ParameterizedStmts"></a>Parameterized statements</h1>
+
+<p>It is common to use SQL queries that look the same, but with
+different constant values. An example of this is when inserting a
+lot of data in the same table. One can for example read a file
+with data, and use the same INSERT query, but with different <i>parameters</i>.
+</p>
+
+<p>A first solution would be to concatenate some query string
+template with parameter values. Those values should then be
+expressed as constants. This is error-prone. This is also not a
+solution when you want to insert some binary data like sound or
+pictures. </p>
+
+<p>Parameterized statements are another solution. Parameter
+values are passed before query execution. The SQL syntax for that
+is simple : prefix the parameter names with a question mark. NOTE
+: This is not standard ODBC/CLI. In ODBC/CLI, parameters are
+positional. In ECLI, they are named. </p>
+
+<p align="left">An insert statement like this &nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td bgcolor="#FFFF99"><pre>INSERT INTO ECLIESSAI VALUES&nbsp;<tt>&nbsp;
+</tt>&nbsp;&nbsp;&nbsp; ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)</pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p align="left">can be parameterized like this &nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td bgcolor="#FFFF99"><pre>INSERT INTO ECLIESSAI VALUES&nbsp;
+<tt>&nbsp;&nbsp;&nbsp; </tt>(<b>?firstname, ?lastname, ?number, ?bdate, ?price</b>)</pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p align="left">Parameters are passed either by providing an
+array of ECLI_VALUE objects, or individually by name.&nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre>vname, othername :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_CHAR
+vprice :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_DOUBLE
+vbdate :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP
+vfname :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_VARCHAR
+vnbr :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_INTEGER
+<tt>...
+create vname.make (20)
+create vnbr.make
+create vprice.make
+create vfname.make (20)
+create vbdate.make_first
+</tt>-- parameterized insertion
+<tt>stmt.set_sql (&quot;</tt>INSERT INTO ECLIESSAI VALUES %
+<tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>&quot;)
+
+-- (STEP 1) set parameters by array
+stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
+
+-- set values
+vname.set_item (&quot;Henry&quot;)
+vfname.set_item (&quot;Black&quot;)
+vprice.set_item (125.8)
+vnumber.set_item (5)
+vbdate.set_date (1995, 8, 19)
+
+-- (STEP 2) bind them
+stmt.</tt><b><tt>bind_parameters
+</tt></b><tt>-- (STEP 3) execute statement
+stmt.execute
+-- inserted tuple (&quot;Henry&quot;, &quot;Black&quot;, 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+
+-- test execution status
+if stmt.is_ok then
+&nbsp;&nbsp;&nbsp; print (&quot;Tuple inserted&quot;)
+else
+&nbsp;&nbsp;&nbsp; handle_error (stmt)
+end
+
+-- (STEP 4) set parameter by name
+--&nbsp; a new value object is provided = parameters must be bound again
+create othername.make (20); other_name.set_item (&quot;Jim&quot;)
+stmt.</tt><b><tt>put_parameter</tt></b><tt> (vname, &quot;firstname&quot;)
+stmt.</tt><b><tt>bind_parameters
+</tt></b><tt>stmt.execute
+-- inserted tuple (&quot;Jim&quot;, &quot;Black&quot;, 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+
+-- (STEP 5) change parameter object state = binding still apply
+othername.set_item (&quot;Louis&quot;)
+stmt.execute
+-- inserted tuple (&quot;Louis&quot;, &quot;Black&quot;, 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+...</tt></pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<ul>
+    <li>Step 1 : parameters objects are passed in an array -
+        set_parameters</li>
+    <li>Step 2 : Parameters must be bound.&nbsp; This way, they
+        are considered by the underlying driver as transfer
+        buffers from the application to the database.</li>
+    <li>Step 3 : Statement is executed</li>
+    <li>Step 4 : A new parameter object is passed by name.&nbsp;
+        i.e : this object replaces the &quot;firstname&quot;
+        parameter (rank 1) in the parameters array.&nbsp; The
+        parameters must then be bound again so that the
+        underlying driver can get advised of this modification.</li>
+    <li>Step 5 : Changing the value contained by a parameter
+        (through feature set_item), updates the transfer buffer
+        content for the associated parameter.&nbsp; The next
+        execution shall take this new value into account.&nbsp;
+        Parameters need no be bound again.</li>
+</ul>
+
+<p align="left">ECLI_STATEMENT features introduced so far :
+&nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="5" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" width="29%"><b>Commands</b> </td>
+        <td valign="top" width="71%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>set_parameters</i></td>
+        <td valign="top" width="71%">set array of parameters.</td>
+    </tr>
+    <tr>
+        <td width="29%"><i>put_parameter</i></td>
+        <td width="71%">put parameter object, by name.</td>
+    </tr>
+    <tr>
+        <td width="29%"><i>bind_parameters</i></td>
+        <td width="71%">bind parameters to statement so that the
+        next execution takes them into account</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><b>Queries</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>bound_parameters</i></td>
+        <td valign="top" width="71%">True when parameters have
+        been bound.</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>parameters</i></td>
+        <td valign="top" width="71%">array of current parameter
+        objects.</td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="OptimizingforPerformance"></a>Optimizing for
+&quot;performance&quot;</h1>
+
+<p>There are times when performance matters a lot.&nbsp;
+Optimizing performance can be done at the database level, and at
+the application level. </p>
+
+<h2>Use database indexes</h2>
+
+<p>At the database level, it is for example advised to define
+indexes on columns that are primary keys, search or sort keys.
+This can improve performance DRAMATICALLY. For example, in a
+heavy batch application, it has been possible to cut application
+time by 10, and database server time by 100 (hundred) by creating
+an appropriate (selective enough) index! This performance
+improvement did not involve <em>any</em> code optimization.</p>
+
+<h2>Parameterize and prepare statements</h2>
+
+<p>At the application level, performance gains can be achieved by
+some actions :</p>
+
+<ul>
+    <li><b>use parameterized statement</b>.&nbsp; The transfer
+        between application memory and the database is
+        optimized.&nbsp; When using an appropriate type, no
+        conversion is needed.&nbsp; When using constants in the
+        query string, constants must be parsed and then converted
+        from string to the appropriate type.</li>
+    <li><b>prepare statements before execution</b>.&nbsp; A
+        database server executes a query in successive
+        steps.&nbsp; Statement preparation leads to an access
+        plan.&nbsp; Execution of a prepared statement leads to
+        access plan execution only (step 5).&nbsp; Non-prepared
+        statements involve the whole cycle (step 1 through 5),
+        each time they are executed.</li>
+</ul>
+
+<ol>
+    <li><ol>
+            <li>Parse statement</li>
+            <li>Validate statement</li>
+            <li>Optimize</li>
+            <li>Generate access plan</li>
+            <li>Execute access plan</li>
+        </ol>
+    </li>
+</ol>
+
+<p>As one can see, parameterized statement preparation can
+achieve dramatic performance improvements if the same statement
+has to be executed many times with different parameters. </p>
+
+<p>ECLI provides such features in ECLI_STATEMENT. </p>
+
+<p align="left">Here is the last example, revisited.&nbsp; </p>
+<div align="center"><center>
+
+<table border="0" cellpadding="3" cellspacing="0" width="640">
+    <tr>
+        <td valign="top" bgcolor="#FFFF99"><pre><font
+color="#999999">vname, othername :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_CHAR
+vprice :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_DOUBLE
+vbdate :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP
+vfname :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_VARCHAR
+vnbr :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECLI_INTEGER
+<tt>...
+create vname.make (20)
+create vnbr.make
+create vprice.make
+create vfname.make (20)
+create vbdate.make_first
+</tt>-- parameterized insertion
+<tt>stmt.set_sql (&quot;</tt>INSERT INTO ECLIESSAI VALUES %
+<tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>&quot;)
+
+</tt></font><tt>-- </tt><font color="#FF0000"><b><tt>(STEP 0) statement preparation &lt;===========
+</tt></b></font><tt>stmt.</tt><b><tt>prepare
+
+</tt></b><font color="#999999"><tt>-- (STEP 1) set parameters by array
+stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
+
+-- set values
+...
+
+-- (STEP 2) bind them
+stmt.</tt><b><tt>bind_parameters
+</tt></b><tt>-- (STEP 3) execute statement
+stmt.execute
+-- inserted tuple (&quot;Henry&quot;, &quot;Black&quot;, 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+
+...
+
+-- (STEP 4) set parameter by name - other way to set a parameter
+--&nbsp; a new value object is provided = parameters must be bound again
+create othername.make (20); other_name.set_item (&quot;Jim&quot;)
+stmt.</tt><b><tt>put_parameter</tt></b><tt> (vname, &quot;firstname&quot;)
+stmt.</tt><b><tt>bind_parameters
+</tt></b><tt>stmt.execute
+-- inserted tuple (&quot;Jim&quot;, &quot;Black&quot;, 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+
+-- (STEP 5) change parameter object state = binding still apply
+othername.set_item (&quot;Louis&quot;)
+stmt.execute
+-- inserted tuple (&quot;Louis&quot;, &quot;Black&quot;, 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+...</tt></font></pre>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<p>The only difference is the addition of Step 0, where the
+statement is prepared. </p>
+
+<p>This prepares the statement, and enters&nbsp;
+'prepared_execution_mode' ( <i>is_prepared_execution_mode</i> =
+True).&nbsp; The statement stays in this mode, unless the <i>set_immediate_execution_mode
+</i>is called. </p>
+
+<p align="left">ECLI_STATEMENT features introduced so far :
+&nbsp; </p>
+<div align="center"><center>
+
+<table border="1" cellpadding="3" width="640">
+    <tr>
+        <td valign="top" width="29%"><b>Commands</b> </td>
+        <td valign="top" width="71%"><b>Description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>prepare</i></td>
+        <td valign="top" width="71%">Prepare the associated sql
+        query, automatically falling from <em>immediate</em> to <em>prepared</em>
+        execution mode.</td>
+    </tr>
+    <tr>
+        <td><i>set_prepared_execution_mode</i></td>
+        <td>Manual transition to prepared execution mode.</td>
+    </tr>
+    <tr>
+        <td><i>set_immediate_execution_mode</i></td>
+        <td>Manual transition to immediate execution mode</td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><b>Queries</b> </td>
+        <td valign="top" width="71%"><b>description</b> </td>
+    </tr>
+    <tr>
+        <td valign="top" width="29%"><i>is_prepared_execution_mode</i></td>
+        <td valign="top" width="71%">True after <i>prepare</i>,
+        or <i>set_prepared_execution_mode.</i></td>
+    </tr>
+</table>
+</center></div>
+
+<h2>Garbage Collection of ECLI objects</h2>
+
+<p>ECLI objects are tightly associated with corresponding
+ODBC/CLI handles and data-structures.&nbsp; Objects are arranged
+in a &quot;uses-relationship&quot; : ECLI_ENVIRONMENT &lt;-&gt;
+ECLI_SESSION&lt;-&gt; ECLI_STATEMENT.</p>
+
+<p>ECLI_SESSION objects depend on ECLI_ENVIRONMENT (which is a
+singleton). The relationship is implicitely established by
+ECLI_SESSION.make or ECLI_SESSION.open. The relationship
+disappears by calling ECLI_SESSION.close</p>
+
+<p>ECLI_STATEMENT objects depend on their associated
+ECLI_SESSION. The relationship is explicitely established by
+ECLI_STATEMENT.make or ECLI_STATEMENT.open. The relationship
+disappears by calling ECLI_STATEMENT.close.</p>
+
+<p>Garbage collection is allowed provided that the
+&quot;slave&quot; objects have been disconnected from their
+&quot;master&quot; object (closed).</p>
+
+<p>At garbage-collection time an exception is raised if any slave
+object stay related.</p>
+
+<h3>Open</h3>
+
+<p>When an ECLI_SESSION is created, it is automatically attached
+to the corresponding ECLI_ENVIRONMENT.&nbsp; This works also for
+an ECLI_STATEMENT with respect to its associated ECLI_SESSION. </p>
+
+<p>An ECLI object cannot be <em>opened</em> until it is <i>closed</i>.
+</p>
+
+<h3>Close</h3>
+
+<p>When you are done with an ECLI object, it is possible to close
+it.&nbsp; That is to say such an object (in 'closed' state) is
+ready for garbage collection.&nbsp; Such a closed object is not
+usable any more ... except when it is opened again. &nbsp; </p>
+
+<h1><a name="Conclusion"></a>Conclusion</h1>
+
+<p>This tutorial has shown the most important features of ECLI. </p>
+
+<p>Other more advanced features can be found in the class
+interfaces, in the examples, and with the tool application <i>query_assistant</i>.
+</p>
+
+<p>For example, we did not speak about the class
+ECLI_VALUE_FACTORY that allows to compose a cursor array with the
+good ECLI_VALUE descendant objects. </p>
+
+<p>We also did not present <i>query_assistant</i>, a tool that
+generates classes, which encapsulate SQL queries. </p>
+
+<p>The aim of ECLI is to provide a simple but efficient
+Relational Database access library for the entire Eiffel
+community. Give it a try. Report problems and send suggestions.
+You are welcome. </p>
+</body>
+</html>

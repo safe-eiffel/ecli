@@ -339,6 +339,12 @@ void ecli_c_timestamp_set_second (EIF_POINTER tm, EIF_INTEGER v) { ((TIMESTAMP_S
 void ecli_c_timestamp_set_fraction (EIF_POINTER tm, EIF_INTEGER v) { ((TIMESTAMP_STRUCT*)tm)->fraction = (SQLUINTEGER) v;}
 
 
+/* size of structures */
+EIF_INTEGER ecli_c_sizeof_date_struct () {return sizeof(DATE_STRUCT);}
+EIF_INTEGER ecli_c_sizeof_time_struct () {return sizeof(TIME_STRUCT);}
+EIF_INTEGER ecli_c_sizeof_timestamp_struct () {return sizeof(TIMESTAMP_STRUCT);}
+
+
 /* Return codes */
 
 EIF_INTEGER	ecli_c_ok () {

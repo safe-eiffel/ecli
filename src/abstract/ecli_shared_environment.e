@@ -10,7 +10,7 @@ class
 
 feature -- Access
 
-	environment : ECLI_ENVIRONMENT is
+	shared_environment : ECLI_ENVIRONMENT is
 		once
 			!!Result.make
 		end

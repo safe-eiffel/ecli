@@ -1,0 +1,94 @@
+system
+	test1
+
+root
+	TEST1: make
+
+default
+	assertion(require)
+	assertion(ensure)
+	assertion(check)
+	assertion(loop)
+	assertion(invariant)
+	address_expression(no)
+	array_optimization(no)
+	console_application(yes)
+	dead_code_removal(yes)
+	dynamic_runtime(no)
+	exception_trace(no)
+	inlining(no)
+	multithreaded(no)
+	check_vape(no)
+	arguments("ecli_db u p")
+	arguments(" ")
+	disabled_debug(yes)
+	debug(no)
+	line_generation(no)
+	profile(no)
+	trace(no)
+
+
+--precompiled ("$EIFFEL5\precomp\spec\$PLATFORM\base");
+-- Eiffel CLI DB library
+-- Gobo Eiffel Utility Library
+-- Gobo Eiffel Kernel Library
+-- Gobo Eiffel Structure Library
+-- EiffelBase
+-- Suppress ds_cursor cluster of GOBO since it does not exist anymore in GOBO2.0
+
+cluster
+	ecli_db:		"$ECLI/examples/test1"
+
+
+	ecli_src:		"$ECLI/src"
+
+	abstract (ecli_src):		"$/abstract"
+
+	ecli_spec (ecli_src):		"$/spec"
+
+	ecli_spec_ise (ecli_spec):		"$/Ise"
+
+	ecli_data (ecli_src):		"$/data"
+
+	ecli_pattern (ecli_src):		"$/pattern"
+
+	ut_command:		"$GOBO\library\utility\command"
+
+	ut_error:		"$GOBO\library\utility\error"
+
+	ut_formatter:		"$GOBO\library\utility\formatter"
+
+	ut_support:		"$GOBO\library\utility\support"
+
+	kl_kernel:		"$GOBO\library\kernel"
+
+	kl_kernel_spec:		"$GOBO\library\kernel\spec\ise"
+
+	ds_container:		"$GOBO\library\structure\container"
+
+	ds_dispenser:		"$GOBO\library\structure\dispenser"
+
+	ds_list:		"$GOBO\library\structure\list"
+
+	ds_sort:		"$GOBO\library\structure\sort"
+
+	ds_support:		"$GOBO\library\structure\support"
+
+	ds_table:		"$GOBO\library\structure\table"
+
+	all base:		"$EIFFEL5\library\base"
+		exclude
+			"desc"; "table_eiffel3"; 
+		end
+
+	gobo_time:		"$GOBO\library\time\date"
+
+	gobo_time_spec:		"$GOBO\library\time\spec\ise"
+
+external
+
+	object:
+		"ODBC32.lib",
+		"$ECLI\src\spec\ise\windows\ecli_c.lib"
+
+end

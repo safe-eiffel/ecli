@@ -16,7 +16,7 @@ inherit
 			sql_type_timestamp, sql_type_date, sql_type_time,
 			sql_real, sql_double, sql_smallint, sql_float, sql_decimal, sql_numeric
 		end
-			
+
 creation
 	make
 
@@ -36,60 +36,48 @@ feature -- Status report
 
 	valid_type (type_code : INTEGER) : BOOLEAN is
 		do
-			Result := valid_types.has (type_code)
+			Result := array_routines.has(valid_types, type_code)
 		end
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
 
 feature -- Miscellaneous
 
 	create_double_value is
 		do
-			create {ECLI_DOUBLE}last_result.make
+			!ECLI_DOUBLE!last_result.make
 		end
 
 	create_real_value is
 		do
-			create {ECLI_REAL}last_result.make
+			!ECLI_REAL!last_result.make
 		end
 
 	create_integer_value is
 		do
-			create {ECLI_INTEGER}last_result.make
+			!ECLI_INTEGER!last_result.make
 		end
 
 	create_char_value (column_precision : INTEGER) is
 		do
-			create {ECLI_CHAR}last_result.make (column_precision)
+			!ECLI_CHAR!last_result.make (column_precision)
 		end
 
 	create_varchar_value (column_precision : INTEGER) is
 		do
-			create {ECLI_VARCHAR}last_result.make (column_precision)
+			if column_precision > 254 then
+				!ECLI_LONGVARCHAR!last_result.make (column_precision)
+			else
+				!ECLI_VARCHAR!last_result.make (column_precision)
+			end
 		end
 
 	create_date_value is
 		do
-			create {ECLI_DATE}last_result.make_first
+			!ECLI_DATE!last_result.make_first
 		end
 
 	create_timestamp_value is
 		do
-			create {ECLI_TIMESTAMP}last_result.make_first
+			!ECLI_TIMESTAMP!last_result.make_first
 		end
 
 	create_time_value is
@@ -127,10 +115,11 @@ feature -- Basic operations
 					create_date_value
 			elseif db_type = sql_type_timestamp then
 					create_timestamp_value
-			end					
+			end
 		ensure
-			last_result /= Void implies 
-				(last_result.column_precision >= column_precision and last_result.decimal_digits >= decimal_digits)
+			last_result /= Void implies
+				((last_result.column_precision >= column_precision or db_type = sql_float) and last_result.decimal_digits >= decimal_digits)
+			-- condition is relaxed for sql_float.  Oracle's NUMBER is given as sql_float with precision 38 !!!
 		end
 
 feature -- Obsolete
@@ -146,6 +135,8 @@ feature {NONE} -- Implementation
 			sql_real, sql_double, sql_smallint, sql_float, sql_decimal, sql_numeric
 			>>
 		end
+
+	array_routines : expanded KL_ARRAY_ROUTINES[INTEGER]
 
 invariant
 	invariant_clause: -- Your invariant here

@@ -33,7 +33,7 @@ feature -- Access
 				Result := Void
 			else
 				ecli_c_value_copy_value (buffer, $actual_value)
-				create Result
+				!! Result
 				Result.set_item (actual_value)
 			end
 		end

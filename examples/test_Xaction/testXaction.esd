@@ -1,0 +1,59 @@
+system   testXaction -- name of the executable module (possibly with path)
+root     transact -- name of the root class
+
+creation make -- name of the creation procedure
+
+cluster       -- list of all clusters of the system (including libraries)
+	"."				end
+
+	[ECLI	"$ECLI/src"] end
+	[Gobo	"$GOBO/library"]	end
+	[Kernel    "$VE_Lib/Kernel"]	end
+
+callback      -- list of callbacks of the system
+interface     -- list of interface classes
+makepath      -- list of directories where make utility will be invoked
+link          -- list of objects to be linked into target executable
+	"$ECLI/src/spec/ve/windows/ecli_c.obj"
+	"ODBC32.lib"
+option        -- system wide options
+
+	-- Output control options
+	target             exe console
+	run_time_in_dll    off
+
+	-- Debugging control options
+	debug              on  -- Symbolic information generation control
+	debug instructions off -- Debug instructions generation control
+
+	-- Linker control options
+	linker             microsoft -- Type of linker which will be used.
+	map                off -- map file creation control
+	no_default_lib     off -- This works only with default linker
+                         -- allows to control run-time linkage
+	multithreading     off -- Link single-thread libraries
+	-- Assertions control options
+	assertions         on  -- All assertions are switched off
+	                       -- assertions on allows to control assertions
+	require            on
+	ensure             off
+	class invariant    off
+	check              on
+	loop variant       off
+	loop invariant     off
+
+	-- Optimizations control options
+	optimize fst         off -- Dynamic access to feature will be optimized
+	fst_expansion_factor 2   -- FST/CAAST expansion factor
+	optimize inline      off -- Access to ARRAY and STRING will be optimized
+	optimize constants   on  -- Access to constants will be optimized
+	optimize once        on  -- Access to once functions will be optimized
+	optimize jumps       on  -- Jumps optimization are enabled
+	optimize reloads     on  -- Register reloads optimizations enabled
+	optimize dead_code   on  -- Skip code generation for dead code (low level)
+
+	-- Finalization control
+	finalize          off  -- Finalize mode switch
+	optimize leaves   off  -- Access to leaf classes optimization
+        optimize calls    off  -- Inaccessible feature calls removing
+end

@@ -1,23 +1,32 @@
+** HERE ARE SOME PORTABILITY PROBLEMS I HAVE ENCOUNTERED, WITH THEIR SOLUTION **
 Language
 --------
 
 VUAR4: $feature valid only if not constant feature.
 	SE : Does not work for local entities.
 	ISE: Works for local entities (is it valid?)
-	
+    => 'dummy' private attributes have been used to overcome this problem.
 	
 Libraries
 ---------
 
-Different names, same semantics
+* Visual Eiffel
+	STRING.make : not same semantics as with ISE or SE
+	VE:: STRING.make (n) ensure count = n
+	{ISE,SE}::STRING.make (n) ensure count=0; capacity=n
+
+* Obsolete
+SE::STRING.empty => is_empty
+
+* Different names, same semantics
 ISE::STRING.clear_all ~= SE::STRING.wipe_out
 	ensure count = 0
 ISE::STRING.wipe_out /= SE:: STRING.wipe_out
 	ISE:: ensure count = 0 and area /= old area
 
-Same name, different semantics
+* Same name, different semantics
 ISE::STRING.index_of (c : CHARACTER; begin : INTEGER) : INTEGER
 SE::STRING.index_of (c : CHARACTER) : INTEGER
 
-Absent in SE
+* Absent in SE
 ISE::STRING.append_integer (i : INTEGER)

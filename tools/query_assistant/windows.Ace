@@ -2,7 +2,7 @@ system
 	query_assistant
 
 root
-	ECLI_QUERY_ASSISTANT (query_assistant): "make"
+	QUERY_ASSISTANT (query_assistant): "make"
 
 default
 	assertion (all)
@@ -12,7 +12,7 @@ default
 	dead_code_removal (yes)
 	profile (no)
 	line_generation (no)
-	debug  (no)
+	debug  (yes)
 	array_optimization (no)
 	inlining (no)
 	inlining_size ("4")

@@ -15,9 +15,6 @@ inherit
 	ECLI_HANDLE
 
 	ECLI_EXTERNAL_API
-		export 
-			{NONE} all
-		end
 
 	ECLI_STATUS
 
@@ -27,7 +24,8 @@ inherit
 			unsubscribe as unregister_session,
 			has_subscribed as is_registered_session,
 			subscribers as sessions,
-			impl_subscribers as impl_sessions
+			impl_subscribers as impl_sessions,
+			count as sessions_count
 		export
 			{ECLI_SESSION}
 				register_session,
@@ -48,61 +46,31 @@ feature -- Initialization
 			set_status (ecli_c_allocate_environment ($handle))
 		end
 
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
+	is_ready_for_disposal : BOOLEAN is
+		do
+			Result := sessions_count = 0
+		end
+	
+	disposal_failure_reason : STRING is
+		once
+			Result := "ECLI_SESSIONS still open; check your code and close them before exiting."
+		end
+			
 	release_handle is
 			-- release environment handle
 		do
-			-- | Do not use iterator here, since ECLI_SESSION.environment_release
-			-- | unsubscribes the session, thereby modifying the sessions list.
-			-- | Using an iterator would raise an precondition-exception.
-			from 
-			until 
-				sessions.is_empty 
-			loop 
-				sessions.first.environment_release (Current) 
-			end
 			-- | actual release of the handle.
 			set_status (ecli_c_free_environment (handle))
-			handle := default_pointer
+			set_handle (default_pointer)
 		end
 
-
-		get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- to be redefined in descendant classes
 		do
 			Result := ecli_c_environment_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
-
 		end
 
 invariant

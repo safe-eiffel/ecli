@@ -1,4 +1,3 @@
-
 insert into PARTICIPANT values (1, 'Jim', 'Morrison', 'Bluberry str.', '10A', 29435, 'Livingstone', 'California', 'USA')
 ;
 insert into PARTICIPANT values (2, 'Arthur', 'Van Hove', 'Coffee Corner', '1.2Cup', 90876, 'JavaSick', 'Louisiana', 'USA')
@@ -83,6 +82,5 @@ insert into REGISTRATION values (20, 4, {ts '2000-07-28 10:02:03'}, 1000, 200)
 ;
 insert into REGISTRATION values (21, 2, {ts '2000-07-23 10:22:03'}, 1000, 500)
 ;
-
 q
 ;

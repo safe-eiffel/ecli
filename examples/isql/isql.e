@@ -22,21 +22,31 @@ feature -- Initialization
 			if args.argument_count < 3 then
 				io.put_string ("Usage: isql <data_source> <user_name> <password>%N")
 			else
-				create session.make (args.argument (1), args.argument (2), args.argument (3))
+				!! session.make (args.argument (1), args.argument (2), args.argument (3))
 				session.connect
 				if session.has_information_message then
 					io.put_string (session.cli_state) 
 					io.put_string (session.diagnostic_message)
 				end
 				if session.is_connected then
-					io.put_string ("Connected !!!%N")
+					io.put_string ("+ Connected %N")
+					print_help
 				end
 				-- definition of statement on session
-				create statement.make (session)
+				!! statement.make (session)
 				do_session
 			end;
 		end
 				
+	print_help is
+		do
+			io.put_string ("Enter a SQL or a command, then a single ';' on a line%N")
+			io.put_string (" ;%Texecute last SQL or command%N")
+			io.put_string ("Commands%N")
+			io.put_string (" h%Tprint this message%N")
+			io.put_string (" q%Tquit%N")
+		end
+		
 	do_session is
 		do
 			from
@@ -44,20 +54,24 @@ feature -- Initialization
 			until
 				last_command.is_equal ("q")
 			loop
-				statement.set_sql (last_command)
-				statement.execute
-				if not statement.is_ok then
-					print_error
+				if last_command.is_equal ("h") then
+					print_help
 				else
-					if statement.has_information_message then
-						print_error                                             
-					end
-					if statement.has_results then
-						statement.describe_cursor
-						show_column_names (statement)
-						show_result_rows (statement)
+					statement.set_sql (last_command)
+					statement.execute
+					if not statement.is_ok then
+						print_error
 					else
-						io.put_string ("OK%N")
+						if statement.has_information_message then
+							print_error                                             
+						end
+						if statement.has_results then
+							statement.describe_cursor
+							show_column_names (statement)
+							show_result_rows (statement)
+						else
+							io.put_string ("OK%N")
+						end
 					end
 				end
 				read_command
@@ -83,7 +97,7 @@ feature -- Initialization
 				i > stmt.cursor_description.count
 			loop
 				width := stmt.cursor_description.item (i).column_precision
-				create s.make (width)
+				!! s.make (width)
 				s.append (stmt.cursor_description.item (i).name)
 				-- pad with blanks
 				npad := width - s.count
@@ -154,8 +168,10 @@ feature -- Basic Operations
 		end
 
 	last_command : STRING is
+		local
+			string_routines : expanded KL_STRING_ROUTINES
 		once
-			create Result.make (1000)
+			 Result := string_routines.make (1000)
 
 		end
 
@@ -177,7 +193,7 @@ feature -- Basic Operations
 			
 	formatting_buffer : MESSAGE_BUFFER is
 		once
-			create Result.make (1000)
+			!! Result.make (1000)
 		end
 	
 	session : ECLI_SESSION
@@ -193,11 +209,11 @@ feature -- Basic Operations
 			from
 				i := 1
 				cols := statement.result_column_count
-				create cursor.make (1, cols)
+				!! cursor.make (1, cols)
 			until
 				i > cols
 			loop
-				create v.make (statement.cursor_description.item (i).column_precision)
+				!! v.make (statement.cursor_description.item (i).column_precision)
 				cursor.put (v, i)
 				i := i + 1
 			end

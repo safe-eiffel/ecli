@@ -25,6 +25,7 @@ Compiler portability
 ====================
 * ISE Eiffel
 * SmallEiffel
+* Visual Eiffel
 
 	Platforms :
 * Windows
@@ -33,9 +34,9 @@ Compiler portability
 Structure
 =========
 	ecli
-	+ doc		---- documentation; see index.html
+	+ doc		---- documentation; see index.html and tutorial.html
 	+ src		---- sources
 	+ examples	---- some examples
 	+ tools		---- tools, like 'query assistant'
 
- 
+DOCUMENTATION : doc/index.html, tutorial.html

@@ -5,7 +5,7 @@ indexing
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
 class
-	qa_example
+	QA_EXAMPLE
 
 creation
 
@@ -14,13 +14,14 @@ creation
 feature -- Initialization
 
 	make is
-			-- qa_example
+			-- QA_EXAMPLE
 		local
 			args :  expanded ARGUMENTS
 		do
+			io.put_string ("Selection of registered participants, by remaining amount to pay%N")
 			-- session opening
 			if args.argument_count < 3 then
-				io.put_string ("Usage: qa_example <data_source> <user_name> <password>%N")
+				io.put_string ("Usage: QA_EXAMPLE <data_source> <user_name> <password>%N")
 			else
 				create session.make (args.argument (1), args.argument (2), args.argument (3))
 				session.connect
@@ -44,6 +45,9 @@ feature -- Initialization
 			until
 				last_command.is_equal ("0")
 			loop
+				io.put_string ("Participants, who still have more than $")
+				io.put_string (last_command)
+				io.put_string (" to pay%N")
 				from
 					cursor.start (last_command.to_double)
 				until
@@ -75,7 +79,7 @@ feature -- Basic Operations
 		-- prompt user
 		do
 			last_command.copy("")
-			io.put_string ("enter value>")
+			io.put_string ("enter value (0=quit) >")
 			io.read_line
 			last_command.append (io.last_string)
 		end
@@ -109,10 +113,10 @@ feature -- Basic Operations
 	
 	session : ECLI_SESSION
 	
-	cursor : PARTICIPANT_BY_REMAINING_CURSOR
+	cursor : PARTICIPANT_BY_REMAINING
 
 
-end -- class qa_example
+end -- class QA_EXAMPLE
 --
 -- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>

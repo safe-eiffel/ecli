@@ -132,24 +132,16 @@ feature -- Initialization
             name := new_name
         end
 ----------------------
-feature { NONE }
-
-    Error      : INTEGER is 0
-    Read       : INTEGER is 1
-    Write      : INTEGER is 2
-    Read_write : INTEGER is 3
-    Append     : INTEGER is 4
-    Closed     : INTEGER is 5
-
-    fdata         : POINTER
-    flags         : INTEGER
-    error_message : STRING
-----------------------
 
     exists : BOOLEAN is
 
+        local
+            ah : ECLI_EXTERNAL_TOOLS
+            p  : POINTER
         do
-            result := (fdata /= Default_pointer)
+            create ah
+            p := ah.string_to_pointer (name)
+            result := (fdata /= Default_pointer) or else ext_exists (p.item)
         end
 ----------------------
 
@@ -251,6 +243,19 @@ feature { NONE }
             end
         end
 ----------------------
+feature { NONE }
+
+    Error      : INTEGER is 0
+    Read       : INTEGER is 1
+    Write      : INTEGER is 2
+    Read_write : INTEGER is 3
+    Append     : INTEGER is 4
+    Closed     : INTEGER is 5
+
+    fdata         : POINTER
+    flags         : INTEGER
+    error_message : STRING
+----------------------
 
     ext_open_read (p : POINTER) : POINTER is
 
@@ -298,6 +303,13 @@ feature { NONE }
         alias "FILE_error_message"
 
         end
+
+---------------------
+
+	ext_exists (p : POINTER) : BOOLEAN is
+		external "C"
+		alias "FILE_exists"
+		end
 
 end -- class FILE
 

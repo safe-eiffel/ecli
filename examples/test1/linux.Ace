@@ -1,8 +1,8 @@
 system
-	e_cli_db
+	test1
 
 root
-	E_CLI_DB (e_cli_db): "make"
+	TEST1 (test1): "make"
 
 default
 	assertion (all)
@@ -21,7 +21,7 @@ default
 
 cluster
 
-	e_cli_db : "$ECLI/examples/test1";
+	test1 : "$ECLI/examples/test1";
 
 	ecli_src : "$ECLI/src";
 	
