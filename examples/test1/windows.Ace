@@ -1,5 +1,5 @@
 system
-	e_cli_db
+	test1
 
 root
 	TEST1 (e_cli_db): "make"
