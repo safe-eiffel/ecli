@@ -2,7 +2,7 @@ system
 	query_assistant
 
 root
-	ECLI_QUERY_ASSISTANT (query_assistant): "make"
+	QUERY_ASSISTANT (query_assistant): "make"
 
 default
 	assertion (all)
