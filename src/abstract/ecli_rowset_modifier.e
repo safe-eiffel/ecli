@@ -58,8 +58,6 @@ feature -- Access
 	
 	parameter_anchor : ECLI_ARRAYED_VALUE is do end
 	
-feature -- Measurement
-	
 feature -- Status report
 
 	valid_parameters_count (a_row_count : INTEGER) : BOOLEAN is
@@ -86,24 +84,6 @@ feature -- Status report
 			valid: True -- For each p in parameters, it_holds p.count <= a_row_count
 			same_count: True -- Every p in parameters have the same count
 		end
-		
---| feature -- Status setting
-
---| feature -- Cursor movement
-
---| feature -- Element change
-
---| feature -- Removal
-
---| feature -- Resizing
-
---| feature -- Transformation
-
---| feature -- Conversion
-
---| feature -- Duplication
-
---| feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -139,10 +119,6 @@ feature -- Basic operations
 		ensure
 			bound_parameters: bound_parameters
 		end		
-		
---|feature -- Obsolete
-
---|feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
