@@ -3,8 +3,7 @@ indexing
 	description:
 	
 		"Objects that represent ARRAYs of typed values to be exchanged with the database.%
-		% These mainly are exchange buffers.  The capacity is set at creation
- and cannot be changed.%
+		% These mainly are exchange buffers.  The capacity is set at creation and cannot be changed.%
 		% The actual number of elements to take into account is set using set_count.%
 		% 'set_count' must not be used by a client except when passing parameters.  The other private usage is %
 		% when a rowset_cursor fetches the last set of data (usually less than the capacity)."
@@ -18,7 +17,7 @@ indexing
 		% or column-wise binding of parameters for modifications.%
 		% Access modes: direct ('item_at'), linear ('start', 'forth', 'item')."
 
-deferred class ECLI_GENERIC_ARRAYED_VALUE
+deferred class ECLI_GENERIC_ARRAYED_VALUE [G]
 
 inherit
 

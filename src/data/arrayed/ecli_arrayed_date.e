@@ -109,7 +109,9 @@ feature -- Access
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
+			date_pointer : POINTER
 		do
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			if not is_null_at (index) then
 				Result := ecli_c_date_get_year (date_pointer)
 			end
@@ -119,7 +121,9 @@ feature -- Access
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
+			date_pointer : POINTER
 		do
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			if not is_null_at (index) then
 				Result := ecli_c_date_get_month (date_pointer)
 			end
@@ -129,7 +133,9 @@ feature -- Access
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
+			date_pointer : POINTER
 		do
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			if not is_null_at (index) then
 				Result := ecli_c_date_get_day (date_pointer)
 			end
@@ -160,7 +166,9 @@ feature -- Element change
 
 	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER ) is
 		local
+			date_pointer : POINTER
 		do
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			ecli_c_date_set_year (date_pointer, a_year)
 			ecli_c_date_set_month (date_pointer, a_month)
 			ecli_c_date_set_day (date_pointer, a_day)			

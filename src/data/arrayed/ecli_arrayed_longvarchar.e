@@ -35,10 +35,10 @@ feature -- Access
 			Result := Sql_longvarchar
 		end
 
-	max_content_capacity : INTEGER is
-		do
-			Result := 1_000_000
-		end
+--	max_content_capacity : INTEGER is
+--		do
+--			Result := 1_000_000
+--		end
 		
 --feature {NONE} -- Initialization
 --
@@ -191,4 +191,8 @@ feature -- Access
 --		end
 --
 --
+feature {NONE} -- Implementation
+
+	default_maximum_capacity : INTEGER is 1_000_000
+	
 end

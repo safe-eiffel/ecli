@@ -15,7 +15,7 @@ inherit
 
 	ECLI_STRING_VALUE
 		rename
-			make as make_single, capacity as content_capacity, max_capacity as max_content_capacity,
+			make as make_single, capacity as content_capacity, maximum_capacity as maximum_content_capacity,
 			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 
 	make (a_content_capacity : INTEGER; a_capacity : INTEGER) is
 		require
-			valid_content_capacity: a_content_capacity > 0 and a_content_capacity < max_content_capacity
+			valid_content_capacity: a_content_capacity > 0 and a_content_capacity < maximum_content_capacity
 			valid_capacity: a_capacity >= 1
 		local
 			s : STRING

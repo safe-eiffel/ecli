@@ -59,10 +59,10 @@ feature -- Access
 
 feature -- Measurement
 
-	max_content_capacity : INTEGER is
-		do
-			Result := 255
-		end
+--	max_content_capacity : INTEGER is
+--		do
+--			Result := 255
+--		end
 		
 feature -- Status report
 
@@ -115,6 +115,10 @@ feature {NONE} -- Implementation
 			end
 		end
 
+feature {NONE} -- Implementation
+
+	default_maximum_capacity : INTEGER is 255
+	
 invariant
 --	count_capacity: count <= capacity
 

@@ -111,12 +111,10 @@ feature -- Basic operations
 			--
 		local
 			message_buffer : XS_C_STRING
-			ext : ECLI_EXTERNAL_TOOLS
 		do
-			create ext
 			create message_buffer.make (50) 
 			sprintf_real (message_buffer.handle, item_at (index).item)
-			Result := ext.pointer_to_string(message_buffer.handle)
+			Result := message_buffer.as_string -- ext.pointer_to_string(message_buffer.handle)
 		end
 
 feature {NONE} -- Implementation

@@ -64,7 +64,7 @@ inherit
 		undefine
 			allocate_buffer,
 			day,
---			is_equal,
+			make_null,
 			is_null, set_null,
 			length_indicator_pointer,
 			month,

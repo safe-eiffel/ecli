@@ -21,10 +21,10 @@ creation
 
 feature -- Access
 
-	max_content_capacity : INTEGER is
-		do
-			Result := 255
-		end
+--	max_content_capacity : INTEGER is
+--		do
+--			Result := 255
+--		end
 
 feature -- Status report
 
@@ -33,4 +33,8 @@ feature -- Status report
 			Result := sql_varchar
 		end
 
+feature {NONE} -- Implementation
+
+	default_maximum_capacity : INTEGER is 255
+	
 end
