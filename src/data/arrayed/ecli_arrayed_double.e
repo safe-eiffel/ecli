@@ -94,22 +94,21 @@ feature -- Basic operations
 
 	out : STRING is
 		local
-			message_buffer : STRING
+			message_buffer : C_STRING
 			i : INTEGER
 		do
-			protect
 			from 
 				i := 1
 				!!Result.make (10)
 				Result.append ("<<")
-				message_buffer := STRING_.make_filled (' ', 50)
+				create message_buffer.make (50)
 			until i = count 
 			loop
 				if is_null_at (i) then
 					Result.append ("NULL")
 				else
-					sprintf_double (string_to_pointer(message_buffer), item_at (i).item)
-					Result.append (pointer_to_string(string_to_pointer (message_buffer)))
+					sprintf_double (message_buffer.handle, item_at (i).item)
+					Result.append (pointer_to_string(message_buffer.handle))
 				end
 				if i < count then
 					Result.append (",")					
@@ -117,7 +116,6 @@ feature -- Basic operations
 				i := i + 1
 			end
 			Result.append (">>")
-			unprotect
 		end
 
 feature {NONE} -- Implementation

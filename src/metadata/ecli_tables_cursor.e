@@ -111,7 +111,7 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	impl_item : ECLI_TABLE
+	impl_item : like item
 
 	definition : STRING is once Result := "SQLTables" end
 

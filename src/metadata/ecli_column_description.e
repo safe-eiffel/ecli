@@ -36,12 +36,14 @@ feature {NONE} -- Initialization
 			valid_maximum: max_name_length > 0
 		local
 			stat : INTEGER
+			name_ptr : POINTER
 		do
-			protect
 			name := STRING_.make_buffer (max_name_length + 1)
+			protect
+			name_ptr := pointer ($name)
 			stat := ecli_c_describe_column (stmt.handle,
 				index,
-				string_to_pointer (name),
+				name_ptr,
 				max_name_length,
 				pointer ($actual_name_length),
 				pointer ($sql_type_code),
@@ -49,7 +51,7 @@ feature {NONE} -- Initialization
 				pointer ($decimal_digits),
 				pointer ($nullability))
 			stmt.set_status (stat)
-			name := pointer_to_string (string_to_pointer(name))
+			name := pointer_to_string (name_ptr)
 			unprotect
 		end
 

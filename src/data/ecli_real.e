@@ -28,7 +28,7 @@ inherit
 		undefine
 			out
 		end
-		
+
 creation
 	make
 
@@ -39,7 +39,7 @@ feature -- Initialization
 			buffer := ecli_c_alloc_value (transfer_octet_length)
 			create impl_item
 		end
-		
+
 feature -- Access
 
 	item : REAL_REF is
@@ -65,12 +65,12 @@ feature -- Status report
 		do
 			Result := True
 		end
-	
+
 	convertible_to_integer : BOOLEAN is
 		do
 			Result := True
 		end
-		
+
 feature -- Status setting
 
 
@@ -88,9 +88,9 @@ feature -- Status setting
 		once
 			Result := sql_real
 		end
-	
+
 	decimal_digits: INTEGER is
-		do 
+		do
 			Result := 0
 		end
 
@@ -131,21 +131,21 @@ feature -- Conversion
 				Result := actual_value
 			end
 		end
-	
+
 	to_double : DOUBLE is
 		do
 			if not is_null then
 				Result := to_real
 			end
 		end
-		
+
 	to_integer : INTEGER is
 		do
 			if not is_null then
 				Result := to_real.truncated_to_integer
 			end
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -159,28 +159,31 @@ feature -- Basic operations
 
 	out : STRING is
 		local
-			message_buffer : STRING
+			message_buffer : C_STRING
 		do
 			if is_null then
 				Result := "NULL"
 			else
-				protect
-				message_buffer := STRING_.make_filled (' ', 50)
-				sprintf_real (string_to_pointer(message_buffer), item.item)
-				Result := pointer_to_string(string_to_pointer (message_buffer))
-				unprotect
+				create message_buffer.make (50)
+				sprintf_real (message_buffer.handle, item.item)
+				Result := pointer_to_string(message_buffer.handle)
 			end
 		end
 
 feature {NONE} -- Implementation
 
 	actual_value : REAL
-	
-	octet_size : INTEGER is do Result := 4 ensure then result_is_4: Result = 4 end
+
+	octet_size : INTEGER is 
+		do 
+			Result := 4 
+		ensure 
+			result_is_4: Result = 4 
+		end
 
 	sprintf_real (s : POINTER; r : REAL) is
-			-- 
-		external "C" 
+			--
+		external "C"
 		alias "ecli_c_sprintf_real"
 		end
 

@@ -13,29 +13,15 @@ class
 
 inherit
 	ECLI_VALUE
-		rename
-		export
-		undefine
 		redefine
 			item, set_item, out, is_equal, convertible_to_date, to_date,
 			convertible_to_timestamp, to_timestamp
-		select
 		end
 
 	ECLI_FORMAT_INTEGER
 		undefine
 			out, is_equal
 		end
-
---| FIXME: uncomment when SmallEiffel 075 has been fixed
---
---	DT_GREGORIAN_CALENDAR 
---		export 
---			{NONE} all;
---			{ANY} days_in_month
---		undefine
---			is_equal, out
---		end
 		
 creation
 	make, make_first, make_default

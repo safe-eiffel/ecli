@@ -332,6 +332,8 @@ feature {NONE} -- Implementation values
 	
 	disposal_failure_reason : STRING is do	end
 
+feature 
+
 	impl_item : like item
 			-- reference to actual item this is always the same item !
 	

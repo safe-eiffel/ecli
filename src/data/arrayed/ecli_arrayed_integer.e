@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_ARRAYED_VALUE
 		redefine
-			item, set_item, set_item_at, out
+			item, set_item, out
 		end
 
 	ECLI_INTEGER
@@ -24,7 +24,7 @@ inherit
 		redefine
 			item, transfer_octet_length, out, trace
 		end
-		
+
 creation
 	make
 
@@ -43,11 +43,11 @@ feature -- Access
 
 	item : INTEGER_REF is
 		do
-			Result := item_at (cursor_index)	
+			Result := item_at (cursor_index)
 		end
 
 	item_at (index : INTEGER) : like item is
-			-- 
+			--
 		do
 			if is_null_at (index) then
 				Result := Void
@@ -57,7 +57,7 @@ feature -- Access
 				Result.set_item (actual_value)
 			end
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report

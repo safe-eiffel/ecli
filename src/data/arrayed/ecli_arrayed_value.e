@@ -4,9 +4,9 @@ indexing
 		% The actual number of elements to take into account is set using set_count.%
 		% 'set_count' must not be used by a client except when passing parameters.  The other private usage is %
 		% when a rowset_cursor fetches the last set of data (usually less than the capacity)."
-		
+
 	author: "Paul G. Crismer"
-	
+
 	usage: "Used in row-set operations : column-wise binding for result-sets, %
 		% or column-wise binding of parameters for modifications.%
 		% Access modes: direct ('item_at'), linear ('start', 'forth', 'item')."
@@ -30,12 +30,12 @@ inherit
 			to_time, convertible_to_time,
 			to_timestamp, convertible_to_timestamp,
 			set_item, set_null, length_indicator_pointer,
-			can_trace		
+			can_trace
 		redefine
-			release_handle, to_external, length_indicator_pointer , is_null, 
-			out, set_null, to_string
+			release_handle, to_external, is_null,
+			out, to_string
 		end
-		
+
 feature -- Initialization
 
 	make (a_capacity : INTEGER) is
@@ -47,7 +47,7 @@ feature -- Initialization
 			cursor_before: before
 			all_null: is_all_null -- foreach i in 1..count : is_null_at (i)
 		end
-		
+
 feature -- Access
 
 	cursor_index : INTEGER
@@ -58,20 +58,20 @@ feature -- Access
 		require
 			valid_index: index >= lower and index <= count
 			not_null: not is_null_at (index)
-		deferred			
+		deferred
 		end
-		
+
 feature -- Measurement
 
 	capacity : INTEGER
 			-- capacity of array
-	
+
 	count : INTEGER
 			-- actual number of values
 
 	lower : INTEGER is 1
 			-- lower index
-	
+
 	upper : INTEGER is
 			-- upper index
 		do
@@ -115,7 +115,7 @@ feature -- Status report
 				index := index + 1
 			end
 		end
-		
+
 	off : BOOLEAN is
 			-- is there any item at current cursor position ?
 		do
@@ -127,15 +127,15 @@ feature -- Status report
 		do
 			Result := (cursor_index < lower)
 		end
-		
+
 	after : BOOLEAN is
 			-- is cursor after any valid element ?
 		do
 			Result := (cursor_index > count)
 		end
-		
+
 feature -- Status setting
-		
+
 	set_null is
 			-- set current item to NULL
 		do
@@ -143,7 +143,7 @@ feature -- Status setting
 				set_null_at (cursor_index)
 			end
 		end
-		
+
 feature -- Cursor movement
 
 	start is
@@ -153,23 +153,23 @@ feature -- Cursor movement
 		ensure
 			definition: not before or else after
 		end
-		
+
 	forth is
 			-- advance internal cursor
 		do
 			cursor_index := cursor_index + 1
 		end
-	
+
 	go (ith : INTEGER) is
 			-- advance internal cursor
 		require
 			ith: ith > 0 and ith <= count
 		do
-			cursor_index := ith	
+			cursor_index := ith
 		ensure
 			cursor_index = ith
 		end
-		
+
 feature -- Element change
 
 	set_item_at (value : like item; index : INTEGER) is
@@ -181,7 +181,7 @@ feature -- Element change
 			item_set: equal (item_at (index), truncated (value))
 			not_null: not is_null_at (index)
 		end
-	
+
 	set_null_at (index: INTEGER) is
 			-- set `index'th value to NULL
 		require
@@ -191,12 +191,12 @@ feature -- Element change
 		ensure
 			null_set: is_null_at (index)
 		end
-		
+
 	set_item (value : like item) is
 		do
 			set_item_at (value, cursor_index)
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -210,7 +210,7 @@ feature -- Conversion
 		do
 			Result := out_item_at (cursor_index)
 		end
-		
+
 	out : STRING is
 		local
 			i : INTEGER
@@ -234,7 +234,7 @@ feature -- Conversion
 		end
 
 	to_external : POINTER is
-			-- external 'C' address of value array 
+			-- external 'C' address of value array
 			-- contiguous memory block of 'capacity' * 'transfer_octet_length'
 			-- use at your own risks !
 		do
@@ -258,7 +258,7 @@ feature -- Basic operations
 		ensure
 			count_set: count = a_count
 		end
-		
+
 feature -- Obsolete
 
 feature -- Inapplicable
@@ -298,11 +298,11 @@ feature {NONE} -- Implementation
 				index := index + 1
 			end
 		end
-		
+
 invariant
 	valid_count: count >= lower and count <= capacity
 	valid_capacity: capacity >= lower
 	lower: lower = 1
 	upper: upper = count
-	limits: lower <= upper	
+	limits: lower <= upper
 end -- class ECLI_ARRAYED_VALUE

@@ -102,7 +102,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	impl_item : ECLI_PROCEDURE
+	impl_item : like item
 
 	definition : STRING is once Result := "SQLProcedures" end
 

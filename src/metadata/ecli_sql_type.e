@@ -87,7 +87,7 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 				end
 			end
 		end
-		
+
 feature -- Access
 
 	name :  STRING is
@@ -105,14 +105,14 @@ feature -- Access
 		end
 
 	size : INTEGER is
-			-- The maximum column size that the server supports for this data type. 
-			-- For numeric data, this is the maximum precision. 
-			-- For string data, this is the length in characters. 
-			-- For datetime data types, this is the length in characters of the string representation 
+			-- The maximum column size that the server supports for this data type.
+			-- For numeric data, this is the maximum precision.
+			-- For string data, this is the length in characters.
+			-- For datetime data types, this is the length in characters of the string representation
 			--  (assuming the maximum allowed precision of the fractional seconds component.)
 		do
 			Result := impl_size
-		ensure then
+		ensure
 			significant: is_size_applicable implies Result /= 0
 		end
 
@@ -131,13 +131,13 @@ feature -- Access
 		ensure
 			significant: is_literal_prefix_applicable implies Result /= Void
 		end
-		
+
 	create_params : STRING is
-			-- A list of keywords, separated by commas, corresponding to each parameter 
-			-- that the application may specify in parentheses when using the name that is returned 
-			-- in the TYPE_NAME field. 
-			-- The keywords in the list can be any of the following: 
-			-- length, precision, scale. 
+			-- A list of keywords, separated by commas, corresponding to each parameter
+			-- that the application may specify in parentheses when using the name that is returned
+			-- in the TYPE_NAME field.
+			-- The keywords in the list can be any of the following:
+			-- length, precision, scale.
 			-- They appear in the order that the syntax requires that they be used.
 			-- The driver supplies the CREATE_PARAMS text in the language of the country where it is used.
 		do
@@ -145,22 +145,22 @@ feature -- Access
 		ensure
 			significant: is_create_params_applicable implies Result /= Void
 		end
-		
+
 	-- is_nullable : inherited
-	
+
 	is_case_sensitive : BOOLEAN is
 			-- If a character datatype, denotes the case sensitivity in comparisons
 			-- and in collations
 		do
 			Result := impl_case_sensitive = sql_true
 		end
-		
+
 	searchable : INTEGER is
 			-- is this type searchable ?
 		do
 			Result := impl_searchable
 		end
-		
+
 	is_unsigned : BOOLEAN is
 			-- is it unsiged ?
 		require
@@ -168,13 +168,13 @@ feature -- Access
 		do
 			Result := impl_unsigned	= sql_true
 		end
-		
+
 	is_fixed_precision_scale : BOOLEAN is
 			-- is the precision scale fixed ?
 		do
 			Result := impl_fixed_precision_scale = sql_true
 		end
-	
+
 	is_auto_unique_value : BOOLEAN is
 			-- Is the data type auto incrementing ?
 		require
@@ -182,7 +182,7 @@ feature -- Access
 		do
 			Result := impl_auto_unique_value = sql_true
 		end
-		
+
 	local_type_name : STRING is
 			-- Localized version of the type name
 		do
@@ -190,7 +190,7 @@ feature -- Access
 		ensure
 			significant: is_local_type_name_applicable implies Result /= Void
 		end
-		
+
 	minimum_scale : INTEGER is
 			-- minimum scale for numeric values
 		require
@@ -198,8 +198,8 @@ feature -- Access
 		do
 			Result := impl_minimum_scale
 		end
-		
-	
+
+
 	maximum_scale : INTEGER is
 			-- maximum scale for numeric values
 		require
@@ -207,15 +207,15 @@ feature -- Access
 		do
 			Result := impl_maximum_scale
 		end
-		
+
 	sql_data_type : INTEGER is
 			-- sql data type code (ODBCV3.0)
 		require
 			exists_sql_data_type
 		do
-			Result := impl_sql_data_type	
+			Result := impl_sql_data_type
 		end
-		
+
 	sql_date_time_sub : INTEGER is
 			-- sql subcode if date time or interval (ODBCV3.0)
 		require
@@ -223,7 +223,7 @@ feature -- Access
 		do
 			Result := impl_sql_date_time_sub
 		end
-		
+
 	num_prec_radix : INTEGER is
 			-- precision radix for numeric (ODBCV3.0)
 		require
@@ -231,7 +231,7 @@ feature -- Access
 		do
 			Result := impl_num_prec_radix
 		end
-		
+
 	interval_precision : INTEGER is
 			-- precision if interval (ODBCV3.0)
 		require
@@ -239,41 +239,41 @@ feature -- Access
 		do
 			Result := impl_interval_precision
 		end
-	
+
 feature -- Measurement
 
 feature -- Status report
 
 	is_size_applicable : BOOLEAN
-	
+
 	is_create_params_applicable : BOOLEAN
-	
+
 	is_literal_prefix_applicable : BOOLEAN
-	
+
 	is_literal_suffix_applicable : BOOLEAN
-	
+
 	is_unsigned_applicable : BOOLEAN
-	
+
 	is_local_type_name_applicable : BOOLEAN
-	
+
 	is_auto_unique_value_applicable : BOOLEAN
-	
+
 	is_minimum_scale_applicable : BOOLEAN
-	
+
 	is_maximum_scale_applicable : BOOLEAN
-	
+
 	exists_sql_data_type : BOOLEAN
-	
+
 	exists_sql_date_time_sub : BOOLEAN
-	
+
 	exists_num_prec_radix : BOOLEAN
-	
+
 	exists_interval_precision : BOOLEAN
 
 feature -- Conversion
 
 	out : STRING is
-			-- 
+			--
 		do
 			!!Result.make (128)
 			Result.append (name)
@@ -293,7 +293,7 @@ feature -- Conversion
 			Result.append (is_fixed_precision_scale.out) Result.append ("%T")
 			if is_auto_unique_value_applicable then Result.append (is_auto_unique_value.out) else Result.append ("NULL") end
 			Result.append ("%T")
-			if local_type_name /= Void then Result.append (local_type_name.out) else Result.append ("NULL") end 
+			if local_type_name /= Void then Result.append (local_type_name.out) else Result.append ("NULL") end
 			Result.append ("%T")
 			if is_minimum_scale_applicable then Result.append (minimum_scale.out) else Result.append ("NULL") end
 			Result.append ("%T")
@@ -306,45 +306,45 @@ feature -- Conversion
 				Result.append (interval_precision.out) Result.append ("%T")
 			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	impl_name : STRING
-	
+
 	impl_sql_type_code : INTEGER
-	
+
 	impl_size : INTEGER
-	
+
 	impl_literal_prefix : STRING
-	
+
 	impl_literal_suffix : STRING
-	
+
 	impl_create_params : STRING
-	
+
 	impl_case_sensitive : INTEGER
-	
+
 	impl_searchable : INTEGER
-	
+
 	impl_unsigned : INTEGER
-	
+
 	impl_fixed_precision_scale : INTEGER
-	
+
 	impl_auto_unique_value : INTEGER
-	
+
 	impl_local_type_name : STRING
-	
+
 	impl_minimum_scale : INTEGER
-	
+
 	impl_maximum_scale : INTEGER
-	
+
 	impl_sql_data_type : INTEGER
-	
+
 	impl_sql_date_time_sub : INTEGER
-	
+
 	impl_num_prec_radix : INTEGER
-	
+
 	impl_interval_precision : INTEGER
-	
+
 invariant
 	invariant_clause: True -- Your invariant here
 

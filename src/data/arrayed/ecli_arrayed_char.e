@@ -19,12 +19,12 @@ inherit
 		end
 
 	ECLI_STRING_ROUTINES
-		export 
-			{NONE} all 
-		undefine 
+		export
+			{NONE} all
+		undefine
 			out
 		end
-		
+
 creation
 	make
 
@@ -37,13 +37,13 @@ feature {NONE} -- Initialization
 		ensure then
 			content_count = content_capacity
 		end
-		
+
 
 feature -- Access
 
 	content_count : INTEGER
 
-	item_at (index : INTEGER) : STRING is
+	item_at (index : INTEGER) : like item is
 		do
 			if not is_null_at (index) then
 				Result := Precursor (index)
@@ -105,7 +105,7 @@ feature {NONE} -- Implementation
 				pad (s, content_capacity)
 			end
 		end
-	
+
 invariant
 --	count_capacity: count <= capacity
 

@@ -12,11 +12,11 @@ inherit
 		rename
 			make as make_input_stream
 		end
-	
 
-create
+
+creation
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_string, a_separators : STRING) is
@@ -31,12 +31,12 @@ feature {NONE} -- Initialization
 		ensure
 			separators_affected: separators = a_separators
 		end
-		
+
 feature -- Access
 
 	separators : STRING
 		-- set of word separators; a separator is any individual character in the string.
-		
+
 feature -- Status report
 
 	is_last_string_quoted : BOOLEAN
@@ -82,7 +82,7 @@ feature -- Basic operations
 
 	read_quoted_word is
 			-- Read characters from input stream until a word separator
-			-- or end of input is reached. 
+			-- or end of input is reached.
 			-- When a word is quoted, all characters up to the next quoting character
 			-- are read. The word available in `last_string'. The line
 			-- separator characters are discarded from the input stream.
@@ -124,7 +124,7 @@ feature -- Basic operations
 					is_last_string_quoted := is_last_string_quoted or else (is_quoted or is_double_quoted)
 				end
 			end
-			end_of_input := is_eof			
+			end_of_input := is_eof
 		end
 
 feature {NONE} -- Implementation
@@ -142,10 +142,10 @@ feature {NONE} -- Implementation
 			last_string_empty: last_string /= Void and then last_string.is_empty
 			not_is_last_string_quoted: not is_last_string_quoted
 		end
-		
+
 invariant
 	is_last_string_quoted: is_last_string_quoted implies
 					((last_string.item (1) = '%'' and then last_string.item (last_string.count) = '%'')
 			or else  (last_string.item (1) = '%"' and then last_string.item (last_string.count) = '%"'))
-			
+
 end -- class KL_WORD_INPUT_STREAM

@@ -12,10 +12,10 @@ inherit
 	ECLI_CURSOR
 		rename
 			statement_start as start, make as cursor_make
-		export 
+		export
 			{ANY} close
 		redefine
-			start, forth
+			start, forth, create_buffers, definition
 		end
 
 	ECLI_EXTERNAL_TOOLS
@@ -24,15 +24,15 @@ inherit
 		undefine
 			dispose
 		end
-		
-feature -- 
+
+feature --
 
 	make (a_name : ECLI_NAMED_METADATA; a_session : ECLI_SESSION) is
 			-- Void values for a_name.catalog, a_name.schema, a_name.name can be Void are 'wildcards'
 		require
 			a_name_not_void: a_name /= Void
 			a_session_not_void: a_session /= Void
-			a_session_connected: a_session.is_connected				
+			a_session_connected: a_session.is_connected
 		local
 			l_catalog, l_schema, l_name : POINTER
 			catalog_length, schema_length, name_length : INTEGER
@@ -64,17 +64,17 @@ feature --
 			queried_schema_set: queried_schema = a_name.schema
 			queried_name_set: queried_name = a_name.name
 		end
-	
+
 feature -- Access
 
 	queried_catalog : STRING
-	
+
 	queried_schema : STRING
-	
+
 	queried_name : STRING
-	
+
 	item : ANY is
-			-- 
+			--
 		require
 			not_off: not off
 		do
@@ -82,7 +82,7 @@ feature -- Access
 		ensure
 			definition: Result /= Void
 		end
-	
+
 feature -- Cursor Movement
 
 	start is
@@ -92,12 +92,12 @@ feature -- Cursor Movement
 			end
 			Precursor
 			if not off then
-				create_item	
+				create_item
 			else
 				impl_item := Void
 			end
 		end
-		
+
 	forth is
 		do
 			Precursor
@@ -106,7 +106,7 @@ feature -- Cursor Movement
 			end
 		end
 
-			
+
 feature {NONE} -- Implementation
 
 	create_buffers is
@@ -118,12 +118,12 @@ feature {NONE} -- Implementation
 			-- create item from current cursor value
 		deferred
 		end
-		
+
 	impl_item : like item
-	
+
 	definition : STRING is
 			-- definition of query
-	 	deferred 
+	 	deferred
 	 	end
 
 	update_state_after_execution is
@@ -134,7 +134,7 @@ feature {NONE} -- Implementation
 				is_executed := True
 				if has_results then
 					set_cursor_before
-					create_buffers		
+					create_buffers
 				else
 					set_cursor_after
 				end
@@ -149,5 +149,5 @@ feature {NONE} -- Implementation
 			-- query metadata
 		deferred
 		end
-		
+
 end -- class ECLI_METADATA_CURSOR

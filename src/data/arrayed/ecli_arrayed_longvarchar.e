@@ -19,7 +19,7 @@ inherit
 		redefine
 			item, content_capacity, content_count
 		end
-	
+
 	ECLI_ARRAYED_VALUE
 		rename
 			make as make_arrayed
@@ -54,10 +54,10 @@ feature {NONE} -- Initialization
 			-- dummy one
 		do
 		end
-		
+
 feature -- Access
 
-	item_at (index : INTEGER) : STRING is
+	item_at (index : INTEGER) : like item is
 		do
 			if is_null_at (index) then
 				Result := Void
@@ -70,11 +70,11 @@ feature -- Access
 		end
 
 	item : STRING is
-			-- 
+			--
 		do
 			Result := item_at (cursor_index)
 		end
-		
+
 	content_capacity : INTEGER is
 		do
 			Result := ecli_c_array_value_get_length (buffer) - 1
@@ -91,9 +91,9 @@ feature -- Access
 		do
 			if not is_null_at (index) then
 				Result := ecli_c_array_value_get_length_indicator_at (buffer, index)
-			end			
+			end
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -132,10 +132,10 @@ feature -- Element change
 			create tools
 			tools.protect
 			ecli_c_array_value_set_value_at (buffer, tools.string_to_pointer (value), actual_length, index)
-			ecli_c_array_value_set_length_indicator_at (buffer, transfer_length, index)			
+			ecli_c_array_value_set_length_indicator_at (buffer, transfer_length, index)
 			tools.unprotect
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -143,13 +143,13 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Conversion
-		
+
 		to_string : STRING is
-				-- 
+				--
 			do
 				Result := item_at (cursor_index).out
 			end
-			
+
 feature -- Duplication
 
 feature -- Miscellaneous

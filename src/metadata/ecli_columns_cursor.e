@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	impl_item : ECLI_COLUMN
+	impl_item : like item
 
 	definition : STRING is once Result := "SQLColumns" end
 

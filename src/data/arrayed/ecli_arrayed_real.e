@@ -20,7 +20,7 @@ inherit
 		rename
 			make as make_single
 		undefine
-			release_handle, length_indicator_pointer, to_external, 
+			release_handle, length_indicator_pointer, to_external,
 			is_null, set_null, out, item, transfer_octet_length, set_item, to_string
 		end
 
@@ -28,7 +28,7 @@ inherit
 		undefine
 			out
 		end
-	
+
 creation
 	make
 
@@ -41,11 +41,11 @@ feature {NONE} -- Initialization
 			count := capacity
 			set_all_null
 		end
-		
+
 feature -- Access
 
 	item_at (index : INTEGER) : like item is
-			-- 
+			--
 		do
 			if is_null_at (index) then
 				Result := Void
@@ -53,15 +53,15 @@ feature -- Access
 				ecli_c_array_value_copy_value_at (buffer, $actual_value, index)
 				!! Result
 				Result.set_item (actual_value)
-			end		
+			end
 		end
-	
+
 	item : REAL_REF is
-			-- 
+			--
 		do
 			Result := item_at (cursor_index)
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -90,7 +90,7 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Conversion
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -98,19 +98,17 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	out_item_at (index : INTEGER) : STRING is
-			-- 
+			--
 		local
-			message_buffer : STRING
+			message_buffer : C_STRING
 			ext : ECLI_EXTERNAL_TOOLS
 		do
-			!!ext
-			message_buffer.make_filled (' ', 50)
-			ext.protect
-			sprintf_real (ext.string_to_pointer(message_buffer), item_at (index).item)
-			Result := ext.pointer_to_string(ext.string_to_pointer (message_buffer))
-			ext.unprotect
+			create ext
+			create message_buffer.make (50) 
+			sprintf_real (message_buffer.handle, item_at (index).item)
+			Result := ext.pointer_to_string(message_buffer.handle)
 		end
-		
+
 feature {NONE} -- Implementation
 
 end -- class ECLI_ARRAYED_REAL

@@ -1,5 +1,5 @@
 indexing
-	description: 
+	description:
 
 		"Objects that use an implementation (external) handle. This can be used %
 	   % in any case where an allocate/free scheme is needed.%
@@ -18,11 +18,11 @@ deferred class
 
 inherit
 
-	ANY 
-	
+	ANY
+
 	ECLI_EXTERNAL_TOOLS
 		export
-			{NONE} all;
+			{NONE} all
 		redefine
 			dispose
 		end
@@ -49,7 +49,7 @@ feature {ECLI_HANDLE} -- Status report
 			-- why is this object not ready_for_disposal
 		deferred
 		end
-		
+
 feature {NONE} -- Implementation
 
 	set_handle (h : POINTER) is
