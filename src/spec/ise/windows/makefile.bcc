@@ -1,8 +1,20 @@
-_EIFFEL_ = $(ISE_EIFFEL)
-CC = $(_EIFFEL_)\bcc55\bin\bcc32.exe
-LIB = $(_EIFFEL_)\bcc55\bin\tlib.exe
+##
+## Makefile for ECLI support library
+##
+## Copyright: Paul G. Crismer and others
+## License: Realeased under the Eiffel Forum License version 2 (http://www.opensource.org/licenses/ver2_eiffel.php)
+## Note: Known to run with Borland Make 5.2
+##
+
+!if !$d(BORLANDC)
+BORLANDC = $(ISE_EIFFEL)\BCC55
+!endif
+
+CC = $(BORLANDC)\bin\bcc32.exe
+LIB = $(BORLANDC)\bin\tlib.exe
 PLATFORM=windows
-CFLAGS = -c -O2 -I$(_EIFFEL_)\bcc55\include -I$(_EIFFEL_)\studio\spec\$(PLATFORM)\include -I.
+
+CFLAGS = -c -O2 -I$(BORLANDC)\include -I$(ISE_EIFFEL)\studio\spec\$(PLATFORM)\include -I.
 OBJ = ecli_bcc.obj
 
 all: clean ecli_bcc.lib
