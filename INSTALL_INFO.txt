@@ -20,6 +20,11 @@ ECLI --
 
 2. Installation
 
+	2.0 NOTE for Linux/Unix (*n*x) users : 
+This package uses unixodbc, avalaible at http://www.unixodbc.org
+It has been tested with PostgreSQL 7.0.2.
+Under SmallEiffel the program ends with a signal 11 exception (???)
+	
 	2.1. Building the C library.
 A) go to the spec - platform - compiler directory of your choice
 B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library 
@@ -29,6 +34,8 @@ B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library
 A) SmallEiffel - run the sebuild.bat (WIN32) or sebuild.sh (*n*x) command file
 B) ISE - use the Ace.ace file or linux.Ace file
 
+
+3. Problems
 
 *** Still having problems with Unix Makefiles ... stupid error I do not find
 the solution.  Have to build libraries and SmallEiffel example by hand...
