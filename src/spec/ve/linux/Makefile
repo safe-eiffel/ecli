@@ -2,7 +2,6 @@ SHELL = /bin/sh
 CC = cc
 AR = ar
 RANLIB = ranlib
-PLATFORM = linux-glibc2.1
 CFLAGS =  -O -I$(VE_Bin) -I. -I/usr/local/include
 RM = /bin/rm -f
 SRC = $(ECLI)/src/spec/C

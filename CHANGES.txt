@@ -1,4 +1,10 @@
 2003-02-28
+	* **** WARNING ****
+	  *****************
+	  ECLI_VALUE descendants 'item' features that return a reference
+	  always return the SAME reference. BEWARE OF ALIASING PROBLEMS.
+	  THIS IS A MAJOR CHANGE wirt respect to THE PREVIOUS SEMANTICS.
+	
 	* Reviewed sample applications :
 		'test1' does not use manifest arrays anymore (to prevent runtime problems with SmartEiffel)
 		'test_rowset' has been revisited to show how error handling could be done; more useful messages.

@@ -47,8 +47,9 @@ ECLI --
 
 	PLEASE, use the LATEST version available, to get the best benefits of this library.
 	
-  2.0 Define ECLI variable
-	Define the ECLI variable as the ECLI directory
+  2.0 Define environment variables :
+  	ECLI 		-  the ECLI directory
+  	GOBO_OS 	-  DO NOT FORGET to set it especially under linux (set it to 'linux')  
 
   2.1. Building the C library.
 	
@@ -56,7 +57,9 @@ ECLI --
           built with a compiler compatible with your system **
 	
 	A) go to the src/spec/<eiffel_compiler>/<platform> - compiler - platform directory of your choice
-	B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library 
+	B) make the ecli_c.lib (WIN32) or libecli_c.a (*n*x) library
+	
+	Known problems : makefiles or .bat files are known to work, but problems may still remain.
 
   2.2. Building the samples
 
