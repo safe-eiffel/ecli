@@ -21,7 +21,7 @@ inherit
 
 	DT_GREGORIAN_CALENDAR 
 		export 
-			{NONE} all
+			{NONE} all;
 			{ANY} days_in_month
 		undefine
 			is_equal, out

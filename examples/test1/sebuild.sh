@@ -1,2 +1,2 @@
 #!/bin/bash
-../../eclibuild.sh e_cli_db make
+../../eclibuild.sh test1 make

@@ -185,18 +185,22 @@ feature --  Basic operations
 			-- insert sample tuples with parameterized and prepared SQL
 		local
 			p_birthdate : 	ECLI_TIMESTAMP
-			name_parameter, other_name_parameter : 	ECLI_CHAR
+			first_name_parameter, last_name_parameter : 	ECLI_CHAR
 		do
 			-- parameterized statement
-			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES (?some_name, ?some_other_name, 40, ?some_date, 89.02)")
+			stmt.set_sql ("INSERT INTO ECLIESSAI VALUES (?first_name, ?last_name, 40, ?some_date, 89.02)")
 			show_query ("Insertion of parameterized values%N", stmt)
 			-- create and setup parameters and values
-			!! name_parameter.make (20)
-			name_parameter.set_item ("Stoney")
-			!!other_name_parameter.make (20)
-			other_name_parameter.set_item ("Archibald")
+			!! first_name_parameter.make (20)
+			first_name_parameter.set_item ("Stoney")
+			!!last_name_parameter.make (20)
+			last_name_parameter.set_item ("Archibald")
 			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
-			stmt.set_parameters (<<name_parameter, other_name_parameter, p_birthdate>>)
+			-- set parameters by "tuple" i.e. ARRAY[ECLI_VALUE]
+			-- order *matters* !!!
+
+			stmt.set_parameters (<<first_name_parameter, last_name_parameter, p_birthdate>>)
+
 			-- using 'prepare' sets prepared_execution_mode
 			stmt.prepare
 			if not stmt.is_ok then
@@ -206,22 +210,37 @@ feature --  Basic operations
 				io.put_string ("Prepared%N")
 			end
 			show_parameter_names (stmt)
+			-- describe_parameters is not supported by all drivers
+
 			stmt.describe_parameters
+
+			-- verify if `describe_parameters' is supported or not
+
 			if not stmt.is_ok then
 				io.put_string ("* Parameter description not possible !!! *%N")
 			end
+
 			io.put_string ("Executing with parameters : '")
-			io.put_string (name_parameter.out); io.put_string ("', '")
-			io.put_string (name_parameter.out); io.put_string ("', '")
+			io.put_string (first_name_parameter.out); io.put_string ("', '")
+			io.put_string (last_name_parameter.out); io.put_string ("', '")
 			io.put_string (p_birthdate.out); io.put_string ("'%N")
 			stmt.bind_parameters
 			stmt.execute
+
 			-- Change parameter value
-			name_parameter.set_null
+			first_name_parameter.set_null
+
 			-- show how it is possible to bind a parameter 'by name'
-			stmt.put_parameter (name_parameter, "some_name")
+			stmt.put_parameter (first_name_parameter, "first_name")
+
 			-- put_parameter 'unbind' previously bound parameters; they have to be bound again before execution
 			stmt.bind_parameters
+
+			io.put_string ("Executing with parameters : '")
+			io.put_string (first_name_parameter.out); io.put_string ("', '")
+			io.put_string (last_name_parameter.out); io.put_string ("', '")
+			io.put_string (p_birthdate.out); io.put_string ("'%N")
+
 			stmt.execute
 			if not stmt.is_ok then
 				io.put_string (stmt.diagnostic_message)
