@@ -29,6 +29,10 @@ feature -- Access
 			Result.append_string (time_regex)
 		end
 	
+	date_regex : STRING is "([0-9]{4})-([0-1][0-9])-([0-3][0-9])"
+	date_separator : STRING is " "
+	
+	date_to_string (date : DT_DATE) : STRING is
 			-- convert `date' to corresponding ISO format
 		do
 			create Result.make (10)

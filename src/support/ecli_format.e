@@ -9,7 +9,7 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-deferred class ECLI_FORMAT
+deferred class ECLI_FORMAT [G]
 
 inherit
 

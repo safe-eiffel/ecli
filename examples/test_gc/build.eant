@@ -4,10 +4,12 @@
 
 	<description>
 		system: "test_gc test application."
-		copyright: "Copyright (c) 2002-2003, Paul G. Crismer"
-		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
 		date: "$Date$"
-		revision: "$Revision$"
+
 	</description>
 
 	<inherit>

@@ -4,11 +4,12 @@
 	<description>
 		system:      "ECLI test for rowset operations."
 
-		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
-		copyright:   "Copyright (c) 2001, Paul G. Crismer and others"
-		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
-		date:        "$Date$"
-		revision:    "$Revision$"
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
 	</description>
 
 	<root class="TEST_ROWSET" creation="make"/>

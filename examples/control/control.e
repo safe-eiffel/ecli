@@ -58,6 +58,11 @@ feature
 	ecli_iso_format_constants : ECLI_ISO_FORMAT_CONSTANTS
 	ecli_length_indicator_constants : ECLI_LENGTH_INDICATOR_CONSTANTS
 	ecli_longvarbinary : ECLI_LONGVARBINARY
+	ecli_filevarbinary : ECLI_FILE_VARBINARY
+	ecli_filevarchar : ECLI_FILE_VARCHAR
+	ecli_filelongvarbinary: ECLI_FILE_LONGVARBINARY
+	ecli_filelongvarchar : ECLI_FILE_LONGVARCHAR
+	
 	ecli_longvarchar : ECLI_LONGVARCHAR
 	ecli_metadata_cursor : ECLI_METADATA_CURSOR
 	ecli_named_metadata : ECLI_NAMED_METADATA
