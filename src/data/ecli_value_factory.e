@@ -12,7 +12,7 @@ inherit
 
 	ECLI_TYPE_CODES
 		export {ANY}
-			sql_char, sql_varchar,
+			sql_char, sql_varchar, sql_longvarchar,
 			sql_type_timestamp, sql_type_date, sql_type_time,
 			sql_real, sql_double, sql_smallint, sql_float, sql_decimal, sql_numeric
 		end
@@ -72,16 +72,17 @@ feature -- Miscellaneous
 
 	create_date_value is
 		do
-			!ECLI_DATE!last_result.make_first
+			!ECLI_DATE!last_result.make_default
 		end
 
 	create_timestamp_value is
 		do
-			!ECLI_TIMESTAMP!last_result.make_first
+			!ECLI_TIMESTAMP!last_result.make_default
 		end
 
 	create_time_value is
 		do
+			!ECLI_TIME!last_result.make_default
 		end
 
 feature -- Basic operations
@@ -91,9 +92,10 @@ feature -- Basic operations
 		require
 			db_type_ok: valid_type (db_type)
 		do
+			last_result := Void
 			if db_type = sql_char then
 					create_char_value (column_precision)
-			elseif db_type = sql_varchar then
+			elseif db_type = sql_varchar or else db_type = sql_longvarchar then
 					create_varchar_value (column_precision)
 			elseif db_type = sql_integer or db_type = sql_smallint then
 					create_integer_value
@@ -115,11 +117,13 @@ feature -- Basic operations
 					create_date_value
 			elseif db_type = sql_type_timestamp then
 					create_timestamp_value
+			else
+				create_varchar_value (column_precision)
 			end
 		ensure
 			last_result /= Void implies
-				((last_result.column_precision >= column_precision or db_type = sql_float) and last_result.decimal_digits >= decimal_digits)
-			-- condition is relaxed for sql_float.  Oracle's NUMBER is given as sql_float with precision 38 !!!
+				((last_result.column_precision >= column_precision or db_type = sql_float or db_type = sql_double) and last_result.decimal_digits >= decimal_digits)
+			-- condition is relaxed for sql_float.  Oracle's NUMBER is given as sql_float or sql_double with precision 38 !!!
 		end
 
 feature -- Obsolete
@@ -130,9 +134,20 @@ feature {NONE} -- Implementation
 
 	valid_types : ARRAY[INTEGER] is
 		once
-			Result := << sql_integer, sql_char, sql_varchar,
-			sql_type_timestamp, sql_type_date, sql_type_time,
-			sql_real, sql_double, sql_smallint, sql_float, sql_decimal, sql_numeric
+			Result := << 
+				sql_char, 
+				sql_decimal, 
+				sql_double, 
+				sql_float, 
+				sql_integer, 
+				sql_longvarchar,
+				sql_numeric,
+				sql_real, 
+				sql_smallint, 
+				sql_type_date, 
+				sql_type_time,
+				sql_type_timestamp, 
+				sql_varchar
 			>>
 		end
 

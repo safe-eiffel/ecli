@@ -14,10 +14,6 @@ inherit
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
 		end
-
-	ECLI_STRING_ROUTINES
-		export {NONE} all
-		end
 		
 creation
 
@@ -27,7 +23,12 @@ feature -- Initialization
 
 	make is
 			-- isql
-		do			
+		do
+			test_ar_integer
+			test_ar_longvarchar
+			test_ar_varchar
+			test_ar_char
+			
 			-- session opening
 			parse_arguments
 			if error_message /= Void then
@@ -46,9 +47,6 @@ feature -- Initialization
 				else
 					if sql /= Void then
 						create_input_file (sql)
-						!!command.make_file (input_file)
-					else
-						!!command.make_interactive
 					end
 					--	
 					!! session.make (dsn, user, password)
@@ -62,7 +60,11 @@ feature -- Initialization
 						print_help
 						-- definition of statement on session
 						!! statement.make (session)
-						do_session	
+						--
+						-- interactive session
+						--
+						do_session
+	
 						-- closing statement
 						statement.close
 						-- disconnecting and closing session
@@ -86,25 +88,117 @@ feature -- Access
 	vars: DS_HASH_TABLE[STRING, STRING]
 	
 	error_message : STRING
+
+	last_command : STRING is
+		once
+			 Result := STRING_.make (1000)
+		end
 	
 	session : ECLI_SESSION
 	
 	statement : ECLI_STATEMENT
 		
 	input_file : PLAIN_TEXT_FILE
+
+	last_string : STRING
 	
 feature -- Status Report
 
 	is_session_done : BOOLEAN is
 			-- 
 		do
-			Result := command.is_quit or else command.end_of_input
+			if end_of_input then
+				Result := True
+			else
+				if last_command.count > 0 then
+					Result :=  last_command.item (1) = 'q'
+						or else last_command.item (1) = 'Q'
+				end
+			end
 		end
 
 	echo_output : BOOLEAN
 
+	is_session_interactive : BOOLEAN is
+		do
+			Result := input_file = Void
+		end
+
+	is_begin (s : STRING) : BOOLEAN is
+			-- is 's' a BEGIN TRANSACTION ?
+			-- checking only first 3 characters...
+		do
+			if s.count >= 3 then
+				if      (s.item (1) = 'b' or else s.item  (1) = 'B')
+					and (s.item (2) = 'e' or else s.item (2) = 'E')
+					and (s.item (3) = 'g' or else s.item (3) = 'G')
+				then
+					Result := True	
+				end				
+			end
+		end
 		
-	command : 	ISQL_COMMAND
+	is_commit (s : STRING) : BOOLEAN is
+			-- is 's' a COMMIT TRANSACTION ?
+			-- checking only first 3 characters...
+		do
+			if s.count >= 3 then
+				if      (s.item (1) = 'c' or else s.item  (1) = 'C')
+					and (s.item (2) = 'o' or else s.item (2) = 'O')
+					and (s.item (3) = 'm' or else s.item (3) = 'M')
+				then
+					Result := True	
+				end				
+			end
+		end
+		
+	is_rollback (s : STRING) : BOOLEAN is
+			-- is 's' a ROLLBACK TRANSACTION ?
+			-- checking only first 3 characters...
+		do
+			if s.count >= 3 then
+				if (s.item (1) = 'r' or s.item  (1) = 'R')
+					and (s.item (2) = 'o' or s.item (2) = 'O')
+					and (s.item (3) = 'l' or s.item (3) = 'L')
+				then
+					Result := True	
+				end				
+			end
+		end
+		
+	is_query (s : STRING) : BOOLEAN is
+			-- is `s' a SELECT ?
+			-- checking only first 3 characters
+		do
+			if s.count >= 3 then
+				if (s.item (1) = 's' or s.item  (1) = 'S')
+					and (s.item (2) = 'e' or s.item (2) = 'E')
+					and (s.item (3) = 'l' or s.item (3) = 'L')
+				then
+					Result := True	
+				end				
+			end
+		end
+		
+	is_set (s : STRING) : BOOLEAN is
+			-- is 's' a SET ?
+		do
+			if s.count >= 3 then
+				if (s.item (1) = 's' or s.item  (1) = 'S')
+					and (s.item (2) = 'e' or s.item (2) = 'E')
+					and (s.item (3) = 't' or s.item (3) = 'T')
+				then
+					Result := True	
+				end				
+			end
+		end
+	
+	end_of_input : BOOLEAN is
+		do
+			if not is_session_interactive then
+				Result := input_file.end_of_file
+			end
+		end
 
 feature -- Status setting
 
@@ -142,43 +236,89 @@ feature -- Basic Operations
 
 	do_session is
 		do
+			test_rowset
 			from
 				read_command
 			until
 				is_session_done
 			loop
-				if not command.is_interactive and echo_output then
-					io.put_string (command.text)
+				if not is_session_interactive and echo_output then
+					io.put_string (last_command)
 					io.put_string ("%N")
 				end
-				if command.is_help then
+				if last_command.is_equal ("h") then
 					print_help
-				elseif command.is_begin then
+				elseif is_begin (last_command) then
 					session.begin_transaction
-				elseif command.is_commit then
+				elseif is_commit (last_command) then
 					session.commit
-				elseif command.is_rollback then
+				elseif is_rollback (last_command) then
 					session.rollback
-				elseif command.is_set then
-					do_set (command.text)
-				elseif command.is_query  then
-					do_execute_query (command.text)
+				elseif is_set (last_command) then
+					do_set (last_command)
+				elseif is_query (last_command) then
+					do_execute_query (last_command)
 				else
-					do_execute_sql (command.text)
+					do_execute_sql (last_command)
 				end
 				read_command
 			end
 		end
 
 	read_command is
-			-- read command and prompt if necessary
+		-- prompt user
+		local
+			done : BOOLEAN
+			separator_index : INTEGER
 		do
-			if command.is_interactive then
-				print ("ISQL> ")
+			last_command.copy("")
+			
+
+			-- prompt user
+			if is_session_interactive then
+				io.put_string ("iSQL>")
 			end
-			command.read
+			
+			from
+				read_line
+			until
+				end_of_input or else done
+			loop
+				-- Trim trailing blanks
+				from
+					separator_index := last_string.count
+				until
+					separator_index < 1 or else
+					(last_string.item(separator_index) /= ' ' and then
+					last_string.item(separator_index) /= '%T')
+				loop
+					separator_index := separator_index - 1
+				end
+				-- End of command ?
+				if separator_index >= 1 then
+					if last_string.item (separator_index) = ';' then
+						done := True
+						separator_index := separator_index - 1
+					end
+				end
+				-- Append if not empty string
+				if separator_index >= 1 then
+					-- Add a blank if necessary to avoid concatenating command statements...
+					if last_command.count > 0 and then (last_command.item (last_command.count) /= ' ' or else
+					   last_string.item (1) /= ' ') then
+					   last_command.append_character (' ')
+					end
+					-- Append next command segment
+					last_command.append (last_string.substring (1, separator_index))					
+				end
+				if not done then
+					read_line
+				end
+			end
+		ensure
+			command_set: last_command /= Void
 		end
-		
+
 	create_input_file (file_name : STRING) is
 			-- create and open file `file_name' for reading
 		require
@@ -203,10 +343,21 @@ feature -- Basic Operations
 			retry
 		end
 	
+	read_line is
+		do
+			if is_session_interactive then
+				io.read_line
+				last_string := io.last_string
+			else
+				input_file.read_line
+				last_string := input_file.last_string
+			end
+		end
+
 	do_execute_sql (s : STRING) is
 			-- 
 		do
-			statement.set_sql (s)
+			statement.set_sql (last_command)
 			if statement.has_parameters then
 				if vars /= Void then
 					set_parameters (statement)
@@ -222,16 +373,16 @@ feature -- Basic Operations
 		end
 
 	do_execute_query (s : STRING) is
-			-- execute query 's' -- must be a SELECT or a procedure call that returns a result-set
+			-- 
 		local
-			cursor : ECLI_ROWSET_CURSOR
+			cursor : ECLI_ROWset_CURSOR
 			after_first : BOOLEAN
 		do
-			!!cursor.make (session, s, 20)
+			!!cursor.make (session, last_command, 20)
 			if cursor.is_ok then
 				if cursor.has_parameters then
 					if vars /= Void then
-						set_parameters (cursor)
+						set_parameters (statement)
 						cursor.bind_parameters
 					end
 				end
@@ -370,7 +521,7 @@ feature {NONE} -- Implementation
 		
 	print_help is
 		do
-			if command.is_interactive then
+			if is_session_interactive then
 				io.put_string ("Enter a SQL or a command terminated by a ';'%N")
 				io.put_string (" ;%Texecutes last SQL or command%N")
 				io.put_string ("Commands%N")
@@ -407,7 +558,7 @@ feature {NONE} -- Implementation
 
 	show_column_names (cursor : ECLI_ROW_CURSOR) is
 		local
-			i, width : INTEGER
+			i, width, npad : INTEGER
 			s : STRING
 		do
 			from
@@ -419,11 +570,8 @@ feature {NONE} -- Implementation
 				!! s.make (width)
 				s.append (cursor.column_name (i))
 				-- pad with blanks
-				if width > s.count then
-					pad (s, width)
-				else
-					s.head (width)
-				end
+				npad := width - s.count
+				pad (s, npad)
 				io.put_string (s)
 				if i <= cursor.upper then
 					io.put_character ('|')
@@ -438,7 +586,7 @@ feature {NONE} -- Implementation
 		require
 			cursor /= Void and then not cursor.off
 		local
-			index, precision : INTEGER
+			index, npad : INTEGER
 		do
 			from
 				index := cursor.lower
@@ -451,11 +599,9 @@ feature {NONE} -- Implementation
 				else
 					formatting_buffer.append ((cursor @i index).to_string)
 				end
-				precision := (cursor @i (index)).column_precision				
-				if precision > formatting_buffer.count then
-					pad (formatting_buffer, precision)
-				else
-					formatting_buffer.head (precision)
+				npad := (cursor @i (index)).column_precision - formatting_buffer.count
+				if npad > 0 then
+					pad (formatting_buffer, npad)
 				end
 				io.put_string (formatting_buffer)
 				io.put_character ('|')
@@ -464,10 +610,135 @@ feature {NONE} -- Implementation
 			--
 			io.put_character ('%N')
 		end
-					
+		
+	pad (s : STRING; n : INTEGER) is
+			-- pad 's' with 'n' blanks
+		local
+			i : INTEGER
+		do
+			from
+				i := 1
+			until
+				i > n
+			loop
+				s.append_character (' ')
+				i := i + 1
+			end
+		end			
+			
 	formatting_buffer : MESSAGE_BUFFER is
 		once
 			!!Result.make (1000)
+		end
+
+	create_compatible_cursor is
+		local
+			i, cols : INTEGER
+			v : ECLI_VARCHAR
+			cursor : ARRAY[ECLI_VALUE]
+		do
+			from
+				i := 1
+				cols := statement.result_column_count
+				!! cursor.make (1, cols)
+			until
+				i > cols
+			loop
+				!! v.make (statement.cursor_description.item (i).column_precision)
+				cursor.put (v, i)
+				i := i + 1
+			end
+			statement.set_cursor (cursor)
+		end
+
+	ar : ECLI_ARRAYED_INTEGER
+	
+	arl : ECLI_ARRAYED_LONGVARCHAR
+	
+	arv : ECLI_ARRAYED_VARCHAR
+	
+	arc : ECLI_ARRAYED_CHAR
+	
+	test_ar_integer is
+			-- 
+		do
+			!! ar.make (5)
+			ar.set_item_at (23, 1)
+			ar.set_item_at (-1, 2)
+			ar.set_item_at (1_000_000_000, 3)
+			ar.set_null_at (4)
+			ar.set_item_at (-1_000_000_000, 5)
+			print (ar.out)
+			print ("%N")
+		end
+
+	test_ar_longvarchar is
+			-- 
+		do
+			!! arl.make (30, 5)
+			arl.set_item_at ("Essai", 1)
+			arl.set_item_at ("", 2)
+			arl.set_item_at ("Très longue chaîne", 3)
+			arl.set_null_at (4)
+			arl.set_item_at ("Rien du tout", 5)
+			print (arl.out)
+			print ("%N")
+		end
+
+	test_ar_varchar is
+			-- 
+		do
+			!! arv.make (30, 5)
+			arv.set_item_at ("Essai", 1)
+			arv.set_item_at ("", 2)
+			arv.set_item_at ("Très longue chaîne", 3)
+			arv.set_null_at (4)
+			arv.set_item_at ("Rien du tout", 5)
+			print (arv.out)
+			print ("%N")
+		end
+
+	test_ar_char is
+			-- 
+		do
+			!! arc.make (30, 5)
+			arc.set_item_at ("Essai", 1)
+			arc.set_item_at ("", 2)
+			arc.set_item_at ("Très longue chaîne", 3)
+			arc.set_null_at (4)
+			arc.set_item_at ("Rien du tout", 5)
+			print (arc.out)
+			print ("%N")
+		end
+		
+	rs : ECLI_ROWSET_CURSOR
+	
+	avf : ECLI_ARRAYED_VALUE_FACTORY
+	
+	test_rowset is
+			-- 
+		local
+			index : INTEGER
+			loops : INTEGER
+		do
+			!!rs.make (session, "select * from toto", 3)
+			from
+				rs.start
+				loops := 1
+			until
+				not rs.is_ok or else rs.off
+			loop
+				from index := rs.lower
+				until (loops \\ rs.row_count /= 1) or else index > rs.upper
+				loop
+					print (rs.item_by_index (index))
+					print ("%N")
+					index := index + 1
+				end
+				rs.forth
+				loops := loops + 1
+			end
+			rs.close
 		end
 		
 end -- class ISQL

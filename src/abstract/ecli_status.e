@@ -22,9 +22,14 @@ inherit
 		export {NONE} all
 		end
 
+	KL_IMPORTED_STRING_ROUTINES
+		export {NONE} all
+		end
+	
 feature -- Access
 
 	status : INTEGER
+			-- status code of last CLI operation
 
 	diagnostic_message : STRING is
 			-- Message describing the current status
@@ -34,6 +39,22 @@ feature -- Access
 			Result := impl_error_message
 		end
 
+	cli_state : STRING is
+			-- name of the internal CLI state
+		do
+			get_diagnostics
+			Result := impl_cli_state.substring(1,5)
+		end
+
+	native_code : INTEGER is
+			-- native error code
+		do
+			get_diagnostics
+			Result := impl_native_code
+		end
+
+feature -- Status report
+
 	has_information_message : BOOLEAN is
 			-- Is the last CLI command ok, 
 			-- but with an available information message ?
@@ -41,18 +62,6 @@ feature -- Access
 			Result := status = cli_ok_with_info
 		ensure
 			Result implies is_ok
-		end
-
-	cli_state : STRING is
-		do
-			get_diagnostics
-			Result := impl_cli_state
-		end
-
-	native_code : INTEGER is
-		do
-			get_diagnostics
-			Result := impl_native_code
 		end
 
 	is_ok : BOOLEAN is
@@ -149,20 +158,9 @@ feature {NONE} -- Implementation
 			retcode : INTEGER
 		do
 			if need_diagnostics then
-				if impl_cli_state = Void then
-					!! impl_cli_state.make (6)
-				end
-				if impl_error_message = Void then
-					!! impl_error_message.make (256)
-				end
-				if impl_error_buffer = Void then
-					!! impl_error_buffer.make (256)
-				end
-				impl_error_message.clear_content
-				-- fill cli_state and buffer with blanks so that count=capacity
-				impl_cli_state.fill_blank
-				impl_cli_state.head (5)
-				impl_error_buffer.fill_blank
+				impl_cli_state := STRING_.make_buffer (6)
+				impl_error_buffer := STRING_.make_buffer (256)
+				!!impl_error_message.make(0)
 				from 
 					count := 1
 					retcode := cli_ok
@@ -189,11 +187,11 @@ feature {NONE} -- Implementation
 
 	impl_native_code : INTEGER
 
-	impl_cli_state : MESSAGE_BUFFER
+	impl_cli_state : STRING
 
-	impl_error_message : MESSAGE_BUFFER
+	impl_error_message : STRING
 
-	impl_error_buffer : MESSAGE_BUFFER
+	impl_error_buffer : STRING
 
 	need_diagnostics : BOOLEAN
 

@@ -44,12 +44,13 @@ feature -- Status report
 	is_null : BOOLEAN is
 			-- is this a NULL value (in RDBMS sense) ?
 		do
-			Result := ecli_c_value_get_length_indicator (buffer) = sql_null_data
+			Result := ecli_c_value_get_length_indicator (buffer) = Sql_null_data
 		end
 
 	convertible_to_string : BOOLEAN is
 			-- is this value convertible to a string ?
 		do
+			Result := True
 		end
 
 	convertible_to_character : BOOLEAN is
@@ -138,7 +139,7 @@ feature -- Element change
 	set_null is
 			-- set item to null
 		do
-			ecli_c_value_set_length_indicator (buffer, sql_null_data)
+			ecli_c_value_set_length_indicator (buffer, Sql_null_data)
 		ensure
 			null_value: is_null 
 		end
@@ -160,6 +161,7 @@ feature -- Conversion
 			convertible: convertible_to_string
 			not_null: not is_null
 		do
+			Result := out
 		end
 
 	to_character : CHARACTER is
@@ -265,6 +267,21 @@ feature {ECLI_STATEMENT} -- Basic operations
 				)
 		end
 
+	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
+		require
+			stmt: stmt /= Void 
+			positive_index: index > 0
+		do
+			stmt.set_status (ecli_c_bind_result (
+					stmt.handle,
+					index,
+					c_type_code,
+					to_external,
+					transfer_octet_length,
+					length_indicator_pointer)
+				)
+		end
+		
 	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- bind this value as parameter 'index' of 'stmt'
 		require
@@ -293,7 +310,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 
 feature {NONE} -- Implementation values
 	
-	sql_null_data : INTEGER is
+	Sql_null_data : INTEGER is
 		once
 			Result := ecli_c_null_data
 		end

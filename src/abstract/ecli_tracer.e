@@ -132,6 +132,16 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_date_time.out)
 			medium.put_string ("'}")
 		end
+
+	put_time (a_time : ECLI_TIME) is
+			-- put 'a_time' as a time constant
+		require
+			a_time /= Void and then not a_time.is_null
+		do
+			medium.put_string ("{t '")
+			medium.put_string (a_time.out)
+			medium.put_string ("'}")
+		end
 		
 	put_double (a_double : ECLI_DOUBLE) is
 			-- put 'a_double' as a double constant

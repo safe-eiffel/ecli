@@ -12,7 +12,8 @@ inherit
 	ECLI_VALUE
 		redefine
 			item, set_item, out,
-			to_double, convertible_to_double 
+			to_double, convertible_to_double, to_integer, convertible_to_integer,
+			to_real, convertible_to_real
 		end
 
 creation
@@ -28,8 +29,6 @@ feature -- Initialization
 feature -- Access
 
 	item : DOUBLE_REF is
-		local
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if is_null then
 				Result := Void
@@ -45,6 +44,16 @@ feature -- Measurement
 feature -- Status report
 
 	convertible_to_double : BOOLEAN is
+		do
+			Result := True
+		end
+
+	convertible_to_integer : BOOLEAN is
+		do
+			Result := True
+		end
+
+	convertible_to_real : BOOLEAN is
 		do
 			Result := True
 		end
@@ -106,6 +115,20 @@ feature -- Conversion
 		do
 			if not is_null then
 				Result := item.item
+			end
+		end
+
+	to_integer : INTEGER is
+		do
+			if not is_null then
+				Result := item.item.truncated_to_integer
+			end
+		end
+
+	to_real : REAL is
+		do
+			if not is_null then
+				Result := item.item.truncated_to_real
 			end
 		end
 		

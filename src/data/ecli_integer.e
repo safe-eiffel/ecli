@@ -28,8 +28,6 @@ feature -- Initialization
 feature -- Access
 
 	item : INTEGER_REF is
-		local
-			tools : ECLI_EXTERNAL_TOOLS
 		do
 			if is_null then
 				Result := Void

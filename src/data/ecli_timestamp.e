@@ -15,16 +15,16 @@ inherit
 		export
 		undefine
 		redefine
-			make_first, item, set_item, 
+			make_default, item, set_item, 
 			set_date, octet_size,
 			c_type_code, column_precision, db_type_code, 
 			decimal_digits, display_size, out, is_equal,
-			to_timestamp, trace
+			to_timestamp, trace, to_string, convertible_to_string
 		select
 		end
 
 creation
-	make, make_first
+	make, make_first, make_default
 
 feature {NONE} -- Initialization
 
@@ -48,8 +48,9 @@ feature {NONE} -- Initialization
 			second_set: second = a_second
 			nanosecond_set: nanosecond = a_nanosecond
 		end
-
-	make_first is
+	
+	make_default is
+			-- make default time_stamp value
 		do
 			allocate_buffer
 			set_date (1,1,1)
@@ -178,6 +179,12 @@ feature -- Status report
 			Result := column_precision
 		end
 
+	convertible_to_string : BOOLEAN is
+			-- 
+		do
+			Result := True
+		end
+		
 feature -- Status setting
 
 feature -- Cursor movement
@@ -192,6 +199,12 @@ feature -- Transformation
 
 feature -- Conversion
 
+	to_string : STRING is
+			--
+		do
+			Result := out
+		end
+		
 	out : STRING is
 		do
 			Result := Precursor

@@ -19,6 +19,11 @@ inherit
 		select
 		end
 
+	ECLI_FORMAT_INTEGER
+		undefine
+			out, is_equal
+		end
+
 --| FIXME: uncomment when SmallEiffel 075 has been fixed
 --
 --	DT_GREGORIAN_CALENDAR 
@@ -30,7 +35,7 @@ inherit
 --		end
 		
 creation
-	make, make_first
+	make, make_first, make_default
 
 feature {NONE} -- Initialization
 
@@ -49,6 +54,13 @@ feature {NONE} -- Initialization
 
 	make_first is
 			-- make as first day of Christian Era : January 1st, 1
+		obsolete "please use make_default instead."
+		do
+			make_default
+		end
+		
+	make_default is
+			-- make default date as first day of Christian Era : January 1st, 1
 		do
 			allocate_buffer
 			set (1,1,1)
@@ -57,7 +69,7 @@ feature {NONE} -- Initialization
 			month_set: month = 1
 			day_set: day = 1
 		end
-
+		
 feature -- Access
 
 	item : DT_DATE is
@@ -218,27 +230,6 @@ feature {NONE} -- Implementation
 
 	string_routines : expanded KL_STRING_ROUTINES
 
-	pad_integer_4 (value : INTEGER) : STRING is
-		do
-			Result:= string_routines.make (4)
-			if value < 10 then
-				Result.append ("000")
-			elseif value < 100 then
-				Result.append ("00")
-			elseif value < 1000 then
-				Result.append ("0")
-			end
-			Result.append (value.out)
-		end
-
-	pad_integer_2 (value : INTEGER) : STRING is
-		do
-			Result:= string_routines.make (2)
-			if value < 10 then
-				Result.append ("0")
-			end
-			Result.append (value.out)
-		end
 
 	allocate_buffer is
 		do

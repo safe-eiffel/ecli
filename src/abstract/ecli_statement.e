@@ -147,7 +147,7 @@ feature -- Access
 	cursor : ARRAY[like value_anchor]
 			-- container where result fields are stored
 
-	parameters : ARRAY[like value_anchor]
+	parameters : ARRAY[like parameter_anchor]
 			-- current parameter values for the statement
 
 	parameters_description : ARRAY[ECLI_PARAMETER_DESCRIPTION]
@@ -170,8 +170,11 @@ feature -- Measurement
 			-- 0 if no result set is available
 		require
 			valid_statement: is_valid
-			executed: is_executed
+			executed_or_prepared: is_prepared or else is_executed
 		do
+			if impl_result_column_count = -1 then
+				get_result_column_count
+			end
 			Result := impl_result_column_count
 		end
 
@@ -181,7 +184,7 @@ feature -- Status Report
 			-- has this statement a result-set ?
 		require
 			valid_statement: is_valid
-			executed: is_executed
+			executed_or_prepared: is_prepared or else is_executed
 		do
 			Result := result_column_count > 0
 		ensure
@@ -318,7 +321,7 @@ feature -- Cursor movement
 			valid_statement: is_valid
 			executed: is_executed
 			result_pending: not off and not before
-			cursor_ready: cursor /= Void and then not array_routines.has (Cursor,Void)
+			cursor_ready: cursor /= Void and then not array_routines.has (cursor,Void)
 		do
 			fetch_next_row
 		end
@@ -346,6 +349,7 @@ feature -- Element change
 			sql := a_sql
 			impl_sql := parsed_sql (sql)
 			impl_parameter_names := Void
+			impl_result_column_count := -1 -- do not know
 			is_executed := False
 			is_prepared := False
 			cursor_description := Void
@@ -353,6 +357,7 @@ feature -- Element change
 			check
 				impl_sql_different: sql /= impl_sql
 			end
+			parameters := Void
 			bound_parameters := False
 		ensure
 			has_sql: sql = a_sql
@@ -360,6 +365,7 @@ feature -- Element change
 			not_executed: not is_executed
 			not_prepared: not is_prepared
 			no_bound_parameters: not bound_parameters
+			no_more_parameters: parameters = Void
 			reset_descriptions: parameters_description = Void and cursor_description = Void
 		end
 
@@ -378,7 +384,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_parameter (value : like value_anchor; key : STRING) is
+	put_parameter (value : like parameter; key : STRING) is
 			-- set parameter 'key' with 'value'
 			-- WARNING : Case sensitive !
 		require
@@ -462,7 +468,7 @@ feature -- Basic operations
 				set_status (ecli_c_execute_direct (handle, tools.string_to_pointer (impl_sql)))
 			end
 			if is_ok then
-				get_result_column_count
+--				get_result_column_count
 				is_executed := True
 				if has_results then
 					set_cursor_before
@@ -517,7 +523,7 @@ feature -- Basic operations
 			-- get metadata about current result-set in 'cursor_description'
 		require
 			valid_statement: is_valid
-			executed: is_executed
+			executed_or_prepared: is_prepared or else is_executed 
 			has_results: has_results
 		local
 			count, limit : INTEGER
@@ -591,6 +597,10 @@ feature -- Inapplicable
 		do
 		end
 
+	parameter_anchor : ECLI_VALUE is
+		do
+		end
+		
 	array_routines : expanded KL_ARRAY_ROUTINES[ANY]
 
 feature {NONE} -- Implementation
@@ -742,6 +752,9 @@ feature {NONE} -- Implementation
 
 
 	impl_result_column_count : INTEGER
+		-- -1 : do not know; must call `get_result_column_count'
+		--  0 : no result-set
+		-- >0  :number of columns in result-set
 
 	impl_parameter_names : DS_LIST[STRING]
 
