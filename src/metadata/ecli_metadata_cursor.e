@@ -108,7 +108,7 @@ feature -- Cursor Movement
 			if results  = Void then
 				create_buffers
 			end
-			Precursor
+			statement_start --Precursor
 			if not off then
 				create_item
 			else

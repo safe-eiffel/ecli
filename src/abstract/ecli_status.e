@@ -29,7 +29,9 @@ inherit
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
 		end
-		
+
+	ANY
+	
 feature -- Access
 
 	status : INTEGER

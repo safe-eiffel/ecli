@@ -19,6 +19,7 @@ inherit
 		redefine
 			create_parameters,
 			put_single_parameter_with_hint,
+			put_parameter_with_hint,
 			bind_one_parameter,
 			put_input_parameter
 		end
@@ -129,6 +130,11 @@ feature {NONE} -- Implementation
 			create directed_parameters.make (1, parameters_count)
 		end
 		
+	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
+		do
+			Precursor (value, key, hint)
+		end
+	
 	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
 			-- 
 		do

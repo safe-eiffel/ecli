@@ -30,6 +30,8 @@ inherit
 			{NONE} all
 		end
 
+	ANY
+	
 feature {ECLI_HANDLE} -- Access
 
 	handle : POINTER

@@ -129,7 +129,7 @@ feature -- Cursor Movement
 			if results  = Void then
 				create_buffers
 			end
-			Precursor
+			statement_start
 			if not off then
 				!!impl_item.make (Current)
 			end

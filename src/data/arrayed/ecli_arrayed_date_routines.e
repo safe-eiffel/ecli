@@ -12,7 +12,9 @@ inherit
 		export 
 			{NONE} all
 		end
-		
+	
+	ANY
+	
 feature -- Access
 
 	buffer : POINTER is
