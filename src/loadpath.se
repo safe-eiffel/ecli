@@ -1,0 +1,5 @@
+${ECLI}/src/abstract/
+${ECLI}/src/data/
+${ECLI}/src/pattern/
+${ECLI}/src/spec/
+${ECLI}/src/spec/se/
