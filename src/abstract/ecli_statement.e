@@ -437,11 +437,13 @@ feature -- Cursor movement
 			-- go after the last result row and release internal cursor state
 		require
 			valid_statement: is_valid
-			valid_state: is_executed and not after
+			valid_state: is_executed
 			has_result_set: has_result_set
 		do
-			set_status (ecli_c_close_cursor (handle))
-			set_cursor_after
+			if not after then
+				set_status (ecli_c_close_cursor (handle))
+				set_cursor_after
+			end
 			fetched_columns_count := 0
 		ensure
 			after: after
