@@ -32,7 +32,7 @@ feature {NONE} -- Initialization
 				ecli_c_describe_parameter (stmt.handle,
 					index,
 					pointer ($sql_type_code),
-					pointer ($column_precision),
+					pointer ($size),
 					pointer ($decimal_digits),
 					pointer ($nullability)))			
 		end

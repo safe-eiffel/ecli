@@ -15,6 +15,7 @@ inherit
 		export {NONE} make_parameter
 		end
 
+	KL_IMPORTED_STRING_ROUTINES
 creation
 	make
 
@@ -27,22 +28,20 @@ feature {NONE} -- Initialization
 			valid_index: index > 0
 			valid_maximum: max_name_length > 0
 		local
-			temp_name : STRING
-			p_temp_name : POINTER
+			stat : INTEGER
 		do
-			!! temp_name.make (max_name_length)
-			p_temp_name := string_to_pointer (temp_name)
-			stmt.set_status (
-				ecli_c_describe_column (stmt.handle,
-					index,
-					p_temp_name,
-					max_name_length,
-					pointer ($actual_name_length),
-					pointer ($sql_type_code),
-					pointer ($column_precision),
-					pointer ($decimal_digits),
-					pointer ($nullability)))
-			name := pointer_to_string (p_temp_name)
+			name := STRING_.make_buffer (max_name_length + 1)
+			stat := ecli_c_describe_column (stmt.handle,
+				index,
+				string_to_pointer (name),
+				max_name_length,
+				pointer ($actual_name_length),
+				pointer ($sql_type_code),
+				pointer ($size),
+				pointer ($decimal_digits),
+				pointer ($nullability))
+			stmt.set_status (stat)
+			name := pointer_to_string (string_to_pointer(name))
 		end
 
 feature -- Access
@@ -54,6 +53,11 @@ feature {NONE} -- Implementation
 
 	actual_name_length : INTEGER
 
+	temporary_name : STRING is
+			-- 
+		once !!Result.make (100)
+		end
+		
 end -- class ECLI_COLUMN_DESCRIPTION
 --
 -- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>
