@@ -1,8 +1,12 @@
 indexing
 	description: "Procedures metadata."
-	author: "Paul G. Crismer."
+	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_PROCEDURE
@@ -45,41 +49,31 @@ feature {NONE} -- Initilization
 feature -- Access
 
 	description : STRING
+			-- description of procedure
 
 	type : INTEGER
+			-- type of procedure
 
 feature -- Measurement
 
 feature -- Status report
 
 	is_procedure :  BOOLEAN is
-			--
+			-- is this a procedure ?
 		do
 			Result := type = sql_pt_procedure
 		end
 
 	is_function : BOOLEAN is
-			--
+			-- is this a function (it has a return value) ?
 		do
 			Result := type = sql_pt_function
 		end
 
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	out : STRING is
-			--
+			-- terse printable representation
 		do
 			Result :=  Precursor {ECLI_NAMED_METADATA}
 			Result.append_string ("%T")
@@ -93,19 +87,9 @@ feature -- Conversion
 			end
 		end
 
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_PROCEDURE
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

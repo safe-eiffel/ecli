@@ -1,8 +1,12 @@
 indexing
 	description: "Objects that open a cursor on database metadata"
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 deferred class
 	ECLI_METADATA_CURSOR
@@ -68,13 +72,16 @@ feature --
 feature -- Access
 
 	queried_catalog : STRING
+			-- queried catalog name
 
 	queried_schema : STRING
+			-- queried schema name
 
 	queried_name : STRING
+			-- queried name (table, column or procedure)
 
 	item : ANY is
-			--
+			-- item at current cursor position
 		require
 			not_off: not off
 		do
@@ -86,6 +93,7 @@ feature -- Access
 feature -- Cursor Movement
 
 	start is
+			-- advance cursor at first item if any
 		do
 			if cursor  = Void then
 				create_buffers
@@ -99,6 +107,7 @@ feature -- Cursor Movement
 		end
 
 	forth is
+			-- advance cursor to next item
 		do
 			Precursor
 			if not off then
@@ -110,7 +119,7 @@ feature -- Cursor Movement
 feature {NONE} -- Implementation
 
 	create_buffers is
-				-- create buffers for cursor
+			-- create buffers for cursor
 		deferred
 		end
 
@@ -151,3 +160,8 @@ feature {NONE} -- Implementation
 		end
 
 end -- class ECLI_METADATA_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

@@ -6,8 +6,12 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_PROCEDURES_CURSOR
@@ -50,7 +54,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : ECLI_PROCEDURE is
-			--
+			-- item at current cursor position
 		do
 			Result := impl_item
 		end
@@ -59,17 +63,20 @@ feature -- Cursor Movement
 
 feature {ECLI_PROCEDURE} -- Access
 
-		buffer_catalog_name,
-			buffer_schema_name,
-			buffer_procedure_name,
-			buffer_description, buffer_na1, buffer_na2, buffer_na3 : ECLI_VARCHAR
+	buffer_catalog_name : ECLI_VARCHAR
+	buffer_schema_name : ECLI_VARCHAR
+	buffer_procedure_name : ECLI_VARCHAR
+	buffer_description : ECLI_VARCHAR
+	buffer_na1 : ECLI_VARCHAR
+	buffer_na2 : ECLI_VARCHAR
+	buffer_na3 : ECLI_VARCHAR
 
-		buffer_procedure_type : ECLI_INTEGER
+	buffer_procedure_type : ECLI_INTEGER
 
 feature {NONE} -- Implementation
 
-		create_buffers is
-				-- create buffers for cursor
+	create_buffers is
+			-- create buffers for cursor
 		do
 			create buffer_catalog_name.make (255)
 			create buffer_schema_name.make (255)
@@ -93,7 +100,7 @@ feature {NONE} -- Implementation
 		end
 
 	create_item is
-			--
+			-- create item at curren cursor position
 		do
 			if not off then
 				!!impl_item.make (Current)
@@ -109,10 +116,15 @@ feature {NONE} -- Implementation
 	do_query_metadata (l_catalog : POINTER; catalog_length : INTEGER;
 		l_schema : POINTER; schema_length : INTEGER;
 		l_name : POINTER; name_length : INTEGER) : INTEGER is
-			--
+			-- actual external query
 		do
 			Result := ecli_c_get_procedures ( handle,
 				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
 		end
 
 end -- class ECLI_PROCEDURES_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

@@ -6,8 +6,12 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_PRIMARY_KEY_CURSOR
@@ -33,7 +37,8 @@ creation
 
 feature {NONE} -- Initialization
 
-	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION)	is
+	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
+			-- create cursor for primary keys on `a_name' (catalog, schema, table)
 		do
 			Precursor (a_name, a_session)
 		end
@@ -41,16 +46,15 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : ECLI_PRIMARY_KEY is
-			-- current type description
+			-- item at current cursor position
 		do
 			Result := impl_item
 		end
 
---	next_item : like item
-
 feature -- Cursor Movement
 
 	forth is
+			-- advance cursor to next item if any
 		do
 			if impl_item = Void or else creating_item then
 				if creating_item then
@@ -62,7 +66,7 @@ feature -- Cursor Movement
 		end
 
 	create_item is
-			--
+			-- create item at current cursor position
 		do
 			if impl_item = Void then
 					!!impl_item.make (Current)
@@ -97,37 +101,37 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-		create_buffers is
-				-- create buffers for cursor
-			do
-				create buffer_table_cat.make (255)
-				create buffer_table_schem.make (255)
-				create buffer_table_name.make (255)
-				create buffer_column_name.make (255)
-				create buffer_key_seq.make
-				create buffer_pk_name.make (255)
-				set_buffer_into_cursor
-			end
+	create_buffers is
+			-- create buffers for cursor
+		do
+			create buffer_table_cat.make (255)
+			create buffer_table_schem.make (255)
+			create buffer_table_name.make (255)
+			create buffer_column_name.make (255)
+			create buffer_key_seq.make
+			create buffer_pk_name.make (255)
+			set_buffer_into_cursor
+		end
 
-		set_buffer_into_cursor is
-				--
-			do
-				set_cursor (<<
-					buffer_table_cat,
-					buffer_table_schem,
-					buffer_table_name,
-					buffer_column_name,
-					buffer_key_seq,
-					buffer_pk_name
-					>>)
-			ensure
-				cursor_not_void: cursor /= Void
-			end
+	set_buffer_into_cursor is
+			-- set cursor with buffer values
+		do
+			set_cursor (<<
+				buffer_table_cat,
+				buffer_table_schem,
+				buffer_table_name,
+				buffer_column_name,
+				buffer_key_seq,
+				buffer_pk_name
+				>>)
+		ensure
+			cursor_not_void: cursor /= Void
+		end
 
 	definition : STRING is once Result := "SQLPrimaryKeys" end
 
 	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
-			--
+			-- actual external query
 		do
 			Result := ecli_c_get_primary_keys ( handle,
 				a_catalog, a_catalog_length,
@@ -138,3 +142,8 @@ feature {NONE} -- Implementation
 	creating_item : BOOLEAN
 
 end -- class ECLI_PRIMARY_KEY_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

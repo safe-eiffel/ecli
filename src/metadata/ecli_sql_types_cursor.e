@@ -1,8 +1,12 @@
 indexing
 	description: "Objects that iterate over the SQL types supported by a datasource"
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_SQL_TYPES_CURSOR
@@ -21,19 +25,19 @@ inherit
 	ECLI_TYPE_CONSTANTS
 		export {NONE} all;
 		{ANY}
-				sql_char,
-				sql_numeric,
-				sql_decimal,
-				sql_integer,
-				sql_smallint,
-				sql_float,
-				sql_real,
-				sql_double,
-				sql_varchar,
-				sql_type_date,
-				sql_type_time,
-				sql_type_timestamp,
-				sql_longvarchar
+			sql_char,
+			sql_numeric,
+			sql_decimal,
+			sql_integer,
+			sql_smallint,
+			sql_float,
+			sql_real,
+			sql_double,
+			sql_varchar,
+			sql_type_date,
+			sql_type_time,
+			sql_type_timestamp,
+			sql_longvarchar
 		end
 
 	KL_IMPORTED_ARRAY_ROUTINES
@@ -70,7 +74,7 @@ feature -- Initialization
 		end
 
 	make (a_type : INTEGER; a_session : ECLI_SESSION) is
-			-- make cursor for `a_type'
+			-- make cursor for `a_type', if it is a type known by the datasource
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
 			valid_type: Integer_array_.has (supported_types, a_type)
@@ -86,7 +90,7 @@ feature -- Initialization
 feature -- Access
 
 	item : ECLI_SQL_TYPE is
-			-- current type description
+			-- item at current cursor position
 		require
 			not_off: not off
 		do
@@ -96,7 +100,7 @@ feature -- Access
 		end
 
 	supported_types : ARRAY[INTEGER] is
-			--
+			-- array of supported types
 		once
 			Result := <<
 				sql_char,
@@ -119,6 +123,7 @@ feature -- Access
 feature -- Cursor Movement
 
 	start is
+			-- advance cursor to first position if any
 		do
 			if cursor  = Void then
 				create_buffers
@@ -130,6 +135,7 @@ feature -- Cursor Movement
 		end
 
 	forth is
+			-- advance cursor to next position
 		do
 			Precursor
 			if not off then
@@ -143,33 +149,33 @@ feature -- Cursor Movement
 feature {ECLI_SQL_TYPE} -- Status
 
 	is_odbc_v3 : BOOLEAN is
-			--
+			-- does this type description contain ODBC > 3.x information ?
 		do
 			Result := result_columns_count > 15
 		end
 
 feature {ECLI_SQL_TYPE} -- Access
 
-		buffer_type_name,
-			buffer_literal_prefix,
-			buffer_literal_suffix,
-			buffer_create_params,
-			buffer_local_type_name : ECLI_VARCHAR
+	buffer_type_name : ECLI_VARCHAR
+	buffer_literal_prefix : ECLI_VARCHAR
+	buffer_literal_suffix : ECLI_VARCHAR
+	buffer_create_params : ECLI_VARCHAR
+	buffer_local_type_name : ECLI_VARCHAR
 
-		buffer_data_type,
-			buffer_column_size,
-			buffer_nullable,
-			buffer_case_sensitive,
-			buffer_searchable,
-			buffer_unsigned_attribute,
-			buffer_fixed_prec_scale,
-			buffer_auto_unique_value,
-			buffer_minimum_scale,
-			buffer_maximum_scale,
-			buffer_sql_data_type,
-			buffer_sql_date_time_sub,
-			buffer_num_prec_radix,
-			buffer_interval_precision : ECLI_INTEGER
+	buffer_data_type : ECLI_INTEGER
+	buffer_column_size : ECLI_INTEGER
+	buffer_nullable : ECLI_INTEGER
+	buffer_case_sensitive : ECLI_INTEGER
+	buffer_searchable : ECLI_INTEGER
+	buffer_unsigned_attribute : ECLI_INTEGER
+	buffer_fixed_prec_scale : ECLI_INTEGER
+	buffer_auto_unique_value : ECLI_INTEGER
+	buffer_minimum_scale : ECLI_INTEGER
+	buffer_maximum_scale : ECLI_INTEGER
+	buffer_sql_data_type : ECLI_INTEGER
+	buffer_sql_date_time_sub : ECLI_INTEGER
+	buffer_num_prec_radix : ECLI_INTEGER
+	buffer_interval_precision : ECLI_INTEGER
 
 feature {NONE} -- Implementation
 
@@ -225,9 +231,9 @@ feature {NONE} -- Implementation
 	definition : STRING is once Result := "SQLGetTypeInfo" end
 
 	get_type_info (type : INTEGER) is
-			--
+			-- get information on `type'
 		do
-			set_status (ecli_c_get_type_info ( handle, type))
+			set_status (ecli_c_get_type_info (handle, type))
 			if is_ok then
 				get_result_columns_count
 				is_executed := True
@@ -236,13 +242,15 @@ feature {NONE} -- Implementation
 				else
 					set_cursor_after
 				end
-	         else
-	         	impl_result_columns_count := 0
+			 else
+				impl_result_columns_count := 0
 			end
 			create_buffers
 		end
 
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_SQL_TYPES_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

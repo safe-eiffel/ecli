@@ -5,8 +5,12 @@ indexing
 		% The referenced table primary key is `referenced key'."
 		
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_FOREIGN_KEY
@@ -73,6 +77,8 @@ feature -- Access
 			update_rule_applicable: is_update_rule_applicable
 		do
 			Result := update_rule_impl 
+		ensure
+			definition: (Result = Sql_cascade or else Result = Sql_set_null or else Result = Sql_set_default or else Result = Sql_no_action)
 		end
 		
 	delete_rule : INTEGER is
@@ -81,6 +87,8 @@ feature -- Access
 			delete_rule_applicable: is_delete_rule_applicable
 		do
 			Result := delete_rule_impl
+		ensure
+			definition: (Result = Sql_cascade or else Result = Sql_set_null or else Result = Sql_set_default or else Result = Sql_no_action)
 		end
 		
 	deferrability : INTEGER is
@@ -89,6 +97,8 @@ feature -- Access
 			deferrability_applicable: is_deferrability_applicable
 		do
 			Result := deferrability_impl 
+		ensure
+			definition: (Result = Sql_initially_deferred or else Result = Sql_initially_immediate or else Result = Sql_not_deferrable)
 		end
 	
 feature -- Status report
@@ -108,38 +118,15 @@ feature -- Measurement
 			columns.put_last (a_column_name)
 			referenced_key.add_column (a_pk_column_name)
 		end
-		
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
 
 feature -- Conversion
 
 	out : STRING is
+			-- terse printable representation
 		do
 			!!Result.make (0)
 		end
 		
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	update_rule_impl : INTEGER
@@ -154,3 +141,8 @@ invariant
 	deferrability_value: is_deferrability_applicable implies (deferrability = Sql_initially_deferred or else deferrability = Sql_initially_immediate or else deferrability = Sql_not_deferrable)
 
 end -- class ECLI_FOREIGN_KEY
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

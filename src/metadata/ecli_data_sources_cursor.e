@@ -1,8 +1,12 @@
 indexing
 	description: "Objects that iterate over data sources"
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_DATA_SOURCES_CURSOR
@@ -88,34 +92,39 @@ feature -- Measurement
 feature -- Status report
 
 	off : BOOLEAN is
-			--
+			-- is there no valid item at cursor position ?
 		do
 			Result := before or after
 		end
 
 	before : BOOLEAN
+			-- is cursor before any valid item ?
 
 	after : BOOLEAN
+			-- is cursor after any valid item ?
 
 	is_user_datasources : BOOLEAN
+			-- is this a cursor on user datasources ?
 
 	is_system_datasources : BOOLEAN
+			-- is this a cursor on system datasources ?
 
 	is_all_datasources : BOOLEAN
+			-- is this a cursor on all datasources ?
 
 feature -- Status setting
 
 feature -- Cursor movement
 
 	start is
-			--
+			-- advance cursor on first position if any
 		require
 			is_off: off
 		do
 			before := False
 			after := False
-			name_buffer := STRING_.make (max_source_name_length + 1)
-			description_buffer := STRING_.make (max_source_description_length + 1)
+			create c_name.make (max_source_name_length + 1)
+			create c_description.make (max_source_description_length + 1)
 			item_ := Void
 			do_fetch (fetch_first_operation)
 		ensure
@@ -123,7 +132,7 @@ feature -- Cursor movement
 		end
 
 	forth is
-			--
+			-- advance cursor on the next position if any
 		require
 			not_off: not off
 		do
@@ -131,20 +140,6 @@ feature -- Cursor movement
 		ensure
 			off_is_after: off implies after
 		end
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -154,21 +149,15 @@ feature -- Basic operations
 			--| do nothing; defined just to be consistent with other cursors
 		end
 
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {ECLI_DATA_SOURCE} -- Implementation
 
 	name : STRING
-
-	name_buffer : STRING
-	description_buffer : STRING
-
 	description : STRING
+	
+	c_name : C_STRING
+	c_description : C_STRING
 
 	actual_name_length : INTEGER
-
 	actual_description_length : INTEGER
 
 feature {NONE} -- Implementation
@@ -186,13 +175,8 @@ feature {NONE} -- Implementation
 		end
 
 	do_fetch (direction : INTEGER) is
-			--
-		local
-			c_name : C_STRING
-			c_description : C_STRING
+			-- actual external query
 		do
-			create c_name.make (max_source_name_length + 1)
-			create c_description.make (max_source_description_length + 1)
 			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, $actual_name_length, c_description.handle, max_source_description_length, $actual_description_length))
 			if is_ok and then not is_no_data then
 				name := c_name.to_string
@@ -213,3 +197,8 @@ invariant
 	invariant_clause: True -- Your invariant here
 
 end -- class ECLI_DATA_SOURCES_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

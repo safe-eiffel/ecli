@@ -1,8 +1,12 @@
 indexing
 	description: "Objects that describe an SQL Table"
-	author: ""
+	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_TABLE
@@ -46,26 +50,10 @@ feature -- Access
 	description : STRING
 			-- description, comment or remarks
 
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	out : STRING is
-			--
+			-- terse visual representation
 		do
 			!!Result.make (128)
 			Result.append_string (Precursor)
@@ -74,19 +62,9 @@ feature -- Conversion
 			append_to_string (Result, description)
 		end
 
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_TABLE
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

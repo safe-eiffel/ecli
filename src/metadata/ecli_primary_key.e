@@ -1,8 +1,12 @@
 indexing
 	description: "Primary keys of a table"
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_PRIMARY_KEY
@@ -19,6 +23,7 @@ inherit
 	
 creation
 	make 
+
 creation
 	{ECLI_FOREIGN_KEY} make_by_name
 	
@@ -41,6 +46,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_by_name (a_catalog_name, a_schema_name, a_table_name, a_key_name, a_column_name : STRING) is
+			-- create for `a_catalog_name', `a_schema_name', `a_table_name', `a_key_name', `a_column_name'
 		require
 			a_table_name_not_void: a_table_name /= Void
 			a_column_name_not_void: a_column_name /= Void
@@ -65,6 +71,7 @@ feature -- Access
 		-- name of the key if it is applicable
 	
 	columns : DS_LIST[STRING]
+		-- list of column names
 	
 feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 	
@@ -77,42 +84,22 @@ feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 		ensure
 			column_added: columns.has (a_column_name) and then columns.count = old columns.count + 1
 		end
-		
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
 
 feature -- Conversion
 
 	out : STRING is
+			-- terse printable representation
 		do
 			!!Result.make (0)
 		end
-		
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
 
 invariant
 	table_name_not_void: table /= Void
 	columns_not_void: columns /= Void and then not columns.has (Void)
 
 end -- class ECLI_PRIMARY_KEY
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

@@ -1,8 +1,13 @@
 indexing
 	description: "Objects that describe a SQL column in a table"
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
+
 
 class
 	ECLI_COLUMN
@@ -22,9 +27,9 @@ inherit
 		end
 
 creation
-	make
+	{ECLI_COLUMNS_CURSOR} make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (cursor : ECLI_COLUMNS_CURSOR) is
 			-- create from `cursor' current position
@@ -67,12 +72,13 @@ feature -- Initialization
 feature -- Access
 
 	table : STRING
-
---	name : STRING
+			-- table name
 
 	type_code : INTEGER
+			-- ODBC code of SQL type
 
 	type_name : STRING
+			-- Datasource dependant type name
 
 	size : INTEGER
 			-- size, display length, number of bits, ... depending on actual datatype
@@ -92,27 +98,21 @@ feature -- Access
 feature -- Measurement
 
 	is_size_applicable : BOOLEAN
+			-- is this a type parameterized by a size ?
+			
 	is_transfer_length_applicable : BOOLEAN
+			-- does a transfer length apply ?
+			
 	is_decimal_digits_applicable : BOOLEAN
+			-- is 'decimal_digits' applicable for this type ?
+			
 	is_precision_radix_applicable : BOOLEAN
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
+			-- is this a numeric type, where 'precision_radix' is applicable ?
 
 feature -- Conversion
 
 	out : STRING is
+			-- terse visual representation
 		do
 			!!Result.make (0)
 			Result.append_string (name); Result.append_string ("%T")
@@ -149,19 +149,9 @@ feature -- Conversion
 			end
 		end
 
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_COLUMN
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

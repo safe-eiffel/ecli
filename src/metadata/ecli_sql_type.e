@@ -1,8 +1,12 @@
 indexing
 	description: "Objects that describe a SQL type, as supported by a datasource."
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_SQL_TYPE
@@ -12,9 +16,6 @@ inherit
 		redefine
 			out
 		end
-
--- The following Creation_clause can be removed if you need no other
--- procedure than `default_create':
 
 creation
 	make
@@ -146,8 +147,6 @@ feature -- Access
 			significant: is_create_params_applicable implies Result /= Void
 		end
 
-	-- is_nullable : inherited
-
 	is_case_sensitive : BOOLEAN is
 			-- If a character datatype, denotes the case sensitivity in comparisons
 			-- and in collations
@@ -162,7 +161,7 @@ feature -- Access
 		end
 
 	is_unsigned : BOOLEAN is
-			-- is it unsiged ?
+			-- is it unsigned ?
 		require
 			is_unsigned_applicable
 		do
@@ -209,7 +208,7 @@ feature -- Access
 		end
 
 	sql_data_type : INTEGER is
-			-- sql data type code (ODBCV3.0)
+			-- sql data type code (ODBC >= V3.0)
 		require
 			exists_sql_data_type
 		do
@@ -217,7 +216,7 @@ feature -- Access
 		end
 
 	sql_date_time_sub : INTEGER is
-			-- sql subcode if date time or interval (ODBCV3.0)
+			-- sql subcode if date time or interval (ODBCV >= 3.0)
 		require
 			exists_sql_date_time_sub
 		do
@@ -225,7 +224,7 @@ feature -- Access
 		end
 
 	num_prec_radix : INTEGER is
-			-- precision radix for numeric (ODBCV3.0)
+			-- precision radix for numeric (ODBCV >= 3.0)
 		require
 			exists_num_prec_radix
 		do
@@ -233,7 +232,7 @@ feature -- Access
 		end
 
 	interval_precision : INTEGER is
-			-- precision if interval (ODBCV3.0)
+			-- precision if interval (ODBCV >= 3.0)
 		require
 			exists_interval_precision
 		do
@@ -252,11 +251,13 @@ feature -- Status report
 
 	is_literal_suffix_applicable : BOOLEAN
 
-	is_unsigned_applicable : BOOLEAN
+	is_unsigned_applicable : BOOLEAN 
+			-- True if it is a numeric type
 
 	is_local_type_name_applicable : BOOLEAN
 
 	is_auto_unique_value_applicable : BOOLEAN
+			-- Can such type be autoincremented ?
 
 	is_minimum_scale_applicable : BOOLEAN
 
@@ -273,7 +274,7 @@ feature -- Status report
 feature -- Conversion
 
 	out : STRING is
-			--
+			-- terse visual representation
 		do
 			!!Result.make (128)
 			Result.append_string (name)
@@ -310,42 +311,27 @@ feature -- Conversion
 feature {NONE} -- Implementation
 
 	impl_name : STRING
-
 	impl_sql_type_code : INTEGER
-
 	impl_size : INTEGER
-
 	impl_literal_prefix : STRING
-
 	impl_literal_suffix : STRING
-
 	impl_create_params : STRING
-
 	impl_case_sensitive : INTEGER
-
 	impl_searchable : INTEGER
-
 	impl_unsigned : INTEGER
-
 	impl_fixed_precision_scale : INTEGER
-
 	impl_auto_unique_value : INTEGER
-
 	impl_local_type_name : STRING
-
 	impl_minimum_scale : INTEGER
-
 	impl_maximum_scale : INTEGER
-
 	impl_sql_data_type : INTEGER
-
 	impl_sql_date_time_sub : INTEGER
-
 	impl_num_prec_radix : INTEGER
-
 	impl_interval_precision : INTEGER
 
-invariant
-	invariant_clause: True -- Your invariant here
-
 end -- class ECLI_SQL_TYPE
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

@@ -1,8 +1,12 @@
 indexing
 	description: "Objects that are named metadata, i.e. with catalog, schema and name."
-	author: ""
+	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_NAMED_METADATA
@@ -40,15 +44,7 @@ feature -- Access
 			-- schema name
 	
 	name : STRING
-			-- table or column name
-	
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
+			-- table, column, or procedure name
 
 feature -- Element change
 
@@ -68,7 +64,7 @@ feature -- Element change
 		end
 
 	set_schema (value : ECLI_VARCHAR) is
-			-- 
+			-- set `schema' with `value'
 		require
 			value: value /= Void
 		do
@@ -83,7 +79,7 @@ feature -- Element change
 		end
 		
 	set_name (value : ECLI_VARCHAR) is
-			-- 
+			-- set `name' with `value'
 		require
 			value: value /= Void and then not value.is_null
 		do
@@ -91,17 +87,11 @@ feature -- Element change
 		ensure
 			assigned: name.is_equal (value.to_string)		
 		end
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
 
 feature -- Conversion
 
 	out : STRING is
-			-- 
+			-- terse printable representation
 		do
 			!!Result.make (0)
 			append_to_string (Result, catalog) Result.append_string ("%T")
@@ -109,15 +99,6 @@ feature -- Conversion
 			append_to_string (Result, name)			
 		end
 		
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
@@ -132,3 +113,8 @@ feature {NONE} -- Implementation
 		end
 
 end -- class ECLI_NAMED_METADATA
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

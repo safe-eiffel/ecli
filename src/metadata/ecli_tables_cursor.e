@@ -6,9 +6,12 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	author: "Paul G. Crismer"
-
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_TABLES_CURSOR
@@ -68,7 +71,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : ECLI_TABLE is
-			-- current type description
+			-- item at current cursor position
 		do
 			Result := impl_item
 		end
@@ -76,7 +79,7 @@ feature -- Access
 feature -- Cursor Movement
 
 	create_item is
-			--
+			-- create current item from buffer values
 		do
 			if not off then
 				!!impl_item.make (Current)
@@ -85,15 +88,15 @@ feature -- Cursor Movement
 
 feature {ECLI_TABLE} -- Access
 
-		buffer_catalog_name,
-			buffer_schema_name,
-			buffer_table_name,
-			buffer_table_type,
-			buffer_description : ECLI_VARCHAR
+	buffer_catalog_name : ECLI_VARCHAR
+	buffer_schema_name : ECLI_VARCHAR
+	buffer_table_name : ECLI_VARCHAR
+	buffer_table_type : ECLI_VARCHAR
+	buffer_description : ECLI_VARCHAR
 
 feature {NONE} -- Implementation
 
-		create_buffers is
+	create_buffers is
 				-- create buffers for cursor
 		do
 			create buffer_catalog_name.make (255)
@@ -121,3 +124,8 @@ feature {NONE} -- Implementation
 		end
 
 end -- class ECLI_TABLES_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

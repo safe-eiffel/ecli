@@ -1,8 +1,13 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "ODBC Data sources."
+
+	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_DATA_SOURCE
@@ -24,11 +29,18 @@ feature {NONE} -- Initialization
 feature -- Access
 	
 	name : STRING
+			-- name of datasource
 	
 	description : STRING
+			-- description
 
 invariant
-	name: name /= Void
-	description: description /= Void
+	name_not_void: name /= Void
+	description_not_void: description /= Void
 
 end -- class ECLI_DATA_SOURCE
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

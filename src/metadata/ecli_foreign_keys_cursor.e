@@ -6,8 +6,12 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	ECLI_FOREIGN_KEYS_CURSOR
@@ -32,7 +36,8 @@ creation
 
 feature {NONE} -- Initialization
 
-	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION)	is
+	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
+			-- create cursor for foreign keys in table identified by `a_name'
 		do
 			Precursor (a_name, a_session)
 		end
@@ -50,6 +55,7 @@ feature -- Access
 feature -- Cursor Movement
 
 	forth is
+			-- advance cursor to next item if any
 		do
 			if impl_item = Void or else creating_item or else next_item /= Void then
 				if creating_item then
@@ -65,7 +71,7 @@ feature -- Cursor Movement
 		end
 
 	create_item is
-			--
+			-- create item at current cursor position
 		do
 			if next_item /= Void then
 				impl_item := next_item
@@ -81,25 +87,19 @@ feature -- Cursor Movement
 
 feature {ECLI_FOREIGN_KEY} -- Access
 
-		buffer_pk_table_cat : ECLI_VARCHAR
-		buffer_pk_table_schem  : ECLI_VARCHAR
-		buffer_pk_table_name  : ECLI_VARCHAR
-		buffer_pk_column_name : ECLI_VARCHAR
---		buffer_table_cat : ECLI_VARCHAR
---		buffer_table_schem  : ECLI_VARCHAR
---		buffer_table_name  : ECLI_VARCHAR
---		buffer_column_name : ECLI_VARCHAR
-
---		buffer_key_seq : ECLI_INTEGER
-		buffer_update_rule : ECLI_INTEGER
-		buffer_delete_rule : ECLI_INTEGER
---		buffer_pk_name : ECLI_VARCHAR
-		buffer_fk_name : ECLI_VARCHAR
-		buffer_deferrability : ECLI_INTEGER
+	buffer_pk_table_cat : ECLI_VARCHAR
+	buffer_pk_table_schem  : ECLI_VARCHAR
+	buffer_pk_table_name  : ECLI_VARCHAR
+	buffer_pk_column_name : ECLI_VARCHAR
+	buffer_update_rule : ECLI_INTEGER
+	buffer_delete_rule : ECLI_INTEGER
+	buffer_fk_name : ECLI_VARCHAR
+	buffer_deferrability : ECLI_INTEGER
 
 feature {NONE} -- Implementation
 
 	fill_item is
+			-- fill item with buffer values
 		local
 			done : BOOLEAN
 		do
@@ -129,45 +129,46 @@ feature {NONE} -- Implementation
 	last_key_seq : INTEGER
 
 	create_buffers is
-				-- create buffers for cursor
-			do
-				create buffer_pk_table_cat.make (255)
-				create buffer_pk_table_schem.make (255)
-				create buffer_pk_table_name.make (255)
-				create buffer_pk_column_name.make (255)
-				create buffer_update_rule.make
-				create buffer_delete_rule.make
-				create buffer_pk_name.make (255)
-				create buffer_fk_name.make (255)
-				create buffer_deferrability.make
-				Precursor
-			end
+			-- create buffers for cursor
+		do
+			create buffer_pk_table_cat.make (255)
+			create buffer_pk_table_schem.make (255)
+			create buffer_pk_table_name.make (255)
+			create buffer_pk_column_name.make (255)
+			create buffer_update_rule.make
+			create buffer_delete_rule.make
+			create buffer_pk_name.make (255)
+			create buffer_fk_name.make (255)
+			create buffer_deferrability.make
+			Precursor
+		end
 
-		set_buffer_into_cursor is
-				--
-			do
-				set_cursor (<<
-						buffer_pk_table_cat ,
-						buffer_pk_table_schem  ,
-						buffer_pk_table_name  ,
-						buffer_pk_column_name ,
-						buffer_table_cat ,
-						buffer_table_schem  ,
-						buffer_table_name  ,
-						buffer_column_name ,
-						buffer_key_seq ,
-						buffer_update_rule ,
-						buffer_delete_rule ,
-						buffer_pk_name ,
-						buffer_fk_name ,
-						buffer_deferrability
-					>>)
-			end
+	set_buffer_into_cursor is
+			-- set cursor with buffer array
+		do
+			set_cursor (<<
+					buffer_pk_table_cat ,
+					buffer_pk_table_schem  ,
+					buffer_pk_table_name  ,
+					buffer_pk_column_name ,
+					buffer_table_cat ,
+					buffer_table_schem  ,
+					buffer_table_name  ,
+					buffer_column_name ,
+					buffer_key_seq ,
+					buffer_update_rule ,
+					buffer_delete_rule ,
+					buffer_pk_name ,
+					buffer_fk_name ,
+					buffer_deferrability
+				>>)
+		end
 
 
 	definition : STRING is once Result := "SQLForeignKeys" end
 
 	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+			-- actual external query
 		do
 			Result := ecli_c_get_foreign_keys ( handle,
 				default_pointer, 0,
@@ -179,3 +180,8 @@ feature {NONE} -- Implementation
 		end
 
 end -- class ECLI_FOREIGN_KEYS_CURSOR
+--
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
+--

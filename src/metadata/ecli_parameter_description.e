@@ -1,10 +1,12 @@
 indexing
 	description: "Description of Parameter data"
 	author: "Paul G. Crismer"
+	
+	library: "ECLI"
+	
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
-
 class
 	ECLI_PARAMETER_DESCRIPTION
 
@@ -57,12 +59,9 @@ feature -- Access
 	decimal_digits : INTEGER
 			-- maximum number of digits to the right of the decimal point, or the scale of the data. For numeric types only.
 
-invariant
-	invariant_clause: -- Your invariant here
-
 end -- class ECLI_PARAMETER_DESCRIPTION
 --
--- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
+-- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --
