@@ -1,0 +1,45 @@
+TODO
+
+Portability
+  * Compiler
+	Port to Visual Eiffel
+
+  * Platform
+	Unix/Linux
+		** DONE 2000-06-22 ** using UnixODBC : www.unixodbc.org
+
+	Test 'query_assistant' on Linux
+
+Implement other data values
+	Time, LONGVARCHAR, BINARY, LONGVARBINARY, ...
+	Those data values should serve
+	for data transfer, not as implementation of corresponding Abstract Data Types.
+	ADT should be defined as clients or extension by inheritance.
+
+Documentation.
+
+Long Variable DataLONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
+	one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
+	Those ECLI_LONGVARCHAR and ECLI_LONGVARBINARY classes should provide an interface that allows
+	reading/writing data to a file. For example, 'item' would be of FILE type.
+	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
+
+Test cases
+
+Examples 
+	** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
+	More examples to do (???)
+	
+Getting various metadata
+	** DONE 2000-07-28 : Result-set metadata, 
+	Tables/Columns/Indexes catalog metadata,
+	SQL Datatypes metadata.
+
+Refactoring
+	** DONE 2000-07-28 : 
+		(+) ECLI_VALUE gets/puts itself to an active statement, 
+		(+) cursor state, class contracts... **
+	Make better use of inheritance, if possible.
+
+Allow Bulk data transfers
+	A cursor is not a single line, but an array of lines. This is interesting for	performance reasons. (Nice to have).

@@ -1,0 +1,26 @@
+** ECLI 0001 Beta 5 **
+
+   !!!  Query assistant - 'Query Assistant' for ECLI allows a developer to generate classes
+	that encapsulate a cursor on a SQL 'SELECT' query.
+     +  Structure reorganization
+     +  Refactoring (contracts, anchored types, ...)
+
+2000-07-30
+	* made some cleaning
+	* updated the documentation
+	* port to smalleiffel
+
+2000-07-29
+	* query_assistant tool
+	* query assistant test and example
+
+2000-07-21
+	* Added 'value_anchor'.  In ECLI_STATEMENT, 'ECLI_VALUE' is replaced by 'like value_anchor'
+
+2000-07-13
+	* ECLI_VALUE 'loads' or 'puts' itself to a statement.  This will allow long data to be read/written.
+		see 'read_result', 'put_parameter'
+	* ECLI_VALUE 'binds' itself to a statement.
+		see 'bind_as_parameter'
+2000-07-07
+	Changed structure of ECLI directories.
