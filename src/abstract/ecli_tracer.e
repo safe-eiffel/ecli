@@ -179,8 +179,28 @@ feature {ECLI_VALUE} -- Basic operations
 		do
 			medium.put_string (a_integer.out)
 		end
-		
 
+	put_binary (a_binary : ECLI_STRING_VALUE) is
+			-- Put `a_binary' as binary value
+		require
+		do
+			medium.put_character ('%'')
+			medium.put_string (a_binary.out)
+			medium.put_character ('%'')			
+		end
+		
+	put_file (a_file : ECLI_FILE_VALUE) is
+			-- Put `a_file'
+		require
+		do
+			medium.put_string ("file://")
+			if a_file.input_file /= Void then
+				medium.put_string (a_file.input_file.name)
+			else
+				medium.put_string (a_file.output_file.name)
+			end
+		end
+		
 feature {NONE} -- Implementation
 
 

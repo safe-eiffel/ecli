@@ -558,6 +558,8 @@ feature -- Basic operations
 			query_is_parsed: is_parsed
 			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
 			parameters_set: parameters_count > 0 implies bound_parameters			
+		local
+			value_pointer : XS_C_INT32
 		do
 			reset_status
 			if session.is_tracing then
@@ -571,17 +573,24 @@ feature -- Basic operations
 			else
 				set_status (ecli_c_execute_direct (handle, impl_sql.handle))
 			end
+			if status = Sql_need_data then
+				create value_pointer.make
+				from
+					set_status (ecli_c_param_data (handle, value_pointer.handle))
+				until
+					status /= Sql_need_data
+				loop
+					parameters.item (value_pointer.item).put_parameter (Current, value_pointer.item)
+					set_status (ecli_c_param_data (handle, value_pointer.handle))				
+				end
+			end
 			if is_ok then
 				is_executed := True
 				if has_result_set then
 					set_cursor_before
 				else
 					set_cursor_after
-					--| TODO: get row count
-					if impl_row_count = Void then
-						create impl_row_count.make
-					end
-					set_status (ecli_c_row_count (handle, impl_row_count.handle))
+					get_row_count
 				end
 			else
 				impl_result_columns_count.put (0)
@@ -946,10 +955,26 @@ feature {NONE} -- Implementation
 
 	cursor_before, cursor_in, cursor_after : INTEGER is unique
 			-- Cursor status values
+
+feature {NONE} -- Hooks for descendants
+
+	get_row_count is
+			-- Get number of rows affected by latest execution
+		require
+			executed: is_executed
+			not_has_result_set: not has_result_set
+		do
+			if impl_row_count = Void then
+				create impl_row_count.make
+			end
+			set_status (ecli_c_row_count (handle, impl_row_count.handle))
+		ensure
+			impl_row_count_exists: impl_row_count /= Void
+		end
 		
 invariant
 	existing_session_implies_not_closed: session /= Void implies not is_closed
-	parameter_index_bounds: last_bound_parameter_index >= 0 and last_bound_parameter_index <= parameters.upper
+	parameter_index_bounds: last_bound_parameter_index >= 0 and (parameters /= Void implies last_bound_parameter_index <= parameters.upper)
 	parameters_description_without_void: parameters_description /= Void implies not array_routines.has (parameters_description,Void)
 
 end -- class ECLI_STATEMENT
