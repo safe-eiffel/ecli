@@ -7,7 +7,7 @@
 		<sql>
 		*insert-sql-here*
 		</sql>
-		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*">
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
@@ -20,7 +20,7 @@
 		<sql>
 		*insert-sql-here*
 		</sql>
-		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*">
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
@@ -33,7 +33,7 @@
 		<sql>
 		*insert-sql-here*
 		</sql>
-		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*">
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
@@ -46,7 +46,7 @@
 		<sql>
 		*insert-sql-here*
 		</sql>
-		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*">
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
@@ -58,7 +58,7 @@
 		<sql>
 		*insert-sql-here*
 		</sql>
-		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*">
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
@@ -71,7 +71,7 @@
 		<sql>
 		*insert-sql-here*
 		</sql>
-		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*">
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>

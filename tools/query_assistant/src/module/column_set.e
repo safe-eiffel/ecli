@@ -154,7 +154,9 @@ feature -- Basic operations
 				create local_items.make (count)
 				local_items.set_equality_tester (equality_tester)
 				if parent /= Void then
-					parent.flatten
+					check
+						parent_flattened: parent.is_flattened
+					end --parent.flatten
 					merge (parent)
 					local_items.merge (Current)
 					local_items.symdif (parent)

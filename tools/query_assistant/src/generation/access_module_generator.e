@@ -28,6 +28,8 @@ feature -- Access
 	
 	access_routines_class : EIFFEL_CLASS
 	
+	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
+
 feature -- Basic operations
 
 	write_class (a_class : EIFFEL_CLASS; a_target_directory : STRING) is
@@ -48,13 +50,13 @@ feature -- Basic operations
 			file.close
 		end
 		
-	create_cursor_class (module : ACCESS_MODULE) is 
+	create_cursor_class (module : ACCESS_MODULE; parent_name : STRING) is 
 			-- create class from `module' and write it into `directory_name'
 		require
 			module_not_void: module /= Void
 		do
 			create cursor_class.make (class_name (module))
-			put_heading (module)
+			put_heading (module, parent_name)
 			put_visible_features (module)
 			put_invisible_features (module)
 		ensure
@@ -93,7 +95,7 @@ feature -- Basic operations
 			set_class_generated: set_class /= Void and then set_class.name.is_equal (set.name)
 		end
 
-	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[ACCESS_MODULE, STRING]) is
+	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[ACCESS_MODULE, STRING]; sets : like all_sets) is
 			-- create deferred access routines helper class
 		require
 			prefix_not_void: name_prefix /= Void
@@ -106,6 +108,7 @@ feature -- Basic operations
 			access_create_object_routine_names : DS_HASH_TABLE [BOOLEAN,STRING]
 			routine : EIFFEL_ROUTINE
 		do
+			all_sets := sets
 			create access_create_object_routine_names.make (modules.count)
 			--| class name
 			create l_class_name.make_from_string (name_prefix)
@@ -344,7 +347,7 @@ feature {NONE} -- Basic operations
 			end
 		end
 				
-	put_heading (module : ACCESS_MODULE) is
+	put_heading (module : ACCESS_MODULE; parent_name : STRING) is
 			-- put indexing, class name, inheritance and creation
 		local
 			parent_clause : STRING
@@ -360,10 +363,20 @@ feature {NONE} -- Basic operations
 
 			create parent_clause.make (100)
 			if module.has_result_set then
-				parent_clause.append_string ("ECLI_CURSOR%N")
+				if parent_name /= Void then
+					parent_clause.append_string (parent_name)
+				else
+					parent_clause.append_string ("ECLI_CURSOR")
+				end
 			else
-				parent_clause.append_string ("ECLI_QUERY%N")
+				if parent_name /= Void then
+					parent_clause.append_string (parent_name)
+				else
+					parent_clause.append_string ("ECLI_QUERY")
+				end
 			end
+			parent_clause.append_character ('%N')
+
 			cursor_class.add_parent (parent_clause)
 			
 			cursor_class.add_creation_procedure_name ("make")
@@ -562,6 +575,10 @@ feature {NONE} -- Implementation
 			--			status.set_datastore_warning (cursor.native_code, cursor.diagnostic_message)
 			--		end
 			--	end
+			check
+				results_in_sets: all_sets.has_item (module.results)
+				results_flattened: module.results.is_flattened
+			end
 			eiffel_routine.add_body_line ("from")
 			eiffel_routine.add_body_line ("%Tcursor.start")
 			eiffel_routine.add_body_line ("%Tstatus.reset")

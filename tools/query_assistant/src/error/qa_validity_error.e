@@ -22,7 +22,8 @@ creation
 	make_parameter_count_mismatch,
 	make_parent_class_empty,
 	make_parameter_already_defined,
-	make_parameter_unknown
+	make_parameter_unknown,
+	make_rejected
 
 feature {NONE} -- Initializaiton
 
@@ -38,6 +39,16 @@ feature {NONE} -- Initializaiton
 			parameters.put (who, 1)
 			parameters.put (what, 2)
 			parameters.put (type, 3)
+		end
+	
+	make_rejected (module_name : STRING) is
+			-- Make `module_name' rejected.
+		require
+			module_name_not_void: module_name /= Void
+		do
+			default_template := reject_template
+			create parameters.make (1, 1)
+			parameters.put (module_name, 1)
 		end
 		
 	make_invalid_reference_column (module, name, table, column : STRING) is
@@ -118,5 +129,5 @@ feature {NONE} -- Implementation
 	parclempty_template : STRING is "[W-VAL-CLEMPTY] Parent class `$1' is empty."
 	alrdyde_template : STRING is 	"[E-VAL-ALRDYDF] Module $1 : Parameter $2 must not have a '$3' attribute, since it already has one from a template."
 	parunknown_template : STRING is "[E-VAL-PARUNKN] Module $1 : Parameter $2 has been defined but does not appear in SQL."
-	
+	reject_template : STRING is 	"[W-VAL-MREJECT] Module $1 has been rejected because of errors in its XML definition."	
 end -- class QA_VALIDITY_ERROR

@@ -334,6 +334,17 @@ feature -- Validity
 			report_error (error)
 		end
 
+	report_rejected (module_name : STRING) is
+			-- Report `module_name' is rejected.
+		require
+			module_name_not_void: module_name /= Void
+		local
+			error : QA_VALIDITY_ERROR
+		do
+			create error.make_rejected (module_name)
+			report_error (error)
+		end
+		
 	report_invalid_reference_column (module, name, table, column: STRING) is
 			-- Report  `name' in `module' has an invalid reference column as `table'.`column'.
 		local

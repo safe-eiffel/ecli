@@ -101,6 +101,12 @@ feature -- Access (Command line arguments)
 	maximum_length_string : STRING
 			-- maximum length for long data without length limit
 
+	default_parent_cursor : STRING
+			-- default parent class name for cursors.
+	
+	default_parent_modify : STRING
+			-- default parent class name for modifiers.
+			
 feature -- Status report
 
 	is_verbose : BOOLEAN
@@ -124,33 +130,9 @@ feature -- Access (generation)
 
 	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
 
---	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING] is
---			-- 
---		local
---			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
---		once
---			create Result.make (result_sets.count + parameter_sets.count)
---			from
---				cursor := result_sets.new_cursor
---				cursor.start
---			until
---				cursor.off
---			loop
---				result.force (cursor.item, cursor.key)
---				cursor.forth
---			end
---			from
---				cursor := parameter_sets.new_cursor
---				cursor.start
---			until
---				cursor.off
---			loop
---				Result.force (cursor.item, cursor.key)
---				cursor.forth
---			end
---		end
-
 	all_parents_set : DS_HASH_TABLE[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+	
+	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
 	
 feature -- Status report
 
@@ -178,7 +160,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.0beta2")
+			error_handler.report_banner ("v1.0beta3")
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2004")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
@@ -194,11 +176,12 @@ feature -- Basic operations
 			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
 			l_factory : ACCESS_MODULE_FACTORY
 			l_module : ACCESS_MODULE
+			l_result_sets : like result_sets
+			parameters_ok, results_ok : BOOLEAN
 		do
 			create modules.make (10)
 			create parameter_sets.make (10)
-			create result_sets.make (10)
-			
+			create l_result_sets.make (10)
 			from
 				root := tree_pipe.document
 				a_cursor := root.root_element.new_cursor
@@ -218,12 +201,28 @@ feature -- Basic operations
 								--| Error : module already exists
 								error_handler.report_already_exists (l_module.name, l_module.name, "Module")
 							else
-								modules.force (l_module, l_module.name) 
+								parameters_ok := True
+								results_ok := True
 								parameter_sets.search (l_module.parameters.name)
 								if parameter_sets.found then
 									error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
-								else
+									parameters_ok := False
+								end
+								if l_module.results /= Void then
+									l_result_sets.search (l_module.results.name)
+									if l_result_sets.found  then
+										error_handler.report_already_exists (l_module.name, l_module.results.name, "Result set")
+										results_ok := False
+									end
+								end
+								if parameters_ok and results_ok then
+									modules.force (l_module, l_module.name) 
 									parameter_sets.force (l_module.parameters, l_module.parameters.name) 
+									if l_module.results /= Void then
+										l_result_sets.force (l_module.results, l_module.results.name)
+									end
+								else
+									error_handler.report_rejected (l_module.name)
 								end
 							end
 						end
@@ -233,10 +232,12 @@ feature -- Basic operations
 				end
 				a_cursor.forth
 			end
+			create result_sets.make (10)
 		ensure
 			modules_not_void: modules /= Void
 			parameter_sets_not_void: parameter_sets /= Void
 			result_sets_not_void: result_sets /= Void
+			result_sets_empty: result_sets.is_empty
 		end
 	
 	parse_xml_input_file is
@@ -276,110 +277,112 @@ feature -- Basic operations
 			value : STRING
 			error_message : STRING
 		do
---			if Arguments.argument_count < 2 then
---				error_handler.report_usage (Fact.is_expat_parser_available)
---				has_error := True
---			else
-				from 
-					arg_index := 1
-				until 
-					arg_index > Arguments.argument_count
-				loop
-					key := Arguments.argument (arg_index)
-					if arg_index + 1 <= Arguments.argument_count then
-						value := clone (Arguments.argument (arg_index + 1))
-					else
-						value := Void
-					end
-					if key.is_equal ("-input") then
-						in_filename := value						
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-expat") then
-						if fact.is_expat_parser_available then
-							event_parser := fact.new_expat_parser
-						else
-							error_handler.report_xml_parser_unavailable ("EXPAT") 
-							has_error := True
-						end
-						arg_index := arg_index + 1
-					elseif key.is_equal ("-eiffel") then
-						create {XM_EIFFEL_PARSER} event_parser.make
-						arg_index := arg_index + 1
-					elseif key.is_equal ("-verbose") then
-						is_verbose := True
-						arg_index := arg_index + 1
-					elseif key.is_equal ("-dsn") then
-						dsn := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-user") then
-						user := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-pwd") then
-						password := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-output_dir") or else key.is_equal ("-output") then
-						out_directory := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-class") then
-						class_filter := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-schema") then
-						default_schema := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-catalog") then
-						default_catalog := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-access_routines_prefix") then
-						access_routines_prefix := value
-						arg_index := arg_index + 2
-					elseif key.is_equal ("-max_length") then
-						maximum_length_string := value
-						arg_index := arg_index + 2
-					else
-						arg_index := arg_index + 1
-						error_handler.report_invalid_argument (key, "name unknown")
-					end
+			from 
+				arg_index := 1
+			until 
+				arg_index > Arguments.argument_count
+			loop
+				key := Arguments.argument (arg_index)
+				if arg_index + 1 <= Arguments.argument_count then
+					value := clone (Arguments.argument (arg_index + 1))
+				else
+					value := Void
 				end
-					-- Create standard pipe holder and bind it to event parser.
-				create error_message.make (0)
-				if not has_error then
-					if event_parser /= Void then
-						!! tree_pipe.make
-						event_parser.set_callbacks (tree_pipe.start)
+				if key.is_equal ("-input") then
+					in_filename := value						
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-expat") then
+					if fact.is_expat_parser_available then
+						event_parser := fact.new_expat_parser
 					else
+						error_handler.report_xml_parser_unavailable ("EXPAT") 
 						has_error := True
-						error_handler.report_missing_argument ("-eiffel' or '-expat'", "An XML parser must be specified")
 					end
+					arg_index := arg_index + 1
+				elseif key.is_equal ("-eiffel") then
+					create {XM_EIFFEL_PARSER} event_parser.make
+					arg_index := arg_index + 1
+				elseif key.is_equal ("-verbose") then
+					is_verbose := True
+					arg_index := arg_index + 1
+				elseif key.is_equal ("-dsn") then
+					dsn := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-user") then
+					user := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-pwd") then
+					password := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-output_dir") or else key.is_equal ("-output") then
+					out_directory := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-class") then
+					class_filter := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-schema") then
+					default_schema := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-catalog") then
+					default_catalog := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-access_routines_prefix") then
+					access_routines_prefix := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-parent_cursor") then
+					default_parent_cursor := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-parent_modify") then
+					default_parent_modify := value
+					arg_index := arg_index + 2
+				elseif key.is_equal ("-max_length") then
+					maximum_length_string := value
+					arg_index := arg_index + 2
+				else
+					arg_index := arg_index + 1
+					error_handler.report_invalid_argument (key, "name unknown")
 				end
-				if user = Void then
+			end
+				-- Create standard pipe holder and bind it to event parser.
+			create error_message.make (0)
+			if not has_error then
+				if event_parser /= Void then
+					!! tree_pipe.make
+					event_parser.set_callbacks (tree_pipe.start)
+				else
 					has_error := True
-					error_handler.report_missing_argument ("-user", "a user name must be specified")
+					error_handler.report_missing_argument ("-eiffel' or '-expat'", "An XML parser must be specified")
 				end
-				if password = Void then
-					has_error := True
-					error_handler.report_missing_argument ("-pwd", "a password must be specified")
-				end
-				if dsn = Void then
-					has_error := True
-					error_handler.report_missing_argument ("-dsn", "a data source name must be specified")
-				end
-				if in_filename = Void then
-					has_error := True
-					error_handler.report_missing_argument ("-input", "an input file name must be specified")
-				elseif not File_system.file_exists (in_filename) then
-					has_error := True
-					error_handler.report_invalid_argument ("-input", "file '"+in_filename+"' does not exist")
-				end
-				if out_directory = Void then
-					has_error := True
-					error_handler.report_missing_argument ("-output", "an output directory must be specified")
-				elseif not File_system.directory_exists (out_directory) then
-					has_error := True
-					error_handler.report_invalid_argument ("-output", "directory '"+out_directory+"' does not exist")
-				
-				end
-				if dsn /= Void and then user /= Void and then password /= Void then
-					create session.make (dsn, user,password)
+			end
+			if user = Void then
+				has_error := True
+				error_handler.report_missing_argument ("-user", "a user name must be specified")
+			end
+			if password = Void then
+				has_error := True
+				error_handler.report_missing_argument ("-pwd", "a password must be specified")
+			end
+			if dsn = Void then
+				has_error := True
+				error_handler.report_missing_argument ("-dsn", "a data source name must be specified")
+			end
+			if in_filename = Void then
+				has_error := True
+				error_handler.report_missing_argument ("-input", "an input file name must be specified")
+			elseif not File_system.file_exists (in_filename) then
+				has_error := True
+				error_handler.report_invalid_argument ("-input", "file '"+in_filename+"' does not exist")
+			end
+			if out_directory = Void then
+				has_error := True
+				error_handler.report_missing_argument ("-output", "an output directory must be specified")
+			elseif not File_system.directory_exists (out_directory) then
+				has_error := True
+				error_handler.report_invalid_argument ("-output", "directory '"+out_directory+"' does not exist")
+			
+			end
+			if dsn /= Void and then user /= Void and then password /= Void then
+				create session.make (dsn, user,password)
 					session.connect
 					if session.is_connected then
 --						session.raise_exception_on_error
@@ -389,27 +392,26 @@ feature -- Basic operations
 						error_handler.report_database_connection_failed (dsn)
 						has_error := True
 					end
-				end
-				if maximum_length_string /= Void then
-					if not maximum_length_string.is_double or else maximum_length_string.to_double <= 0 then
+			end
+			if maximum_length_string /= Void then
+				if not maximum_length_string.is_double or else maximum_length_string.to_double <= 0 then
+					has_error := True
+					error_handler.report_invalid_argument ("-maximum_length", "must be a strictly positive integer")
+				else
+					if maximum_length_string.to_double > reasonable_maximum_length then
 						has_error := True
-						error_handler.report_invalid_argument ("-maximum_length", "must be a strictly positive integer")
+						error_handler.report_invalid_argument ("-maximum_length","Maximum length is not reasonable, the value provided is greater than "+reasonable_maximum_length.out)
 					else
-						if maximum_length_string.to_double > reasonable_maximum_length then
-							has_error := True
-							error_handler.report_invalid_argument ("-maximum_length","Maximum length is not reasonable, the value provided is greater than "+reasonable_maximum_length.out)
-						else
-							set_maximum_length (maximum_length_string.to_integer)
-						end
+						set_maximum_length (maximum_length_string.to_integer)
 					end
 				end
-				if has_error then
-					error_handler.report_usage (Fact.is_expat_parser_available)
-				end
-				if not is_verbose then
-					error_handler.disable_verbose
-				end
---			end
+			end
+			if has_error then
+				error_handler.report_usage (Fact.is_expat_parser_available)
+			end
+			if not is_verbose then
+				error_handler.disable_verbose
+			end
 		ensure
 			in_filename_not_void: not has_error implies in_filename /= Void
 			parser_not_void: not has_error implies event_parser /= Void
@@ -451,7 +453,6 @@ feature {NONE} -- Implementation
 			-- 
 		local
 			resolver : REFERENCE_RESOLVER[ACCESS_MODULE_METADATA]
-			all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
 			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
 		do
 			create all_sets.make (result_sets.count + parameter_sets.count)
@@ -499,6 +500,9 @@ feature {NONE} -- Implementation
 						error_handler.report_end ("Analyzing "+cursor.item.name,True)
 						if cursor.item.has_result_set then
 							result_sets.force (cursor.item.results, cursor.item.results.name)
+						else
+--							error_handler.report_rejected (cursor.item.name)
+							do_nothing
 						end
 					else
 						error_handler.report_end ("Analyzing "+cursor.item.name,False)
@@ -552,7 +556,7 @@ feature {NONE} -- Implementation
 			end
 			if access_routines_prefix /= Void then
 				--| generate access routines
-				gen.create_access_routines_class (access_routines_prefix, modules)
+				gen.create_access_routines_class (access_routines_prefix, modules, all_sets)
 				gen.write_class (gen.access_routines_class, out_directory)
 			end
 			--| FIXME : report if class generation has produced an error
@@ -563,10 +567,17 @@ feature {NONE} -- Implementation
 			-- generate classes for `module', query + parameter_set + result_set classes
 		require
 			module_not_void: module /= Void
+		local
+			parent_class : STRING
 		do
 			create gen
 			a_error_handler.report_generating (module.name)
-			gen.create_cursor_class (module)
+			if module.has_result_set then
+				parent_class := default_parent_cursor
+			else
+				parent_class := default_parent_modify
+			end
+			gen.create_cursor_class (module, parent_class)
 			gen.write_class (gen.cursor_class,out_directory)
 			if module.parameters.parent_name = Void or else module.parameters.local_items.count > 0 then
 				if module.parameters.count > 0 then

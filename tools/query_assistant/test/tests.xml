@@ -64,7 +64,7 @@ SELECT * FROM TTABLE WHERE CINTEGER =?p and CVARCHAR=?v
 
 	<access name="PARAMETER_COUNT_MISMATCH">
 		<description>
-			description: "Parameter not described"
+			description: "Mismatch between parameter counts in SQL and parameter_set definition"
 		</description>
 		<sql>
 SELECT * FROM TTABLE WHERE CINTEGER =?p
