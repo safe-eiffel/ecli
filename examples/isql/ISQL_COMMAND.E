@@ -221,6 +221,18 @@ feature -- Status report
 			end
 		end
 		
+	is_procedures  : BOOLEAN is
+			-- is 'text' equal to 'PROCEDURES' ?
+		do
+			if text.count >= 3 then
+				if (text.item (1) = 'p' or text.item  (1) = 'P')
+					and (text.item (2) = 'r' or text.item (2) = 'R')
+					and (text.item (3) = 'o' or text.item (3) = 'O')
+				then
+					Result := True
+				end
+			end
+		end
 		
 --|feature -- Status setting
 

@@ -171,6 +171,8 @@ feature -- Basic Operations
 					do_sources
 				elseif command.is_columns then
 					do_columns (command.text)
+				elseif command.is_procedures then
+					do_procedures
 				else
 					do_execute_sql (command.text)
 				end
@@ -321,7 +323,9 @@ feature -- Basic Operations
 		local
 			cursor : ECLI_DATA_SOURCES_CURSOR
 		do
-			!!cursor
+			debug
+				!!cursor.make_all
+			end
 			from
 				cursor.start
 				print ("SOURCE_NAME%T DESCRIPTION%N")
@@ -332,6 +336,26 @@ feature -- Basic Operations
 				print (cursor.item.description) print ("%N")
 				cursor.forth
 			end
+		end
+		
+	do_procedures is
+			-- show procedures
+		local
+			i : INTEGER
+			procedures : ARRAY[ECLI_PROCEDURE]
+		do
+			from
+				procedures := repository.procedures
+				i := procedures.lower
+			until
+				i > procedures.upper
+				
+			loop
+				print (procedures.item (i))
+				print ("%N")
+				i := i + 1	
+			end
+		
 		end
 		
 	do_columns (s : STRING) is
