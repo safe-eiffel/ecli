@@ -64,7 +64,65 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
  
-		
+ 	put_manifest_string_constant (stream : KI_CHARACTER_OUTPUT_STREAM; string : STRING) is
+ 		require
+ 			stream_not_void: stream /= Void
+ 			stream_open: stream.is_open_write
+ 			string_not_void: string /= Void
+		local
+			newlines, index : INTEGER
+			c : CHARACTER
+		do
+			newlines := string.occurrences ('%N')
+			from
+				index := 1
+				stream.put_character ('"')
+			until
+				index > string.count
+			loop
+				c := string.item (index)
+				inspect c
+				when '%N' then
+					stream.put_string ("%%%N%%")
+				else
+					stream.put_character (c)
+				end
+				index := index + 1
+			end
+			stream.put_character ('"')
+ 		end
+ 		
+	manifest_string_constant (string : STRING) : STRING is
+			-- Convert `string' to a manifest string constant.
+		require
+			string_not_void: string /= Void
+		local
+			newlines, index : INTEGER
+			c : CHARACTER
+		do
+			newlines := string.occurrences ('%N')
+			from
+				index := 1
+				create Result.make (string.count + newlines * 3 + 2)
+				Result.append_character ('"')
+			until
+				index > string.count
+			loop
+				c := string.item (index)
+				inspect c
+				when '%N' then
+					Result.append_string ("%%%N%%")
+				else
+					Result.append_character (c)
+				end
+				index := index + 1
+			end
+			Result.append_character ('"')
+		ensure
+			result_not_void: Result /= Void
+			manifest_string: Result.item (1) = '"' and Result.item (Result.count)= '"'
+		end
+			
 feature -- Duplication
 
 feature -- Miscellaneous
