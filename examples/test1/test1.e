@@ -22,6 +22,7 @@ feature -- Initialization
 	make is
 			-- ecli test application
 		do
+			io.put_string ("'test1' ECLI tutorial application%N%N")
 			-- session opening
 			parse_arguments
 			if not arguments_ok then
@@ -43,28 +44,40 @@ feature -- Initialization
 					disconnect_session
 				end
 				close_session
+				io.put_string ("Test1 finished.%N")
 			end
-			io.put_string ("Press ENTER to continue")
-			io.read_line
 		end
 
 
 feature -- Access
 
-	session : 	ECLI_SESSION
-	stmt : 		ECLI_STATEMENT
+	session : ECLI_SESSION
+			-- Database session on datasource
+			
+	stmt : ECLI_STATEMENT
+			-- Statement used for executing SQL
 
-	data_source_name, user_name, password : STRING
+	data_source_name : STRING
+			-- Name of datasource
+			
+	user_name : STRING
+			-- User name
+	
+	password : STRING
+			-- Password
 
 	trace_file_name : STRING
+			-- Name of trace file, if any
 	
 feature -- Status setting
 
 	arguments_ok : BOOLEAN
+			-- are program arguments OK ?
 
 feature --  Basic operations
 
 	parse_arguments is
+			-- parse program arguments
 		local
 			args :		expanded ARGUMENTS
 		do
@@ -82,11 +95,13 @@ feature --  Basic operations
 		end
 
 	print_usage is
+			-- print terse usage string
 		do
 				io.put_string ("Usage: test1 <data_source> <user_name> <password> [<trace_file_name>]%N")
 		end
 
 	trace_if_necessary is
+			-- activate trace if trace_file_name exists
 		local
 			f : KL_TEXT_OUTPUT_FILE
 			tracer : ECLI_TRACER
@@ -103,22 +118,25 @@ feature --  Basic operations
 				else
 					io.put_string ("Trace file <")
 					io.put_string (trace_file_name)
-					io.put_string ("> cannot be open.  No trace%N")
+					io.put_string ("> cannot be open. No trace%N")
 				end
 			end		
 		end
 		
 	create_and_connect_session is
+			-- create session and connect user `data_source_name', `user_name' and `password'
 		do
 			io.put_string ("%N SESSION - Creation and Connection%N")
 			io.put_string ("---------------------------------%N")
+			io.put_string ("Connection can give some information about what happened%N")
+			io.put_string ("This is not necessarily an error !%N")
 			create  session.make (data_source_name, user_name, password)
 			session.connect
 			if session.has_information_message or not session.is_ok then
 				print_status (session)
 			end
 			if session.is_connected then
-				io.put_string ("Connected createcreate %N")
+				io.put_string ("%NSUCCESS : Connected %N")
 			end
 		ensure
 			session_exists: session /= Void
@@ -138,6 +156,7 @@ feature --  Basic operations
 		end
 
 	create_sample_table is
+				-- create sample table named ECLITRIAL
 			require
 				stmt_exists: stmt /= Void
 			do
@@ -169,7 +188,7 @@ feature --  Basic operations
 			io.put_string ("---------------------------------%N")
 			-- DML statements
 
-			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
 			show_query ("Insertion of hard-coded values%N", stmt)
 
 			stmt.execute
@@ -197,30 +216,35 @@ feature --  Basic operations
 		do
 			io.put_string ("%N DML - Insert tuples - Parameterized SQL%N")
 			io.put_string ("------------------------------------------%N")
-			-- parameterized statement
+			-- set parameterized statement
 			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ( ?last_name, ?first_name, ?nbr, ?year, ?price)")
 			show_query ("Insertion of parameterized values%N", stmt)
+
 			-- create and setup parameters and values
+
 			create  first_name_parameter.make (20)
 			create last_name_parameter.make (20)
 			create p_nbr.make
-			price := 89.107896
 			create p_price.make
 			create  p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
 			first_name_parameter.set_item ("Portail")
 			last_name_parameter.set_item ("Guillaume")
 			p_nbr.set_item (10)
+			price := 89.107896
 			p_price.set_item (price)
-			create l_parameters.make (1, 5)
+
 			-- setup parameters array
+			create l_parameters.make (1, 5)
 			l_parameters.put (last_name_parameter, 1)
 			l_parameters.put (first_name_parameter,2)
 			l_parameters.put (p_nbr,3)
 			l_parameters.put (p_birthdate,4)
 			l_parameters.put (p_price,5)
+
 			-- set parameters
 			stmt.set_parameters (l_parameters)
 			-- SmartEiffel fooled by manifest arrays <<last_name_parameter, first_name_parameter,  p_nbr, p_birthdate, p_price>>)
+
 			show_parameter_names (stmt)
 			stmt.bind_parameters
 			if not stmt.is_ok then
@@ -244,7 +268,9 @@ feature --  Basic operations
 			-- parameterized statement
 			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES (?first_name, ?last_name, 40, ?some_date, 89.02)")
 			show_query ("Insertion of parameterized values%N", stmt)
+
 			-- create and setup parameters and values
+
 			create  first_name_parameter.make (20)
 			create last_name_parameter.make (20)
 			create  p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
@@ -257,6 +283,7 @@ feature --  Basic operations
 			l_parameters.put (first_name_parameter,1)
 			l_parameters.put (last_name_parameter, 2)
 			l_parameters.put (p_birthdate, 3)
+
 			stmt.set_parameters (l_parameters)
 			-- Do not use Manifest Arrays : SmartEiffel 1.0 and greater generate wrong code !
 
@@ -306,6 +333,7 @@ feature --  Basic operations
 		end
 
 	query_database is
+			-- query database to see what's in the ECLITRIAL table
 		local
 			name_result_value : 	ECLI_CHAR
 			price_result_value : 	ECLI_DOUBLE
@@ -322,7 +350,8 @@ feature --  Basic operations
 
 			stmt.execute
 			if stmt.is_ok then
-				stmt.describe_cursor
+				show_column_names (stmt)
+				
 				-- create result set 'value holders'
 				create  name_result_value.make (20)
 				create  firstname_result_value.make (20)
@@ -342,7 +371,6 @@ feature --  Basic operations
 				-- iterate on result-set
 				from
 					stmt.start
-					show_column_names (stmt)
 				until
 					stmt.off
 				loop
@@ -357,10 +385,12 @@ feature --  Basic operations
 		end
 
 	drop_table is
+			-- drop ECLITRIAL
 		do
 			-- DDL statement
 			stmt.set_sql  ("DROP TABLE ECLITRIAL")
-			show_query ("Dropping table%N", stmt)
+			show_query ("%N Dropping table%N", stmt)
+			io.put_string ("---------------------------------%N")
 			stmt.execute
 			if not stmt.is_ok then
 				print_status (stmt)
@@ -368,60 +398,69 @@ feature --  Basic operations
 		end
 
 	disconnect_session is
+			-- disconnect session before closing
 		do
 			-- session disconnection
 			session.disconnect
 			if not session.is_connected then
-				io.put_string ("Disconnected!create %N")
+				io.put_string ("%NSession disconnected %N")
+			else
+				print_status (stmt)
 			end
 		end
 
 	close_statement is
+			-- close `stmt'
 		do
 			stmt.close
 		end
 
 	close_session is
+			-- close `session'
 		do
 			session.close
 		end
 
 feature -- Miscellaneous
 
-	show_parameter_names (astmt : ECLI_STATEMENT) is
+	show_parameter_names (a_statement : ECLI_STATEMENT) is
+			-- show parameter names of SQL in `a_statement'
 		local
 			list_cursor: DS_LIST_CURSOR[STRING]
 		do
-			list_cursor := astmt.parameter_names.new_cursor
+			list_cursor := a_statement.parameter_names.new_cursor
 			from
 				list_cursor.start
-				io.put_string ("** Parameter names **%N")
+				io.put_string ("Parameter names of Query :%N")
 			until
 				list_cursor.off
 			loop
+				io.put_string ("%T%"")
 				io.put_string (list_cursor.item)
-				io.put_string ("%N")
+				io.put_string ("%"%N")
 				list_cursor.forth
 			end
 		end
 
-	show_column_names (astmt : ECLI_STATEMENT) is
+	show_column_names (a_statement : ECLI_STATEMENT) is
+			-- show column names of `a_statement'.cursor_description
 		require
-			statement_exists: astmt /= Void
-			statement_executed: astmt.is_executed
-			statement_has_results: astmt.has_results
+			statement_exists: a_statement /= Void
+			statement_executed: a_statement.is_executed
+			statement_has_results: a_statement.has_results
 		local
 			i, width : INTEGER
 			s : STRING
 		do
 			from
 				i := 1
+				a_statement.describe_cursor
 			until
-				i > astmt.cursor_description.count
+				i > a_statement.cursor_description.count
 			loop
-				io.put_string (formatted_column (astmt.cursor_description.item (i).name,
-							astmt.cursor_description.item (i)))
-				if i <= astmt.cursor_description.count then
+				io.put_string (formatted_column (a_statement.cursor_description.item (i).name,
+							a_statement.cursor_description.item (i)))
+				if i <= a_statement.cursor_description.count then
 					io.put_character ('|')
 				end
 				i := i + 1
@@ -430,7 +469,7 @@ feature -- Miscellaneous
 		end
 
 	formatted_column (s : STRING; d : ECLI_COLUMN_DESCRIPTION) : STRING is
-			-- 
+			-- `s' formatted with respect to `d'.size
 		local
 			width : INTEGER
 		do
@@ -453,7 +492,8 @@ feature -- Miscellaneous
 			end
 		end
 		
-	show_result_row (astmt : ECLI_STATEMENT) is
+	show_result_row (a_statement : ECLI_STATEMENT) is
+			-- show values at current cursor position for `a_statement'
 		local
 			i : INTEGER
 			width : INTEGER
@@ -462,11 +502,11 @@ feature -- Miscellaneous
 			from
 				i := 1
 			until
-				i > astmt.cursor.count
+				i > a_statement.cursor.count
 			loop
 				io.put_string (formatted_column (
-							astmt.cursor.item (i).out,
-							astmt.cursor_description.item (i)))
+							a_statement.cursor.item (i).out,
+							a_statement.cursor_description.item (i)))
 				io.put_character ('|')
 				i := i + 1
 			end
@@ -475,6 +515,7 @@ feature -- Miscellaneous
 
 
 	show_query (comment : STRING; statement : ECLI_STATEMENT) is
+			-- show query on `statement', preceded by `comment'
 		do
 			io.put_string (comment)
 			io.put_string (statement.sql)
@@ -485,6 +526,7 @@ feature -- Miscellaneous
 		end
 
 	print_status (status : ECLI_STATUS) is
+			-- print `status' information
 		do
 			if status.has_information_message then
 				print ("Information *%N")
@@ -500,7 +542,6 @@ feature -- Miscellaneous
 			print ("%N")
 		end
 
-invariant
 end -- class TEST1
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>

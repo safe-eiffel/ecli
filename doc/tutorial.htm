@@ -31,14 +31,14 @@
   	#title .title {font-size: 200%; font-weight: bold;}
   	#title .author {font-size: 150%; font-weight: bold;}
 	#toc {
-		background: rgb(204,204,255);
+		background-color:#e7ebff;
 		padding: 0.5em;
 		border: none;
 		margin-left: 10%;
 		margin-right: 10%;
 	  }
 	#code {
-		background: rgb(255,255,204);
+		background-color:#e7ebff;
 		padding: 0.5em;
 		border: none;
 		font-family: courier, serif;
@@ -582,36 +582,36 @@ insertion, and update of table content. <br>
 <div id="code">
 <pre>
 stmt : ECLI_STATEMENT
-
 ...
 
 create stmt.<strong>make</strong> (session)
 -- DDL statement
-stmt.<b>set_sql</b> ("CREATE TABLE ECLIESSAI ( %
-	% name CHAR(20), fname VARCHAR (20), nbr INTEGER,%
+stmt.<b>set_sql</b> ("CREATE TABLE ECLITRIAL ( %
+	% name CHAR(20), %
+	% fname VARCHAR (20), %
+	% nbr INTEGER,%
 	% bdate DATETIME, price FLOAT)")
 
 stmt.<b>execute</b>
 if stmt.is_ok then
-	io.put_string ("Table ECLIESSAI created%N")
+	io.put_string ("Table ECLITRIAL created%N")
 else
 	handle_error (stmt)
 end
 
 -- DML statements
-stmt.<b>set_sql</b> ("INSERT INTO ECLIESSAI VALUES %
-	% ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
+stmt.<b>set_sql</b> ("INSERT INTO ECLITRIAL VALUES %
+	% ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
 stmt.<b>execute</b>
-
 ...
 
-stmt.<strong>close</strong>
+stmt.<b>close</b>
 </pre>
 
 
 </div>
 
-      <p>The first query creates a table whose name is 'ECLIESSAI'. The second
+      <p>The first query creates a table whose name is 'ECLITRIAL'. The second
  one shows an insertion, where actual values are provided as constants. ODBC/CLI
  introduces a standard notation to express constant values for specific types
  like dates ( <b>{d 'yyyy-mm-dd'}</b> ) and timestamps ( <b>{ts 'yyyy-mm-dd
@@ -704,7 +704,7 @@ users  from database idiosyncrasies.</i><i><br>
  from class ECLI_VALUE. Those classes provide transfer-specific features while
  giving access to a preferred (default) Eiffel class. </p>
 
-      <p align="Left">The ECLI_VALUE classes closely model the ECLI-supported
+      <p align="Left">The ECLI_VALUE descendant classes closely model the ECLI-supported
  SQL92 data values, they also provide what we call a 'preferred' (default?)
  Eiffel object. &nbsp; </p>
 
@@ -738,28 +738,28 @@ users  from database idiosyncrasies.</i><i><br>
         <tr>
             <td valign="Top" width="33%">ECLI_INTEGER</td>
             <td valign="Top" width="33%">INTEGER</td>
-            <td valign="Top" width="33%">INTEGER_REF</td>
+            <td valign="Top" width="33%">INTEGER</td>
              <td valign="Top"><i>to_integer</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_FLOAT</td>
             <td valign="Top" width="33%">FLOAT</td>
-            <td valign="Top" width="33%">DOUBLE_REF</td>
+            <td valign="Top" width="33%">DOUBLE</td>
              <td valign="Top"><i>to_double</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_DOUBLE</td>
             <td valign="Top" width="33%">DOUBLE</td>
-            <td valign="Top" width="33%">DOUBLE_REF</td>
+            <td valign="Top" width="33%">DOUBLE</td>
              <td valign="Top"><i>to_double</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_REAL</td>
             <td valign="Top" width="33%">REAL</td>
-            <td valign="Top" width="33%">REAL_REF</td>
+            <td valign="Top" width="33%">REAL</td>
              <td valign="Top"><i>to_real</i><br>
              </td>
         </tr>
@@ -781,7 +781,7 @@ users  from database idiosyncrasies.</i><i><br>
             <td>ECLI_TIME</td>
             <td>TIME</td>
             <td>DT_TIME (Gobo)</td>
-             <td valign="Top">Not yet implemented<br>
+             <td valign="Top"><i>to_time</i><br>
              </td>
         </tr>
         <tr>
@@ -791,8 +791,6 @@ users  from database idiosyncrasies.</i><i><br>
              <td valign="Top"><i>to_string</i><br>
              </td>
         </tr>
-
-
       </table>
     </center>
          </div>
@@ -826,42 +824,66 @@ Eiffel object correspondance.</td>
             <td valign="Top" width="50%">is this a NULL database
 value  ?</td>
         </tr>
-        <tr>
-            <td valign="Top" width="50%"><i>item</i></td>
-            <td valign="Top" width="50%">gives access to the         preferred
- Eiffel object correspondance. &nbsp;It is void if <i>is_null = True</i>.<br>
-             </td>
-        </tr>
            <tr>
-             <td valign="Top"><i>to_string, to_integer, to_double, to_date,
-to_timestamp, to_real</i><br>
+             <td valign="Top"><i>to_string, to_integer, to_real, to_double, to_date, to_time,
+to_timestamp</i><br>
              </td>
-             <td valign="Top">equivalent of<br>
-
-            <ul>
-
-              <li>&nbsp;<small>
- item </small>if preferred type is a reference.</li>
-
-              <li>&nbsp;<small>
- item.item</small> if preferred type is expanded.</li>
-
-            </ul>
+             <td valign="Top">conversion to Eiffel object<br>
              </td>
            </tr>
            <tr>
              <td valign="Top"><i>convertible_to_string, convertible_to_double,
 convertible_to_real, convertible_to_timestamp, convertible_to_date, convertible_to_integer</i><br>
              </td>
-             <td valign="Top">True when <small>
- item </small>is of that type.<br>
+             <td valign="Top">True if corresponding to_* feature can be called
              </td>
            </tr>
-
-
       </table>
     </center>
          </div>
+
+      <p align="Left">ECLI_GENERIC_VALUE [G] is a direct heir of ECLI_VALUE that defines the following features </p>
+
+      <div align="Center">
+      <center>
+      <table width="80%" border="1" cellpadding="5" cellspacing="0">
+
+        <tr>
+            <td valign="Top" width="50%"><b>Queries</b> </td>
+            <td valign="Top" width="50%"><b>Description</b> </td>
+        </tr>
+        <tr>
+            <td valign="Top" width="50%"><i>item</i></td>
+            <td valign="Top" width="50%">Eiffel object corresponding to current value.
+            	If G is a reference type, this always is the <i>same</i> object whose state can differ.
+            	BEWARE of aliasing problems. Using the to_* corresponding feature always create a new object : no aliasing.</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="50%"><b>Commands</b> </td>
+            <td valign="Top" width="50%"><b>Description</b> </td>
+        </tr>
+        <tr>
+            <td valign="Top" width="50%"><i>set_item (value : G)</i></td>
+            <td valign="Top" width="50%">sets `item' to `value'.</td>
+        </tr>
+      </table>
+      </center>
+</div>
+      <p>
+      Inheritance relationships
+      </p>
+      <ul>
+<li>ECLI_CHAR -> ECLI_GENERIC_VALUE [STRING]</li>
+<li>ECLI_VARCHAR  -> ECLI_GENERIC_VALUE [STRING]</li>
+<li>ECLI_INTEGER  -> ECLI_GENERIC_VALUE [INTEGER]</li>
+<li>ECLI_FLOAT -> ECLI_GENERIC_VALUE [DOUBLE]</li>
+<li>ECLI_DOUBLE -> ECLI_GENERIC_VALUE [DOUBLE]</li>
+<li>ECLI_REAL  -> ECLI_GENERIC_VALUE [REAL]</li>
+<li>ECLI_DATE -> ECLI_GENERIC_VALUE [DT_DATE]</li>
+<li>ECLI_TIMESTAMP -> ECLI_GENERIC_VALUE [DT_DATE_TIME]</li>
+<li>ECLI_TIME -> ECLI_GENERIC_VALUE [DT_TIME]</li>
+<li>ECLI_LONGVARCHAR -> ECLI_GENERIC_VALUE [STRING]</li>
+     </ul>
 
       <h2>Scanning a result-set</h2>
 
@@ -883,7 +905,7 @@ vbdate :	 ECLI_TIMESTAMP
 vfname :	 ECLI_VARCHAR
 vnbr   : 	 ECLI_INTEGER
 -- selection of tuples
-stmt.set_sql ("SELECT * FROM ECLIESSAI")
+stmt.set_sql ("SELECT * FROM ECLITRIAL")
 stmt.execute
 -- get results
 if stmt.is_ok and then stmt.<b>has_results</b> then
@@ -1167,7 +1189,7 @@ passed before query execution. The SQL syntax for that is simple : prefix
 
              <tr>
             <td bgcolor="#ffff99">
-            <pre>INSERT INTO ECLIESSAI VALUES&nbsp;<tt>&nbsp;<br></tt>&nbsp;&nbsp;&nbsp; ('Toto', 'Henri', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)</pre>
+            <pre>INSERT INTO ECLITRIAL VALUES&nbsp;<tt>&nbsp;<br></tt>&nbsp;&nbsp;&nbsp; ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)</pre>
             </td>
         </tr>
 
@@ -1184,7 +1206,7 @@ passed before query execution. The SQL syntax for that is simple : prefix
 
              <tr>
             <td bgcolor="#ffff99">
-            <pre>INSERT INTO ECLIESSAI VALUES&nbsp;<br><tt>&nbsp;&nbsp;&nbsp; </tt>(<b>?firstname, ?lastname, ?number, ?bdate, ?price</b>)</pre>
+            <pre>INSERT INTO ECLITRIAL VALUES&nbsp;<br><tt>&nbsp;&nbsp;&nbsp; </tt>(<b>?firstname, ?lastname, ?number, ?bdate, ?price</b>)</pre>
             </td>
         </tr>
 
@@ -1202,7 +1224,7 @@ ECLI_VALUE objects, or individually by name.&nbsp; </p>
 
              <tr>
             <td valign="Top" bgcolor="#ffff99">
-            <pre>othername:	ECLI_CHAR<br>p_name  :		 ECLI_CHAR<br>p_price :	&nbsp;&nbsp;&nbsp; ECLI_DOUBLE<br>p_bdate :	&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP<br>p_fname :	&nbsp;&nbsp;&nbsp; ECLI_VARCHAR<br>p_nbr :		&nbsp; ECLI_INTEGER<br><tt>...<br>create&nbsp;</tt>p_<tt>name.make (20)<br>create&nbsp;</tt>p_<tt>nbr.make<br>create&nbsp;</tt>p_<tt>price.make<br>create&nbsp;</tt>p_<tt>fname.make (20)<br>create&nbsp;</tt>p_<tt>bdate.make_first<br></tt>-- parameterized insertion<br><tt>stmt.set_sql ("</tt>INSERT INTO ECLIESSAI VALUES %<br><tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>")<br><br>-- (STEP 1) set parameters by array<br>stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;</tt>p_<tt>fname,&nbsp;</tt>p_<tt>name,&nbsp;</tt>p_<tt>nbr,&nbsp;</tt>p_<tt>bdate,&nbsp;</tt>p_<tt>price&gt;&gt;)<br><br>-- set values<br></tt>p_<tt>name.set_item ("Henry")<br></tt>p_<tt>fname.set_item ("Black")<br></tt>p_<tt>price.set_item (125.8)<br></tt>p_<tt>number.set_item (5)<br></tt>p_<tt>bdate.set_date (1995, 8, 19)<br><br>-- (STEP 2) bind them<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>-- (STEP 3) execute statement<br>stmt.execute<br>-- inserted tuple ("Henry", "Black", 5, {ts '1995-08-19 00:00:00'}, 125.8)<br><br>-- test execution status<br>if stmt.is_ok then<br>&nbsp;&nbsp;&nbsp; print ("Tuple inserted")<br>else<br>&nbsp;&nbsp;&nbsp; handle_error (stmt)<br>end<br><br>-- (STEP 4) set parameter by name<br>--&nbsp; a new value object is provided = parameters must be bound again<br>create othername.make (20); other_name.set_item ("Jim")<br>stmt.</tt><b><tt>put_parameter</tt></b><tt> (</tt>other<tt>name, "firstname")<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>stmt.execute<br>-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>-- (STEP 5) change parameter object state = binding still apply<br>othername.set_item ("Louis")<br>stmt.execute<br>-- inserted tuple ("Louis", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br>...</tt></pre>
+            <pre>othername:	ECLI_CHAR<br>p_name  :		 ECLI_CHAR<br>p_price :	&nbsp;&nbsp;&nbsp; ECLI_DOUBLE<br>p_bdate :	&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP<br>p_fname :	&nbsp;&nbsp;&nbsp; ECLI_VARCHAR<br>p_nbr :		&nbsp; ECLI_INTEGER<br><tt>...<br>create&nbsp;</tt>p_<tt>name.make (20)<br>create&nbsp;</tt>p_<tt>nbr.make<br>create&nbsp;</tt>p_<tt>price.make<br>create&nbsp;</tt>p_<tt>fname.make (20)<br>create&nbsp;</tt>p_<tt>bdate.make_first<br></tt>-- parameterized insertion<br><tt>stmt.set_sql ("</tt>INSERT INTO ECLITRIAL VALUES %<br><tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>")<br><br>-- (STEP 1) set parameters by array<br>stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;</tt>p_<tt>fname,&nbsp;</tt>p_<tt>name,&nbsp;</tt>p_<tt>nbr,&nbsp;</tt>p_<tt>bdate,&nbsp;</tt>p_<tt>price&gt;&gt;)<br><br>-- set values<br></tt>p_<tt>name.set_item ("Henry")<br></tt>p_<tt>fname.set_item ("Black")<br></tt>p_<tt>price.set_item (125.8)<br></tt>p_<tt>number.set_item (5)<br></tt>p_<tt>bdate.set_date (1995, 8, 19)<br><br>-- (STEP 2) bind them<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>-- (STEP 3) execute statement<br>stmt.execute<br>-- inserted tuple ("Henry", "Black", 5, {ts '1995-08-19 00:00:00'}, 125.8)<br><br>-- test execution status<br>if stmt.is_ok then<br>&nbsp;&nbsp;&nbsp; print ("Tuple inserted")<br>else<br>&nbsp;&nbsp;&nbsp; handle_error (stmt)<br>end<br><br>-- (STEP 4) set parameter by name<br>--&nbsp; a new value object is provided = parameters must be bound again<br>create othername.make (20); other_name.set_item ("Jim")<br>stmt.</tt><b><tt>put_parameter</tt></b><tt> (</tt>other<tt>name, "firstname")<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>stmt.execute<br>-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>-- (STEP 5) change parameter object state = binding still apply<br>othername.set_item ("Louis")<br>stmt.execute<br>-- inserted tuple ("Louis", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br>...</tt></pre>
             </td>
         </tr>
 
@@ -1420,7 +1442,7 @@ with different parameters. </p>
 
              <tr>
             <td valign="Top" bgcolor="#ffff99">
-            <pre>vname, othername :		 ECLI_CHAR<br>vprice :	&nbsp;&nbsp;&nbsp; ECLI_DOUBLE<br>vbdate :	&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP<br>vfname :	&nbsp;&nbsp;&nbsp; ECLI_VARCHAR<br>vnbr :		&nbsp; ECLI_INTEGER<br><tt>...<br>create vname.make (20)<br>create vnbr.make<br>create vprice.make<br>create vfname.make (20)<br>create vbdate.make_first<br></tt>-- parameterized insertion<br><tt>stmt.set_sql ("</tt>INSERT INTO ECLIESSAI VALUES %<br><tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>")<br><br></tt><tt>-- </tt><b><tt>(STEP 0) statement preparation &lt;===========<br></tt></b><tt>stmt.</tt><b><tt>prepare<br><br></tt></b><tt>-- (STEP 1) set parameters by array<br>stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)<br><br>-- set values<br>...<br><br>-- (STEP 2) bind them<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>-- (STEP 3) execute statement<br>stmt.execute<br>-- inserted tuple ("Henry", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>...<br><br>-- (STEP 4) set parameter by name - other way to set a parameter<br>--&nbsp; a new value object is provided = parameters must be bound again<br>create othername.make (20); other_name.set_item ("Jim")<br>stmt.</tt><b><tt>put_parameter</tt></b><tt> (vname, "firstname")<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>stmt.execute<br>-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>-- (STEP 5) change parameter object state = binding still apply<br>othername.set_item ("Louis")<br>stmt.execute<br>-- inserted tuple ("Louis", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br>...</tt></pre>
+            <pre>vname, othername :		 ECLI_CHAR<br>vprice :	&nbsp;&nbsp;&nbsp; ECLI_DOUBLE<br>vbdate :	&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP<br>vfname :	&nbsp;&nbsp;&nbsp; ECLI_VARCHAR<br>vnbr :		&nbsp; ECLI_INTEGER<br><tt>...<br>create vname.make (20)<br>create vnbr.make<br>create vprice.make<br>create vfname.make (20)<br>create vbdate.make_first<br></tt>-- parameterized insertion<br><tt>stmt.set_sql ("</tt>INSERT INTO ECLITRIAL VALUES %<br><tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>")<br><br></tt><tt>-- </tt><b><tt>(STEP 0) statement preparation &lt;===========<br></tt></b><tt>stmt.</tt><b><tt>prepare<br><br></tt></b><tt>-- (STEP 1) set parameters by array<br>stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)<br><br>-- set values<br>...<br><br>-- (STEP 2) bind them<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>-- (STEP 3) execute statement<br>stmt.execute<br>-- inserted tuple ("Henry", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>...<br><br>-- (STEP 4) set parameter by name - other way to set a parameter<br>--&nbsp; a new value object is provided = parameters must be bound again<br>create othername.make (20); other_name.set_item ("Jim")<br>stmt.</tt><b><tt>put_parameter</tt></b><tt> (vname, "firstname")<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>stmt.execute<br>-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>-- (STEP 5) change parameter object state = binding still apply<br>othername.set_item ("Louis")<br>stmt.execute<br>-- inserted tuple ("Louis", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br>...</tt></pre>
             </td>
         </tr>
 

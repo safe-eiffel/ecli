@@ -37,7 +37,7 @@ feature -- Basic operations
 			context.output_file.put_string (Usage_string)
 		end
 
-	Usage_string : STRING is "Usage: isql [-dsn <data_source> -user <user_name> -pwd <password>] [-sql <file_name>] [echo] [[-set <name>=<value> ]...]%N%
+	Usage_string : STRING is "Usage: clisql [-dsn <data_source> -user <user_name> -pwd <password>] [-sql <file_name>] [echo] [[-set <name>=<value> ]...]%N%
 						%%T-dsn data_source%T%TODBC data source name%N%
 						%%T-user user_name%T%Tuser name for database login%N%
 						%%T-pwd password%T%Tpassword for database login%N%
