@@ -42,11 +42,11 @@ feature {NONE} -- Initialization
 			if cursor.buffer_table_name.is_null then
 
 			else
-				table := cursor.buffer_table_name.to_string
+				table := cursor.buffer_table_name.as_string
 			end
 			set_name (cursor.buffer_column_name)
 			type_code := cursor.buffer_data_type.to_integer
-			type_name := cursor.buffer_type_name.to_string
+			type_name := cursor.buffer_type_name.as_string
 			if not cursor.buffer_column_size.is_null then
 				size := cursor.buffer_column_size.to_integer
 				is_size_applicable := True
@@ -65,7 +65,7 @@ feature {NONE} -- Initialization
 			end
 			nullability := cursor.buffer_nullable.to_integer
 			if not cursor.buffer_remarks.is_null then
-				description := cursor.buffer_remarks.to_string
+				description := cursor.buffer_remarks.as_string
 			end
 		end
 

@@ -47,23 +47,23 @@ feature {NONE} -- Initialization
 			set_name (cursor.buffer_table_name)
 
 			if not cursor.buffer_pk_table_cat.is_null then
-				pk_catalog := cursor.buffer_pk_table_cat.to_string
+				pk_catalog := cursor.buffer_pk_table_cat.as_string
 			end
 			if not cursor.buffer_pk_table_schem.is_null then
-				pk_schema := cursor.buffer_pk_table_schem.to_string
+				pk_schema := cursor.buffer_pk_table_schem.as_string
 			end
 			if not cursor.buffer_pk_table_name.is_null then
-				pk_table := cursor.buffer_pk_table_name.to_string
+				pk_table := cursor.buffer_pk_table_name.as_string
 			end
 			if not cursor.buffer_pk_name.is_null then
-				primary_key_name := cursor.buffer_pk_name.to_string
+				primary_key_name := cursor.buffer_pk_name.as_string
 			end
 			if not cursor.buffer_fk_name.is_null then
-				key_name := cursor.buffer_fk_name.to_string
+				key_name := cursor.buffer_fk_name.as_string
 			end
 			create {DS_LINKED_LIST[STRING]} columns.make
-			columns.put_last (cursor.buffer_column_name.to_string)
-			create referenced_key.make_by_name (pk_catalog, pk_schema, pk_table, primary_key_name,cursor.buffer_pk_column_name.to_string)
+			columns.put_last (cursor.buffer_column_name.as_string)
+			create referenced_key.make_by_name (pk_catalog, pk_schema, pk_table, primary_key_name,cursor.buffer_pk_column_name.as_string)
 		end
 		
 feature -- Access

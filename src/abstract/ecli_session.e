@@ -71,9 +71,9 @@ feature -- Initialization
 			allocate
 			reset_implementation
 		ensure
-			data_source_shared : data_source = a_data_source
-			user_name_shared : user_name= a_user_name
-			password_shared : password = a_password
+			data_source_set : data_source.is_equal (a_data_source)
+			user_name_set : user_name.is_equal (a_user_name)
+			password_set : password.is_equal (a_password)
 			valid: is_valid
 			open:  not is_closed
 		end
@@ -191,10 +191,11 @@ feature -- Status report
 	is_describe_parameters_capable : BOOLEAN is
 			-- can 'ECLI_STATEMENT.describe_parameters' be called ?
 		local
-			functions : expanded ECLI_FUNCTIONS_CONSTANTS
+			functions : ECLI_FUNCTIONS_CONSTANTS
 		do
+			create functions
 			if impl_describe_parameters_capability < sql_false then
-				set_status (ecli_c_sql_get_functions (handle, functions.Sql_api_sqldescribeparam, $ impl_describe_parameters_capability))
+				set_status (ecli_c_sql_get_functions (handle, functions.Sql_api_sqldescribeparam, ext_describe_parameters_capability.handle))
 			end
 			Result := impl_describe_parameters_capability = sql_true
 		end
@@ -451,7 +452,7 @@ feature {NONE} -- Implementation
 			-- reset all implementation values to default ones
 		do
 			ext_transaction_capability.put (sql_tc_none - 1)
-			impl_describe_parameters_capability := sql_false - 1
+			ext_describe_parameters_capability.put (sql_false - 1)
 			impl_is_bind_arrayed_parameters_capability := -1			
 			impl_is_bind_arrayed_results_capability := -1			
 		end
@@ -506,9 +507,10 @@ feature {NONE} -- Implementation
 		
 	ext_is_manual_commit : XS_C_BOOLEAN
 	ext_transaction_capability : XS_C_INT32
-
-	impl_describe_parameters_capability : INTEGER
+	ext_describe_parameters_capability : XS_C_INT32
 	
+	impl_describe_parameters_capability : INTEGER is do Result := ext_describe_parameters_capability.item end
+
 	impl_is_bind_arrayed_parameters_capability : INTEGER
 	impl_is_bind_arrayed_results_capability	: INTEGER
 	
@@ -523,7 +525,8 @@ feature {NONE} -- Implementation
 			create ext_handle.make
 			create ext_is_manual_commit.make
 			create ext_transaction_capability.make
-
+			create ext_describe_parameters_capability.make
+			
 			-- | Allocate session handle
 			environment := shared_environment
 			henv := environment.handle

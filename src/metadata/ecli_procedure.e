@@ -39,7 +39,7 @@ feature {NONE} -- Initilization
 			set_schema (cursor.buffer_schema_name)
 			set_name (cursor.buffer_procedure_name)
 			if not cursor.buffer_description.is_null then
-				description := cursor.buffer_description.to_string
+				description := cursor.buffer_description.as_string
 			end
 			if not cursor.buffer_procedure_type.is_null then
 				type := cursor.buffer_procedure_type.to_integer

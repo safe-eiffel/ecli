@@ -20,6 +20,8 @@ inherit
 			sql_real, sql_double, sql_smallint, sql_float, sql_decimal, sql_numeric
 		end
 
+	KL_IMPORTED_ARRAY_ROUTINES
+	
 creation
 	make
 
@@ -149,7 +151,7 @@ feature {NONE} -- Implementation
 			>>
 		end
 
-	array_routines : expanded KL_ARRAY_ROUTINES[INTEGER]
+	array_routines : KL_ARRAY_ROUTINES[INTEGER] is do Result := Integer_array_ end
 
 end -- class ECLI_VALUE_FACTORY
 --

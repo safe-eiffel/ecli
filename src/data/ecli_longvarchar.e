@@ -11,10 +11,10 @@ class
 inherit
 	ECLI_GENERIC_VALUE [STRING]
 		redefine
-			item, set_item,convertible_to_string, to_string, out, convertible_to_character, to_character,
+			item, set_item,convertible_to_string, as_string, out, convertible_to_character, to_character,
 			convertible_to_integer, to_integer, convertible_to_double, to_double, impl_item
 		end
-
+	
 creation
 	make
 
@@ -132,7 +132,9 @@ feature -- Element change
 				transfer_length := actual_length - 1
 			end
 --			protect
-			ecli_c_value_set_value (buffer, string_to_pointer (value), actual_length)
+			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_length)
+			ext_item.from_string (value)
+			--ecli_c_value_set_value (buffer, string_to_pointer (value), actual_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 --			unprotect
 		ensure then
@@ -141,7 +143,7 @@ feature -- Element change
 			
 feature -- Conversion
 
-	to_string : STRING is
+	as_string : STRING is
 			-- Conversion to STRING value
 		do
 			Result := clone (item)
@@ -182,7 +184,6 @@ feature -- Basic operations
 		do
 			a_tracer.put_string (Current)
 		end
-		
 
 feature -- Obsolete
 
@@ -193,6 +194,8 @@ feature {NONE} -- Implementation
 	octet_size : INTEGER is do Result := transfer_octet_length end
 
 	impl_item : STRING
+
+	ext_item : XS_C_STRING
 	
 end -- class ECLI_LONGVARCHAR
 --

@@ -43,18 +43,27 @@ feature -- Basic operations
 			stream.read_word
 			if not stream.end_of_input then
 				--| try reading table_name
-				stream.read_word
+				stream.read_quoted_word
 				if not stream.end_of_input then
 					l_table := clone (stream.last_string)
-					stream.read_word
+					if stream.is_last_string_quoted then
+						l_table := l_table.substring (2, l_table.count-1)
+					end
+					stream.read_quoted_word
 					if not stream.end_of_input then
 						l_schema := l_table
 						l_table := clone (stream.last_string)
-						stream.read_word
+						if stream.is_last_string_quoted then
+							l_table := l_table.substring (2, l_table.count-1)
+						end
+						stream.read_quoted_word
 						if not stream.end_of_input then
 							l_catalog := l_schema
 							l_schema := l_table
 							l_table := clone (stream.last_string)
+							if stream.is_last_string_quoted then
+								l_table := l_table.substring (2, l_table.count-1)
+							end
 						end
 					end
 				end

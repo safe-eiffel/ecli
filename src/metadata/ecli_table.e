@@ -35,10 +35,10 @@ feature {NONE} -- Initialization
 			set_schema (tables_cursor.buffer_schema_name)
 			set_name (tables_cursor.buffer_table_name)
 			if not tables_cursor.buffer_table_type.is_null then
-				 type := tables_cursor.buffer_table_type.to_string
+				 type := tables_cursor.buffer_table_type.as_string
 			end
 			if not tables_cursor.buffer_description.is_null then
-				description := tables_cursor.buffer_description.to_string
+				description := tables_cursor.buffer_description.as_string
 			end
 		end
 

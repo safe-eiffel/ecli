@@ -77,7 +77,7 @@ feature -- Cursor Movement
 					loop
 						forth
 						if not off then
-							impl_item.add_column (buffer_column_name.to_string)
+							impl_item.add_column (buffer_column_name.as_string)
 						end
 					end
 					creating_item := False

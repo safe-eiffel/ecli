@@ -28,22 +28,22 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 			type_cursor: type_cursor /= Void
 			current_exists: not type_cursor.off
 		do
-			impl_name := type_cursor.buffer_type_name.to_string
+			impl_name := type_cursor.buffer_type_name.as_string
 			impl_sql_type_code := type_cursor.buffer_data_type.to_integer
 			if not type_cursor.buffer_column_size.is_null then
 				impl_size := type_cursor.buffer_column_size.to_integer
 				is_size_applicable := True
 			end
 			if not type_cursor.buffer_literal_prefix.is_null then
-				impl_literal_prefix := type_cursor.buffer_literal_prefix.to_string
+				impl_literal_prefix := type_cursor.buffer_literal_prefix.as_string
 				is_literal_prefix_applicable := True
 			end
 			if not type_cursor.buffer_literal_suffix.is_null then
-				impl_literal_suffix := type_cursor.buffer_literal_suffix.to_string
+				impl_literal_suffix := type_cursor.buffer_literal_suffix.as_string
 				is_literal_suffix_applicable := True
 			end
 			if not type_cursor.buffer_create_params.is_null then
-				impl_create_params := type_cursor.buffer_create_params.to_string
+				impl_create_params := type_cursor.buffer_create_params.as_string
 				is_create_params_applicable := True
 			end
 			nullability := type_cursor.buffer_nullable.to_integer
@@ -58,7 +58,7 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 				is_auto_unique_value_applicable := True
 			end
 			if not type_cursor.buffer_local_type_name.is_null then
-				impl_local_type_name := type_cursor.buffer_local_type_name.to_string
+				impl_local_type_name := type_cursor.buffer_local_type_name.as_string
 				is_local_type_name_applicable := True
 			end
 			if not type_cursor.buffer_minimum_scale.is_null then

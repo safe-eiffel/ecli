@@ -23,16 +23,27 @@ feature
 	do_tests is
 			-- run test on ECLI_VALUE descendants
 		do
+			print ("test CHAR%N")
 			test_char
+			print ("test VARCHAR%N")
 			test_varchar
+			print ("test LONGVARCHAR%N")
 			test_longvarchar
+			print ("test DATE%N")
 			test_date
+			print ("test TIME%N")
 			test_time
+			print ("test TIMESTAMP%N")
 			test_timestamp
+			print ("test INTEGER%N")
 			test_integer
+			print ("test DOUBLE%N")
 			test_double
+			print ("test REAL%N")
 			test_real
+			print ("test FLOAT%N")
 			test_float
+			io.read_line
 		end
 
 	do_arrayed_tests is

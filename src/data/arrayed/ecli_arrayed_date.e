@@ -24,7 +24,7 @@ inherit
 		export
 			{NONE} make_single, make_default_single
 		undefine
-			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, set_item, to_string
+			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, set_item, as_string
 		redefine
 			item, trace, allocate_buffer, year, month, day, set_date --, transfer_octet_length
 		end

@@ -16,8 +16,9 @@ feature -- Initialization
 	make is
 			-- TRANSACT
 		local
-			args :          expanded ARGUMENTS
+			args : ARGUMENTS
 		do
+			create args
 			-- session opening
 			if args.argument_count < 3 then
 				io.put_string ("Usage: transact <data_source> <user_name> <password>%N")

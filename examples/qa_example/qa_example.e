@@ -16,8 +16,9 @@ feature -- Initialization
 	make is
 			-- QA_EXAMPLE
 		local
-			args :  expanded ARGUMENTS
+			args : ARGUMENTS
 		do
+			create args
 			io.put_string ("Selection of registered participants, by remaining amount to pay%N")
 			-- session opening
 			if args.argument_count < 3 then

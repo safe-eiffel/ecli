@@ -184,7 +184,7 @@ feature -- Basic operations
 				not cursor.is_ok or else cursor.off or else not ok
 			loop
 				-- find index in names array, to find corresponding age
-				index := index_of_array_string (names, cursor.item_by_index (1).to_string)
+				index := index_of_array_string (names, cursor.item_by_index (1).as_string)
 				if index > 0 then
 					-- ok if retrieved value is ages.item (index) + 2
 					ok := (cursor.item_by_index (2).to_integer = (ages.item (index) + 2) )
@@ -303,13 +303,14 @@ feature {NONE} -- Implementation
 			-- examine each status:
 		local
 			index : INTEGER
-			const : expanded ECLI_ROW_STATUS_CONSTANTS
+			const : ECLI_ROW_STATUS_CONSTANTS
 			status : INTEGER
 			stmt : ECLI_STATEMENT
 			p_age : ECLI_INTEGER
 			p_name : ECLI_VARCHAR
 			
 		do
+			create const
 			-- Error handling with bulk operations is not straigthforward.
 			-- First, locate offending parameter set
 			-- Then retry query with non-arrayed parameters and get the error information

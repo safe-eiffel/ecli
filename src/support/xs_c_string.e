@@ -13,24 +13,34 @@ class
 
 inherit
 	XS_C_MEMORY
+		redefine
+			dispose, is_equal
+		end
 
 	ECLI_EXTERNAL_TOOLS
 		undefine
-			dispose
+			dispose, is_equal
 		end
 	
 creation
-	make, make_from_string
+	make, make_from_string, make_shared_from_pointer, set_empty
 	
 feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
 			-- make for `a_capacity' characters
 		require
-			a_capacity_positive: a_capacity > 0
+			a_capacity_positive: a_capacity >= 0
 		do
-			handle := c_memory_allocate (a_capacity + 1)
+			if a_capacity > 0 then
+				handle := c_memory_allocate (a_capacity + 1)
+			else
+				make_shared_from_pointer (empty_string.handle, 0)
+			end
 			capacity := a_capacity
+		ensure
+			capacity_set: capacity = a_capacity
+			shared_when_empty: (a_capacity = 0) implies (Current = empty_string or else (is_shared and then handle = empty_string.handle))
 		end
 
 	make_from_string (s : STRING) is
@@ -39,16 +49,40 @@ feature {NONE} -- Initialization
 			s_not_void: s /= Void
 		do
 			make (s.count)
-			from_string (s)
+			if not is_shared then
+				from_string (s)
+			end
 		ensure
+			capacity_set: capacity = s.count
+			shared_when_empty: (s.count = 0) implies (is_shared and then handle = empty_string.handle)
 			is_copy: item.is_equal (s)
+		end
+
+	make_shared_from_pointer (p : POINTER; a_capacity : INTEGER) is
+			-- 
+		require
+			p_not_default: p /= default_pointer
+			a_capacity_positive: a_capacity >= 0
+		do
+			handle := p
+			capacity := a_capacity
+			is_shared := True
+		ensure
+			handle_set: handle = p
+			capacity_set: capacity = a_capacity
+			is_shared: is_shared
 		end
 		
 feature -- Access
 
 	capacity : INTEGER
 			-- string capacity
-	
+			
+feature -- Status report
+
+	is_shared : BOOLEAN 
+		-- is the handle of this string shared with other objects ?
+		
 feature -- Conversion
 
 	item : STRING is
@@ -57,6 +91,26 @@ feature -- Conversion
 			Result := pointer_to_string (handle)
 		end
 
+feature -- Constants
+
+	empty_string : XS_C_STRING is
+			-- empty string
+		once
+			create Result.set_empty
+		end
+
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			-- is 'other' equal to current ?
+		do
+			if other = Current or else handle = other.handle then
+				Result := True
+			else
+				Result := item.is_equal (other.item)
+			end
+		end
+		
 feature -- Element change
 
 	from_string (s : STRING) is
@@ -79,6 +133,26 @@ feature -- Element change
 			c_memory_put_int8 (c_memory_pointer_plus (handle, s.count), 0)
 		ensure
 			equal_strings: item.is_equal (s)
+		end
+
+	dispose is
+			-- 
+		do
+			if not is_shared then
+				Precursor {XS_C_MEMORY}
+			end
+		end
+
+feature {NONE} -- Implementation
+
+	set_empty is 
+		do
+			if empty_string /= Void then
+				make_shared_from_pointer (empty_string.handle, 0)
+			else
+				handle := c_memory_allocate ( 1)
+				c_memory_put_int8 (handle, 0)
+			end
 		end
 		
 end -- class XS_C_STRING

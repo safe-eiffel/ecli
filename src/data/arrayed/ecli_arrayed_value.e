@@ -33,7 +33,7 @@ inherit
 			can_trace
 		redefine
 			release_handle, to_external, is_null,
-			to_string
+			as_string
 		end
 
 feature -- Initialization
@@ -190,7 +190,7 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
 	
-	to_string : STRING is
+	as_string : STRING is
 			-- visible representation of current item
 		do
 			Result := out_item_at (cursor_index)

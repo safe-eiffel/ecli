@@ -175,14 +175,10 @@ feature {NONE} -- Implementation
 					go_after
 			else
 				if fetch_increment \\ row_capacity = 0 then
-					--| protect from moving GC
-					collection_off
 					--| Bind `row_count' a getting the actual number of rows fetched
 					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, impl_row_count.handle, 0))			
 					--| Do actual fetch
 					Precursor
-					--| restore GC
-					collection_on
 					fill_status_array
 					start_values
 					physical_fetch_count := physical_fetch_count + 1

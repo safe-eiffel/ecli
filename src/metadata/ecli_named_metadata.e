@@ -54,13 +54,13 @@ feature -- Element change
 			value: value /= Void
 		do
 			if not value.is_null then
-				catalog := value.to_string
+				catalog := value.as_string
 			else
 				catalog := Void
 			end
 		ensure
 			void_if_null_value: value.is_null implies catalog = Void
-			assigned_if_not_null: not value.is_null implies catalog.is_equal (value.to_string)
+			assigned_if_not_null: not value.is_null implies catalog.is_equal (value.as_string)
 		end
 
 	set_schema (value : ECLI_VARCHAR) is
@@ -69,13 +69,13 @@ feature -- Element change
 			value: value /= Void
 		do
 			if not value.is_null then
-				schema := value.to_string			
+				schema := value.as_string			
 			else
 				schema := Void
 			end
 		ensure
 			void_if_null_value: value.is_null implies schema = Void
-			assigned_if_not_null: not value.is_null implies schema.is_equal (value.to_string)		
+			assigned_if_not_null: not value.is_null implies schema.is_equal (value.as_string)		
 		end
 		
 	set_name (value : ECLI_VARCHAR) is
@@ -83,9 +83,9 @@ feature -- Element change
 		require
 			value: value /= Void and then not value.is_null
 		do
-			name := value.to_string
+			name := value.as_string
 		ensure
-			assigned: name.is_equal (value.to_string)		
+			assigned: name.is_equal (value.as_string)		
 		end
 
 feature -- Conversion

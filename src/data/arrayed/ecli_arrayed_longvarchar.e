@@ -15,7 +15,7 @@ inherit
 			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
-			set_item, transfer_octet_length, to_string, convertible_to_string
+			set_item, transfer_octet_length, as_string, convertible_to_string
 		redefine
 			item, content_capacity, content_count
 		end
@@ -24,7 +24,7 @@ inherit
 		rename
 			make as make_arrayed
 		redefine
-			set_item, out_item_at, to_string
+			set_item, out_item_at, as_string
 		select
 			is_equal, copy
 		end
@@ -133,8 +133,9 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
-			create tools
-			ecli_c_array_value_set_value_at (buffer, string_to_pointer (value), actual_length, index)
+			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), transfer_length )
+			ext_item.from_string (value)
+			--ecli_c_array_value_set_value_at (buffer, string_to_pointer (value), actual_length, index)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_length, index)
 		end
 
@@ -146,7 +147,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-		to_string : STRING is
+		as_string : STRING is
 				--
 			do
 				Result := item_at (cursor_index).out

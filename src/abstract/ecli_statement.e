@@ -38,6 +38,8 @@ inherit
 			session_disconnect
 		end
 
+	KL_IMPORTED_ARRAY_ROUTINES
+	
 creation
 	make
 
@@ -418,6 +420,7 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 		do
+			reset_status
 			sql := a_sql
 			name_to_position.wipe_out
 			parser.parse (sql, Current)
@@ -440,6 +443,7 @@ feature -- Element change
 			no_bound_parameters: not bound_parameters
 			no_more_parameters: parameters = Void
 			reset_descriptions: parameters_description = Void and cursor_description = Void
+			is_ok: is_ok
 		end
 
 	set_parameters (param : like parameters) is
@@ -527,11 +531,9 @@ feature -- Basic operations
 			valid_statement: is_valid
 			query_is_parsed: is_parsed
 			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
-			parameters_set: parameters_count > 0 implies bound_parameters
-		local
-			tools : expanded ECLI_EXTERNAL_TOOLS
-			
+			parameters_set: parameters_count > 0 implies bound_parameters			
 		do
+			reset_status
 			if session.is_tracing then
 				trace (session.tracer)
 			end
@@ -579,6 +581,7 @@ feature -- Basic operations
 			limit := parameters_count
 			!! parameters_description.make (1, limit)
 			from
+				reset_status
 				count := 1
 			until count > limit or not is_ok
 			loop
@@ -609,6 +612,7 @@ feature -- Basic operations
 			!! cursor_description.make (1, limit)
 			from
 				count := 1
+				reset_status
 			until count > limit or not is_ok
 			loop
 				!! description.make (Current, count, 100)
@@ -633,6 +637,7 @@ feature -- Basic operations
 		do
 			from
 				parameter_index := 1
+				reset_status
 			until
 				not is_ok or else parameter_index > parameters.count
 			loop
@@ -643,7 +648,7 @@ feature -- Basic operations
 				last_bound_parameter_index := parameter_index - 1
 				bound_parameters := True
 			else
-				last_bound_parameter_index := parameter_index - 2
+				last_bound_parameter_index := (0).max(parameter_index - 2)
 				bound_parameters := False
 			end
 		ensure
@@ -657,8 +662,6 @@ feature -- Basic operations
 			-- prepare the sql statement
 		require
 			valid_statement: is_valid
-		local
-			tools : expanded ECLI_EXTERNAL_TOOLS
 		do
 			if is_executed and then (has_results and  not after) then
 				close_cursor
@@ -684,7 +687,7 @@ feature -- Inapplicable
 		do
 		end
 		
-	array_routines : expanded KL_ARRAY_ROUTINES[ANY]
+	array_routines : KL_ARRAY_ROUTINES[ANY] is do Result := Any_array_ end
 
 feature {ECLI_SQL_PARSER} -- Callback
 
@@ -722,94 +725,6 @@ feature {ECLI_STATUS} -- Inapplicable
 		end
 
 feature {NONE} -- Implementation
-
---	parsed_sql (s : STRING) : STRING is
---			-- parse s, replacing every '?<name>' by '?'
---			-- and set up the name to position translation table
---			-- <name> is [a-zA-Z_0-9]+
---		local
---			eq : KL_EQUALITY_TESTER[DS_LIST[INTEGER]]
---			param_count, param_number, i_start, i_begin_parameter_name, i_end_parameter_name : INTEGER
---			name_found : BOOLEAN
---			name : STRING
---			string_routines : expanded KL_STRING_ROUTINES
---		do
---			Result := string_routines.make (s.count)
---			param_count := s.occurrences ('?')
---			--| create or resize translation table
---			if param_count > 0 then
---				if name_to_position = Void then
---					!! name_to_position.make (param_count)
---					!! eq
---					name_to_position.set_equality_tester (eq)
---				else
---					if param_count > name_to_position.capacity then
---						name_to_position.resize (param_count)
---					end
---					name_to_position.wipe_out
---				end
---				-- | loop through parameters
---				-- | * insert a name to position item
---				-- | * copy s to Result, except the parameter names
---				from
---					i_start := 1
---					param_number := 1
---				variant s.count+1 - i_start
---				until
---					param_number > param_count or i_start > s.count
---				loop
---					-- copy s[i_start..i_begin_parameter_name-1], where s@(i_begin_parameter_name-1) = '?'
---					from
---						i_begin_parameter_name := i_start
---					until
---						s.item (i_begin_parameter_name) = '?'
---					loop
---						Result.extend (s.item (i_begin_parameter_name))
---						i_begin_parameter_name := i_begin_parameter_name + 1
---					end
---					Result.extend (s.item (i_begin_parameter_name))
---					i_begin_parameter_name := i_begin_parameter_name + 1
---
---					--| go past parameter name
---					from
---						i_end_parameter_name := i_begin_parameter_name+1
---						name_found := False
---					until
---						 name_found or i_end_parameter_name > s.count
---					loop
---						inspect (s.item (i_end_parameter_name))
---							when 'a'..'z', 'A'..'Z', '0'..'9', '_' then
---								i_end_parameter_name := i_end_parameter_name + 1
---							else
---								name_found := True
---						end
---					end
---					-- | parameter name is substring (i_begin_parameter_name, i_end_parameter_name-1)
---					-- | put its position in the translation table
---					name := s.substring(i_begin_parameter_name, i_end_parameter_name -1)
---					--
---					-- | same parameter name can occur at multiple position
---					--
---					add_new_parameter (name, param_number)
---					-- | prepare for next iteration
---					i_start := i_end_parameter_name
---					param_number := param_number + 1
---				end
---				-- copy s[i_start..s.count] to Result
---				from
---				until
---					i_start > s.count
---				loop
---					Result.extend (s.item(i_start))
---					i_start := i_start + 1
---				end
---			else
---				Result.copy (s)
---			end
---			set_parsed
---		ensure
---			is_parsed: is_parsed
---		end
 
 	name_to_position : DS_HASH_TABLE [DS_LIST[INTEGER], STRING]
 

@@ -40,11 +40,11 @@ feature -- Basic operations
 			after_first : BOOLEAN
 			a_statement : ECLI_STATEMENT
 		do
-			if context.session.is_bind_arrayed_results_capable then
-				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (context.session, text , 20)	
-			else
+--			if context.session.is_bind_arrayed_results_capable then
+--				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (context.session, text , 20)	
+--			else
 				create cursor.make_prepared (context.session, text)
-			end
+--			end
 			if cursor.is_ok then
 				if cursor.has_parameters then
 					if context.variables /= Void then
@@ -161,7 +161,7 @@ feature {NONE} -- Implementation
 				if cursor.item_by_index (index).is_null then
 					context.filter.put_column ("NULL")
 				else
-					context.filter.put_column (cursor.item_by_index(index).to_string)
+					context.filter.put_column (cursor.item_by_index(index).as_string)
 				end
 				index := index + 1
 			end

@@ -19,15 +19,20 @@ inherit
 --			set_date,
 --			c_type_code, column_precision, sql_type_code,
 --			decimal_digits, display_size, out, is_equal, create_impl_item,
---			to_timestamp, trace, to_string, convertible_to_string, transfer_octet_length
+--			to_timestamp, trace, as_string, convertible_to_string, transfer_octet_length
 --		select
 --		end
 
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
-			create_impl_item, impl_item, is_equal,to_timestamp, out, to_string, convertible_to_string, set_item, item
+			create_impl_item, impl_item, is_equal,to_timestamp, out, as_string, convertible_to_string, set_item, item
 		end
 
+	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			out, is_equal, copy
+		end
+	
 creation
 	make, make_first, make_default
 
@@ -200,6 +205,18 @@ feature -- Measurement
 			item_set: item.is_equal (other)
 		end
 
+	set_decimal_digits (n : INTEGER) is
+			-- set `decimal_digits' to `n'
+			-- this value is data source dependent;
+			-- get type information using ECLI_SQL_TYPES_CURSOR
+		require
+			valid_number: n <= 9
+		do
+			decimal_digits := n
+		ensure
+			decimal_digits_set: decimal_digits = n
+		end
+		
 feature -- Measurement
 
 	days_in_month (a_month, a_year : INTEGER) : INTEGER is
@@ -208,8 +225,6 @@ feature -- Measurement
 			-- Feature to be deleted when smalleiffel 075 has been fixed
 		require
 			month_ok: a_month >= 1 and a_month <= 12
-		local
-			calendar : expanded DT_GREGORIAN_CALENDAR
 		do
 			Result := calendar.days_in_month(a_month, a_year)
 		end
@@ -238,21 +253,8 @@ feature -- Status report
 			Result := sql_type_timestamp
 		end
 
-	decimal_digits: INTEGER is
-			-- log_10 (nanoseconds)
-		local
-			l_nanoseconds : INTEGER
-		do
-			l_nanoseconds := nanosecond
-			from
-				Result := 0
-			until
-				l_nanoseconds = 0
-			loop
-				Result := Result + 1
-				l_nanoseconds := l_nanoseconds // 10
-			end
-		end
+	decimal_digits: INTEGER
+			-- number of digits allowed in the fractional seconds part
 
 	display_size: INTEGER is
 		do
@@ -267,18 +269,16 @@ feature -- Status report
 
 feature -- Conversion
 
-	to_string : STRING is
+	as_string : STRING is
 			--
 		do
 			Result := out
 		end
 
 	out : STRING is
-		local
-			string_routines : expanded KL_STRING_ROUTINES	
 		do
 			if not is_null then
-				Result:= string_routines.make (10)
+				Result:= STRING_.make (10)
 				Result.append_string (Integer_format.pad_integer_4 (year))
 				Result.append_character ('-')
 				Result.append_string (Integer_format.pad_integer_2 (month))
@@ -358,6 +358,8 @@ feature {NONE} -- Implementation
 		end
 	
 	impl_item : DT_DATE_TIME
+
+	calendar : DT_GREGORIAN_CALENDAR is once create Result end
 	
 end -- class ECLI_TIMESTAMP
 --

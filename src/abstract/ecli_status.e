@@ -117,7 +117,12 @@ feature -- Status setting
 
 feature {NONE} -- Implementation
 
-
+	reset_status is
+			-- 
+		do
+			set_status (Sql_success)
+		end
+		
 	set_status (v : INTEGER) is
 		do
 			status := v

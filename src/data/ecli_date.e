@@ -18,6 +18,11 @@ inherit
 			convertible_to_timestamp, to_timestamp, create_impl_item, impl_item
 		end
 		
+	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			out, is_equal, copy
+		end
+
 creation
 	make, make_default
 
@@ -87,8 +92,6 @@ feature -- Measurement
 			-- Feature to be deleted when smalleiffel 075 has been fixed
 		require
 			month_ok: a_month >= 1 and a_month <= 12
-		local
-			calendar : expanded DT_GREGORIAN_CALENDAR
 		do
 			Result := calendar.days_in_month(a_month, a_year)
 		end
@@ -171,13 +174,11 @@ feature -- Transformation
 feature -- Conversion
 
 	out : STRING is
-		local
-			string_routines : expanded KL_STRING_ROUTINES	
 		do
 			if is_null then
 				Result := "NULL"
 			else
-				Result:= string_routines.make (10)
+				Result:= STRING_.make (10)
 				Result.append_string (integer_format.pad_integer_4 (year))
 				Result.append_character ('-')
 				Result.append_string (integer_format.pad_integer_2 (month))
@@ -241,6 +242,8 @@ feature {NONE} -- Implementation
 		end
 
 	impl_item : DT_DATE
+
+	calendar :  DT_GREGORIAN_CALENDAR is once create Result end
 	
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)

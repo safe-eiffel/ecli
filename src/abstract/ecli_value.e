@@ -135,7 +135,7 @@ feature -- Transformation
  
 feature -- Conversion
 
-	to_string : STRING is
+	as_string : STRING is
 			-- Current converted to STRING
 		require
 			convertible: convertible_to_string

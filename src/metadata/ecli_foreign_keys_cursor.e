@@ -111,7 +111,7 @@ feature {NONE} -- Implementation
 			loop
 				forth
 				if not off and then buffer_key_seq.to_integer > last_key_seq then
-					impl_item.add_column (buffer_column_name.to_string, buffer_pk_column_name.to_string)
+					impl_item.add_column (buffer_column_name.as_string, buffer_pk_column_name.as_string)
 				else
 					done := True
 				end

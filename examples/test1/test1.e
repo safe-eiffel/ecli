@@ -79,8 +79,9 @@ feature --  Basic operations
 	parse_arguments is
 			-- parse program arguments
 		local
-			args :		expanded ARGUMENTS
+			args : ARGUMENTS
 		do
+			create args
 			if args.argument_count >= 3 then
 				data_source_name := clone (args.argument (1))
 				user_name := clone (args.argument (2))
@@ -273,7 +274,8 @@ feature --  Basic operations
 
 			create  first_name_parameter.make (20)
 			create last_name_parameter.make (20)
-			create  p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
+			create  p_birthdate.make (1957, 9, 22, 14, 30, 02, 500_000_000)
+			
 			first_name_parameter.set_item ("Stoney")
 			last_name_parameter.set_item ("Archibald")
 
@@ -309,7 +311,19 @@ feature --  Basic operations
 			io.put_string (last_name_parameter.out); io.put_string ("', '")
 			io.put_string (p_birthdate.out); io.put_string ("'%N")
 			stmt.bind_parameters
-			stmt.execute
+			if stmt.bound_parameters then
+				stmt.execute
+				if not stmt.is_ok or stmt.has_information_message then
+					io.put_string (stmt.diagnostic_message)
+					io.put_character ('%N')
+				end
+			else
+				io.put_string ("Problem with parameter ")
+				io.put_integer (stmt.last_bound_parameter_index + 1)
+				io.put_new_line
+				io.put_string (stmt.diagnostic_message)
+				io.put_character ('%N')
+			end
 
 			-- Change parameter value
 			first_name_parameter.set_null
@@ -325,8 +339,16 @@ feature --  Basic operations
 			io.put_string (last_name_parameter.out); io.put_string ("', '")
 			io.put_string (p_birthdate.out); io.put_string ("'%N")
 
-			stmt.execute
-			if not stmt.is_ok then
+			if stmt.bound_parameters then
+				stmt.execute
+				if not stmt.is_ok or stmt.has_information_message then
+					io.put_string (stmt.diagnostic_message)
+					io.put_character ('%N')
+				end
+			else
+				io.put_string ("Problem with parameter ")
+				io.put_integer (stmt.last_bound_parameter_index + 1)
+				io.put_new_line
 				io.put_string (stmt.diagnostic_message)
 				io.put_character ('%N')
 			end
