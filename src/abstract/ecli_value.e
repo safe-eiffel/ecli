@@ -296,7 +296,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 				index,
 				c_type_code,
 				sql_type_code,
-				column_precision,
+				size,
 				decimal_digits,
 				to_external,
 				transfer_octet_length,

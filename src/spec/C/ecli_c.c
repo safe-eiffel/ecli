@@ -126,6 +126,15 @@ EIF_INTEGER ecli_c_rollback (EIF_POINTER con)  {
 	return (EIF_INTEGER) SQLEndTran(SQL_HANDLE_DBC,(SQLHDBC) con, SQL_ROLLBACK);
 }
 
+EIF_INTEGER ecli_c_row_count (EIF_POINTER stmt, EIF_POINTER count)  {
+	SQLINTEGER row_count;
+	SQLRETURN retcode;
+
+	retcode = SQLRowCount ((SQLHSTMT)stmt, &row_count);
+	*((EIF_INTEGER*)count) = (EIF_INTEGER) row_count;
+	return (EIF_INTEGER) retcode;
+}
+
 EIF_INTEGER ecli_c_parameter_count (EIF_POINTER stmt, EIF_POINTER count)  {
 	SQLSMALLINT param_count;
 	SQLRETURN retcode;

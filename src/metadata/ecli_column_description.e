@@ -16,6 +16,8 @@ inherit
 		rename
 			make as make_parameter
 		export {NONE} make_parameter
+		redefine
+			is_equal
 		end
 
 	ECLI_EXTERNAL_TOOLS
@@ -80,16 +82,27 @@ feature -- Measurement
 		do
 			Result := name.hash_code
 		end
+
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			-- 
+		do
+			Result := Precursor {ECLI_PARAMETER_DESCRIPTION} (other) and then name.is_equal (other.name)
+		end
 		
 feature {NONE} -- Implementation
 
 	ext_actual_name_length : XS_C_INT32 is once create Result.make end
 
-	temporary_name : STRING is
-			-- 
-		once !!Result.make (100)
-		end
-		
+--	temporary_name : STRING is
+--			-- 
+--		once !!Result.make (100)
+--		end
+
+invariant
+	name_exists: name /= Void
+	
 end -- class ECLI_COLUMN_DESCRIPTION
 --
 -- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

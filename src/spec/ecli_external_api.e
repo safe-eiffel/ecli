@@ -93,6 +93,10 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 	
+	ecli_c_row_count (stmt : POINTER; count : POINTER) : INTEGER is
+		external "c" 
+		end
+		
 	ecli_c_parameter_count (stmt : POINTER; count : POINTER) : INTEGER  is
 		external "C"
 		end

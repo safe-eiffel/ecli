@@ -24,6 +24,7 @@ feature -- Access
 		require
 			not_null: not is_null
 		do
+			Result := impl_item
 		ensure
 			not_void: Result /= Void
 		end
@@ -33,18 +34,19 @@ feature -- Element change
 	set_item (value: G) is
 			-- set `item' with content of `value'
 		require
-			value /= Void
+			value_exists: value /= Void
 		do
 		ensure
---			item_set: equal (item, truncated (value))
+			item_set: equal (item, formatted (value))
 			not_null: not is_null
 		end;
 
 feature -- Conversion
 
-	truncated (v : G) : G is
-			-- truncated 'v' according to 'column_precision'
+	formatted (v : G) : G is
+			-- 'v' formatted according to 'column_precision'
 			-- does nothing, except for fixed format types like CHAR
+			-- where values are either truncated or padded by blanks
 		do
 			Result := v
 		end

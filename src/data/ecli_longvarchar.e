@@ -92,7 +92,7 @@ feature -- Status report
 			Result := sql_c_char
 		end
 
-	column_precision: INTEGER is
+	size: INTEGER is
 		do
 			Result := display_size
 		end
@@ -131,14 +131,9 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
---			protect
 			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_length)
 			ext_item.from_string (value)
-			--ecli_c_value_set_value (buffer, string_to_pointer (value), actual_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
---			unprotect
-		ensure then
-			item_set: equal (item, truncated (value))		
 		end
 			
 feature -- Conversion

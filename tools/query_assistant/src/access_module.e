@@ -27,7 +27,6 @@ feature {NONE} -- Initialization
 		do
 			set_name (a_name.string)
 			set_query (a_query.string)
---			!DS_LINKED_LIST[MODULE_PARAMETER]!parameters.make
 		ensure
 			name_assigned: name = a_name
 			query_assigned: query = a_query
@@ -38,10 +37,8 @@ feature -- Access
 	description: STRING
 			-- description of current module. Useful for documenting purposes
 
---	parameters: DS_LIST [MODULE_PARAMETER]
-			-- formal parameters of `query'
-
---	results: DS_LIST[ECLI_COLUMN_DESCRIPTION]
+	query_statement : ECLI_STATEMENT
+	query_session : ECLI_SESSION
 
 	parameters : PARAMETER_SET
 	
@@ -53,11 +50,13 @@ feature -- Access
 	name: STRING
 			-- Name of current acces module. Generated names shall include it
 
+	parameter_positions : string
+	
 feature -- Measurement
 
 feature -- Status report
 
-	is_error : BOOLEAN
+--	is_error : BOOLEAN
 	
 	is_query_valid : BOOLEAN
 
@@ -65,9 +64,13 @@ feature -- Status report
 	
 	is_parameters_valid : BOOLEAN
 
-	query_statement : ECLI_STATEMENT
-	query_session : ECLI_SESSION
-	
+	has_results : BOOLEAN is
+		require
+			is_checked_query: is_checked_query
+		do
+			Result := results /= Void
+		end
+		
 feature -- Status setting
 
 	check_validity (a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
@@ -84,123 +87,14 @@ feature -- Status setting
 				check_parameters (a_error_handler)
 			end
 			query_statement.close
+		ensure
+			query_session_affected: query_session = a_session
+			query_statement_exists: query_statement /= Void
 		end
 
-	check_query (a_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
-			-- 
-		require
-			a_statement_not_void: a_statement /= Void
-			a_error_handler_not_void: a_error_handler /= Void
-		do
-			is_query_valid := False
-			query_statement := a_statement
-			query_statement.set_sql (query)
-			query_statement.prepare
-			if query_statement.is_ok then
-				is_query_valid := True
-			else
-				a_error_handler.report_error_message ("Statement not valid : %N" +
-					query + "%N" + query_statement.diagnostic_message + "%N") 
-			end
-			is_checked_query := True
-		ensure
-			query_statement_valid: query_statement /= Void and then query_statement.is_valid
-			query_statement_set: query_statement = a_statement
-		end
-
-	describe_result_set (a_error_handler : UT_ERROR_HANDLER) is
-			-- 
-		require
-			a_error_handler_not_void: a_error_handler /= Void
-			checked_query: is_checked_query
-			query_statement_valid: query_statement.is_valid
-		local
-			index : INTEGER
-		do
-			query_statement.describe_cursor
-			create results.make (name+"_RESULTS")
-			from
-				index := query_statement.cursor_description.lower
-			until
-				index > query_statement.cursor_description.upper
-			loop
-				results.force (query_statement.cursor_description.item (index))
-				index := index + 1
-			end
-		ensure
-			results_count: results.count = query_statement.cursor_description.count
-		end
-		
-	check_parameters (a_error_handler : UT_ERROR_HANDLER) is
-			--| Check if declared parameters are the same as statement parameters
-		require
-			a_error_handler_not_void: a_error_handler /= Void
-			checked_query: is_checked_query
-			query_statement_valid: query_statement.is_valid
-		local
-			sql_parameters : DS_LIST[STRING]
-			parameters_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
-			tester : KL_EQUALITY_TESTER [STRING]
-			l_catalog, l_schema : STRING
-		do
-			--| same number
-			is_parameters_valid := (query_statement.parameter_names.count = parameters.count)
-			if is_parameters_valid then
-				--| same names				
-				sql_parameters := query_statement.parameter_names
-				parameters_cursor := parameters.new_cursor
-				from
-					parameters_cursor.start
-					create tester
-					sql_parameters.set_equality_tester (tester)
-				until
-					not is_parameters_valid or else parameters_cursor.off
-				loop
-					is_parameters_valid := is_parameters_valid and sql_parameters.has (parameters_cursor.item.name)
-					parameters_cursor.forth
-				end
-				if not is_parameters_valid then
-					--| Error : parameters_cursor.item.name not in sql_parameters
-					a_error_handler.report_error_message ("In module '"+name+"'%NSQL parameter '"+parameters_cursor.item.name + "' is not defined in any <parameter> element")
-				else
-					--| check for parameter reference columns
-					from
-						parameters_cursor.start
-						create tester
-						sql_parameters.set_equality_tester (tester)
-					until
-						not is_parameters_valid or else parameters_cursor.off
-					loop
-						if not shared_catalog_name.is_empty then
-							l_catalog := shared_catalog_name
-						end
-						if not shared_schema_name.is_empty then
-							l_schema := shared_schema_name
-						end
-						parameters_cursor.item.check_validity (query_session, l_catalog, l_schema)
-						is_parameters_valid := is_parameters_valid and then parameters_cursor.item.is_valid
-						if is_parameters_valid then
-							parameters_cursor.forth
-						end
-					end
-					if not is_parameters_valid then
-						--| Error: invalid column reference
-					a_error_handler.report_error_message ("In module '"+ name +"'%NReference column for '"+
-						parameters_cursor.item.name + "' not found => " + 
-						parameters_cursor.item.reference_column.table + "." + parameters_cursor.item.reference_column.column
-					)
-					end
-				end				
-			else
-				--| Error : number of declared parameters not the same as query parameters
-					a_error_handler.report_error_message ("In module '"+ name +
-					"'%NNumber of declared parameters does not match number of SQL parameters")
-			end
-		end
-		
 feature -- Cursor movement
 
-feature -- Element change
+feature {ACCESS_MODULE_FACTORY}-- Element change
 
 	set_description (a_description: STRING) is
 			-- Set `description' to `a_description'.
@@ -275,6 +169,126 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	statement : ECLI_STATEMENT
+
+	describe_result_set (a_error_handler : UT_ERROR_HANDLER) is
+			-- 
+		require
+			a_error_handler_not_void: a_error_handler /= Void
+			checked_query: is_checked_query
+			query_statement_valid: query_statement.is_valid
+		local
+			index : INTEGER
+		do
+			if query_statement.has_results then
+				query_statement.describe_cursor
+				if results = Void then 
+					create results.make (name+"_RESULTS")
+				end
+				from
+					index := query_statement.cursor_description.lower
+				until
+					index > query_statement.cursor_description.upper
+				loop
+					--| FIXME: verify that a same column does not exist...
+					results.force (create {MODULE_RESULT}.make(query_statement.cursor_description.item (index), index), index)
+					index := index + 1
+				end
+			else
+				results := Void
+			end
+		ensure
+			results_count: results.count = query_statement.cursor_description.count
+		end
+		
+	check_parameters (a_error_handler : UT_ERROR_HANDLER) is
+			--| Check if declared parameters are the same as statement parameters
+		require
+			a_error_handler_not_void: a_error_handler /= Void
+			checked_query: is_checked_query
+			query_statement_valid: query_statement.is_valid
+		local
+			sql_parameters : DS_LIST[STRING]
+			parameters_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
+			tester : KL_EQUALITY_TESTER [STRING]
+			l_catalog, l_schema : STRING
+		do
+			--| same number
+			is_parameters_valid := (query_statement.parameter_names.count = parameters.count)
+			if is_parameters_valid then
+				--| same names				
+				sql_parameters := query_statement.parameter_names
+				parameters_cursor := parameters.new_cursor
+				from
+					parameters_cursor.start
+					create tester
+					sql_parameters.set_equality_tester (tester)
+				until
+					not is_parameters_valid or else parameters_cursor.off
+				loop
+					is_parameters_valid := is_parameters_valid and sql_parameters.has (parameters_cursor.item.name)
+					parameters_cursor.forth
+				end
+				if not is_parameters_valid then
+					--| Error : parameters_cursor.item.name not in sql_parameters
+					a_error_handler.report_error_message ("In module '"+name+"'%NSQL parameter '"+parameters_cursor.item.name + "' is not defined in any <parameter> element")
+				else
+					--| check for parameter reference columns
+					from
+						parameters_cursor.start
+						create tester
+						sql_parameters.set_equality_tester (tester)
+					until
+						not is_parameters_valid or else parameters_cursor.off
+					loop
+						if not shared_catalog_name.is_empty then
+							l_catalog := shared_catalog_name
+						end
+						if not shared_schema_name.is_empty then
+							l_schema := shared_schema_name
+						end
+						parameters_cursor.item.check_validity (query_session, l_catalog, l_schema)
+						is_parameters_valid := is_parameters_valid and then parameters_cursor.item.is_valid
+						if is_parameters_valid then
+							parameters_cursor.forth
+						end
+					end
+					if not is_parameters_valid then
+						--| Error: invalid column reference
+					a_error_handler.report_error_message ("In module '"+ name +"'%NReference column for '"+
+						parameters_cursor.item.name + "' not found => " + 
+						parameters_cursor.item.reference_column.table + "." + parameters_cursor.item.reference_column.column
+					)
+					end
+				end				
+			else
+				--| Error : number of declared parameters not the same as query parameters
+					a_error_handler.report_error_message ("In module '"+ name +
+					"'%NNumber of declared parameters does not match number of SQL parameters")
+			end
+		end
+
+	check_query (a_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
+			-- 
+		require
+			a_statement_not_void: a_statement /= Void
+			a_error_handler_not_void: a_error_handler /= Void
+		do
+			is_query_valid := False
+			query_statement := a_statement
+			query_statement.set_sql (query)
+			query_statement.prepare
+			if query_statement.is_ok then
+				is_query_valid := True
+			else
+				a_error_handler.report_error_message ("Statement not valid : %N" +
+					query + "%N" + query_statement.diagnostic_message + "%N") 
+			end
+			is_checked_query := True
+		ensure
+			query_statement_valid: query_statement /= Void and then query_statement.is_valid
+			query_statement_set: query_statement = a_statement
+		end
+
 	
 invariant
 	invariant_clause: True -- Your invariant here

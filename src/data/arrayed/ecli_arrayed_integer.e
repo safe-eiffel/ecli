@@ -75,8 +75,6 @@ feature -- Element change
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
-		ensure then
-			item_set: item = value
 		end
 
 	set_item_at (value : INTEGER; index : INTEGER) is

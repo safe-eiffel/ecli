@@ -114,7 +114,7 @@ feature -- Status report
 			Result := sql_c_type_date
 		end
 
-	column_precision: INTEGER is
+	size : INTEGER is
 		do
 			Result := 10
 		end
@@ -161,8 +161,6 @@ feature -- Element change
 	set_item (other : DT_DATE) is
 		do
 			set (other.year, other.month, other.day)
-		ensure then
-			item_set: item.is_equal (other)
 		end
 
 feature -- Removal

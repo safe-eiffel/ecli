@@ -12,10 +12,10 @@ inherit
 	ECLI_ARRAYED_DATE
 		rename
 			make_single as make_single_date, make_default_single as make_default_1_date,
-			set_item as set_date_item, truncated as date_truncated, create_impl_item as create_date_impl_item,
+			set_item as set_date_item, formatted as date_formatted, create_impl_item as create_date_impl_item,
 			copy_item as copy_item_date, is_equal_item as is_equal_item_date
 		export
-			{NONE} make_single_date, make_default_1_date, set_date_item, date_truncated
+			{NONE} make_single_date, make_default_1_date, set_date_item, date_formatted
 		undefine
 			c_type_code,
 			column_precision,
@@ -63,7 +63,7 @@ inherit
 		redefine
 			impl_item, create_impl_item
 		select
-			truncated, create_impl_item
+			formatted, create_impl_item
 		end
 
 creation

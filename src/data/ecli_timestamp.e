@@ -9,26 +9,14 @@ class
 	ECLI_TIMESTAMP
 
 inherit
---	ECLI_DATE
---		rename
---			make as make_date, set as set_date
---		export
---		undefine
---		redefine
---			make_default, item, impl_item, set_item,
---			set_date,
---			c_type_code, column_precision, sql_type_code,
---			decimal_digits, display_size, out, is_equal, create_impl_item,
---			to_timestamp, trace, as_string, convertible_to_string, transfer_octet_length
---		select
---		end
-
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
 			create_impl_item, impl_item, is_equal,to_timestamp, out, as_string, convertible_to_string, set_item, item
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
+		export
+			{NONE} all
 		undefine
 			out, is_equal, copy
 		end
@@ -201,8 +189,6 @@ feature -- Measurement
 		do
 			set_date (other.year, other.month,other.day)
 			set_time (other.hour, other.minute, other.second, other.millisecond * 1_000_000)
-		ensure then
-			item_set: item.is_equal (other)
 		end
 
 	set_decimal_digits (n : INTEGER) is
@@ -236,7 +222,7 @@ feature -- Status report
 			Result := sql_c_type_timestamp
 		end
 
-	column_precision: INTEGER is
+	size : INTEGER is
 		local
 			l_decimal_digits : INTEGER
 		do
@@ -258,7 +244,7 @@ feature -- Status report
 
 	display_size: INTEGER is
 		do
-			Result := column_precision
+			Result := size
 		end
 
 	convertible_to_string : BOOLEAN is

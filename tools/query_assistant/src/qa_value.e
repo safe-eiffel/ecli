@@ -53,7 +53,7 @@ feature {NONE} -- implementation
 		do
 			create Result.make (12)
 			Result.append ("make (")
-			Result.append (column_precision.out)
+			Result.append (size.out)
 			Result.append (")")
 		end
 

@@ -39,6 +39,9 @@ inherit
 		end
 
 	KL_IMPORTED_ARRAY_ROUTINES
+		export
+			{NONE} all
+		end
 	
 creation
 	make
@@ -197,6 +200,20 @@ feature -- Access
 			
 feature -- Measurement
 
+	modified_row_count : INTEGER is
+			-- number of rows modified by some inserting, updating or deleting operation
+			-- invalid for query operations
+		require
+			executed: is_executed
+			not_a_query: not has_results
+		do
+			if impl_row_count = Void then
+				create impl_row_count.make
+			end
+			set_status (ecli_c_row_count (handle, impl_row_count.handle))
+			Result := impl_row_count.item
+		end
+		
 	parameter_count : INTEGER is
 		obsolete "Please use 'parameters_count' instead (note 'parameters' is plural)."
 		do Result := parameters_count end
@@ -789,6 +806,9 @@ feature {NONE} -- Implementation
 		end
 
 
+	impl_row_count : XS_C_INT32
+		-- buffer for storing number of rows affected
+		
 	impl_result_columns_count : XS_C_INT32
 		-- -1 : do not know; must call `get_result_column_count'
 		--  0 : no result-set

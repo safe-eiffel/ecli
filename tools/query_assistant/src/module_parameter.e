@@ -42,6 +42,8 @@ feature -- Access
 	name: STRING
 
 	metadata : ECLI_COLUMN
+
+	implementation : QA_VALUE
 	
 feature -- Measurement
 
@@ -106,6 +108,18 @@ feature {NONE} -- Element change
 		do
 			name := a_name
 		ensure
+		end
+
+feature -- Element change
+
+	set_implementation (value : QA_VALUE) is
+			-- 
+		require
+			value_exists: value /= Void
+		do
+			implementation := value
+		ensure
+			implementation_assigned: implementation = value
 		end
 
 feature -- Removal

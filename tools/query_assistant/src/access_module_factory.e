@@ -28,6 +28,15 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	error_handler : UT_ERROR_HANDLER
+
+	last_result_set : RESULT_SET
+	
+	last_parameter_set: PARAMETER_SET
+	
+	last_parameter : MODULE_PARAMETER
+	
+	last_module : ACCESS_MODULE
+	
 	
 feature -- Measurement
 
@@ -97,13 +106,12 @@ feature -- Basic operations
 		local
 			name_att, type_att : XM_ATTRIBUTE
 			name, type : STRING
-			character_data : XM_CHARACTER_DATA
-			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			parameter, description, query : XM_ELEMENT
+			description, query : XM_ELEMENT
 		do
 			is_error := False
 			last_module := Void
 			last_parameter_set := Void
+			last_result_set := Void
 			if element.has_attribute_by_name ("name") then
 				name_att := element.attribute_by_name ("name")
 			end
@@ -135,8 +143,14 @@ feature -- Basic operations
 							create last_parameter_set.make (parameter_set_name (name))
 							populate_parameter_set (element)
 						end
+						if element.has_element_by_name ("result_set") then
+							create_result_set (element.element_by_name ("result_set"), result_set_name (name))
+						end
 						if last_parameter_set /= Void then
 							last_module.set_parameters (last_parameter_set)
+						end
+						if last_result_set /= Void then
+							last_module.set_results (last_result_set)
 						end
 					else
 						error_handler.report_error_message ("Module '"+name+"' does not have any <sql> element")
@@ -155,8 +169,6 @@ feature -- Basic operations
 			element_name_parameter_set: element.name.string.is_equal ("parameter_set")
 			default_name_not_void: default_name /= Void
 		local
-			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			parameter : XM_ELEMENT
 			name, parent : STRING
 		do
 			if element.has_attribute_by_name ("name") then
@@ -173,12 +185,28 @@ feature -- Basic operations
 			populate_parameter_set (element)
 		end
 		
-	last_parameter_set: PARAMETER_SET
-	
-	last_parameter : MODULE_PARAMETER
-	
-	last_module : ACCESS_MODULE
-	
+	create_result_set (element : XM_ELEMENT; default_name : STRING) is
+			-- 
+		require
+			element_not_void: element /= Void
+			element_name_result_set: element.name.string.is_equal ("result_set")
+			default_name_not_void: default_name /= Void
+		local
+			name, parent : STRING
+		do
+			if element.has_attribute_by_name ("name") then
+				name := element.attribute_by_name ("name").value.string
+			else
+				name := default_name
+			end
+			if element.has_attribute_by_name ("extends") then
+				parent := element.attribute_by_name ("extends").value.string
+				create last_result_set.make_with_parent_name (name, parent)
+			else
+				create last_result_set.make (name)
+			end
+		end
+
 feature -- Obsolete
 
 feature -- Inapplicable

@@ -25,6 +25,7 @@ feature {NONE} -- Initialization
 		do
 			name := a_name
 			make_set (initial_size)
+			set_equality_tester (create {KL_EQUALITY_TESTER [like item]})
 		ensure
 			name_set: name = a_name
 		end
@@ -35,10 +36,8 @@ feature {NONE} -- Initialization
 			a_name_not_void: a_name /= Void
 			a_parent_name_not_void: a_parent_name /= Void
 		do
-			name := a_name
 			parent_name := a_parent_name
-			make_set (initial_size)
-			--column_make_with_parent (a_parent, initial_size)
+			make (a_name)
 		ensure
 			name_set: name = a_name
 			parent_name_set: parent_name = a_parent_name
@@ -50,7 +49,7 @@ feature -- Access
 	
 	parent_name : STRING
 	
-	parent : like Current
+	parent : PARENT_COLUMN_SET[G]
 	
 	local_items : DS_HASH_SET[G]
 
@@ -100,9 +99,13 @@ feature -- Basic operations
 		do
 			if not is_flattened then
 				create local_items.make (count)
-				local_items.merge (Current)
-				parent.flatten
-				merge (parent)
+				local_items.set_equality_tester (equality_tester)
+				if parent /= Void then
+					parent.flatten
+					merge (parent)
+					local_items.merge (Current)
+					local_items.symdif (parent)
+				end
 			end
 		ensure
 			is_flattened: is_flattened
@@ -118,5 +121,5 @@ feature {NONE} -- Implementation
 	
 invariant
 	local_items_when_flattened: local_items /= Void implies is_flattened
-	
+	equality_tester_exists: equality_tester /= Void 
 end -- class COLUMN_SET

@@ -152,8 +152,6 @@ feature -- Element change
 	set_item (other : DT_DATE) is
 		do
 			set_item_at (other, cursor_index)
-		ensure then
-			item_set: item.is_equal (other)
 		end
 
 	set_item_at (other : DT_DATE; index : INTEGER) is

@@ -118,8 +118,6 @@ feature -- Element change
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
-		ensure then
-			item_set: item.is_equal (value)
 		end
 
 	set_item_at (value : like item; index : INTEGER) is

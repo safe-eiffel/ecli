@@ -14,7 +14,7 @@ inherit
 		export
 		undefine
 		redefine
-			make, content_count, sql_type_code, item_at, truncated
+			make, content_count, sql_type_code, item_at, formatted
 		select
 		end
 
@@ -74,9 +74,9 @@ feature -- Resizing
 
 feature -- Transformation
 
-	truncated (v : like item) : like item is
+	formatted (v : like item) : like item is
 		do
-			Result := clone (v)
+			create Result.make_from_string (v)
 			format (Result)
 		end
 

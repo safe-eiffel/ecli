@@ -6,7 +6,7 @@ indexing
 	licensing: "See notice at end of class"
 
 class
-	QA_CURSOR_GENERATOR
+	ACCESS_MODULE_GENERATOR
 
 inherit
 	ECLI_TYPE_CONSTANTS
@@ -15,29 +15,29 @@ inherit
 	
 feature -- Initialization
 
-	execute (a_cursor : QA_CURSOR; a_directory_name : STRING; a_description : STRING) is -- a_file : KL_TEXT_OUTPUT_FILE) is
-		require
-			cursor: a_cursor /= Void and then a_cursor.name /= Void
-			cursor_executed: a_cursor.is_executed
-			a_directory_name_not_void: a_directory_name /= Void
-		do
-			current_cursor := a_cursor
-			current_description := a_description
-			create cursor_class.make (class_name)
-			create parameters_class.make (parameters_class_name (class_name))
-			create results_class.make (results_class_name (class_name))
-			create_cursor_class
-			create_parameters_class
-			if current_cursor.has_results then
-				create_results_class
-			end
-			--
-			write_class (cursor_class, a_directory_name)
-			write_class (parameters_class, a_directory_name)
-			if current_cursor.has_results then
-				write_class (results_class, a_directory_name)
-			end
-		end
+--	execute (a_cursor : QA_CURSOR; a_directory_name : STRING; a_description : STRING) is -- a_file : KL_TEXT_OUTPUT_FILE) is
+--		require
+--			cursor: a_cursor /= Void and then a_cursor.name /= Void
+--			cursor_executed: a_cursor.is_executed
+--			a_directory_name_not_void: a_directory_name /= Void
+--		do
+--			current_cursor := a_cursor
+--			current_description := a_description
+--			create cursor_class.make (class_name)
+--			create parameters_class.make (parameters_class_name (class_name))
+--			create results_class.make (results_class_name (class_name))
+--			create_cursor_class
+--			create_parameters_class
+--			if current_cursor.has_results then
+--				create_results_class
+--			end
+--			--
+--			write_class (cursor_class, a_directory_name)
+--			write_class (parameters_class, a_directory_name)
+--			if current_cursor.has_results then
+--				write_class (results_class, a_directory_name)
+--			end
+--		end
 	
 	write_class (a_class : EIFFEL_CLASS; a_target_directory : STRING) is
 			-- 
@@ -54,28 +54,35 @@ feature -- Initialization
 			file.close
 		end
 		
-	create_cursor_class is
+	create_cursor_class (module : ACCESS_MODULE; directory_name : STRING) is
 			-- 
+		require
 		do
-			put_heading
-			put_visible_features
-			put_invisible_features
-			put_closing
+			create cursor_class.make (class_name (module))
+			put_heading (module)
+			put_visible_features (module)
+			put_invisible_features (module)
+			put_closing (module)
+			write_class (cursor_class, directory_name)
 		end
 
-	create_parameters_class is
+	create_parameters_class (parameter_set : COLUMN_SET[MODULE_PARAMETER]; directory_name : STRING)is
 			-- 
 		local
 			routine : EIFFEL_ROUTINE
 			attribute : EIFFEL_ATTRIBUTE
 			feature_group : EIFFEL_FEATURE_GROUP
-			c : DS_LIST_CURSOR [STRING]
+			c : DS_HASH_SET_CURSOR [MODULE_PARAMETER]
 			a_qa_value : QA_VALUE
 			a_call, line, vname : STRING
 			i : INTEGER
 		do
-			parameters_class.add_indexing_clause ("description: %"Parameters objects for "+class_name+"%"")
+			create parameters_class.make (parameter_set.name)
+			parameters_class.add_indexing_clause ("description: %"Parameters objects %"")
 			parameters_class.add_indexing_clause ("status: %"Automatically generated.  DOT NOT MODIFY !%"")
+			if parameter_set.parent /= Void then
+				parameters_class.add_parent (parameter_set.parent.name)	
+			end
 			--| creation
 			parameters_class.add_creation_procedure_name ("make")
 			--| make
@@ -87,16 +94,21 @@ feature -- Initialization
 			
 			
 				from
-					c := current_cursor.parameter_names.new_cursor
+					if parameter_set.parent = Void then
+						c := parameter_set.new_cursor
+					else
+						c := parameter_set.local_items.new_cursor
+						routine.add_body_line ("Precursor")
+					end
 					c.start
 				until
 					c.off
 				loop
-					a_qa_value := current_cursor.parameter (c.item)
+					a_qa_value := c.item.implementation
 					a_call := a_qa_value.creation_call
 					--begin_line ("create "); put (parameter_feature_name (c.item)); put ("."); put (a_qa_value.creation_call)
 					create line.make_from_string ("create ")
-					line.append_string (to_lower (c.item))
+					line.append_string (to_lower (c.item.name))
 					line.append_string (".")
 					line.append_string (a_qa_value.creation_call)
 					
@@ -112,24 +124,24 @@ feature -- Initialization
 			create feature_group.make ("Access")
 
 				from
-					c := current_cursor.parameter_names.new_cursor
+					c := parameter_set.new_cursor
 					c.start
 				until
 					c.off
 				loop
-					a_qa_value := current_cursor.parameter (c.item)
-					vname := c.item
+					a_qa_value := c.item.implementation
+					vname := c.item.name
 					create attribute.make (to_lower (vname), a_qa_value.ecli_type)
 					feature_group.add_feature (attribute)
 					i := i + 1
 					c.forth
 				end
 			parameters_class.add_feature_group (feature_group)
-			
+			write_class (parameters_class, directory_name)			
 		end
 		
 
-	create_results_class is
+	create_results_class (result_set : COLUMN_SET[MODULE_RESULT]; directory_name : STRING) is
 			-- 
 		local
 			routine : EIFFEL_ROUTINE
@@ -140,9 +152,14 @@ feature -- Initialization
 			a_qa_value : QA_VALUE
 			a_call, vname : STRING
 			cd, vdescription : ECLI_COLUMN_DESCRIPTION
+			c : DS_HASH_SET_CURSOR[MODULE_RESULT]
 		do
-			results_class.add_indexing_clause ("description: %"Results objects for "+class_name+"%"")
+			create results_class.make (result_set.name)
+			results_class.add_indexing_clause ("description: %"Results objects %"")
 			results_class.add_indexing_clause ("status: %"Automatically generated.  DOT NOT MODIFY !%"")
+			if result_set.parent /= Void then
+				results_class.add_parent (result_set.parent.name)				
+			end
 			--| creation
 			results_class.add_creation_procedure_name ("make")
 			
@@ -156,13 +173,19 @@ feature -- Initialization
 			
 			from
 				i := 1
-				count := current_cursor.result_columns_count
+				if result_set.parent = Void then
+					c := result_set.new_cursor
+				else
+					c := result_set.local_items.new_cursor
+					routine.add_body_line ("Precursor")
+				end
+				c.start
 			until
-				i > count
+				c.off
 			loop
-				a_qa_value := current_cursor.cursor.item (i)
+				a_qa_value := c.item.implementation
 				a_call := a_qa_value.creation_call
-				cd := current_cursor.cursor_description.item (i)
+				cd := c.item.metadata
 --					begin_line ("create "); put (to_lower (cd.name)); put ("."); put (a_call)
 				create line.make_from_string ("create ")
 				line.append_string (to_lower (cd.name))
@@ -170,7 +193,7 @@ feature -- Initialization
 				line.append_string (a_call)
 				
 				routine.add_body_line (line)
-				i := i + 1
+				c.forth
 			end
 			
 			feature_group.add_feature (routine)
@@ -182,28 +205,33 @@ feature -- Initialization
 
 			from
 				i := 1
-				count := current_cursor.result_columns_count
+				if result_set.parent /= Void then
+					c := result_set.local_items.new_cursor
+				else
+					c := result_set.new_cursor
+				end
+				c.start
 			until
-				i > count
+				c.off
 			loop
-				vname := current_cursor.cursor_description.item (i).name
-				vdescription := current_cursor.cursor_description.item (i)
+				vname := c.item.metadata.name
+				vdescription := c.item.metadata
 				
 				--
-				create attribute.make (to_lower (vname), current_cursor.cursor.item (i).ecli_type)
+				create attribute.make (to_lower (vname),c.item.implementation.ecli_type)
 				feature_group.add_feature (attribute)
-				i := i + 1
+				c.forth
 			end
 
 			results_class.add_feature_group (feature_group)
-			
+			write_class (results_class, directory_name)
 		end
 		
 feature -- Access
 
 	current_description : STRING
 	
-	current_cursor : QA_CURSOR
+--	current_cursor : QA_CURSOR
 	
 	current_file : KL_TEXT_OUTPUT_FILE
 
@@ -237,17 +265,15 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	put_visible_features is
+	put_visible_features(module : ACCESS_MODULE) is
 		do
-			put_make
-			put_access
-			put_element_change
-			put_definition
-			if current_cursor.has_results then
-			end
+			put_make (module)
+			put_access (module)
+			put_element_change (module)
+			put_definition (module)
 		end
 
-	put_access is
+	put_access (module : ACCESS_MODULE) is
 			-- 
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
@@ -255,33 +281,33 @@ feature -- Basic operations
 		do
 			create feature_group.make ("-- Access")
 			
-			create a_feature.make ("parameters_object", parameters_class_name (class_name))
+			create a_feature.make ("parameters_object", module.parameters.name)
 			feature_group.add_feature (a_feature)
 			
-			if current_cursor.has_results then
-				create a_feature.make ("item", results_class_name (class_name))
+			if module.has_results then
+				create a_feature.make ("item", module.results.name)
 				feature_group.add_feature (a_feature)
 			end			
 			
 			cursor_class.add_feature_group (feature_group) 
 		end
 
-	put_element_change is
+	put_element_change (module : ACCESS_MODULE) is
 			-- 
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
 			a_feature : EIFFEL_ROUTINE
 			parameter, a_local, pre,post : DS_PAIR[STRING,STRING]
-			list_cursor : DS_LIST_CURSOR[STRING]
+			cursor : DS_HASH_SET_CURSOR[MODULE_PARAMETER]
 			pname : STRING
 		do
 			create feature_group.make ("-- Element change")
 			
 			create a_feature.make ("set_parameters_object")
-			create parameter.make ("a_parameters_object", parameters_class_name (class_name))
+			create parameter.make ("a_parameters_object", module.parameters.name)
 			a_feature.set_comment ("set `parameters_object' to `a_parameters_object'")
 			--| parameters
-			create parameter.make ("a_parameters_object", parameters_class_name (class_name))
+			create parameter.make ("a_parameters_object", module.parameters.name)
 			a_feature.add_param (parameter)
 			--| precondition
 			create pre.make ("a_parameters_object_not_void","a_parameters_object /= Void")
@@ -291,14 +317,14 @@ feature -- Basic operations
 			a_feature.add_body_line ("parameters_object := a_parameters_object")
 			--|   foreach item in parameters_object, put_parameter
 			from
-				list_cursor := current_cursor.parameter_names.new_cursor
-				list_cursor.start
+				cursor := module.parameters.new_cursor
+				cursor.start
 			until
-				list_cursor.off
+				cursor.off
 			loop
-				pname := list_cursor.item				
+				pname := cursor.item.name				
 				a_feature.add_body_line ("put_parameter (parameters_object." + pname + ",%"" + pname + "%")")
-				list_cursor.forth
+				cursor.forth
 			end
 			--| bind parameters
 			a_feature.add_body_line ("bind_parameters")
@@ -327,29 +353,29 @@ feature -- Basic operations
 			Result.append_string ("_RESULTS")
 		end
 		
-	put_invisible_features is
+	put_invisible_features (module : ACCESS_MODULE) is
 		do
-			if current_cursor.has_results then
-				put_create_buffers
+			if module.has_results then
+				put_create_buffers (module)
 			end
 		end
 				
-	put_heading is
+	put_heading (module : ACCESS_MODULE) is
 			-- put indexing, class name, inheritance and creation
 		local
 			parent_clause : STRING
 		do
-			if current_description /= Void then
-				cursor_class.add_indexing_clause (current_description)				
+			if module.description /= Void then
+				cursor_class.add_indexing_clause (module.description)				
 			end
-			cursor_class.add_indexing_clause ("warning: %"Generated cursor '" +current_cursor.name +"' : DO NOT EDIT !%"")
+			cursor_class.add_indexing_clause ("warning: %"Generated cursor '" +module.name +"' : DO NOT EDIT !%"")
 			cursor_class.add_indexing_clause ("author: %"QUERY_ASSISTANT%"")
 			cursor_class.add_indexing_clause ("date: %"$Date : $%"")
 			cursor_class.add_indexing_clause ("revision: %"$Revision : $%"")
 			cursor_class.add_indexing_clause ("licensing: %"See notice at end of class%"")
 
 			create parent_clause.make (100)
-			if current_cursor.has_results then
+			if module.has_results then
 				parent_clause.append_string ("ECLI_CURSOR%N")
 			else
 				parent_clause.append_string ("ECLI_QUERY%N")
@@ -359,7 +385,7 @@ feature -- Basic operations
 			cursor_class.add_creation_procedure_name ("make")
 		end
 
-	put_make is
+	put_make (module : ACCESS_MODULE) is
 			-- 
 		do
 --			create feature_group.make ("Initialization")
@@ -374,7 +400,7 @@ feature -- Basic operations
 --			cursor_class.add_feature_group (feature_group)
 		end
 		
-	put_definition is
+	put_definition (module : ACCESS_MODULE) is
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
 			attribute : EIFFEL_ATTRIBUTE
@@ -382,15 +408,15 @@ feature -- Basic operations
 		do
 			create feature_group.make ("Constants")
 			create attribute.make ("definition", "STRING")
-			if not current_cursor.definition.has ('%N') then
-				attribute.set_value ("%""+current_cursor.definition+"%"")
+			if not module.query.has ('%N') then
+				attribute.set_value ("%""+module.query+"%"")
 			else
 				create attribute_value.make_from_string ("%"[")
-				if current_cursor.definition.item(1) /= '%N' then
+				if module.query.item(1) /= '%N' then
 					attribute_value.append_character ('%N')
 				end
-				attribute_value.append_string (current_cursor.definition)
-				if current_cursor.definition.item (current_cursor.definition.count) /= '%N' then
+				attribute_value.append_string (module.query)
+				if module.query.item (module.query.count) /= '%N' then
 					attribute_value.append_character ('%N')
 				end
 				attribute_value.append_string ("]%"")
@@ -532,11 +558,11 @@ feature -- Basic operations
 --				begin_line ("end")
 		end
 
-	put_create_buffers is
+	put_create_buffers (module : ACCESS_MODULE) is
 		local
 			i, count : INTEGER
 			cd : ECLI_COLUMN_DESCRIPTION
-			c : DS_LIST_CURSOR [STRING]
+			c : DS_HASH_SET_CURSOR [MODULE_RESULT]
 			a_qa_value : QA_VALUE
 			a_call : STRING
 			routine : EIFFEL_ROUTINE
@@ -552,24 +578,27 @@ feature -- Basic operations
 			routine.set_comment ("-- Creation of buffers")
 			
 			routine.add_body_line ("create item.make")
-			routine.add_body_line ("create cursor.make (1,"+current_cursor.result_columns_count.out+")")
+			routine.add_body_line ("create cursor.make (1,"+module.results.count.out+")")
 			
 			from
+				count := module.results.count
+				c := module.results.new_cursor
+				c.start
 				i := 1
-				count := current_cursor.result_columns_count
 			until
-				i > count
+				c.off
 			loop
-				a_qa_value := current_cursor.cursor.item (i)
+				a_qa_value :=c.item.implementation
 				a_call := a_qa_value.creation_call
-				cd := current_cursor.cursor_description.item (i)				
+				cd := c.item.metadata				
 				create line.make_from_string("cursor.put (item.")
 				line.append_string (to_lower (cd.name))
 				line.append_string (", ")
-				line.append_string (i.out)
+				line.append_integer (module.results.rank.item (c.item.metadata.name))
 				line.append_string (")")
 				routine.add_body_line (line)
 				i := i + 1
+				c.forth
 			end
 
 			feature_group.add_feature (routine)
@@ -658,7 +687,7 @@ feature -- Basic operations
 --				exdent
 		end
 		
-	put_closing is
+	put_closing (module : ACCESS_MODULE) is
 			-- put closing of class
 		do
 		end
@@ -669,9 +698,9 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	class_name : STRING is
+	class_name (module : ACCESS_MODULE) : STRING is
 		do
-			Result := clone (current_cursor.name)
+			Result := clone (module.name)
 			Result.to_upper
 		end
 
@@ -700,7 +729,7 @@ feature {NONE} -- Implementation
 invariant
 	invariant_clause: -- Your invariant here
 
-end -- class QA_CURSOR_GENERATOR
+end -- class ACCESS_MODULE_GENERATOR
 --
 -- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>

@@ -69,7 +69,7 @@ feature -- Access
 			Result := sql_c_long
 		end
 
-	column_precision: INTEGER is
+	size : INTEGER is
 		do
 			Result := 10
 		end
@@ -107,8 +107,6 @@ feature -- Element change
 			--ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
 			c_memory_put_int32 (ecli_c_value_get_value(buffer), value)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
-		ensure then
-			item_set: item = value
 		end
 
 feature -- Removal

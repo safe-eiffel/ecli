@@ -14,7 +14,7 @@ class
 inherit
 	ECLI_VARCHAR
 		redefine
-			make, count, sql_type_code, item, truncated
+			make, count, sql_type_code, item, formatted
 		select
 		end
 
@@ -55,9 +55,9 @@ feature -- Status report
 
 feature -- Transformation
 
-	truncated (v : like item) : like item is
+	formatted (v : like item) : like item is
 		do
-			Result := clone (v)
+			create Result.make_from_string (v)
 			format (Result)
 		end
 

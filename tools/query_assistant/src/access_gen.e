@@ -42,6 +42,8 @@ feature {NONE} -- Initialization
 				process_data_file
 				process_document
 				check_modules
+				resolve_parent_classes
+				generate_modules
 			end
 		end
 
@@ -103,7 +105,7 @@ feature -- Basic operations
 			-- 
 		local
 			root : XM_DOCUMENT
-			module, access : XM_ELEMENT
+			access : XM_ELEMENT
 			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
 			l_factory : ACCESS_MODULE_FACTORY
 			l_module : ACCESS_MODULE
@@ -124,19 +126,19 @@ feature -- Basic operations
 				if access /= Void and then access.name.string.is_equal ("access") then
 					l_factory.create_access_module (access)
 					l_module := l_factory.last_module 
-					if l_module /= Void then
+					if not l_factory.is_error and then l_module /= Void then
 						modules.search (l_module.name)
 						if modules.found then
 							--| Error : module already exists
 							error_handler.report_error_message ("Module %'"+l_module.name+"%' already exists!%N")
 						else
 							modules.force (l_module, l_module.name) 
-						end
 						parameter_sets.search (l_module.parameters.name)
 						if parameter_sets.found then
 							error_handler.report_error_message ("Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
 						else
 							parameter_sets.force (l_module.parameters, l_module.parameters.name) 
+						end
 						end
 					end
 				end
@@ -155,11 +157,8 @@ feature -- Basic operations
 			parser_not_void: event_parser /= Void
 			pipe_not_void: tree_pipe /= Void
 		local
-			formatter: XM_FORMATTER
 			in: KL_TEXT_INPUT_FILE
-			os: KL_TEXT_OUTPUT_FILE
 			cannot_read: UT_CANNOT_READ_FILE_ERROR
-			cannot_write: UT_CANNOT_WRITE_TO_FILE_ERROR
 		do
 			error_handler.report_info_message ("- parsing data...")
 			!! in.make (in_filename)
@@ -184,10 +183,8 @@ feature -- Basic operations
 	process_arguments is
 			-- Read command line arguments.
 		local
-			parser_switch: STRING
 			key : STRING
 			arg_index : INTEGER
-			use_expat : BOOLEAN
 			value : STRING
 			error_message : STRING
 		do
@@ -306,6 +303,34 @@ feature {NONE} -- Implementation
 			usage_message_not_void: Result /= Void
 		end
 
+	resolve_parent_classes is
+		do
+			resolve_parent_parameter_sets
+			resolve_parent_result_sets
+		end
+		
+	resolve_parent_parameter_sets is
+		local
+			resolver : PARENT_RESOLVER[MODULE_PARAMETER]
+		do
+			create resolver
+			parent_parameter_sets := resolver.resolve_parents (parameter_sets)
+			resolver.resolve_descendants (parameter_sets)
+		end
+		
+	resolve_parent_result_sets is
+			--
+		local
+			resolver : PARENT_RESOLVER[MODULE_RESULT]
+		do
+			create resolver
+			parent_result_sets := resolver.resolve_parents (result_sets)
+			resolver.resolve_descendants (result_sets)
+		end
+	
+	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
+	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
+	
 	check_modules is
 			-- check modules
 		local
@@ -327,7 +352,11 @@ feature {NONE} -- Implementation
 					if cursor.item.is_query_valid and then cursor.item.is_parameters_valid then
 						print (cursor.item.name)
 						print (" is OK%N")
-						generate (cursor.item, session, error_handler)
+						if cursor.item.has_results then
+							result_sets.force (cursor.item.results, cursor.item.results.name)
+						end
+					else
+						-- produce an error message						
 					end
 				end
 				cursor.forth
@@ -340,48 +369,97 @@ feature {NONE} -- Implementation
 			session.close
 		end
 
-	generate (a_module : ACCESS_MODULE; a_session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
+	generate_modules is
+			-- 
+		local
+			c : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
+			p : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
+			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_RESULT], STRING]
+
+		do
+			from
+				c := modules.new_cursor
+				c.start
+			until
+				c.off
+			loop
+				generate (c.item, error_handler)
+				c.forth
+			end
+			create gen
+			from
+				p := parent_parameter_sets.new_cursor
+				p.start
+			until
+				p.off
+			loop
+				gen.create_parameters_class (p.item, out_directory)
+				p.forth
+			end
+			from
+				r := parent_result_sets.new_cursor
+				r.start
+			until
+				r.off
+			loop
+				gen.create_results_class (r.item, out_directory)
+				r.forth
+			end
+		end
+		
+	generate (module : ACCESS_MODULE;a_error_handler : UT_ERROR_HANDLER) is
 			-- 
 		require
-			a_module_not_void: a_module /= Void
+			module_not_void: module /= Void
 		local
-			cursor : QA_CURSOR
+			factory : QA_VALUE_FACTORY
 			p_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
+			r_cursor : DS_SET_CURSOR[MODULE_RESULT]
+			parameters : DS_HASH_TABLE[QA_VALUE,STRING]
+			results : DS_HASH_TABLE[QA_VALUE,STRING]
 		do
-			create cursor.make (a_session)
-			cursor.define (a_module.query)
-			cursor.set_name (a_module.name)
-			cursor.prepare
-			if cursor.is_ok then
-				from
-					p_cursor := a_module.parameters.new_cursor
-					p_cursor.start
-				until
-					p_cursor.off
-				loop
-					cursor.value_factory.create_instance (
-						p_cursor.item.metadata.type_code,
-						p_cursor.item.metadata.size,
-						p_cursor.item.metadata.decimal_digits)
-					cursor.put_parameter (cursor.value_factory.last_result, p_cursor.item.name)
-					p_cursor.forth
-				end
-				if cursor.has_results then
-					cursor.describe_cursor
-					cursor.create_compatible_cursor
-				end
-				--| a ce stade, on peut exploiter 
-				--| cursor.parameters, cursor.cursor
-				--|
-				create gen
-				gen.execute (cursor, out_directory, a_module.description)
-			else
-				error_handler.report_error_message (a_module.name + ": Error preparing query%N%T"+cursor.diagnostic_message)
+			create factory.make
+			from
+				p_cursor := module.parameters.new_cursor
+				create parameters.make (module.parameters.count)
+				p_cursor.start
+			until
+				p_cursor.off
+			loop
+				factory.create_instance (
+					p_cursor.item.metadata.type_code,
+					p_cursor.item.metadata.size,
+					p_cursor.item.metadata.decimal_digits)
+				p_cursor.item.set_implementation (factory.last_result)
+				p_cursor.forth
 			end
-			cursor.close
+			if module.has_results then
+				from
+					r_cursor := module.results.new_cursor
+					create results.make (module.results.count)
+					r_cursor.start
+				until
+					r_cursor.off
+				loop
+					factory.create_instance (
+						r_cursor.item.metadata.sql_type_code ,
+						r_cursor.item.metadata.size,
+						r_cursor.item.metadata.decimal_digits)
+					r_cursor.item.set_implementation (factory.last_result)
+					r_cursor.forth
+				end
+			end
+			--| a ce stade, on peut exploiter 
+			--| cursor.parameters, cursor.cursor
+			--|
+			create gen
+			gen.create_cursor_class (module, out_directory)
+			gen.create_parameters_class (module.parameters, out_directory)
+			gen.create_results_class (module.results, out_directory)
 		end
 
-	gen : QA_CURSOR_GENERATOR
+	gen : ACCESS_MODULE_GENERATOR
+
 	
 invariant
 

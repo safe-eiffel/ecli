@@ -79,7 +79,7 @@ feature -- Status setting
 			Result := sql_c_float --  !!!
 		end
 
-	column_precision: INTEGER is
+	size : INTEGER is
 		do
 			Result := 7
 		end
@@ -111,12 +111,8 @@ feature -- Element change
 	set_item (value : REAL) is
 			-- set item to 'value', truncating if necessary
 		do
---			impl_item := value
---			ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
 			c_memory_put_real (ecli_c_value_get_value (buffer), value)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
-		ensure then
-			item_set: item = value
 		end
 
 feature -- Removal
