@@ -26,7 +26,7 @@ creation
 	
 feature {NONE} -- Initialization
 
-	make (a_session : ECLI_SESSION) isµ
+	make (a_session : ECLI_SESSION) is
 			-- Create for a database accessed through `a_session'.
 		require
 			a_session_not_void: a_session /= Void
