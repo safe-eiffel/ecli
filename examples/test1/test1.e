@@ -33,14 +33,15 @@ feature -- Initialization
 					trace_if_necessary
 					create_statement
 					create_sample_table
-					simple_insert_sample_tuples
-					query_database
-					parameterized_insert
-					query_database
-					parameterized_prepared_insert_sample_tuples
-					query_database
-					drop_table
-					close_statement
+					put_photo
+					get_photo
+--					simple_insert_sample_tuples
+--					query_database
+--					parameterized_insert
+--					query_database
+--					parameterized_prepared_insert_sample_tuples
+--					query_database
+--					drop_table
 					disconnect_session
 				end
 				close_session
@@ -48,7 +49,52 @@ feature -- Initialization
 			end
 		end
 
+	put_photo is
+		local
+			photo : ECLI_FILE_LONGVARBINARY
+			photo_file : KL_BINARY_INPUT_FILE
+		do
+			create photo_file.make ("architecture.bmp")	
+			create photo.make_input (photo_file)
+			create stmt.make (session)
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3, ?photo)")
+			stmt.put_parameter (photo, "photo")
+			stmt.bind_parameters
+			stmt.execute
+			if stmt.is_ok then
+				print ("OK%N")
+			else
+				print ("KO%N")
+			end
+			stmt.close
+		end
 
+	get_photo is
+		local
+			photo : ECLI_FILE_LONGVARBINARY
+			photo_file : KL_BINARY_OUTPUT_FILE
+		do
+			create photo_file.make ("myphoto.bmp")	
+			create photo.make_output (photo_file)
+			create stmt.make (session)
+			stmt.set_sql ("select document from eclitrial")
+			stmt.execute
+			stmt.set_results (<<photo>>)
+			if stmt.is_ok then
+				print ("OK%N")
+				from
+					stmt.start
+				until
+					stmt.off
+				loop
+					stmt.forth
+				end
+			else
+				print ("KO%N")
+			end
+			stmt.close
+		end
+		
 feature -- Access
 
 	session : ECLI_SESSION
@@ -165,7 +211,7 @@ feature --  Basic operations
 				io.put_string ("---------------------------------%N")
 				-- DDL statement
 				-- | Uncomment next line for using MS Access driver or PostgreSQL or SQL Server
-				stmt.set_sql ("CREATE TABLE ECLITRIAL (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
+				stmt.set_sql ("CREATE TABLE ECLITRIAL (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT, document LONGBINARY)")
 				--
 				-- | Uncomment next line for using Oracle 8 driver, and comment previous one
 				--stmt.set_sql ("CREATE TABLE ECLITRIAL (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")

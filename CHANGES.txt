@@ -1,3 +1,16 @@
+2004-05-14
+	* Refactored ECLI_VALUE hierarchy
+	* Introduced sending/getting long data : ECLI_FILE_VALUE and descendants
+	* ECLI_STATEMENT.get_row_count is a hook that is called just after a statement has been executed.
+	  Descendants can redefine it, for getting multiple row_counts using SQLMoreResults.
+	  
+2004-05-05
+	* Bug fixes: 
+		- ECLI_DATA_SOURCES_CURSOR.get_diagnostics Result is not initialized
+		- ECLI_STATUS.get_diagnostics : impl_cli_state not renitialized
+	* New features:
+		- XS_C_STRING : 'wipe_out' added, 'put' fixed.
+
 2003-09-10
 	* New class ECLI_STORED_PROCEDURE allowing usage of input, output and input/output parameters
 	* New metadata classes : ECLI_PROCEDURES_CURSOR, ECLI_PROCEDURE, ECLI_PROCEDURE_COLUMNS_CURSOR, ECLI_PROCEDURE_COLUMN

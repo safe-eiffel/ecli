@@ -1,3 +1,5 @@
+ECLI v2.0
+
 ECLI v1.2
 	ECLI runs with .NET
 	ECLI_VALUE.to_string has been renamed 'as_string', to ensure compatibility with MS.NET

@@ -19,7 +19,7 @@ feature {NONE} -- Initialization
 
 	make (n : INTEGER) is
 		require
-			n > 0 and n <= max_capacity
+			valid_n: n > 0 and n <= max_capacity
 		local
 			s : STRING
 		do
