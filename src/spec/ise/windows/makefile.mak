@@ -1,6 +1,6 @@
 CC = cl
-PLATFORM=windows
-CFLAGS = -c -Ox -W3 -I$(ISE_EIFFEL)\studio\spec\$(PLATFORM)\include -I.
+ISE_PLATFORM=windows
+CFLAGS = -c -Ox -W3 -I$(ISE_EIFFEL)\studio\spec\$(ISE_PLATFORM)\include -I.
 OBJ = ecli_c.obj
 
 all:: clean ecli_c.lib
