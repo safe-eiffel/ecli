@@ -40,10 +40,12 @@ feature {NONE} -- Initialization
 					set_shared_schema_name (default_schema)
 				end
 				parse_xml_input_file
-				process_document
-				check_modules
-				resolve_parent_classes
-				generate_modules
+				if not has_error then
+					process_document
+					check_modules
+					resolve_parent_classes
+					generate_modules
+				end
 			end
 		end
 
