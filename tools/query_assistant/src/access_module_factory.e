@@ -67,7 +67,7 @@ feature -- Basic operations
 				type_att := element.attribute_by_name ("type")
 			end
 			if name_att = Void then
-				error_handler.report_error_message ("Module should have a 'name' attribute")
+				error_handler.report_error_message ("! [Error] Module should have a 'name' attribute")
 				is_error := True
 			else
 				name := name_att.value
@@ -82,7 +82,7 @@ feature -- Basic operations
 						end
 						if element.has_element_by_name ("parameter_set") then
 							if element.has_element_by_name ("parameter") then
-								error_handler.report_error_message ("Module '"+name+"' cannot have 'parameter' elements while having 'parameter_set' element")
+								error_handler.report_error_message ("! [Error] Module '"+name+"' cannot have 'parameter' elements while having 'parameter_set' element")
 								is_error := True
 							else
 								create_parameter_set (element.element_by_name ("parameter_set"), parameter_set_name (name))
@@ -101,7 +101,7 @@ feature -- Basic operations
 							last_module.set_results (last_result_set)
 						end
 					else
-						error_handler.report_error_message ("Module '"+name+"' does not have any <sql> element")
+						error_handler.report_error_message ("! [Error] Module '"+name+"' does not have any <sql> element")
 						is_error := True
 					end
 				end
@@ -238,6 +238,9 @@ feature {NONE} -- Implementation
 			if l_name /= Void and then l_table /= Void and then l_column /= Void then
 				create l_reference.make (l_table, l_column)
 				create last_parameter.make (l_name, l_reference)
+				if element.has_attribute_by_name ("sample") then
+					last_parameter.set_sample (element.attribute_by_name ("sample").value.string)
+				end
 			end
 		ensure
 			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void

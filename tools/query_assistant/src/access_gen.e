@@ -157,12 +157,12 @@ feature -- Basic operations
 						modules.search (l_module.name)
 						if modules.found then
 							--| Error : module already exists
-							error_handler.report_error_message ("Module %'"+l_module.name+"%' already exists!%N")
+							error_handler.report_error_message ("! [Error] Module %'"+l_module.name+"%' already exists!%N")
 						else
 							modules.force (l_module, l_module.name) 
 						parameter_sets.search (l_module.parameters.name)
 						if parameter_sets.found then
-							error_handler.report_error_message ("Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
+							error_handler.report_error_message ("! [Error] Parameter set%'"+l_module.parameters.name+"%' already exists'%N" ) 
 						else
 							parameter_sets.force (l_module.parameters, l_module.parameters.name) 
 						end
@@ -204,7 +204,7 @@ feature -- Basic operations
 				else
 				end
 			end
-			error_handler.report_info_message ("- parsing done.")
+			error_handler.report_info_message (". parsing done.")
 		end
 
 	process_arguments is
@@ -237,7 +237,7 @@ feature -- Basic operations
 						if fact.is_expat_parser_available then
 							event_parser := fact.new_expat_parser
 						else
-							error_handler.report_error_message ("expat is not availabe, please choose other parser backend")
+							error_handler.report_error_message ("! [Error] : expat is not availabe, please choose other parser backend")
 							has_error := True
 						end
 						arg_index := arg_index + 1
@@ -267,7 +267,7 @@ feature -- Basic operations
 						arg_index := arg_index + 2
 					else
 						arg_index := arg_index + 1
-						error_handler.report_error_message ("Invalid argument name : "+key)
+						error_handler.report_error_message ("! [Error] Invalid argument name : "+key)
 					end
 				end
 					-- Create standard pipe holder and bind it to event parser.
@@ -343,7 +343,7 @@ feature {NONE} -- Implementation
 			resolver : REFERENCE_RESOLVER[MODULE_PARAMETER]
 		do
 			create resolver
-			parent_parameter_sets := resolver.resolve_parents (parameter_sets)
+			parent_parameter_sets := resolver.resolve_parents (parameter_sets, error_handler)
 			resolver.resolve_descendants (parameter_sets)
 		end
 		
@@ -353,7 +353,7 @@ feature {NONE} -- Implementation
 			resolver : REFERENCE_RESOLVER[MODULE_RESULT]
 		do
 			create resolver
-			parent_result_sets := resolver.resolve_parents (result_sets)
+			parent_result_sets := resolver.resolve_parents (result_sets, error_handler)
 			resolver.resolve_descendants (result_sets)
 		end
 	
@@ -374,10 +374,10 @@ feature {NONE} -- Implementation
 			loop
 				l_name := cursor.item.name
 				if class_filter = Void or else class_filter.is_equal (cursor.item.name) then
+					error_handler.report_info_message ("- Analyzing "+cursor.item.name)
 					cursor.item.check_validity (session, error_handler)
 					if cursor.item.is_valid then
-						print (cursor.item.name)
-						print (" is OK%N")
+						error_handler.report_info_message (". OK")
 						if cursor.item.has_results then
 							result_sets.force (cursor.item.results, cursor.item.results.name)
 						end
@@ -390,7 +390,7 @@ feature {NONE} -- Implementation
 			if session.is_connected then
 				session.disconnect
 			else
-				error_handler.report_error_message ("Datasource not connected " + session.diagnostic_message)
+				error_handler.report_error_message ("! Error : Datasource not connected " + session.diagnostic_message)
 			end
 			session.close
 		end
@@ -401,8 +401,8 @@ feature {NONE} -- Implementation
 			c : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
 			p : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
 			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_RESULT], STRING]
-
 		do
+			error_handler.report_info_message ("- Generating classes ... ")
 			--| classes for modules
 			from
 				c := modules.new_cursor
@@ -410,7 +410,9 @@ feature {NONE} -- Implementation
 			until
 				c.off
 			loop
-				generate (c.item, error_handler)
+				if c.item.is_valid then
+					generate (c.item, error_handler)
+				end
 				c.forth
 			end
 			create gen
@@ -421,6 +423,7 @@ feature {NONE} -- Implementation
 			until
 				p.off
 			loop
+				error_handler.report_info_message (" + " + p.item.name)
 				gen.create_parameters_class (p.item)
 				gen.write_class (gen.parameters_class, out_directory)
 				p.forth
@@ -432,6 +435,7 @@ feature {NONE} -- Implementation
 			until
 				r.off
 			loop
+				error_handler.report_info_message (" + " + r.item.name)
 				gen.create_results_class (r.item)
 				gen.write_class (gen.results_class, out_directory)
 				r.forth
@@ -444,11 +448,14 @@ feature {NONE} -- Implementation
 			module_not_void: module /= Void
 		do
 			create gen
+			a_error_handler.report_info_message (" + " + module.name)
 			gen.create_cursor_class (module)
 			gen.write_class (gen.cursor_class,out_directory)
+			a_error_handler.report_info_message (" + " + module.parameters.name)
 			gen.create_parameters_class (module.parameters)
 			gen.write_class (gen.parameters_class, out_directory)
 			if module.has_results then
+				a_error_handler.report_info_message (" + " + module.results.name)
 				gen.create_results_class (module.results)
 				gen.write_class (gen.results_class, out_directory)
 			end

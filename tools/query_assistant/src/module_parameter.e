@@ -65,7 +65,9 @@ feature -- Access
 		do
 			Result := metadata.decimal_digits
 		end
-		
+
+	sample : STRING 
+	
 feature -- Measurement
 
 	hash_code : INTEGER is 
@@ -82,7 +84,9 @@ feature -- Status report
 		end
 
 	is_valid : BOOLEAN
-			
+	
+	has_sample : BOOLEAN is do Result := sample /= Void end		
+	
 feature -- Status setting
 
 	check_validity (a_session : ECLI_SESSION; a_catalog_name, a_schema_name : STRING) is
@@ -114,6 +118,19 @@ feature -- Status setting
 				valid_and_metadata: is_valid implies metadata /= Void
 			end
 
+feature -- Element change
+
+	set_sample (s : STRING) is
+			-- 
+		require
+			s_exists: s /= Void
+			s_not_empty: not s.is_empty
+		do
+			sample := s
+		ensure
+			sample_set: sample = s
+		end
+		
 feature {NONE} -- Element change
 
 	set_reference_column (a_reference_column: REFERENCE_COLUMN) is

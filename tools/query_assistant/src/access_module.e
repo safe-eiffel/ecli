@@ -94,7 +94,7 @@ feature -- Status setting
 		do
 			create query_statement.make (a_session)
 			query_session := a_session
-			check_query (query_statement, a_error_handler)
+			check_query (query_statement, a_session, a_error_handler)
 			if is_query_valid then
 				describe_result_set (query_statement, a_error_handler) 
 				check_parameters (query_statement, query_session, a_error_handler)
@@ -104,7 +104,8 @@ feature -- Status setting
 			is_checked_query: is_checked_query
 		end
 
-feature {ACCESS_MODULE_FACTORY}-- Element change
+feature -- Element change
+
 
 	set_description (a_description: STRING) is
 			-- Set `description' to `a_description'.
@@ -186,7 +187,7 @@ feature {NONE} -- Implementation
 					--| FIXME: verify that a same column does not exist...
 					current_result := create {MODULE_RESULT}.make(query_statement.cursor_description.item (index))
 					if results.has (current_result) then
-						a_error_handler.report_error_message ("Result set '"+results.name+"' has two columns named '"+current_result.metadata.name+"'")
+						a_error_handler.report_error_message ("! [Error] Result set '"+results.name+"' has two columns named '"+current_result.metadata.name+"'")
 						is_results_valid := False
 						results := Void
 					else
@@ -231,7 +232,7 @@ feature {NONE} -- Implementation
 				end
 				if not is_parameters_valid then
 					--| Error : parameters_cursor.item.name not in sql_parameters
-					a_error_handler.report_error_message ("In module '"+name+"'%NSQL parameter '"+parameters_cursor.item.name + "' is not defined in any <parameter> element")
+					a_error_handler.report_error_message ("! [Error] In module '"+name+"'%NSQL parameter '"+parameters_cursor.item.name + "' is not defined in any <parameter> element")
 				else
 					--| check for parameter reference columns
 					from
@@ -255,7 +256,7 @@ feature {NONE} -- Implementation
 					end
 					if not is_parameters_valid then
 						--| Error: invalid column reference
-					a_error_handler.report_error_message ("In module '"+ name +"'%NReference column for '"+
+					a_error_handler.report_error_message ("! [Error] In module '"+ name +"'%NReference column for '"+
 						parameters_cursor.item.name + "' not found => " + 
 						parameters_cursor.item.reference_column.table + "." + parameters_cursor.item.reference_column.column
 					)
@@ -263,24 +264,59 @@ feature {NONE} -- Implementation
 				end				
 			else
 				--| Error : number of declared parameters not the same as query parameters
-					a_error_handler.report_error_message ("In module '"+ name +
+					a_error_handler.report_error_message ("! [Error] In module '"+ name +
 					"'%NNumber of declared parameters does not match number of SQL parameters")
 			end
 		end
 
-	check_query (query_statement : ECLI_STATEMENT; a_error_handler : UT_ERROR_HANDLER) is
+	check_query (query_statement : ECLI_STATEMENT; session : ECLI_SESSION; a_error_handler : UT_ERROR_HANDLER) is
 			-- 
 		require
 			query_statement_not_void: query_statement /= Void
 			a_error_handler_not_void: a_error_handler /= Void
+		local
+			cs : DS_SET_CURSOR[MODULE_PARAMETER]
+			factory : QA_VALUE_FACTORY
 		do
+			create factory.make
 			is_query_valid := False
 			query_statement.set_sql (query)
 			query_statement.prepare
 			if query_statement.is_ok then
-				is_query_valid := True
+				if parameters.has_samples then
+					if session.is_transaction_capable then
+						-- create parameters
+						from
+							cs := parameters.new_cursor
+							cs.start
+						until
+							cs.off
+						loop
+							-- créer paramètre
+							factory.create_value_from_sample (cs.item.sample)
+							query_statement.put_parameter (factory.last_result, cs.item.name)
+							cs.forth
+						end
+						
+						-- begin transaction
+						session.begin_transaction
+						-- try query
+						query_statement.bind_parameters
+						query_statement.execute
+						if query_statement.is_ok then
+							is_query_valid := True
+						else
+							a_error_handler.report_error_message ("! [Error] "+query_statement.diagnostic_message)
+						end
+						-- rollback
+						session.rollback
+					end
+				else
+					is_query_valid := True
+					a_error_handler.report_warning_message ("! [Warning] Statement '"+name+"' has been *prepared* successfully;%N   unfortunately statement preparation does not catch all SQL errors.")
+				end
 			else
-				a_error_handler.report_error_message ("Statement not valid : %N" +
+				a_error_handler.report_error_message ("! [Error] SQL Statement not valid : %N" +
 					query + "%N" + query_statement.diagnostic_message + "%N") 
 			end
 			is_checked_query := True

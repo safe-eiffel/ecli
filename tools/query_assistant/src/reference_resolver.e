@@ -12,7 +12,7 @@ class
 
 feature -- Basic operations
 
-	resolve_parents (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]) : DS_HASH_TABLE [PARENT_COLUMN_SET [G], STRING] is
+	resolve_parents (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]; error_handler : UT_ERROR_HANDLER) : DS_HASH_TABLE [PARENT_COLUMN_SET [G], STRING] is
 			-- extract parent information from `items' and create collection of parent object into Result
 		local
 			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET [G],STRING]
@@ -48,6 +48,9 @@ feature -- Basic operations
 				parent_cursor.off
 			loop
 				parent_cursor.item.flatten
+				if parent_cursor.item.count = 0 then
+					error_handler.report_warning_message ("! Warning : parent class '"+parent_cursor.item.name+"' has no feature.%N%T Parent classes should factor out common features of descendants.%NTODO: check if descendants have something in common")
+				end
 				parent_cursor.forth	
 			end
 		end
