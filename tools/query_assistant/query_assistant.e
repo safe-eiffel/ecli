@@ -30,6 +30,9 @@ feature -- Initialization
 					if qacursor.is_executed then
 						generate
 					end
+					qacursor.close
+					session.disconnect
+					session.close
 				end
 			else
 				print_usage
@@ -214,7 +217,7 @@ feature -- Basic operations
 				if qacursor.has_parameters then
 					-- create and set 'parameters' array
 					create parameters.make (1, qacursor.parameter_count)
-					qacursor.set_parameters (parameters)
+					--qacursor.set_parameters (parameters)
 					-- try to describe parameters
 					qacursor.describe_parameters
 					if qacursor.parameters_description = Void then
@@ -522,7 +525,7 @@ invariant
 
 end -- class QUERY_ASSISTANT
 --
--- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

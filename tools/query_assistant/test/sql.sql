@@ -1,1 +1,1 @@
-select * from qaessai where cchar20 = ?pcchar20
+select * from toto where weight = ?weight

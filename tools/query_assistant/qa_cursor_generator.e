@@ -78,71 +78,106 @@ feature -- Basic operations
 
 	put_visible_features is
 		do
-			put_line ("feature -- Basic Operations")
+			begin_line ("feature {NONE} -- Initialization")
+			put_make
+			begin_line ("feature -- Basic Operations")
 			put_new_line
 			put_start
-			put_line ("feature -- Access")
+			begin_line ("feature -- Access")
 			put_new_line
 			put_definition
-			put_line ("feature -- Access (parameters)")
+			begin_line ("feature -- Access (parameters)")
 			put_new_line
 			put_parameters
-			put_line ("feature -- Access (results)")
-			put_new_line
-			put_results
+			if current_cursor.has_results then
+				begin_line ("feature -- Access (results)")
+				put_new_line
+				put_results
+			end
 		end
 
 	put_invisible_features is
 		do
-			put_line ("feature {NONE} -- Implementation")
+			begin_line ("feature {NONE} -- Implementation")
+			if current_cursor.has_results then
+				put_new_line
+				put_create_buffers
+			else
+				put_new_line
+				put_foo_create_buffers
+			end
 			put_new_line
-			put_setup
+			put_create_parameter_buffers
 		end
 				
 	put_heading is
 			-- put indexing, class name, inheritance and creation
 		do
-			put_line ("indexing")
+			put ("indexing")
 			indent
-			put("description: %"Generated cursor '"); put (current_cursor.name); put_line ("' : DO NOT EDIT !%"")
-			put_line ("author: %"QUERY_ASSISTANT%"")
-			put_line ("date: %"$Date : $%"")
-			put_line ("revision: %"$Revision : $%"")
-			put_line ("licensing: %"See notice at end of class%"")
+			begin_line ("description: %"Generated cursor '"); put (current_cursor.name); put ("' : DO NOT EDIT !%"")
+			begin_line ("author: %"QUERY_ASSISTANT%"")
+			begin_line ("date: %"$Date : $%"")
+			begin_line ("revision: %"$Revision : $%"")
+			begin_line ("licensing: %"See notice at end of class%"")
 			exdent
-			put_line ("class")
-			put_new_line
-			indent
-			put_line (class_name)
-			exdent
-			put_new_line
-			put_line ("inherit")
+			begin_line ("class")
 			put_new_line
 			indent
-			put_line ("ECLI_CURSOR")
+			begin_line (class_name)
 			exdent
 			put_new_line
-			put_line ("creation")
+			begin_line ("inherit")
 			put_new_line
 			indent
-			put_line ("make")
+			begin_line ("ECLI_CURSOR")
+			indent
+			begin_line ("redefine")
+			indent
+			begin_line ("make")
 			exdent
-			put_new_line			
+			begin_line ("end")
+			exdent
+			put_new_line
+			begin_line ("creation")
+			put_new_line
+			indent
+			begin_line ("make")
+			exdent
+			put_new_line
 		end
 
+	put_make is
+			-- 
+		do
+			indent
+			begin_line ("make (a_session : ECLI_SESSION) is")
+			indent
+			begin_line ("-- initialize")
+			exdent
+			begin_line ("do")
+			indent
+			begin_line ("Precursor (a_session)")
+			begin_line ("create_parameter_buffers")
+			exdent
+			begin_line ("end")
+			exdent
+			put_new_line
+		end
+		
 	put_definition is
 		do
 			indent
-			put_line ("definition : STRING is")
+			begin_line ("definition : STRING is")
 			indent
 			indent
-			put_line ("-- SQL definition of Current")
+			begin_line ("-- SQL definition of Current")
 			exdent
-			put_line ("once")
+			begin_line ("once")
 			indent
-			put ("Result := %""); put (current_cursor.definition); put_line ("%"")
+			begin_line ("Result := %""); put (current_cursor.definition); put ("%"")
 			exdent
-			put_line ("end")
+			begin_line ("end")
 			exdent
 			exdent
 			put_new_line
@@ -186,15 +221,14 @@ feature -- Basic operations
 				put (") ")
 			end			
 			put ("is")
-			put_new_line
 			indent
 			-- feature comment
 			indent
-			put_line ("-- position cursor at first position of result-set obtained")
-			put_line ("-- by applying actual parameters to definition")
+			begin_line ("-- position cursor at first position of result-set obtained")
+			begin_line ("-- by applying actual parameters to definition")
 			exdent
 			-- feature body
-			put_line ("do")
+			begin_line ("do")
 			indent
 			-- set parameters with their value
 			from
@@ -205,16 +239,16 @@ feature -- Basic operations
 				list_cursor.off
 			loop
 				pname := list_cursor.item
-				put (pname)
+				begin_line (parameter_feature_name (pname))
 				put (".set_item (a_")
 				put (pname)
-				put_line (")")
+				put (")")
 				list_cursor.forth
 			end
 			-- execute and 'start'
-			put_line ("implementation_start")
+			begin_line ("implementation_start")
 			exdent
-			put_line ("end")
+			begin_line ("end")
 			exdent
 			put_new_line
 			exdent
@@ -238,7 +272,8 @@ feature -- Basic operations
 				list_cursor.off
 			loop
 				pname := list_cursor.item
-				put (to_lower (pname) ); put ( "%T: " ); put_line ( current_cursor.parameter (pname).ecli_type)
+				-- p_<parameter_name> : type
+				begin_line (parameter_feature_name (pname) ); put ( "%T: " ); put ( current_cursor.parameter (pname).ecli_type)
 				i := i + 1
 				list_cursor.forth
 			end
@@ -262,9 +297,9 @@ feature -- Basic operations
 			loop
 				vname := current_cursor.cursor_description.item (i).name
 				vdescription := current_cursor.cursor_description.item (i)
-				put (to_lower (vname))
+				begin_line (to_lower (vname))
 				put ("%T: ")
-				put_line (current_cursor.cursor.item (i).ecli_type )
+				put (current_cursor.cursor.item (i).ecli_type )
 				i := i + 1
 			end
 			exdent
@@ -272,7 +307,19 @@ feature -- Basic operations
 		end
 		
 
-	put_setup is
+	put_foo_create_buffers is
+		do
+				indent
+				begin_line ("create_buffers is")
+				indent
+				indent
+				begin_line ("-- create all result attribute objects")
+				exdent
+				begin_line ("do")
+				begin_line ("end")
+		end
+
+	put_create_buffers is
 		local
 			i, count : INTEGER
 			cd : ECLI_COLUMN_DESCRIPTION
@@ -281,21 +328,23 @@ feature -- Basic operations
 			a_call : STRING
 		do
 				indent
-				put_line ("setup is")
+				begin_line ("create_buffers is")
 				indent
 				indent
-				put_line ("-- setup all attribute objects")
+				begin_line ("-- create all result attribute objects")
 				exdent
-				put_line ("do")
+				begin_line ("do")
 				indent
 				-- create cursor.make (1, <result_count>)
-				put_line ("-- create cursor values array")
-				put ("create cursor.make (1, "); put (current_cursor.result_column_count.out); put_line (")")
+				begin_line ("-- create cursor values array")
+				begin_line ("create cursor.make (1, "); put (current_cursor.result_column_count.out); 
+				put (")")
 
 				---- for each column in <column list>
 				-- create <column>.make <corresponding creation parameters>
 				-- cursor.put (<column>, rank)
-				put_line ("-- setup result value object and put them in 'cursor' ")
+				put_new_line
+				begin_line ("-- setup result value object and put them in 'cursor' ")
 				from
 					i := 1
 					count := current_cursor.result_column_count
@@ -305,14 +354,42 @@ feature -- Basic operations
 					a_qa_value := current_cursor.cursor.item (i)
 					a_call := a_qa_value.creation_call
 					cd := current_cursor.cursor_description.item (i)
-					put ("create "); put (to_lower (cd.name)); put ("."); put_line (a_call)
-					put ("cursor.put ("); put (to_lower (cd.name)); put (", "); put (i.out); put_line (")")
+					begin_line ("create "); put (to_lower (cd.name)); put ("."); put (a_call)
+					begin_line ("cursor.put ("); put (to_lower (cd.name)); put (", "); put (i.out); put (")")
 					i := i + 1
 				end
+				exdent
+				begin_line ("end")
+				exdent
+				put_new_line
+				exdent
+		end
+
+	put_create_parameter_buffers is
+		local
+			i, count : INTEGER
+			cd : ECLI_COLUMN_DESCRIPTION
+			c : DS_LIST_CURSOR [STRING]
+			a_qa_value : QA_VALUE
+			a_call : STRING
+		do
+				indent
+				begin_line ("create_parameter_buffers is")
+				indent
+				indent
+				begin_line ("-- create all parameters attribute objects")
+				exdent
+				begin_line ("do")
+				indent
+				-- create cursor.make (1, <result_count>)
+				begin_line ("-- create cursor values array")
+				begin_line ("create cursor.make (1, "); put (current_cursor.result_column_count.out); 
+				put (")")
 				---- for each parameter in <parameter list>
 				-- create <parameter>.make <corresponding creation parameters>
 				-- put_parameter (<parameter>, "<parameter>")
-				put_line ("-- setup parameter value objects and put them, by name")
+				put_new_line
+				begin_line ("-- setup parameter value objects and put them, by name")
 				from
 					c := current_cursor.parameter_names.new_cursor
 					c.start
@@ -321,13 +398,13 @@ feature -- Basic operations
 				loop
 					a_qa_value := current_cursor.parameter (c.item)
 					a_call := a_qa_value.creation_call
-					put ("create "); put (to_lower (c.item)); put ("."); put_line (a_qa_value.creation_call)
-					put ("put_parameter (") ; put (to_lower (c.item)); put (", %""); put (c.item) ; put_line ("%")" )
+					begin_line ("create "); put (parameter_feature_name (c.item)); put ("."); put (a_qa_value.creation_call)
+					begin_line ("put_parameter (") ; put (parameter_feature_name (c.item)); put (", %""); put (c.item) ; put ("%")" )
 					c.forth
 				end
 				--
 				exdent
-				put_line ("end")
+				begin_line ("end")
 				exdent
 				put_new_line
 				exdent
@@ -337,8 +414,9 @@ feature -- Basic operations
 			-- put closing of class
 		do
 			put_new_line
-			put ("end -- class ")
-			put_line (class_name)
+			begin_line ("end -- class ")
+			put (class_name)
+			put_new_line
 		end
 		
 feature -- Obsolete
@@ -353,15 +431,23 @@ feature {NONE} -- Implementation
 			Result.to_upper
 		end
 
-	put_line (s : STRING) is
+	begin_line (s : STRING) is
+			-- put indentation + line
 		require
 			s /= Void
 		do
+			put_new_line
 			current_file.put_string (indentation)
 			put (s)
-			put_new_line
 		end
 
+	put_line (s : STRING) is
+			-- put indentation + line + new_line
+		do
+			begin_line (s)
+			put_new_line
+		end
+		
 	put (s : STRING) is
 		require
 			s /= Void
@@ -385,12 +471,23 @@ feature {NONE} -- Implementation
 			create Result.make
 		end
 
+	parameter_feature_name (a_name : STRING) : STRING is
+			-- name of feature for parameter `a_name'
+		require
+			a_name_not_void: a_name /= Void
+		do
+			!!Result.make (a_name.count + 2)
+			Result.append ("p_")
+			Result.append (a_name)
+			Result.to_lower
+		end
+		
 invariant
 	invariant_clause: -- Your invariant here
 
 end -- class QA_CURSOR_GENERATOR
 --
--- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2000-2002, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -18,12 +18,11 @@ creation
 
 feature -- Basic Operations
 
-
-	start (a_page : INTEGER) is
+	start (a_weight : INTEGER) is
 			-- position cursor at first position of result-set obtained
 			-- by applying actual parameters to definition
 		do
-			page.set_item (a_page)
+			p_weight.set_item (a_weight)
 			implementation_start
 		end
 
@@ -33,36 +32,39 @@ feature -- Access
 	definition : STRING is
 			-- SQL definition of Current
 		once
-			Result := "select * from toto where age=?page"
+			Result := "select * from toto where weight = ?weight"
 		end
 
 feature -- Access (parameters)
 
-	page	: ECLI_INTEGER
+	p_weight	: ECLI_INTEGER
 
 feature -- Access (results)
 
-	nom	: ECLI_CHAR
-	age	: ECLI_INTEGER
-	adresse	: ECLI_VARCHAR
+	name	: ECLI_CHAR
+	bdate	: ECLI_TIMESTAMP
+	weight	: ECLI_INTEGER
 
 feature {NONE} -- Implementation
 
-	setup is
-			-- setup all attribute objects
+	create_buffers is
+			-- create all attribute objects
 		do
 			-- create cursor values array
 			create cursor.make (1, 3)
+
 			-- setup result value object and put them in 'cursor' 
-			create nom.make (20)
-			cursor.put (nom, 1)
-			create age.make
-			cursor.put (age, 2)
-			create adresse.make (30)
-			cursor.put (adresse, 3)
+			create name.make (20)
+			cursor.put (name, 1)
+			create bdate.make_first
+			cursor.put (bdate, 2)
+			create weight.make
+			cursor.put (weight, 3)
+
 			-- setup parameter value objects and put them, by name
-			create page.make
-			put_parameter (page, "page")
+			create p_weight.
+			make
+			put_parameter (weight, "weight")
 		end
 
 
