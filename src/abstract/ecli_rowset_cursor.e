@@ -1,5 +1,7 @@
 indexing
-	description: "Objects that define a rowset cursor and allow sweeping through it.  Rows are physically retrieved `row_count' at a time, minimizing network traffic if any."
+	description: "Row cursors that physically fetch sets of rows.%N%
+			%Rows are physically retrieved `row_count' at a time, minimizing network traffic."
+			
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -12,7 +14,9 @@ inherit
 	ECLI_ROW_CURSOR
 		rename
 			make as row_cursor_make, open as row_cursor_open, 
-			make_prepared as row_cursor_make_prepared, open_prepared as row_cursor_open_prepared
+			make_prepared as row_cursor_make_prepared, open_prepared as row_cursor_open_prepared,
+			make_with_buffer_factory as row_cursor_make_with_buffer_factory,
+			make_prepared_with_buffer_factory as row_cursor_make_prepared_with_buffer_factory
 		export 
 			{NONE} row_cursor_make, row_cursor_open
 		redefine
@@ -65,6 +69,47 @@ feature -- Initialization
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			row_count_set: row_capacity = a_row_capacity
 		end
+
+	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory : like buffer_factory) is
+			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
+		require
+			a_session_exists: a_session /= Void
+			a_session_connected: a_session.is_connected
+			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
+			sql_definition_exists: sql_definition /= Void
+			a_buffer_factory_exists: a_buffer_factory /= Void
+		do
+			row_capacity := a_row_capacity
+			make_row_count_capable
+			!!rowset_status.make (row_capacity)
+			row_cursor_make_with_buffer_factory (a_session, sql_definition, a_buffer_factory)
+		ensure
+			valid: is_valid
+			definition_set: definition = sql_definition
+			definition_is_sql: equal (definition, sql)
+			buffer_factory_assigned: buffer_factory = a_buffer_factory
+			row_count_set: row_capacity = a_row_capacity
+		end
+		
+	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory :  like buffer_factory) is
+			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
+		require
+			a_session_exists: a_session /= Void
+			a_session_connected: a_session.is_connected
+			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
+			sql_definition_exists: sql_definition /= Void
+			a_buffer_factory_exists: a_buffer_factory /= Void
+		do
+			make_with_buffer_factory (a_session, sql_definition, a_row_capacity, a_buffer_factory)
+			prepare
+		ensure
+			valid: is_valid
+			definition_set: definition = sql_definition
+			definition_is_sql: equal (definition, sql)
+			buffer_factory_assigned: buffer_factory = a_buffer_factory
+			row_count_set: row_capacity = a_row_capacity
+			prepared_if_ok: is_ok implies is_prepared
+		end
 		
 feature -- Access
 
@@ -72,24 +117,6 @@ feature -- Access
 		
 	buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
 	
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 		
 	start is
@@ -102,10 +129,6 @@ feature -- Basic operations
 			fetched_columns_count_set: (is_executed and then has_result_set) implies (fetched_columns_count = result_columns_count.min (results.count))
 		end
 			
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	create_buffer_factory is
@@ -223,8 +246,5 @@ feature {NONE} -- Implementation
 		do
 			create impl_row_count.make
 		end
-		
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class ECLI_ROWSET_CURSOR

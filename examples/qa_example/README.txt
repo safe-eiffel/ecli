@@ -7,7 +7,7 @@ Shows the usage of 'query_assistant'
   By using the 'isql' sample application :
 	isql -dsn datasource -user user -pwd password -sql ddl.sql
 	
-  NOTE: use file ddl.postgres.sql wit a PostgreSQL data source
+  NOTE: use file ddl.postgres.sql with a PostgreSQL data source
 
 3. populate database using file 'insert.sql'
 

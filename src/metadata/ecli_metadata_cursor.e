@@ -25,7 +25,7 @@ inherit
 feature {NONE} -- Initialization
 
 	make (criteria : ECLI_NAMED_METADATA; a_session : ECLI_SESSION) is
-			-- Create cursor on items matching 
+			-- Create cursor on items matching `criteria'
 			-- Void values for criteria.catalog, criteria.schema, criteria.name can be Void are 'wildcards'
 		require
 			criteria_not_void: criteria /= Void

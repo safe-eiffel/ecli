@@ -31,7 +31,7 @@ creation
 feature {NONE} -- Initialization
 
 	make_all_tables (a_session : ECLI_SESSION) is
-			-- make cursor for all types of session
+			-- make cursor on all tables of database underlying `session'
 		obsolete
 			"Use feature `make' "
 		require

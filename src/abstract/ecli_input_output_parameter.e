@@ -13,10 +13,6 @@ inherit
 creation
 	make
 	
-feature -- Access
-
-feature -- Measurement
-
 feature -- Status report
 
 	is_input : BOOLEAN is 
@@ -39,24 +35,6 @@ feature -- Status report
 		ensure then
 			is_false: not Result
 		end
-	
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature {ECLI_STATEMENT} -- Basic operations
 
@@ -64,12 +42,6 @@ feature {ECLI_STATEMENT} -- Basic operations
 		do
 			item.bind_as_input_output_parameter (statement, position)
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
 
 invariant
 	is_input_output: is_input_output

@@ -1,6 +1,6 @@
 indexing
 	description: "SQL Queries, defined by a SQL text. Heir for classes whose SQL definition remains constant, (static, not modifiable)."
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
