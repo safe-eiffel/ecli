@@ -147,7 +147,7 @@ feature -- Input
         do
             last_string := clone ("")
             p           := ext_readline (fdata)
-            if p /= Default_pointer then
+            if not p.is_null then
                 create ah
                 last_string := ah.pointer_to_string (p)
             end

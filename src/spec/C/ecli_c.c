@@ -38,7 +38,22 @@ EIF_INTEGER ecli_c_allocate_statement (EIF_POINTER con, EIF_POINTER p_stmt)  {
 EIF_INTEGER ecli_c_free_statement (EIF_POINTER stmt)  {
     /* free statement handle */
 	return (EIF_INTEGER) SQLFreeHandle(SQL_HANDLE_STMT, (SQLHSTMT) stmt);
+}
 
+EIF_INTEGER ecli_c_set_integer_statement_attribute (EIF_POINTER StatementHandle, EIF_INTEGER Attribute, EIF_INTEGER ValuePtr) {
+	return (EIF_INTEGER) SQLSetStmtAttr (
+				(SQLHSTMT)		StatementHandle,
+				(SQLINTEGER)	Attribute,
+				(SQLPOINTER)	ValuePtr,
+				(SQLINTEGER)	0);
+}
+
+EIF_INTEGER ecli_c_set_pointer_statement_attribute (EIF_POINTER StatementHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr, EIF_INTEGER StringLength) {
+	return (EIF_INTEGER) SQLSetStmtAttr (
+				(SQLHSTMT)		StatementHandle,
+				(SQLINTEGER)	Attribute,
+				(SQLPOINTER)	ValuePtr,
+				(SQLINTEGER)	StringLength);
 }
 
 EIF_INTEGER ecli_c_connect (EIF_POINTER con, EIF_POINTER data_source, EIF_POINTER user, EIF_POINTER password)  {
@@ -215,6 +230,9 @@ EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 	return res;
 }
 
+EIF_INTEGER ecli_c_get_type_info (EIF_POINTER stmt, EIF_INTEGER data_type) {
+	return (EIF_INTEGER) SQLGetTypeInfo( (SQLHSTMT) stmt, (SQLSMALLINT) data_type);
+}
 
 EIF_INTEGER ecli_c_get_data (EIF_POINTER stmt,
 							 EIF_INTEGER column_number,
@@ -260,7 +278,7 @@ static EIF_INTEGER ecli_c_get_error_diagnostic (SQLSMALLINT handle_type,
 		(SQLSMALLINT)		buffer_length,
 		(SQLSMALLINT *)		&p_length_indicator);
 	*((EIF_INTEGER*) length_indicator)= (EIF_INTEGER) p_length_indicator;
-	return res;
+return res;
 }
 
 EIF_INTEGER ecli_c_environment_error (EIF_POINTER handle,
@@ -358,6 +376,91 @@ void ecli_c_value_copy_value (EIF_POINTER v, EIF_POINTER dest) {
 	memcpy ((void*)dest, (void*) ((struct ecli_c_value*)v)->value, ((struct ecli_c_value*)v)->length);
 }
 
+/* Accessors and modifiers for ecli_c_array_value */
+EIF_POINTER ecli_c_alloc_array_value (EIF_INTEGER c_buffer_length, EIF_INTEGER a_count) {
+	struct ecli_c_array_value *res;
+
+	res = (struct ecli_c_array_value *) malloc(sizeof(struct ecli_c_array_value)+ (c_buffer_length * a_count+ sizeof(long)* a_count));
+	if (res)
+		res->length = (long) c_buffer_length;
+		res->count = (long) a_count;
+	return (EIF_POINTER) res;
+}
+
+void ecli_c_free_array_value (EIF_POINTER ptr) {
+	free (ptr);
+}
+
+static long * AV_LENGTH_INDICATOR_ARRAY_ADDRESS (struct ecli_c_array_value* av) {
+	return (long *)(av->buffer);
+}
+
+static long AV_LENGTH_INDICATOR (struct ecli_c_array_value* av, long i) {
+	return (AV_LENGTH_INDICATOR_ARRAY_ADDRESS (av) [i]);
+}
+
+static  long * AV_LENGTH_INDICATOR_PTR (struct ecli_c_array_value* av, long i) {
+	return ((long *)  &(AV_LENGTH_INDICATOR_ARRAY_ADDRESS(av) [i]));
+}
+
+static  long AV_LENGTH_SIZE (struct ecli_c_array_value* av)  {
+	return (sizeof (long) * av->count);
+}
+
+static  char * AV_VALUE_ARRAY_ADDRESS (struct ecli_c_array_value* av)  {
+	return (char *)(av->buffer + AV_LENGTH_SIZE (av));
+}
+
+static  char * AV_VALUE (struct ecli_c_array_value* av, long i)  {
+	return (char *) (AV_VALUE_ARRAY_ADDRESS (av) + i * av->length);
+}
+
+static  long AV_BUFFER_LENGTH (struct ecli_c_array_value* av)  {
+	return (AV_LENGTH_SIZE (av) + av->length * av->count);
+}
+
+EIF_INTEGER ecli_c_array_value_get_length (EIF_POINTER v) {
+	return (EIF_INTEGER) 	((struct ecli_c_array_value*)v)->length;
+}
+
+EIF_POINTER ecli_c_array_value_get_length_indicator_pointer (EIF_POINTER av) {
+	return (EIF_POINTER) AV_LENGTH_INDICATOR_ARRAY_ADDRESS ((struct ecli_c_array_value *) av);
+}
+
+EIF_POINTER ecli_c_array_value_get_value (EIF_POINTER av) {
+	return (EIF_POINTER) AV_VALUE_ARRAY_ADDRESS ((struct ecli_c_array_value*)av);
+}
+
+void ecli_c_array_value_set_length_indicator_at (EIF_POINTER v, EIF_INTEGER li, EIF_INTEGER index) {
+	*(AV_LENGTH_INDICATOR_PTR ( (struct ecli_c_array_value*)v, index-1))= (long) li;
+}
+
+EIF_INTEGER ecli_c_array_value_get_length_indicator_at (EIF_POINTER v, EIF_INTEGER index) {
+	return (EIF_INTEGER) AV_LENGTH_INDICATOR ((struct ecli_c_array_value*)v, (long) index-1);
+}
+
+EIF_POINTER ecli_c_array_value_get_length_indicator_pointer_at (EIF_POINTER v, EIF_INTEGER index) {
+	return (EIF_POINTER) 	AV_LENGTH_INDICATOR_PTR((struct ecli_c_array_value*)v, (long) index-1);
+}
+
+void ecli_c_array_value_set_value_at (EIF_POINTER v, EIF_POINTER new_array_value, EIF_INTEGER actual_length, EIF_INTEGER index) {
+	memcpy (
+		(void*)(AV_VALUE((struct ecli_c_array_value*)v, (long) index-1)),
+		(const void*)new_array_value,
+		actual_length);
+}
+
+EIF_POINTER ecli_c_array_value_get_value_at (EIF_POINTER v, EIF_INTEGER index) {
+	return (EIF_POINTER) AV_VALUE((struct ecli_c_array_value*)v, (long) index-1);
+}
+
+void ecli_c_array_value_copy_value_at (EIF_POINTER v, EIF_POINTER dest, EIF_INTEGER index) {
+	memcpy ((void*)dest,
+		(void*) AV_VALUE((struct ecli_c_array_value*)v, (long) index-1),
+		((struct ecli_c_array_value*)v)->length);
+}
+
+
 /* Accessors and Modifiers for DATE, TIME, and TIMESTAMP */
 /*														 */
 
@@ -445,6 +548,11 @@ EIF_INTEGER ecli_c_nullable_unknown () {
 }
 
 /* SQL Data types */
+
+EIF_INTEGER ecli_c_sql_all_types () {
+	return (EIF_INTEGER) SQL_ALL_TYPES;
+}
+
 EIF_INTEGER ecli_c_sql_char () {
 	return (EIF_INTEGER) SQL_CHAR  ;
 }
@@ -508,6 +616,18 @@ EIF_INTEGER ecli_c_sql_type_timestamp () {
 
 EIF_INTEGER ecli_c_sql_longvarchar () {
 	return (EIF_INTEGER) SQL_LONGVARCHAR  ;
+}
+
+EIF_INTEGER ecli_c_sql_binary () {
+	return (EIF_INTEGER) SQL_BINARY;
+}
+
+EIF_INTEGER ecli_c_sql_varbinary () {
+	return (EIF_INTEGER) SQL_VARBINARY;
+}
+
+EIF_INTEGER ecli_c_sql_longvarbinary () {
+	return (EIF_INTEGER) SQL_LONGVARBINARY;
 }
 
 /* SQL C Types */

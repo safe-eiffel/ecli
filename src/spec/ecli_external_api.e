@@ -40,6 +40,17 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_set_integer_statement_attribute (StatementHandle : POINTER; Attribute : INTEGER; ValuePtr : INTEGER)  : INTEGER is
+			-- free statement handle
+		external "C"
+		end
+
+	
+	ecli_c_set_pointer_statement_attribute (StatementHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
+			-- free statement handle
+		external "C"
+		end
+
 	ecli_c_connect (con : POINTER; data_source, user, password : POINTER) : INTEGER is
 			-- connect 'con' on 'data_source' for 'user' with 'password'
 		external "C"
@@ -106,6 +117,10 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_get_type_info (stmt : POINTER; data_type : INTEGER) : INTEGER is
+		external "C"
+		end
+		
 	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER; len_indicator_pointer : POINTER) : INTEGER is
 		external "C"
 		end
@@ -174,6 +189,61 @@ feature {NONE} -- Value handling functions
 		external "C"
 		end
 	
+feature {NONE} -- Value handling functions for ARRAYED values
+
+	ecli_c_alloc_array_value (c_buffer_length : INTEGER; a_count : INTEGER)  : POINTER is
+		external "C"
+		end
+
+	ecli_c_free_array_value (ptr : POINTER) is
+		external "C"
+		end
+
+
+	ecli_c_array_value_get_length (v : POINTER)  : INTEGER is
+			-- maximum length of elements
+		external "C"
+		end
+
+	ecli_c_array_value_get_length_indicator_pointer (av : POINTER)  : POINTER is
+			-- pointer to array of length indicators
+		external "C"
+		end
+
+	ecli_c_array_value_get_value (av : POINTER)  : POINTER is
+			-- pointer to array of values
+		external "C"
+		end
+
+	ecli_c_array_value_set_length_indicator_at (v : POINTER; li : INTEGER; index : INTEGER) is
+			-- set `index'th length indicator
+		external "C"
+		end
+
+	ecli_c_array_value_get_length_indicator_at (v : POINTER; index : INTEGER)  : INTEGER is
+			-- get `index'th length indicator
+		external "C"
+		end
+
+	ecli_c_array_value_get_length_indicator_pointer_at (v : POINTER; index : INTEGER)  : POINTER is
+		external "C"
+		end
+
+	ecli_c_array_value_set_value_at (v : POINTER; new_array_value : POINTER; actual_length : INTEGER; index : INTEGER) is
+			-- set `index'th value
+		external "C"
+		end
+
+	ecli_c_array_value_get_value_at (v : POINTER; index : INTEGER)  : POINTER is
+			-- get `index'th value	
+		external "C"
+		end
+
+	ecli_c_array_value_copy_value_at (v : POINTER; dest : POINTER; index : INTEGER) is
+			-- copy `index'th value	to `dest'
+		external "C"
+		end
+
 feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 
 	ecli_c_date_get_year (dt : POINTER) : INTEGER is
@@ -311,14 +381,18 @@ feature {NONE} -- Return codes
 	
 feature {NONE} -- Data type indicators
 
-	 ecli_c_sql_char  : INTEGER is
-	external "C"
-	end
+	ecli_c_sql_all_types : INTEGER is
+		external "C"
+		end
+	
+	ecli_c_sql_char  : INTEGER is
+		external "C"
+		end
 
 
-	 ecli_c_sql_numeric  : INTEGER is
-	external "C"
-	end
+	ecli_c_sql_numeric  : INTEGER is
+		external "C"
+		end
 
 
 	 ecli_c_sql_decimal  : INTEGER is
@@ -376,7 +450,23 @@ feature {NONE} -- Data type indicators
 	external "C"
 	end
 
-	 ecli_c_sql_c_char  : INTEGER is
+
+	ecli_c_sql_binary : INTEGER is
+	external "C"
+	end
+	
+	ecli_c_sql_varbinary : INTEGER is
+	external "C"
+	end
+	
+	ecli_c_sql_longvarbinary : INTEGER is
+	external "C"
+	end
+
+
+feature -- C types
+
+	ecli_c_sql_c_char  : INTEGER is
 	external "C"
 	end
 
@@ -448,9 +538,28 @@ feature {NONE} -- transaction capabilities
 	external "C"
 	end
 
+feature {NONE} -- statement attributes
+
+	Sql_attr_row_bind_type : INTEGER is 5
+	Sql_attr_row_bind_offset_ptr: INTEGER is 23
+	Sql_attr_row_operation_ptr: INTEGER is 24
+	Sql_attr_row_status_ptr: INTEGER is 25
+	Sql_attr_rows_fetched_ptr: INTEGER is 26
+	Sql_attr_row_array_size: INTEGER is 27
+
+feature {NONE} -- row status
+
+	Sql_row_success: INTEGER is 0
+	Sql_row_deleted: INTEGER is 1
+	Sql_row_updated: INTEGER is 2
+	Sql_row_norow: INTEGER is 3
+	Sql_row_added: INTEGER is 4
+	Sql_row_error: INTEGER is 5
+	Sql_row_success_with_info: INTEGER is 6
+	Sql_bind_by_column : INTEGER is 0
 end -- class ECLI_EXTERNAL_API
 --
--- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --
