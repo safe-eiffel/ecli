@@ -13,26 +13,41 @@ deferred class
 
 inherit
 	ECLI_TRACEABLE
+		undefine
+			is_equal
+		end
 
 	ECLI_HANDLE
 		rename
 			handle as buffer
 		export
 			{NONE} release_handle
+		undefine
+			is_equal
 		end
 
 	ECLI_EXTERNAL_API
+		undefine
+			is_equal
+		end
 
 	ECLI_TYPE_CONSTANTS
+		undefine
+			is_equal
+		end
 
 	ECLI_DATA_DESCRIPTION
 		export
 			{ANY} all
+		undefine
+			is_equal
 		end
 
 	ECLI_LENGTH_INDICATOR_CONSTANTS
 		export 
 			{NONE} all
+		undefine
+			is_equal
 		end
 		
 feature -- Status report

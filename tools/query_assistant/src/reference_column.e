@@ -10,6 +10,12 @@ indexing
 class
 	REFERENCE_COLUMN
 
+inherit
+	ANY
+		redefine
+			is_equal
+		end
+		
 create
 	make
 
@@ -77,7 +83,14 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-feature -- Obsolete
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			-- 
+		do
+			Result := column.is_equal (other.column) and then table.is_equal (other.table)
+		end
+		
 
 feature -- Inapplicable
 

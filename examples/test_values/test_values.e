@@ -43,7 +43,6 @@ feature
 			test_real
 			print ("test FLOAT%N")
 			test_float
-			io.read_line
 		end
 
 	do_arrayed_tests is

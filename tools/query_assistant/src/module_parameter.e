@@ -12,7 +12,10 @@ class
 
 inherit
 	HASHABLE
-	
+		redefine
+			is_equal
+		end
+		
 create
 	make
 
@@ -119,7 +122,14 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-feature -- Obsolete
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			-- 
+		do
+			Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
+		end
+		
 
 feature -- Inapplicable
 

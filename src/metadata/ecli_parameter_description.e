@@ -12,15 +12,26 @@ class
 
 inherit
 	ECLI_DATA_DESCRIPTION
-
+		redefine
+			is_equal
+		end
+		
 	-- begin mix-in
 	ECLI_EXTERNAL_TOOLS
 		export {NONE} all
+		undefine
+			is_equal
 		end
 
 	ECLI_EXTERNAL_API
-	
+		undefine
+			is_equal
+		end
+		
 	ECLI_NULLABLE_METADATA
+		undefine
+			is_equal
+		end
 	-- end mix-in
 	
 creation
@@ -63,6 +74,14 @@ feature -- Access
 	decimal_digits : INTEGER
 			-- maximum number of digits to the right of the decimal point, or the scale of the data. For numeric types only.
 
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+			-- 
+		do
+			Result := Precursor {ECLI_DATA_DESCRIPTION} (other) and then sql_type_code  = other.sql_type_code and then size = other.size and then decimal_digits = other.decimal_digits 
+		end
+		
 feature {NONE} -- Implementation
 
 		ext_sql_type_code : XS_C_INT32 is once create Result.make end

@@ -22,12 +22,18 @@ inherit
 		export
 			{NONE} all
 		undefine
-			dispose
+			dispose, is_equal
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			is_equal
+		end
 
 	HASHABLE
+		undefine
+			is_equal
+		end
 
 creation
 	make
