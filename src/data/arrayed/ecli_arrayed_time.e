@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI TIME value"
+	description: "ISO CLI TIME arrayed value"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -26,18 +26,16 @@ inherit
 		end
 	
 creation
-	make_default
+	make
 	
 feature {NONE} -- Initialization
 
-	make_default (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER) is
 		do
 			capacity := a_capacity
 			count := capacity
 			allocate_buffer
-		ensure
-			capacity_set: capacity = a_capacity
-			count_set: count = capacity
+			set_all_null
 		end
 
 feature -- Access
@@ -114,6 +112,7 @@ feature -- Measurement
 			ecli_c_timestamp_set_minute (time_pointer, a_minute)
 			ecli_c_timestamp_set_second (time_pointer, a_second)
 			ecli_c_timestamp_set_fraction (time_pointer, a_nanosecond)
+			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)			
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute

@@ -80,17 +80,17 @@ feature -- Miscellaneous
 
 	create_date_value is
 		do
-			!ECLI_ARRAYED_DATE!last_result.make_default (row_count)
+			!ECLI_ARRAYED_DATE!last_result.make (row_count)
 		end
 
 	create_timestamp_value is
 		do
-			!ECLI_ARRAYED_TIMESTAMP!last_result.make_default (row_count)
+			!ECLI_ARRAYED_TIMESTAMP!last_result.make (row_count)
 		end
 
 	create_time_value is
 		do
-			!ECLI_ARRAYED_TIME!last_result.make_default (row_count)
+			!ECLI_ARRAYED_TIME!last_result.make (row_count)
 		end
 
 feature -- Basic operations

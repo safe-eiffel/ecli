@@ -36,30 +36,52 @@ inherit
 			to_string
 		end
 		
+feature -- Initialization
+
+	make (a_capacity : INTEGER) is
+			-- make for `a_capacity' items
+		deferred
+		ensure
+			capacity_set: capacity = a_capacity
+			count_set: count = capacity
+			cursor_before: before
+			all_null: is_all_null -- foreach i in 1..count : is_null_at (i)
+		end
+		
 feature -- Access
 
 	cursor_index : INTEGER
+			-- index of internal cursor
 
 	item_at (index : INTEGER) : like item is
 			-- item at `index'th position
 		require
-			valid_index: index >= 1 and index <= count
+			valid_index: index >= lower and index <= count
 		deferred			
 		end
 		
 feature -- Measurement
 
 	capacity : INTEGER
+			-- capacity of array
 	
 	count : INTEGER
 			-- actual number of values
+
+	lower : INTEGER is 1
+			-- lower index
 	
+	upper : INTEGER is
+			-- upper index
+		do
+			Result := count
+		end
 feature -- Status report
 
 	is_null_at (index : INTEGER) : BOOLEAN is
 			-- is `index'th item NULL ?
 		require
-			valid_index: index >= 1 and index <= count
+			valid_index: index >= lower and index <= count
 		do
 			Result := (ecli_c_array_value_get_length_indicator_at (buffer, index) = Sql_null_data)
 		end
@@ -67,32 +89,70 @@ feature -- Status report
 	is_null : BOOLEAN is
 			-- is element at `cursor_index' NULL ?
 		do
-			Result := is_null_at (cursor_index)
+			if off then
+				Result := False
+			else
+				Result := is_null_at (cursor_index)
+			end
+		ensure
+			null_when_off: off implies (Result = False)
+			definition: (not off) implies (Result = is_null_at (cursor_index))
+		end
+
+	is_all_null : BOOLEAN is
+			-- are all element NULL ?
+		local
+			index : INTEGER
+		do
+			from
+				Result := True
+				index := 1
+			until
+				Result = False or else index > count
+			loop
+				Result := Result and is_null_at (index)
+				index := index + 1
+			end
 		end
 		
 	off : BOOLEAN is
-			-- 
+			-- is there any item at current cursor position ?
 		do
-			Result := cursor_index < 1 or else cursor_index > count
+			Result := cursor_index < lower or else cursor_index > count
 		end
 
+	before : BOOLEAN is
+			-- is cursor before any valid element ?
+		do
+			Result := (cursor_index < lower)
+		end
+		
+	after : BOOLEAN is
+			-- is cursor after any valid element ?
+		do
+			Result := (cursor_index > count)
+		end
+		
 feature -- Status setting
 		
 feature -- Cursor movement
 
 	start is
+			-- start internal cursor
 		do
-			cursor_index := 1
+			cursor_index := lower
+		ensure
+			definition: not before or else after
 		end
 		
 	forth is
-			-- 
+			-- advance internal cursor
 		do
 			cursor_index := cursor_index + 1
 		end
 	
 	go (ith : INTEGER) is
-			-- 
+			-- advance internal cursor
 		require
 			ith: ith > 0 and ith <= count
 		do
@@ -106,7 +166,7 @@ feature -- Element change
 	set_item_at (value : like item; index : INTEGER) is
 			-- set `index'th value to `value'
 		require
-			valid_index: index >= 1 and index <= count
+			valid_index: index >= lower and index <= count
 		deferred
 		ensure
 			item_set: equal (item_at (index), truncated (value))
@@ -115,7 +175,7 @@ feature -- Element change
 	set_null_at (index: INTEGER) is
 			-- set `index'th value to NULL
 		require
-			valid_index: index >= 1 and index <= count
+			valid_index: index >= lower and index <= count
 		do
 			ecli_c_array_value_set_length_indicator_at (buffer, Sql_null_data, index)
 		ensure
@@ -136,7 +196,7 @@ feature -- Transformation
 feature -- Conversion
 
 	to_string : STRING is
-			-- 
+			-- visible representation of current item
 		do
 			Result := out_item_at (cursor_index)
 		end
@@ -182,12 +242,13 @@ feature -- Basic operations
 			-- used to indicate that index ranging from 'a_count' + 1 to 'capacity'
 			-- do not hold interesting values
 		require
-			valid_count: a_count >= 1 and a_count <= capacity
+			valid_count: a_count >= lower and a_count <= capacity
 		do
 			count := a_count
 		ensure
 			count_set: count = a_count
 		end
+		
 feature -- Obsolete
 
 feature -- Inapplicable
@@ -212,9 +273,26 @@ feature {NONE} -- Implementation
 		do
 			Result := item_at (index).out
 		end
+
+	set_all_null is
+			-- set all element to NULL
+		local
+			index : INTEGER
+		do
+			from
+				index := 1
+			until
+				index > count
+			loop
+				set_null_at (index)
+				index := index + 1
+			end
+		end
 		
 invariant
-	valid_count: count >= 1 and count <= capacity
-	valid_capacity: capacity >= 1
-
+	valid_count: count >= lower and count <= capacity
+	valid_capacity: capacity >= lower
+	lower: lower = 1
+	upper: upper = count
+	limits: lower <= upper	
 end -- class ECLI_ARRAYED_VALUE

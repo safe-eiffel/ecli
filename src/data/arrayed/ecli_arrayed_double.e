@@ -1,5 +1,5 @@
 indexing
-	description: "CLI SQL DOUBLE value"
+	description: "CLI SQL DOUBLE arrayed value"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -26,16 +26,14 @@ inherit
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
 		do
 			buffer := ecli_c_alloc_array_value (8, a_capacity)
 			capacity := a_capacity
 			count := capacity
-		ensure
-			capacity_set: capacity = a_capacity
-			count_set: count = capacity
+			set_all_null
 		end
 		
 feature -- Access
@@ -93,11 +91,6 @@ feature -- Duplication
 feature -- Miscellaneous
 
 feature -- Basic operations
-
---	trace (a_tracer : ECLI_TRACER) is
---		do
---			a_tracer.put_double (Current)
---		end
 
 	out : STRING is
 		local

@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI DATE value"
+	description: "ISO CLI DATE arrayed value"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -35,21 +35,17 @@ inherit
 		end
 	
 creation
-	make_default
+	make
 
 feature {NONE} -- Initialization
 		
-	make_default (a_capacity : INTEGER) is
-			-- make default date as first day of Christian Era : January 1st, 1
+	make (a_capacity : INTEGER) is
+			-- make array of null dates
 		do
 			capacity := a_capacity
 			count := capacity
 			allocate_buffer
-			from start until off loop set_date (1,1,1); forth end; start
-		ensure
-			year_set: year = 1
-			month_set: month = 1
-			day_set: day = 1
+			set_all_null
 		end
 		
 feature -- Access
@@ -126,6 +122,7 @@ feature -- Element change
 			ecli_c_date_set_year (date_pointer, other.year)
 			ecli_c_date_set_month (date_pointer, other.month)
 			ecli_c_date_set_day (date_pointer, other.day)			
+			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		end
 
 	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER ) is
@@ -136,6 +133,7 @@ feature -- Element change
 			ecli_c_date_set_year (date_pointer, a_year)
 			ecli_c_date_set_month (date_pointer, a_month)
 			ecli_c_date_set_day (date_pointer, a_day)			
+			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		ensure
 			year_set: item_at (index).year = a_year
 			month_set: item_at (index).month = a_month

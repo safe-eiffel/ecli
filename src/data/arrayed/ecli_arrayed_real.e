@@ -1,5 +1,5 @@
 indexing
-	description: "CLI SQL REAL value"
+	description: "CLI SQL REAL arrayed value"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -27,16 +27,14 @@ inherit
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
 		do
 			buffer := ecli_c_alloc_array_value (4, a_capacity)
 			capacity := a_capacity
 			count := capacity
-		ensure
-			capacity_set: capacity = a_capacity
-			count_set: count = capacity
+			set_all_null
 		end
 		
 feature -- Access

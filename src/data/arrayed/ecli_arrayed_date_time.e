@@ -1,5 +1,5 @@
 indexing
-	description: "Date and time objects; synonym of ECLI_TIMESTAMP"
+	description: "Arrayed Date and time objects; synonym of ECLI_TIMESTAMP"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

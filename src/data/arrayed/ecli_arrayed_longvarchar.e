@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI LONGVARCHAR (n) values"
+	description: "ISO CLI LONGVARCHAR (n) arrayed values"
 	author: "Paul-G.Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -21,6 +21,8 @@ inherit
 		end
 	
 	ECLI_ARRAYED_VALUE
+		rename
+			make as make_arrayed
 		redefine
 			item, set_item, out_item_at, to_string
 		end
@@ -38,10 +40,18 @@ feature {NONE} -- Initialization
 			buffer := ecli_c_alloc_array_value (a_content_capacity+1, a_capacity)
 			capacity := a_capacity
 			count := capacity
+			set_all_null
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
-			array_capacity_set: capacity = a_capacity
+			capacity_set: capacity = a_capacity
 			count_set: count = capacity
+			cursor_before: before
+			all_null: is_all_null -- foreach i in 1..count : is_null_at (i)
+		end
+
+	make_arrayed (a_capacity : INTEGER) is
+			-- dummy one
+		do
 		end
 		
 feature -- Access

@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI TIMESTAMP values"
+	description: "ISO CLI TIMESTAMP arrayed values"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -56,7 +56,7 @@ inherit
 		end
 	
 creation
-	make_default
+	make
 
 feature {NONE} -- Initialization
 

@@ -1,5 +1,5 @@
 indexing
-	description: "ISO CLI VARCHAR (n) values"
+	description: "ISO CLI VARCHAR (n) arrayed values"
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
