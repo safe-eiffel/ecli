@@ -216,8 +216,10 @@ feature {NONE} -- Implementation
 							a_error_handler.report_warning_message ("![Warning] Is the lenght of result column '"+current_description.name+"' reasonable :"+current_description.size.out+" ?%N")
 							a_error_handler.report_warning_message ("-> use command line parameter -max_length <length>%N")
 						end
+						create current_result.make(current_description, maximum_length)
+					else
+						create current_result.make(current_description, current_description.size)
 					end
-					create current_result.make(current_description, maximum_length)
 					if results.has (current_result) then
 						a_error_handler.report_error_message ("! [Error] Result set '"+results.name+"' has two columns named '"+current_result.name+"'")
 						is_results_valid := False

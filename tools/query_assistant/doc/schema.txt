@@ -1,4 +1,4 @@
-Title: Basic description of Query Assistant
+Title: XML language for describing Access Modules for Query Assistant
 
 Author: Paul G. Crismer
 Date: September 10, 2003
@@ -46,7 +46,7 @@ XML Grammar (BNF style)
 			parameter_map : parameter_map_type
 			access : access_type
 
-	parameter_map_type ::= parameter + 
+	parameter_map_type ::= parameter+ 
 
 		Types:
 			parameter : parameter_type_in_map
@@ -55,6 +55,8 @@ XML Grammar (BNF style)
 
 		Attributes: 
 			name	mandatory	will be the name of the generated class.
+			type	optional	'read', 'write', 'update', 'delete', 'refresh', 'extended'.
+	
 			
 		Types:
 			sql 		: STRING
@@ -68,6 +70,9 @@ XML Grammar (BNF style)
 			provided the data source supports transaction : a rollback is executed
 			immediately after executing the statement; it's just a trial that can
 			be executed even on production databases.
+			Accesses with type attribute 'extended' inform query assistant to generate
+			an extended query skeleton compliant with the EPOM framework.
+			
 			
 	parameter_set_type ::= parameter+
 

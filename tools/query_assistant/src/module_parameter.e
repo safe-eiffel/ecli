@@ -44,12 +44,12 @@ feature {NONE} -- Initialization
 			set_name (a_name)
 			set_reference_column (a_reference_column)
 			if maximum_length > 0 then
-				size_impl := maximum_length
+				maximum_length_impl := maximum_length
 			end
 		ensure
 			name_assigned: name = a_name
 			reference_column_assigned: reference_column = a_reference_column
-			size_impl_assigned: maximum_length > 0 implies size_impl = maximum_length
+			maximum_length_impl_assigned: maximum_length > 0 implies maximum_length_impl = maximum_length
 		end
 
 feature -- Access
@@ -70,8 +70,8 @@ feature -- Access
 	size : INTEGER is
 			-- 
 		do
-			if size_impl > 0 then
-				Result := size_impl
+			if maximum_length_impl > 0 and then maximum_length_impl <= metadata.size then
+				Result := maximum_length_impl
 			else
 				Result := metadata.size
 			end
@@ -187,7 +187,7 @@ feature {NONE} -- Element change
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
-			-- 
+			-- is Current equal to `other' ?
 		do
 			Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
 		end
@@ -195,7 +195,7 @@ feature -- Comparison
 feature -- Duplication
 
 	copy (other : like Current) is
-			-- 
+			-- copy from `other'
 		do
 			create name.make_from_string (other.name)
 			create reference_column.make (other.reference_column.table, other.reference_column.column)
@@ -207,7 +207,9 @@ feature -- Duplication
 			end
 		end
 
-	size_impl : INTEGER
+feature {NONE} -- Implementation
+
+	maximum_length_impl : INTEGER
 	
 invariant
 	name_not_void: name /= Void
