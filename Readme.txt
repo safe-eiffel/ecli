@@ -1,8 +1,8 @@
 Eiffel Library to ISO/CLI (Call Level Interface) compatible DB systems
 
-Author : Paul G. Crismer <pgcrism@attglobal.net>
+Author : Paul G. Crismer <pgcrism@pi.be>
 License: Released under the Eiffel Forum License
-Copyright: 2000 - Paul G. Crismer 
+Copyright: 2000-2001 - Paul G. Crismer 
 
 Abstract
 ========

@@ -47,7 +47,7 @@ feature
 		
 end -- class MESSAGE_BUFFER
 --
--- Copyright: 2000, Paul G. Crismer, <pgcrism@attglobal.net>
+-- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

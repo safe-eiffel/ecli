@@ -1,6 +1,6 @@
 @echo off
 rem -- ECLI build procedure
-rem -- (c) 2000 - Paul G. Crismer
+rem -- (c) 2000-2001 - Paul G. Crismer
 rem -- Released under the Eiffel-Forum Licence : see forum.txt
 
 echo ** ECLI build procedure **

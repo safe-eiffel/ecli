@@ -1,6 +1,6 @@
 #!/bin/bash
 # -- ECLI build procedure
-# -- (c) 2000 - Paul G. Crismer
+# -- (c) 2000-2001 - Paul G. Crismer
 # -- Released under the Eiffel-Forum Licence : see forum.txt
 
 

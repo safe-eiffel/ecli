@@ -1,6 +1,7 @@
 2001-09-15
 	* TEST1 now traces its output if asked on the command line.
-	
+	* SmallEiffel-build systems now report error messages (error fixed).
+ 
 2001-09-06
 	* ISQL implementation of COMMIT, ROLLBACK and BEGIN.
 		TODO: read until _eof_ or quit
