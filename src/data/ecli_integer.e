@@ -59,7 +59,7 @@ feature -- Status report
 			Result := True
 		end
 		
-feature -- Status setting
+feature -- Access
 
 
 	c_type_code: INTEGER is
@@ -89,7 +89,9 @@ feature -- Status setting
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := 4
+		ensure
+			integer_32: Result = 4
 		end
 
 feature -- Cursor movement
@@ -161,6 +163,8 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	actual_value : INTEGER
+
+	octet_size : INTEGER is do Result := 4 ensure then result_is_4: Result = 4 end
 
 invariant
 	invariant_clause: -- Your invariant here

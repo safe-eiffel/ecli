@@ -31,7 +31,7 @@ inherit
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, is_equal, out, set_item, to_string
 		redefine
-			item, transfer_octet_length, trace, allocate_buffer, year, month, day, set_date
+			item, trace, allocate_buffer, year, month, day, set_date --, transfer_octet_length
 		end
 	
 creation
@@ -66,31 +66,70 @@ feature -- Access
 		end
 
 	year : INTEGER is
+			-- year_at (cursor_index)
+		require
+			not_off: not off
+		do
+			Result := year_at (cursor_index)
+		ensure
+			value_at_cursor_index: not is_null implies Result = month_at (cursor_index)
+			zero_when_null: is_null implies Result = 0
+		end
+
+	month : INTEGER is
+			-- month_at (cursor_index)
+		require
+			not_off: not off
+		do
+			Result := month_at (cursor_index)
+		ensure
+			value_at_cursor_index: not is_null implies Result = month_at (cursor_index)
+			zero_when_null: is_null implies Result = 0
+		end
+
+	day : INTEGER is
+			-- day_at (cursor_index)
+		require
+			not_off: not off
+		do
+			Result := day_at (cursor_index)
+		ensure
+			value_at_cursor_index: not is_null implies Result = day_at (cursor_index)
+			zero_when_null: is_null implies Result = 0
+		end
+
+	year_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and then index <= upper
 		local
 			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
-			if not is_null then
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
 				Result := ecli_c_date_get_year (date_pointer)
 			end
 		end
 
-	month : INTEGER is
+	month_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and then index <= upper
 		local
 			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
-			if not is_null then
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
 				Result := ecli_c_date_get_month (date_pointer)
 			end
 		end
 
-	day : INTEGER is
+	day_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and then index <= upper
 		local
 			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
-			if not is_null then
+			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
 				Result := ecli_c_date_get_day (date_pointer)
 			end
 		end
@@ -100,10 +139,10 @@ feature -- Measurement
 		
 feature -- Status report
 
-	transfer_octet_length: INTEGER is
-		do
-			Result := ecli_c_array_value_get_length (buffer)
-		end
+--	transfer_octet_length: INTEGER is
+--		do
+--			Result := ecli_c_array_value_get_length (buffer)
+--		end
 
 feature -- Status setting
 
@@ -118,11 +157,12 @@ feature -- Element change
 		local
 			date_pointer : POINTER
 		do
-			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
-			ecli_c_date_set_year (date_pointer, other.year)
-			ecli_c_date_set_month (date_pointer, other.month)
-			ecli_c_date_set_day (date_pointer, other.day)			
-			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
+--			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
+--			ecli_c_date_set_year (date_pointer, other.year)
+--			ecli_c_date_set_month (date_pointer, other.month)
+--			ecli_c_date_set_day (date_pointer, other.day)			
+--			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
+			set_date_at (other.year, other.month, other.day, index)
 		end
 
 	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER ) is
@@ -135,9 +175,9 @@ feature -- Element change
 			ecli_c_date_set_day (date_pointer, a_day)			
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		ensure
-			year_set: item_at (index).year = a_year
-			month_set: item_at (index).month = a_month
-			day_set: item_at (index).day = a_day
+			year_set: year_at (index) = a_year
+			month_set: month_at (index) = a_month
+			day_set: day_at (index) = a_day
 		end
 
 	set_date (a_year, a_month, a_day : INTEGER) is
@@ -191,7 +231,7 @@ feature {NONE} -- Implementation
 	allocate_buffer is
 		do
 			if buffer = default_pointer then
-				buffer := ecli_c_alloc_array_value (octet_size, capacity)
+				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)
 			end
 		end
 

@@ -170,6 +170,7 @@ feature -- Element change
 		deferred
 		ensure
 			item_set: equal (item_at (index), truncated (value))
+			not_null: not is_null_at (index)
 		end
 	
 	set_null_at (index: INTEGER) is

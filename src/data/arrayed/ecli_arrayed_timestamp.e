@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_ARRAYED_DATE
 		rename 
-			make_single as make_single_date, make_default_single as make_default_1, 
+			make_single as make_single_date, make_default_single as make_default_1_date, 
 			set_item as set_date_item
 		undefine
 			c_type_code,
@@ -21,22 +21,39 @@ inherit
 			decimal_digits, 
 			display_size, 
 			item,  
-			octet_size, 
 			to_time, 
 			to_timestamp, 
 			trace, 
-			transfer_octet_length 
+			transfer_octet_length, convertible_to_timestamp , convertible_to_date
 		redefine
-			is_equal, out_item_at, set_item_at --, set_item, set_item_at, 
+			is_equal, out_item_at, set_item_at--, set_item, set_item_at, 
 		select
-			make_default_1, make_single_date, set_date_item
+			make_default_1_date, make_single_date, set_date_item--, set_item_at-- to_date
 		end
 
+--	ECLI_ARRAYED_TIME
+--		rename 
+--			make_single as make_single_time, make_default_single as make_default_1_time, 
+--			set_item as set_time_item, set_at as set_time_time_at, set_item_at as set_time_item_at
+--		undefine
+--			c_type_code,
+--			column_precision, 
+--			convertible_to_string,
+--			sql_type_code, 
+--			decimal_digits, 
+--			display_size, 
+--			item,  
+--			to_time, hour, minute, second,
+--			to_timestamp, make, --set_time_item_at,
+--			trace, allocate_buffer, item_at, to_date, convertible_to_timestamp,convertible_to_date,
+--			transfer_octet_length, is_equal, out_item_at --, set_item_at --, set_item, set_item_at, 
+--		end
+	
 	ECLI_TIMESTAMP
 		rename
-			make as make_single, make_default as make_default_2, set as set_single
+			make as make_single, make_default as make_default_2, set as set_single_timestamp
 		export
-			{NONE} make_single, set_single, make_default_2
+			{NONE} make_single, set_single_timestamp, make_default_2
 		undefine
 			allocate_buffer, 
 			day, 
@@ -50,9 +67,9 @@ inherit
 			set_item, 
 			to_external, 
 			to_string, 
-			year
-		redefine
-			trace, hour, minute, second, nanosecond
+			year, hour, minute, second, nanosecond, to_date
+--		redefine
+--			trace, hour, minute, second, nanosecond
 		end
 	
 creation
@@ -113,6 +130,54 @@ feature -- Access
 			end
 		end
 
+	hour_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and index <= upper
+		local
+			timestamp_pointer : POINTER
+		do
+			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
+				Result := ecli_c_timestamp_get_hour (timestamp_pointer)
+			end
+		end
+
+	minute_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and index <= upper
+		local
+			timestamp_pointer : POINTER
+		do
+			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
+				Result := ecli_c_timestamp_get_minute (timestamp_pointer)
+			end
+		end
+
+	second_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and index <= upper
+		local
+			timestamp_pointer : POINTER
+		do
+			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
+				Result := ecli_c_timestamp_get_second (timestamp_pointer)
+			end
+		end
+
+	nanosecond_at (index : INTEGER) : INTEGER is
+		require
+			valid_index: index >= 1 and index <= upper
+		local
+			timestamp_pointer : POINTER
+		do
+			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, index)
+			if not is_null_at (index) then
+				Result := ecli_c_timestamp_get_fraction (timestamp_pointer)
+			end
+		end
+
 feature -- Measurement
 
 	set_time_at (a_hour, a_minute, a_second, a_nanosecond : INTEGER; index : INTEGER ) is
@@ -125,16 +190,16 @@ feature -- Measurement
 		local
 			timestamp_pointer : POINTER
 		do
-			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, cursor_index)
+			timestamp_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			ecli_c_timestamp_set_hour (timestamp_pointer, a_hour)
 			ecli_c_timestamp_set_minute (timestamp_pointer, a_minute)
 			ecli_c_timestamp_set_second (timestamp_pointer, a_second)
 			ecli_c_timestamp_set_fraction (timestamp_pointer, a_nanosecond)
 		ensure
-			hour_set: item_at (index).hour = a_hour
-			minute_set: item_at (index).minute = a_minute
-			second_set: item_at (index).second = a_second
-			nanosecond_set: item_at (index).millisecond = a_nanosecond // 1_000_000
+			hour_set: hour_at (index) = a_hour
+			minute_set: minute_at (index) = a_minute
+			second_set: second_at (index) = a_second
+			nanosecond_set: nanosecond_at (index) = a_nanosecond
 		end
 
 	set_at (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER; index : INTEGER) is
@@ -157,6 +222,7 @@ feature -- Measurement
 			minute_set: item_at (index).minute = a_minute
 			second_set: item_at (index).second = a_second
 			nanosecond_set: item_at (index).millisecond = a_nanosecond // 1_000_000
+			not_null: not is_null_at (index)
 		end
 
 	set_item (other : like item) is
@@ -219,10 +285,10 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
-		do
-			a_tracer.put_timestamp (Current)
-		end
+--	trace (a_tracer : ECLI_TRACER) is
+--		do
+--			a_tracer.put_timestamp (Current)
+--		end
 
 	is_equal (other : like Current) : BOOLEAN is
 		do

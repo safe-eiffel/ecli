@@ -11,7 +11,7 @@ class
 inherit
 	ECLI_DOUBLE
 		redefine
-			column_precision, sql_type_code, decimal_digits, display_size, transfer_octet_length
+			column_precision, sql_type_code, decimal_digits, display_size
 		end
 
 creation
@@ -52,10 +52,6 @@ feature -- Status setting
 			Result := 22
 		end
 
-	transfer_octet_length: INTEGER is
-		do
-			Result := ecli_c_value_get_length (buffer)
-		end
 
 feature -- Cursor movement
 

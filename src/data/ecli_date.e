@@ -65,6 +65,7 @@ feature {NONE} -- Initialization
 			allocate_buffer
 			set (1,1,1)
 		ensure
+			not_null: not is_null
 			year_set: year = 1
 			month_set: month = 1
 			day_set: day = 1
@@ -152,7 +153,7 @@ feature -- Status report
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := ecli_c_sizeof_date_struct
 		end
 
 feature -- Status setting
@@ -165,6 +166,7 @@ feature -- Status setting
 			ecli_c_date_set_year (to_external, a_year)
 			ecli_c_date_set_month (to_external, a_month)
 			ecli_c_date_set_day (to_external, a_day)
+			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
 		ensure
 			year_set: year = a_year
 			month_set: month = a_month
@@ -234,13 +236,8 @@ feature {NONE} -- Implementation
 	allocate_buffer is
 		do
 			if buffer = default_pointer then
-				buffer := ecli_c_alloc_value (octet_size)
+				buffer := ecli_c_alloc_value (transfer_octet_length)
 			end
-		end
-
-	octet_size : INTEGER is
-		do
-			Result := 6
 		end
 	
 	ecli_c_sizeof_date_struct : INTEGER is

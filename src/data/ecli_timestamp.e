@@ -16,10 +16,10 @@ inherit
 		undefine
 		redefine
 			make_default, item, set_item, 
-			set_date, octet_size,
+			set_date,
 			c_type_code, column_precision, sql_type_code, 
 			decimal_digits, display_size, out, is_equal,
-			to_timestamp, trace, to_string, convertible_to_string
+			to_timestamp, trace, to_string, convertible_to_string, transfer_octet_length
 		select
 		end
 
@@ -40,6 +40,7 @@ feature {NONE} -- Initialization
 			allocate_buffer
 			set (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond)
 		ensure
+			not_null: not is_null
 			year_set: year = a_year
 			month_set: month = a_month
 			day_set: day = a_day
@@ -148,7 +149,7 @@ feature -- Measurement
 
 	set_item (other : like item) is
 		do
-			Precursor (other)
+			set_date (other.year, other.month,other.day)
 			set_time (other.hour, other.minute, other.second, other.millisecond * 1_000_000)
 		end
 
@@ -269,12 +270,14 @@ feature -- Obsolete
 
 feature -- Inapplicable
 
-feature {NONE} -- Implementation
-
-	octet_size : INTEGER is
+	transfer_octet_length : INTEGER is
 		do
 			Result := ecli_c_sizeof_timestamp_struct
 		end
+		
+feature {NONE} -- Implementation
+
+--	octet_size : INTEGER is
 	
 	ecli_c_sizeof_timestamp_struct : INTEGER is
 		external "C"

@@ -161,6 +161,8 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
+	octet_size : INTEGER is do Result := transfer_octet_length end
+
 invariant
 	invariant_clause: -- Your invariant here
 

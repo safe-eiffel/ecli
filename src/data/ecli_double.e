@@ -23,7 +23,7 @@ feature -- Initialization
 
 	make is
 		do
-			buffer := ecli_c_alloc_value (8)
+			buffer := ecli_c_alloc_value (transfer_octet_length)
 		end
 		
 feature -- Access
@@ -88,7 +88,7 @@ feature -- Status setting
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := 8
 		end
 
 feature -- Cursor movement

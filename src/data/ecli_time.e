@@ -24,92 +24,96 @@ creation
 	
 feature {NONE} -- Initialization
 
-	make (a_hour, a_minute, a_second, a_nanosecond : INTEGER) is
+	make (a_hour, a_minute, a_second : INTEGER) is --, a_nanosecond : INTEGER) is
 		require
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
-			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
+--			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
 		do
 			allocate_buffer
-			set (a_hour, a_minute, a_second, a_nanosecond)
+			set (a_hour, a_minute, a_second) --, a_nanosecond)
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
 			second_set: second = a_second
-			nanosecond_set: nanosecond = a_nanosecond
+--			nanosecond_set: nanosecond = a_nanosecond
 		end
 
 	make_default is
 		do
 			allocate_buffer
+			set (0, 0, 0)
 		ensure
 			hour_set: hour = 0
 			minute_set: minute = 0
 			second_set: second = 0
-			nanosecond_set: nanosecond = 0
+--			nanosecond_set: nanosecond = 0
 		end
 
 feature -- Access
 
 	item : DT_TIME is
 		do
-			!!Result.make_precise (hour, minute, second,nanosecond // 1_000_000)
+			!!Result.make_precise (hour, minute, second,0)
+		ensure then
+			no_millisecond: Result.millisecond = 0
 		end
 
 	hour : INTEGER is
 		do
 			if not is_null then
-				Result := ecli_c_timestamp_get_hour (to_external)
+				Result := ecli_c_time_get_hour (to_external)
 			end
 		end
 
 	minute : INTEGER is
 		do
 			if not is_null then
-				Result := ecli_c_timestamp_get_minute (to_external)
+				Result := ecli_c_time_get_minute (to_external)
 			end
 		end
 
 	second : INTEGER is
 		do
 			if not is_null then
-				Result := ecli_c_timestamp_get_second (to_external)
+				Result := ecli_c_time_get_second (to_external)
 			end
 		end
 
-	nanosecond : INTEGER is
-		do
-			if not is_null then
-				Result := ecli_c_timestamp_get_fraction (to_external)
-			end
-		end
+--	nanosecond : INTEGER is
+--		do
+--			if not is_null then
+--				Result := ecli_c_timestamp_get_fraction (to_external)
+--			end
+--		end
 
 feature -- Measurement
 
 
-	set (a_hour, a_minute, a_second, a_nanosecond : INTEGER ) is
+	set (a_hour, a_minute, a_second : INTEGER) is
 		require
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
 			second: a_second >= 0 and a_second <= 61 -- to maintain synchronization of sidereal time (?)
-			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
+--			nanosecond: a_nanosecond >= 0 and a_nanosecond <= 999_999_999
 
 		do
-			ecli_c_timestamp_set_hour (to_external, a_hour)
-			ecli_c_timestamp_set_minute (to_external, a_minute)
-			ecli_c_timestamp_set_second (to_external, a_second)
-			ecli_c_timestamp_set_fraction (to_external, a_nanosecond)
+			ecli_c_time_set_hour (to_external, a_hour)
+			ecli_c_time_set_minute (to_external, a_minute)
+			ecli_c_time_set_second (to_external, a_second)
+--			ecli_c_timestamp_set_fraction (to_external, a_nanosecond)
+			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
 		ensure
 			hour_set: hour = a_hour
 			minute_set: minute = a_minute
 			second_set: second = a_second
-			nanosecond_set: nanosecond = a_nanosecond
+--			nanosecond_set: nanosecond = a_nanosecond
 		end
 
 	set_item (other : like item) is
 		do
-			set (other.hour, other.minute, other.second, other.millisecond * 1_000_000)
+			set (other.hour, other.minute, other.second)
 		end
 
 feature -- Status report
@@ -120,20 +124,13 @@ feature -- Status report
 		end
 
 	column_precision: INTEGER is
-		local
-			l_digits : INTEGER
 		do
-			l_digits := decimal_digits
-			if l_digits > 0 then
-				Result := 9+l_digits
-			else
-				Result := 8
-			end
+			Result := 8
 		end
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := ecli_c_sizeof_time_struct --ecli_c_value_get_length (buffer)
 		end
 
 	sql_type_code: INTEGER is
@@ -142,19 +139,8 @@ feature -- Status report
 		end
 	
 	decimal_digits: INTEGER is
-			-- log_10 (nanoseconds)	
-		local
-			l_nanoseconds : INTEGER
-		do 
-			l_nanoseconds := nanosecond
-			from
-				Result := 0
-			until
-				l_nanoseconds = 0
-			loop
-				l_nanoseconds := l_nanoseconds // 10
-				Result := Result + 1
-			end
+		do
+			Result := 0
 		end
 
 	display_size: INTEGER is
@@ -186,10 +172,10 @@ feature -- Conversion
 				Result.append (pad_integer_2 (minute))
 				Result.append_character (':')
 				Result.append (pad_integer_2 (second))
-				if nanosecond > 0 then
-					Result.append_character ('.')
-					Result.append (nanosecond.out)
-				end
+--				if nanosecond > 0 then
+--					Result.append_character ('.')
+--					Result.append (nanosecond.out)
+--				end
 			end
 		end
 			
@@ -213,8 +199,7 @@ feature -- Basic operations
 		do
 			Result := hour = other.hour and
 				minute = other.minute and
-				second = other.second and
-				nanosecond = other.nanosecond
+				second = other.second
 		end
 			
 feature -- Obsolete
@@ -222,18 +207,13 @@ feature -- Obsolete
 	allocate_buffer is
 		do
 			if buffer = default_pointer then
-				buffer := ecli_c_alloc_value (octet_size)
+				buffer := ecli_c_alloc_value (transfer_octet_length)
 			end
 		end
 
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
-
-	octet_size : INTEGER is
-		do
-			Result := ecli_c_sizeof_time_struct
-		end
 	
 	ecli_c_sizeof_time_struct : INTEGER is
 		external "C"

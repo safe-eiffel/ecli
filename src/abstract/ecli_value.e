@@ -321,7 +321,7 @@ feature {NONE} -- Implementation values
 	is_ready_for_disposal : BOOLEAN is True
 	
 	disposal_failure_reason : STRING is do	end
-	
+		
 invariant
 	invariant_clause: is_valid
 
