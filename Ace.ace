@@ -1,0 +1,62 @@
+system
+	e_cli_db
+
+root
+	E_CLI_DB (e_cli_db): "make"
+
+default
+	assertion (require)
+	multithreaded (no)
+	console_application (yes)
+	dynamic_runtime (no)
+	dead_code_removal (yes)
+	profile (no)
+	line_generation (no)
+	debug  (no)
+	array_optimization (no)
+	inlining (no)
+	inlining_size ("4")
+	precompiled ("$EIFFEL4\precomp\spec\$PLATFORM\base");
+
+
+cluster
+
+	e_cli_db : "C:\user\pgc\ecli_db";
+
+	-- Eiffel CLI DB library
+	abstract (e_cli_db) : "$\abstract";
+	ecli_spec (e_cli_db) : "$\spec";
+	ecli_spec_ise (ecli_spec) : "$\ise";
+	ecli_data (e_cli_db) : "$\data";
+	ecli_pattern (e_cli_db) : "$\pattern";
+
+		-- Gobo Eiffel Utility Library
+	ut_command:			"$GOBO\library\utility\command";
+	ut_error:			"$GOBO\library\utility\error";
+	ut_formatter:		"$GOBO\library\utility\formatter";
+	ut_support:			"$GOBO\library\utility\support";
+
+		-- Gobo Eiffel Kernel Library
+	kl_kernel:			"$GOBO\library\kernel";
+	kl_kernel_spec:		"$GOBO\library\kernel\spec\ise";
+
+		-- Gobo Eiffel Structure Library
+	ds_container:		"$GOBO\library\structure\container";
+	ds_cursor:			"$GOBO\library\structure\cursor";
+	ds_dispenser:		"$GOBO\library\structure\dispenser";
+	ds_list:			"$GOBO\library\structure\list";
+	ds_sort:			"$GOBO\library\structure\sort";
+	ds_support:			"$GOBO\library\structure\support";
+	ds_table:			"$GOBO\library\structure\table";
+
+		-- EiffelBase
+	all base:						"$EIFFEL4\library\base"
+		exclude
+			"desc";"table_eiffel3"
+		end
+
+	thread:						"$EIFFEL4\library\thread"
+
+external
+	object: "ODBC32.lib",	"c:\user\pgc\ecli_db\spec\ise\windows\ecli_c.lib";
+end

@@ -1,0 +1,16 @@
+Language
+--------
+
+VUAR4: $feature valid only if not constant feature.
+	SE : Does not work for local entities.
+	ISE: Works for local entities (is it valid?)
+	
+	
+Libraries
+---------
+
+Different names, same semantics
+ISE::STRING.clear_all ~= SE::STRING.wipe_out
+	ensure count = 0
+ISE::STRING.wipe_out /= SE:: STRING.wipe_out
+	ISE:: ensure count = 0 and area /= old area

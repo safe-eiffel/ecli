@@ -1,0 +1,27 @@
+ECLI --
+
+	1) Structure
+	2) Installation
+
+1. Structure
+
+	abstract			-- abstract ECLI data types
+	data				-- data transfer classes
+	doc				-- documentation
+	pattern				-- used pattern classes
+	spec				-- special classes
+		C			-- C wrappers
+		Ise			-- Ise specific
+			Windows			Platform specific
+		se			-- SmallEiffel specific
+			Windows		 	...
+
+2. Installation
+
+	2.1. Building the C library.
+A) go to the spec - platform - compiler directory of your choice
+B) make the ecli_c.lib library 
+
+	2.2. Building the sample
+A) SmallEiffel - run the sebuild.bat command file
+B) ISE - use the Ace.ace file
