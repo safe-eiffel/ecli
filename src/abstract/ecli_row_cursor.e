@@ -12,7 +12,6 @@ inherit
 		rename
 			make as cursor_make, open as statement_open,
 			make_prepared as cursor_make_prepared,
-			close as cursor_close, statement_close as close,
 			create_buffers as create_row_buffers
 		export 
 			{NONE} cursor_make;

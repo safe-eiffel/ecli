@@ -5,13 +5,13 @@ Shows the usage of 'query_assistant'
 2. create the tables using file 'ddl.sql'
 	
   By using the 'isql' sample application :
-	isql datasource user password < ddl.sql
+	isql -dsn datasource -user user -pwd password -sql ddl.sql
 	
   NOTE: use file ddl.postgres.sql wit a PostgreSQL data source
 
 3. populate database using file 'insert.sql'
 
-	isql datasource user password < insert.sql
+	isql -dsn datasource -user user -pwd password -sql insert.sql
 	
 4. use 'query_assistant' to generate class 'participant_by_remaining_cursor', using query 'byremaining.sql'
     query_assistant -sql byremaining.sql -dir ./ -class participant_by_remaining_cursor -dsn <dsn> -user <user> -pwd <pwd>

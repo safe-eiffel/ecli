@@ -13,34 +13,24 @@
 
 	<root class="TEST1" creation="make"/>
 
-	<cluster>
-		<option unless="${DEBUG}">
-			<require enable="False"/>
-			<ensure enable="False"/>
-			<invariant enable="False"/>
-			<loop enable="False"/>
-			<check enable="False"/>
-			<optimize enable="True"/>
-		</option>
-		<option if="${DEBUG}">
-			<require enable="True"/>
-			<ensure enable="True"/>
-			<invariant enable="True"/>
-			<loop enable="True"/>
-			<check enable="True"/>
-			<optimize enable="False"/>
-		</option>
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
 
-		<cluster name="test1" location="${ECLI}/examples/test1"/>
+	<cluster name="test1" location="${ECLI}/examples/test1"/>
 
-		<mount location="${ECLI}/cluster.xace"/>
-	
-		<mount location="${GOBO}/library/time/cluster.xace"/>
-		<mount location="${GOBO}/library/kernel/cluster.xace"/>
-		<mount location="${GOBO}/library/structure/cluster.xace"/>
-		<mount location="${GOBO}/library/utility/cluster.xace"/>
-		<mount location="${GOBO}/library/pattern/cluster.xace"/>
-		<mount location="${GOBO}/library/kernel.xace"/>
+	<mount location="${ECLI}/library.xace"/>
 
-	</cluster>
+	<mount location="${GOBO}/library/time/library.xace"/>
+	<mount location="${GOBO}/library/kernel/library.xace"/>
+	<mount location="${GOBO}/library/structure/library.xace"/>
+	<mount location="${GOBO}/library/utility/library.xace"/>
+	<mount location="${GOBO}/library/pattern/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+
 </system>

@@ -10,8 +10,7 @@ class
 inherit
 	ECLI_CURSOR
 		rename
-			statement_start as start,
-			close as cursor_close, statement_close as close
+			statement_start as start
 		export 
 			{ANY} close
 		redefine

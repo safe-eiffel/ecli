@@ -90,12 +90,12 @@ feature -- Status report
 			-- is element at `cursor_index' NULL ?
 		do
 			if off then
-				Result := False
+				Result := True
 			else
 				Result := is_null_at (cursor_index)
 			end
 		ensure
-			null_when_off: off implies (Result = False)
+			null_when_off: off implies Result
 			definition: (not off) implies (Result = is_null_at (cursor_index))
 		end
 

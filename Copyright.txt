@@ -31,7 +31,7 @@ Forum Freeware License:
     INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
     ARISING IN ANY WAY OUT OF THE USE OF THIS PACKAGE.
 -----
-Copyright 2000-2001, Paul G. Crismer, mailto:pgcrism@pi.be
+Copyright 2000-2002, Paul G. Crismer, mailto:pgcrism@users.sourceforge.net
 
 Copyright R. Switzer & al, for IO_MEDIUM, FILE, PLAIN_TEXT_FILE compatibility for SmallEiffel
 	Those files have been adapted from the ones of MICO/E
