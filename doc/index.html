@@ -72,7 +72,7 @@ Compilers. </p>
 
 <ol>
     <li>Connect/Disconnect to a database.</li>
-    <li>Issue SQL Statements with or without parameters.</li>
+    <li>Issue SQL Statements with or without parameters (stored procedures as well).</li>
     <li>Parameters can be used by name (extension to CLI).</li>
     <li>Execute in direct or prepared mode. Prepared mode is <i>more</i>
         performant for repeated execution of same query with
@@ -80,6 +80,8 @@ Compilers. </p>
     <li>Get result set data.</li>
     <li>Describe result-set (metadata)</li>
     <li>Describe parameters (metadata)</li>
+    <li>Use transactions</li>
+    <li>Trace SQL statements that are issued by an application.</li>
 </ol>
 
 <h2>Cursor framework and tool</h2>
@@ -177,6 +179,20 @@ data-transfer-values are encapsulated <br>
 in the class ECLI_VALUE and its descendants. <br>
 Descendant classes map CLI specific database values : CHAR,
 VARCHAR, INTEGER, ... </p>
+
+<h2>I4. Stored procedures</h2>
+Stored procedures are called using the ODBC-neutral syntax : <b>{CALL <i>procedure_name (parameter_list)</i>}</b>.
+
+<p>
+NOT Supported:
+<ul>
+<li>Stored procedures that return multiple result sets are NOT supported for the moment.
+</li>
+<li>
+Stored procedures that return a single value are not supported : calls of the form {CALL ?=procedure(parameters)}.
+</li>
+</ul>
+</p>
 
 <h1>Section 3 : Architecture Diagram</h1>
 
