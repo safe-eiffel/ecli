@@ -137,12 +137,12 @@ feature --  Basic operations
 				io.put_string (" - DDL - Create sample table%N")
 				-- DDL statement
 				-- | Uncomment next line for using MS Access driver or PostgreSQL
-				stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
+				--stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate DATETIME, price FLOAT)")
 				--
 				-- | Uncomment next line for using Oracle 8 driver, and comment previous one
 				--stmt.set_sql ("CREATE TABLE ECLIESSAI (lname CHAR(20), fname VARCHAR2 (20), nbr NUMBER(10), bdate DATE, price FLOAT)")
 				-- | Uncomment next line for using Interbase driver, and comment previous one
-				--stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
+				stmt.set_sql ("CREATE TABLE ECLIESSAI (name CHAR(20), fname VARCHAR (20), nbr INTEGER, bdate TIMESTAMP, price FLOAT)")
 				show_query ("Table creation : ",stmt)
 
 				stmt.execute
@@ -169,7 +169,7 @@ feature --  Basic operations
 
 				stmt.execute
 				--
-				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Didi', 'Anticonstitutionnellement', 30, {ts '2000-07-26 23:59:59.99'}, 42.4)")
+				stmt.set_sql ("INSERT INTO ECLIESSAI VALUES ('Didi', 'Lemmings', 30, {ts '2000-07-26 23:59:59.00'}, 42.4)")
 				show_query ("", stmt)
 
 				stmt.execute
@@ -197,7 +197,7 @@ feature --  Basic operations
 			price := 89.107896
 			!!p_price.make
 			p_price.set_item (price)
-			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
+			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
 			stmt.set_parameters (<<first_name_parameter, last_name_parameter, p_nbr, p_birthdate, p_price>>)
 			show_parameter_names (stmt)
 			stmt.bind_parameters
@@ -205,7 +205,7 @@ feature --  Basic operations
 				print_status (stmt)
 			end
 			stmt.execute
-			if not stmt.is_ok then
+			if not stmt.is_ok or stmt.has_information_message then
 				print_status (stmt)
 			end
 		end
@@ -224,7 +224,7 @@ feature --  Basic operations
 			first_name_parameter.set_item ("Stoney")
 			!!last_name_parameter.make (20)
 			last_name_parameter.set_item ("Archibald")
-			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 5453528)
+			!! p_birthdate.make (1957, 9, 22, 14, 30, 02, 0)
 
 			-- set parameters by "tuple" i.e. ARRAY[ECLI_VALUE]
 			-- order *matters* !!!
@@ -426,6 +426,9 @@ feature -- Miscellaneous
 			io.put_string (comment)
 			io.put_string (statement.sql)
 			io.put_character ('%N')
+			if statement.has_information_message or not statement.is_ok then
+				print_status (statement)
+			end
 		end
 
 	print_status (status : ECLI_STATUS) is

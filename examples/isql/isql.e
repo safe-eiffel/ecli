@@ -20,8 +20,16 @@ feature -- Initialization
 		do
 			-- session opening
 			if args.argument_count < 3 then
-				io.put_string ("Usage: isql <data_source> <user_name> <password>%N")
+				io.put_string ("Usage: isql <data_source> <user_name> <password> [<input_file_name> [echo]]%N")
 			else
+				-- determine_input
+				if args.argument_count > 3 then
+					create_input_file (args.argument (4))
+					if args.argument_count > 4 then
+						echo_output := (args.argument (4).item (1) ='e' or else args.argument (4).item (1)='E')
+					end
+				end
+				
 				!! session.make (args.argument (1), args.argument (2), args.argument (3))
 				session.connect
 				if session.has_information_message then
@@ -49,14 +57,16 @@ feature -- Initialization
 				
 	print_help is
 		do
-			io.put_string ("Enter a SQL or a command terminated by a ';'%N")
-			io.put_string (" ;%Texecutes last SQL or command%N")
-			io.put_string ("Commands%N")
-			io.put_string (" h%Tprint this message%N")
-			io.put_string (" q%Tquit%N")
-			io.put_string (" BEGIN TRANSACTION%T Begins a new transaction%N")
-			io.put_string (" COMMIT TRANSACTION%T Commits current transaction%N")
-			io.put_string (" ROLLBACK TRANSACTION%T Rollbacks current transaction%N")
+			if is_session_interactive then
+				io.put_string ("Enter a SQL or a command terminated by a ';'%N")
+				io.put_string (" ;%Texecutes last SQL or command%N")
+				io.put_string ("Commands%N")
+				io.put_string (" h%Tprint this message%N")
+				io.put_string (" q%Tquit%N")
+				io.put_string (" BEGIN TRANSACTION%T Begins a new transaction%N")
+				io.put_string (" COMMIT TRANSACTION%T Commits current transaction%N")
+				io.put_string (" ROLLBACK TRANSACTION%T Rollbacks current transaction%N")
+			end
 		end
 		
 	do_session is
@@ -66,6 +76,10 @@ feature -- Initialization
 			until
 				is_session_done
 			loop
+				if not is_session_interactive and echo_output then
+					io.put_string (last_command)
+					io.put_string ("%N")
+				end
 				if last_command.is_equal ("h") then
 					print_help
 				elseif is_begin (last_command) then
@@ -175,38 +189,43 @@ feature -- Basic Operations
 			separator_index : INTEGER
 		do
 			last_command.copy("")
+			
 
-			io.put_string ("iSQL>")
+			-- prompt user
+			if is_session_interactive then
+				io.put_string ("iSQL>")
+			end
+			
 			from
-				io.read_line
+				read_line
 			until
-				done
+				end_of_input or else done
 			loop
 				-- Trim trailing blanks
 				from
-					separator_index := io.last_string.count
+					separator_index := last_string.count
 				until
 					separator_index < 1 or
-					io.last_string.item(separator_index) /= ' ' or
-					io.last_string.item(separator_index) /= '%T'
-			loop
+					last_string.item(separator_index) /= ' ' or
+					last_string.item(separator_index) /= '%T'
+				loop
 					separator_index := separator_index - 1
 				end
 				-- End of command ?
 				if separator_index >= 1 then
-					if io.last_string.item (separator_index) = ';' then
+					if last_string.item (separator_index) = ';' then
 						done := True
 						separator_index := separator_index - 1
 					end
 				end
 				-- Append if not empty string
 				if separator_index >= 1 then
-					last_command.append (io.last_string.substring (1, separator_index))					
+					last_command.append (last_string.substring (1, separator_index))					
 				end
 				if not done then
-				io.read_line
+					read_line
+				end
 			end
-		end
 		end
 
 	last_command : STRING is
@@ -307,12 +326,63 @@ feature -- Basic Operations
 	is_session_done : BOOLEAN is
 			-- 
 		do
-			if last_command.count > 0 then
-				Result :=  last_command.item (1) = 'q'
+			if end_of_input then
+				Result := True
+			else
+				if last_command.count > 0 then
+					Result :=  last_command.item (1) = 'q'
 						or else last_command.item (1) = 'Q'
+				end
 			end
 		end
+
+	is_session_interactive : BOOLEAN is
+		do
+			Result := input_file = Void
+		end
 		
+	input_file : PLAIN_TEXT_FILE
+
+	create_input_file (file_name : STRING) is
+			-- create and open file `file_name' for reading
+		require
+			file_name_exists : file_name /= Void
+		local
+			rescued : BOOLEAN
+		do
+			if not rescued then
+				!!input_file.make_open_read (file_name)
+			end
+		ensure
+			input_file /= Void implies input_file.is_open_read
+		rescue
+			rescued := True
+			input_file := Void
+			retry
+		end
+
+	last_string : STRING
+	
+	read_line is
+		do
+			if is_session_interactive then
+				io.read_line
+				last_string := io.last_string
+			else
+				input_file.read_line
+				last_string := input_file.last_string
+			end
+		end
+	
+	end_of_input : BOOLEAN is
+		do
+			if not is_session_interactive then
+				Result := input_file.end_of_file
+			end
+		end
+
+	echo_output : BOOLEAN
+	
 end -- class ISQL
 --
 -- Copyright: 2000-2001, Paul G. Crismer, <pgcrism@pi.be>

@@ -119,7 +119,7 @@ feature {ECLI_VALUE} -- Basic operations
 			a_date /= Void and then not a_date.is_null
 		do
 			medium.put_string ("{d '")
-			put_date_part (a_date)
+			medium.put_string (a_date.out)
 			medium.put_string ("'}")
 		end
 		
@@ -129,14 +129,7 @@ feature {ECLI_VALUE} -- Basic operations
 			a_date_time /= Void and then not a_date_time.is_null
 		do
 			medium.put_string ("{ts '")
-			put_date_part (a_date_time)
-			medium.put_integer (a_date_time.hour)
-			medium.put_character (':')
-			medium.put_integer (a_date_time.minute)
-			medium.put_character (':')
-			medium.put_integer (a_date_time.second)
-			medium.put_character ('.')
-			medium.put_integer (a_date_time.nanosecond)
+			medium.put_string (a_date_time.out)
 			medium.put_string ("'}")
 		end
 		
@@ -186,18 +179,6 @@ feature {NONE} -- Implementation
 			else
 				a_value.trace (Current)
 			end
-		end
-
-	put_date_part (a_date : ECLI_DATE) is
-			-- put 'date' as YYYY-MM-DD
-		require
-			a_date /= Void
-		do
-			medium.put_integer (a_date.year)
-			medium.put_character ('-')
-			medium.put_integer (a_date.month)
-			medium.put_character ('-')
-			medium.put_integer (a_date.day)
 		end
 
 	parameter_count : INTEGER

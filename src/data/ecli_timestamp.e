@@ -202,8 +202,10 @@ feature -- Conversion
 				Result.append (pad_integer_2 (minute))
 				Result.append_character (':')
 				Result.append (pad_integer_2 (second))
-				Result.append_character ('.')
-				Result.append (nanosecond.out)
+				if nanosecond > 0 then
+					Result.append_character ('.')
+					Result.append (nanosecond.out)
+				end
 			end
 		end
 			
