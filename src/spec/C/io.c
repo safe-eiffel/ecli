@@ -1,6 +1,7 @@
 #include "ecli_c.h"
 #include <string.h>
 #include <stdio.h>
+#include <io.h>
 #include <errno.h>
 
 static void xstrerror(void);
@@ -207,6 +208,13 @@ EIF_BOOLEAN FILE_eof (EIF_POINTER fp)
     return (EIF_BOOLEAN) feof ((FILE*)fp);
 }
 /******************************************************/
+
+EIF_BOOLEAN FILE_exists (EIF_POINTER path)
+{
+		return (EIF_BOOLEAN) ((access (path, 0)==0)?1:0);
+}
+
+
 #define BSIZE 1024
 
 static char buf[BSIZE];
