@@ -48,4 +48,5 @@
 		</option>
 	</cluster>
 
+	<mount location="${SAFE}/lib/kernel/library.xace"/>
 </library>

@@ -29,6 +29,7 @@
 		<echo message="WARNING: ECLI variable not set" unless="${ECLI}"/>
 		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
 		<echo message="WARNING: ECLI_C_BCC_DIR variable not set" if="${GOBO_CC}=bcc" unless="${ECLI_C_BCCDIR}"/>
+		<echo message="WARNING: SAFE variable not set" unless="${SAFE}"/>
 	</target>
 
 	<target name="prepare_compile" depend="init">

@@ -62,6 +62,7 @@
   <li><a href="#Introduction">Introduction</a>
      </li>
   <li><a href="#ODBCCLI">ODBC/CLI Background</a></li>
+  <li><a href="#Archi_0">Architecture at first glance</a></li>
   <li><a href="#Yourfirstdatabase">Your first database session</a></li>
   <li><a href="#Statuscheckinganderror">Status checking and error handling</a></li>
   <li><a href="#StatementExec">Statement execution</a></li>
@@ -219,7 +220,7 @@ information </p>
 
 <div align="Left">ODBC/CLI associates a name with a set of configuration information.
 This is known as the <i>data source name</i>. ODBC/CLI configuration is generally
-stored in a file : <tt>ODBC.INI</tt>.</div>
+stored in a file : ODBC.INI.</div>
 <p align="Center"></p>
 
 <div align="Center">
@@ -360,6 +361,38 @@ ODBC reference manual</a>
 <br>
 </div>
 <p align="Center">  </p>
+
+<h1><a name="Archi_0"></a>
+Architecture at first glance</h1>
+<p align="Left">The following diagram shows the main abstractions of ECLI</p>
+<p align="Center"><img src="Archi_0.jpg" width="656" height="343">
+    </p>
+
+      <div align="Center">
+      <table width="80%" border="1" cellpadding="5" cellspacing="0">
+
+        <tr>
+            <td valign="Top" width="29%"><b>Class</b> </td>
+            <td valign="Top" width="71%"><b>Description</b> </td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>ECLI_STATUS</i></td>
+            <td valign="Top" width="71%">Objects that represent a CLI status, reflects its various values and associated information messages</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>ECLI_SESSION</i></td>
+            <td valign="Top" width="71%">Objects that represent a session to a database</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>ECLI_STATEMENT</i></td>
+            <td valign="Top" width="71%">Objects that represent statements that manipulate a database. They are defined on a connected session. Provide CLI/ODBC CORE and some Level 1 functionalities</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>ECLI_VALUE</i></td>
+            <td valign="Top" width="71%">Objects that represent typed values to be exchanged with the database</td>
+        </tr>
+      </table>
+         </div>
 
 <h1><a name="Yourfirstdatabase"></a>
  Your first database session</h1>
@@ -714,14 +747,14 @@ users  from database idiosyncrasies.</i><i><br>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_CHAR</td>
-            <td valign="Top" width="33%">CHAR (n); 1 &lt;= n &lt; 255</td>
+            <td valign="Top" width="33%">CHAR (n); 1 &lt;= n &lt; max_char</td>
             <td valign="Top" width="33%">STRING</td>
              <td valign="Top"><i>as_string</i><br>
              </td>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_VARCHAR</td>
-            <td valign="Top" width="33%">VARCHAR (n); 1 &lt;= n &lt;    255</td>
+            <td valign="Top" width="33%">VARCHAR (n); 1 &lt;= n &lt;    max_varchar</td>
             <td valign="Top" width="33%">STRING</td>
              <td valign="Top"><i>as_string</i><br>
              </td>
@@ -777,7 +810,7 @@ users  from database idiosyncrasies.</i><i><br>
         </tr>
         <tr>
             <td valign="Top" width="33%">ECLI_LONGVARCHAR</td>
-            <td valign="Top" width="33%">LONGVARCHAR</td>
+            <td valign="Top" width="33%">LONGVARCHAR (n); 1 &lt;= n &lt;= max_longvarchar</td>
             <td valign="Top" width="33%">STRING</td>
              <td valign="Top"><i>as_string</i><br>
              </td>
@@ -786,11 +819,36 @@ users  from database idiosyncrasies.</i><i><br>
     </center>
          </div>
 
-      <p>The originality of this model is to allow for database NULL value
+     <p>The originality of this model is to allow for database NULL value
  detection. While other database libraries provide default Eiffel values for
  a NULL database value, ECLI allows reading or writing such a NULL value.
       </p>
 
+	<p>NOTE : The <em>max_varchar</em>, <em>max_char</em>, and <em>max_longvarchar</em> limits are
+	implementation dependent.  ECLI_CHAR and ECLI_VARCHAR have a maximum capacity of 255.  ECLI_LONGVARCHAR have a maximum capacity of 1_000_000.
+	Users with different needs must create descendant classes that redefine the <em>max_capacity</em> feature.</p>
+	</p>
+<p>The following code fragment shows how to define a class that closely follows the VARCHAR2 datatype of Oracle :</P>
+<div id="Code">
+<pre>
+class
+	ORACLE_VARCHAR2
+inherit
+	ECLI_VARCHAR
+		redefine
+			max_capacity
+		end
+creation
+	make
+
+feature -- Measurement
+
+	max_capacity : INTEGER is do Result := 2000 end
+end
+</pre>
+</div>
+
+</div>
       <p align="Left">The important ECLI_VALUE features are :&nbsp; </p>
 
       <div align="Center">
@@ -1174,55 +1232,70 @@ passed before query execution. The SQL syntax for that is simple : prefix
 
       <p align="Left">An insert statement like this &nbsp; </p>
 
-      <div align="Center">
-      <center>
-      <table width="80%" border="0" cellpadding="3" cellspacing="0">
-
-             <tr>
-            <td bgcolor="#ffff99">
-            <pre>INSERT INTO ECLITRIAL VALUES&nbsp;<tt>&nbsp;<br></tt>&nbsp;&nbsp;&nbsp; ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)</pre>
-            </td>
-        </tr>
-
-
-      </table>
-    </center>
-         </div>
+      <div id="code">
+      <pre>INSERT INTO ECLITRIAL VALUES&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)</pre>
+	</div>
 
       <p align="Left">can be parameterized like this &nbsp; </p>
 
-      <div align="Center">
-      <center>
-      <table width="80%" border="0" cellpadding="3" cellspacing="0">
+      <div id="Code">
+<pre>
+INSERT INTO ECLITRIAL VALUES&nbsp;
+   (<b>?firstname, ?lastname, ?number, ?bdate, ?price</b>)</pre>
+</div>
 
-             <tr>
-            <td bgcolor="#ffff99">
-            <pre>INSERT INTO ECLITRIAL VALUES&nbsp;<br><tt>&nbsp;&nbsp;&nbsp; </tt>(<b>?firstname, ?lastname, ?number, ?bdate, ?price</b>)</pre>
-            </td>
-        </tr>
-
-
-      </table>
-    </center>
-         </div>
 
       <p align="Left">Parameters are passed either by providing an array of
 ECLI_VALUE objects, or individually by name.&nbsp; </p>
 
-      <div align="Center">
-      <center>
-      <table width="80%" border="0" cellpadding="3" cellspacing="0">
+<div id="Code">
+<pre>
+othername:  ECLI_CHAR
+p_name  :   ECLI_CHAR
+p_price :   ECLI_DOUBLE
+p_bdate :   ECLI_TIMESTAMP
+p_fname :   ECLI_VARCHAR
+p_nbr :     ECLI_INTEGER
 
-             <tr>
-            <td valign="Top" bgcolor="#ffff99">
-            <pre>othername:	ECLI_CHAR<br>p_name  :		 ECLI_CHAR<br>p_price :	&nbsp;&nbsp;&nbsp; ECLI_DOUBLE<br>p_bdate :	&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP<br>p_fname :	&nbsp;&nbsp;&nbsp; ECLI_VARCHAR<br>p_nbr :		&nbsp; ECLI_INTEGER<br><tt>...<br>create&nbsp;</tt>p_<tt>name.make (20)<br>create&nbsp;</tt>p_<tt>nbr.make<br>create&nbsp;</tt>p_<tt>price.make<br>create&nbsp;</tt>p_<tt>fname.make (20)<br>create&nbsp;</tt>p_<tt>bdate.make_first<br></tt>-- parameterized insertion<br><tt>stmt.set_sql ("</tt>INSERT INTO ECLITRIAL VALUES %<br><tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>")<br><br>-- (STEP 1) set parameters by array<br>stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;</tt>p_<tt>fname,&nbsp;</tt>p_<tt>name,&nbsp;</tt>p_<tt>nbr,&nbsp;</tt>p_<tt>bdate,&nbsp;</tt>p_<tt>price&gt;&gt;)<br><br>-- set values<br></tt>p_<tt>name.set_item ("Henry")<br></tt>p_<tt>fname.set_item ("Black")<br></tt>p_<tt>price.set_item (125.8)<br></tt>p_<tt>number.set_item (5)<br></tt>p_<tt>bdate.set_date (1995, 8, 19)<br><br>-- (STEP 2) bind them<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>-- (STEP 3) execute statement<br>stmt.execute<br>-- inserted tuple ("Henry", "Black", 5, {ts '1995-08-19 00:00:00'}, 125.8)<br><br>-- test execution status<br>if stmt.is_ok then<br>&nbsp;&nbsp;&nbsp; print ("Tuple inserted")<br>else<br>&nbsp;&nbsp;&nbsp; handle_error (stmt)<br>end<br><br>-- (STEP 4) set parameter by name<br>--&nbsp; a new value object is provided = parameters must be bound again<br>create othername.make (20); other_name.set_item ("Jim")<br>stmt.</tt><b><tt>put_parameter</tt></b><tt> (</tt>other<tt>name, "firstname")<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>stmt.execute<br>-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>-- (STEP 5) change parameter object state = binding still apply<br>othername.set_item ("Louis")<br>stmt.execute<br>-- inserted tuple ("Louis", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br>...</tt></pre>
-            </td>
-        </tr>
+...
 
+-- parameterized insertion
+stmt.set_sql ("INSERT INTO ECLITRIAL VALUES %
+&nbsp;&nbsp; % (<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)")
 
-      </table>
-    </center>
-         </div>
+-- (STEP 1) set parameters by array
+stmt.<b>set_parameters</b> (&lt;&lt;p_fname,&nbsp;p_name,&nbsp;p_nbr,&nbsp;p_bdate,&nbsp;p_price&gt;&gt;)
+
+-- set values
+
+...
+
+-- (STEP 2) bind them
+stmt.<b>bind_parameters
+</b>-- (STEP 3) execute statement
+stmt.<b>execute</b>
+
+-- test execution status
+if stmt.is_ok then
+    print ("Tuple inserted")
+else
+    handle_error (stmt)
+end
+
+-- (STEP 4) set parameter by name
+--&nbsp; a new value object is provided = parameters must be bound again
+create othername.make (20); other_name.set_item ("Jim")
+stmt.<b>put_parameter</b> (othername, "firstname")
+stmt.<b>bind_parameters</b>
+stmt.<b>execute</b>
+
+-- (STEP 5) change parameter object state - binding still apply
+othername.set_item ("Louis")
+stmt.<b>execute</b>
+
+...
+</pre>
+</div>
 
       <ul>
 
@@ -1352,7 +1425,7 @@ ECLI_TRACER features :<br>
           <tr>
             <td valign="Top" width="29%"><i>make</i></td>
             <td valign="Top" width="71%">Creation feature. &nbsp;Needs an
-IO_MEDIUM instance that <i>is_open_write</i>.</td>
+KI_CHARACTER_OUTPUT_STREAM instance that <i>is_open_write</i>.</td>
           </tr>
           <tr>
             <td valign="Top" width="29%"><b>Queries</b></td>
@@ -1365,14 +1438,20 @@ IO_MEDIUM instance that <i>is_open_write</i>.</td>
           </tr>
 
       </table>
-      <br>
-The trace file can be read and executed by the <i>isql</i> sample application.
+      <p>
+The trace file can be read and executed by the <i>clisql</i> sample application.
 &nbsp;For example, let <i>/tmp/trace.sql</i> be the tracefile; the batch
-of SQL statements can be executed using this command : <i>isql &lt;datasource&gt;
-&lt;username&gt; &lt;password&gt; /tmp/trace.sql</i>.<br>
-      <br>
-      <center>    </center>
-         </div>
+of SQL statements can be executed using this command :</>
+<div id="Code">clisql -dsn &lt;datasource&gt;
+-user &lt;username&gt; -pwd &lt;password&gt; -sql_file_name /tmp/trace.sql
+</div>
+<p>
+NOTE : This ECLI_TRACER tracing facility is *not* related to the low/level tracing facility of ODBC
+that trace C API calls and is activated through the ODBC configuration files.
+
+ECLI_TRACER is a SQL tracing facility.
+</p>
+</div>
       </div>
 
       <h1><a name="OptimizingforPerformance"></a>
@@ -1427,20 +1506,50 @@ with different parameters. </p>
 
       <p align="Left">Here is the last example, revisited.&nbsp; </p>
 
-      <div align="Center">
-      <center>
-      <table width="80%" border="0" cellpadding="3" cellspacing="0">
+<div id="Code">
+<pre>
+othername:  ECLI_CHAR
+p_name  :   ECLI_CHAR
+p_price :   ECLI_DOUBLE
+p_bdate :   ECLI_TIMESTAMP
+p_fname :   ECLI_VARCHAR
+p_nbr :     ECLI_INTEGER
 
-             <tr>
-            <td valign="Top" bgcolor="#ffff99">
-            <pre>vname, othername :		 ECLI_CHAR<br>vprice :	&nbsp;&nbsp;&nbsp; ECLI_DOUBLE<br>vbdate :	&nbsp;&nbsp;&nbsp; ECLI_TIMESTAMP<br>vfname :	&nbsp;&nbsp;&nbsp; ECLI_VARCHAR<br>vnbr :		&nbsp; ECLI_INTEGER<br><tt>...<br>create vname.make (20)<br>create vnbr.make<br>create vprice.make<br>create vfname.make (20)<br>create vbdate.make_first<br></tt>-- parameterized insertion<br><tt>stmt.set_sql ("</tt>INSERT INTO ECLITRIAL VALUES %<br><tt>&nbsp;&nbsp; % </tt>(<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)<tt>")<br><br></tt><tt>-- </tt><b><tt>(STEP 0) statement preparation &lt;===========<br></tt></b><tt>stmt.</tt><b><tt>prepare<br><br></tt></b><tt>-- (STEP 1) set parameters by array<br>stmt.</tt><b><tt>set_parameters</tt></b><tt> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)<br><br>-- set values<br>...<br><br>-- (STEP 2) bind them<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>-- (STEP 3) execute statement<br>stmt.execute<br>-- inserted tuple ("Henry", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>...<br><br>-- (STEP 4) set parameter by name - other way to set a parameter<br>--&nbsp; a new value object is provided = parameters must be bound again<br>create othername.make (20); other_name.set_item ("Jim")<br>stmt.</tt><b><tt>put_parameter</tt></b><tt> (vname, "firstname")<br>stmt.</tt><b><tt>bind_parameters<br></tt></b><tt>stmt.execute<br>-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br><br>-- (STEP 5) change parameter object state = binding still apply<br>othername.set_item ("Louis")<br>stmt.execute<br>-- inserted tuple ("Louis", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)<br>...</tt></pre>
-            </td>
-        </tr>
+...
 
+-- parameterized insertion
+stmt.set_sql ("INSERT INTO ECLITRIAL VALUES %
+&nbsp;&nbsp; % (<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)")
 
-      </table>
-    </center>
-         </div>
+-- (STEP 0) statement preparation &lt;===========
+stmt.<b>prepare</b>
+
+-- (STEP 1) set parameters by array
+stmt.<b>set_parameters</b> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
+
+-- set values
+...
+
+-- (STEP 2) bind them
+stmt.<b>bind_parameters</b>
+-- (STEP 3) execute statement
+stmt.<b>execute</b>
+
+...
+
+-- (STEP 4) set parameter by name - other way to set a parameter
+--&nbsp; a new value object is provided = parameters must be bound again
+create othername.make (20); other_name.set_item ("Jim")
+stmt.<b>put_parameter</b> (vname, "firstname")
+stmt.<b>bind_parameters</b>
+stmt.<b>execute</b>
+-- inserted tuple ("Jim", "Black", 5, {ts '1995-08-19 00:00:00.00'}, 125.8)
+
+-- (STEP 5) change parameter object state = binding still apply
+othername.set_item ("Louis")
+stmt.execute
+...</pre>
+</div>
 
       <p>The only difference is the addition of Step 0, where the statement
  is prepared. </p>
@@ -1496,18 +1605,19 @@ and data-structures.&nbsp; Objects are arranged in a "uses-relationship" :
 ECLI_ENVIRONMENT &lt;-&gt; ECLI_SESSION&lt;-&gt; ECLI_STATEMENT.</p>
 
       <p>ECLI_SESSION objects depend on ECLI_ENVIRONMENT (which is a singleton).
- The relationship is implicitely established by ECLI_SESSION.make or ECLI_SESSION.open.
+ The relationship is established by ECLI_SESSION.make or ECLI_SESSION.open.
  The relationship disappears by calling ECLI_SESSION.close</p>
 
       <p>ECLI_STATEMENT objects depend on their associated ECLI_SESSION. The
-relationship is explicitely established by ECLI_STATEMENT.make or ECLI_STATEMENT.open.
+relationship is established by ECLI_STATEMENT.make or ECLI_STATEMENT.open.
  The relationship disappears by calling ECLI_STATEMENT.close.</p>
 
-      <p>Garbage collection is allowed provided that the "slave" objects have
-been disconnected from their "master" object (closed).</p>
-
-      <p>At garbage-collection time an exception is raised if any slave object
- stay linked.</p>
+      <p>Garbage collection releases external resources.  <br></br>When ECLI_SESSION resources are
+      released, the associated ECLI_STATEMENT external resources are discarded.<br></br>
+      In contrast, ECLI_ENVIRONMENT external resources cannot be released if all associated sessions
+      are not closed. The <em>debug</em> flag "ecli_check_closes" allows checking paired open/close.
+      At garbage-collection time an exception is raised if any slave object
+ stay linked to the ECLI_ENVIRONMENT object.</p>
 
       <h3>Open</h3>
 
