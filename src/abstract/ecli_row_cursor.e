@@ -42,6 +42,7 @@ feature {NONE} -- Initialization
 		ensure
 			valid: is_valid
 			definition_set: definition = a_sql
+			definition_is_sql: equal (definition, sql)
 			ok: is_ok implies is_prepared
 			definition_is_a_query:  has_results or else not is_ok
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit

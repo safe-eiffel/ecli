@@ -43,6 +43,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	definition : STRING is
+			-- cursor definition (i.e. SQL text)
 		deferred
 		end
 
