@@ -106,7 +106,6 @@ feature -- Basic operations
 			l_class_name : STRING
 			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE, STRING]
 			basic_operations, implementation, status_report, access : EIFFEL_FEATURE_GROUP
-			deferred_session : EIFFEL_ROUTINE
 			access_create_object_routine_names : DS_HASH_TABLE [BOOLEAN,STRING]
 			routine : EIFFEL_ROUTINE
 		do
@@ -532,7 +531,8 @@ feature {NONE} -- Implementation
 		end
 		
 	put_helper_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
-			-- put access routines for `module' into `group'
+			-- put helper access routine for `module' into `group';
+			-- the routine is named 'do_<module.name>'
 		require
 			module_not_void: module /= Void
 			group_not_void: group /= Void
@@ -623,7 +623,7 @@ feature {NONE} -- Implementation
 			routine_parameter, routine_precondition, routine_postcondition : DS_PAIR [STRING,STRING]
 			eiffel_routine : EIFFEL_ROUTINE
 		do
-			--create_object_from_<access_results> (row : <access_results>) is
+			--extend_cursor_from_<access_results> (row : <access_results>) is
 			--	deferred
 			--	end
 			create routine_name.make_from_string ("extend_cursor_from_")
@@ -645,7 +645,7 @@ feature {NONE} -- Implementation
 		end
 		
 	put_signature_to_routine (set : COLUMN_SET[ACCESS_MODULE_METADATA]; eiffel_routine : EIFFEL_ROUTINE) is
-			-- 
+			-- put signature representing `set' to `eiffel_routine'.
 		local
 			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
 			new_parameter : DS_PAIR[STRING,STRING]
