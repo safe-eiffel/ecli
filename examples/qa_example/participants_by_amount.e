@@ -1,7 +1,7 @@
 indexing
 
 	
-		description: "Select participants by amount already paid"
+		description: "Select participants by amount already paid."
 	
 	warning: "Generated cursor 'PARTICIPANTS_BY_AMOUNT' : DO NOT EDIT !"
 	author: "QUERY_ASSISTANT"

@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that represent Eiffel code fragments"
+	description: "Objects that represent Eiffel code fragments."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
 	date: "$Date$"

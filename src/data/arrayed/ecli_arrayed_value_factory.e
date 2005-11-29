@@ -2,12 +2,12 @@ indexing
 
 	description:
 	
-			"Factory of ECLI_ARRAYED_VALUE descendant instances"
+			"Factory of ECLI_ARRAYED_VALUE descendant instances."
 
 	note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -55,63 +55,50 @@ feature -- Measurement
 	row_count : INTEGER
 			-- default capacity of arrayed values
 	
-feature -- Status report
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	create_double_value is
 		do
-			!ECLI_ARRAYED_DOUBLE!last_result.make (row_count)
+			create {ECLI_ARRAYED_DOUBLE}last_result.make (row_count)
 		end
 
 	create_real_value is
 		do
-			!ECLI_ARRAYED_REAL!last_result.make (row_count)
+			create {ECLI_ARRAYED_REAL}last_result.make (row_count)
 		end
 
 	create_integer_value is
 		do
-			!ECLI_ARRAYED_INTEGER!last_result.make (row_count)
+			create {ECLI_ARRAYED_INTEGER}last_result.make (row_count)
 		end
 
 	create_char_value (column_precision : INTEGER) is
 		do
-			!ECLI_ARRAYED_CHAR!last_result.make (column_precision,row_count)
+			create {ECLI_ARRAYED_CHAR}last_result.make (column_precision,row_count)
 		end
 
 	create_varchar_value (column_precision : INTEGER) is
 		do
 			if column_precision > 254 then
-				!ECLI_ARRAYED_LONGVARCHAR!last_result.make (column_precision,row_count)
+				create {ECLI_ARRAYED_LONGVARCHAR}last_result.make (column_precision,row_count)
 			else
-				!ECLI_ARRAYED_VARCHAR!last_result.make (column_precision, row_count)
+				create {ECLI_ARRAYED_VARCHAR}last_result.make (column_precision, row_count)
 			end
 		end
 
 	create_date_value is
 		do
-			!ECLI_ARRAYED_DATE!last_result.make (row_count)
+			create {ECLI_ARRAYED_DATE}last_result.make (row_count)
 		end
 
 	create_timestamp_value is
 		do
-			!ECLI_ARRAYED_TIMESTAMP!last_result.make (row_count)
+			create {ECLI_ARRAYED_TIMESTAMP}last_result.make (row_count)
 		end
 		
 	create_time_value is
 		do
-			!ECLI_ARRAYED_TIME!last_result.make (row_count)
+			create {ECLI_ARRAYED_TIME}last_result.make (row_count)
 		end
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end

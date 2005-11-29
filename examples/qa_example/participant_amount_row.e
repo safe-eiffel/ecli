@@ -1,6 +1,6 @@
 indexing
 
-	description: "Results objects "
+	description: "Results objects ."
 	status: "Automatically generated.  DOT NOT MODIFY !"
 
 class PARTICIPANT_AMOUNT_ROW

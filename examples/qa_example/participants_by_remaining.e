@@ -1,7 +1,7 @@
 indexing
 
 	
-		description: "Select participants by remaining amount to pay"
+		description: "Select participants by remaining amount to pay."
 	
 	warning: "Generated cursor 'PARTICIPANTS_BY_REMAINING' : DO NOT EDIT !"
 	author: "QUERY_ASSISTANT"

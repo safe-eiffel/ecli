@@ -1,5 +1,5 @@
 indexing
-	description: "Test for objects garbage collection";
+	description: "Test for objects garbage collection.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -62,11 +62,11 @@ feature -- Initialization
 			create stmt22.make (sess2)			
 
 			--| let stmt 1..3 be "disposable"
-			stmt11.release
-			stmt21.release
-			stmt22.release
+			stmt11.close
+			stmt21.close
+			stmt22.close
 			--| detach reference to sess1
-			sess1.release
+			sess1.close
 			sess1 := Void -- unattached
 			--| unattach references so that GC can work
 			stmt0 := Void -- still attached
@@ -135,7 +135,7 @@ feature -- Initialization
 	
 end -- class TEST_GC
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

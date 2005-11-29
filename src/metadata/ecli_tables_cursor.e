@@ -7,7 +7,7 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -31,7 +31,7 @@ feature {NONE} -- Initialization
 	make_all_tables (a_session : ECLI_SESSION) is
 			-- make cursor on all tables of database underlying `session'
 		obsolete
-			"Use feature `make' "
+			"Use feature `make' ."
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
 		local
@@ -46,7 +46,7 @@ feature {NONE} -- Initialization
 	make_table (a_table_name : STRING; a_session : ECLI_SESSION) is
 			-- make for `a_table_name'
 		obsolete
-			" Use feature `make'"
+			" Use feature `make'."
 		require
 			a_table_name_not_void: a_table_name /= Void
 			a_sessin_not_void: a_session /= Void

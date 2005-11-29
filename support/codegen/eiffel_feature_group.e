@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that represent a group of Eiffel feature with common export status"
+	description: "Objects that represent a group of Eiffel feature with common export status."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
 	date: "$Date$"

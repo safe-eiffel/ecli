@@ -2,10 +2,10 @@ indexing
 
 	description:
 	
-			"SQL DATE arrayed value"
+			"SQL DATE arrayed buffers."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -31,7 +31,7 @@ inherit
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, set_item,
 			as_string, year, month, day
 		redefine
-			item, trace, allocate_buffer, set_date --, transfer_octet_length
+			item, trace, allocate_buffer
 		end
 
 	ECLI_ARRAYED_DATE_ROUTINES
@@ -74,88 +74,6 @@ feature -- Access
 			Result := impl_item
 		end
 
---	year : INTEGER is
---			-- year_at (cursor_index)
---		do
---			if not off then
---				Result := year_at (cursor_index)
---			end
---		ensure then
---			value_at_cursor_index: (not (is_null or else off)) implies Result = year_at (cursor_index)
---			zero_when_null: is_null implies Result = 0
---			zero_when_off: off implies Result = 0
---		end
---
---	month : INTEGER is
---			-- month_at (cursor_index)
---		do
---			if not off then
---				Result := month_at (cursor_index)
---			end
---		ensure then
---			value_at_cursor_index: (not (is_null or else off)) implies Result = month_at (cursor_index)
---			zero_when_null: is_null implies Result = 0
---			zero_when_off: off implies Result = 0
---		end
---
---	day : INTEGER is
---			-- day_at (cursor_index)
---		do
---			if not off then
---				Result := day_at (cursor_index)
---			end
---		ensure then
---			value_at_cursor_index: (not (is_null or else off)) implies Result = day_at (cursor_index)
---			zero_when_null: is_null implies Result = 0
---			zero_when_off: off implies Result = 0
---		end
---
---	year_at (index : INTEGER) : INTEGER is
---		require
---			valid_index: index >= 1 and then index <= upper
---		local
---			date_pointer : POINTER
---		do
---			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
---			if not is_null_at (index) then
---				Result := ecli_c_date_get_year (date_pointer)
---			end
---		end
---
---	month_at (index : INTEGER) : INTEGER is
---		require
---			valid_index: index >= 1 and then index <= upper
---		local
---			date_pointer : POINTER
---		do
---			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
---			if not is_null_at (index) then
---				Result := ecli_c_date_get_month (date_pointer)
---			end
---		end
---
---	day_at (index : INTEGER) : INTEGER is
---		require
---			valid_index: index >= 1 and then index <= upper
---		local
---			date_pointer : POINTER
---		do
---			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
---			if not is_null_at (index) then
---				Result := ecli_c_date_get_day (date_pointer)
---			end
---		end
-
-feature -- Measurement
-
-feature -- Status report
-
---	transfer_octet_length: INTEGER is
---		do
---			Result := ecli_c_array_value_get_length (buffer)
---		end
-
-feature -- Status setting
 
 feature -- Element change
 
@@ -169,72 +87,12 @@ feature -- Element change
 			set_date_at (other.year, other.month, other.day, index)
 		end
 
---	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER ) is
---		local
---			date_pointer : POINTER
---		do
---			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
---			ecli_c_date_set_year (date_pointer, a_year)
---			ecli_c_date_set_month (date_pointer, a_month)
---			ecli_c_date_set_day (date_pointer, a_day)			
---			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
-----			set_date_external (date_pointer, a_year, a_month, a_day)
---		ensure
---			year_set: year_at (index) = a_year
---			month_set: month_at (index) = a_month
---			day_set: day_at (index) = a_day
---		end
-
-	set_date (a_year, a_month, a_day : INTEGER) is
-		do
-			set_date_at (a_year, a_month, a_day, cursor_index)
-		end
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
---	as_string : STRING is
---		do
---			Result := out_item_at (cursor_index)
---		end
---		
---	out_item_at (index : INTEGER) : STRING is
---		local
---			save_index : INTEGER
---		do
---			!!Result.make (10)
---			if is_null_at (index) then
---				Result.append_string ("NULL")
---			else
---				save_index := cursor_index
---				cursor_index := index
---				Result.append_string (Integer_format.pad_integer_4 (year))
---				Result.append_character ('-')
---				Result.append_string (Integer_format.pad_integer_2 (month))
---				Result.append_character ('-')
---				Result.append_string (Integer_format.pad_integer_2 (day))
---				cursor_index := save_index
---			end
---		end
-		
 feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
 		do
 			a_tracer.put_date (Current)
 		end
-
---	is_equal (other : like Current) : BOOLEAN is
---		do
---			Result := year = other.year and
---				month = other.month and
---				day = other.day
---		end
 
 feature {NONE} -- Implementation
 
@@ -246,7 +104,8 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
-	month:	(not is_null) implies (month >= 1 and month <= 12)
-	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))
+
+	valid_month:	(not is_null) implies (month >= 1 and month <= 12)
+	valid_day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))
 
 end

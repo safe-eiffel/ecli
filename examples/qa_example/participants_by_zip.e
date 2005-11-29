@@ -1,7 +1,7 @@
 indexing
 
 	
-		description: "Select participants by zip"
+		description: "Select participants by zip."
 	
 	warning: "Generated cursor 'PARTICIPANTS_BY_ZIP' : DO NOT EDIT !"
 	author: "QUERY_ASSISTANT"

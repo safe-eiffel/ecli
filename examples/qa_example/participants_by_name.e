@@ -1,7 +1,7 @@
 indexing
 
 	
-		description: "Select participants matching a last name"
+		description: "Select participants matching a last name."
 	
 	warning: "Generated cursor 'PARTICIPANTS_BY_NAME' : DO NOT EDIT !"
 	author: "QUERY_ASSISTANT"

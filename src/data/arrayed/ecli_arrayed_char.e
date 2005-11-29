@@ -2,10 +2,10 @@ indexing
 
 	description:
 	
-			"SQL CHAR (n) arrayed values"
+			"SQL CHAR (n) arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -20,7 +20,6 @@ inherit
 		redefine
 			make, 
 			content_count, 
---			sql_type_code, 
 			item_at, formatted
 		select
 		end
@@ -74,16 +73,6 @@ feature -- Status report
 			Result := sql_varchar
 		end
 
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
 feature -- Transformation
 
 	formatted (v : like item) : like item is
@@ -91,18 +80,6 @@ feature -- Transformation
 			create Result.make_from_string (v)
 			format (Result)
 		end
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
@@ -122,7 +99,4 @@ feature {NONE} -- Implementation
 
 	default_maximum_capacity : INTEGER is 255
 	
-invariant
---	count_capacity: count <= capacity
-
 end

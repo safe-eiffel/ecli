@@ -1,5 +1,5 @@
 indexing
-	description: "TEST1 sample application";
+	description: "TEST1 sample application.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -33,8 +33,10 @@ feature -- Initialization
 					trace_if_necessary
 					create_statement
 					create_sample_table
-					put_photo
-					get_photo
+					put_empty_string
+					
+--					put_photo
+--					get_photo
 --					simple_insert_sample_tuples
 --					query_database
 --					parameterized_insert
@@ -49,6 +51,22 @@ feature -- Initialization
 			end
 		end
 
+	put_empty_string is
+		local
+			name, first_name : ECLI_VARCHAR
+		do
+			create name.make (10)
+			create first_name.make (10)
+			name.set_item ("Paulisson")
+			first_name.set_item ("")
+			create stmt.make (session)
+			stmt.set_sql ("INSERT INTO ECLITRIAL VALUES (?name,?first_name, 10, {ts '2000-05-24 08:20:15.00'}, 33.3, NULL)")
+			stmt.put_parameter (name, "name")
+			stmt.put_parameter (first_name, "first_name")
+			stmt.bind_parameters
+			stmt.execute
+		end
+		
 	put_photo is
 		local
 			photo : ECLI_FILE_LONGVARBINARY
@@ -609,7 +627,7 @@ feature -- Miscellaneous
 
 end -- class TEST1
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

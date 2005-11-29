@@ -5,7 +5,7 @@ indexing
 		"Objects that test ECLI_VALUE descendants."
 		
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -63,6 +63,9 @@ feature -- Basic operations
 			create z.make (10)
 			z.copy (v)
 			assert_equal("copy", v, z)
+			v.set_item ("")
+			assert_equal("empty_count", v.count, 0)
+			assert_equal("empty_as_string", v.as_string, "")
 		end
 
 	test_longvarchar is

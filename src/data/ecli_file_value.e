@@ -5,7 +5,7 @@ indexing
 			"Objects that transfer large data from/into a file."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -167,6 +167,7 @@ feature -- Conversion
 	as_character: CHARACTER is do  end
 	as_date: DT_DATE is do  end
 	as_double: DOUBLE is do  end
+	as_decimal : MA_DECIMAL is do end
 	as_integer: INTEGER is do  end
 	as_real: REAL is do  end
 	as_string: STRING is do  end

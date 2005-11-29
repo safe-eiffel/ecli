@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that can represent either Eiffel functions or procedures"
+	description: "Objects that can represent either Eiffel functions or procedures."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
 	date: "$Date$"

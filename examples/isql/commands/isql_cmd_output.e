@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that direct further output to a specific file"
+	description: "Objects that direct further output to a specific file."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

@@ -1,5 +1,5 @@
 indexing
-	description: "Name routines that help follow the Eiffel style rules"
+	description: "Name routines that help follow the Eiffel style rules."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -10,25 +10,49 @@ class
 inherit
 	KL_IMPORTED_CHARACTER_ROUTINES
 	KL_IMPORTED_STRING_ROUTINES
-
+	
 feature -- Access
 
-feature -- Measurement
+	reserved_words : ARRAY[STRING] is
+		once
+			Result := <<
+				"agent","alias","all","and","as","assign","attribute", 
+				"check","class","convert","create","Current", 
+				"debug","deferred","do", 
+				"else","elseif","end","ensure","expanded","export","external", 
+				"False","feature","from","frozen", 
+				"if","implies","inherit","indexing","inspect","invariant", 
+				"like","local","loop", 
+				"not","note","obsolete","old","once","only","or", 
+				"Precursor","redefine","reference","rename","require","rescue","Result","retry", 
+				"select","separate","then","True","TUPLE", 
+				"undefine","until", 
+				"variant","Void", 
+				"when", 
+				"xor"
+			>>
+			Result.compare_objects
+		end
 
 feature -- Status report
 
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
+	is_reserved_word (a_word : STRING) : BOOLEAN is	
+			-- Case insensitive search of `a_word' into `reserved_words'.
+		require
+			a_word_not_void: a_word /= Void
+		local
+			i : INTEGER
+		do
+			from
+				i := reserved_words.lower
+			until
+				i > reserved_words.upper or else Result
+			loop
+				Result := string_.same_case_insensitive (reserved_words.item (i), a_word)
+				i := i + 1
+			end
+		end
+		
 feature -- Conversion
 
 	camel_to_class_name (string : STRING) : STRING is
@@ -49,6 +73,9 @@ feature -- Conversion
 		do
 			Result := camel_to_eiffel_words (string)
 			Result.to_lower
+			if is_reserved_word (Result) then
+				Result.append_character ('_')
+			end
 		ensure
 			result_not_void: Result /= Void
 		end
@@ -123,16 +150,6 @@ feature -- Conversion
 			manifest_string: Result.item (1) = '"' and Result.item (Result.count)= '"'
 		end
 			
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	camel_to_eiffel_words (string : STRING)  : STRING is

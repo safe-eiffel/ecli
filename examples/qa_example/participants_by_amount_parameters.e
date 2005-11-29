@@ -1,6 +1,6 @@
 indexing
 
-	description: "Results objects "
+	description: "Results objects ."
 	status: "Automatically generated.  DOT NOT MODIFY !"
 
 class PARTICIPANTS_BY_AMOUNT_PARAMETERS

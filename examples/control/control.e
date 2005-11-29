@@ -15,10 +15,36 @@ feature
 			print (b.out) print ("%N")
 			print (z.out) print ("%N")
 			t := b.from_integer (-1)
+			t := t * a.from_integer (2)
+			t := t or b
+			t := t xor b
+			
 		end
 		
 	z, t : UNSIGNED_32
-		
+
+feature -- Gobo file system
+
+	f : KI_FILE
+	fi : KI_INPUT_FILE	
+	si : KI_INPUT_STREAM[CHARACTER]
+	d : KI_DIRECTORY
+	tif : KI_TEXT_INPUT_FILE
+	tis : KI_TEXT_INPUT_STREAM
+	tof : KI_TEXT_OUTPUT_FILE
+	tos : KI_TEXT_OUTPUT_STREAM
+	ip : KI_PATHNAME
+	p : KL_PATHNAME
+	fs : KL_SHARED_FILE_SYSTEM
+	sis : KL_STRING_INPUT_STREAM
+	sos : KL_STRING_OUTPUT_STREAM
+	nt : KL_NULL_TEXT_OUTPUT_STREAM
+	mac : KL_MACOS_INPUT_FILE
+	maco : KL_MACOS_OUTPUT_FILE
+	proxi : KL_PROXY_CHARACTER_INPUT_STREAM
+	proxo : KL_PROXY_CHARACTER_OUTPUT_STREAM
+	sst : KL_SHARED_STREAMS
+	
 feature
 
 	ecli_api_constants : ECLI_API_CONSTANTS
@@ -51,6 +77,9 @@ feature
 	ecli_date_format : ECLI_DATE_FORMAT
 	ecli_date_time : ECLI_DATE_TIME
 	ecli_decimal : ECLI_DECIMAL
+	ecli_driver_login : ECLI_DRIVER_LOGIN
+	ecli_driver : ECLI_DRIVER
+	ecli_drivers_cursor : ECLI_DRIVERS_CURSOR
 	ecli_double : ECLI_DOUBLE
 	ecli_environment : ECLI_ENVIRONMENT
 	ecli_external_api : ECLI_EXTERNAL_API
@@ -119,6 +148,7 @@ feature
 	ecli_transaction_isolation : ECLI_TRANSACTION_ISOLATION
 	ecli_transaction_isolation_constants : ECLI_TRANSACTION_ISOLATION_CONSTANTS
 	ecli_type_constants : ECLI_TYPE_CONSTANTS
+	ecli_type_catalog : ECLI_TYPE_CATALOG
 	ecli_value : ECLI_VALUE
 	ecli_value_factory : ECLI_VALUE_FACTORY
 	ecli_varbinary : ECLI_VARBINARY
