@@ -1,8 +1,8 @@
 indexing
 
 	description:
-	
-			"Objects that iterate over installed ODBC drivers."
+
+		"Objects that iterate over installed ODBC drivers."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
@@ -23,7 +23,7 @@ inherit
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
-	
+
 creation
 
 	make
@@ -40,7 +40,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_DRIVER is
+	item: ECLI_DRIVER is
 			-- current item
 		do
 			Result := item_
@@ -52,16 +52,17 @@ feature -- Measurement
 
 feature -- Status report
 
-	off : BOOLEAN is
+	off: BOOLEAN is
 			-- is there no valid item at cursor position ?
 		do
-			Result := before or after
+			Result := before or
+				after
 		end
 
-	before : BOOLEAN
+	before: BOOLEAN
 			-- is cursor before any valid item ?
 
-	after : BOOLEAN
+	after: BOOLEAN
 			-- is cursor after any valid item ?
 
 feature -- Cursor movement
@@ -98,54 +99,68 @@ feature -- Basic operations
 	close is
 			-- close cursor
 		do
-			--| do nothing; defined just to be consistent with other cursors
+				--| do nothing; defined just to be consistent with other cursors
 		end
 
 feature {ECLI_DRIVER} -- Implementation
 
-	name : STRING
-	attributes : STRING
-	
-	c_name : XS_C_STRING
-	c_attributes : XS_C_STRING
+	name: STRING
 
-	actual_name_length : XS_C_INT16
-	actual_attributes_length : XS_C_INT16
+	attributes: STRING
+
+	c_name: XS_C_STRING
+
+	c_attributes: XS_C_STRING
+
+	actual_name_length: XS_C_INT16
+
+	actual_attributes_length: XS_C_INT16
 
 feature {NONE} -- Implementation
 
-	release_handle is do end
-
-	disposal_failure_reason : STRING is once Result := "" end
-
-	is_ready_for_disposal : BOOLEAN is do Result := True end
-
-	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
-			-- to be redefined in descendant classes
+	release_handle is
 		do
-			Result := ecli_c_environment_error (Shared_environment.handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
 
-	do_fetch (direction : INTEGER) is
+	disposal_failure_reason: STRING is
+		once
+			Result := ""
+		end
+
+	is_ready_for_disposal: BOOLEAN is
+		do
+			Result := True
+		end
+
+	get_error_diagnostic (record_index: INTEGER; state: POINTER; native_error: POINTER;
+		message: POINTER; buffer_length: INTEGER; length_indicator: POINTER): INTEGER is
+			-- to be redefined in descendant classes
+		do
+			Result := ecli_c_environment_error (Shared_environment.handle, record_index, state,
+				native_error, message, buffer_length, length_indicator)
+		end
+
+	do_fetch (direction: INTEGER) is
 			-- actual external query
 		do
-			set_status (ecli_c_sql_drivers
-				(Shared_environment.handle, direction, 
-				c_name.handle, max_source_name_length, actual_name_length.handle, 
-				c_attributes.handle, max_attributes_length, actual_attributes_length.handle))
+			set_status (ecli_c_sql_drivers (Shared_environment.handle, direction, c_name.handle,
+				max_source_name_length, actual_name_length.handle, c_attributes.handle,
+				max_attributes_length, actual_attributes_length.handle))
 			if is_ok and then not is_no_data then
 				name := c_name.as_string
 				attributes := c_attributes.substring (1, actual_attributes_length.item)
-				!!item_.make (Current)
+				create item_.make (Current)
 			else
 				item_ := Void
 				after := True
 			end
 		end
 
-	item_ : ECLI_DRIVER
+	item_: ECLI_DRIVER
 
-	max_source_name_length : INTEGER is 1024
-	max_attributes_length : INTEGER is 16384
+	max_source_name_length: INTEGER is 1024
+
+	max_attributes_length: INTEGER is 16384
 
 end -- class ECLI_DRIVERS_CURSOR
+
