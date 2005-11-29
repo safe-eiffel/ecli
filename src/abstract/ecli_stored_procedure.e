@@ -150,7 +150,4 @@ feature {NONE} -- Implementation
 			directed_parameters.item (i).bind (Current, i)	
 		end
 		
-invariant
-	invariant_clause: True -- Your invariant here
-
 end
