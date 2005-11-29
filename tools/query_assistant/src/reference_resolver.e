@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that resolve access module metadata references to parents or descendants"
+	description: "Objects that resolve access module metadata references to parents or descendants."
 
 	library: "Access_gen : Access Modules Generators utilities"
 	
@@ -73,7 +73,7 @@ feature -- Basic operations
 		
 end -- class REFERENCE_RESOLVER
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -265,11 +265,17 @@ feature {NONE} -- Implementation
 			parameters_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
 			tester : KL_EQUALITY_TESTER [STRING]
 			l_catalog, l_schema : STRING
-
+			l_parameter_names : DS_LIST[STRING]
+			new_parameters_capacity : INTEGER
 		do
 			create sql_parameters.make (10)
 			sql_parameters.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
-			sql_parameters.extend (query_statement.parameter_names)
+			l_parameter_names := query_statement.parameter_names
+			new_parameters_capacity := sql_parameters.count + l_parameter_names.count
+			if sql_parameters.capacity < new_parameters_capacity then
+				sql_parameters.resize (new_parameters_capacity)	
+			end
+			sql_parameters.extend (l_parameter_names)
 			parameter_set_names := parameters.as_set_name
 			symdif := sql_parameters.symdifference (parameter_set_names)
 			undefined_parameters := symdif.intersection (sql_parameters)
@@ -423,7 +429,7 @@ invariant
 
 end -- class ACCESS_MODULE
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

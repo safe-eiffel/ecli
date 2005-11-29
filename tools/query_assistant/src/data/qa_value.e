@@ -1,7 +1,7 @@
 indexing
 	description: 
 
-		"ECLI_VALUE with eiffel generation metadata"
+		"ECLI_VALUE with eiffel generation metadata."
 
 	author: 	"Paul G. Crismer"
 	date: 		"$Date$"
@@ -83,9 +83,17 @@ feature {NONE} -- implementation
 			result_not_void: Result /= Void
 		end
 		
+	make_null_call : STRING is
+		do
+			create Result.make (12)
+			Result.append_string ("make_null")
+		ensure
+			result_not_void: Result /= Void
+		end
+		
 end -- class QA_VALUE
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

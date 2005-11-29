@@ -1,5 +1,5 @@
 indexing
-	description: "Accesses to shared maximum length"
+	description: "Accesses to shared maximum length."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

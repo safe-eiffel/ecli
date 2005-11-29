@@ -1,5 +1,5 @@
 indexing
-	description: "Access module metadata objects"
+	description: "Access module metadata objects."
 
 	library: "Access_gen : Access Modules Generators utilities"
 	
@@ -96,10 +96,12 @@ feature -- Status report
 	is_equal (other : like Current) : BOOLEAN is
 			-- 
 		do
-			Result := (sql_type_code = other.sql_type_code and then
+			if metadata_available and then other.metadata_available then
+				Result := (sql_type_code = other.sql_type_code and then
 				size = other.size and then
 				decimal_digits = other.decimal_digits and then
 				name.is_equal (other.name))
+			end
 		end
 		
 feature {NONE} -- Implementation
@@ -139,7 +141,7 @@ invariant
 
 end -- class ACCESS_MODULE_METADATA
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

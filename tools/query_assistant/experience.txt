@@ -1,17 +1,17 @@
 Expérience - Query Assistant
 
-Problèmes
-
-Redondance de code.  Les Result-set et Parameter-set ne sont pas "partageables".
-
-
 Nouveaux besoins
 
-* nommer le result-set
-* nommer le parameter-set
-* référencer/partager un result-set déjà nommé.
-* référencer/partager un parameter-set déjà nommé
-* étendre un result-set ou un parameter-set
+* Associer un type à une colonne (result/parameter) et veiller à circonvenir la fabrique ou bien l'étendre pour qu'elle permette de créer un élément sur base du nom.
+* Dans les squelettes on ne devrait pas trouver de prototype deferred, juste les do_...
+
+
+? référencer/partager un result-set déjà nommé.
+? référencer/partager un parameter-set déjà nommé
+DONE * étendre un result-set ou un parameter-set
+DONE * nommer le result-set
+DONE * nommer le parameter-set
+
 
 Nouvelles classes :
 
@@ -20,25 +20,10 @@ QA_RESULT_SET
 
 Shopping-list:
 
-PARAMETER_SET
-** hérite de "SET"
-ancestor : ?
-name -- nom
-count -- nombre de paramètres
-add  (MODULE_PARAMETER)
--- comparaison (égalité de la liste des paramètres, pas du nom)
-liste de paramètres
-liste plate de parametres
+syntaxe XML proposée:
 
-RESULT_SET
-** hérite de "SET"
-ancestor : ?
-name -- nom
-count -- nombre de résultats
-add (?)
--- comparaison
-liste de resultats
-liste plate de résultats
+	<parameter ... type="ecli_type" ...>
+	<result name="nom-colonne" type="ecli_type" ...>
 
 syntaxe proposée : result_set, parameter_set
 
@@ -46,7 +31,3 @@ syntaxe proposée : result_set, parameter_set
 <parameter_set name ="toto" [extends="lulu"]>
 	<parameter .... >
 </parameter_set>
-
-Table de symboles:
-parameter_sets : HT
-result_sets : HT

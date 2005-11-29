@@ -61,7 +61,7 @@ feature -- Basic operations
 			element_name_access: element.name.string.is_equal (t_access)
 		local
 			name_att, type_att : XM_ATTRIBUTE
-			name, type : STRING
+			name : STRING
 			description, query : XM_ELEMENT
 			module_type : ACCESS_TYPE
 		do
@@ -407,7 +407,7 @@ invariant
 
 end -- class ACCESS_MODULE_FACTORY
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

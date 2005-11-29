@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that give access to a shared columns repository object"
+	description: "Objects that give access to a shared columns repository object."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

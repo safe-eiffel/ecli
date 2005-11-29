@@ -1,5 +1,5 @@
 indexing
-	description: "Cursor class generators"
+	description: "Cursor class generators."
 
 	library: "Access_gen : Access Modules Generators utilities"
 	
@@ -97,7 +97,7 @@ feature -- Basic operations
 			set_class_generated: set_class /= Void and then set_class.name.is_equal (set.name)
 		end
 
-	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[ACCESS_MODULE, STRING]; sets : like all_sets) is
+	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[ACCESS_MODULE, STRING]; sets : like all_sets; without_prototypes : BOOLEAN) is
 			-- create deferred access routines helper class
 		require
 			prefix_not_void: name_prefix /= Void
@@ -122,6 +122,11 @@ feature -- Basic operations
 			access_routines_class.set_deferred
 			access_routines_class.add_parent ("PO_STATUS_USE")
 			access_routines_class.add_parent ("PO_STATUS_MANAGEMENT")
+
+			--| indexing
+			put_indexing_clause (access_routines_class, "description:%"Generated access routines%"","Automatically generated.  DOT NOT MODIFY !")
+			access_routines_class.add_indexing_clause ("usage: %"mix-in%"")
+		
 			--| feature groups
 			create access.make ("Access")
 			create status_report.make ("Status report")
@@ -132,6 +137,7 @@ feature -- Basic operations
 			access_routines_class.add_feature_group (status_report)
 			access_routines_class.add_feature_group (basic_operations)
 			access_routines_class.add_feature_group (implementation)
+
 			--| access
 			create routine.make ("last_object")
 			routine.set_type ("PO_PERSISTENT")
@@ -142,7 +148,7 @@ feature -- Basic operations
 			--| status report
 			create routine.make ("is_error")
 			routine.set_type ("BOOLEAN")
-			routine.set_comment ("did last operation produce an error?")
+			routine.set_comment ("Did last operation produce an error?")
 			status_report.add_feature (routine)
 			from
 				cursor := modules.new_cursor
@@ -151,15 +157,14 @@ feature -- Basic operations
 				cursor.off
 			loop
 				if cursor.item.type.is_extended and then cursor.item.is_valid and then cursor.item.has_result_set then
-					put_access_routine (cursor.item, basic_operations)
+					if not without_prototypes then
+						put_access_routine (cursor.item, basic_operations)
+					end
 					put_helper_access_routine (cursor.item, implementation)
 					put_access_create_object (cursor.item, implementation, access_create_object_routine_names)
 				end
 				cursor.forth
 			end
-			access_routines_class.add_indexing_clause ("description: %"generated access routines%"")
-			access_routines_class.add_indexing_clause ("usage: %"mix-in%"")
-			
 		end
 		
 feature {NONE} -- Basic operations
@@ -175,6 +180,8 @@ feature {NONE} -- Basic operations
 			line : STRING
 			i : INTEGER
 			c : DS_HASH_SET_CURSOR[ACCESS_MODULE_METADATA]
+			assertion : DS_PAIR[STRING, STRING]
+			assertion_tag, assertion_expression : STRING
 		do
 			create Result.make (column_set.name)
 			put_indexing_clause (Result, "Buffer objects for database transfer.", "Automatically generated.  DOT NOT MODIFY !")
@@ -194,7 +201,7 @@ feature {NONE} -- Basic operations
 			feature_group.add_export ("NONE")
 			
 			create routine.make ("make")
-			routine.set_comment ("-- Creation of buffers")
+			routine.set_comment ("Creation of buffers")
 			
 			from
 				i := 1
@@ -217,6 +224,17 @@ feature {NONE} -- Basic operations
 				line.append_string (c.item.creation_call)
 				
 				routine.add_body_line (line)
+				
+				create assertion_tag.make_from_string (c.item.eiffel_name)
+				assertion_tag.append_string ("_is_null")
+				create assertion_expression.make_from_string (c.item.eiffel_name)
+				assertion_expression.append_string (".is_null")
+				create assertion.make (assertion_tag, assertion_expression)
+				if column_set.parent /= Void then 
+					routine.add_refined_postcondition (assertion)
+				else
+					routine.add_postcondition (assertion)
+				end
 				c.forth
 			end
 			
@@ -441,7 +459,7 @@ feature {NONE} -- Basic operations
 			feature_group.add_export ("NONE")
 			
 			create routine.make ("create_buffers")
-			routine.set_comment ("-- Creation of buffers")
+			routine.set_comment ("Creation of buffers")
 			
 			create local_buffers.make ("buffers", "ARRAY[like value_anchor]")
 			routine.add_local (local_buffers)
@@ -573,21 +591,6 @@ feature {NONE} -- Implementation
 				--		cursor.set_parameters_object (parameters)
 				eiffel_routine.add_body_line ("cursor.set_parameters_object (parameters)")
 			end
-			--		from
-			--			cursor.start
-			--			status.reset
-			--		until
-			--			status.is_error or else cursor.is_error or else cursor.off
-			--		loop
-			--			extend_cursor_from_<access_results>
-			--			cursor.forth
-			--		end
-			--      if cursor.is_error then
-			--			status.set_datastore_error (cursor.native_code, cursor.diagnostic_message)
-			--		elseif cursor.is_ok and cursor.has_information_message then
-			--			status.set_datastore_warning (cursor.native_code, cursor.diagnostic_message)
-			--		end
-			--	end
 			check
 				results_in_sets: all_sets.has_item (module.results)
 				results_flattened: module.results.is_flattened
@@ -664,7 +667,7 @@ invariant
 
 end -- class ACCESS_MODULE_GENERATOR
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that handle cached accesses to database repository"
+	description: "Objects that handle cached accesses to database repository."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

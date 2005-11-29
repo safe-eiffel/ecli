@@ -1,5 +1,5 @@
 indexing
-	description: "Access type enumeration"
+	description: "Access type enumeration."
 	author: "Paul G. Crismer & others."
 	date: "$Date$"
 	revision: "$Revision$"

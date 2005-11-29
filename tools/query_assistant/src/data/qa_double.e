@@ -1,5 +1,5 @@
 indexing
-	description: "CLI SQL DOUBLE value"
+	description: "CLI SQL DOUBLE value."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -32,7 +32,7 @@ feature
 		
 end -- class QA_DOUBLE
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

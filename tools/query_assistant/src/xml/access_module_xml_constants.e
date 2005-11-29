@@ -1,5 +1,5 @@
 indexing
-	description: "Access module generator XML constants"
+	description: "Access module generator XML constants."
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

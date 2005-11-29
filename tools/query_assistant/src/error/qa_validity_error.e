@@ -2,10 +2,10 @@ indexing
 
 	description:
 	
-			"Validity Errors"
+			"Validity Errors."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -123,7 +123,7 @@ feature {NONE} -- Initializaiton
 feature {NONE} -- Implementation
 
 	alex_template : STRING is       "[E-VAL-ALRDYEX] Module $1 : $3 `$2' already exists."
-	invrefcol_template : STRING is  "[E-VAL-INRFCOL] Module $1 : SQL parameter `$2' has an invalid reference column [$3.$4]."
+	invrefcol_template : STRING is  "[E-VAL-INRFCOL] Module $1 : SQL parameter `$2' has an invalid reference column [$3.$4].%N%TNOTE: Name comparison is case SENSITIVE.%N%TWhat to do: Check the names and the case in the reference column definition."
 	misdesc_template : STRING is    "[E-VAL-MISDESC] Module $1 : missing description for SQL parameter `$2'."
 	countmis_template : STRING is   "[E-VAL-CNTMISM] Module $1 : Mismatch between count of SQL parameters and of declared parameters."
 	parclempty_template : STRING is "[W-VAL-CLEMPTY] Parent class `$1' is empty."

@@ -1,5 +1,5 @@
 indexing
-	description: "Result sets"
+	description: "Result sets."
 
 	library: "Access_gen : Access Modules Generators utilities"
 	
@@ -25,12 +25,12 @@ feature {NONE} -- Initialization
 
 		make (a_name: STRING) is
 			-- create result set with `a_name'
-		do
-			Precursor (a_name)
-			create rank.make (capacity)
-			set_equality_tester (create {KL_EQUALITY_TESTER [MODULE_RESULT]})
-		end
-
+			do
+				Precursor (a_name)
+				create rank.make (capacity)
+--				set_equality_tester (create {KL_EQUALITY_TESTER [MODULE_RESULT]})
+			end
+		
 feature -- Access
 
 	rank : DS_HASH_TABLE[INTEGER, STRING]
@@ -73,7 +73,7 @@ feature {NONE} -- Implementation
 		
 end -- class RESULT_SET
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

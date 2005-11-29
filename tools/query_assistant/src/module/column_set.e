@@ -1,5 +1,5 @@
 indexing
-	description: "Column sets (parameters or results) of an SQL access module"
+	description: "Column sets (parameters or results) of an SQL access module."
 
 	library: "Access_gen : Access Modules Generators utilities"
 	
@@ -14,6 +14,8 @@ inherit
 	DS_HASH_SET[G]
 		rename
 			make as make_set
+		redefine
+			same_equality_tester
 		end
 	
 feature {NONE} -- Initialization
@@ -27,7 +29,6 @@ feature {NONE} -- Initialization
 			name := a_name
 			make_set (initial_size)
 			set_equality_tester (create {KL_EQUALITY_TESTER [like item]})
-			create local_items.make (10)
 		ensure
 			name_set: name = a_name
 		end
@@ -51,7 +52,7 @@ feature -- Access
 	type : STRING is
 			-- 
 		do
-			if parent_name /= Void and then local_items.count = 0 then
+			if parent_name /= Void and then local_items /= Void and then local_items.count = 0 then
 				Result := parent_name
 			else
 				Result := name
@@ -64,7 +65,7 @@ feature -- Access
 	
 	parent : PARENT_COLUMN_SET[G]
 	
-	local_items : DS_HASH_SET[G]
+	local_items : DS_HASH_SET [G]
 		-- local items : difference between Current and parent
 
 	final_set : like Current is
@@ -98,11 +99,16 @@ feature -- Access
 				end
 			end
 		end
-		
+	
 feature -- Status report
 
 	is_flattened : BOOLEAN
 	
+	same_equality_tester (other: DS_SEARCHABLE [G]) : BOOLEAN is
+		do
+			Result := True
+		end
+		
 feature -- Element change
 
 	set_parent (a_parent : like parent) is
@@ -151,15 +157,12 @@ feature -- Basic operations
 			-- flatten so that columns of parent set are included in current set
 		do
 			if not is_flattened then
-				create local_items.make (count)
-				local_items.set_equality_tester (equality_tester)
 				if parent /= Void then
 					check
 						parent_flattened: parent.is_flattened
 					end --parent.flatten
 					merge (parent)
-					local_items.merge (Current)
-					local_items.symdif (parent)
+					local_items := subtraction (parent)
 				end
 				is_flattened := True
 			end
@@ -194,9 +197,10 @@ invariant
 	
 	name_not_void: name /= Void
 	name_meaningful: name.count > 2
+	
 end -- class COLUMN_SET
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

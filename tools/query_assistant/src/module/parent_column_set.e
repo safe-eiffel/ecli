@@ -1,5 +1,5 @@
 indexing
-	description: "Column sets with descendants"
+	description: "Column sets with descendants."
 
 	library: "Access_gen : Access Modules Generators utilities"
 	
@@ -25,7 +25,6 @@ feature {NONE} -- Initialization
 		do
 			create {DS_LINKED_LIST[like column_set_anchor]} descendants.make
 			Precursor (a_name)
-			create local_items.make (10)
 		end
 		
 feature -- Access
@@ -50,7 +49,7 @@ feature -- Basic operations
 	flatten is
 		local
 			cursor : DS_LIST_CURSOR [like column_set_anchor]
-			set : DS_HASH_SET [G]
+			set, item_as_set_metadata : DS_HASH_SET [G]
 		do
 			if not is_flattened then
 				from
@@ -59,12 +58,15 @@ feature -- Basic operations
 				until
 					cursor.off
 				loop
+					create item_as_set_metadata.make (cursor.item.count)
+					item_as_set_metadata.set_equality_tester (equality_tester)
+					item_as_set_metadata.append_last (cursor.item)
 					if set = Void then
 						create set.make (capacity)
 						set.set_equality_tester (equality_tester)
-						set.merge (cursor.item)
+						set.merge (item_as_set_metadata)
 					else
-						set.intersect (cursor.item)
+						set.intersect (item_as_set_metadata)
 					end
 					cursor.forth
 				end
@@ -88,7 +90,7 @@ feature {NONE} -- Implementation
 		
 end -- class PARENT_COLUMN_SET
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

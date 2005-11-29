@@ -109,6 +109,9 @@ feature -- Status report
 
 	is_verbose : BOOLEAN
 	
+	no_prototypes : BOOLEAN
+		-- Does Current not generate function prototypes in class skeletons?
+		
 feature -- Constants
 
 	reasonable_maximum_length : INTEGER is 1_000_000
@@ -158,7 +161,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.0rc1")
+			error_handler.report_banner ("v1.0rc5")
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2005")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
@@ -268,13 +271,23 @@ feature -- Basic operations
 		end
 
 	process_arguments is
-			-- Read command line arguments.
+			-- Read and check command line arguments.
+		do
+			parse_arguments
+			verify_arguments
+		ensure
+			in_filename_not_void: not has_error implies in_filename /= Void
+			parser_not_void: not has_error implies event_parser /= Void
+			pipe_not_void: not has_error implies tree_pipe /= Void
+		end
+		
+	parse_arguments is
+			-- Parse command line arguments.
 		local
 			key : STRING
 			arg_index : INTEGER
 			value : STRING
-			error_message : STRING
-		do
+		do		
 			from 
 				arg_index := 1
 			until 
@@ -339,12 +352,22 @@ feature -- Basic operations
 				elseif key.is_equal ("-use_decimal") then
 					set_use_decimal (True)
 					arg_index := arg_index + 1
+				elseif key.is_equal ("-no_prototypes") or else key.is_equal ("-no_prototype") then
+					no_prototypes := True
+					arg_index := arg_index + 1
 				else
 					arg_index := arg_index + 1
 					error_handler.report_invalid_argument (key, "name unknown")
 				end
 			end
-				-- Create standard pipe holder and bind it to event parser.
+		end
+	
+	verify_arguments is
+			-- Verify parsed arguments.
+		local
+			error_message : STRING
+		do		
+			-- Create standard pipe holder and bind it to event parser.
 			create error_message.make (0)
 			if not has_error then
 				if event_parser /= Void then
@@ -386,7 +409,6 @@ feature -- Basic operations
 				create session.make (dsn, user,password)
 					session.connect
 					if session.is_connected then
---						session.raise_exception_on_error
 						create repository.make (session)
 						set_shared_columns_repository (repository)
 					else
@@ -413,10 +435,6 @@ feature -- Basic operations
 			if not is_verbose then
 				error_handler.disable_verbose
 			end
-		ensure
-			in_filename_not_void: not has_error implies in_filename /= Void
-			parser_not_void: not has_error implies event_parser /= Void
-			pipe_not_void: not has_error implies tree_pipe /= Void
 		end
 
 feature {NONE} -- Implementation
@@ -557,7 +575,7 @@ feature {NONE} -- Implementation
 			end
 			if access_routines_prefix /= Void then
 				--| generate access routines
-				gen.create_access_routines_class (access_routines_prefix, modules, all_sets)
+				gen.create_access_routines_class (access_routines_prefix, modules, all_sets, no_prototypes)
 				gen.write_class (gen.access_routines_class, out_directory)
 			end
 			--| FIXME : report if class generation has produced an error
@@ -608,7 +626,7 @@ invariant
 
 end -- class ACCESS_GEN
 --
--- Copyright: 2000-2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --
