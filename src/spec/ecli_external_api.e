@@ -63,6 +63,10 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_get_pointer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; BufferLength : INTEGER; StringLengthPtr : POINTER)  : INTEGER is
+		external "C"
+		end
+
 	ecli_c_get_integer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER)  : INTEGER is
 		external "C"
 		end

@@ -48,7 +48,7 @@ indexing
 
 class ECLI_TYPE_CONSTANTS
 
-feature {NONE} -- SQL data type indicators
+feature {ANY} -- SQL data type indicators
 
 	Sql_all_types	:	INTEGER is	0
 		--  GetTypeInfo() request for all data types 

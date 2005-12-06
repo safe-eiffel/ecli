@@ -16,9 +16,9 @@ inherit
 	ANY
 	
 	ECLI_TYPE_CONSTANTS
-		export 
-			{NONE} all
-		end
+--		export 
+--			{NONE} all
+--		end
 		
 creation
 	

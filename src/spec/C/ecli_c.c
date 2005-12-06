@@ -81,6 +81,15 @@ EIF_INTEGER ecli_c_set_pointer_connection_attribute (EIF_POINTER ConnectionHandl
 				(SQLINTEGER)	StringLength);
 }
 
+EIF_INTEGER ecli_c_get_pointer_connection_attribute (EIF_POINTER ConnectionHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr, EIF_INTEGER BufferLength, EIF_POINTER StringLength) {
+	return (EIF_INTEGER) SQLGetConnectAttr (
+				(SQLHDBC)		ConnectionHandle,
+				(SQLINTEGER)	Attribute,
+				(SQLPOINTER)	ValuePtr,
+				(SQLINTEGER)	BufferLength,
+				(SQLINTEGER*)	StringLength);
+}
+
 EIF_INTEGER ecli_c_connect (EIF_POINTER con, EIF_POINTER data_source, EIF_POINTER user, EIF_POINTER password)  {
     /* connect 'con' on 'data_source' for 'user' with 'password' */
 	return (EIF_INTEGER) SQLConnect((SQLHDBC)con,

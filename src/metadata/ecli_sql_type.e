@@ -149,6 +149,44 @@ feature -- Access
 			significant: is_create_params_applicable implies Result /= Void
 		end
 
+	create_parameters : DS_LIST[STRING] is
+			-- name of each individual create parameter, in the order in which they must appear.
+		local
+			splitter : ST_SPLITTER
+		do
+			if impl_create_parameters = Void then
+				create splitter.make
+				splitter.set_separators (",")
+				impl_create_parameters := splitter.split (create_params)
+			end
+			Result := impl_create_parameters
+		end
+		
+	data_definition (parameters : ARRAY[INTEGER]) : STRING is
+			-- Data definition string for Current type with `parameters'.
+		require
+			parameters_for_create_parameters: create_parameters.count > 0 implies (parameters /= Void and parameters.count = create_parameters.count)
+		local
+			i : INTEGER
+		do
+			create Result.make_from_string (name)
+			if create_parameters.count > 0 then
+				Result.append_character ('(')
+				from
+					i := parameters.lower
+				until
+					i > parameters.upper
+				loop
+					Result.append_integer (parameters.item (i))
+					i := i + 1
+					if i <= parameters.upper then
+						Result.append_character (',')
+					end
+				end	
+				Result.append_character (')')
+			end
+		end
+		
 	is_case_sensitive : BOOLEAN is
 			-- If a character datatype, denotes the case sensitivity in comparisons
 			-- and in collations
@@ -302,9 +340,15 @@ feature -- Conversion
 			if is_maximum_scale_applicable then Result.append_string (maximum_scale.out) else Result.append_string ("NULL") end
 			Result.append_string ("%T")
 			if exists_sql_data_type then
-				Result.append_string (sql_data_type.out) Result.append_string ("%T")
+				 Result.append_string (sql_data_type.out) Result.append_string ("%T")
+			end	
+			if exists_sql_date_time_sub then 
 				Result.append_string (sql_date_time_sub.out) Result.append_string ("%T")
+			end
+			if exists_num_prec_radix then 
 				Result.append_string (num_prec_radix.out) Result.append_string ("%T")
+			end
+			if exists_interval_precision then 
 				Result.append_string (interval_precision.out) Result.append_string ("%T")
 			end
 		end
@@ -317,6 +361,7 @@ feature {NONE} -- Implementation
 	impl_literal_prefix : STRING
 	impl_literal_suffix : STRING
 	impl_create_params : STRING
+	impl_create_parameters : DS_LIST[STRING]
 	impl_case_sensitive : INTEGER
 	impl_searchable : INTEGER
 	impl_unsigned : INTEGER

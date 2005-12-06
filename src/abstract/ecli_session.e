@@ -135,18 +135,58 @@ feature -- Access
 	tracer : ECLI_TRACER
 			-- Tracer of all session activity; Void implies no trace
 
+	api_trace_filename : STRING is
+			-- Name of the api trace file.
+		local
+			ext_string: XS_C_STRING
+			int32: XS_C_INT32
+		do
+			create ext_string.make (2048)
+			create int32.make
+			set_status (ecli_c_get_pointer_connection_attribute (handle, att.sql_attr_tracefile, ext_string.handle, ext_string.capacity, int32.handle))
+			Result := ext_string.substring (1, int32.item)
+		ensure
+			api_trace_filename_not_void: Result /= Void
+		end
+		
 	transaction_isolation : ECLI_TRANSACTION_ISOLATION is
 			-- Current active transaction isolation options
 		local
 			ext_txn_isolation : XS_C_UINT32
-			att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS
 		do
 			create ext_txn_isolation.make
-			create att
 			set_status (ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_txn_isolation , ext_txn_isolation.handle))
 			create Result.make (ext_txn_isolation.item)
 		ensure
-			Result_not_void: Result /= Void
+			transaction_isolation_not_void: Result /= Void
+		end
+
+	connection_timeout : DT_TIME_DURATION is		
+			-- Duration corresponding to the number of seconds to wait for any request on the connection
+			-- to complete before returning to the application. 
+			-- Result.second_count = 0 means no timeout
+		local
+			ext_connection_timeout: XS_C_UINT32
+		do
+			create ext_connection_timeout.make
+			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_connection_timeout, ext_connection_timeout.handle))
+			create Result.make_canonical (ext_connection_timeout.item)
+		ensure
+			connection_timeout_not_void: Result /= Void
+		end
+
+	login_timeout : DT_TIME_DURATION is
+			-- Duration corresponding to the number of seconds to wait for a login request to complete 
+			-- before returning to the application. The default is driver-dependent. 
+			-- Result.second_count = 0 means not timeout and a connection attempt will wait indefinitely.
+		local	
+			ext_connection_timeout: XS_C_UINT32
+		do
+			create ext_connection_timeout.make
+			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_login_timeout, ext_connection_timeout.handle))
+			create Result.make_canonical (ext_connection_timeout.item)
+		ensure
+			login_timeout_not_void: Result /= Void
 		end
 		
 feature -- Status report
@@ -187,10 +227,8 @@ feature -- Status report
 			-- Is the connection dead ?
 		local
 			uint_result : XS_C_UINT32
-			att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS
 		do
 			create uint_result.make
-			create att
 			set_status (ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_connection_dead,uint_result.handle))
 			Result := (uint_result.item = att.Sql_cd_true)
 		end
@@ -261,6 +299,16 @@ feature -- Status report
 			tracing_is_tracer_not_void: Result = (tracer /= Void)
 		end
 
+	is_api_tracing : BOOLEAN is
+			-- Is this session tracing ODBC/CLI api calls ?
+		local
+			uint32 : XS_C_UINT32
+		do
+			create uint32.make
+			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_trace,uint32.handle))
+			Result := (uint32.item = att.sql_opt_trace_on)
+		end
+		
 feature -- Status setting
 
 	set_manual_commit is
@@ -299,6 +347,43 @@ feature -- Status setting
 			no_tracer: tracer = Void
 		end
 
+	enable_api_tracing is
+		do
+			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
+		end
+		
+	disable_api_tracing is
+		do
+			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_off))
+		end
+
+--SQL_ATTR_TRACE
+--	Either
+--	(ODBC 1.0)
+--	An SQLUINTEGER value telling the Driver Manager whether to perform tracing: 
+--	SQL_OPT_TRACE_OFF = Tracing off (the default)
+--	
+--	SQL_OPT_TRACE_ON = Tracing on
+--	
+--	When tracing is on, the Driver Manager writes each ODBC function call to the trace file.
+--	
+--	Note   When tracing is on, the Driver Manager can return SQLSTATE IM013 (Trace file error) from any function.
+--	An application specifies a trace file with the SQL_ATTR_TRACEFILE option. If the file already exists, the Driver Manager appends to the file. Otherwise, it creates the file. If tracing is on and no trace file has been specified, the Driver Manager writes to the file SQL.LOG in the root directory. 
+--	
+--	An application can set the variable ODBCSharedTraceFlag to enable tracing dynamically. Tracing is then enabled for all ODBC applications currently running. If an application turns tracing off, it is turned off only for that application.
+--	
+--	If the Trace keyword in the system information is set to 1 when an application calls SQLAllocHandle with a HandleType of SQL_HANDLE_ENV, tracing is enabled for all handles. It is enabled only for the application that called SQLAllocHandle.
+--	
+--	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_TRACE does not require that the ConnectionHandle argument be valid and will not return SQL_ERROR if ConnectionHandle is NULL. This attribute applies to all connections.
+
+--SQL_ATTR_TRACEFILE
+--	Either
+--	(ODBC 1.0)
+--	A null-terminated character string containing the name of the trace file. 
+--	The default value of the SQL_ATTR_TRACEFILE attribute is specified with the TraceFile keyword in the system information. For more information, see ODBC Subkey.
+--	
+--	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_ TRACEFILE does not require the ConnectionHandle argument to be valid and will not return SQL_ERROR if ConnectionHandle is invalid. This attribute applies to all connections.
+		
 feature -- Element change
 
 	set_login_strategy (new_login : ECLI_LOGIN_STRATEGY) is
@@ -314,6 +399,7 @@ feature -- Element change
 		
 	set_user_name(a_user_name: STRING) is
 			-- Set `user' to `a_user'
+		obsolete "[2004-12-23]Use `login_strategy' instead."
 		require
 			not_connected: not is_connected
 			a_user_ok: a_user_name/= Void
@@ -325,6 +411,7 @@ feature -- Element change
 
 	set_data_source (a_data_source : STRING) is
 			-- Set `data_source' to `a_data_source'
+		obsolete "[2004-12-23]Use `set_login_strategy' instead."
 		require
 			not_connected: not is_connected
 			a_data_source_ok: a_data_source /= Void
@@ -336,6 +423,7 @@ feature -- Element change
 
 	set_password (a_password : STRING) is
 			-- Set password to 'a_password
+		obsolete "[2004-12-23]Use `set_login_strategy' instead."
 		require
 			not_connected: not is_connected
 			a_password_ok: a_password /= Void
@@ -361,15 +449,62 @@ feature -- Element change
 		require
 			an_isolation_not_void: an_isolation /= Void
 			no_pending_transaction: not has_pending_transaction
-		local
-			att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS
 		do
-			create att
 			set_status (ecli_c_set_integer_connection_attribute (handle, att.Sql_attr_txn_isolation,  an_isolation.value))
 		ensure
 			done_when_ok: is_ok implies (transaction_isolation.is_equal (an_isolation))
 		end
 
+	set_login_timeout (duration : DT_TIME_DURATION) is
+			-- Set `login_timeout' to `duration'.
+			-- If the specified timeout exceeds the maximum login timeout in the data source, 
+			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
+		require
+			not_connected: not is_connected
+			duration_not_void: duration /= Void
+		local
+			uint32: XS_C_UINT32
+		do
+			create uint32.make
+			uint32.put (duration.second_count)
+			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_login_timeout,  uint32.item))
+		ensure
+			login_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies login_timeout.is_equal (duration)
+		end
+
+	set_connection_timeout (duration : DT_TIME_DURATION) is
+			-- Set `connection_timeout' to `duration'.
+			-- If the specified timeout exceeds the maximum connection timeout in the data source, 
+			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
+		require
+			not_connected: not is_connected
+			duration_not_void: duration /= Void
+		local
+			uint32: XS_C_UINT32
+		do
+			create uint32.make
+			uint32.put (duration.second_count)
+			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_connection_timeout,  uint32.item))
+		ensure
+			connection_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies connection_timeout.is_equal (duration)
+		end
+
+	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM) is		
+			-- Set `api_trace' to `filename'.
+		require
+			filename_not_void: filename /= Void
+			file_system_not_void: file_system /= Void
+			file_name_valid: file_system.directory_exists (file_system.dirname (filename))
+			not_api_tracing: not is_api_tracing
+		local
+			xs_string : XS_C_STRING
+		do
+			create xs_string.make_from_string (filename)
+			set_status (ecli_c_set_pointer_connection_attribute (handle, att.sql_attr_tracefile, xs_string.handle, filename.count))
+		ensure
+			api_trace_filename_set: is_ok implies file_system.basename (api_trace_filename).is_equal (file_system.basename (filename))
+		end
+		
 feature -- Basic Operations
 
 	begin_transaction is
@@ -633,6 +768,11 @@ feature {NONE} -- Implementation
 			if is_ok then
 				set_disconnected
 			end			
+		end
+
+	att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS is		
+		once
+			create Result
 		end
 		
 invariant
