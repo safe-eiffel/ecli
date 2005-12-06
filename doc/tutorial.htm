@@ -109,9 +109,9 @@ available  on various platforms : Windows, Unix, Linux</DD>
 	<DT><b>Multicompiler</b></DT><DD>it uses as portable Eiffel   as
 possible, and has already been tested using
 		<UL>
-			<LI>ISE Eiffel 5.3 and</LI>
-			<LI>SmartEiffel, </LI>
-			<LI>Visual Eiffel 4.1.</LI>
+			<LI>ISE Eiffel 5.5, 5.6 and</LI>
+			<LI>GOBO-supported SmartEiffel, </LI>
+			<LI>Visual Eiffel 5.0.</LI>
 
 		</DD>
 </DL>
@@ -545,13 +545,13 @@ driver.</dd>
 
       </table>
 
-      <p>A basic error handling routine would look like this
+      <p>A basic status hanling routine would look like this
  : </p>
 
  <div id="code">
  <pre>
 
- handle_error (status : ECLI_STATUS) is
+ handle_status (status : ECLI_STATUS) is
  	do
  		if status.<b>has_information_message</b> or status.<b>is_error</b> then
  			print (status.<b>cli_state</b>)
