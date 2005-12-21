@@ -17,9 +17,26 @@ inherit
 	KL_SHARED_FILE_SYSTEM
 	
 	DT_SHARED_SYSTEM_CLOCK
+
+create	
+
+	make
 	
+feature {NONE} -- Initialization
+
+	make (an_error_handler : QA_ERROR_HANDLER) is
+		require
+			an_error_handler_not_void: an_error_handler /= Void
+		do
+			error_handler := an_error_handler
+		ensure
+			error_handler_set: error_handler = an_error_handler
+		end
+		
 feature -- Access
 
+	error_handler : QA_ERROR_HANDLER
+	
 	cursor_class : EIFFEL_CLASS
 	
 	parameters_class : EIFFEL_CLASS
@@ -48,8 +65,12 @@ feature -- Basic operations
 			file_name := File_system.pathname (a_target_directory,file_name) 
 			file := File_system.new_output_file (file_name)
 			file.open_write
-			a_class.write (file)
-			file.close
+			if file.is_open_write then 
+				a_class.write (file)
+				file.close
+			else
+				error_handler.report_cannot_write_file (file_name)
+			end
 		end
 		
 	create_cursor_class (module : ACCESS_MODULE; parent_name : STRING) is 

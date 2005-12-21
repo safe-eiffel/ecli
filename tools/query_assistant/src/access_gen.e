@@ -161,7 +161,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.0rc5")
+			error_handler.report_banner ("v1.0rc6")
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2005")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
@@ -560,7 +560,7 @@ feature {NONE} -- Implementation
 				end
 				c.forth
 			end
-			create gen
+			create gen.make (error_handler)
 			--| classes for parent results
 			from
 				s := all_parents_set.new_cursor
@@ -589,7 +589,7 @@ feature {NONE} -- Implementation
 		local
 			parent_class : STRING
 		do
-			create gen
+			create gen.make (a_error_handler)
 			a_error_handler.report_generating (module.name)
 			if module.has_result_set then
 				parent_class := default_parent_cursor

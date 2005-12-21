@@ -66,9 +66,20 @@ feature -- File
 		require
 			file_name_not_void: file_name /= Void
 		local
-			error : UT_CANNOT_READ_FILE_ERROR
+			error : QA_FILE_ERROR
 		do
-			create error.make (file_name)
+			create error.make_cannot_read (file_name)
+			report_error (error)
+		end
+
+	report_cannot_write_file (file_name : STRING) is		
+			-- Report file `file_name' cannot' be written.
+		require
+			file_name_not_void: file_name /= Void
+		local
+			error : QA_FILE_ERROR
+		do
+			create error.make_cannot_write (file_name)
 			report_error (error)
 		end
 		
