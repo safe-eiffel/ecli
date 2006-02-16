@@ -235,6 +235,10 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_sql_get_info (handle : POINTER; info_type: INTEGER; info_value_ptr: POINTER; buffer_length : INTEGER; string_length_ptr: POINTER) : INTEGER is
+		external "C" 
+		end
+		
 	ecli_c_sql_drivers (handle : POINTER;
 			Direction : INTEGER;
 			DriverDescription : POINTER;

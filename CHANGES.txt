@@ -1,3 +1,10 @@
+2005-12-*
+	* Complete review of test1 application.
+	* Added ECLI_DBMS_INFORMATION - equivalent of SQLGetInfo
+	
+2005-12-07
+	* ECLI_SESSION: Added getting/setting various connection attributes : login_timeout, connection_timeout, network_packet_size, tracing API (ODBC) low level calls.
+	
 2005-01-07
 	* Procedure calls are now fully tested.
 	* Support of multiple result sets : go_after finishes sweeping through the current result-set, finish finishes sweeping through all pending result sets.

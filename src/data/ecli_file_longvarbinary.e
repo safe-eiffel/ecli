@@ -25,5 +25,5 @@ feature -- Access
 		do
 			Result := Sql_longvarbinary
 		end
-
+		
 end

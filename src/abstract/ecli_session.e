@@ -21,7 +21,7 @@ inherit
 	ECLI_HANDLE
 		export
 			{ANY} is_valid;
-			{ECLI_LOGIN_STRATEGY, ECLI_HANDLE} handle
+			{ECLI_LOGIN_STRATEGY, ECLI_HANDLE, ECLI_DBMS_INFORMATION} handle
 		end
 
 	ECLI_SHARED_ENVIRONMENT
@@ -86,6 +86,7 @@ feature -- Initialization
 		do
 			allocate
 			reset_implementation
+			create info.make (Current)
 		ensure
 			valid: is_valid
 			open: not is_closed
@@ -117,6 +118,8 @@ feature -- Access
 			Result := simple_login.password
 		end
 
+	info : ECLI_DBMS_INFORMATION
+		
 	transaction_capability : INTEGER is
 			-- Transaction capability of established session
 		require
@@ -133,7 +136,7 @@ feature -- Access
 		end
 
 	tracer : ECLI_TRACER
-			-- Tracer of all session activity; Void implies no trace
+			-- Tracer of all SQL. Void implies no trace.
 
 	api_trace_filename : STRING is
 			-- Name of the api trace file.
@@ -187,6 +190,31 @@ feature -- Access
 			create Result.make_canonical (ext_connection_timeout.item)
 		ensure
 			login_timeout_not_void: Result /= Void
+		end
+
+	network_packet_size : INTEGER is		
+			-- Network packet size.
+			-- Note:   Many data sources either do not support this option or only can return but not set
+			--         the network packet size.
+		local
+			uint32 : XS_C_UINT32
+		do
+			create uint32.make
+			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_packet_size, uint32.handle))
+			Result := uint32.item
+		end
+		
+	set_network_packet_size (new_size : INTEGER) is
+			--  If the specified size exceeds the maximum packet size 
+			--  or is smaller than the minimum packet size, the driver substitutes that value and 
+			--  returns SQLSTATE 01S02 (Option value changed).
+		require
+			new_size_positive: new_size > 0
+			not_connected: not is_connected
+		do
+			set_status (ecli_c_set_integer_connection_attribute(handle, att.sql_attr_packet_size, new_size))		
+		ensure
+			network_packet_size_set: (is_ok and not cli_state.is_equal ("01S02")) implies network_packet_size = new_size
 		end
 		
 feature -- Status report
@@ -337,7 +365,7 @@ feature -- Status setting
 		end
 
 	disable_tracing is
-			-- Disable session trace
+			-- Disable SQL tracing.
 		require
 			tracing: is_tracing
 		do
@@ -348,11 +376,13 @@ feature -- Status setting
 		end
 
 	enable_api_tracing is
+			-- Enable ODBC API tracing into `api_trace_filename'.
 		do
 			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
 		end
 		
 	disable_api_tracing is
+			-- Disable ODBC API tracing.
 		do
 			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_off))
 		end
@@ -434,7 +464,7 @@ feature -- Element change
 		end
 
 	set_tracer (a_tracer : ECLI_TRACER) is
-			-- Trace SQL with `a_tracer'
+			-- Trace SQL with `a_tracer'.
 		require
 			tracer_ok: a_tracer /= Void
 		do
@@ -490,7 +520,7 @@ feature -- Element change
 		end
 
 	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM) is		
-			-- Set `api_trace' to `filename'.
+			-- Set `api_trace_filename' to `filename'.
 		require
 			filename_not_void: filename /= Void
 			file_system_not_void: file_system /= Void
@@ -777,5 +807,5 @@ feature {NONE} -- Implementation
 		
 invariant
 	valid_session: environment /= Void implies environment = shared_environment
-
+	info_not_void: info /= Void
 end

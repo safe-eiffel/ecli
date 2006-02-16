@@ -26,4 +26,10 @@ feature -- Access
 			Result := Sql_varbinary
 		end
 
+	c_type_code : INTEGER is
+		do
+			Result := sql_c_binary
+		end
+		end
+		
 end

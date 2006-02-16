@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "NUMBER/DECIMAL values."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

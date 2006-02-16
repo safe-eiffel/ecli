@@ -27,6 +27,11 @@ inherit
 			is_equal 
 		end
 	
+	KL_SHARED_FILE_SYSTEM
+		undefine
+			is_equal
+		end
+		
 feature {NONE} -- Initialization
 
 	make_input (an_input_file : like input_file) is
@@ -45,7 +50,7 @@ feature {NONE} -- Initialization
 	make_output (an_output_file : like output_file) is
 			-- make for writing to `an_output_file'
 		require
-			an_output_file_exists: an_output_file /= Void and then an_output_file.exists
+			an_output_file_not_void: an_output_file /= Void
 			an_output_file_not_open: not an_output_file.is_open_write
 		do
 			size := an_output_file.count
@@ -79,7 +84,8 @@ feature -- Measurement
 			Result := size
 		end
 		
-	transfer_octet_length: INTEGER is 1024
+	transfer_octet_length: INTEGER is 4096
+	
 
 feature -- Status report
 
@@ -200,7 +206,11 @@ feature -- Basic operations
 			create parameter_rank.make
 			create length_at_execution.make
 			parameter_rank.put (index)
-			length_at_execution.put (ecli_c_len_data_at_exe (size))
+			if stmt.info.need_long_data_len then
+				length_at_execution.put (ecli_c_len_data_at_exe (size))
+			else
+				length_at_execution.put (sql_data_at_exec)
+			end
 			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
 				index,
 				Parameter_directions.Sql_param_input,
@@ -249,6 +259,8 @@ feature -- Basic operations
 		
 	put_parameter (stmt: ECLI_STATEMENT; index: INTEGER) is
 			-- Put `index'-th parameter of `stmt' by reading data from `input_file'.
+		local
+			l_total, l_count : INTEGER
 		do
 			if not is_null then
 				from
@@ -257,13 +269,15 @@ feature -- Basic operations
 				until
 					input_file.end_of_input
 				loop
+					l_count := input_file.last_string.count
+					l_total := l_total + l_count 
 					ext_item.from_string (input_file.last_string)
-					stmt.set_status (ecli_c_put_data (stmt.handle, to_external, input_file.last_string.count))
+					stmt.set_status (ecli_c_put_data (stmt.handle, to_external, l_count))
 					input_file.read_string (Transfer_octet_length)
 				end
 				input_file.close
 			else
-					stmt.set_status (ecli_c_put_data (stmt.handle, to_external, ecli_c_value_get_length_indicator (buffer)))
+				stmt.set_status (ecli_c_put_data (stmt.handle, to_external, ecli_c_value_get_length_indicator (buffer)))
 			end
 		end
 		
@@ -289,7 +303,7 @@ feature {NONE} -- Implementation
 invariant
 
 	ext_item_not_void: ext_item /= Void
-	ext_item_shares_buffer: ext_item.to_external = buffer
+	ext_item_shares_buffer: ext_item.to_external = ecli_c_value_get_value (buffer)
 	input_xor_output: is_input xor is_output
 	
 end

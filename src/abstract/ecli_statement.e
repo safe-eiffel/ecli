@@ -129,6 +129,14 @@ feature {ECLI_SESSION} -- Basic Operations
 		
 feature -- Access
 
+	info : ECLI_DBMS_INFORMATION is
+			-- DBMS information
+		do
+			Result := session.info
+		ensure
+			info_not_void: Result /= Void
+		end
+		
 	sql : STRING
 			-- Sql statement to be executed
 

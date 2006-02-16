@@ -14,6 +14,17 @@ deferred class ECLI_CURSOR
 inherit
 
 	ECLI_QUERY
+		redefine
+			real_execution
+		end
+		
+feature -- Status report
+
+	real_execution : BOOLEAN is
+		do
+			Result := True
+		end
+		
 			
 feature -- Cursor movement
 

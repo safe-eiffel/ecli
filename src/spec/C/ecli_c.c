@@ -551,6 +551,17 @@ EIF_INTEGER ecli_c_transaction_capable (EIF_POINTER handle, EIF_POINTER capable)
 	return res;
 }
 
+EIF_INTEGER ecli_c_sql_get_info (EIF_POINTER handle, EIF_INTEGER info_type, EIF_POINTER info_value_ptr, EIF_INTEGER buffer_length, EIF_POINTER string_length_ptr) {
+	EIF_INTEGER res;
+
+	res = (EIF_INTEGER) SQLGetInfo(	 (SQLHDBC)      handle,
+									 (SQLUSMALLINT) info_type,
+									 (SQLPOINTER)   info_value_ptr,
+									 (SQLSMALLINT)  buffer_length,
+									 (SQLSMALLINT *)string_length_ptr);
+	return res;
+}
+
 EIF_INTEGER ecli_c_sql_get_functions (EIF_POINTER handle, EIF_INTEGER function, EIF_POINTER supported) {
 	SQLUSMALLINT support;
 	EIF_INTEGER res;

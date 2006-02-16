@@ -216,6 +216,7 @@ feature {NONE} -- Implementation
 	impl_buffer_length_indicator : XS_C_INT32
 	
 invariant
+
 	valid_status: valid_status (status)
 
 end

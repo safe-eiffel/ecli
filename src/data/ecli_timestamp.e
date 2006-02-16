@@ -65,7 +65,7 @@ feature {NONE} -- Initialization
 
 	make_first is
 			-- make first day of Christian era
-		obsolete "Use `make_first' instead"
+		obsolete "Use `make_default' instead"
 		do
 			make_default
 		ensure
