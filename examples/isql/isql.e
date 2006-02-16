@@ -62,6 +62,7 @@ feature {NONE} -- Initialization
 					end
 					create tc.make(session)
 					l := tc.numeric_types
+					print (tc.types_for_id (tc.sql_decimal).first)
 				end
 				if session = Void or else session /= Void and then not session.is_connected then
 					current_context.filter.begin_error

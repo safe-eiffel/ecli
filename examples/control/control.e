@@ -8,44 +8,33 @@ feature
 
 	make is
 		local
-			a, b : UNSIGNED_32
+			d : DT_TIME_DURATION
+			api_tracing : BOOLEAN
+			i : INTEGER
 		do
-			b := not a
-			z := b.from_hex ("FFE9")
-			print (b.out) print ("%N")
-			print (z.out) print ("%N")
-			t := b.from_integer (-1)
-			t := t * a.from_integer (2)
-			t := t or b
-			t := t xor b
-			
+			create session.make_default
+			api_tracing := session.is_api_tracing
+			create login.make ("SODEV4", "D51PRE1M2", "MESBAYV")	
+			d := session.login_timeout
+			session.set_api_trace_filename ("c:\soexp1_odbc.log", create {KL_WINDOWS_FILE_SYSTEM}.make)
+			session.enable_api_tracing
+			session.set_login_timeout (create {DT_TIME_DURATION}.make_canonical (1))
+			api_tracing := session.is_api_tracing
+			d := session.login_timeout
+			session.set_login_strategy (login)
+			i := session.network_packet_size
+			session.connect
+			d := session.login_timeout
+			i := session.network_packet_size
+			session.disable_api_tracing
+			session.disconnect
+			session.close
 		end
-		
-	z, t : UNSIGNED_32
 
-feature -- Gobo file system
-
-	f : KI_FILE
-	fi : KI_INPUT_FILE	
-	si : KI_INPUT_STREAM[CHARACTER]
-	d : KI_DIRECTORY
-	tif : KI_TEXT_INPUT_FILE
-	tis : KI_TEXT_INPUT_STREAM
-	tof : KI_TEXT_OUTPUT_FILE
-	tos : KI_TEXT_OUTPUT_STREAM
-	ip : KI_PATHNAME
-	p : KL_PATHNAME
-	fs : KL_SHARED_FILE_SYSTEM
-	sis : KL_STRING_INPUT_STREAM
-	sos : KL_STRING_OUTPUT_STREAM
-	nt : KL_NULL_TEXT_OUTPUT_STREAM
-	mac : KL_MACOS_INPUT_FILE
-	maco : KL_MACOS_OUTPUT_FILE
-	proxi : KL_PROXY_CHARACTER_INPUT_STREAM
-	proxo : KL_PROXY_CHARACTER_OUTPUT_STREAM
-	sst : KL_SHARED_STREAMS
+	session : ECLI_SESSION		
+	login : ECLI_SIMPLE_LOGIN
 	
-feature
+feature -- Access
 
 	ecli_api_constants : ECLI_API_CONSTANTS
 	ecli_arrayed_buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
