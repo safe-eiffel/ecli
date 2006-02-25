@@ -161,7 +161,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.0rc6")
+			error_handler.report_banner ("v1.0rc7")
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2005")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end

@@ -69,18 +69,28 @@ feature -- Basic operations
 			if columns.found then
 				last_column := columns.found_item
 			else
+				last_column := Void
 				create nm.make (catalog_name, schema_name, table_name)
 				create cursor.make_query_column ( nm, column_name, session)
-				cursor.start
-				if not cursor.off then
-					columns.force (cursor.item, id)
-					last_column := cursor.item
-				else
-					-- avoid unnecessary repository searches 
-					columns.force (Void, id)
-					last_column := Void
+				--| Fix for Oracle driver that returns fool results.  Retrieve all results.
+				from
+					if cursor.is_ok then
+						cursor.start
+					end
+				until
+					not cursor.is_ok or else cursor.off
+				loop
+					columns.force (cursor.item, hash_identifiant (catalog_name, schema_name, table_name, cursor.item.name))
+					cursor.forth
 				end
 				cursor.close
+				columns.search (id)
+				if columns.found then
+					last_column := columns.found_item
+				else
+					last_column := Void
+					columns.force (Void, id)
+				end
 			end
 			if last_column = Void then
 				found := False

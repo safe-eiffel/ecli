@@ -48,7 +48,9 @@ feature {NONE} -- Initialization
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
-			create queried_column_impl.make_from_string (a_column_name)
+			if a_column_name /= Void then 
+				create queried_column_impl.make_from_string (a_column_name)
+			end
 			make (a_search_criteria, a_session)
 		end
 

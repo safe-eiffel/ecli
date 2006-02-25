@@ -576,7 +576,7 @@ feature -- Element change
 			row_not_void: row /= Void
 			row_lower: row.lower = 1
 			row_count: row.count > 0
-			is_executed: is_executed
+--			is_executed: is_executed
 		do
 			results := row
 		ensure
