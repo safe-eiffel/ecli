@@ -630,22 +630,23 @@ stmt : ECLI_STATEMENT
 
 create stmt.<strong>make</strong> (session)
 -- DDL statement
-stmt.<b>set_sql</b> ("CREATE TABLE ECLITRIAL ( %
-	% name CHAR(20), %
-	% fname VARCHAR (20), %
-	% nbr INTEGER,%
-	% bdate DATETIME, price FLOAT)")
+stmt.<b>set_sql</b> ("create table COPY (
+ isbn VARCHAR(14),
+ serial_number INTEGER,
+ purchased DATE,
+ price FLOAT,
+ loc_store INTEGER,
+ loc_shelf INTEGER,
+ loc_row INTEGER,
+ borrower INTEGER,
+ borrow_time TIMESTAMP
+)")
 
 stmt.<b>execute</b>
-if stmt.is_ok then
-	io.put_string ("Table ECLITRIAL created%N")
-else
-	handle_error (stmt)
-end
+...
 
 -- DML statements
-stmt.<b>set_sql</b> ("INSERT INTO ECLITRIAL VALUES %
-	% ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)")
+stmt.<b>set_sql</b> ("INSERT INTO COPY VALUES ('1892005034', 1, {d '2005-03-27'}, 15.77, 1,1,1, NULL, NULL)")
 stmt.<b>execute</b>
 ...
 
@@ -1018,24 +1019,20 @@ were a linear collection (features <i>start</i>, <i>forth</i>, <i>off</i>
 
  <div id="code">
  <pre>
-vname  :	 ECLI_CHAR
-vprice :	 ECLI_DOUBLE
-vbdate :	 ECLI_TIMESTAMP
-vfname :	 ECLI_VARCHAR
-vnbr   : 	 ECLI_INTEGER
+isbn   :	 ECLI_VARCHAR
+title  : ECLI_VARCHAR
+author : ECLI_VARCHAR
 -- selection of tuples
-stmt.set_sql ("SELECT * FROM ECLITRIAL")
+stmt.set_sql ("SELECT * FROM BOOK")
 stmt.execute
 -- get results
 if stmt.is_ok and then stmt.<b>has_result_set</b> then
 	 -- create result set 'value holders'
-	 create vname.make (20)
-	 create vnbr.make
-	 create vprice.make
-	 create vfname.make (20)
-	 create vbdate.make_first
+	 create isbn.make (14)
+	 create title.make (100)
+	 create author.make (30)
 	 -- define the container of value holders
-	 stmt.<b>set_results</b> (&lt;&lt;vname, vfname, vnbr, vbdate, vprice&gt;&gt;)
+	 stmt.<b>set_results</b> (&lt;&lt;isbn, title, author&gt;&gt;)
 	 -- iterate on result-set
 	 from
 		&nbsp; stmt.<b>start</b>
@@ -1303,15 +1300,14 @@ passed before query execution. The SQL syntax for that is simple : prefix
       <p align="Left">An insert statement like this &nbsp; </p>
 
       <div id="code">
-      <pre>INSERT INTO ECLITRIAL VALUES&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; ('Smith', 'Henry', 10, {ts '2000-05-24 08:20:15.00'}, 33.3)</pre>
+      <pre>INSERT INTO COPY VALUES ('1892005034', 1, {d '2005-03-27'}, 15.77, 1,1,1, NULL, NULL)</pre>
 	</div>
 
       <p align="Left">can be parameterized like this &nbsp; </p>
 
       <div id="Code">
 <pre>
-INSERT INTO ECLITRIAL VALUES&nbsp;
-   (<b>?firstname, ?lastname, ?number, ?bdate, ?price</b>)</pre>
+INSERT INTO COPY VALUES (<b>?p_isbn, ?p_serial, ?p_purchased, ?p_price, ?p_loc_store, ?p_loc_shelf, ?p_loc_row, ?p_borrower, ?p_borrow_time</b>)</pre>
 </div>
 
 
@@ -1320,56 +1316,60 @@ ECLI_VALUE objects, or individually by name.&nbsp; </p>
 
 <div id="Code">
 <pre>
-othername:  ECLI_CHAR
-p_name  :   ECLI_CHAR
-p_price :   ECLI_DOUBLE
-p_bdate :   ECLI_TIMESTAMP
-p_fname :   ECLI_VARCHAR
-p_nbr :     ECLI_INTEGER
+	v_isbn : ECLI_VARCHAR
+	v_title : ECLI_VARCHAR
+	v_author : ECLI_VARCHAR
+
+	v_isbn_nvc : ECLI_VARCHAR
 
 ...
 
--- parameterized insertion
-stmt.set_sql ("INSERT INTO ECLITRIAL VALUES %
-&nbsp;&nbsp; % (<b>?firstname</b>, <b>?lastname</b>, <b>?number</b>, <b>?bdate</b>, <b>?price</b>)")
+	-- create buffers
+	create v_isbn.make (14)
+	create v_title.make (100)
+	create v_author.make (30)
 
--- (STEP 1) set parameters by array
-stmt.<b>set_parameters</b> (&lt;&lt;p_fname,&nbsp;p_name,&nbsp;p_nbr,&nbsp;p_bdate,&nbsp;p_price&gt;&gt;)
+	-- Insert new BOOK
+	-- set SQL
+	stmt.set_sql ("INSERT BOOK VALUES (?p_isbn, ?p_title, ?p_author)")
 
--- set values
+	-- (either 1) put parameters by array
+	stmt.set_parameters (<< v_isbn, v_title, v_author>>)
 
-...
+	-- (or 2) put parameters by name
+	stmt.put_parameter (v_isbn, "p_isbn")
+	stmt.put_parameter (v_title, "p_title")
+	stmt.put_parameter (v_author, "p_author")
 
--- (STEP 2) bind them
-stmt.<b>bind_parameters
-</b>-- (STEP 3) execute statement
-stmt.<b>execute</b>
+	-- (in all cases) bind parameters
+	stmt.bind_parameters
 
--- test execution status
-if stmt.is_ok then
-    print ("Tuple inserted")
-else
-    handle_error (stmt)
-end
+	-- set parameter values
+	v_isbn.set_item ("0136291554")
+	v_title.set_item ("Object-Oriented Software Construction (Book/CD-ROM) (2nd Edition)")
+	v_author.set_item ("Meyer, Bertrand")
 
--- (STEP 4) set parameter by name
---&nbsp; a new value object is provided = parameters must be bound again
-create othername.make (20); other_name.set_item ("Jim")
-stmt.<b>put_parameter</b> (othername, "firstname")
-stmt.<b>bind_parameters</b>
-stmt.<b>execute</b>
+	-- execute
+	stmt.execute
 
--- (STEP 5) change parameter object state - binding still apply
-othername.set_item ("Louis")
-stmt.<b>execute</b>
+	...
 
+	-- Binding still applies.  Changing buffer values and executing again inserts new values.
+	v_isbn.set_item ("1892005034")
+	v_title.set_item ("Nonviolent Communication: A Language of Life")
+	v_author.set_item ("Rosenberg, Marshall B.")
+
+	-- execute
+	stmt.execute
 ...
 </pre>
 </div>
 
       <ul>
 
-        <li>Step 1 : parameters objects are passed in an array - set_parameters</li>
+        <li>Step 1 : parameters objects are passed in an array - <em>set_parameters</em>
+        	Another way of binding is "by name" - <em>put_parameter</em>
+        </li>
 
         <li>Step 2 : Parameters must be bound.&nbsp; This way, they    are
 considered by the underlying driver as transfer         buffers from  the
@@ -1377,15 +1377,11 @@ application to the database.</li>
 
         <li>Step 3 : Statement is executed</li>
 
-        <li>Step 4 : A new parameter object is passed by name.&nbsp;
-i.e : this object replaces the "firstname"         parameter (rank 1) in
-the parameters array.&nbsp; The         parameters must then be bound again
-so that the         underlying driver can get advised of this modification.</li>
 
-        <li>Step 5 : Changing the value contained by a parameter (through
+        <li>Step 4 : Changing the value contained by a parameter (through
 feature set_item), updates the transfer buffer         content for the associated
-parameter.&nbsp; The next         execution shall take this new value into
-account.&nbsp;         Parameters need not be bound again.</li>
+parameter.&nbsp; The next execution shall take this new value into
+account.&nbsp; Parameters need not be bound again.</li>
 
       </ul>
 
