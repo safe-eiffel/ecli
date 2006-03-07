@@ -54,15 +54,17 @@
 		<!-- do nothing -->
 	</target>
 
-	<target name="do_all" depend="init">
+	<target name="do_all">
 		<description>
 			Call 'geant' with the same target ${target}
 			in all subdirectories.
 		</description>
 
+		<geant file="build.eant" target="${target}" dir="control"/>
 		<geant file="build.eant" target="${target}" dir="isql"/>
 		<geant file="build.eant" target="${target}" dir="qa_example"/>
-		<geant file="build.eant" target="${target}" dir="test_gc"/>
+		<geant file="build.eant" target="${target}" dir="test_decimal"/>
+		<geant file="build.eant" target="${target}" dir="test_procedures"/>
 		<geant file="build.eant" target="${target}" dir="test_rowset"/>
 		<geant file="build.eant" target="${target}" dir="test_values"/>
 		<geant file="build.eant" target="${target}" dir="test_Xaction"/>

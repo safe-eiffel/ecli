@@ -2,6 +2,8 @@ ECLI sample applications
 
 Directory	Application name	Description
 ---------	----------------	-------------------------------------------------------
+control		control			An application that does nothing but reference all ECLI classes.
+
 isql		isql			Interactive SQL
 					usage: isql <data_source_name> <user> <password> [sql_file_name [echo]]
 					isql works in two modes
@@ -9,6 +11,12 @@ isql		isql			Interactive SQL
 					* batch : isql reads commands from file whose name is sql_file_name.
 						* echo is a flag that directs isql to echo commands when they are executed.
 					
+qa_example	
+
+test_decimal				Tests ECLI_DECIMAL
+
+test_procedures	test_procecedures	Test procedures on an SQL Server.
+
 test1		test1			Your first sample application : create table, 
 					insert tuples, select tuples, drop table
 					usage: test1 <data_source_name> <user> <password> [trace_file_name]

@@ -125,11 +125,11 @@ feature {NONE} -- Implementation
 	
 	set_error (message, value : STRING) is
 		do
-						!!error_message.make (0)
-						error_message.append_string (message)
-						error_message.append_string (" '")
-						error_message.append_string (value)
-						error_message.append_string ("'")		
+			!!error_message.make (0)
+			error_message.append_string (message)
+			error_message.append_string (" '")
+			error_message.append_string (value)
+			error_message.append_string ("'")		
 		ensure
 			error_message /= Void
 		end
@@ -156,7 +156,7 @@ feature {NONE} -- Implementation
 		
 end -- class TEST_ROWSET
 --
--- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

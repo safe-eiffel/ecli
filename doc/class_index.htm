@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="Version" content="8.0.3410">
+  <meta name="Date" content="10/11/96">
+  <title>ECLI - Eiffel Wrapper for the ISO/CLI DBMS Interface</title>
+  <style type="text/css">
+  	body {color: black; background: white;
+  		font-family: Verdana, sans-serif;
+  		font-size: 10pt;
+		margin-left: 5%;
+		margin-right: 5%;
+  	}
+  	td {
+  		font-family: Verdana, sans-serif;
+  		font-size: 10pt;
+	}
+	table {
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+  	h1 {  		font-family: Verdana, sans-serif;
+				font-weight: bold; font-size: 16pt;}
+  	h2 {  		font-family: Verdana, sans-serif;
+				font-weight: bold; font-size: 13pt;}
+	h3 {  		font-family: Verdana, sans-serif;
+				font-weight: bold; font-size: 11pt;}
+  	#title p {
+  		text-align: center;}
+  	#title .title {font-size: 200%; font-weight: bold;}
+  	#title .author {font-size: 150%; font-weight: bold;}
+	#toc {
+		background: rgb(204,204,255);
+		padding: 0.5em;
+		border: none;
+		margin-left: 10%;
+		margin-right: 10%;
+	  }
+	#code {
+		background: rgb(255,255,204);
+		padding: 0.5em;
+		border: none;
+		font-family: courier, serif;
+		font-size: 10pt;
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+  </style>
+</head>
+
+<body>
+
+<h1>Class index</h1>
+<div id="toc">
+<ol>
+  <li><a href="#dictionary">Class dictionary</a>
+     </li>
+  <li><a href="#values">ECLI_VALUE class hierarchy</a></li>
+  <li><a href="#statements">ECLI_STATEMENT class hierarchy</a></li>
+  <li><a href="#logins">ECLI_LOGIN_STRATEGY class hierarchy</a></li>
+</ol>
+</div>
+
+<h2><a name="dictionary">Class dictionary</a></h2>
+<table width="80%" border="1" cellpadding="3" cellspacing="0">
+ 		<tr>
+ 			<td valign="Top" width="20%"><b>Class</b> </td>
+            <td valign="Top" width="20%"><b>Description</b> </td>
+		</tr>
+<tr><td><a name="ECLI_API_CONSTANTS">ECLI_API_CONSTANTS</a></td><td> CLI/ODBC API constants.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_BUFFER_FACTORY">ECLI_ARRAYED_BUFFER_FACTORY</a></td><td> Objects that create arrayed buffers for rowset commands.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_CHAR">ECLI_ARRAYED_CHAR</a></td><td> SQL CHAR (n) arrayed values.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_DATE">ECLI_ARRAYED_DATE</a></td><td> SQL DATE arrayed buffers.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_DATE_ROUTINES*">ECLI_ARRAYED_DATE_ROUTINES*</a></td><td> Routines for handling arrayed buffers of DATEs or date part of TIMESTAMPs.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_DATE_TIME">ECLI_ARRAYED_DATE_TIME</a></td><td> Arrayed buffers of DATETIME (synonym of TIMESTAMP) values.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_DOUBLE">ECLI_ARRAYED_DOUBLE</a></td><td> CLI SQL DOUBLE arrayed value.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_FLOAT">ECLI_ARRAYED_FLOAT</a></td><td> CLI SQL FLOAT value.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_INTEGER">ECLI_ARRAYED_INTEGER</a></td><td> CLI SQL INTEGER arrayed value.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_LONGVARCHAR">ECLI_ARRAYED_LONGVARCHAR</a></td><td> SQL LONGVARCHAR (n) arrayed values.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_REAL">ECLI_ARRAYED_REAL</a></td><td> CLI SQL REAL arrayed value.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_STRING_VALUE*">ECLI_ARRAYED_STRING_VALUE*</a></td><td> Arrayed buffers of string.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_TIME">ECLI_ARRAYED_TIME</a></td><td> SQL TIME arrayed value.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_TIMESTAMP">ECLI_ARRAYED_TIMESTAMP</a></td><td> SQL TIMESTAMP arrayed values.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_VALUE*">ECLI_ARRAYED_VALUE*</a></td><td> Objects that represent ARRAYs of typed values to be exchanged with the database. These mainly are exchange buffers.  The capacity is set at creation and cannot be changed. The actual number of elements to take into account is set using set_count. 'set_count' must not be used by a client except when passing parameters.  The other private usage is  when a rowset_cursor fetches the last set of data (usually less than the capacity).</td></tr>
+<tr><td><a name="ECLI_ARRAYED_VALUE_FACTORY">ECLI_ARRAYED_VALUE_FACTORY</a></td><td> Factory of ECLI_ARRAYED_VALUE descendant instances.</td></tr>
+<tr><td><a name="ECLI_ARRAYED_VARCHAR">ECLI_ARRAYED_VARCHAR</a></td><td> SQL VARCHAR (n) arrayed values.</td></tr>
+<tr><td><a name="ECLI_BINARY">ECLI_BINARY</a></td><td> SQL BINARY (n) data objects.</td></tr>
+<tr><td><a name="ECLI_BINARY_VALUE*">ECLI_BINARY_VALUE*</a></td><td> SQL Binary values.</td></tr>
+<tr><td><a name="ECLI_BUFFER_FACTORY">ECLI_BUFFER_FACTORY</a></td><td> Objects that create buffers for DB to application information exchange.</td></tr>
+<tr><td><a name="ECLI_CHAR">ECLI_CHAR</a></td><td> SQL CHAR (n) values.</td></tr>
+<tr><td><a name="ECLI_COLUMN">ECLI_COLUMN</a></td><td> Objects that describe a SQL column in a table.</td></tr>
+<tr><td><a name="ECLI_COLUMNS_CURSOR">ECLI_COLUMNS_CURSOR</a></td><td> Cursors over columns of tables. Columns match search criterias :(1) catalog name, (2) schema name, (3) table name.A Void criteria is considered as a wildcard.</td></tr>
+<tr><td><a name="ECLI_COLUMN_DESCRIPTION">ECLI_COLUMN_DESCRIPTION</a></td><td> Description of result-set column.</td></tr>
+<tr><td><a name="ECLI_CONNECTION_ATTRIBUTE_CONSTANTS">ECLI_CONNECTION_ATTRIBUTE_CONSTANTS</a></td><td> Connection attribute constants : keys and values.</td></tr>
+<tr><td><a name="ECLI_CURSOR*">ECLI_CURSOR*</a></td><td> Cursors over SQL query result set. Starting iteration creates `results' object through `create_buffers'.</td></tr>
+<tr><td><a name="ECLI_DATA_DESCRIPTION*">ECLI_DATA_DESCRIPTION*</a></td><td> Objects that describe SQL properties of data items; Usually got from catalog queries.</td></tr>
+<tr><td><a name="ECLI_DATA_SOURCE">ECLI_DATA_SOURCE</a></td><td> ODBC Data sources.</td></tr>
+<tr><td><a name="ECLI_DATA_SOURCES_CURSOR">ECLI_DATA_SOURCES_CURSOR</a></td><td> Objects that iterate over installed data sources.</td></tr>
+<tr><td><a name="ECLI_DATE">ECLI_DATE</a></td><td> SQL DATE values.</td></tr>
+<tr><td><a name="ECLI_DATE_FORMAT">ECLI_DATE_FORMAT</a></td><td> ISO Date formats and conversion facilities.</td></tr>
+<tr><td><a name="ECLI_DATE_TIME">ECLI_DATE_TIME</a></td><td> SQL DATETIME values.</td></tr>
+<tr><td><a name="ECLI_DBMS_INFORMATION">ECLI_DBMS_INFORMATION</a></td><td> Objects that give information about the underlying DBMS</td></tr>
+<tr><td><a name="ECLI_DBMS_INFORMATION_CONSTANTS">ECLI_DBMS_INFORMATION_CONSTANTS</a></td><td> Constants related to SQLGetInfo.</td></tr>
+<tr><td><a name="ECLI_DECIMAL">ECLI_DECIMAL</a></td><td> SQL DECIMAL (precision, decimal_digits) values.</td></tr>
+<tr><td><a name="ECLI_DOUBLE">ECLI_DOUBLE</a></td><td> SQL DOUBLE values.</td></tr>
+<tr><td><a name="ECLI_DRIVER">ECLI_DRIVER</a></td><td> ODBC Drivers.</td></tr>
+<tr><td><a name="ECLI_DRIVERS_CURSOR">ECLI_DRIVERS_CURSOR</a></td><td> Objects that iterate over installed ODBC drivers.</td></tr>
+<tr><td><a name="ECLI_DRIVER_LOGIN">ECLI_DRIVER_LOGIN</a></td><td> Simple Login Strategies that use a connection string.</td></tr>
+<tr><td><a name="ECLI_ENVIRONMENT">ECLI_ENVIRONMENT</a></td><td> Encapsulation of CLI environment. There should be a single object of this type in a system. This object is a handle to the CLI facilities : it is the first CLI object to be created, and the last to be deleted.</td></tr>
+<tr><td><a name="ECLI_EXTERNAL_API">ECLI_EXTERNAL_API</a></td><td> CLI C Interface.</td></tr>
+<tr><td><a name="ECLI_FILE_LONGVARBINARY">ECLI_FILE_LONGVARBINARY</a></td><td> SQL LONGVARBINARY large data transferred from/into a file.</td></tr>
+<tr><td><a name="ECLI_FILE_LONGVARCHAR">ECLI_FILE_LONGVARCHAR</a></td><td> SQL LONGVARCHAR large data transferred from/into a file.</td></tr>
+<tr><td><a name="ECLI_FILE_VALUE*">ECLI_FILE_VALUE*</a></td><td> Objects that transfer large data from/into a file.</td></tr>
+<tr><td><a name="ECLI_FILE_VARBINARY">ECLI_FILE_VARBINARY</a></td><td> SQL VARBINARY large data transferred from/into a file.</td></tr>
+<tr><td><a name="ECLI_FILE_VARCHAR">ECLI_FILE_VARCHAR</a></td><td> SQL VARCHAR large data transferred from/into a file.</td></tr>
+<tr><td><a name="ECLI_FLOAT">ECLI_FLOAT</a></td><td> SQL FLOAT values.</td></tr>
+<tr><td><a name="ECLI_FOREIGN_KEY">ECLI_FOREIGN_KEY</a></td><td> Foreign keys of a table, referring to a primary key of other table. The table identified by [catalog, schema, table] is the referring table. The foreign key of the referring table is composed of `columns' and is identified by `key_name'. The referenced table primary key is `referenced key'.</td></tr>
+<tr><td><a name="ECLI_FOREIGN_KEYS_CURSOR">ECLI_FOREIGN_KEYS_CURSOR</a></td><td> Cursors on foreign keys of tables. Search criterias are (1) catalog name, (2) schema name, (3) table name.A Void criteria is considered as a wildcard.</td></tr>
+<tr><td><a name="ECLI_FOREIGN_KEY_CONSTANTS">ECLI_FOREIGN_KEY_CONSTANTS</a></td><td> Constants relative to foreign keys.</td></tr>
+<tr><td><a name="ECLI_FORMAT* [G]">ECLI_FORMAT* [G]</a></td><td> Objects that handle some data format.</td></tr>
+<tr><td><a name="ECLI_FORMAT_INTEGER">ECLI_FORMAT_INTEGER</a></td><td> Objects that provide integer formatting routines.</td></tr>
+<tr><td><a name="ECLI_FUNCTIONS_CONSTANTS">ECLI_FUNCTIONS_CONSTANTS</a></td><td> Constants accepted by SQLGetFunctions;.</td></tr>
+<tr><td><a name="ECLI_GENERIC_ARRAYED_VALUE* [G]">ECLI_GENERIC_ARRAYED_VALUE* [G]</a></td><td> Objects that represent ARRAYs of typed values to be exchanged with the database. These mainly are exchange buffers.  The capacity is set at creation and cannot be changed. The actual number of elements to take into account is set using set_count. 'set_count' must not be used by a client except when passing parameters.  The other private usage is  when a rowset_cursor fetches the last set of data (usually less than the capacity).</td></tr>
+<tr><td><a name="ECLI_GENERIC_VALUE* [G]">ECLI_GENERIC_VALUE* [G]</a></td><td> Objects that represent typed values to be exchanged with the database.</td></tr>
+<tr><td><a name="ECLI_HANDLE*">ECLI_HANDLE*</a></td><td> Objects that use an implementation (external) handle. This can be used  in any case where an allocate/free scheme is needed.	  Safety  note: 	 In case of using this handle for storing externally allocated memory, descendant classes should redefine 'release_handle', in order to free externally allocated memory. `prepare_for_disposal' is executed before `release_handle' and should also be redefined by descendant classes.</td></tr>
+<tr><td><a name="ECLI_INPUT_OUTPUT_PARAMETER">ECLI_INPUT_OUTPUT_PARAMETER</a></td><td> Input/Output parameters in SQL statements.</td></tr>
+<tr><td><a name="ECLI_INPUT_PARAMETER">ECLI_INPUT_PARAMETER</a></td><td> Input parameters in SQL statements.</td></tr>
+<tr><td><a name="ECLI_INTEGER">ECLI_INTEGER</a></td><td> SQL INTEGER values.</td></tr>
+<tr><td><a name="ECLI_ISO_FORMAT_CONSTANTS">ECLI_ISO_FORMAT_CONSTANTS</a></td><td> Date and Time ISO formats and corresponding helper functions.</td></tr>
+<tr><td><a name="ECLI_LENGTH_INDICATOR_CONSTANTS">ECLI_LENGTH_INDICATOR_CONSTANTS</a></td><td> Length indicator constants.</td></tr>
+<tr><td><a name="ECLI_LOGIN_STRATEGY*">ECLI_LOGIN_STRATEGY*</a></td><td> Login Strategies.</td></tr>
+<tr><td><a name="ECLI_LONGVARBINARY">ECLI_LONGVARBINARY</a></td><td> SQL LONGVARBINARY values.</td></tr>
+<tr><td><a name="ECLI_LONGVARCHAR">ECLI_LONGVARCHAR</a></td><td> SQL LONGVARCHAR (n) values.</td></tr>
+<tr><td><a name="ECLI_METADATA_CURSOR*">ECLI_METADATA_CURSOR*</a></td><td> Cursors on database metadata.</td></tr>
+<tr><td><a name="ECLI_NAMED_METADATA">ECLI_NAMED_METADATA</a></td><td> Objects that are named metadata, i.e. with catalog, schema and name.</td></tr>
+<tr><td><a name="ECLI_NULLABILITY_CONSTANTS">ECLI_NULLABILITY_CONSTANTS</a></td><td> Nullable metadata constants.</td></tr>
+<tr><td><a name="ECLI_NULLABLE_METADATA">ECLI_NULLABLE_METADATA</a></td><td> Objects that describe nullability metadata.</td></tr>
+<tr><td><a name="ECLI_OUTPUT_PARAMETER">ECLI_OUTPUT_PARAMETER</a></td><td> Output parameters in SQL statements.</td></tr>
+<tr><td><a name="ECLI_PARAMETER_DESCRIPTION">ECLI_PARAMETER_DESCRIPTION</a></td><td> Description of Parameter data.</td></tr>
+<tr><td><a name="ECLI_PRIMARY_KEY">ECLI_PRIMARY_KEY</a></td><td> Primary keys of a table.</td></tr>
+<tr><td><a name="ECLI_PRIMARY_KEY_CURSOR">ECLI_PRIMARY_KEY_CURSOR</a></td><td> Cursors on primary keys of tables. Search criterias are (1) catalog name, (2) schema name, (3) table name.A Void criteria is considered as a wildcard.</td></tr>
+<tr><td><a name="ECLI_PROCEDURES_CURSOR">ECLI_PROCEDURES_CURSOR</a></td><td> Cursor on procedures matching criteria. Search criterias are (1) catalog name, (2) schema name, (3) procedure name.A Void criteria is considered as a wildcard.</td></tr>
+<tr><td><a name="ECLI_PROCEDURE_COLUMN">ECLI_PROCEDURE_COLUMN</a></td><td> Procedure columns metadata : parameters, result, result_set.</td></tr>
+<tr><td><a name="ECLI_PROCEDURE_COLUMNS_CURSOR">ECLI_PROCEDURE_COLUMNS_CURSOR</a></td><td> Cursor on catalog metadata regarding columns of stored procedures. 	  Columns match search criterias : (1) catalog name, (2) schema name, (3) procedure name.	  A Void criteria is considered as a wildcard.</td></tr>
+<tr><td><a name="ECLI_PROCEDURE_METADATA">ECLI_PROCEDURE_METADATA</a></td><td> Procedures metadata.</td></tr>
+<tr><td><a name="ECLI_PROCEDURE_TYPE_METADATA">ECLI_PROCEDURE_TYPE_METADATA</a></td><td> Objects that are procedure type metadata.</td></tr>
+<tr><td><a name="ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS">ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS</a></td><td> Procedure column type metadata constants.</td></tr>
+<tr><td><a name="ECLI_QUERY*">ECLI_QUERY*</a></td><td> SQL Queries, defined by a SQL text. Heir for classes whose SQL definition remains constant, (static, not modifiable).</td></tr>
+<tr><td><a name="ECLI_REAL">ECLI_REAL</a></td><td> SQL REAL values.</td></tr>
+<tr><td><a name="ECLI_ROWSET_CAPABLE*">ECLI_ROWSET_CAPABLE*</a></td><td> Objects that are able of operating on a rowset	  A rowset is an array  of `row_capacity' rows.	  Database operations occur one rowset at a time.	  Status information is available for each row in the rowset.</td></tr>
+<tr><td><a name="ECLI_ROWSET_CURSOR">ECLI_ROWSET_CURSOR</a></td><td> Row cursors that physically fetch sets of rows.	 Rows are physically retrieved `row_count' at a time, minimizing network traffic.</td></tr>
+<tr><td><a name="ECLI_ROWSET_MODIFIER">ECLI_ROWSET_MODIFIER</a></td><td> Objects that modify the database one rowset at a time.</td></tr>
+<tr><td><a name="ECLI_ROWSET_STATUS">ECLI_ROWSET_STATUS</a></td><td> Objects that reflect status of rowset operations. They basically are an array of integer.</td></tr>
+<tr><td><a name="ECLI_ROW_CURSOR">ECLI_ROW_CURSOR</a></td><td> Row cursors.	 A row cursor allows sweeping, row by row, through a result-set of a SQL query.	 The ECLI_VALUE buffers composing the row are built by `buffer_factory' using	 the result-set description obtained from the database server.	 Individual column items can be accessed by name or by index.</td></tr>
+<tr><td><a name="ECLI_ROW_STATUS_CONSTANTS">ECLI_ROW_STATUS_CONSTANTS</a></td><td> Objects that group row status constants.</td></tr>
+<tr><td><a name="ECLI_SESSION">ECLI_SESSION</a></td><td> Objects that represent a session to a database.</td></tr>
+<tr><td><a name="ECLI_SHARED_ENVIRONMENT">ECLI_SHARED_ENVIRONMENT</a></td><td> Shared CLI environment.</td></tr>
+<tr><td><a name="ECLI_SIMPLE_LOGIN">ECLI_SIMPLE_LOGIN</a></td><td> Simple Login Strategies that use a datasource name, a user name and a password.</td></tr>
+<tr><td><a name="ECLI_SQL_PARSER">ECLI_SQL_PARSER</a></td><td> Objects that parse SQL queries, searching for parameters.</td></tr>
+<tr><td><a name="ECLI_SQL_PARSER_CALLBACK*">ECLI_SQL_PARSER_CALLBACK*</a></td><td> Objects that are called back by an ECLI_SQL_PARSER.</td></tr>
+<tr><td><a name="ECLI_SQL_TYPE">ECLI_SQL_TYPE</a></td><td> Objects that describe a SQL type, as supported by a datasource.</td></tr>
+<tr><td><a name="ECLI_SQL_TYPES_CURSOR">ECLI_SQL_TYPES_CURSOR</a></td><td> Cursors over the SQL types supported by the datasource related to a session.</td></tr>
+<tr><td><a name="ECLI_STATEMENT">ECLI_STATEMENT</a></td><td> Objects that represent statements that manipulate  a database. They are defined on a connected session.   Provide CLI/ODBC CORE and some Level 1 functionalities.</td></tr>
+<tr><td><a name="ECLI_STATEMENT_PARAMETER*">ECLI_STATEMENT_PARAMETER*</a></td><td> SQL statement parameters : value and direction.</td></tr>
+<tr><td><a name="ECLI_STATUS*">ECLI_STATUS*</a></td><td> Objects that represent a CLI status, reflects its various values and associated information messages</td></tr>
+<tr><td><a name="ECLI_STATUS_CONSTANTS">ECLI_STATUS_CONSTANTS</a></td><td> Status constants.</td></tr>
+<tr><td><a name="ECLI_STORED_PROCEDURE">ECLI_STORED_PROCEDURE</a></td><td> Stored procedures.</td></tr>
+<tr><td><a name="ECLI_STRING_ROUTINES">ECLI_STRING_ROUTINES</a></td><td> Supporting string routines.</td></tr>
+<tr><td><a name="ECLI_STRING_VALUE*">ECLI_STRING_VALUE*</a></td><td> Buffers for exchanging string-based values between application and database.</td></tr>
+<tr><td><a name="ECLI_TABLE">ECLI_TABLE</a></td><td> Objects that describe an SQL Table.</td></tr>
+<tr><td><a name="ECLI_TABLES_CURSOR">ECLI_TABLES_CURSOR</a></td><td> Cursors on metadata for tables, matching some criteria. Search criterias are (1) catalog name, (2) schema name, (3) table name.A Void criteria is considered as a wildcard.</td></tr>
+<tr><td><a name="ECLI_TIME">ECLI_TIME</a></td><td> SQL TIME values.</td></tr>
+<tr><td><a name="ECLI_TIMESTAMP">ECLI_TIMESTAMP</a></td><td> SQL TIMESTAMP values.</td></tr>
+<tr><td><a name="ECLI_TIMESTAMP_FORMAT">ECLI_TIMESTAMP_FORMAT</a></td><td> Objects that know the iso TIMESTAMP format and are able to convert from/to it.</td></tr>
+<tr><td><a name="ECLI_TIME_FORMAT">ECLI_TIME_FORMAT</a></td><td> Time formats, ISO specification.</td></tr>
+<tr><td><a name="ECLI_TRACEABLE*">ECLI_TRACEABLE*</a></td><td> Objects that are traceable through an ECLI_TRACER.</td></tr>
+<tr><td><a name="ECLI_TRACER">ECLI_TRACER</a></td><td> Objects that trace SQL execution on an output medium.</td></tr>
+<tr><td><a name="ECLI_TRANSACTION_CAPABILITY_CONSTANTS">ECLI_TRANSACTION_CAPABILITY_CONSTANTS</a></td><td> Transaction capability constants.</td></tr>
+<tr><td><a name="ECLI_TRANSACTION_ISOLATION">ECLI_TRANSACTION_ISOLATION</a></td><td> Object that abstract a transaction isolation type.</td></tr>
+<tr><td><a name="ECLI_TRANSACTION_ISOLATION_CONSTANTS">ECLI_TRANSACTION_ISOLATION_CONSTANTS</a></td><td> Transaction isolation constants - Used as bitmask in Sql_txn_isolation_option.</td></tr>
+<tr><td><a name="ECLI_TYPE_CATALOG">ECLI_TYPE_CATALOG</a></td><td> Catalogs of types supported by a particular database.</td></tr>
+<tr><td><a name="ECLI_TYPE_CONSTANTS">ECLI_TYPE_CONSTANTS</a></td><td> CLI DB type codes.  Use this class as a mix-in. Extracted from SQL.h, for ODBC ver >= 3.5.</td></tr>
+<tr><td><a name="ECLI_VALUE*">ECLI_VALUE*</a></td><td> Objects that represent typed values to be exchanged with the database.</td></tr>
+<tr><td><a name="ECLI_VALUE_FACTORY">ECLI_VALUE_FACTORY</a></td><td> Factory of ECLI_VALUE descendant instances.</td></tr>
+<tr><td><a name="ECLI_VARBINARY">ECLI_VARBINARY</a></td><td> SQL VARBINARY (n) values.</td></tr>
+<tr><td><a name="ECLI_VARCHAR">ECLI_VARCHAR</a></td><td> SQL VARCHAR (n) values.</td></tr>
+<tr><td>PAT_PUBLISHER [G -> PAT_SUBSCRIBER]</td><td> Publisher part of the publish/subscribe pattern.</td></tr>
+<tr><td>PAT_SUBSCRIBER*</td><td> Subscriber part of the publisher/subscriber pattern.</td></tr>
+</table>
+
+<h2><a name="values">ECLI_VALUE hierarchy</a></h2>
+
+<div id="code">
+<pre>
+<a href="#ECLI_VALUE*">ECLI_VALUE*</a>
+	<a href="#ECLI_ARRAYED_VALUE*">ECLI_ARRAYED_VALUE*</a>
+		<a href="#ECLI_GENERIC_ARRAYED_VALUE*">ECLI_GENERIC_ARRAYED_VALUE*</a> [<a href="#G">G</a>]
+			<a href="#ECLI_ARRAYED_DATE">ECLI_ARRAYED_DATE</a>
+			<a href="#ECLI_ARRAYED_DOUBLE">ECLI_ARRAYED_DOUBLE</a>
+				<a href="#ECLI_ARRAYED_FLOAT">ECLI_ARRAYED_FLOAT</a>
+			<a href="#ECLI_ARRAYED_INTEGER">ECLI_ARRAYED_INTEGER</a>
+			<a href="#ECLI_ARRAYED_REAL">ECLI_ARRAYED_REAL</a>
+			<a href="#ECLI_ARRAYED_TIME">ECLI_ARRAYED_TIME</a>
+			<a href="#ECLI_ARRAYED_TIMESTAMP">ECLI_ARRAYED_TIMESTAMP</a>
+				<a href="#ECLI_ARRAYED_DATE_TIME">ECLI_ARRAYED_DATE_TIME</a>
+			<a href="#ECLI_ARRAYED_STRING_VALUE*">ECLI_ARRAYED_STRING_VALUE*</a>
+				<a href="#ECLI_ARRAYED_CHAR">ECLI_ARRAYED_CHAR</a>
+				<a href="#ECLI_ARRAYED_LONGVARCHAR">ECLI_ARRAYED_LONGVARCHAR</a>
+				<a href="#ECLI_ARRAYED_VARCHAR">ECLI_ARRAYED_VARCHAR</a>
+	<a href="#ECLI_GENERIC_VALUE*">ECLI_GENERIC_VALUE*</a> [<a href="#G">G</a>]
+		<a href="#ECLI_DATE">ECLI_DATE</a>
+			<a href="#ECLI_ARRAYED_DATE">ECLI_ARRAYED_DATE</a>
+		<a href="#ECLI_DECIMAL">ECLI_DECIMAL</a>
+		<a href="#ECLI_DOUBLE">ECLI_DOUBLE</a>
+			<a href="#ECLI_ARRAYED_DOUBLE">ECLI_ARRAYED_DOUBLE</a>...
+			<a href="#ECLI_FLOAT">ECLI_FLOAT</a>
+		<a href="#ECLI_INTEGER">ECLI_INTEGER</a>
+			<a href="#ECLI_ARRAYED_INTEGER">ECLI_ARRAYED_INTEGER</a>
+		<a href="#ECLI_REAL">ECLI_REAL</a>
+			<a href="#ECLI_ARRAYED_REAL">ECLI_ARRAYED_REAL</a>
+		<a href="#ECLI_TIME">ECLI_TIME</a>
+			<a href="#ECLI_ARRAYED_TIME">ECLI_ARRAYED_TIME</a>
+		<a href="#ECLI_STRING_VALUE*">ECLI_STRING_VALUE*</a>
+			<a href="#ECLI_CHAR">ECLI_CHAR</a>
+			<a href="#ECLI_LONGVARCHAR">ECLI_LONGVARCHAR</a>
+			<a href="#ECLI_VARCHAR">ECLI_VARCHAR</a>
+			<a href="#ECLI_ARRAYED_STRING_VALUE*">ECLI_ARRAYED_STRING_VALUE*</a>...
+			<a href="#ECLI_BINARY_VALUE*">ECLI_BINARY_VALUE*</a>
+				<a href="#ECLI_BINARY">ECLI_BINARY</a>
+				<a href="#ECLI_LONGVARBINARY">ECLI_LONGVARBINARY</a>
+				<a href="#ECLI_VARBINARY">ECLI_VARBINARY</a>
+		<a href="#ECLI_TIMESTAMP">ECLI_TIMESTAMP</a>
+			<a href="#ECLI_ARRAYED_TIMESTAMP">ECLI_ARRAYED_TIMESTAMP</a>...
+			<a href="#ECLI_DATE_TIME">ECLI_DATE_TIME</a>
+	<a href="#ECLI_FILE_VALUE*">ECLI_FILE_VALUE*</a>
+		<a href="#ECLI_FILE_LONGVARCHAR">ECLI_FILE_LONGVARCHAR</a>
+			<a href="#ECLI_FILE_VARCHAR">ECLI_FILE_VARCHAR</a>
+		<a href="#ECLI_FILE_LONGVARBINARY">ECLI_FILE_LONGVARBINARY</a>
+		<a href="#ECLI_FILE_VARBINARY">ECLI_FILE_VARBINARY</a>
+</pre>
+</div>
+<h2><a name="statements">ECLI_STATEMENT hierarchy</a></h2>
+
+<div id="code">
+<pre>
+<a href="#ECLI_STATEMENT">ECLI_STATEMENT</a>
+	<a href="#ECLI_ROWSET_MODIFIER">ECLI_ROWSET_MODIFIER</a>
+	<a href="#ECLI_STORED_PROCEDURE">ECLI_STORED_PROCEDURE</a>
+	<a href="#ECLI_QUERY*">ECLI_QUERY*</a>
+		<a href="#ECLI_CURSOR*">ECLI_CURSOR*</a>
+			<a href="#ECLI_ROW_CURSOR">ECLI_ROW_CURSOR</a>
+				<a href="#ECLI_ROWSET_CURSOR">ECLI_ROWSET_CURSOR</a>
+			<a href="#ECLI_SQL_TYPES_CURSOR">ECLI_SQL_TYPES_CURSOR</a>
+			<a href="#ECLI_METADATA_CURSOR*">ECLI_METADATA_CURSOR*</a>
+				<a href="#ECLI_PRIMARY_KEY_CURSOR">ECLI_PRIMARY_KEY_CURSOR</a>
+					<a href="#ECLI_FOREIGN_KEYS_CURSOR">ECLI_FOREIGN_KEYS_CURSOR</a>
+				<a href="#ECLI_PROCEDURES_CURSOR">ECLI_PROCEDURES_CURSOR</a>
+				<a href="#ECLI_TABLES_CURSOR">ECLI_TABLES_CURSOR</a>
+				<a href="#ECLI_COLUMNS_CURSOR">ECLI_COLUMNS_CURSOR</a>
+					<a href="#ECLI_PROCEDURE_COLUMNS_CURSOR">ECLI_PROCEDURE_COLUMNS_CURSOR</a>
+</pre>
+</div>
+<h2><a name="logins">ECLI_LOGIN_STRATEGY hierarchy</a></h2>
+<div id="code">
+<pre>
+<a href="#ECLI_LOGIN_STRATEGY*">ECLI_LOGIN_STRATEGY*</a>
+	<a href="#ECLI_DRIVER_LOGIN">ECLI_DRIVER_LOGIN</a>
+	<a href="#ECLI_SIMPLE_LOGIN">ECLI_SIMPLE_LOGIN</a>
+</pre>
+</div>
+</body>
+</html>

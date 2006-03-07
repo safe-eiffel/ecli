@@ -5,7 +5,7 @@ indexing
 			"Stored procedures."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -22,6 +22,7 @@ inherit
 			put_parameter_with_hint,
 			bind_one_parameter,
 			put_input_parameter
+
 		end
 		
 creation

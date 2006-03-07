@@ -7,7 +7,7 @@ indexing
 		% Provide CLI/ODBC CORE and some Level 1 functionalities."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2005, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -788,7 +788,8 @@ feature -- Inapplicable
 	parameter_anchor : ECLI_VALUE is
 		do
 		end
-		
+	
+			
 	array_routines : KL_ARRAY_ROUTINES[ANY] is do Result := Any_array_ end
 
 feature {ECLI_SQL_PARSER} -- Callback
@@ -967,12 +968,12 @@ feature {NONE} -- Implementation
 			parameters_exist: parameters /= Void and then parameters.count = parameters_count
 		end
 
-	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ANY) is
+	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
 		do
 			parameters.put (value, position)
 		end
 
-	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ANY) is
+	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
 			-- Set all parameters named `key' occurring in `sql' with `value'
 			-- WARNING : Case sensitive !
 		require

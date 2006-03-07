@@ -44,20 +44,24 @@ feature -- Initialization
 					trace_if_necessary
 					create_statement
 					determine_current_sql_type
-					 create_sample_table
-					if is_tables_created then
-						simple_insert_sample_tuples
-						parameterized_insert
-						parameterized_prepared_insert_sample_tuples
-						query_database
-						if is_longvarbinary_supported then
-							put_photo ("1892005034", photo_filename ("nvc.jpg"))
-							put_photo ("0136291554", photo_filename ("oosc2.jpg"))
-							get_photo ("0136291554", "photo_oosc2.jpg")
-							get_photo ("1892005034", "photo_nvc.jpg")
+					if current_sql_type /= Void then
+						 create_sample_table
+						if is_tables_created then
+							simple_insert_sample_tuples
+							parameterized_insert
+							parameterized_prepared_insert_sample_tuples
+							query_database
+							if is_longvarbinary_supported then
+								put_photo ("1892005034", photo_filename ("nvc.jpg"))
+								put_photo ("0136291554", photo_filename ("oosc2.jpg"))
+								get_photo ("0136291554", "photo_oosc2.jpg")
+								get_photo ("1892005034", "photo_nvc.jpg")
+							end
 						end
+						drop_tables
+					else	
+						error_handler.report_info_message ("Could not determine SQL type")
 					end
-					drop_tables
 					disconnect_session
 				end
 				close_session
@@ -834,12 +838,12 @@ feature {NONE} -- Implementation
 			create Result.make (10)
 			Result.put (True, "Firebird 1.5")
 			Result.put (True, "Microsoft SQL Server")
-			Result.put (True, "ACCESS")
+--			Result.put (False, "ACCESS")
 		end
 		
 end -- class TEST1
 --
--- Copyright: 2000-2005, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

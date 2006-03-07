@@ -1,5 +1,44 @@
 ** TODO **
 
+* Before releasing 2.2
+
+- REM  0 : verify documentation
+- REM 10 : verify samples (enough information to compile and go)
+- REM  2 : samples : factor code for arguments passing and version/banner message ???
+	CONS  1
+	A - arguments passing
+	B - banner
+	C - version
+	D - usage
+application	A	B	C	D
+transact	Pos	Proc(1)	-	Inline
+test1		Keyed	Inline	-	Proc(2)
+test_rowset	Keyed	-	-	Proc(3)
+test_procedures	Pos	Inline	-	Proc(4)
+test_gc		Pos	-	-	inline
+test_decimal_*	-	-	-	-
+qa_example	Pos	-	-	inline
+isql		Keyed	Proc(5)	_	Proc(6)
+
+Pos: Postional - dsn user pwd
+Keyed: -dsn <dsn> -user <user> -pwd <pwd>
+
+Inline: within other code
+Proc: within specific procedure
+
+1 : TRANSACT.show_initial_message
+2 : TEST1.print_usage
+3 : TEST_ROWSET.print_usage
+4 : TEST_PROCEDURES.print_usage
+5 : ISQL.print_banner
+6 : ISQL.print_usage
+
+- REM  3 : samples : factor code for database/SQL syntax selection.
+- REM  2 : Package things + release.
+
+
+TOTAL 18
+
 FUNCTIONALITY
 
 	Getting various metadata :
@@ -18,20 +57,10 @@ DOCUMENTATION
 
 DATA TYPES/VALUES
 
-	Long Variable Data as streams (file)
-
-        * LONGVARCHAR, LONGVARBINARY : Result set columns currently are retrieved
-	  one column at a time (using SQLGetData).  Very long data cannot be stored in computer memory.
-	  Those ECLI_LONGVARCHAR and ECLI_LONGVARBINARY classes should provide an interface that allows
-	  reading/writing data to a file. For example, 'item' would be of FILE type.
 
 	Implement other data values
 
-	* BINARY, VARBINARY , LONGVARBINARY, ...
-		Note : Those data values should serve for data transfer, not as implementation of corresponding Abstract Data Types.
-		ADT should be defined as clients or extension by inheritance.
 	* TINYINT, BIGINT
-	* DECIMAL
 	* BIT
 
 TESTING
@@ -51,10 +80,13 @@ General
 
 Functionality
 
+	** DONE 2006-01-xx : DBMS information - capabilities, various metadata
+	** DONE 2006-01-xx : Type catalog
+	** DONE 2005-xx-xx : Procedures + multiple result sets
 	** DONE 2000-07-28 : Result-set metadata, 
-	** DONE 2002-07 : Tables/Columns metadata
-	** DONE 2002-07 : SQL Datatypes metadata.
-	** DONE 2003-03 : Primary/Foreign-keys catalog metadata,
+	** DONE 2002-07-xx : Tables/Columns metadata
+	** DONE 2002-07-xx : SQL Datatypes metadata.
+	** DONE 2003-03-xx : Primary/Foreign-keys catalog metadata,
 
 	** DONE 2002-09-26 : Allow Bulk data transfers
 	   A cursor is not a single line, but an array of lines. 
@@ -67,16 +99,20 @@ Portability
 
 Documentation
 
+	** DONE 2006-02-27 : Index of classes
 	** DONE 2000-10-14 : Tutorial
 	** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
 
 Data types/values
 
+	** DONE 2006-01-xx : Long Variable Data as streams (file)
+	** DONE 2005-xx-xx : BINARY, VARBINARY, LONGBINARY, LONGVARBINARY
 	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
-	** DONE 2002-07 : Time, 
-	** DONE 2000-08-10 LONGVARCHAR has been implemented
+	** DONE 2002-07-xx : Time, 
+	** DONE 2000-08-10 : LONGVARCHAR has been implemented
 
 Refactoring
+
 	** DONE 2000-07-28 : 
 	(+) ECLI_VALUE gets/puts itself to an active statement, 
 	(+) cursor state, class contracts... **

@@ -1,3 +1,6 @@
+2006-01-*
+	* ODBC/CLI API tracing : ECLI_SESSION.set_api_trace_filename, ECLI_SESSION.enable_api_tracing, ECLI_SESSION.disable_api_tracing.
+
 2005-12-*
 	* Complete review of test1 application.
 	* Added ECLI_DBMS_INFORMATION - equivalent of SQLGetInfo

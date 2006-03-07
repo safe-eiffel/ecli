@@ -1,5 +1,5 @@
 indexing
-	description: "TEST1 sample application.";
+	description: "test procedures application.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -18,7 +18,7 @@ feature -- Initialization
 	make is
 			-- ecli test application
 		do
-			io.put_string ("'test1' ECLI tutorial application%N%N")
+			io.put_string ("ECLI 'test_procedures' application%N%N")
 			-- session opening
 			parse_arguments
 			if not arguments_ok then
@@ -280,7 +280,7 @@ feature --  Basic operations
 	print_usage is
 			-- print terse usage string
 		do
-				io.put_string ("Usage: test1 <data_source> <user_name> <password> [<trace_file_name>]%N")
+				io.put_string ("Usage: test_procedures <data_source> <user_name> <password> [<trace_file_name>]%N")
 		end
 
 	trace_if_necessary is
@@ -373,9 +373,9 @@ feature -- Miscellaneous
 			print (status.diagnostic_message)
 		end
 		
-end -- class TEST1
+end
 --
 -- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
--- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- Released under the Eiffel Forum License version 2 <http://www.opensource.org/licenses/ver2_eiffel.php>
 -- See file <forum.txt>
 --

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<system name="test_procedures">
+	<description>
+		system:      "ECLI test procedures."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<root class="TEST_PROCEDURES" creation="make"/>
+
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
+
+	<cluster name="test1" location="${ECLI}/examples/test_procedures"/>
+
+	<mount location="${ECLI}/library.xace"/>
+</system>
