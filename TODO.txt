@@ -3,47 +3,44 @@
 * Before releasing 2.2
 
 - REM  0 : verify documentation
-- REM 10 : verify samples (enough information to compile and go)
-- REM  2 : samples : factor code for arguments passing and version/banner message ???
-	CONS  1
-	A - arguments passing
-	B - banner
-	C - version
-	D - usage
-application	A	B	C	D
-transact	Pos	Proc(1)	-	Inline
-test1		Keyed	Inline	-	Proc(2)
-test_rowset	Keyed	-	-	Proc(3)
-test_procedures	Pos	Inline	-	Proc(4)
-test_gc		Pos	-	-	inline
-test_decimal_*	-	-	-	-
-qa_example	Pos	-	-	inline
-isql		Keyed	Proc(5)	_	Proc(6)
+- REM  0 : verify samples (enough information to compile and go)
+- REM  0 : samples : factor code for arguments passing and version/banner message ???
+	CONS  4
+		A - arguments passing
+		B - banner
+		C - version
+		D - usage
+	application	A	B	C	D
+	transact	Pos	Proc(1)	-	Inline
+	test1		Keyed	Inline	-	Proc(2)
+	test_rowset	Keyed	-	-	Proc(3)
+	test_procedures	Pos	Inline	-	Proc(4)
+	test_gc		Pos	-	-	Inline
+	test_decimal_*	Pos	-	-	Inline
+	qa_example	Pos	-	-	Inline
+	isql		Keyed	Proc(5)	_	Proc(6)
 
-Pos: Postional - dsn user pwd
-Keyed: -dsn <dsn> -user <user> -pwd <pwd>
+	Pos: Positional - dsn user pwd
+	Keyed: -dsn <dsn> -user <user> -pwd <pwd>
 
-Inline: within other code
-Proc: within specific procedure
+	Inline: within other code
+	Proc: within specific procedure
 
-1 : TRANSACT.show_initial_message
-2 : TEST1.print_usage
-3 : TEST_ROWSET.print_usage
-4 : TEST_PROCEDURES.print_usage
-5 : ISQL.print_banner
-6 : ISQL.print_usage
+	1 : TRANSACT.show_initial_message
+	2 : TEST1.print_usage
+	3 : TEST_ROWSET.print_usage
+	4 : TEST_PROCEDURES.print_usage
+	5 : ISQL.print_banner
+	6 : ISQL.print_usage
 
 - REM  3 : samples : factor code for database/SQL syntax selection.
+
 - REM  2 : Package things + release.
-
-
-TOTAL 18
 
 FUNCTIONALITY
 
 	Getting various metadata :
 	* Table statistics (information on indexes)
-
 
 DEPLOYMENT
 
@@ -56,7 +53,6 @@ DOCUMENTATION
 	More examples to do (???)
 
 DATA TYPES/VALUES
-
 
 	Implement other data values
 

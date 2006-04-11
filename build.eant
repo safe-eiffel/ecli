@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<project name="ecli" default="help">
+
+	<description>
+		system: "ECLI parent project file."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init"/>
+			<redefine target="prepare_compile"/>
+			<redefine target="help"/>
+			<redefine target="install"/>
+		</parent>
+	</inherit>
+
+<!-- Implementation -->
+
+	<target name="init">
+		<precursor/>
+		<geant target="check_ecli_variables"/>
+	</target>
+
+	<target name="check_ecli_variables">
+		<echo message="ERROR: GOBO_EIFFEL must be set." unless="${GOBO_EIFFEL}"/>
+		<echo message="WARNING: ECLI variable not set" unless="${ECLI}"/>
+		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
+		<echo message="WARNING: ECLI_C_BCC_DIR variable not set" if="${GOBO_CC}=bcc" unless="${ECLI_C_BCCDIR}"/>
+		<echo message="WARNING: SAFE_KERNEL variable not set" unless="${SAFE_KERNEL}"/>
+		<echo message="WARNING: SMARTEIFFELDIR variable not set" unless="${SMARTEIFFELDIR}" if="${GOBO_EIFFEL}=se"/>
+	</target>
+
+	<target unless="${GOBO_OS}=windows" name="prepare_compile" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+                <exec executable="make"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}"/>
+                <exec executable="make"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}"/>
+        </target>
+
+	<target if="${GOBO_OS}=windows" name="prepare_compile_windows" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- safe kernel lib Compile them if necessary -->
+                <exec executable="nmake -f makefile.mak" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+                <exec executable="make -f makefile.bcc"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+                <exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>                
+                <exec executable="make -f Makefile.gcc"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
+                
+		<!-- Compile them if necessary -->
+                <exec executable="nmake -f makefile.mak" dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+                <exec executable="make -f makefile.bcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+                <exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>                
+                <exec executable="make -f Makefile.gcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
+
+        </target>
+
+	<target name="install" depend="compile_libs"/>
+	
+        <target name="compile_libs" depend="prepare_compile, prepare_compile_windows">
+	</target>
+	
+	<target name="help">
+		<echo message="   geant compile_libs"/>
+		<echo message="   geant install"/>
+	</target>
+</project>

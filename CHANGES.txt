@@ -1,3 +1,6 @@
+2006-03-22
+	* renamed $ECLI/ecli.eant as build.eant + defined targets 'install' and 'compile_libs'.
+	
 2006-01-*
 	* ODBC/CLI API tracing : ECLI_SESSION.set_api_trace_filename, ECLI_SESSION.enable_api_tracing, ECLI_SESSION.disable_api_tracing.
 

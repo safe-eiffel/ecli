@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="*utf-8*or*iso-8859-1*"?>
+<!-- 
+
+	Replace strings between stars by what you want.
+
+-->
+
 <modules>
 	<parameter_map>
-		*insert-optional-parameter-map-here*
+		<!-- Mapping parameter names to RDBMS columns -->
+		<!-- OneOrMore -->
+		<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 	</parameter_map>
-	<access name="*insert-module-name-here*">
+
+	<!-- Access module definition -->
+	<!-- OneOrMore -->
+	<access name="*insert-module-name-here*" type="*acces-type*">  <!-- type == read | write | update | delete | extended -->
 		<description>
 			description: "*insert-description-here*"
 		</description>
-		<sql>
+		
+		<sql> 
+		<!-- Advice : insert sql as CDATA section -->
 		*insert-sql-here*
 		</sql>
+		
+		<!-- Description of parameter set.  Descriptions here override mapping in parameter map -->
 		<parameter_set name="*optional-parameter-set-name*" extends="*optional-parent-parameter-set-name-here*"/>
+			<!-- OneOrMore -->
 			<parameter name="*parameter-name*" table="*reference-table*" column="*reference-column*" sample="*optional-sample-value"/> 
 		</parameter_set>
+		
+		<!-- For factoring out similar result sets among different accesses, use the "extends" attribute -->
 		<result_set name="*optional-result-set-name*" extends="*optional-parent-result-set-name-here*"/>
 	</access>
 </modules>

@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modules>
-<parameter_map>
-	<parameter name="last_name" table="PARTICIPANT" column="last_name"/> 
-	<parameter name="paid_amount" table="REGISTRATION" column="paid_amount"/> 
-</parameter_map>
-<access  type="selection" name="PARTICIPANTS_BY_NAME">
-	<description>
-		description: "Select participants matching a last name"
-	</description>
-	<sql>
-	select * from PARTICIPANT where
-		last_name = ?last_name
-	</sql>
-	<parameter_set>
-		<parameter name="last_name" sample="foo"/> 
-	</parameter_set>
-	<result_set extends="PARTICIPANT_ROW"/>
-</access>
-<access  type="selection" name="PARTICIPANTS_BY_ZIP">
-	<description>
-		description: "Select participants by zip"
-	</description>
-	<sql>
-	select * from PARTICIPANT where
-		zip = ?zip
-	</sql>
-	<parameter_set>
-		<parameter name="zip" table="PARTICIPANT" column="zip" sample="4053"/> 
-	</parameter_set>
-	<result_set extends="PARTICIPANT_ROW"/>
-</access>
-<access  type="selection" name="PARTICIPANTS_COUNT_BY_REMAINING">
-	<description>
-		description: "Select participants count by remaining amount to pay"
-	</description>
-	<sql>
-	select count (*) as count from PARTICIPANT p, REGISTRATION r where
-		r.participant_id = p.identifier AND
-		(r.fee - r.paid_amount) > ?remaining_amount
-	</sql>
-	<parameter_set>
-		<parameter name="remaining_amount" table="REGISTRATION" column="paid_amount" sample="256"/> 
-	</parameter_set>
-	<result_set extends="PARTICIPANT_COUNT"/>
-</access>
-<access  type="selection" name="PARTICIPANTS_BY_REMAINING">
-	<description>
-		description: "Select participants by remaining amount to pay"
-	</description>
-	<sql>
-	select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
-	 p.country, r.reg_time, (r.fee - r.paid_amount) as remaining from PARTICIPANT p, REGISTRATION r where
-		r.participant_id = p.identifier AND
-		(r.fee - r.paid_amount) > ?remaining_amount
-	</sql>
-	<parameter_set>
-		<parameter name="remaining_amount" table="REGISTRATION" column="paid_amount" sample="256"/> 
-	</parameter_set>
-	<result_set extends="PARTICIPANT_AMOUNT_ROW"/>
-</access>
-<access  type="selection" name="PARTICIPANTS_BY_AMOUNT">
-	<description>
-		description: "Select participants by amount already paid"
-	</description>
-	<sql>
-	select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
-	 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
-		r.participant_id = p.identifier AND
-		r.paid_amount tutu ?paid_amount
-	</sql>
-	<result_set extends="PARTICIPANT_AMOUNT_ROW"/>
-</access>
-<access  type="selection" name="PARTICIPANTS_BY_REG_TIME">
-	<description>
-		description: "Select participants by amount already paid"
-	</description>
-	<sql>
-	select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
-	 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
-		r.participant_id = p.identifier AND
-		r.reg_time > ?reg_time
-	</sql>
-	<parameter_set>
-		<parameter name="reg_time" table="REGISTRATION" column="reg_time" sample="{ts '2000-07-28 10:12:01.23'}"/> 
-	</parameter_set>
-	<result_set extends="PARTICIPANT_AMOUNT_ROW"/>
-</access>
+	<parameter_map>
+		<parameter name="last_name" table="PARTICIPANT" column="last_name"/> 
+		<parameter name="paid_amount" table="REGISTRATION" column="paid_amount"/> 
+	</parameter_map>
+	<access  type="selection" name="PARTICIPANTS_BY_NAME">
+		<description>
+			description: "Select participants matching a last name"
+		</description>
+		<sql>
+		select * from PARTICIPANT where
+			last_name = ?last_name
+		</sql>
+		<parameter_set>
+			<parameter name="last_name" sample="foo"/> 
+		</parameter_set>
+		<result_set extends="PARTICIPANT_ROW"/>
+	</access>
+	<access  type="selection" name="PARTICIPANTS_BY_ZIP">
+		<description>
+			description: "Select participants by zip"
+		</description>
+		<sql>
+		select * from PARTICIPANT where
+			zip = ?zip
+		</sql>
+		<parameter_set>
+			<parameter name="zip" table="PARTICIPANT" column="zip" sample="4053"/> 
+		</parameter_set>
+		<result_set extends="PARTICIPANT_ROW"/>
+	</access>
+	<access  type="selection" name="PARTICIPANTS_COUNT_BY_REMAINING">
+		<description>
+			description: "Select participants count by remaining amount to pay"
+		</description>
+		<sql>
+		select count (*) as count from PARTICIPANT p, REGISTRATION r where
+			r.participant_id = p.identifier AND
+			(r.fee - r.paid_amount) > ?remaining_amount
+		</sql>
+		<parameter_set>
+			<parameter name="remaining_amount" table="REGISTRATION" column="paid_amount" sample="256"/> 
+		</parameter_set>
+		<result_set extends="PARTICIPANT_COUNT"/>
+	</access>
+	<access  type="selection" name="PARTICIPANTS_BY_REMAINING">
+		<description>
+			description: "Select participants by remaining amount to pay"
+		</description>
+		<sql>
+		select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
+		 p.country, r.reg_time, (r.fee - r.paid_amount) as remaining from PARTICIPANT p, REGISTRATION r where
+			r.participant_id = p.identifier AND
+			(r.fee - r.paid_amount) > ?remaining_amount
+		</sql>
+		<parameter_set>
+			<parameter name="remaining_amount" table="REGISTRATION" column="paid_amount" sample="256"/> 
+		</parameter_set>
+		<result_set extends="PARTICIPANT_ROW"/>
+	</access>
+	<access  type="selection" name="PARTICIPANTS_BY_AMOUNT">
+		<description>
+			description: "Select participants by amount already paid"
+		</description>
+		<sql>
+		select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
+		 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
+			r.participant_id = p.identifier AND
+			r.paid_amount = ?paid_amount
+		</sql>
+		<result_set extends="PARTICIPANT_ROW"/>
+	</access>
+	<access  type="selection" name="PARTICIPANTS_BY_REG_TIME">
+		<description>
+			description: "Select participants by amount already paid"
+		</description>
+		<sql>
+		select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
+		 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
+			r.participant_id = p.identifier AND
+			r.reg_time > ?reg_time
+		</sql>
+		<parameter_set>
+			<parameter name="reg_time" table="REGISTRATION" column="reg_time" sample="{ts '2000-07-28 10:12:01.23'}"/> 
+		</parameter_set>
+		<result_set extends="PARTICIPANT_ROW"/>
+	</access>
 </modules>

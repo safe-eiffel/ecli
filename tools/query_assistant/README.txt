@@ -84,7 +84,8 @@ Content
 		[-max_length <length>]	Maximum length of long data when metadata seem unbounded.
 		[-parent_cursor <name>]	Parent class of cursor classes are <parent> instead of ECLI_CURSOR
 		[-parent_modify <name>]	Parent class of modify classes are <parent> instead of ECLI_QUERY	
-
+		[-no_prototype]		Does not generate prototype functions in EPOM skeleton class.
+		
 3. Known problems
 
 	* some SQL verification is done by query_assistant through letting the database

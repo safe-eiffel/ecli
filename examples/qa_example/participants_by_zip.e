@@ -1,13 +1,10 @@
 indexing
 
 	
-		description: "Select participants by zip."
-	
-	warning: "Generated cursor 'PARTICIPANTS_BY_ZIP' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+			description: "Select participants by zip"
+		
+	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_ZIP'. DO NOT EDIT!"
+	generated: "2006/03/21 14:12:57.031"
 
 class PARTICIPANTS_BY_ZIP
 
@@ -42,28 +39,30 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-	select * from PARTICIPANT where
-		zip = ?zip
-	
-]"
+	definition: STRING is "%N%
+%		select * from PARTICIPANT where%N%
+%			zip = ?zip%N%
+%		"
 
 feature {NONE} -- Implementation
 
 	create_buffers is
-			-- -- Creation of buffers
+			-- Creation of buffers
+		local
+			buffers: ARRAY[like value_anchor]
 		do
 			create item.make
-			create cursor.make (1,9)
-			cursor.put (item.identifier, 1)
-			cursor.put (item.first_name, 2)
-			cursor.put (item.last_name, 3)
-			cursor.put (item.street, 4)
-			cursor.put (item.no, 5)
-			cursor.put (item.zip, 6)
-			cursor.put (item.city, 7)
-			cursor.put (item.state, 8)
-			cursor.put (item.country, 9)
+			create buffers.make (1,9)
+			buffers.put (item.identifier, 1)
+			buffers.put (item.first_name, 2)
+			buffers.put (item.last_name, 3)
+			buffers.put (item.street, 4)
+			buffers.put (item.no, 5)
+			buffers.put (item.zip, 6)
+			buffers.put (item.city, 7)
+			buffers.put (item.state, 8)
+			buffers.put (item.country, 9)
+			set_results (buffers)
 		end
 
 end -- class PARTICIPANTS_BY_ZIP

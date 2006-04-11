@@ -20,6 +20,7 @@ feature -- Initialization
 			-- QA_EXAMPLE
 		local
 			args : ARGUMENTS
+			simple_login : ECLI_SIMPLE_LOGIN
 		do
 			create args
 			io.put_string ("Selection of registered participants, by remaining amount to pay%N")
@@ -27,7 +28,9 @@ feature -- Initialization
 			if args.argument_count < 3 then
 				io.put_string ("Usage: QA_EXAMPLE <data_source> <user_name> <password>%N")
 			else
-				create session.make (args.argument (1), args.argument (2), args.argument (3))
+				create session.make_default
+				create simple_login.make (args.argument (1), args.argument (2), args.argument (3))
+				session.set_login_strategy (simple_login)
 				session.connect
 				if session.has_information_message then
 					io.put_string (session.cli_state) 
@@ -59,7 +62,7 @@ feature -- Initialization
 				io.put_string (last_command)
 				io.put_string (" to pay%N")
 				from
-					parameters.remaining_amount.set_item (last_command.as_double)
+					parameters.remaining_amount.set_item (last_command.to_double)
 					cursor.set_parameters_object (parameters)
 					cursor.start
 				until
@@ -99,7 +102,6 @@ feature -- Basic Operations
 	last_command : STRING is
 		once
 			create Result.make (1000)
-
 		end
 
 	pad (s : STRING; n : INTEGER) is

@@ -17,6 +17,8 @@ inherit
 	
 	KL_SHARED_OPERATING_SYSTEM
 	
+	KL_SHARED_FILE_SYSTEM
+	
 creation
 
 	make
@@ -28,9 +30,6 @@ feature {NONE} -- Initialization
 		local
 			simple_login : ECLI_SIMPLE_LOGIN
 			std : KL_STANDARD_FILES
-			sp : ECLI_STORED_PROCEDURE
-			tc : ECLI_TYPE_CATALOG
-			l : DS_LIST[ECLI_SQL_TYPE]
 		do			
 			create_commands
 			create std
@@ -60,9 +59,6 @@ feature {NONE} -- Initialization
 					else
 						print_error (session)
 					end
-					create tc.make(session)
-					l := tc.numeric_types
-					print (tc.types_for_id (tc.sql_decimal).first)
 				end
 				if session = Void or else session /= Void and then not session.is_connected then
 					current_context.filter.begin_error
@@ -71,7 +67,11 @@ feature {NONE} -- Initialization
 						%Please connect first using 'CONNECT' command.%N")
 					current_context.filter.end_error
 				end
-				execute_command.execute ("execute", current_context)	
+				if sql_file_name /= Void then
+					execute_command.execute ("execute "+sql_file_name, current_context)
+				else
+					execute_command.execute ("execute", current_context)	
+				end
 				-- disconnecting and closing session
 				if current_context.session /= Void then
 					if current_context.session.is_connected then
@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 							user := Arguments.argument (index + 1)
 						elseif current_argument.is_equal ("-pwd") then
 							password := Arguments.argument (index + 1)
-						elseif current_argument.is_equal ("-sql_file_name") then
+						elseif current_argument.is_equal ("-sql_file_name") or else current_argument.is_equal ("-sql") then
 							sql_file_name := Arguments.argument (index + 1)
 						elseif current_argument.is_equal ("-set") then
 							do_assign (Arguments.argument (index + 1))

@@ -1,7 +1,8 @@
 indexing
 
-	description: "Results objects ."
+	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
+	generated: "2006/03/21 14:12:57.078"
 
 class PARTICIPANTS_BY_AMOUNT_PARAMETERS
 
@@ -12,9 +13,11 @@ creation
 feature {NONE} -- Initialization
 
 	make is
-			-- -- Creation of buffers
+			-- Creation of buffers
 		do
 			create paid_amount.make
+		ensure
+			paid_amount_is_null: paid_amount.is_null
 		end
 
 feature  -- Access

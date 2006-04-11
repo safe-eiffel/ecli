@@ -28,7 +28,7 @@ insert into PARTICIPANT values (14, 'Jack', 'Morrison', 'Bluberry str.', '10A', 
 ;
 insert into PARTICIPANT values (15, 'Luc', 'Abom', 'Avenue de la Tèche', '53', 2000, 'Lausanne', NULL, 'Suisse')
 ;
-insert into PARTICIPANT values (16, 'Guy', 'Fokou', 'Baotec drive, '101', 11111, 'Fokouville', NULL, 'USA')
+insert into PARTICIPANT values (16, 'Guy', 'Fokou', 'Baotec drive', '101', 11111, 'Fokouville', NULL, 'USA')
 ;
 insert into PARTICIPANT values (17, 'Roger', 'Browne', 'Cambridge Street', '22 CB24NJ', 24, 'Cambridge', NULL, 'United Kingdom')
 ;
