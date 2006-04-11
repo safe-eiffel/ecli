@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<system name="test_decimal_ecli">
+	<description>
+		system:      "ECLI test application.  It shows the major functionalities of the ECLI Library."
+
+		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
+		copyright:   "Copyright (c) 2001, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date $"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="TEST_DECIMAL_ECLI" creation="make"/>
+
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
+
+	<cluster name="test_decimal_ecli" location="${ECLI}/examples/test_decimal"/>
+	
+	<mount location="${ECLI}/library.xace"/>
+	<mount location="${GOBO}/library/time/library.xace"/>
+	<mount location="${GOBO}/library/kernel/library.xace"/>
+	<mount location="${GOBO}/library/structure/library.xace"/>
+	<mount location="${GOBO}/library/utility/library.xace"/>
+	<mount location="${GOBO}/library/pattern/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+
+</system>
