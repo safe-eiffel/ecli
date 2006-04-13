@@ -13,8 +13,9 @@
 	</description>
 
 	<inherit>
-		<parent location="${ECLI}/ecli.eant">
+		<parent location="${ECLI}/build.eant">
 			<redefine target="init_system"/>
+			<redefine target="help"/>
 		</parent>
 	</inherit>
 
@@ -26,4 +27,7 @@
 		<set name="system_dir" value="${ECLI}/examples/isql"/>
 	</target>
 
+	<target name="help">
+		<geant target="help2"/>
+	</target>
 </project>
