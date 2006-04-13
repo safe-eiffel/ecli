@@ -70,15 +70,15 @@
 			in all subdirectories.
 		</description>
 
-<!--		<geant file="build.eant" target="${target}" dir="control"/>
+		<geant file="build.eant" target="${target}" dir="control"/>
 		<geant file="build.eant" target="${target}" dir="isql"/>
--->		<geant file="build.eant" target="${target}" dir="test_Xaction"/>
-<!--		<geant file="build.eant" target="${target}" dir="qa_example"/>
+		<geant file="build.eant" target="${target}" dir="qa_example"/>
 		<geant file="build.eant" target="${target}" dir="test_decimal"/>
 		<geant file="build.eant" target="${target}" dir="test_procedures"/>
 		<geant file="build.eant" target="${target}" dir="test_rowset"/>
 		<geant file="build.eant" target="${target}" dir="test_values"/>
 		<geant file="build.eant" target="${target}" dir="test1"/>
--->	</target>
+		<geant file="build.eant" target="${target}" dir="test_Xaction"/>
+</target>
 
 </project>
