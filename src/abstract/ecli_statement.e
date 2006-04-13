@@ -722,7 +722,7 @@ feature -- Basic operations
 				results_description := Void
 			end
 		ensure
-			description: is_ok implies
+			results_described: is_ok implies
 				(results_description /= Void and then results_description.lower = 1 and then results_description.count = result_columns_count)
 		end
 

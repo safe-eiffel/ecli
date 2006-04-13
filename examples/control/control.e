@@ -1,9 +1,12 @@
 class
 	CONTROL
 
+inherit
+	KL_SHARED_FILE_SYSTEM
+	
 creation
 	make
-	
+
 feature
 
 	make is
@@ -11,14 +14,16 @@ feature
 			d : DT_TIME_DURATION
 			api_tracing : BOOLEAN
 			i : INTEGER
+			one_second : DT_TIME_DURATION
 		do
 			create session.make_default
 			api_tracing := session.is_api_tracing
-			create login.make ("SODEV4", "D51PRE1M2", "MESBAYV")	
+			create login.make ("SODEV4", "D51PRE1M2", "MESBAYV")
 			d := session.login_timeout
-			session.set_api_trace_filename ("c:\soexp1_odbc.log", create {KL_WINDOWS_FILE_SYSTEM}.make)
+			session.set_api_trace_filename ("c:\soexp1_odbc.log", file_system)
 			session.enable_api_tracing
-			session.set_login_timeout (create {DT_TIME_DURATION}.make_canonical (1))
+			create one_second.make_canonical (1)
+			session.set_login_timeout (one_second)
 			api_tracing := session.is_api_tracing
 			d := session.login_timeout
 			session.set_login_strategy (login)
@@ -31,9 +36,9 @@ feature
 			session.close
 		end
 
-	session : ECLI_SESSION		
+	session : ECLI_SESSION
 	login : ECLI_SIMPLE_LOGIN
-	
+
 feature -- Access
 
 	ecli_api_constants : ECLI_API_CONSTANTS
@@ -89,7 +94,7 @@ feature -- Access
 	ecli_filevarchar : ECLI_FILE_VARCHAR
 	ecli_filelongvarbinary: ECLI_FILE_LONGVARBINARY
 	ecli_filelongvarchar : ECLI_FILE_LONGVARCHAR
-	
+
 	ecli_longvarchar : ECLI_LONGVARCHAR
 	ecli_metadata_cursor : ECLI_METADATA_CURSOR
 	ecli_named_metadata : ECLI_NAMED_METADATA

@@ -17,6 +17,8 @@ inherit
 	KL_SHARED_FILE_SYSTEM
 
 	KL_SHARED_ARGUMENTS
+	
+	KL_IMPORTED_ARRAY_ROUTINES
 		
 creation
 
@@ -575,7 +577,7 @@ feature {NONE} -- Implementation
 			if data_source_name /= Void and then user_name /= Void and then password /= Void then
 				arguments_ok := True
 				if current_sql_type /= Void then
-					if supported_sql_syntax.has (current_sql_type) then
+					if string_array_.has (supported_sql_syntax, current_sql_type) then
 					else
 						arguments_ok := False
 						error_handler.report_error_message ("Invalid sql syntax : " + current_sql_type + " is not supported")
@@ -666,7 +668,7 @@ feature {NONE} -- Implementation
 				width := width.min (15)
 			end
 			create  Result.make (width)
-			Result.append (s)
+			Result.append_string (s)
 			-- pad with blanks
 			from
 				width := width - s.count

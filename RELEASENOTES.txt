@@ -1,3 +1,7 @@
+ECLI v2.2
+	Tested with EiffelStudio 5.6,
+	VE5.0b. build 2506
+
 ECLI v2.0
 
 ECLI v1.2

@@ -6,7 +6,7 @@
 		system: "ECLI parent project file."
 
 		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-		copyright: "Copyright (c) 2001-2004, Paul G. Crismer and others"
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
 		license: "Eiffel Forum License v2 (see forum.txt)"
 		date: "$Date$"
 
@@ -78,5 +78,19 @@
 	<target name="help">
 		<echo message="   geant compile_libs"/>
 		<echo message="   geant install"/>
+	</target>
+
+	<target name="help2">
+		<echo message="   geant compile_libs"/>
+		<echo message="   geant install"/>
+		<echo message="   geant compile"/>
+		<echo message="   geant compile_ise"/>
+		<echo message="   geant compile_se"/>
+		<echo message="   geant compile_ve"/>
+		<echo message="   geant compile_debug_ise"/>
+		<echo message="   geant compile_debug_se"/>
+		<echo message="   geant compile_debug_ve"/>
+		<echo message="   geant clean"/>
+		<echo message="   geant clobber"/>
 	</target>
 </project>

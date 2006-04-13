@@ -20,7 +20,7 @@ inherit
 
 	ECLI_GENERIC_VALUE [MA_DECIMAL]
 		redefine
-			item, set_item, out,
+			item, out,
 			impl_item,
 			bind_as_parameter,
 			formatted,

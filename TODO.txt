@@ -33,7 +33,8 @@
 	5 : ISQL.print_banner
 	6 : ISQL.print_usage
 
-- REM  3 : samples : factor code for database/SQL syntax selection.
+- REM  0 : samples : factor code for database/SQL syntax selection.
+	Delayed.
 
 - REM  2 : Package things + release.
 
