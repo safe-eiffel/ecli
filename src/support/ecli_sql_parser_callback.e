@@ -23,6 +23,8 @@ feature -- Basic operations
 	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER) is
 		require
 			valid_callback : is_valid
+			a_parameter_name_not_void: a_parameter_name /= Void
+			a_position_stricly_positive: a_position > 0
 		deferred
 		end
 
