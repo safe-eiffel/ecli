@@ -161,9 +161,6 @@ feature {NONE} -- Implementation
 			index : INTEGER
 			c, u : CHARACTER
 		do
-			if string.is_equal ("LastSituationWR") then
-				do_nothing
-			end
 			create Result.make (string.count + 10)
 			from
 				index := 1
