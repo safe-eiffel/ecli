@@ -10,16 +10,16 @@ class
 	TEST1
 
 inherit
-	
+
 	ECLI_TYPE_CONSTANTS
 
-	KL_SHARED_EXECUTION_ENVIRONMENT	
+	KL_SHARED_EXECUTION_ENVIRONMENT
 	KL_SHARED_FILE_SYSTEM
 
 	KL_SHARED_ARGUMENTS
-	
+
 	KL_IMPORTED_ARRAY_ROUTINES
-		
+
 creation
 
 	make
@@ -42,7 +42,7 @@ feature -- Initialization
 				create_and_connect_session
 				if session.is_connected then
 --FIXME:
-					create type_catalog.make (session)
+--					create type_catalog.make (session)
 					trace_if_necessary
 					create_statement
 					determine_current_sql_type
@@ -61,7 +61,7 @@ feature -- Initialization
 							end
 						end
 						drop_tables
-					else	
+					else
 						error_handler.report_info_message ("Could not determine SQL type")
 					end
 					disconnect_session
@@ -70,53 +70,58 @@ feature -- Initialization
 				error_handler.report_info_message ("Test1 finished.%N")
 			end
 		end
-		
+
 feature -- Access
 
 	session : ECLI_SESSION
 			-- Database session on datasource
-	
+
 	type_catalog : ECLI_TYPE_CATALOG
 			-- Catalog of types available for `session'.
-					
+
 	stmt : ECLI_STATEMENT
 			-- Statement used for executing SQL
 
 	data_source_name : STRING
 			-- Name of datasource
-			
+
 	user_name : STRING
 			-- User name
-	
+
 	password : STRING
 			-- Password
 
 	trace_file_name : STRING
 			-- Name of trace file, if any
-	
+
 	current_sql_type : STRING
 			-- Current sql type.
 
 	error_handler : UT_ERROR_HANDLER
-		
-	valid_sql_types : ARRAY[STRING] is
+
+	valid_sql_types : DS_LIST[STRING] is
 			-- Valid sql types
 		once
-			Result := <<
-				sql_92, sql_interbase, sql_mssql, sql_oracle, sql_postgres >>
+			create {DS_LINKED_LIST[STRING]}Result.make
+		 	Result.put_right (sql_92)
+			Result.put_right (sql_interbase)
+			Result.put_right (sql_mssql)
+			Result.put_right (sql_oracle)
+			Result.put_right (sql_postgres)
+			Result.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
 		ensure
 			valid_sql_types_not_void: Result /= Void
 		end
-		
+
 feature -- Status setting
 
 	arguments_ok : BOOLEAN
 			-- are program arguments OK ?
 
 	is_tables_created : BOOLEAN
-	
+
 	is_longvarbinary_supported : BOOLEAN
-	
+
 feature --  Basic operations
 
 	create_and_connect_session is
@@ -168,9 +173,9 @@ feature --  Basic operations
 					message.append_character ('%'')
 					error_handler.report_error_message (message)
 				end
-			end		
+			end
 		end
-		
+
 	create_statement is
 			-- Create 'stmt'.
 		require
@@ -184,11 +189,11 @@ feature --  Basic operations
 		end
 
 	determine_current_sql_type is
-		local		
+		local
 			name : STRING
 		do
+			name := session.info.dbms_name
 			if current_sql_type = Void then
-				name := session.info.dbms_name
 				dbms2sqlsyntax.search (name)
 				if dbms2sqlsyntax.found then
 					current_sql_type := dbms2sqlsyntax.found_item
@@ -196,9 +201,9 @@ feature --  Basic operations
 			end
 			if current_sql_type /= Void then
 				is_longvarbinary_supported := dbms2longvarbinary.has (name) and then dbms2longvarbinary.item (name)
-			end			
+			end
 		end
-		
+
 	create_sample_table is
 				-- Create sample tables.
 			require
@@ -227,7 +232,7 @@ feature --  Basic operations
 				end
 				is_tables_created := stmt.is_ok
 			end
-	
+
 	simple_insert_sample_tuples is
 			-- Insert sample tuples with simple direct SQL.
 		do
@@ -254,37 +259,37 @@ feature --  Basic operations
 			p_isbn : ECLI_VARCHAR
 			p_title : ECLI_VARCHAR
 			p_author : ECLI_VARCHAR
-		do	
+		do
 			error_handler.report_info_message ("=> DML - Insert tuples - Parameterized SQL")
 			-- create buffers
 			create p_isbn.make (14)
 			create p_title.make (100)
 			create p_author.make (30)
-			
+
 			-- Insert new BOOK
 			-- set SQL
 			stmt.set_sql (dml_parameterized_insert_book)
 
 			-- put parameters by array
 			stmt.set_parameters (<< p_isbn, p_title, p_author>>)
-			
+
 			-- bind parameters
 			stmt.bind_parameters
-			
+
 			-- set parameter values
 			p_isbn.set_item ("0136291554")
 			p_title.set_item ("Object-Oriented Software Construction (Book/CD-ROM) (2nd Edition)")
 			p_author.set_item ("Meyer, Bertrand")
-			
+
 			-- execute
 			stmt.execute
 			show_query (stmt)
-			
+
 			if not stmt.is_ok or stmt.has_information_message then
 				handle_status (stmt)
 			end
 		end
-		
+
 	parameterized_prepared_insert_sample_tuples is
 			-- Insert tuples with parameterized and prepared SQL.
 		local
@@ -308,13 +313,13 @@ feature --  Basic operations
 			create p_row.make
 			create p_borrower.make
 			create p_borrow_date.make_null
-			
+
 			-- Insert new BOOK
 			-- set SQL
 			stmt.set_sql (dml_parameterized_insert_copy)
 			-- Prepare
 			stmt.prepare
-			if stmt.is_ok then	
+			if stmt.is_ok then
 				-- put parameters by name
 				stmt.put_parameter (p_isbn, "isbn")
 				stmt.put_parameter (p_serial, "serial")
@@ -325,11 +330,11 @@ feature --  Basic operations
 				stmt.put_parameter (p_row, "row")
 				stmt.put_parameter (p_borrower, "borrower")
 				stmt.put_parameter (p_borrow_date, "borrow_date")
-				
-				
+
+
 				-- bind parameters
 				stmt.bind_parameters
-				
+
 				-- set parameter values
 				p_isbn.set_item ("0136291554")
 				p_serial.set_item (1)
@@ -341,11 +346,11 @@ feature --  Basic operations
 				p_row.set_item (1)
 				p_borrower.set_null
 				p_borrow_date.set_null
-								
+
 				-- execute
 				stmt.execute
 				show_query (stmt)
-			end			
+			end
 			if not stmt.is_ok or stmt.has_information_message then
 				handle_status (stmt)
 			end
@@ -366,12 +371,12 @@ feature --  Basic operations
 			stmt.execute
 			if stmt.is_ok then
 				show_column_names (stmt)
-				
+
 				create buffer_factory
-				
+
 				-- create result set 'value holders'
 				stmt.describe_results
-				buffer_factory.create_buffers (stmt.results_description)				
+				buffer_factory.create_buffers (stmt.results_description)
 				stmt.set_results (buffer_factory.last_buffers)
 				-- iterate on result-set
 				from
@@ -398,13 +403,13 @@ feature --  Basic operations
 		local
 			photo : ECLI_FILE_LONGVARBINARY
 			photo_file : KL_BINARY_INPUT_FILE
-			isbn : ECLI_VARCHAR	
-			l_stmt : ECLI_STATEMENT		
+			isbn : ECLI_VARCHAR
+			l_stmt : ECLI_STATEMENT
 		do
 			create l_stmt.make (session)
 --			l_stmt.raise_exception_on_error
 			error_handler.report_info_message ("=> DML - Insert tuple - Long data")
-			create photo_file.make (a_target_filename)	
+			create photo_file.make (a_target_filename)
 			-- Create photo buffer for input.
 			create photo.make_input (photo_file)
 			create isbn.make (14)
@@ -432,10 +437,10 @@ feature --  Basic operations
 		local
 			photo_file : KL_BINARY_OUTPUT_FILE
 			photo : ECLI_FILE_LONGVARBINARY
-			isbn : ECLI_VARCHAR			
+			isbn : ECLI_VARCHAR
 		do
 			error_handler.report_info_message ("=> DML - Select tuple - Long data")
-			create photo_file.make (a_target_filename)	
+			create photo_file.make (a_target_filename)
 			-- Create photo buffer for output.
 			create photo.make_output (photo_file)
 			create isbn.make (14)
@@ -447,7 +452,7 @@ feature --  Basic operations
 			show_query (stmt)
 			if stmt.is_ok then
 				stmt.set_results (<<photo>>)
-				from				
+				from
 					stmt.start
 				until
 					not stmt.is_ok or else stmt.off
@@ -479,7 +484,7 @@ feature --  Basic operations
 			stmt.execute
 			show_query (stmt)
 
-			if is_longvarbinary_supported then 
+			if is_longvarbinary_supported then
 				stmt.set_sql  ("DROP TABLE BOOKCOVER")
 				stmt.execute
 				show_query (stmt)
@@ -531,16 +536,11 @@ feature -- Constants
 	sql_oracle : STRING is "ora"
 	sql_interbase : STRING is "ib"
 	sql_mssql : STRING is "mssql"
-	sql_postgres : STRING is "pg"	
+	sql_postgres : STRING is "pg"
 
 	dml_parameterized_insert_book : STRING is "INSERT INTO BOOK VALUES (?isbn, ?title, ?author)"
 	dml_parameterized_insert_copy : STRING is "INSERT INTO COPY VALUES (?isbn, ?serial, ?purchased, ?price, ?store, ?shelf, ?row, ?borrower, ?borrow_date)"
 
-	supported_sql_syntax : ARRAY[STRING] is
-		once
-			Result := << sql_92, sql_oracle, sql_interbase, sql_mssql, sql_postgres>>
-		end
-		
 feature {NONE} -- Implementation
 
 	parse_arguments is
@@ -577,7 +577,7 @@ feature {NONE} -- Implementation
 			if data_source_name /= Void and then user_name /= Void and then password /= Void then
 				arguments_ok := True
 				if current_sql_type /= Void then
-					if string_array_.has (supported_sql_syntax, current_sql_type) then
+					if valid_sql_types.has (current_sql_type) then
 					else
 						arguments_ok := False
 						error_handler.report_error_message ("Invalid sql syntax : " + current_sql_type + " is not supported")
@@ -595,18 +595,19 @@ feature {NONE} -- Implementation
 		local
 			usage : UT_USAGE_MESSAGE
 			message : STRING
-			i : INTEGER
+			c : DS_LIST_CURSOR[STRING]
 		do
 			create message.make_from_string ("-dsn <data_source> -user <user_name> -pwd <password> -sql <sqlsyntax> [-tracefile <trace_file_name>]")
 			message.append_string ("%N%TSupported sql syntaxes :%N")
 			from
-				i := supported_sql_syntax.lower
+				c := valid_sql_types.new_cursor
+				c.start
 			until
-				i > supported_sql_syntax.upper
+				c.off
 			loop
 				message.append_string ("%N%T%T")
-				message.append_string (supported_sql_syntax.item (i))
-				i := i + 1
+				message.append_string (c.item)
+				c.forth
 			end
 			create usage.make (message)
 			error_handler.report_warning (usage)
@@ -662,8 +663,8 @@ feature {NONE} -- Implementation
 			width : INTEGER
 		do
 			width := d.size
-			if d.sql_type_code = sql_integer 
-			   or else d.sql_type_code = sql_double 
+			if d.sql_type_code = sql_integer
+			   or else d.sql_type_code = sql_double
 			   or else d.sql_type_code = Sql_float then
 				width := width.min (15)
 			end
@@ -679,7 +680,7 @@ feature {NONE} -- Implementation
 				width := width - 1
 			end
 		end
-		
+
 	show_result_row (a_statement : ECLI_STATEMENT) is
 			-- Show values at current cursor position for `a_statement'.
 		local
@@ -749,12 +750,12 @@ feature {NONE} -- Implementation
 	ddl_copy : STRING
 	ddl_borrower: STRING
 	ddl_bookcover: STRING
-		
-	get_ddl_statements is	
+
+	get_ddl_statements is
 			-- Get DDL SQL statements in configuration files.
 		require
 			current_sql_type_not_void: current_sql_type /= Void
-			current_sql_type_valid: current_sql_type = sql_92 or else current_sql_type = sql_oracle or else current_sql_type = sql_interbase or current_sql_type = sql_mssql or current_sql_type = sql_postgres
+			valid_sql_type: valid_sql_types.has (current_sql_type)
 		do
 			ddl_book := string_from_file (ddl_filename_for ("book", current_sql_type))
 			ddl_bookcover := string_from_file (ddl_filename_for ("bookcover", current_sql_type))
@@ -765,10 +766,10 @@ feature {NONE} -- Implementation
 			ddl_copy_set: ddl_copy /= Void and then not ddl_copy.is_empty
 			ddl_borrower_set: ddl_borrower /= Void and then not ddl_borrower.is_empty
 		end
-		
+
 	ddl_file_prefix : STRING is "ddl_"
-	
-	ddl_filename_for (table, sql_type : STRING) : STRING is	
+
+	ddl_filename_for (table, sql_type : STRING) : STRING is
 			-- Ddl file name for `table' and `sql_type'.
 		require
 			table_not_void: table /= Void
@@ -795,11 +796,11 @@ feature {NONE} -- Implementation
 			create Result.make (125)
 			directory := file_system.nested_pathname (execution_environment.interpreted_string ("${ECLI}"), << "examples", "books", "data" >>)
 			Result.append_string (file_system.pathname (directory, name))
-		ensure	
+		ensure
 			photo_filename_not_void: Result /= Void
 		end
-		
-	string_from_file (filename : STRING) : STRING is		
+
+	string_from_file (filename : STRING) : STRING is
 			-- String extracted from file `filename'.
 		require
 			filename_not_void: filename /= Void
@@ -819,12 +820,12 @@ feature {NONE} -- Implementation
 						Result.append_character ('%N')
 					end
 					file.read_line
-					Result.append_string (file.last_string)					
+					Result.append_string (file.last_string)
 				end
 			end
 		end
-	
-	dbms2sqlsyntax : DS_HASH_TABLE[STRING, STRING] is	
+
+	dbms2sqlsyntax : DS_HASH_TABLE[STRING, STRING] is
 			-- Map of dbms name to sql syntax.
 		once
 			create Result.make (10)
@@ -834,15 +835,15 @@ feature {NONE} -- Implementation
 			Result.put (sql_oracle, "Oracle")
 			Result.put (sql_mssql, "ACCESS")
 		end
-	
-	dbms2longvarbinary : DS_HASH_TABLE[BOOLEAN, STRING] is	
+
+	dbms2longvarbinary : DS_HASH_TABLE[BOOLEAN, STRING] is
 		once
 			create Result.make (10)
 			Result.put (True, "Firebird 1.5")
 			Result.put (True, "Microsoft SQL Server")
 --			Result.put (False, "ACCESS")
 		end
-		
+
 end -- class TEST1
 --
 -- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
