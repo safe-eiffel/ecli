@@ -8,7 +8,7 @@ indexing
 		% Some databases like Oracle are sensible to National Language Support settings.%
 		% Please configure the ODBC driver so that it uses US settings because ECLI is not%
 		% capable of determining the National Language Support that is used."
-		
+
 	library: "GOBO Eiffel Decimal Arithmetic Library"
 	copyright: "Copyright (c) 2005, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
@@ -27,11 +27,11 @@ inherit
 			valid_item
 		end
 
-	MA_DECIMAL_CONSTANTS
+	MA_DECIMAL_CONTEXT_CONSTANTS
 		undefine
 			is_equal, copy, out
 		end
-	
+
 creation
 
 	make
@@ -49,7 +49,7 @@ feature {NONE} -- Initialization
 			is_null: is_null
 			precision_set: precision = new_precision
 			decimal_digits_set: decimal_digits = new_decimal_digits
-			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision 
+			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision
 			default_round_mode: rounding_context.rounding_mode = Default_rounding_mode
 		end
 
@@ -70,7 +70,7 @@ feature {NONE} -- Initialization
 			is_null: is_null
 			precision_set: precision = new_precision
 			decimal_digits_set: decimal_digits = new_decimal_digits
-			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision 
+			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision
 			round_mode_set: rounding_context.rounding_mode = new_rounding_mode
 		end
 
@@ -78,7 +78,7 @@ feature -- Access
 
 	rounding_context : MA_DECIMAL_CONTEXT
 			-- Context used for rounding to (precision, decimal_digits).
-	
+
 	item : MA_DECIMAL is
 			-- Current value.
 		do
@@ -89,12 +89,12 @@ feature -- Access
 			end
 		end
 
-		
+
 feature -- Measurement
 
 	precision : INTEGER
 			-- Number of significant digits.
-	
+
 	decimal_digits : INTEGER
 			-- Number of digits after the decimal point.
 
@@ -115,37 +115,37 @@ feature -- Status report
 
 	convertible_as_character : BOOLEAN is
 			-- Is this value convertible to a character ?
-		do 
+		do
 			Result := False
 		end
 
 	convertible_as_boolean : BOOLEAN is
 			-- Is this value convertible to a boolean ?
-		do 
+		do
 			Result := False
 		end
 
 	convertible_as_decimal : BOOLEAN is
 			-- Is this value convertible to a decimal ?
-		do 
+		do
 			Result := True
 		end
 
 	convertible_as_date : BOOLEAN is
 			-- Is this value convertible to a date ?
-		do 
+		do
 			Result := False
 		end
 
 	convertible_as_time : BOOLEAN is
 			-- Is this value convertible to a time ?
-		do 
+		do
 			Result := False
 		end
 
 	convertible_as_timestamp : BOOLEAN is
 			-- Is this value convertible to a timestamp ?
-		do 
+		do
 			Result := False
 		end
 
@@ -155,20 +155,20 @@ feature -- Status report
 			Result := True
 		end
 
-	convertible_as_integer : BOOLEAN is 
+	convertible_as_integer : BOOLEAN is
 			-- Is this value convertible to an integer ?
 		do
 			Result := not is_null
 		end
 
-	convertible_as_double : BOOLEAN is 
+	convertible_as_double : BOOLEAN is
 			-- Is this value convertible to a double ?
 		do
 			Result := not is_null
 		end
 
 
-	convertible_as_real : BOOLEAN is 
+	convertible_as_real : BOOLEAN is
 			-- Is this value convertible to a real ?
 		do
 			Result := not is_null
@@ -186,7 +186,7 @@ feature -- Status report
 			decimal_digits_compatible: Result implies (value.exponent <= 0 implies -(value.exponent) <= decimal_digits)
 			no_specials_allowed: Result implies not value.is_special
 		end
-		
+
 feature {ECLI_VALUE, ECLI_STATEMENT} -- Status report
 
 	c_type_code: INTEGER is
@@ -216,11 +216,11 @@ feature -- Element change
 			l := value.rescale (-decimal_digits, rounding_context)
 			s := l.to_scientific_string
 			if s.count <= transfer_octet_length then
-				ext_item.from_string (s)			
+				ext_item.from_string (s)
 			end
 			ecli_c_value_set_length_indicator (buffer, s.count)
 		end
-		
+
 feature -- Conversion
 
 	as_string : STRING is
@@ -233,17 +233,17 @@ feature -- Conversion
 		do
 			Result := item.to_integer
 		end
-		
+
 	as_double : DOUBLE is
 		do
 			Result := item.to_double
 		end
-		
+
 	as_real : REAL is
-		do 
+		do
 			Result := as_string.to_real
 		end
-		
+
 	out : STRING is
 		do
 			if is_null then
@@ -259,7 +259,7 @@ feature -- Conversion
 		end
 
 	as_character : CHARACTER is
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER
 		do
 			do_nothing
 		end
@@ -294,7 +294,7 @@ feature -- Conversion
 		ensure then
 			definition: Result.is_equal (v.rescale (- decimal_digits, rounding_context))
 		end
-		
+
 feature {ECLI_TRACER} -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
@@ -319,7 +319,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 				length_indicator,
 				length_indicator_pointer))
 		end
-		
+
 feature {NONE} -- Implementation
 
 	impl_item : MA_DECIMAL
@@ -327,7 +327,7 @@ feature {NONE} -- Implementation
 	ext_item : XS_C_STRING
 
 invariant
-	
+
 	rounding_context_not_void: rounding_context /= Void
-	
+
 end

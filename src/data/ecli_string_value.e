@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Buffers for exchanging string-based values between application and database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -16,7 +16,7 @@ inherit
 	ECLI_GENERIC_VALUE[STRING]
 		redefine
 			item,
-			out, 
+			out,
 			impl_item
 		end
 
@@ -52,7 +52,7 @@ feature {NONE} -- Initialization
 			capacity_set: capacity = n
 			maximum_capacity_set: maximum_capacity = n
 		end
-		
+
 feature -- Access
 
 	item : STRING is
@@ -70,7 +70,7 @@ feature -- Access
 		do
 			Result := maximum_capacity
 		end
-		
+
 	maximum_capacity : INTEGER is
 		do
 			if maximum_capacity_impl > 0 then
@@ -99,14 +99,14 @@ feature -- Access
 		end
 
 feature -- Measurement
-		
+
 	size: INTEGER is
 		do
 			Result := display_size
 		end
 
 	decimal_digits: INTEGER is
-		do 
+		do
 			Result := 0
 		end
 
@@ -122,17 +122,17 @@ feature -- Measurement
 
 feature -- Status report
 
-	convertible_as_string : BOOLEAN is 
+	convertible_as_string : BOOLEAN is
 		do
 			Result := True
 		end
 
-	convertible_as_integer : BOOLEAN is 
+	convertible_as_integer : BOOLEAN is
 		do
 			Result := not is_null and then item.is_integer
 		end
 
-	convertible_as_double : BOOLEAN is 
+	convertible_as_double : BOOLEAN is
 		do
 			Result := not is_null and then item.is_double
 		end
@@ -142,7 +142,7 @@ feature -- Status report
 		local
 			parser : MA_DECIMAL_TEXT_PARSER
 		do
-			create parser
+			create parser.make
 			parser.parse (item)
 			Result := not parser.error
 		end
@@ -199,7 +199,7 @@ feature -- Element change
 			ext_item.from_string (value)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 		end
-			
+
 feature -- Conversion
 
 	out : STRING is
@@ -226,13 +226,13 @@ feature -- Conversion
 		end
 
 	as_integer : INTEGER is
-			-- 
+			--
 		do
 			Result := item.to_integer
 		end
-		
+
 	as_double : DOUBLE is
-			-- 
+			--
 		do
 			Result := item.to_double
 		end
@@ -295,17 +295,17 @@ feature -- Basic operations
 			ext_item.append_substring_to (i_start, i_end, string)
 		ensure
 			string_set: string.substring (
-				(old (string.count)) + 1, 
-				string.count).is_equal (item.substring (i_start, i_end))			
+				(old (string.count)) + 1,
+				string.count).is_equal (item.substring (i_start, i_end))
 		end
-		
+
 feature -- Constants
 
 	default_maximum_capacity : INTEGER is
 			-- default maximum capacity
 		deferred
 		end
-	
+
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
@@ -317,7 +317,7 @@ feature {NONE} -- Implementation
 	ext_item : XS_C_STRING
 
 	maximum_capacity_impl : INTEGER
-		
+
 invariant
 
 	ext_item_not_void: ext_item /= Void
