@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Simple Login Strategies that use a connection string."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,10 +17,10 @@ inherit
 		export
 			{ANY} Sql_driver_noprompt, Sql_driver_complete, Sql_driver_complete_required, Sql_driver_prompt
 		end
-		
+
 creation
 	make, make_interactive, make_complete_strict, make_complete_lazy
-	
+
 feature {NONE} -- Initialization
 
 	make (new_connection_string : STRING) is
@@ -35,7 +35,7 @@ feature {NONE} -- Initialization
 			connection_string_set: connection_string = new_connection_string
 			mode_no_prompt: mode = Sql_driver_noprompt
 		end
-		
+
 	make_interactive (new_connection_string : STRING; new_parent_window_handle : POINTER) is
 			-- Make using `new_connection_string'. Connection dialog shall use `new_parent_window_handle' as parent window.
 		require
@@ -85,13 +85,13 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	connection_string : STRING
-	
+
 	completed_connection_string : STRING
-	
+
 	mode : INTEGER
-	
+
 	parent_window_handle : POINTER
-	
+
 feature -- Basic operations
 
 	connect (the_session : ECLI_SESSION) is
@@ -111,11 +111,15 @@ feature -- Basic operations
 				impl_completed_connection_string.capacity,
 				actual_length.handle,
 				mode))
-			completed_connection_string := impl_completed_connection_string.substring (1, actual_length.item)
+			if actual_length.item > 0 then
+				completed_connection_string := impl_completed_connection_string.substring (1, actual_length.item)
+			else
+				completed_connection_string := ""
+			end
 		ensure then
 			completed_connection_string_not_void: completed_connection_string /= Void
 		end
-		
+
 feature -- Constants
 
 	completed_connection_string_default_length : INTEGER is 4096
@@ -126,9 +130,9 @@ feature {NONE} -- Implementation
 
 	impl_connection_string : XS_C_STRING
 	impl_completed_connection_string : XS_C_STRING
-	
+
 invariant
 
 	connection_string_not_void: connection_string /= Void
-	
+
 end -- class ECLI_DRIVER_LOGIN
