@@ -2,7 +2,7 @@ indexing
 	description: "Access modules; Each module encapsulates one database query."
 
 	library: "Access_gen : Access Modules Generators utilities"
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -14,7 +14,7 @@ inherit
 	SHARED_SCHEMA_NAME
 	SHARED_CATALOG_NAME
 	SHARED_MAXIMUM_LENGTH
-	
+
 create
 	make
 
@@ -37,29 +37,29 @@ feature -- Access
 
 	description: STRING
 			-- description of current module. Useful for documenting purposes
-			
+
 	parameters : PARAMETER_SET
 			-- parameters metadata
-	
+
 	results : RESULT_SET
 			-- results metadata
-	
+
 	query: STRING
 			-- SQL query
 
 	name: STRING
 			-- Name of current acces module. Generated names shall include it
-		
+
 	type : ACCESS_TYPE
-	
+
 feature -- Status report
 
 	is_prepared: BOOLEAN
 
 	is_error : BOOLEAN
-	
+
 	is_validity_checked : BOOLEAN
-	
+
 	is_query_valid : BOOLEAN
 			-- is query executable ?
 
@@ -68,13 +68,13 @@ feature -- Status report
 
 	is_checked_query_prepare : BOOLEAN
 			-- has the query been checked for preparation ?
-			
+
 	is_parameters_valid : BOOLEAN
 			-- are the parameters valid ?
 
 	is_results_valid : BOOLEAN
 			-- are the results valid ?
-	
+
 	is_valid : BOOLEAN is
 			-- is this query valid ?
 		require
@@ -84,7 +84,7 @@ feature -- Status report
 		ensure
 			definition: Result = (is_query_valid and then is_parameters_valid and then is_results_valid)
 		end
-		
+
 	has_result_set : BOOLEAN is
 			-- is this a query (if not, it is a command/modifying statement) ?
 		require
@@ -92,7 +92,7 @@ feature -- Status report
 		do
 			Result := results /= Void
 		end
-		
+
 feature -- Status setting
 
 	check_validity (a_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
@@ -110,7 +110,7 @@ feature -- Status setting
 			query_statement.set_sql (query)
 			prepare_query (query_statement, a_error_handler)
 			if query_statement.is_ok then
-				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size) 
+				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size)
 				check_parameters (query_statement, query_session, a_error_handler, reasonable_maximum_size)
 				if is_parameters_valid and is_results_valid then
 					try_query (query_statement, a_session, a_error_handler)
@@ -162,7 +162,7 @@ feature -- Element change
 		ensure
 			result_set: results = a_results
 		end
-		
+
 	set_type (new_type : ACCESS_TYPE) is
 		require
 			new_type_not_void: new_type /= VOid
@@ -171,7 +171,7 @@ feature -- Element change
 		ensure
 			type_set: type = new_type
 		end
-		
+
 feature {NONE} -- Element change
 
 	set_query (a_query: STRING) is
@@ -199,7 +199,7 @@ feature {NONE} -- Implementation
 	statement : ECLI_STATEMENT
 
 	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
-			-- 
+			--
 		require
 			a_error_handler_not_void: a_error_handler /= Void
 			checked_query_prepare: is_checked_query_prepare
@@ -212,7 +212,7 @@ feature {NONE} -- Implementation
 			is_results_valid := True
 			if query_statement.has_result_set then
 				query_statement.describe_results
-				if results = Void then 
+				if results = Void then
 					create results.make (name+"_RESULTS")
 				end
 				from
@@ -248,7 +248,7 @@ feature {NONE} -- Implementation
 			results_void_if_no_result_set: results = Void implies not query_statement.has_result_set
 			results_count: results /= Void implies results.count = query_statement.results_description.count
 		end
-		
+
 	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
 			--| Check if declared parameters are the same as statement parameters
 		require
@@ -273,7 +273,7 @@ feature {NONE} -- Implementation
 			l_parameter_names := query_statement.parameter_names
 			new_parameters_capacity := sql_parameters.count + l_parameter_names.count
 			if sql_parameters.capacity < new_parameters_capacity then
-				sql_parameters.resize (new_parameters_capacity)	
+				sql_parameters.resize (new_parameters_capacity)
 			end
 			sql_parameters.extend (l_parameter_names)
 			parameter_set_names := parameters.as_set_name
@@ -336,7 +336,7 @@ feature {NONE} -- Implementation
 					a_error_handler.report_parameter_unknown (name, cursor_string.item)
 					cursor_string.forth
 				end
-			end				
+			end
 		end
 
 	prepare_query (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER) is
@@ -353,9 +353,9 @@ feature {NONE} -- Implementation
 		ensure
 			is_checked_query_prepare: is_checked_query_prepare
 		end
-		
+
 	try_query (query_statement : ECLI_STATEMENT; session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER) is
-			-- 
+			--
 		require
 			query_statement_not_void: query_statement /= Void
 			a_error_handler_not_void: a_error_handler /= Void
@@ -401,7 +401,7 @@ feature {NONE} -- Implementation
 							query_statement.execute
 							if query_statement.is_ok then
 								is_query_valid := True
-							else						
+							else
 								a_error_handler.report_query_execution_failed (query_statement.sql, query_statement.diagnostic_message, name)
 								is_error := True
 							end

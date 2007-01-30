@@ -2,7 +2,7 @@ indexing
 	description: "Cursor class generators."
 
 	library: "Access_gen : Access Modules Generators utilities"
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -15,13 +15,15 @@ inherit
 	ECLI_TYPE_CONSTANTS
 
 	KL_SHARED_FILE_SYSTEM
-	
+
 	DT_SHARED_SYSTEM_CLOCK
 
-create	
+	KL_IMPORTED_STRING_ROUTINES
+
+create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (an_error_handler : QA_ERROR_HANDLER) is
@@ -32,21 +34,21 @@ feature {NONE} -- Initialization
 		ensure
 			error_handler_set: error_handler = an_error_handler
 		end
-		
+
 feature -- Access
 
 	error_handler : QA_ERROR_HANDLER
-	
+
 	cursor_class : EIFFEL_CLASS
-	
+
 	parameters_class : EIFFEL_CLASS
-	
+
 	results_class : EIFFEL_CLASS
 
 	set_class : EIFFEL_CLASS
-	
+
 	access_routines_class : EIFFEL_CLASS
-	
+
 	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
 
 feature -- Basic operations
@@ -62,18 +64,18 @@ feature -- Basic operations
 		do
 			file_name := as_lower (a_class.name)
 			file_name.append_string (".e")
-			file_name := File_system.pathname (a_target_directory,file_name) 
+			file_name := File_system.pathname (a_target_directory,file_name)
 			file := File_system.new_output_file (file_name)
 			file.open_write
-			if file.is_open_write then 
+			if file.is_open_write then
 				a_class.write (file)
 				file.close
 			else
 				error_handler.report_cannot_write_file (file_name)
 			end
 		end
-		
-	create_cursor_class (module : ACCESS_MODULE; parent_name : STRING) is 
+
+	create_cursor_class (module : ACCESS_MODULE; parent_name : STRING) is
 			-- create class from `module' and write it into `directory_name'
 		require
 			module_not_void: module /= Void
@@ -96,9 +98,9 @@ feature -- Basic operations
 		ensure
 			parameter_class_exists: parameters_class /= Void and then parameters_class.name.is_equal (parameter_set.name)
 		end
-		
 
-	create_results_class (result_set : COLUMN_SET[MODULE_RESULT]) is 
+
+	create_results_class (result_set : COLUMN_SET[MODULE_RESULT]) is
 			-- create class from `result_set' and write it into `directory_name'
 		require
 			result_set_not_void: result_set /= Void
@@ -108,7 +110,7 @@ feature -- Basic operations
 			results_class_generated: results_class /= Void and then results_class.name.is_equal (result_set.name)
 		end
 
-	create_set_class (set : COLUMN_SET[ACCESS_MODULE_METADATA]) is 
+	create_set_class (set : COLUMN_SET[ACCESS_MODULE_METADATA]) is
 			-- create class from `result_set' and write it into `directory_name'
 		require
 			set_not_void: set /= Void
@@ -136,7 +138,7 @@ feature -- Basic operations
 			create l_class_name.make_from_string (name_prefix)
 			l_class_name.append_string ("_ACCESS_ROUTINES")
 			l_class_name.to_upper
-			
+
 			--| class object
 			create access_routines_class.make (l_class_name)
 			access_routines_class.set_deferred
@@ -146,7 +148,7 @@ feature -- Basic operations
 			--| indexing
 			put_indexing_clause (access_routines_class, "description:%"Generated access routines%"","Automatically generated.  DOT NOT MODIFY !")
 			access_routines_class.add_indexing_clause ("usage: %"mix-in%"")
-		
+
 			--| feature groups
 			create access.make ("Access")
 			create status_report.make ("Status report")
@@ -186,7 +188,7 @@ feature -- Basic operations
 				cursor.forth
 			end
 		end
-		
+
 feature {NONE} -- Basic operations
 
 	virtual_row_class (column_set : COLUMN_SET[ACCESS_MODULE_METADATA]) : EIFFEL_CLASS is
@@ -210,19 +212,19 @@ feature {NONE} -- Basic operations
 				line.append_string ("%N%T%Tredefine%N")
 				line.append_string (  "%T%T%Tmake%N")
 				line.append_string (  "%T%Tend")
-				Result.add_parent (line)				
+				Result.add_parent (line)
 			end
 			--| creation
 			Result.add_creation_procedure_name ("make")
-			
+
 			--| Initialization	
 			--| 	make
 			create feature_group.make ("Initialization")
 			feature_group.add_export ("NONE")
-			
+
 			create routine.make ("make")
 			routine.set_comment ("Creation of buffers")
-			
+
 			from
 				i := 1
 				if column_set.parent = Void then
@@ -239,29 +241,29 @@ feature {NONE} -- Basic operations
 				c.off
 			loop
 				create line.make_from_string ("create ")
-				line.append_string (c.item.eiffel_name) 
+				line.append_string (c.item.eiffel_name)
 				line.append_string (".")
 				line.append_string (c.item.creation_call)
-				
+
 				routine.add_body_line (line)
-				
+
 				create assertion_tag.make_from_string (c.item.eiffel_name)
 				assertion_tag.append_string ("_is_null")
 				create assertion_expression.make_from_string (c.item.eiffel_name)
 				assertion_expression.append_string (".is_null")
 				create assertion.make (assertion_tag, assertion_expression)
-				if column_set.parent /= Void then 
+				if column_set.parent /= Void then
 					routine.add_refined_postcondition (assertion)
 				else
 					routine.add_postcondition (assertion)
 				end
 				c.forth
 			end
-			
+
 			feature_group.add_feature (routine)
-			
-			Result.add_feature_group (feature_group) 
-			
+
+			Result.add_feature_group (feature_group)
+
 			--| Access
 			create feature_group.make ("Access")
 
@@ -288,7 +290,7 @@ feature {NONE} -- Basic operations
 			Result_generated: Result /= Void and then Result.name.is_equal (column_set.name)
 		end
 
-		
+
 	put_visible_features(module : ACCESS_MODULE) is
 			-- put visible features of `module' into `cursor_class'
 		do
@@ -305,7 +307,7 @@ feature {NONE} -- Basic operations
 			parameters_class_name, results_class_name : STRING
 		do
 			create feature_group.make ("-- Access")
-			
+
 			if module.parameters.count > 0 then
 	--			if module.parameters.parent_name /= Void and then
 	--			   module.parameters.local_items.count = 0 then
@@ -315,10 +317,10 @@ feature {NONE} -- Basic operations
 	--			end
 				create a_feature.make ("parameters_object", parameters_class_name)
 				feature_group.add_feature (a_feature)
-			end			
-			
+			end
+
 			if module.has_result_set then
---				if module.results.parent_name /= Void and then 
+--				if module.results.parent_name /= Void and then
 --					module.results.local_items.count = 0 then
 					  results_class_name := module.results.type
 --				else
@@ -326,9 +328,9 @@ feature {NONE} -- Basic operations
 --				end
 				create a_feature.make ("item", results_class_name)
 				feature_group.add_feature (a_feature)
-			end			
-			
-			cursor_class.add_feature_group (feature_group) 
+			end
+
+			cursor_class.add_feature_group (feature_group)
 		end
 
 	put_indexing_clause (eiffel_class : EIFFEL_CLASS; description : STRING; status_message : STRING) is
@@ -342,9 +344,9 @@ feature {NONE} -- Basic operations
 				eiffel_class.add_indexing_clause ("description: %""+description+"%"")
 			end
 			eiffel_class.add_indexing_clause ("status: %""+status_message+"%"")
-			eiffel_class.add_indexing_clause ("generated: %""+ system_clock.date_time_now.out +"%"")			
+			eiffel_class.add_indexing_clause ("generated: %""+ system_clock.date_time_now.out +"%"")
 		end
-		
+
 	put_element_change (module : ACCESS_MODULE) is
 			-- put element change  features of `module' into `cursor_class'
 		local
@@ -357,7 +359,7 @@ feature {NONE} -- Basic operations
 		do
 			if module.parameters.count > 0 then
 				create feature_group.make ("-- Element change")
-				
+
 				create a_feature.make ("set_parameters_object")
 				a_feature.set_comment ("set `parameters_object' to `a_parameters_object'")
 				--| parameters
@@ -376,7 +378,7 @@ feature {NONE} -- Basic operations
 				until
 					cursor.off
 				loop
-					pname := cursor.item.name				
+					pname := cursor.item.name
 					a_feature.add_body_line ("put_parameter (parameters_object." + pname + ",%"" + pname + "%")")
 					cursor.forth
 				end
@@ -385,9 +387,9 @@ feature {NONE} -- Basic operations
 				--| ensure
 				create post.make ("bound_parameters", "bound_parameters")
 				a_feature.add_postcondition (post)
-				
+
 				feature_group.add_feature (a_feature)
-				
+
 				cursor_class.add_feature_group (feature_group)
 			end
 		end
@@ -399,7 +401,7 @@ feature {NONE} -- Basic operations
 				put_create_buffers (module)
 			end
 		end
-				
+
 	put_heading (module : ACCESS_MODULE; parent_name : STRING) is
 			-- put indexing, class name, inheritance and creation
 		local
@@ -411,7 +413,7 @@ feature {NONE} -- Basic operations
 			else
 				description := "Not available"
 			end
-			put_indexing_clause (cursor_class, description, "Cursor/Query automatically generated for '"+module.name+"'. DO NOT EDIT!")			
+			put_indexing_clause (cursor_class, description, "Cursor/Query automatically generated for '"+module.name+"'. DO NOT EDIT!")
 			create parent_clause.make (100)
 			if module.has_result_set then
 				if parent_name /= Void then
@@ -429,10 +431,10 @@ feature {NONE} -- Basic operations
 			parent_clause.append_character ('%N')
 
 			cursor_class.add_parent (parent_clause)
-			
+
 			cursor_class.add_creation_procedure_name ("make")
 		end
-		
+
 	put_definition (module : ACCESS_MODULE) is
 			-- put cursor definition  features of `module' into `cursor_class'
 		local
@@ -440,26 +442,20 @@ feature {NONE} -- Basic operations
 			attribute : EIFFEL_ATTRIBUTE
 			attribute_value : STRING
 			eiffel_names : EIFFEL_NAME_ROUTINES
+			sql_adjusted: STRING
+			new_line_count : INTEGER
 		do
 			create eiffel_names
 			create feature_group.make ("Constants")
 			create attribute.make ("definition", "STRING")
-			if not module.query.has ('%N') then
-				attribute.set_value ("%""+module.query+"%"")
-			else
---				create attribute_value.make_from_string ("%"[")
---				if module.query.item(1) /= '%N' then
---					attribute_value.append_character ('%N')
---				end
---				attribute_value.append_string (module.query)
---				if module.query.item (module.query.count) /= '%N' then
---					attribute_value.append_character ('%N')
---				end
---				attribute_value.append_string ("]%"")
-				create attribute_value.make_from_string (eiffel_names.manifest_string_constant (module.query))
-				attribute.set_value (attribute_value)
+			sql_adjusted := module.query.twin
+			STRING_.left_adjust (sql_adjusted)
+			STRING_.right_adjust (sql_adjusted)
+			if sql_adjusted.occurrences ('%N') = 0 then
+				sql_adjusted.append_character ('%N')
 			end
-			
+			create attribute_value.make_from_string (eiffel_names.verbatim_string (sql_adjusted, True, ""))
+			attribute.set_value (attribute_value)
 			feature_group.add_feature (attribute)
 			cursor_class.add_feature_group (feature_group)
 		end
@@ -474,18 +470,18 @@ feature {NONE} -- Basic operations
 			line : STRING
 			local_buffers : DS_PAIR[STRING,STRING]
 		do
-			
+
 			create feature_group.make ("Implementation")
 			feature_group.add_export ("NONE")
-			
+
 			create routine.make ("create_buffers")
 			routine.set_comment ("Creation of buffers")
-			
+
 			create local_buffers.make ("buffers", "ARRAY[like value_anchor]")
 			routine.add_local (local_buffers)
 			routine.add_body_line ("create item.make")
 			routine.add_body_line ("create buffers.make (1,"+module.results.count.out+")")
-			
+
 			from
 				count := module.results.count
 				c := module.results.new_cursor
@@ -505,7 +501,7 @@ feature {NONE} -- Basic operations
 			end
 			routine.add_body_line ("set_results (buffers)")
 			feature_group.add_feature (routine)
-			cursor_class.add_feature_group (feature_group) 
+			cursor_class.add_feature_group (feature_group)
 		end
 
 feature {NONE} -- Implementation
@@ -539,7 +535,7 @@ feature {NONE} -- Implementation
 			new_parameter, local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
 			l_name, parameter_setting_line : STRING
 		do
-			--| routine name: read_<access> 
+			--| routine name: read_<access>
 			create l_name.make_from_string (module.name)
 			l_name.to_lower
 			--| eiffel routine
@@ -550,7 +546,7 @@ feature {NONE} -- Implementation
 			eiffel_routine.add_precondition (routine_precondition)
 			group.add_feature (eiffel_routine)
 		end
-		
+
 	put_helper_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
 			-- put helper access routine for `module' into `group';
 			-- the routine is named 'do_<module.name>'
@@ -563,7 +559,7 @@ feature {NONE} -- Implementation
 			new_parameter, local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
 			l_name, parameter_setting_line : STRING
 		do
-			--| routine name: do_<access> 
+			--| routine name: do_<access>
 			create l_name.make_from_string ("do_")
 			l_name.append_string (module.name)
 			l_name.to_lower
@@ -573,18 +569,18 @@ feature {NONE} -- Implementation
 			--| routine signature : (cursor : module_name; [eiffel_signature (<parameter_set>)]) is
 			create local_cursor.make ("cursor", as_upper (module.name))
 			eiffel_routine.add_param (local_cursor)
-	
+
 			put_signature_to_routine (module.parameters, eiffel_routine)
-			
+
 			--| precondition
 			create routine_precondition.make ("cursor_not_void", "cursor /= Void")
 			eiffel_routine.add_precondition (routine_precondition)
 			create routine_precondition.make ("last_cursor_empty", "last_cursor /= Void and then last_cursor.is_empty")
 			eiffel_routine.add_precondition (routine_precondition)
-		
+
 			--| locals
 			if module.parameters.count > 0 then
-					
+
 				--	local
 				--		parameters : <access_parameters>
 				create local_parameters.make ("parameters",  as_upper (module.parameters.type))
@@ -595,10 +591,10 @@ feature {NONE} -- Implementation
 			if module.parameters.count > 0 then
 				--		create parameters.make
 				eiffel_routine.add_body_line ("create parameters.make")
-				from 
+				from
 					p_cursor := module.parameters.new_cursor
 					p_cursor.start
-				until 
+				until
 					p_cursor.off
 				loop
 					create parameter_setting_line.make_from_string ("parameters.")
@@ -632,7 +628,7 @@ feature {NONE} -- Implementation
 			eiffel_routine.add_body_line ("end")
 			group.add_feature (eiffel_routine)
 		end
-		
+
 	put_access_create_object (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP; access_create_object_routine_names : DS_HASH_TABLE[BOOLEAN,STRING]) is
 			-- put `create_object_from_<module.results>' into `group'
 		require
@@ -649,7 +645,7 @@ feature {NONE} -- Implementation
 			--	end
 			create routine_name.make_from_string ("extend_cursor_from_")
 			routine_name.append_string (as_lower (module.results.final_set.name))
-			
+
 			if not access_create_object_routine_names.has (routine_name) then
 				create eiffel_routine.make (routine_name)
 				create routine_parameter.make ("row", as_upper (module.results.final_set.name))
@@ -664,25 +660,25 @@ feature {NONE} -- Implementation
 				access_create_object_routine_names.force (True, routine_name)
 			end
 		end
-		
+
 	put_signature_to_routine (set : COLUMN_SET[ACCESS_MODULE_METADATA]; eiffel_routine : EIFFEL_ROUTINE) is
 			-- put signature representing `set' to `eiffel_routine'.
 		local
 			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
 			new_parameter : DS_PAIR[STRING,STRING]
 		do
-			from 
+			from
 				p_cursor := set.new_cursor
 				p_cursor.start
-			until 
+			until
 				p_cursor.off
 			loop
 				create new_parameter.make (p_cursor.item.eiffel_name, p_cursor.item.value_type)
-				eiffel_routine.add_param (new_parameter) 
+				eiffel_routine.add_param (new_parameter)
 				p_cursor.forth
 			end
 		end
-	
+
 invariant
 	invariant_clause: -- Your invariant here
 

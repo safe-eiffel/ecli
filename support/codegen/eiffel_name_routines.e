@@ -6,29 +6,29 @@ indexing
 
 class
 	EIFFEL_NAME_ROUTINES
-	
+
 inherit
 	KL_IMPORTED_CHARACTER_ROUTINES
 	KL_IMPORTED_STRING_ROUTINES
-	
+
 feature -- Access
 
 	reserved_words : ARRAY[STRING] is
 		once
 			Result := <<
-				"agent","alias","all","and","as","assign","attribute", 
-				"check","class","convert","create","Current", 
-				"debug","deferred","do", 
-				"else","elseif","end","ensure","expanded","export","external", 
-				"False","feature","from","frozen", 
-				"if","implies","inherit","indexing","inspect","invariant", 
-				"like","local","loop", 
-				"not","note","obsolete","old","once","only","or", 
-				"Precursor","redefine","reference","rename","require","rescue","Result","retry", 
-				"select","separate","then","True","TUPLE", 
-				"undefine","until", 
-				"variant","Void", 
-				"when", 
+				"agent","alias","all","and","as","assign","attribute",
+				"check","class","convert","create","Current",
+				"debug","deferred","do",
+				"else","elseif","end","ensure","expanded","export","external",
+				"False","feature","from","frozen",
+				"if","implies","inherit","indexing","inspect","invariant",
+				"like","local","loop",
+				"not","note","obsolete","old","once","only","or",
+				"Precursor","redefine","reference","rename","require","rescue","Result","retry",
+				"select","separate","then","True","TUPLE",
+				"undefine","until",
+				"variant","Void",
+				"when",
 				"xor"
 			>>
 			Result.compare_objects
@@ -36,7 +36,7 @@ feature -- Access
 
 feature -- Status report
 
-	is_reserved_word (a_word : STRING) : BOOLEAN is	
+	is_reserved_word (a_word : STRING) : BOOLEAN is
 			-- Case insensitive search of `a_word' into `reserved_words'.
 		require
 			a_word_not_void: a_word /= Void
@@ -52,7 +52,7 @@ feature -- Status report
 				i := i + 1
 			end
 		end
-		
+
 feature -- Conversion
 
 	camel_to_class_name (string : STRING) : STRING is
@@ -65,7 +65,7 @@ feature -- Conversion
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 	camel_to_feature_name (string : STRING) : STRING is
 			-- convert `string' from camel case to an eiffel feature name
 		require
@@ -79,7 +79,7 @@ feature -- Conversion
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 	camel_to_constant_name (string : STRING) : STRING is
 			-- convert `string' from camel case to an eiffel constant name
 		require
@@ -90,7 +90,7 @@ feature -- Conversion
 		ensure
 			result_not_void: Result /= Void
 		end
- 
+
  	put_manifest_string_constant (stream : KI_CHARACTER_OUTPUT_STREAM; string : STRING) is
  		require
  			stream_not_void: stream /= Void
@@ -118,7 +118,7 @@ feature -- Conversion
 			end
 			stream.put_character ('"')
  		end
- 		
+
 	manifest_string_constant (string : STRING) : STRING is
 			-- Convert `string' to a manifest string constant.
 		require
@@ -149,7 +149,52 @@ feature -- Conversion
 			result_not_void: Result /= Void
 			manifest_string: Result.item (1) = '"' and Result.item (Result.count)= '"'
 		end
-			
+
+	verbatim_string (string : STRING; left_adjusted : BOOLEAN; discriminant : STRING) : STRING is
+			-- Convert `string' to a verbatim string, possibly `left_adjusted', with `discriminant' in the opener/closer.
+		require
+			string_not_void: string /= Void
+			discriminant_not_void: discriminant /= Void
+		local
+			opener, closer : CHARACTER
+		do
+			create Result.make (string.count + 2 * discriminant.count + 8)
+			if left_adjusted then
+				opener := verbatim_left_adjusted_opener
+				closer := verbatim_left_adjusted_closer
+			else
+				opener := verbatim_opener
+				closer := verbatim_closer
+			end
+			Result.append_character ('"')
+			Result.append_string (discriminant)
+			Result.append_character (opener)
+			if string.has ('%N') then
+				if string.item(1) /= '%N' then
+					Result.append_character ('%N')
+				end
+				Result.append_string (string)
+				if string.item(string.count) /= '%N' then
+					Result.append_character ('%N')
+				end
+			else
+				Result.append_string (string)
+			end
+			Result.append_character (closer)
+			Result.append_string (discriminant)
+			Result.append_character ('"')
+		ensure
+			verbatim_string_not_void: Result /= Void
+			verbatim_string_has_string: Result.has_substring (string)
+		end
+
+feature -- Constants
+
+	verbatim_left_adjusted_opener : CHARACTER is '['
+	verbatim_opener : CHARACTER is '{'
+	verbatim_left_adjusted_closer : CHARACTER is ']'
+	verbatim_closer : CHARACTER is '}'
+
 feature {NONE} -- Implementation
 
 	camel_to_eiffel_words (string : STRING)  : STRING is
@@ -194,7 +239,7 @@ feature {NONE} -- Implementation
 						end
 					else
 						Result.append_character (c)
-					end	
+					end
 					last_upper := False
 				else
 					Result.append_character (c)
