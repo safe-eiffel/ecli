@@ -2,7 +2,7 @@ indexing
 	description	: "Access Modules generators"
 
 	library: "Access_gen : Access Modules Generators utilities"
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -22,9 +22,9 @@ inherit
 	SHARED_COLUMNS_REPOSITORY
 	SHARED_MAXIMUM_LENGTH
 	SHARED_USE_DECIMAL
-	
+
 	ACCESS_MODULE_XML_CONSTANTS
-	
+
 creation
 
 	make
@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 		do
 			Arguments.set_program_name ("query_assistant")
 			create error_handler.make_standard
-			print_prologue 
+			print_prologue
 			process_arguments
 			if not has_error then
 				if default_catalog /= Void then
@@ -82,38 +82,38 @@ feature -- Access (Command line arguments)
 
 	dsn : STRING
 			-- data source name
-	
+
 	user : STRING
 			-- user name
-	
+
 	password : STRING
 			-- password
 
 	class_filter : STRING
 			-- class name to generate
-			
+
 	default_catalog : STRING
 			-- default catalog for metadata queries
-	
+
 	default_schema : STRING
 			-- default schema for metadata queries
-	
+
 	maximum_length_string : STRING
 			-- maximum length for long data without length limit
 
 	default_parent_cursor : STRING
 			-- default parent class name for cursors.
-	
+
 	default_parent_modify : STRING
 			-- default parent class name for modifiers.
-			
+
 feature -- Status report
 
 	is_verbose : BOOLEAN
-	
+
 	no_prototypes : BOOLEAN
 		-- Does Current not generate function prototypes in class skeletons?
-		
+
 feature -- Constants
 
 	reasonable_maximum_length : INTEGER is 1_000_000
@@ -122,21 +122,21 @@ feature -- Access (generation)
 
 	error_handler: QA_ERROR_HANDLER
 			-- Error handler
-	
+
 	modules : DS_HASH_TABLE [ACCESS_MODULE, STRING]
 
 	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
 
 	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
-	
+
 	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
 
 	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
 
 	all_parents_set : DS_HASH_TABLE[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
-	
+
 	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
-	
+
 feature -- Status report
 
 	has_error: BOOLEAN
@@ -194,10 +194,10 @@ feature -- Basic operations
 				a_cursor.off
 			loop
 				element ?= a_cursor.item
-				if element /= Void then 
+				if element /= Void then
 					if element.name.string.is_equal (t_access) then
 						l_factory.create_access_module (element)
-						l_module := l_factory.last_module 
+						l_module := l_factory.last_module
 						if not l_factory.is_error and then l_module /= Void then
 							modules.search (l_module.name)
 							if modules.found then
@@ -219,8 +219,8 @@ feature -- Basic operations
 									end
 								end
 								if parameters_ok and results_ok then
-									modules.force (l_module, l_module.name) 
-									parameter_sets.force (l_module.parameters, l_module.parameters.name) 
+									modules.force (l_module, l_module.name)
+									parameter_sets.force (l_module.parameters, l_module.parameters.name)
 									if l_module.results /= Void then
 										l_result_sets.force (l_module.results, l_module.results.name)
 									end
@@ -242,7 +242,7 @@ feature -- Basic operations
 			result_sets_not_void: result_sets /= Void
 			result_sets_empty: result_sets.is_empty
 		end
-	
+
 	parse_xml_input_file is
 			-- Do the real work of parsing the XML
 		require
@@ -282,17 +282,17 @@ feature -- Basic operations
 			parser_not_void: not has_error implies event_parser /= Void
 			pipe_not_void: not has_error implies tree_pipe /= Void
 		end
-		
+
 	parse_arguments is
 			-- Parse command line arguments.
 		local
 			key : STRING
 			arg_index : INTEGER
 			value : STRING
-		do		
-			from 
+		do
+			from
 				arg_index := 1
-			until 
+			until
 				arg_index > Arguments.argument_count
 			loop
 				key := Arguments.argument (arg_index)
@@ -302,13 +302,13 @@ feature -- Basic operations
 					value := Void
 				end
 				if key.is_equal ("-input") then
-					in_filename := value						
+					in_filename := value
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-expat") then
 					if fact.is_expat_parser_available then
 						event_parser := fact.new_expat_parser
 					else
-						error_handler.report_xml_parser_unavailable ("EXPAT") 
+						error_handler.report_xml_parser_unavailable ("EXPAT")
 						has_error := True
 					end
 					arg_index := arg_index + 1
@@ -363,17 +363,21 @@ feature -- Basic operations
 				end
 			end
 		end
-	
+
 	verify_arguments is
 			-- Verify parsed arguments.
 		local
 			error_message : STRING
-		do		
+		do
 			-- Create standard pipe holder and bind it to event parser.
 			create error_message.make (0)
 			if not has_error then
+				if event_parser = Void then
+					create {XM_EIFFEL_PARSER} event_parser.make
+					error_handler.report_default_argument ("-eiffel|-expat", "Eiffel XML parser")
+				end
 				if event_parser /= Void then
-					!! tree_pipe.make
+					create tree_pipe.make
 					event_parser.set_callbacks (tree_pipe.start)
 				else
 					has_error := True
@@ -405,7 +409,7 @@ feature -- Basic operations
 			elseif not File_system.directory_exists (out_directory) then
 				has_error := True
 				error_handler.report_invalid_argument ("-output", "directory '"+out_directory+"' does not exist")
-			
+
 			end
 			if dsn /= Void and then user /= Void and then password /= Void then
 				create session.make (dsn, user,password)
@@ -449,7 +453,7 @@ feature {NONE} -- Implementation
 --			resolve_parent_result_sets
 			resolve_all_sets
 		end
-		
+
 	resolve_parent_parameter_sets is
 			-- resolve parent classes for parameter sets
 		local
@@ -459,7 +463,7 @@ feature {NONE} -- Implementation
 			parent_parameter_sets := resolver.resolve_parents (parameter_sets, error_handler)
 			resolver.resolve_descendants (parameter_sets)
 		end
-		
+
 	resolve_parent_result_sets is
 			-- resolve parent classes for parameter sets
 		local
@@ -471,7 +475,7 @@ feature {NONE} -- Implementation
 		end
 
 	resolve_all_sets is
-			-- 
+			--
 		local
 			resolver : REFERENCE_RESOLVER[ACCESS_MODULE_METADATA]
 			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
@@ -499,8 +503,8 @@ feature {NONE} -- Implementation
 			all_parents_set := resolver.resolve_parents (all_sets, error_handler)
 			resolver.resolve_descendants (all_sets)
 		end
-		
-		
+
+
 	check_modules is
 			-- check modules
 		local
@@ -583,7 +587,7 @@ feature {NONE} -- Implementation
 			--| FIXME : report if class generation has produced an error
 			error_handler.report_end ("Class generation", True)
 		end
-		
+
 	generate (module : ACCESS_MODULE;a_error_handler : QA_ERROR_HANDLER) is
 			-- generate classes for `module', query + parameter_set + result_set classes
 		require
@@ -620,7 +624,7 @@ feature {NONE} -- Implementation
 
 	session : ECLI_SESSION
 	repository : COLUMNS_REPOSITORY
-	
+
 invariant
 
 	error_handler_not_void: error_handler /= Void

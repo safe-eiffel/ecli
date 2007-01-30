@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Error handlers."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -21,9 +21,9 @@ inherit
 
 create
 	make_standard, make_null
-	
+
 feature -- Status report
-	
+
 feature -- Status setting
 
 	disable_verbose is
@@ -32,7 +32,7 @@ feature -- Status setting
 		ensure
 			not_verbose: not is_verbose
 		end
-		
+
 feature -- Arguments
 
 	report_missing_argument (argument_name, explanation: STRING) is
@@ -59,6 +59,18 @@ feature -- Arguments
 			report_error (error)
 		end
 
+	report_default_argument (argument_name, value: STRING) is
+			-- Report usage of default argument `value' for `argument_name'.
+		require
+			argument_name_not_void: argument_name /= void
+			explanation_not_void: value /= void
+		local
+			error : QA_ARGUMENTS_ERROR
+		do
+			create error.make_default (argument_name, value)
+			report_warning (error)
+		end
+
 feature -- File
 
 	report_cannot_read_file (file_name : STRING) is
@@ -72,7 +84,7 @@ feature -- File
 			report_error (error)
 		end
 
-	report_cannot_write_file (file_name : STRING) is		
+	report_cannot_write_file (file_name : STRING) is
 			-- Report file `file_name' cannot' be written.
 		require
 			file_name_not_void: file_name /= Void
@@ -82,7 +94,7 @@ feature -- File
 			create error.make_cannot_write (file_name)
 			report_error (error)
 		end
-		
+
 feature -- Database
 
 	report_database_connection_failed (data_source_name: STRING) is
@@ -215,7 +227,7 @@ feature -- Internal
 			error : QA_INTERNAL_ERROR
 		do
 			create error.make_could_not_create_parameter (module, name, diagnostic)
-			report_error (error) 
+			report_error (error)
 		end
 
 	report_xml_parser_unavailable (name: STRING) is
@@ -239,7 +251,7 @@ feature -- Internal
 			error : QA_INTERNAL_ERROR
 		do
 			create error.make_column_length_too_large (module, column, length, parameter)
-			report_error (error) 
+			report_error (error)
 		end
 
 	report_column_length_truncated (module, column: STRING; length: INTEGER; parameter: BOOLEAN) is
@@ -252,9 +264,9 @@ feature -- Internal
 			error : QA_INTERNAL_ERROR
 		do
 			create error.make_column_length_truncated (module, column, length, parameter)
-			report_error (error) 
+			report_error (error)
 		end
-		
+
 feature -- Syntax
 
 	report_duplicate_element (module, element, parent: STRING) is
@@ -267,7 +279,7 @@ feature -- Syntax
 			error : QA_SYNTAX_ERROR
 		do
 			create error.make_duplicate_element (module, element, parent)
-			report_error (error) 
+			report_error (error)
 		end
 
 report_exclusive_element (module, element_a, element_b, parent: STRING) is
@@ -281,7 +293,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			error : QA_SYNTAX_ERROR
 		do
 			create error.make_exclusive_element (module, element_a, element_b, parent)
-			report_error (error) 
+			report_error (error)
 		end
 
 	report_missing_element (module, element, parent: STRING) is
@@ -293,7 +305,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			error : QA_SYNTAX_ERROR
 		do
 			create error.make_missing_element (module, element, parent)
-			report_error (error) 
+			report_error (error)
 		end
 
 	report_missing_attribute (module, attribute, element: STRING) is
@@ -306,7 +318,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			error : QA_SYNTAX_ERROR
 		do
 			create error.make_missing_attribute (module, attribute, element)
-			report_error (error) 
+			report_error (error)
 		end
 
 	report_parse_error (diagnostic: STRING) is
@@ -317,9 +329,9 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			error : QA_SYNTAX_ERROR
 		do
 			create error.make_parse_error (diagnostic)
-			report_error (error) 
+			report_error (error)
 		end
-		
+
 feature -- Usage
 
 	report_usage (has_expat: BOOLEAN) is
@@ -355,7 +367,7 @@ feature -- Validity
 			create error.make_rejected (module_name)
 			report_error (error)
 		end
-		
+
 	report_invalid_reference_column (module, name, table, column: STRING) is
 			-- Report  `name' in `module' has an invalid reference column as `table'.`column'.
 		local
@@ -389,7 +401,7 @@ feature -- Validity
 			create error.make_parameter_already_defined (module, name, attribute_name)
 			report_error (error)
 		end
-		
+
 	report_parameter_unknown (module, name : STRING) is
 			-- Report parameter `name' in `module' is unknown but defined.
 		require
@@ -401,8 +413,8 @@ feature -- Validity
 			create error.make_parameter_unknown (module, name)
 			report_error (error)
 		end
-		
-	
+
+
 	report_parameter_count_mismatch (module: STRING) is
 			-- Report  parameter count mismatch in `module'.
 		require
@@ -424,5 +436,5 @@ feature -- Validity
 			create error.make_parent_class_empty (parent)
 			report_error (error)
 		end
-		
+
 end -- class QA_ERROR_HANDLER
