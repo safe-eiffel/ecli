@@ -33,11 +33,9 @@ feature {NONE} -- Initialization
 
 	make is
 			-- generate access modules
-		local
-			t : ECLI_TYPE_CATALOG
 		do
 			Arguments.set_program_name ("query_assistant")
-			create error_handler.make_standard
+			create_error_handler
 			print_prologue
 			process_arguments
 			if not has_error then
@@ -160,10 +158,15 @@ feature -- Parser
 
 feature -- Basic operations
 
+	create_error_handler is
+		do
+			create error_handler.make_standard
+		end
+
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.0rc7")
+			error_handler.report_banner ("v1.1")
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2006")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
@@ -412,7 +415,8 @@ feature -- Basic operations
 
 			end
 			if dsn /= Void and then user /= Void and then password /= Void then
-				create session.make (dsn, user,password)
+				create session.make_default
+					session.set_login_strategy (create {ECLI_SIMPLE_LOGIN}.make(dsn, user, password))
 					session.connect
 					if session.is_connected then
 						create repository.make (session)
@@ -549,8 +553,6 @@ feature {NONE} -- Implementation
 			-- generate modules
 		local
 			c : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
-			p : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
-			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[MODULE_RESULT], STRING]
 			s : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
 		do
 			error_handler.report_start ("Class generation")
