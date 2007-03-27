@@ -196,7 +196,7 @@ feature -- Element change
 				actual_length := value.count + 1
 				transfer_length := actual_length - 1
 			end
-			ext_item.from_string (value)
+			ext_item.from_substring (value, 1 , transfer_length)
 			ecli_c_value_set_length_indicator (buffer, transfer_length)
 		end
 
