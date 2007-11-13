@@ -21,16 +21,16 @@ feature -- Access
 			Result := padded ("<any sql statement>", command_width)
 			Result.append_string ("Execute any SQL statement or procedure call.")
 		end
-		
+
 feature -- Status report
 
 	needs_session : BOOLEAN is True
-	
+
 	matches (text : STRING) : BOOLEAN  is
 		do
 			Result := True
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -55,39 +55,39 @@ feature -- Basic operations
 					end
 				end
 				cursor.start
-				if cursor.is_executed then 
+				if cursor.is_executed then
 					if cursor.has_result_set then
-						from 
+						from
 							if cursor.has_information_message then
 								print_error (cursor, context)
 							end
-						until 
+						until
 							not cursor.is_ok or else cursor.off
 						loop
 							if not after_first then
 								show_column_names (cursor, context)
 								after_first := True
-							end	
+							end
 							show_one_row (cursor, context)
 							cursor.forth
 						end
 						if not cursor.is_ok then
 							print_error (cursor, context)
-						end				
+						end
 					end
 				else
-					print_error (cursor, context)                                          
+					print_error (cursor, context)
 				end
 			else
 				print_error (cursor, context)
 			end
 			cursor.close
 		end
-		
+
 feature {NONE} -- Implementation
-	
+
 	current_context : ISQL_CONTEXT
-	
+
 	set_parameters (stmt : ECLI_STATEMENT; context : ISQL_CONTEXT) is
 		require
 			stmt_not_void: stmt /= Void
@@ -110,17 +110,17 @@ feature {NONE} -- Implementation
 					stmt.put_parameter (value, cursor.item)
 				end
 				cursor.forth
-			end					
+			end
 		end
 
 
 	print_error (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT) is
 		do
 			context.filter.begin_error
-			context.filter.put_error (sql_error (cursor)) 
-			context.filter.end_error			
+			context.filter.put_error (sql_error (cursor))
+			context.filter.end_error
 		end
-		
+
 	show_column_names (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT) is
 		local
 			i : INTEGER
@@ -131,10 +131,21 @@ feature {NONE} -- Implementation
 			until
 				i > cursor.upper
 			loop
-				context.filter.put_heading (cursor.column_name (i))
+				context.filter.put_heading (column_name (cursor, i))
 				i := i + 1
 			end
 			context.filter.end_heading
+		end
+
+	column_name (cursor : ECLI_ROW_CURSOR; i : INTEGER) : STRING is
+		local
+			l_capacity : INTEGER
+			l_statement : ECLI_STATEMENT
+		do
+			l_statement ?= cursor
+			l_capacity := l_statement.results_description.item (i).size.min (50)
+			create Result.make (l_capacity)
+			Result.append_string (cursor.column_name (i))
 		end
 
 

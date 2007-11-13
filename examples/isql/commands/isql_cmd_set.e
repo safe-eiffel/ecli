@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "set"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is False
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -44,7 +44,7 @@ feature {ISQL} -- Inapplicable
 			-- assigns <var-name>=<value>
 		local
 			setting : STRING
-			assign_index : INTEGER		
+			assign_index : INTEGER
 			var_name, var_value : STRING
 			string_routines : ECLI_STRING_ROUTINES
 			msg : STRING
@@ -71,7 +71,7 @@ feature {ISQL} -- Inapplicable
 					msg.append_string ("Not a variable assignment ")
 					msg.append_string (setting)
 					set_error (msg)
-			end			
+			end
 		end
 
 
@@ -81,6 +81,7 @@ feature {NONE} -- Implementation
 			-- handle a 'set <var-name>=<value>'
 		local
 			cursor : DS_HASH_TABLE_CURSOR[STRING,STRING]
+			l_message : STRING
 		do
 			if s.count > Match_string.count then
 				--do assign
@@ -88,7 +89,7 @@ feature {NONE} -- Implementation
 				if error_message /= Void then
 					io.put_string (error_message)
 					io.put_string ("%N")
-				end				
+				end
 			else
 				-- show variable names
 				from
@@ -97,13 +98,16 @@ feature {NONE} -- Implementation
 				until
 					cursor.off
 				loop
-					context.output_file.put_string (cursor.key)
-					context.output_file.put_string ("=%"")
-					context.output_file.put_string (escaped_value (cursor.item))
-					context.output_file.put_string ("%"")
-					context.output_file.put_new_line
+					create l_message.make (30)
+					l_message.append_string (cursor.key)
+					l_message.append_string ("=%"")
+					l_message.append_string (escaped_value (cursor.item))
+					l_message.append_string ("%"")
+					context.filter.begin_message
+					context.filter.put_message (l_message)
+					context.filter.end_message
 					cursor.forth
-				end					
+				end
 			end
 		end
 
@@ -119,7 +123,7 @@ feature {NONE} -- Implementation
 			end
 			context.variables.force (substituted_escapes (l_value), name)
 		end
-	
+
 	substituted_escapes (s : STRING) : STRING is
 			-- substitute 'C' escape sequences : \n, \r, \0, \t, \\
 		local
@@ -162,7 +166,7 @@ feature {NONE} -- Implementation
 					end
 				else
 					Result.append_character (c)
-					index := index + 1				
+					index := index + 1
 				end
 			end
 		end

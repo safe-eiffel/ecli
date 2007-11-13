@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "re"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is False
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -44,7 +44,9 @@ feature -- Basic operations
 			if not worder.end_of_input then
 				if worder.last_string.is_integer then
 					history_index := worder.last_string.to_integer
-					context.output_file.put_string (context.history.item (history_index))
+					context.filter.begin_message
+					context.filter.put_message (context.history.item (history_index))
+					context.filter.end_message
 					context.command_stream.set_buffer_text (context.history.item (history_index))
 				else
 					context.filter.begin_error
@@ -54,7 +56,7 @@ feature -- Basic operations
 			else
 				context.filter.begin_error
 				context.filter.put_error ("RECALL : expecting a number")
-				context.filter.end_error			
+				context.filter.end_error
 			end
 		end
 

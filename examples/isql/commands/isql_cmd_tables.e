@@ -9,7 +9,7 @@ class
 
 inherit
 	ISQL_COMMAND
-	
+
 feature -- Access
 
 	help_message : STRING is
@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "tab"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is True
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -40,17 +40,10 @@ feature -- Basic operations
 			query : ECLI_NAMED_METADATA
 		do
 			from index := 1
-				context.filter.begin_heading
-				context.filter.put_heading ("CATALOG")
-				context.filter.put_heading ("SCHEMA")
-				context.filter.put_heading ("TABLE_NAME")
-				context.filter.put_heading ("TYPE")
-				context.filter.put_heading ("DESCRIPTION")
-				context.filter.end_heading
-				
 				create query.make (Void, Void, Void)
-				!!tables_cursor.make (query, context.session)
+				create tables_cursor.make (query, context.session)
 				tables_cursor.start
+				put_headings (tables_cursor, context)
 			until
 				not tables_cursor.is_ok or else tables_cursor.off
 			loop
@@ -71,5 +64,35 @@ feature -- Basic operations
 			end
 			tables_cursor.close
 		end
-		
+
+	put_headings (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT) is
+		local
+			l_catalog : STRING
+			l_schema : STRING
+			l_name : STRING
+			l_type : STRING
+			l_description : STRING
+		do
+			cursor.describe_results
+			create l_catalog.make (cursor.results_description.item(1).size.min(c_maximum_initial_column_capacity))
+			l_catalog.append_string ("CATALOG")
+			create l_schema.make (cursor.results_description.item(2).size.min(c_maximum_initial_column_capacity))
+			l_schema.append_string ("SCHEMA")
+			create l_name.make (cursor.results_description.item(3).size.min(c_maximum_initial_column_capacity))
+			l_name.append_string ("TABLE_NAME" )
+			create l_type.make (cursor.results_description.item(4).size.min(c_maximum_initial_column_capacity))
+			l_type.append_string ("TYPE")
+			create l_description.make (cursor.results_description.item(5).size.min(c_maximum_initial_column_capacity))
+			l_description.append_string ("DESCRIPTION" )
+			context.filter.begin_heading
+			context.filter.put_heading (l_catalog)
+			context.filter.put_heading (l_schema)
+			context.filter.put_heading (l_name)
+			context.filter.put_heading (l_type)
+			context.filter.put_heading (l_description)
+			context.filter.end_heading
+		end
+
+	c_maximum_initial_column_capacity : INTEGER is 25
+
 end -- class ISQL_CMD_TABLES

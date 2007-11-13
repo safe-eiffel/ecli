@@ -11,11 +11,11 @@ inherit
 	ISQL_COMMAND
 
 	KL_EXECUTION_ENVIRONMENT
-	
+
 	KL_SHARED_OPERATING_SYSTEM
-	
+
 	KL_SHARED_FILE_SYSTEM
-	
+
 feature -- Access
 
 	help_message : STRING is
@@ -25,16 +25,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "edit"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is False
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -60,8 +60,10 @@ feature -- Basic operations
 				create shell_command.make (editor_program + " clibuffer.sql")
 				shell_command.execute
 				--| let the system execute the command
-				context.output_file.put_string ("Commands have been saved in file 'clibuffer.sql'%NType 'EXECUTE clibuffer.sql' to execute them.%N")
+				context.filter.begin_message
+				context.filter.put_message ("Commands have been saved in file 'clibuffer.sql'%NType 'EXECUTE clibuffer.sql' to execute them.")
+				context.filter.end_message
 			end
 		end
-		
+
 end -- class ISQL_CMD_EDIT

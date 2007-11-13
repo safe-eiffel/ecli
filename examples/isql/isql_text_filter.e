@@ -12,12 +12,13 @@ inherit
 		redefine
 			begin_heading, end_heading, put_heading,
 			begin_row, end_row, put_column,
-			begin_error, put_error, end_error
+			begin_error, put_error, end_error,
+			end_message
 		end
-	
+
 creation
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_context : ISQL_CONTEXT) is
@@ -28,9 +29,9 @@ feature {NONE} -- Initialization
 		ensure
 			context_set: context = a_context
 		end
-		
+
 feature -- Access
-	
+
 	context : ISQL_CONTEXT
 
 	heading_begin : STRING is do Result := "" end
@@ -42,48 +43,48 @@ feature -- Access
 	error_begin : STRING is do Result := "" end
 	error_separator : STRING is do Result := "; " end
 	error_end : STRING is do Result := "%N" end
-	
+
 feature -- Basic operations
 
-	begin_heading is 
-		do 
+	begin_heading is
+		do
 			if not context.is_variable_true (context.var_no_heading) then
 				output_file.put_string (heading_begin)
 			end
 			Precursor
 		end
-	
-	end_heading is 
-		do 
+
+	end_heading is
+		do
 			if not context.is_variable_true (context.var_no_heading) then
 				output_file.put_string (heading_end)
 			end
 			Precursor
 		end
-	
-	put_heading (s : STRING) is 
-		do 
+
+	put_heading (s : STRING) is
+		do
 			if not context.is_variable_true (context.var_no_heading) then
 				if heading_count > 0 then
 					output_file.put_string (heading_separator)
-				end 
+				end
 				output_file.put_string (s)
 			end
 			Precursor (s)
 		end
-		
-	begin_row is 
-		do 
+
+	begin_row is
+		do
 			output_file.put_string (row_begin)
 			Precursor
 		end
-	
-	end_row is 
-		do 
+
+	end_row is
+		do
 			output_file.put_string (row_end)
 			Precursor
 		end
-	
+
 	put_column (s : STRING) is
 		do
 			if column_count > 0 then
@@ -92,19 +93,25 @@ feature -- Basic operations
 			output_file.put_string (s)
 			Precursor (s)
 		end
-		
-	begin_error is 
-		do 
+
+	begin_error is
+		do
 			output_file.put_string (error_begin)
 			Precursor
 		end
-	
+
 	end_error is
-		do 
+		do
 			output_file.put_string (error_end)
 			Precursor
 		end
-	
+
+	end_message is
+		do
+			output_file.put_string ("%N")
+			Precursor
+		end
+
 	put_error (s : STRING) is
 		do
 			if error_count > 0 then
@@ -112,6 +119,11 @@ feature -- Basic operations
 			end
 			output_file.put_string (s)
 			Precursor (s)
+		end
+
+	put_message (s : STRING) is
+		do
+			output_file.put_string (s)
 		end
 
 feature {NONE} -- Implementation
@@ -124,11 +136,11 @@ feature {NONE} -- Implementation
 			if context.has_variable (var_name) then
 				Result := context.variable (var_name)
 			else
-				Result := "" 
-			end			
+				Result := ""
+			end
 		end
-		
+
 invariant
 	context_not_void: context /= Void
-	
+
 end -- class ISQL_TEXT_FILTER

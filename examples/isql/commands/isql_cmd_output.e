@@ -11,7 +11,7 @@ inherit
 	ISQL_COMMAND
 
 	KL_STANDARD_FILES
-	
+
 feature -- Access
 
 	help_message : STRING is
@@ -21,16 +21,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "out"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is False
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -55,17 +55,11 @@ feature -- Basic operations
 					end
 					create string_routines
 					if string_routines.as_lower (name).is_equal ("stdout") then
-						if not context.output_file.name.is_equal ("stdout") then
-							context.output_file.close
-							context.set_output_file (Output)
-						end
+						context.set_output_file (Output)
 					else
 						create file.make (name)
 						file.open_write
 						if file.is_open_write then
-							if not context.output_file.name.is_equal ("stdout") then
-								context.output_file.close
-							end
 							context.set_output_file (file)
 						else
 							create msg.make (0)
