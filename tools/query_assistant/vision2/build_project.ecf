@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><system xmlns="http://www.eiffel.com/developers/xml/configuration-1-0-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-0-0 http://www.eiffel.com/developers/xml/configuration-1-0-0.xsd" name="qagui" uuid="A66DBAD2-999D-466A-A661-609DAA61EAB6">
+	<target name="vision2_project">
+		<description>This configuration file has been generated for you by EiffelBuild.</description>
+		<root cluster="root_cluster" class="VISION2_APPLICATION" feature="make_and_launch"/>
+		<option warning="true">
+			<assertions precondition="true" postcondition="true" check="true" invariant="false" loop="false"/>
+		</option>
+		<setting name="exception_trace" value="true"/>
+		<setting name="inlining_size" value="10"/>
+		<setting name="multithreaded" value="true"/>
+		<setting name="platform" value="windows"/>
+		<external_include location="$ECLI/src/spec/C"/>
+		<external_include location="$SAFE_KERNEL/external/spec/ise/windows"/>
+		<external_library location="$ECLI/src/spec/ise/windows/ecli_msc.lib"/>
+		<external_library location="$SAFE_KERNEL/external/src/spec/ise/windows/xs_c_msc.lib"/>
+		<external_library location="ODBC32.lib"/>
+		<external_library location="ODBCCP32.lib"/>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="gobo" location="$ISE_LIBRARY\library\gobo\gobo.ecf"/>
+		<library name="process" location="$ISE_LIBRARY\library\process\process.ecf"/>
+		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2.ecf"/>
+		<cluster name="ecli" location="$ECLI\src\" recursive="true">
+			<file_rule>
+				<exclude>/ve$</exclude>
+				<exclude>/se$</exclude>
+				<exclude>/C$</exclude>
+				<exclude>/linux$</exclude>
+				<exclude>/CVS$</exclude>
+			</file_rule>
+		</cluster>
+		<cluster name="ecli_support" location="$ECLI\support\" recursive="true"/>
+		<cluster name="qa" location="C:\User\eiffel\safe\safe\lib\ecli\tools\query_assistant\src\" recursive="true"/>
+		<cluster name="root_cluster" location="C:\User\eiffel\safe\safe\lib\ecli\tools\query_assistant\vision2\" recursive="true">
+			<file_rule>
+				<exclude>/EIFGENs$</exclude>
+				<exclude>/.svn$</exclude>
+				<exclude>/CVS$</exclude>
+			</file_rule>
+		</cluster>
+		<cluster name="safe_kernel" location="$SAFE_KERNEL\" recursive="true">
+			<file_rule>
+				<exclude>/ve$</exclude>
+				<exclude>/se$</exclude>
+				<exclude>/C$</exclude>
+				<exclude>/linux$</exclude>
+				<exclude>/CVS$</exclude>
+			</file_rule>
+		</cluster>
+	</target>
+	<target name="vision2_project_dotnet" extends="vision2_project">
+		<setting name="msil_generation" value="true"/>
+	</target>
+</system>
