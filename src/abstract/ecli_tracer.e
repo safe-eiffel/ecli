@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Objects that trace SQL execution on an output medium."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -11,10 +11,13 @@ indexing
 
 class ECLI_TRACER
 
+inherit
+	DT_SHARED_SYSTEM_CLOCK
+
 creation
 
 	make
-	
+
 feature -- Initialization
 
 	make (a_medium : like medium) is
@@ -27,20 +30,47 @@ feature -- Initialization
 		ensure
 			medium: medium = a_medium
 		end
-		
+
 feature -- Access
 
 	medium : KI_CHARACTER_OUTPUT_STREAM
 
+	execution_begin : DT_DATE_TIME
+
+	execution_end : DT_DATE_TIME
+
+feature -- Status report
+
+	is_tracing_time : BOOLEAN
+			-- Is time tracing enabled ?
+
+feature -- Status change
+
+	enable_time_tracing is
+			-- Enable time tracing
+		do
+			is_tracing_time := True
+		ensure
+			is_tracing_time: is_tracing_time
+		end
+
+	disable_time_tracing is
+			-- Disable time tracing
+		do
+			is_tracing_time := False
+		ensure
+			not_tracing_time: not is_tracing_time
+		end
+
 feature {ECLI_STATEMENT} -- Basic operations
-	
+
 	trace (a_sql : STRING; a_parameters : ARRAY[ECLI_VALUE]) is
 			-- Trace 'a_sql', substituting parameter markers by 'a_parameters'
 		local
 			index : INTEGER
 			c : CHARACTER
 		do
-			from 
+			from
 				index := 1
 				state := state_sql
 				parameter_count := 0
@@ -48,7 +78,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 				index > a_sql.count
 			loop
 				c := a_sql.item (index)
-				if state = state_sql then 
+				if state = state_sql then
 					if is_parameter_marker (c) then
 						next_state := state_parameter
 						parameter_count := parameter_count + 1
@@ -59,19 +89,19 @@ feature {ECLI_STATEMENT} -- Basic operations
 					else
 						next_state := state
 						medium.put_character (c)
-					end	
+					end
 				elseif state = state_parameter then
 					if is_separator (c) then
 						next_state := state_sql
 						medium.put_character (c)
 					end
 					-- do not output anything on medium : just eating up parameter name
-				elseif state = state_string_literal then 
+				elseif state = state_string_literal then
 					if is_quote (c) then
 						next_state := state_literal_out
 					end
 					medium.put_character (c)
-				elseif state = state_literal_out then 
+				elseif state = state_literal_out then
 					if is_quote (c) then
 						next_state := state_string_literal
 					else
@@ -81,11 +111,33 @@ feature {ECLI_STATEMENT} -- Basic operations
 				end
 				state := next_state
 				index := index + 1
-			end		
+			end
 			medium.put_string(";%N")
 			medium.flush
 		end
-		
+
+	begin_execution_timing is
+			-- begin query execution
+		do
+			execution_begin := system_clock.date_time_now
+		end
+
+	end_execution_timing is
+			-- end query execution
+		require
+			execution_begin_not_void: execution_begin /= Void
+		local
+			duration : DT_DATE_TIME_DURATION
+		do
+			execution_end := system_clock.date_time_now
+			duration := execution_end - execution_begin
+			medium.put_string ("-- ")
+			medium.put_string (duration.to_canonical (execution_begin).out)
+			medium.put_character ('%N')
+		ensure
+			execution_end_not_void: execution_end /= Void
+		end
+
 feature {ECLI_SESSION} -- Basic operations
 
 	trace_begin is
@@ -93,13 +145,13 @@ feature {ECLI_SESSION} -- Basic operations
 		do
 			medium.put_string ("BEGIN TRANSACTION;%N")
 		end
-		
+
 	trace_commit is
 			-- Trace COMMIT TRANSACTION
 		do
 			medium.put_string ("COMMIT TRANSACTION;%N")
 		end
-		
+
 	trace_rollback is
 			-- Trace ROLLBACK TRANSACTION
 		do
@@ -118,7 +170,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_decimal.out)
 			medium.put_character ('%'')
 		end
-		
+
 	put_string (a_value : ECLI_GENERIC_VALUE[STRING]) is
 			-- Put 'a_value' as a string constant
 		require
@@ -128,7 +180,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_value.out)
 			medium.put_character ('%'')
 		end
-		
+
 	put_date (a_date : ECLI_DATE) is
 			-- Put 'a_date' as a date constant
 		require
@@ -138,7 +190,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_date.out)
 			medium.put_string ("'}")
 		end
-		
+
 	put_timestamp (a_date_time : ECLI_TIMESTAMP) is
 			-- Put 'a_timestamp' as a timestamp constant
 		require
@@ -158,7 +210,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_time.out)
 			medium.put_string ("'}")
 		end
-		
+
 	put_double (a_double : ECLI_DOUBLE) is
 			-- Put 'a_double' as a double constant
 		require
@@ -166,7 +218,7 @@ feature {ECLI_VALUE} -- Basic operations
 		do
 			medium.put_string (a_double.out)
 		end
-		
+
 	put_real (a_real : ECLI_REAL) is
 			-- Put 'a_real' as a real constant
 		require
@@ -174,7 +226,7 @@ feature {ECLI_VALUE} -- Basic operations
 		do
 			medium.put_string (a_real.out)
 		end
-		
+
 	put_float (a_float : ECLI_FLOAT) is
 			-- Put 'a_float' as a float constant
 		require
@@ -182,7 +234,7 @@ feature {ECLI_VALUE} -- Basic operations
 		do
 			medium.put_string (a_float.out)
 		end
-		
+
 	put_integer (a_integer : ECLI_INTEGER) is
 			-- Put 'a_integer' as an integer constant
 		require
@@ -197,9 +249,9 @@ feature {ECLI_VALUE} -- Basic operations
 		do
 			medium.put_character ('%'')
 			medium.put_string (a_binary.out)
-			medium.put_character ('%'')			
+			medium.put_character ('%'')
 		end
-		
+
 	put_file (a_file : ECLI_FILE_VALUE) is
 			-- Put `a_file'
 		require
@@ -211,7 +263,7 @@ feature {ECLI_VALUE} -- Basic operations
 				medium.put_string (a_file.output_file.name)
 			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	put_parameter_value (a_value : ECLI_VALUE) is
@@ -227,29 +279,29 @@ feature {NONE} -- Implementation
 		end
 
 	parameter_count : INTEGER
-	
+
 	state_sql, state_parameter, state_string_literal, state_literal_out : INTEGER is unique
 
 	state, next_state : INTEGER
-	
+
 	is_quote (c : CHARACTER) : BOOLEAN is
 			-- Is `c' a quote ?
 		do
 			Result := (c = '%'')
 		end
-		
+
 	is_parameter_marker (c : CHARACTER) : BOOLEAN is
 			-- Is `c' a parameter marker ?
 		do
 			Result := (c = '?')
 		end
-		
+
 	is_separator (c : CHARACTER) : BOOLEAN is
 			-- Is `c' a separator ?
 		do
 			Result := (c = ' ') or else (c = ',') or else (c = ')') or else (c = '%T') or else (c = '%N')
-		end		
-		
+		end
+
 invariant
 
 	medium_inv: medium /= Void and then medium.is_open_write

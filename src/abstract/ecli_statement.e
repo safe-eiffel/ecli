@@ -26,7 +26,7 @@ inherit
 		end
 
 	ECLI_TRACEABLE
-	
+
 	PAT_SUBSCRIBER
 		rename
 			publisher as session,
@@ -41,9 +41,9 @@ inherit
 		export
 			{NONE} all
 		end
-	
+
 	ECLI_SQL_PARSER_CALLBACK
-	
+
 creation
 
 	make
@@ -121,12 +121,12 @@ feature {ECLI_SESSION} -- Basic Operations
 			not_closed: not is_closed
 		do
 			session := Void
-			release_handle			
+			release_handle
 		ensure
 			not_valid:  	not is_valid
-			no_session: 	session = Void			
+			no_session: 	session = Void
 		end
-		
+
 feature -- Access
 
 	info : ECLI_DBMS_INFORMATION is
@@ -136,7 +136,7 @@ feature -- Access
 		ensure
 			info_not_void: Result /= Void
 		end
-		
+
 	sql : STRING
 			-- Sql statement to be executed
 
@@ -196,7 +196,7 @@ feature -- Access
 	cursor : ARRAY[like value_anchor] is
 		obsolete "Use `results'"
 		do Result := results end
-		
+
 	results : ARRAY[like value_anchor]
 			-- Container of result values (i.e. buffers for transferring
 			-- data from program to database) content is meaningful only
@@ -216,11 +216,11 @@ feature -- Access
 		do
 			Result := results_description
 		end
-		
+
 	last_bound_parameter_index : INTEGER
-			-- Index of last *successfuly* bound parameter after `bind_parameters'. 
+			-- Index of last *successfuly* bound parameter after `bind_parameters'.
 			-- Zero if none has been bound.
-			
+
 feature -- Measurement
 
 	modified_row_count : INTEGER is
@@ -236,11 +236,11 @@ feature -- Measurement
 --			set_status (ecli_c_row_count (handle, impl_row_count.handle))
 			Result := impl_row_count.item
 		end
-		
+
 	parameter_count : INTEGER is
 		obsolete "Please use `parameters_count' instead (note `parameters' is plural)."
 		do Result := parameters_count end
-		
+
 	parameters_count : INTEGER is
 			-- Number of parameters in `sql'
 		require
@@ -250,10 +250,10 @@ feature -- Measurement
 			Result := parameters_count_impl
 		end
 
-	result_column_count : INTEGER is 
-		obsolete "Please use `result_columns_count' instead (note `columns' is plural)." 
+	result_column_count : INTEGER is
+		obsolete "Please use `result_columns_count' instead (note `columns' is plural)."
 		do Result := result_columns_count end
-	
+
 	result_columns_count : INTEGER is
 			-- Number of columns in result-set
 			-- 0 if no result set is available
@@ -269,7 +269,7 @@ feature -- Measurement
 
 	fetched_columns_count : INTEGER
 			-- Number of columns retrieved by latest `start' or `forth' operation
-		
+
 feature -- Status Report
 
 	is_describe_parameters_capable : BOOLEAN is
@@ -280,10 +280,10 @@ feature -- Status Report
 		do
 			Result := session.is_describe_parameters_capable
 		end
-		
+
 	has_results : BOOLEAN is
 			-- Has this statement a result-set ?
-		obsolete "Use `has_result_set'." 
+		obsolete "Use `has_result_set'."
 		require
 			valid_statement: is_valid
 			executed_or_prepared: is_prepared or else is_executed
@@ -293,7 +293,7 @@ feature -- Status Report
 
 	has_another_result_set : BOOLEAN
 			-- Has this statement another result-set ?
-			
+
 	has_result_set : BOOLEAN is
 			-- Has this statement a result-set ?
 		require
@@ -378,12 +378,12 @@ feature -- Status Report
 	can_trace : BOOLEAN is
 			-- Can Current trace itself ?
 		do
-			Result := (is_valid and is_parsed and 
+			Result := (is_valid and is_parsed and
 				 (is_prepared_execution_mode implies is_prepared) and
 				 (parameters_count > 0 implies bound_parameters))
 		ensure then
-			definition : Result implies 
-				(is_valid and is_parsed and 
+			definition : Result implies
+				(is_valid and is_parsed and
 				 (is_prepared_execution_mode implies is_prepared) and
 				 (parameters_count > 0 implies bound_parameters))
 		end
@@ -438,7 +438,7 @@ feature -- Cursor movement
 		do
 			fetch_next_row
 		ensure
-			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (results.count)			
+			fetched_columns: not off implies fetched_columns_count = result_columns_count.min (results.count)
 		end
 
 	finish, close_cursor is
@@ -458,7 +458,7 @@ feature -- Cursor movement
 			after: after
 			fetched_columns: fetched_columns_count = 0
 		end
-		
+
 	go_after is
 			-- Finish iterating on current result set.
 		require
@@ -471,7 +471,7 @@ feature -- Cursor movement
 				set_status (ecli_c_more_results (handle))
 				if is_ok and then not is_no_data then
 					has_another_result_set := True
-				else 
+				else
 					has_another_result_set := False
 					cursor_status := Cursor_closed
 				end
@@ -496,7 +496,7 @@ feature -- Cursor movement
 		ensure
 			before: before
 		end
-		
+
 feature -- Element change
 
 	set_sql (new_sql : STRING) is
@@ -548,7 +548,7 @@ feature -- Element change
 		end
 
 	put_parameter (value : like parameter_anchor; parameter_name : STRING) is
-			-- Put `value' as `parameter_name' 
+			-- Put `value' as `parameter_name'
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid
@@ -568,7 +568,7 @@ feature -- Element change
 		do
 			set_results (row)
 		end
-		
+
 	set_results (row : like results) is
 			-- Set `results' container with `row'
 		require
@@ -609,21 +609,29 @@ feature -- Basic operations
 			valid_statement: is_valid
 			query_is_parsed: is_parsed
 			prepared_when_mode_prepared: is_prepared_execution_mode implies is_prepared
-			parameters_set: parameters_count > 0 implies bound_parameters			
+			parameters_set: parameters_count > 0 implies bound_parameters
 		local
 			value_pointer : XS_C_INT32
 		do
 			reset_status
-			if session.is_tracing then
-				trace (session.tracer)
-			end
 			if is_executed and then has_result_set and then not after then
 				finish
+			end
+			if session.is_tracing then
+				if session.tracer.is_tracing_time then
+					session.tracer.begin_execution_timing
+				end
 			end
 			if is_prepared_execution_mode then
 				set_status (ecli_c_execute (handle) )
 			else
 				set_status (ecli_c_execute_direct (handle, impl_sql.handle))
+			end
+			if session.is_tracing then
+				trace (session.tracer)
+				if session.tracer.is_tracing_time then
+					session.tracer.end_execution_timing
+				end
 			end
 			if status = Sql_need_data then
 				create value_pointer.make
@@ -633,7 +641,7 @@ feature -- Basic operations
 					status /= Sql_need_data
 				loop
 					parameters.item (value_pointer.item).put_parameter (Current, value_pointer.item)
-					set_status (ecli_c_param_data (handle, value_pointer.handle))				
+					set_status (ecli_c_param_data (handle, value_pointer.handle))
 				end
 			end
 			if is_ok then
@@ -659,7 +667,7 @@ feature -- Basic operations
 		do
 			a_tracer.trace (impl_sql.as_string, parameters)
 		end
-		
+
 	describe_parameters is
 			-- Get metadata about parameters in `parameters_description'
 		require
@@ -696,12 +704,12 @@ feature -- Basic operations
 		do
 			describe_results
 		end
-		
+
 	describe_results is
 			-- Get metadata about current result-set in `results_description'
 		require
 			valid_statement: is_valid
-			executed_or_prepared: is_prepared or else is_executed 
+			executed_or_prepared: is_prepared or else is_executed
 			has_result_set: has_result_set
 		local
 			count, limit : INTEGER
@@ -752,7 +760,7 @@ feature -- Basic operations
 			end
 		ensure
 			bound_parameters: is_ok implies bound_parameters
-			parameter_index_less: not is_ok implies last_bound_parameter_index < parameters.upper  
+			parameter_index_less: not is_ok implies last_bound_parameter_index < parameters.upper
 			parameter_index_n: is_ok implies last_bound_parameter_index = parameters.upper
 		end
 
@@ -788,8 +796,8 @@ feature -- Inapplicable
 	parameter_anchor : ECLI_VALUE is
 		do
 		end
-	
-			
+
+
 	array_routines : KL_ARRAY_ROUTINES[ANY] is do Result := Any_array_ end
 
 feature {ECLI_SQL_PARSER} -- Callback
@@ -891,7 +899,7 @@ feature {NONE} -- Implementation
 
 	impl_row_count : XS_C_INT32
 		-- Buffer for storing number of rows affected
-		
+
 	impl_result_columns_count : XS_C_INT32
 		-- -1 : do not know; must call `get_result_column_count'
 		--  0 : no result-set
@@ -948,7 +956,7 @@ feature {NONE} -- Implementation
 		end
 
 	parser_impl : ECLI_SQL_PARSER
-	
+
 	parser : ECLI_SQL_PARSER is
 		do
 			if parser_impl = Void then
@@ -956,7 +964,7 @@ feature {NONE} -- Implementation
 			end
 			Result := parser_impl
 		end
-		
+
 		parameters_count_impl : INTEGER
 
 	create_parameters is
@@ -1025,7 +1033,7 @@ feature {NONE} -- Hooks for descendants
 		ensure
 			impl_row_count_not_void: impl_row_count /= Void
 		end
-		
+
 invariant
 	existing_session_implies_not_closed: session /= Void implies not is_closed
 	parameter_index_bounds: last_bound_parameter_index >= 0 and then (parameters /= Void implies last_bound_parameter_index <= parameters.upper)
