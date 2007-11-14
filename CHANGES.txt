@@ -1,3 +1,6 @@
+2007-11-10
+	* Time tracing facility in ECLI_TRACER that outputs the time needed for executing a query.
+
 2006-03-22
 	* renamed $ECLI/ecli.eant as build.eant + defined targets 'install' and 'compile_libs'.
 	
