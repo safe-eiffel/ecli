@@ -8,10 +8,10 @@ indexing
 	revision: "$Revision$"
 
 class
-	MODULE_RESULT
+	RDBMS_ACCESS_RESULT
 
 inherit
-	ACCESS_MODULE_METADATA
+	RDBMS_ACCESS_METADATA
 
 	HASHABLE
 		undefine

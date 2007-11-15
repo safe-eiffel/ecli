@@ -8,7 +8,7 @@ indexing
 	revision: "$Revision$"
 
 class
-	PARENT_COLUMN_SET [G->ACCESS_MODULE_METADATA]
+	PARENT_COLUMN_SET [G->RDBMS_ACCESS_METADATA]
 
 inherit
 	COLUMN_SET[G]

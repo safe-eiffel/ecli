@@ -8,10 +8,10 @@ indexing
 	revision: "$Revision$"
 
 class
-	MODULE_PARAMETER
+	RDBMS_ACCESS_PARAMETER
 
 inherit
-	ACCESS_MODULE_METADATA
+	RDBMS_ACCESS_METADATA
 		redefine
 			copy, is_equal
 		end
@@ -196,7 +196,7 @@ feature -- Comparison
 			if ANY_.same_types (Current, other) then
 				Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
 			else
-				Result := Precursor {ACCESS_MODULE_METADATA} (other)
+				Result := Precursor {RDBMS_ACCESS_METADATA} (other)
 			end
 		end
 

@@ -8,7 +8,7 @@ indexing
 	revision: "$Revision$"
 
 class
-	ACCESS_MODULE_FACTORY
+	RDBMS_ACCESS_FACTORY
 
 inherit 
 	ACCESS_MODULE_XML_CONSTANTS
@@ -39,13 +39,13 @@ feature -- Access
 	
 	last_parameter_set: PARAMETER_SET
 	
-	last_module : ACCESS_MODULE
+	last_module : RDBMS_ACCESS
 
 	parameter_map : PARAMETER_MAP
 	
 feature {NONE} -- Access
 
-	last_parameter : MODULE_PARAMETER
+	last_parameter : RDBMS_ACCESS_PARAMETER
 
 feature -- Status report
 
@@ -277,7 +277,7 @@ feature {NONE} -- Implementation
 		local
 			l_name, l_table, l_column : STRING
 			l_reference : REFERENCE_COLUMN
-			template : MODULE_PARAMETER
+			template : RDBMS_ACCESS_PARAMETER
 		do
 			is_error := False
 			last_parameter := Void
@@ -318,7 +318,7 @@ feature {NONE} -- Implementation
 			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void
 		end
 
-	create_parameter_from_template (element : XM_ELEMENT; template : MODULE_PARAMETER) is
+	create_parameter_from_template (element : XM_ELEMENT; template : RDBMS_ACCESS_PARAMETER) is
 			-- create parameter from `element', using `template'
 		require
 			element_not_void: element /= Void
@@ -367,7 +367,7 @@ feature {NONE} -- Implementation
 			-- 
 		local
 			sql_parser : ECLI_SQL_PARSER
-			cursor : DS_SET_CURSOR[MODULE_PARAMETER]
+			cursor : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 		do
 			create sql_parser.make
 			parameter_names.wipe_out
@@ -395,7 +395,7 @@ feature {NONE} -- Implementation
 				loop
 					parameter_map.search (parameter_names.item_for_iteration)
 					if parameter_map.found then
-						last_parameter_set.force_last (create {MODULE_PARAMETER}.copy (parameter_map.found_item))						
+						last_parameter_set.force_last (create {RDBMS_ACCESS_PARAMETER}.copy (parameter_map.found_item))						
 					end
 					parameter_names.forth
 				end

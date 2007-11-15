@@ -121,19 +121,19 @@ feature -- Access (generation)
 	error_handler: QA_ERROR_HANDLER
 			-- Error handler
 
-	modules : DS_HASH_TABLE [ACCESS_MODULE, STRING]
+	modules : DS_HASH_TABLE [RDBMS_ACCESS, STRING]
 
 	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
 
 	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
 
-	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_PARAMETER], STRING]
+	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[RDBMS_ACCESS_PARAMETER], STRING]
 
-	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[MODULE_RESULT],STRING]
+	parent_result_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[RDBMS_ACCESS_RESULT],STRING]
 
-	all_parents_set : DS_HASH_TABLE[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+	all_parents_set : DS_HASH_TABLE[PARENT_COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
 
-	all_sets : DS_HASH_TABLE[COLUMN_SET[ACCESS_MODULE_METADATA],STRING]
+	all_sets : DS_HASH_TABLE[COLUMN_SET[RDBMS_ACCESS_METADATA],STRING]
 
 feature -- Status report
 
@@ -180,8 +180,8 @@ feature -- Basic operations
 			root : XM_DOCUMENT
 			element : XM_ELEMENT
 			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			l_factory : ACCESS_MODULE_FACTORY
-			l_module : ACCESS_MODULE
+			l_factory : RDBMS_ACCESS_FACTORY
+			l_module : RDBMS_ACCESS
 			l_result_sets : like result_sets
 			parameters_ok, results_ok : BOOLEAN
 		do
@@ -461,7 +461,7 @@ feature {NONE} -- Implementation
 	resolve_parent_parameter_sets is
 			-- resolve parent classes for parameter sets
 		local
-			resolver : REFERENCE_RESOLVER[MODULE_PARAMETER]
+			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_PARAMETER]
 		do
 			create resolver
 			parent_parameter_sets := resolver.resolve_parents (parameter_sets, error_handler)
@@ -471,7 +471,7 @@ feature {NONE} -- Implementation
 	resolve_parent_result_sets is
 			-- resolve parent classes for parameter sets
 		local
-			resolver : REFERENCE_RESOLVER[MODULE_RESULT]
+			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_RESULT]
 		do
 			create resolver
 			parent_result_sets := resolver.resolve_parents (result_sets, error_handler)
@@ -481,8 +481,8 @@ feature {NONE} -- Implementation
 	resolve_all_sets is
 			--
 		local
-			resolver : REFERENCE_RESOLVER[ACCESS_MODULE_METADATA]
-			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_METADATA]
+			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
 		do
 			create all_sets.make (result_sets.count + parameter_sets.count)
 			from
@@ -512,7 +512,7 @@ feature {NONE} -- Implementation
 	check_modules is
 			-- check modules
 		local
-			cursor : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
+			cursor : DS_HASH_TABLE_CURSOR[RDBMS_ACCESS,STRING]
 			l_name : STRING
 		do
 			from
@@ -552,8 +552,8 @@ feature {NONE} -- Implementation
 	generate_modules is
 			-- generate modules
 		local
-			c : DS_HASH_TABLE_CURSOR[ACCESS_MODULE,STRING]
-			s : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[ACCESS_MODULE_METADATA], STRING]
+			c : DS_HASH_TABLE_CURSOR[RDBMS_ACCESS,STRING]
+			s : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
 		do
 			error_handler.report_start ("Class generation")
 			--| classes for modules
@@ -590,7 +590,7 @@ feature {NONE} -- Implementation
 			error_handler.report_end ("Class generation", True)
 		end
 
-	generate (module : ACCESS_MODULE;a_error_handler : QA_ERROR_HANDLER) is
+	generate (module : RDBMS_ACCESS;a_error_handler : QA_ERROR_HANDLER) is
 			-- generate classes for `module', query + parameter_set + result_set classes
 		require
 			module_not_void: module /= Void
@@ -622,7 +622,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	gen : ACCESS_MODULE_GENERATOR
+	gen : RDBMS_ACCESS_GENERATOR
 
 	session : ECLI_SESSION
 	repository : COLUMNS_REPOSITORY

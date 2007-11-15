@@ -11,7 +11,7 @@ class
 	PARAMETER_SET
 
 inherit
-	COLUMN_SET[MODULE_PARAMETER]
+	COLUMN_SET[RDBMS_ACCESS_PARAMETER]
 		redefine
 			make
 		end
@@ -32,7 +32,7 @@ feature -- Status report
 	has_samples : BOOLEAN is
 			-- has this parameter set samples for all the parameters ?
 		local
-			sc : DS_SET_CURSOR[MODULE_PARAMETER]
+			sc : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 		do
 			if count > 0 then
 				from

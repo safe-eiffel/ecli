@@ -1,5 +1,5 @@
 indexing
-	description: "Access modules; Each module encapsulates one database query."
+	description: "RDBMS Accesses: one access encapsulates one database DML query."
 
 	library: "Access_gen : Access Modules Generators utilities"
 
@@ -8,14 +8,12 @@ indexing
 	revision: "$Revision$"
 
 class
-	ACCESS_MODULE
+	RDBMS_ACCESS
 
 inherit
 	SHARED_SCHEMA_NAME
 	SHARED_CATALOG_NAME
 	SHARED_MAXIMUM_LENGTH
-
-	PO_PERSISTENT
 
 create
 	make
@@ -38,7 +36,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	persistent_class_name : STRING is do Result := generator end
-	
+
 	description: STRING
 			-- description of current module. Useful for documenting purposes
 
@@ -210,7 +208,7 @@ feature {NONE} -- Implementation
 			query_statement_valid: query_statement.is_valid
 		local
 			index : INTEGER
-			current_result : MODULE_RESULT
+			current_result : RDBMS_ACCESS_RESULT
 			current_description : ECLI_COLUMN_DESCRIPTION
 		do
 			is_results_valid := True
@@ -266,7 +264,7 @@ feature {NONE} -- Implementation
 			undefined_parameters : DS_SET [STRING]
 			unknown_parameters : DS_SET [STRING]
 			cursor_string : DS_SET_CURSOR [STRING]
-			parameters_cursor : DS_SET_CURSOR[MODULE_PARAMETER]
+			parameters_cursor : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 			tester : KL_EQUALITY_TESTER [STRING]
 			l_catalog, l_schema : STRING
 			l_parameter_names : DS_LIST[STRING]
@@ -364,7 +362,7 @@ feature {NONE} -- Implementation
 			query_statement_not_void: query_statement /= Void
 			a_error_handler_not_void: a_error_handler /= Void
 		local
-			cs : DS_SET_CURSOR[MODULE_PARAMETER]
+			cs : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 			factory : QA_VALUE_FACTORY
 			parameters_put : INTEGER
 		do

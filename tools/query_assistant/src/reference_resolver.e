@@ -8,7 +8,7 @@ indexing
 	revision: "$Revision$"
 
 class
-	REFERENCE_RESOLVER [G -> ACCESS_MODULE_METADATA]
+	REFERENCE_RESOLVER [G -> RDBMS_ACCESS_METADATA]
 
 feature -- Basic operations
 

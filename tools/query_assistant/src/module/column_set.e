@@ -8,7 +8,7 @@ indexing
 	revision: "$Revision$"
 
 deferred class
-	COLUMN_SET[G->ACCESS_MODULE_METADATA]
+	COLUMN_SET[G->RDBMS_ACCESS_METADATA]
 
 inherit
 	DS_HASH_SET[G]

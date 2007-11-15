@@ -8,7 +8,7 @@ indexing
 	revision: "$Revision$"
 
 deferred class
-	ACCESS_MODULE_METADATA
+	RDBMS_ACCESS_METADATA
 
 inherit
 	HASHABLE

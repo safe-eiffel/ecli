@@ -11,7 +11,7 @@ class
 	RESULT_SET
 
 inherit
-	COLUMN_SET[MODULE_RESULT]
+	COLUMN_SET[RDBMS_ACCESS_RESULT]
 		rename
 			put as put_set, force as force_set
 		redefine
