@@ -32,7 +32,7 @@ inherit
 			create_varchar_value
 		end
 			
-creation
+create
 
 	make
 

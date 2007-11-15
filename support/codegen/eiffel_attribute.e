@@ -17,7 +17,7 @@ inherit
 			make as feature_make
 		end
 
-creation
+create
 
 	make
 

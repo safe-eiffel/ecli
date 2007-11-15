@@ -20,7 +20,7 @@ inherit
 
 	KL_IMPORTED_ARRAY_ROUTINES
 
-creation
+create
 
 	make
 

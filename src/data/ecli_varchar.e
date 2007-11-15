@@ -15,7 +15,7 @@ inherit
 
 	ECLI_STRING_VALUE
 		
-creation
+create
 
 	make
 

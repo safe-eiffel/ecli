@@ -13,7 +13,7 @@ inherit
 
 	ECLI_TYPE_CONSTANTS
 
-creation
+create
 	make
 
 feature -- Initialization

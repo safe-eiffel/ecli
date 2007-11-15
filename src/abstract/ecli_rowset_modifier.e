@@ -28,7 +28,7 @@ inherit
 	
 	ECLI_ROWSET_CAPABLE
 	
-creation
+create
 
 	make
 	

@@ -53,7 +53,7 @@ inherit
 
 	ECLI_TRANSACTION_CAPABILITY_CONSTANTS
 
-creation
+create
 
 	make, make_default
 

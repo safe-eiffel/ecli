@@ -15,7 +15,7 @@ class
 inherit
 	QA_ERROR
 
-creation
+create
 	
 	make_connection_failed,
 	make_query_failed,

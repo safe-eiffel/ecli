@@ -29,7 +29,7 @@ inherit
 			out
 		end
 		
-creation
+create
 
 	make
 	

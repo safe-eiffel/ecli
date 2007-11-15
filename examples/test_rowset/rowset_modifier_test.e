@@ -7,7 +7,7 @@ indexing
 class
 	ROWSET_MODIFIER_TEST
 
-creation
+create
 	make
 	
 feature {NONE} -- Initialization

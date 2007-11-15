@@ -21,7 +21,7 @@ inherit
 			error_end
 		end
 	
-creation
+create
 	make
 	
 feature -- Access

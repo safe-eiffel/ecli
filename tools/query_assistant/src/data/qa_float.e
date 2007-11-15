@@ -13,7 +13,7 @@ inherit
 	
 	QA_VALUE
 
-creation
+create
 	make
 	
 feature

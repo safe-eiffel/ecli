@@ -6,7 +6,7 @@ indexing
 
 class PARTICIPANTS_BY_NAME_PARAMETERS
 
-creation
+create
 
 	make
 

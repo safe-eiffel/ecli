@@ -18,7 +18,7 @@ inherit
 			valid_item
 		end
 		
-creation
+create
 
 	make, make_force_maximum_capacity
 	

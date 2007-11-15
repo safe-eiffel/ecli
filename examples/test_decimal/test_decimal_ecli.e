@@ -8,7 +8,7 @@ inherit
 
 	KL_SHARED_ARGUMENTS
 	
-creation
+create
 
 	make
 	

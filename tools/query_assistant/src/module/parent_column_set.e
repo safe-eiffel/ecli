@@ -16,7 +16,7 @@ inherit
 			copy, make, flatten
 		end
 
-creation
+create
 	make
 	
 feature {NONE} -- Initialization

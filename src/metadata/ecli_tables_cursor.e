@@ -22,7 +22,7 @@ inherit
 			item, impl_item
 		end
 
-creation
+create
 
 	make_all_tables, make_table, make
 

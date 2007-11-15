@@ -22,7 +22,7 @@ inherit
 				  Sql_row_deleted, Sql_row_updated,	Sql_row_norow, Sql_row_added
 		end
 	
-creation
+create
 
 	make
 

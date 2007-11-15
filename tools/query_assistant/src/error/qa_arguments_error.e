@@ -15,7 +15,7 @@ inherit
 
 	QA_ERROR
 
-creation
+create
 
 	make_missing,
 	make_invalid,

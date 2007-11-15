@@ -14,7 +14,7 @@ class QA_VALIDITY_ERROR
 inherit
 	QA_ERROR
 
-creation
+create
 	
 	make_already_exists,
 	make_invalid_reference_column,

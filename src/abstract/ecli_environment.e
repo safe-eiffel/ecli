@@ -37,7 +37,7 @@ inherit
 				is_registered_session
 			end
 
-creation
+create
 
 	{ECLI_SHARED_ENVIRONMENT} make
 

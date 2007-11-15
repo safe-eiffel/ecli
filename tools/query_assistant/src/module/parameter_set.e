@@ -16,7 +16,7 @@ inherit
 			make
 		end
 
-creation
+create
 	make, make_with_parent_name
 	
 feature {NONE} -- Initialization

@@ -15,7 +15,7 @@ inherit
 
 	QA_ERROR
 
-creation
+create
 	
 	make_could_not_create_parameter,
 	make_xml_parser_unavailable,

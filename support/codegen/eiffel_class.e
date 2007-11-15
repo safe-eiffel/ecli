@@ -15,7 +15,7 @@ inherit
 
 	EIFFEL_CODE
 
-creation
+create
 
 	make
 

@@ -18,7 +18,7 @@ inherit
 			value_factory, value_anchor
 		end
 	
-creation
+create
 
 	make
 	

@@ -14,7 +14,7 @@ class QA_USAGE_MESSAGE
 inherit
 	QA_ERROR
 
-creation
+create
 	make
 	
 feature -- Initialization

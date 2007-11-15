@@ -25,7 +25,7 @@ inherit
 			is_equal
 		end
 		
-creation
+create
 
 	make, set_read_committed, set_read_uncommitted, set_repeatable_read, set_serializable
 	

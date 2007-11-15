@@ -18,7 +18,7 @@ inherit
 			{ANY} Sql_driver_noprompt, Sql_driver_complete, Sql_driver_complete_required, Sql_driver_prompt
 		end
 
-creation
+create
 	make, make_interactive, make_complete_strict, make_complete_lazy
 
 feature {NONE} -- Initialization

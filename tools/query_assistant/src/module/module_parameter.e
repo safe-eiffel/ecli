@@ -2,7 +2,7 @@ indexing
 	description: "Module parameter description by the user."
 
 	library: "Access_gen : Access Modules Generators utilities"
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -15,12 +15,12 @@ inherit
 		redefine
 			copy, is_equal
 		end
-		
+
 	KL_IMPORTED_ANY_ROUTINES
 		undefine
 			is_equal, copy
 		end
-		
+
 	HASHABLE
 		undefine
 			copy, is_equal
@@ -30,7 +30,7 @@ inherit
 		undefine
 			is_equal, copy
 		end
-		
+
 create
 	make, copy
 
@@ -63,13 +63,13 @@ feature -- Access
 	metadata : ECLI_COLUMN
 
 	sql_type_code : INTEGER is
-			-- 
+			--
 		do
 			Result := metadata.type_code
 		end
-		
+
 	size : INTEGER is
-			-- 
+			--
 		do
 			if maximum_length_impl > 0 and then maximum_length_impl <= metadata.size then
 				Result := maximum_length_impl
@@ -77,29 +77,29 @@ feature -- Access
 				Result := metadata.size
 			end
 		end
-		
+
 	decimal_digits : INTEGER is
-			-- 
+			--
 		do
 			Result := metadata.decimal_digits
 		end
 
-	sample : STRING 
-	
+	sample : STRING
+
 feature -- Measurement
-		
+
 feature -- Status report
-	
+
 	metadata_available : BOOLEAN is
-			-- 
+			--
 		do
 			Result := metadata /= Void
 		end
 
 	is_valid : BOOLEAN
-	
-	has_sample : BOOLEAN is do Result := sample /= Void end		
-	
+
+	has_sample : BOOLEAN is do Result := sample /= Void end
+
 feature -- Status setting
 
 --	check_validity (a_session : ECLI_SESSION; a_catalog_name, a_schema_name : STRING) is
@@ -111,7 +111,7 @@ feature -- Status setting
 --				cursor : ECLI_COLUMNS_CURSOR
 --				nm : ECLI_NAMED_METADATA
 --			do
---				create nm. make (a_catalog_name, a_schema_name, reference_column.table) 
+--				create nm. make (a_catalog_name, a_schema_name, reference_column.table)
 --				create cursor.make_query_column (nm,reference_column.column,a_session)
 --				if cursor.is_ok then
 --					cursor.start
@@ -141,8 +141,8 @@ feature -- Status setting
 					if size > reasonable_maximum_size then
 						error_handler.report_column_length_too_large (
 							" ",
-							name, 
-							size, 
+							name,
+							size,
 							True)
 					end
 					is_valid := True
@@ -157,7 +157,7 @@ feature -- Status setting
 feature -- Element change
 
 	set_sample (s : STRING) is
-			-- 
+			--
 		require
 			s_not_void: s /= Void
 			s_not_empty: not s.is_empty
@@ -166,7 +166,7 @@ feature -- Element change
 		ensure
 			sample_set: sample = s
 		end
-		
+
 feature {NONE} -- Element change
 
 	set_reference_column (a_reference_column: REFERENCE_COLUMN) is
@@ -208,7 +208,7 @@ feature -- Duplication
 			create name.make_from_string (other.name)
 			create reference_column.make (other.reference_column.table, other.reference_column.column)
 			if other.metadata /= Void then
-				metadata := clone (other.metadata)
+				metadata := other.metadata.twin
 			end
 			if other.sample /= Void then
 				create sample.make_from_string (other.sample)
@@ -218,7 +218,7 @@ feature -- Duplication
 feature {NONE} -- Implementation
 
 	maximum_length_impl : INTEGER
-	
+
 invariant
 	name_not_void: name /= Void
 	reference_column_not_void: reference_column /= Void

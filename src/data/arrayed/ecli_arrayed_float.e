@@ -18,7 +18,7 @@ inherit
 			column_precision, sql_type_code, decimal_digits, display_size, transfer_octet_length
 		end
 
-creation
+create
 
 	make
 

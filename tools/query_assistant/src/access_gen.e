@@ -25,7 +25,7 @@ inherit
 
 	ACCESS_MODULE_XML_CONSTANTS
 
-creation
+create
 
 	make
 
@@ -145,7 +145,7 @@ feature -- Parser
 	fact: XM_EXPAT_PARSER_FACTORY is
 			-- Expat XML parser factory
 		once
-			!! Result
+			create Result
 		ensure
 			factory_not_void: Result /= Void
 		end
@@ -257,7 +257,7 @@ feature -- Basic operations
 		do
 			has_error := False
 			error_handler.report_start ("Parsing XML file")
-			!! in.make (in_filename)
+			create in.make (in_filename)
 			in.open_read
 			if not in.is_open_read then
 				error_handler.report_cannot_read_file (in_filename)

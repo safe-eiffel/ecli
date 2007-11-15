@@ -39,7 +39,7 @@ inherit
 			is_equal, copy, out
 		end
 	
-creation
+create
 
 	make
 

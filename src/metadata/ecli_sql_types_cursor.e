@@ -42,7 +42,7 @@ inherit
 
 	KL_IMPORTED_ARRAY_ROUTINES
 	
-creation
+create
 
 	make_all_types, make_by_type
 

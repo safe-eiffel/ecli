@@ -197,7 +197,7 @@ feature {NONE} -- Basic operations
 			column_set_not_void: column_set /= Void
 		local
 			routine : EIFFEL_ROUTINE
-			attribute : EIFFEL_ATTRIBUTE
+			an_attribute : EIFFEL_ATTRIBUTE
 			feature_group : EIFFEL_FEATURE_GROUP
 			line : STRING
 			i : INTEGER
@@ -280,8 +280,8 @@ feature {NONE} -- Basic operations
 			until
 				c.off
 			loop
-				create attribute.make (c.item.eiffel_name, c.item.ecli_type)
-				feature_group.add_feature (attribute)
+				create an_attribute.make (c.item.eiffel_name, c.item.ecli_type)
+				feature_group.add_feature (an_attribute)
 				c.forth
 			end
 
@@ -355,7 +355,6 @@ feature {NONE} -- Basic operations
 			parameter, pre,post : DS_PAIR[STRING,STRING]
 			cursor : DS_HASH_SET_CURSOR[MODULE_PARAMETER]
 			pname : STRING
-			l_parameters_name : STRING
 		do
 			if module.parameters.count > 0 then
 				create feature_group.make ("-- Element change")
@@ -439,15 +438,14 @@ feature {NONE} -- Basic operations
 			-- put cursor definition  features of `module' into `cursor_class'
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
-			attribute : EIFFEL_ATTRIBUTE
+			an_attribute : EIFFEL_ATTRIBUTE
 			attribute_value : STRING
 			eiffel_names : EIFFEL_NAME_ROUTINES
 			sql_adjusted: STRING
-			new_line_count : INTEGER
 		do
 			create eiffel_names
 			create feature_group.make ("Constants")
-			create attribute.make ("definition", "STRING")
+			create an_attribute.make ("definition", "STRING")
 			sql_adjusted := module.query.twin
 			STRING_.left_adjust (sql_adjusted)
 			STRING_.right_adjust (sql_adjusted)
@@ -455,8 +453,8 @@ feature {NONE} -- Basic operations
 				sql_adjusted.append_character ('%N')
 			end
 			create attribute_value.make_from_string (eiffel_names.verbatim_string (sql_adjusted, True, ""))
-			attribute.set_value (attribute_value)
-			feature_group.add_feature (attribute)
+			an_attribute.set_value (attribute_value)
+			feature_group.add_feature (an_attribute)
 			cursor_class.add_feature_group (feature_group)
 		end
 
@@ -508,20 +506,28 @@ feature {NONE} -- Implementation
 
 	class_name (module : ACCESS_MODULE) : STRING is
 		do
-			Result := clone (module.name)
+			Result := module.name.twin
 			Result.to_upper
 		end
 
 	as_lower (s : STRING) : STRING is
+		require
+			s_not_void: s /= Void
 		do
-			Result := clone (s)
+			create Result.make_from_string (s)
 			Result.to_lower
+		ensure
+			as_lower_not_void: Result /= Void
 		end
 
 	as_upper (s : STRING) : STRING is
+		require
+			s_not_void: s /= Void
 		do
-			Result := clone (s)
+			create Result.make_from_string (s)
 			Result.to_upper
+		ensure
+			as_upper_not_void: Result /= Void
 		end
 
 	put_access_routine (module : ACCESS_MODULE; group : EIFFEL_FEATURE_GROUP) is
@@ -530,10 +536,9 @@ feature {NONE} -- Implementation
 			module_not_void: module /= Void
 			group_not_void: group /= Void
 		local
-			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
 			eiffel_routine : EIFFEL_ROUTINE
-			new_parameter, local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
-			l_name, parameter_setting_line : STRING
+			 routine_precondition : DS_PAIR [STRING, STRING]
+			l_name : STRING
 		do
 			--| routine name: read_<access>
 			create l_name.make_from_string (module.name)
@@ -556,7 +561,7 @@ feature {NONE} -- Implementation
 		local
 			p_cursor : DS_SET_CURSOR[ACCESS_MODULE_METADATA]
 			eiffel_routine : EIFFEL_ROUTINE
-			new_parameter, local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
+			local_cursor, local_parameters, routine_precondition : DS_PAIR [STRING, STRING]
 			l_name, parameter_setting_line : STRING
 		do
 			--| routine name: do_<access>

@@ -13,7 +13,7 @@ inherit
 	ECLI_CURSOR
 
 
-creation
+create
 
 	make
 

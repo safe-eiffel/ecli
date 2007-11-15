@@ -31,7 +31,7 @@ inherit
 				bind_parameters, parameters
 		end
 
-creation
+create
 
 	make, open, make_prepared, open_prepared, make_with_buffer_factory,
 	make_prepared_with_buffer_factory

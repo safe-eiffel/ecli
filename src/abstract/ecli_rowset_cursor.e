@@ -29,7 +29,7 @@ inherit
 	
 	ECLI_ROWSET_CAPABLE
 	
-creation
+create
 
 	make, make_prepared, open, open_prepared
 	

@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Syntax Errors."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,14 +15,14 @@ inherit
 
 	QA_ERROR
 
-creation
-	
+create
+
 	make_duplicate_element,
 	make_exclusive_element,
 	make_missing_element,
 	make_missing_attribute,
 	make_parse_error
-	
+
 feature {NONE} -- Initialization
 
 	make_duplicate_element (module, element, parent : STRING) is
@@ -73,23 +73,23 @@ feature {NONE} -- Initialization
 			code := misel_code
 			parameters.put (code, 4)
 		end
-		
-	make_missing_attribute (module, attribute, element : STRING) is
+
+	make_missing_attribute (module, an_attribute, element : STRING) is
 			-- Make for missing `attribute' in `element' for `module'.
 		require
 			module_not_void: module /= Void
-			attribute_not_void: attribute /= Void
+			an_attribute_not_void: an_attribute /= Void
 			element_not_void: element /= Void
 		do
 			default_template := misat_template
 			create parameters.make (1, 4)
 			parameters.put (module, 1)
-			parameters.put (attribute, 2)
+			parameters.put (an_attribute, 2)
 			parameters.put (element, 3)
 			code := misat_code
 			parameters.put (code, 4)
 		end
-		
+
 	make_parse_error (diagnostic : STRING) is
 			-- Make for XML parse error with `diagnostic'.
 		require
@@ -115,5 +115,5 @@ feature {NONE} -- Implementation
 	misel_code : STRING is "E-SYN-MISELEM"
 	misat_code : STRING is "E-SYN-MISATTR"
 	parer_code : STRING is "E-SYN-PARSERR"
-		
+
 end -- class QA_SYNTAX_ERROR

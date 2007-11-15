@@ -4,7 +4,7 @@ class
 inherit
 	KL_SHARED_FILE_SYSTEM
 	
-creation
+create
 	make
 
 feature

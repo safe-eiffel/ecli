@@ -15,6 +15,8 @@ inherit
 	SHARED_CATALOG_NAME
 	SHARED_MAXIMUM_LENGTH
 
+	PO_PERSISTENT
+
 create
 	make
 
@@ -35,6 +37,8 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
+	persistent_class_name : STRING is do Result := generator end
+	
 	description: STRING
 			-- description of current module. Useful for documenting purposes
 

@@ -22,11 +22,11 @@ inherit
 			out
 		end
 	
-creation
+create
 
 	make 
 
-creation
+create
 
 	{ECLI_FOREIGN_KEY} make_by_name
 	

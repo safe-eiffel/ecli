@@ -26,7 +26,7 @@ inherit
 			out
 		end
 
-creation
+create
 
 	{ECLI_COLUMNS_CURSOR} make
 

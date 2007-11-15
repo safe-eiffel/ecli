@@ -18,7 +18,7 @@ inherit
 			get_transfer_length
 		end
 
-creation
+create
 
 	make_input, make_output
 	

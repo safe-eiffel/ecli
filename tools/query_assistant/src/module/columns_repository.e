@@ -7,7 +7,7 @@ indexing
 class
 	COLUMNS_REPOSITORY
 
-creation
+create
 	make
 	
 feature {NONE} -- Initialization

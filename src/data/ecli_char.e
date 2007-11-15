@@ -21,7 +21,7 @@ inherit
 			formatted
 		end
 
-creation
+create
 
 	make, make_force_maximum_capacity
 	

@@ -7,7 +7,7 @@ indexing
 class
 	TEST_GC
 
-creation
+create
 
 	make
 

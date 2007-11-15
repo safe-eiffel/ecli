@@ -15,7 +15,7 @@ inherit
 			bind_as_parameter
 		end
 
-creation
+create
 	make
 	
 feature

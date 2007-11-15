@@ -10,7 +10,7 @@ class
 inherit
 	KL_STANDARD_FILES
 
-creation
+create
 	make, make_by_parent
 
 feature {NONE} -- Initialization

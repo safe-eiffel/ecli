@@ -15,7 +15,7 @@ inherit
 
 	ECLI_BINARY_VALUE
 		
-creation
+create
 
 	make, make_force_maximum_capacity
 	

@@ -15,7 +15,7 @@ inherit
 	
 	QA_ERROR
 
-creation
+create
 	
 	make_copyright,
 	make_banner,

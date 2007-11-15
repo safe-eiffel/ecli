@@ -308,16 +308,16 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			report_error (error)
 		end
 
-	report_missing_attribute (module, attribute, element: STRING) is
+	report_missing_attribute (module, an_attribute, element: STRING) is
 			-- Report missing `attribute' in `element' for `module'.
 		require
 			module_not_void: module /= void
-			attribute_not_void: attribute /= void
+			an_attribute_not_void: an_attribute /= void
 			element_not_void: element /= void
 		local
 			error : QA_SYNTAX_ERROR
 		do
-			create error.make_missing_attribute (module, attribute, element)
+			create error.make_missing_attribute (module, an_attribute, element)
 			report_error (error)
 		end
 

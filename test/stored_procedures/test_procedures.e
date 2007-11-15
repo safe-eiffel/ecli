@@ -9,7 +9,7 @@ indexing
 class
 	TEST_PROCEDURES
 	
-creation
+create
 
 	make
 

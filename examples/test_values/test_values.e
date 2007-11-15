@@ -1,7 +1,7 @@
 class
 	TEST_VALUES
 	
-creation
+create
 	make
 	
 feature 

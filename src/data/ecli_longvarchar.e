@@ -15,7 +15,7 @@ inherit
 
 	ECLI_STRING_VALUE
 	
-creation
+create
 
 	make, make_force_maximum_capacity
 	

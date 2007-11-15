@@ -2,7 +2,7 @@ indexing
 	description: "Module result metadata."
 
 	library: "Access_gen : Access Modules Generators utilities"
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -12,12 +12,12 @@ class
 
 inherit
 	ACCESS_MODULE_METADATA
-		
+
 	HASHABLE
 		undefine
 			is_equal
 		end
-		
+
 create
 	make
 
@@ -41,28 +41,28 @@ feature {NONE} -- Initialization
 feature {NONE}-- Access
 
 	metadata : ECLI_COLUMN_DESCRIPTION
-	
+
 feature -- Access
 
-			
+
 	sql_type_code : INTEGER is
 		do
 			Result := metadata.sql_type_code
 		end
-		
+
 	size : INTEGER is
 		do
 			Result := size_impl -- metadata.size
 		end
-		
+
 	decimal_digits : INTEGER is
 		do
 			Result := metadata.decimal_digits
 		end
-	
+
 	name : STRING is
 		do
-			Result := clone(metadata.name)
+			Result := metadata.name.twin
 			Result.to_lower
 		end
 
@@ -72,7 +72,7 @@ feature -- Status report
 		do
 			Result := metadata /= Void
 		end
-		
+
 feature {NONE} -- implementation
 
 	size_impl : INTEGER

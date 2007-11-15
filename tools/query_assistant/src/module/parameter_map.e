@@ -13,7 +13,7 @@ class
 inherit
 	DS_HASH_TABLE [MODULE_PARAMETER, STRING]
 	
-creation
+create
 	make 
 	
 end -- class PARAMETER_MAP

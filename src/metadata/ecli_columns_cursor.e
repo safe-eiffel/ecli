@@ -22,7 +22,7 @@ inherit
 			item, impl_item, make
 		end
 
-creation
+create
 
 	make, make_query_column, make_all_columns
 

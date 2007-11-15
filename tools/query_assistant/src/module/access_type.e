@@ -7,7 +7,7 @@ indexing
 class
 	ACCESS_TYPE
 
-creation
+create
 	make_from_string 
 
 feature -- Initialization

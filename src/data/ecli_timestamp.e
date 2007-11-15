@@ -19,7 +19,7 @@ inherit
 			item
 		end
 		
-creation
+create
 
 	make, make_first, make_default, make_null
 

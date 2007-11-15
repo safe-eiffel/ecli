@@ -19,7 +19,7 @@ inherit
 			create_impl_item, impl_item
 		end
 
-creation
+create
 
 	make, make_default, make_null
 
