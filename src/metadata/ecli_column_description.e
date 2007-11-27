@@ -31,7 +31,7 @@ inherit
 			is_equal
 		end
 
-create
+create 
 
 	make
 
@@ -89,6 +89,11 @@ feature -- Comparison
 feature {NONE} -- Implementation
 
 	ext_actual_name_length : XS_C_INT32 is once create Result.make end
+
+--	temporary_name : STRING is
+--			--
+--		once !!Result.make (100)
+--		end
 
 invariant
 	name_not_void: name /= Void

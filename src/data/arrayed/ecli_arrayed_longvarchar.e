@@ -24,7 +24,7 @@ inherit
 --			is_equal, copy
 --		end
 
-create
+creation
 
 	make
 

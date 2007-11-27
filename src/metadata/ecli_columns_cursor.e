@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 		local
 			search_criteria : ECLI_NAMED_METADATA
 		do
-			!!search_criteria.make (Void, Void, a_table)
+			create search_criteria.make (Void, Void, a_table)
 			make (search_criteria, a_session)
 		ensure
 			executed: is_ok implies is_executed
@@ -48,7 +48,7 @@ feature {NONE} -- Initialization
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
-			if a_column_name /= Void then 
+			if a_column_name /= Void then
 				create queried_column_impl.make_from_string (a_column_name)
 			end
 			make (a_search_criteria, a_session)
@@ -69,7 +69,7 @@ feature -- Access
 				Result := queried_column_impl.as_string
 			end
 		end
-		
+
 	item : ECLI_COLUMN is
 			-- item at current cursor position
 		do
@@ -82,7 +82,7 @@ feature -- Cursor Movement
 			-- create item at current cursor position
 		do
 			if not off then
-				!!impl_item.make (Current)
+				create impl_item.make (Current)
 			else
 				impl_item := Void
 			end
@@ -119,7 +119,7 @@ feature {NONE} -- Implementation
 			create_buffer_values
 			set_buffer_values_array
 		end
-		
+
 	create_buffer_values is
 		do
 			create buffer_table_cat.make (255)
@@ -141,7 +141,7 @@ feature {NONE} -- Implementation
 			create buffer_ordinal_position.make
 			create buffer_is_nullable.make (255)
 		end
-	
+
 	set_buffer_values_array is
 		do
 			set_results (<<
@@ -188,5 +188,5 @@ feature {NONE} -- Implementation
 		end
 
 	queried_column_impl : XS_C_STRING
-	
+
 end

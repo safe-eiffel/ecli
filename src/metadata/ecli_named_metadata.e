@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that are named metadata, i.e. with catalog, schema and name."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -21,7 +21,7 @@ inherit
 create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_catalog, a_schema, a_name : STRING) is
@@ -35,15 +35,15 @@ feature {NONE} -- Initialization
 			schema_assigned: schema = a_schema
 			name_assigned: name = a_name
 		end
-		
+
 feature -- Access
 
 	catalog : STRING
 			-- catalog name
-	
+
 	schema : STRING
 			-- schema name
-	
+
 	name : STRING
 			-- table, column, or procedure name
 
@@ -70,15 +70,15 @@ feature -- Element change
 			value: value /= Void
 		do
 			if not value.is_null then
-				schema := value.as_string			
+				schema := value.as_string
 			else
 				schema := Void
 			end
 		ensure
 			void_if_null_value: value.is_null implies schema = Void
-			assigned_if_not_null: not value.is_null implies schema.is_equal (value.as_string)		
+			assigned_if_not_null: not value.is_null implies schema.is_equal (value.as_string)
 		end
-		
+
 	set_name (value : ECLI_VARCHAR) is
 			-- set `name' with `value'
 		require
@@ -86,7 +86,7 @@ feature -- Element change
 		do
 			name := value.as_string
 		ensure
-			assigned: name.is_equal (value.as_string)		
+			assigned: name.is_equal (value.as_string)
 		end
 
 feature -- Conversion
@@ -94,16 +94,16 @@ feature -- Conversion
 	out : STRING is
 			-- terse printable representation
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			append_to_string (Result, catalog) Result.append_string ("%T")
 			append_to_string (Result, schema) Result.append_string ("%T")
-			append_to_string (Result, name)			
+			append_to_string (Result, name)
 		end
 
 feature {NONE} -- Implementation
 
 	append_to_string (dest, src : STRING) is
-			-- 
+			--
 		do
 			if src = Void then
 				dest.append_string ("NULL")

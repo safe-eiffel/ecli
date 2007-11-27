@@ -71,8 +71,8 @@ feature -- Initialization
 			if is_valid then
 				session.register_statement (Current)
 			end
-			!!name_to_position.make (10)
-			!!eq
+			create name_to_position.make (10)
+			create eq
 			name_to_position.set_equality_tester (eq)
 		ensure
 			session_ok: session = a_session and not is_closed
@@ -176,7 +176,7 @@ feature -- Access
 			table_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[INTEGER],STRING]
 		do
 			if impl_parameter_names = Void then
-				!DS_LINKED_LIST[STRING]! impl_parameter_names.make
+				create {DS_LINKED_LIST[STRING]} impl_parameter_names.make
 				table_cursor := name_to_position.new_cursor
 				from
 					table_cursor.start
@@ -230,10 +230,6 @@ feature -- Measurement
 			executed: is_executed
 			not_a_query: not has_result_set
 		do
---			if impl_row_count = Void then
---				create impl_row_count.make
---			end
---			set_status (ecli_c_row_count (handle, impl_row_count.handle))
 			Result := impl_row_count.item
 		end
 
@@ -680,13 +676,13 @@ feature -- Basic operations
 			description : ECLI_PARAMETER_DESCRIPTION
 		do
 			limit := parameters_count
-			!! parameters_description.make (1, limit)
+			create parameters_description.make (1, limit)
 			from
 				reset_status
 				count := 1
 			until count > limit or not is_ok
 			loop
-				!! description.make (Current, count)
+				create description.make (Current, count)
 				parameters_description.put (description, count)
 				count := count + 1
 			end
@@ -716,13 +712,13 @@ feature -- Basic operations
 			description : ECLI_COLUMN_DESCRIPTION
 		do
 			limit := result_columns_count
-			!! results_description.make (1, limit)
+			create results_description.make (1, limit)
 			from
 				count := 1
 				reset_status
 			until count > limit or not is_ok
 			loop
-				!! description.make (Current, count, 100)
+				create description.make (Current, count, 100)
 				results_description.put (description, count)
 				count := count + 1
 			end
@@ -809,10 +805,26 @@ feature {ECLI_SQL_PARSER} -- Callback
 			if name_to_position.has (a_parameter_name) then
 				name_to_position.item (a_parameter_name).put_right (a_position)
 			else
-				!DS_LINKED_LIST[INTEGER]!position_list.make
+				create {DS_LINKED_LIST[INTEGER]}position_list.make
 				position_list.put_right (a_position)
 				name_to_position.force (position_list, a_parameter_name)
 			end
+		end
+
+	on_table_literal (a_sql: STRING; i_begin, i_end: INTEGER) is
+		do
+		end
+
+	on_parameter (a_sql: STRING; i_begin, i_end: INTEGER) is
+		do
+		end
+
+	on_string_literal (a_sql: STRING; i_begin, i_end: INTEGER) is
+		do
+		end
+
+	on_parameter_marker (a_sql: STRING; index: INTEGER) is
+		do
 		end
 
 feature {ECLI_STATUS} -- Inapplicable
@@ -971,7 +983,7 @@ feature {NONE} -- Implementation
 		require
 			parameters_void: parameters = Void
 		do
-			!! parameters.make (1, parameters_count)
+			create parameters.make (1, parameters_count)
 		ensure
 			parameters_exist: parameters /= Void and then parameters.count = parameters_count
 		end

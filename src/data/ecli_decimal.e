@@ -4,10 +4,12 @@ indexing
 
 		"SQL DECIMAL (precision, decimal_digits) values."
 
-	note: "Data transfers are made through string representations.%
-		% Some databases like Oracle are sensible to National Language Support settings.%
-		% Please configure the ODBC driver so that it uses US settings because ECLI is not%
-		% capable of determining the National Language Support that is used."
+	please_note: "[
+		 Data transfers are made through string representations.
+		 Some databases like Oracle are sensible to National Language Support settings.
+		 Please configure the ODBC driver so that it uses US settings because ECLI is not
+		 capable of determining the National Language Support that is used.
+		 ]"
 
 	library: "GOBO Eiffel Decimal Arithmetic Library"
 	copyright: "Copyright (c) 2005, Paul G. Crismer and others"

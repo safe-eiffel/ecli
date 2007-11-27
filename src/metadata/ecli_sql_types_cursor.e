@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Cursors over the SQL types supported by the datasource related to a session."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -41,7 +41,7 @@ inherit
 		end
 
 	KL_IMPORTED_ARRAY_ROUTINES
-	
+
 create
 
 	make_all_types, make_by_type
@@ -131,7 +131,7 @@ feature -- Cursor Movement
 			end
 			statement_start
 			if not off then
-				!!impl_item.make (Current)
+				create impl_item.make (Current)
 			end
 		end
 
@@ -140,7 +140,7 @@ feature -- Cursor Movement
 		do
 			Precursor
 			if not off then
-				!!impl_item.make (Current)
+				create impl_item.make (Current)
 			else
 				impl_item := Void
 			end

@@ -18,7 +18,7 @@ inherit
 			sql_type_code			
 		end
 
-create
+creation
 
 	make
 

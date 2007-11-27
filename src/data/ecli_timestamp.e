@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL TIMESTAMP values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,10 +15,10 @@ inherit
 
 	ECLI_GENERIC_VALUE [DT_DATE_TIME]
 		redefine
-			create_impl_item, impl_item, is_equal, out, 
+			create_impl_item, impl_item, is_equal, out,
 			item
 		end
-		
+
 create
 
 	make, make_first, make_default, make_null
@@ -81,7 +81,7 @@ feature {NONE} -- Initialization
 		ensure
 			is_null: is_null
 		end
-		
+
 feature -- Access
 
 	item : DT_DATE_TIME is
@@ -321,7 +321,7 @@ feature -- Element change
 		ensure
 			decimal_digits_set: decimal_digits = n
 		end
-		
+
 feature -- Conversion
 
 	as_string : STRING is
@@ -356,7 +356,7 @@ feature -- Conversion
 
 	as_timestamp : DT_DATE_TIME is
 		do
-			Result := clone (item)
+			Result := item.twin
 		end
 
 	as_date : DT_DATE is
@@ -365,7 +365,7 @@ feature -- Conversion
 		end
 
 	as_character : CHARACTER is
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER
 		do
 		end
 
@@ -398,7 +398,7 @@ feature -- Conversion
 			-- Current converted to DT_TIME
 		do
 		end
-		
+
 feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
@@ -452,11 +452,11 @@ feature {NONE} -- Implementation
 		once
 			create Result
 		end
-	
+
 	impl_item : DT_DATE_TIME
 
 	calendar : DT_GREGORIAN_CALENDAR is once create Result end
-	
+
 	set_date_external (pointer : POINTER; a_year, a_month, a_day : INTEGER ) is
 			-- set date part of external `pointer'
 		require
@@ -472,7 +472,7 @@ feature {NONE} -- Implementation
 			month_set: ecli_c_date_get_month (pointer) = a_month
 			day_set: ecli_c_date_get_day (pointer) = a_day
 		end
-	
+
 	set_time_external (pointer : POINTER; a_hour, a_minute, a_second, a_nanosecond : INTEGER ) is
 			-- Set time part of external structure referenced by `pointer'
 		require

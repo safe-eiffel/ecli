@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that describe a SQL column in a table."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -100,13 +100,13 @@ feature -- Measurement
 
 	is_size_applicable : BOOLEAN
 			-- is this a type parameterized by a size ?
-			
+
 	is_transfer_length_applicable : BOOLEAN
 			-- does a transfer length apply ?
-			
+
 	is_decimal_digits_applicable : BOOLEAN
 			-- is 'decimal_digits' applicable for this type ?
-			
+
 	is_precision_radix_applicable : BOOLEAN
 			-- is this a numeric type, where 'precision_radix' is applicable ?
 
@@ -115,7 +115,7 @@ feature -- Conversion
 	out : STRING is
 			-- terse visual representation
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string (name); Result.append_string ("%T")
 			Result.append_string (type_code.out); Result.append_string ("%T")
 			Result.append_string (type_name); Result.append_string ("%T")

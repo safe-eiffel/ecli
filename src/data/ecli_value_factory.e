@@ -1,10 +1,10 @@
 indexing
 
 	description:
-	
+
 			"Factory of ECLI_VALUE descendant instances."
 
-	note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
+	please_note: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
@@ -23,8 +23,8 @@ inherit
 		end
 
 	KL_IMPORTED_ARRAY_ROUTINES
-	
-create
+
+create 
 
 	make
 
@@ -57,7 +57,7 @@ feature {NONE} -- Miscellaneous
 		do
 			create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
 		end
-		
+
 	create_real_value is
 		do
 			create {ECLI_REAL}last_result.make
@@ -138,21 +138,21 @@ feature {NONE} -- Implementation
 
 	valid_types : ARRAY[INTEGER] is
 		once
-			Result := << 
+			Result := <<
 				sql_binary,
-				sql_char, 
-				sql_type_date, 
-				sql_decimal, 
-				sql_double, 
-				sql_float, 
-				sql_integer, 
+				sql_char,
+				sql_type_date,
+				sql_decimal,
+				sql_double,
+				sql_float,
+				sql_integer,
 				sql_longvarbinary,
 				sql_longvarchar,
 				sql_numeric,
-				sql_real, 
-				sql_smallint, 
+				sql_real,
+				sql_smallint,
 				sql_type_time,
-				sql_type_timestamp, 
+				sql_type_timestamp,
 				sql_varchar
 			>>
 		end

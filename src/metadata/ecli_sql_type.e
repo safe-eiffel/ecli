@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that describe a SQL type, as supported by a datasource."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -161,7 +161,7 @@ feature -- Access
 			end
 			Result := impl_create_parameters
 		end
-		
+
 	data_definition (parameters : ARRAY[INTEGER]) : STRING is
 			-- Data definition string for Current type with `parameters'.
 		require
@@ -182,11 +182,11 @@ feature -- Access
 					if i <= parameters.upper then
 						Result.append_character (',')
 					end
-				end	
+				end
 				Result.append_character (')')
 			end
 		end
-		
+
 	is_case_sensitive : BOOLEAN is
 			-- If a character datatype, denotes the case sensitivity in comparisons
 			-- and in collations
@@ -290,7 +290,7 @@ feature -- Status report
 
 	is_literal_suffix_applicable : BOOLEAN
 
-	is_unsigned_applicable : BOOLEAN 
+	is_unsigned_applicable : BOOLEAN
 			-- True if it is a numeric type
 
 	is_local_type_name_applicable : BOOLEAN
@@ -315,7 +315,7 @@ feature -- Conversion
 	out : STRING is
 			-- terse visual representation
 		do
-			!!Result.make (128)
+			create Result.make (128)
 			Result.append_string (name)
 			Result.append_string ("%T")
 			Result.append_string (sql_type_code.out) Result.append_string ("%T")
@@ -341,14 +341,14 @@ feature -- Conversion
 			Result.append_string ("%T")
 			if exists_sql_data_type then
 				 Result.append_string (sql_data_type.out) Result.append_string ("%T")
-			end	
-			if exists_sql_date_time_sub then 
+			end
+			if exists_sql_date_time_sub then
 				Result.append_string (sql_date_time_sub.out) Result.append_string ("%T")
 			end
-			if exists_num_prec_radix then 
+			if exists_num_prec_radix then
 				Result.append_string (num_prec_radix.out) Result.append_string ("%T")
 			end
-			if exists_interval_precision then 
+			if exists_interval_precision then
 				Result.append_string (interval_precision.out) Result.append_string ("%T")
 			end
 		end

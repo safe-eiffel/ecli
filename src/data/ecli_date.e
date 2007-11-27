@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL DATE values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,7 +15,7 @@ inherit
 
 	ECLI_GENERIC_VALUE [DT_DATE]
 		redefine
-			item, out, is_equal, 
+			item, out, is_equal,
 			create_impl_item, impl_item
 		end
 
@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 			month_set: month = a_month
 			day_set: day = a_day
 		end
-		
+
 	make_default is
 			-- make default date as first day of Christian Era : January 1st, 1
 		do
@@ -57,7 +57,7 @@ feature {NONE} -- Initialization
 		ensure
 			is_null: is_null
 		end
-		
+
 feature -- Access
 
 	item : DT_DATE is
@@ -240,13 +240,13 @@ feature -- Conversion
 	as_date : DT_DATE is
 			-- Current converted to date
 		do
-			Result := clone (item)
+			Result := item.twin
 		end
-		
+
 	as_timestamp : DT_DATE_TIME is
 			-- Current converted to timestamp
 		do
-			!!Result.make(year, month, day, 0, 0, 0)
+			create Result.make(year, month, day, 0, 0, 0)
 		end
 
 	as_string : STRING is
@@ -256,7 +256,7 @@ feature -- Conversion
 		end
 
 	as_character : CHARACTER is
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER
 		do
 		end
 
@@ -289,7 +289,7 @@ feature -- Conversion
 			-- Current converted to DT_TIME
 		do
 		end
-		
+
 feature -- Basic operations
 
 	trace (a_tracer : ECLI_TRACER) is
@@ -313,7 +313,7 @@ feature {NONE} -- Implementation
 				check_valid
 			end
 		end
-	
+
 	ecli_c_sizeof_date_struct : INTEGER is
 		external "C"
 		end
@@ -325,7 +325,7 @@ feature {NONE} -- Implementation
 			create d.make (0,1,1)
 			impl_item := d
 		end
-	
+
 	integer_format : 	ECLI_FORMAT_INTEGER is
 			-- format integer routines
 		once
@@ -335,7 +335,7 @@ feature {NONE} -- Implementation
 	impl_item : DT_DATE
 
 	calendar :  DT_GREGORIAN_CALENDAR is once create Result end
-	
+
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)
 	day:  	(not is_null) implies (day >= 1 and day <= days_in_month (month, year))

@@ -59,7 +59,7 @@ feature {NONE} -- Implementation
 	subscribers : DS_LIST[G] is
 		do
 			if impl_subscribers = Void then
-				!DS_LINKED_LIST[G]! impl_subscribers.make
+				create {DS_LINKED_LIST[G]} impl_subscribers.make
 			end
 			Result := impl_subscribers
 		ensure

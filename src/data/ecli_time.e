@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL TIME values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,15 +15,15 @@ inherit
 
 	ECLI_GENERIC_VALUE [DT_TIME]
 		redefine
-			is_equal, out, 
+			is_equal, out,
 			item,
 			create_impl_item, impl_item
 		end
-		
+
 create
 
 	make, make_default, make_null
-	
+
 feature {NONE} -- Initialization
 
 	make (a_hour, a_minute, a_second : INTEGER) is --, a_nanosecond : INTEGER) is
@@ -61,7 +61,7 @@ feature {NONE} -- Initialization
 		ensure
 			is_null: is_null
 		end
-		
+
 feature -- Access
 
 	item : DT_TIME is
@@ -226,7 +226,7 @@ feature -- Conversion
 
 	out : STRING is
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			if not is_null then
 				Result.append_character (' ')
 				Result.append_string (Integer_format.pad_integer_2 (hour))
@@ -238,10 +238,10 @@ feature -- Conversion
 				Result := out_null
 			end
 		end
-			
+
 	as_time : DT_TIME is
 		do
-			Result := clone (item)
+			Result := item.twin
 		end
 
 	as_string : STRING is
@@ -251,7 +251,7 @@ feature -- Conversion
 		end
 
 	as_character : CHARACTER is
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER
 		do
 		end
 
@@ -289,7 +289,7 @@ feature -- Conversion
 			-- Current converted to DT_DATE_TIME
 		do
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -307,7 +307,7 @@ feature -- Basic operations
 				minute = other.minute and
 				second = other.second
 		end
-			
+
 feature -- Obsolete
 
 	allocate_buffer is
@@ -321,18 +321,18 @@ feature -- Obsolete
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
-	
+
 	ecli_c_sizeof_time_struct : INTEGER is
 		external "C"
 		end
 
 	create_impl_item is
-			-- 
+			--
 		local
 			t : DT_TIME
 		do
 			create t.make (0,0,0)
-			impl_item := t			
+			impl_item := t
 		end
 
 	integer_format : 	ECLI_FORMAT_INTEGER is
@@ -340,9 +340,9 @@ feature {NONE} -- Implementation
 		once
 			create Result
 		end
-		
+
 	impl_item : DT_TIME
-	
+
 invariant
 	impl_item_not_void: impl_item /= Void
 

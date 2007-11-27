@@ -17,7 +17,7 @@ inherit
 		export
 			{ECLI_LOGIN_STRATEGY} set_status
 		end
-		
+
 	ECLI_HANDLE
 		export
 			{ANY} is_valid;
@@ -91,12 +91,12 @@ feature -- Initialization
 			valid: is_valid
 			open: not is_closed
 		end
-		
+
 feature -- Access
 
 	login_strategy : ECLI_LOGIN_STRATEGY
 			-- Login strategy used for connection.
-			
+
 	data_source : STRING is
 			-- Data source used for connection
 		obsolete "[2004-12-23]Use `login_strategy' instead."
@@ -119,7 +119,7 @@ feature -- Access
 		end
 
 	info : ECLI_DBMS_INFORMATION
-		
+
 	transaction_capability : INTEGER is
 			-- Transaction capability of established session
 		require
@@ -151,7 +151,7 @@ feature -- Access
 		ensure
 			api_trace_filename_not_void: Result /= Void
 		end
-		
+
 	transaction_isolation : ECLI_TRANSACTION_ISOLATION is
 			-- Current active transaction isolation options
 		local
@@ -164,9 +164,9 @@ feature -- Access
 			transaction_isolation_not_void: Result /= Void
 		end
 
-	connection_timeout : DT_TIME_DURATION is		
+	connection_timeout : DT_TIME_DURATION is
 			-- Duration corresponding to the number of seconds to wait for any request on the connection
-			-- to complete before returning to the application. 
+			-- to complete before returning to the application.
 			-- Result.second_count = 0 means no timeout
 		local
 			ext_connection_timeout: XS_C_UINT32
@@ -179,10 +179,10 @@ feature -- Access
 		end
 
 	login_timeout : DT_TIME_DURATION is
-			-- Duration corresponding to the number of seconds to wait for a login request to complete 
-			-- before returning to the application. The default is driver-dependent. 
+			-- Duration corresponding to the number of seconds to wait for a login request to complete
+			-- before returning to the application. The default is driver-dependent.
 			-- Result.second_count = 0 means not timeout and a connection attempt will wait indefinitely.
-		local	
+		local
 			ext_connection_timeout: XS_C_UINT32
 		do
 			create ext_connection_timeout.make
@@ -192,7 +192,7 @@ feature -- Access
 			login_timeout_not_void: Result /= Void
 		end
 
-	network_packet_size : INTEGER is		
+	network_packet_size : INTEGER is
 			-- Network packet size.
 			-- Note:   Many data sources either do not support this option or only can return but not set
 			--         the network packet size.
@@ -203,20 +203,20 @@ feature -- Access
 			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_packet_size, uint32.handle))
 			Result := uint32.item
 		end
-		
+
 	set_network_packet_size (new_size : INTEGER) is
-			--  If the specified size exceeds the maximum packet size 
-			--  or is smaller than the minimum packet size, the driver substitutes that value and 
+			--  If the specified size exceeds the maximum packet size
+			--  or is smaller than the minimum packet size, the driver substitutes that value and
 			--  returns SQLSTATE 01S02 (Option value changed).
 		require
 			new_size_positive: new_size > 0
 			not_connected: not is_connected
 		do
-			set_status (ecli_c_set_integer_connection_attribute(handle, att.sql_attr_packet_size, new_size))		
+			set_status (ecli_c_set_integer_connection_attribute(handle, att.sql_attr_packet_size, new_size))
 		ensure
 			network_packet_size_set: (is_ok and not cli_state.is_equal ("01S02")) implies network_packet_size = new_size
 		end
-		
+
 feature -- Status report
 
 	has_pending_transaction : BOOLEAN is
@@ -242,7 +242,7 @@ feature -- Status report
 		ensure
 			definition: Result = (login_strategy /= Void)
 		end
-		
+
 	is_connected : BOOLEAN is
 			-- Is this session connected to a database ?
 		do
@@ -260,7 +260,7 @@ feature -- Status report
 			set_status (ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_connection_dead,uint_result.handle))
 			Result := (uint_result.item = att.Sql_cd_true)
 		end
-		
+
 	is_transaction_capable : BOOLEAN is
 		require
 			connected: is_connected
@@ -272,7 +272,7 @@ feature -- Status report
 				transaction_capability = sql_tc_ddl_commit or
 				transaction_capability = sql_tc_ddl_ignore )
 		end
-	
+
 	is_describe_parameters_capable : BOOLEAN is
 			-- Can 'ECLI_STATEMENT.describe_parameters' be called ?
 		local
@@ -291,7 +291,7 @@ feature -- Status report
 			dummy_statement : ECLI_STATEMENT
 		do
 			if impl_is_bind_arrayed_parameters_capability < 0 then
-				!!dummy_statement.make (Current)
+				create dummy_statement.make (Current)
 				if dummy_statement.can_use_arrayed_parameters then
 					impl_is_bind_arrayed_parameters_capability := 1
 				else
@@ -301,14 +301,14 @@ feature -- Status report
 			end
 			Result := impl_is_bind_arrayed_parameters_capability = 1
 		end
-		
+
 	is_bind_arrayed_results_capable : BOOLEAN is
 			-- Can arrayed results be used  ?
 		local
 			dummy_statement : ECLI_STATEMENT
 		do
 			if impl_is_bind_arrayed_results_capability < 0 then
-				!!dummy_statement.make (Current)
+				create dummy_statement.make (Current)
 				if dummy_statement.can_use_arrayed_results then
 					impl_is_bind_arrayed_results_capability := 1
 				else
@@ -336,7 +336,7 @@ feature -- Status report
 			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_trace,uint32.handle))
 			Result := (uint32.item = att.sql_opt_trace_on)
 		end
-		
+
 feature -- Status setting
 
 	set_manual_commit is
@@ -380,7 +380,7 @@ feature -- Status setting
 		do
 			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
 		end
-		
+
 	disable_api_tracing is
 			-- Disable ODBC API tracing.
 		do
@@ -390,7 +390,7 @@ feature -- Status setting
 --SQL_ATTR_TRACE
 --	Either
 --	(ODBC 1.0)
---	An SQLUINTEGER value telling the Driver Manager whether to perform tracing: 
+--	An SQLUINTEGER value telling the Driver Manager whether to perform tracing:
 --	SQL_OPT_TRACE_OFF = Tracing off (the default)
 --	
 --	SQL_OPT_TRACE_ON = Tracing on
@@ -398,7 +398,7 @@ feature -- Status setting
 --	When tracing is on, the Driver Manager writes each ODBC function call to the trace file.
 --	
 --	Note   When tracing is on, the Driver Manager can return SQLSTATE IM013 (Trace file error) from any function.
---	An application specifies a trace file with the SQL_ATTR_TRACEFILE option. If the file already exists, the Driver Manager appends to the file. Otherwise, it creates the file. If tracing is on and no trace file has been specified, the Driver Manager writes to the file SQL.LOG in the root directory. 
+--	An application specifies a trace file with the SQL_ATTR_TRACEFILE option. If the file already exists, the Driver Manager appends to the file. Otherwise, it creates the file. If tracing is on and no trace file has been specified, the Driver Manager writes to the file SQL.LOG in the root directory.
 --	
 --	An application can set the variable ODBCSharedTraceFlag to enable tracing dynamically. Tracing is then enabled for all ODBC applications currently running. If an application turns tracing off, it is turned off only for that application.
 --	
@@ -409,11 +409,11 @@ feature -- Status setting
 --SQL_ATTR_TRACEFILE
 --	Either
 --	(ODBC 1.0)
---	A null-terminated character string containing the name of the trace file. 
+--	A null-terminated character string containing the name of the trace file.
 --	The default value of the SQL_ATTR_TRACEFILE attribute is specified with the TraceFile keyword in the system information. For more information, see ODBC Subkey.
 --	
 --	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_ TRACEFILE does not require the ConnectionHandle argument to be valid and will not return SQL_ERROR if ConnectionHandle is invalid. This attribute applies to all connections.
-		
+
 feature -- Element change
 
 	set_login_strategy (new_login : ECLI_LOGIN_STRATEGY) is
@@ -426,7 +426,7 @@ feature -- Element change
 		ensure
 			login_strategy_set: login_strategy = new_login
 		end
-		
+
 	set_user_name(a_user_name: STRING) is
 			-- Set `user' to `a_user'
 		obsolete "[2004-12-23]Use `login_strategy' instead."
@@ -487,7 +487,7 @@ feature -- Element change
 
 	set_login_timeout (duration : DT_TIME_DURATION) is
 			-- Set `login_timeout' to `duration'.
-			-- If the specified timeout exceeds the maximum login timeout in the data source, 
+			-- If the specified timeout exceeds the maximum login timeout in the data source,
 			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
 		require
 			not_connected: not is_connected
@@ -504,7 +504,7 @@ feature -- Element change
 
 	set_connection_timeout (duration : DT_TIME_DURATION) is
 			-- Set `connection_timeout' to `duration'.
-			-- If the specified timeout exceeds the maximum connection timeout in the data source, 
+			-- If the specified timeout exceeds the maximum connection timeout in the data source,
 			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
 		require
 			not_connected: not is_connected
@@ -519,7 +519,7 @@ feature -- Element change
 			connection_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies connection_timeout.is_equal (duration)
 		end
 
-	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM) is		
+	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM) is
 			-- Set `api_trace_filename' to `filename'.
 		require
 			filename_not_void: filename /= Void
@@ -534,7 +534,7 @@ feature -- Element change
 		ensure
 			api_trace_filename_set: is_ok implies file_system.basename (api_trace_filename).is_equal (file_system.basename (filename))
 		end
-		
+
 feature -- Basic Operations
 
 	begin_transaction is
@@ -624,7 +624,7 @@ feature -- Basic Operations
 			login_set: login_strategy = new_strategy
 			connected: is_connected implies is_ok
 		end
-		
+
 	disconnect is
 			-- Disconnect the session and close any remaining statement
 		require
@@ -691,16 +691,16 @@ feature {NONE} -- Implementation
 		do
 			Result ?= login_strategy
 		end
-		
+
 	reset_implementation is
 			-- Reset all implementation values to default ones
 		do
 			ext_transaction_capability.put (sql_tc_none - 1)
 			ext_describe_parameters_capability.put (sql_false - 1)
-			impl_is_bind_arrayed_parameters_capability := -1			
-			impl_is_bind_arrayed_results_capability := -1			
+			impl_is_bind_arrayed_parameters_capability := -1
+			impl_is_bind_arrayed_results_capability := -1
 		end
-		
+
 	release_handle is
 		do
 			if is_connected then
@@ -742,16 +742,16 @@ feature {NONE} -- Implementation
 		do
 			Result := ext_transaction_capability.item
 		end
-		
+
 	ext_is_manual_commit : XS_C_BOOLEAN
 	ext_transaction_capability : XS_C_INT32
 	ext_describe_parameters_capability : XS_C_INT32
-	
+
 	impl_describe_parameters_capability : INTEGER is do Result := ext_describe_parameters_capability.item end
 
 	impl_is_bind_arrayed_parameters_capability : INTEGER
 	impl_is_bind_arrayed_results_capability	: INTEGER
-	
+
 	allocate is
 			-- Allocate HANDLE
 		require
@@ -764,7 +764,7 @@ feature {NONE} -- Implementation
 			create ext_is_manual_commit.make
 			create ext_transaction_capability.make
 			create ext_describe_parameters_capability.make
-			
+
 			-- | Allocate session handle
 			environment := shared_environment
 			henv := environment.handle
@@ -797,14 +797,14 @@ feature {NONE} -- Implementation
 			set_status (ecli_c_disconnect (handle))
 			if is_ok then
 				set_disconnected
-			end			
+			end
 		end
 
-	att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS is		
+	att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS is
 		once
 			create Result
 		end
-		
+
 invariant
 	valid_session: environment /= Void implies environment = shared_environment
 	info_not_void: info /= Void

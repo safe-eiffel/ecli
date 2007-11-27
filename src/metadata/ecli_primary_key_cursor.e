@@ -22,7 +22,7 @@ inherit
 			item, make, forth
 		end
 
-create
+creation
 
 	make
 

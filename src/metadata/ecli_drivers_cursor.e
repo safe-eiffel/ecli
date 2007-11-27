@@ -24,7 +24,7 @@ inherit
 
 	KL_IMPORTED_STRING_ROUTINES
 
-create
+creation
 
 	make
 

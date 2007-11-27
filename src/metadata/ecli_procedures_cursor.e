@@ -22,7 +22,7 @@ inherit
 			item, impl_item
 		end
 
-create
+creation
 
 	make_all_procedures, make -- , make_by_type
 

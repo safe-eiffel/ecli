@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Shared CLI environment."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,7 +15,7 @@ feature -- Access
 
 	shared_environment : ECLI_ENVIRONMENT is
 		once
-			!!Result.make
+			create Result.make
 		end
 
 end
