@@ -10,31 +10,33 @@ class
 feature -- Access
 
 	t_access : STRING is "access"
-	
+
 	t_parameter_map : STRING is "parameter_map"
-	
+
 	t_name : STRING is "name"
-	
+
 	t_type : STRING is "type"
-	
+
 	t_sql : STRING is "sql"
-	
+
 	t_result_set : STRING is "result_set"
-	
+
 	t_extends : STRING is "extends"
-	
+
 	t_parameter_set : STRING is "parameter_set"
-	
+
 	t_table : STRING is "table"
-	
+
 	t_column : STRING is "column"
-	
+
 	t_description : STRING is "description"
-	
+
 	t_parameter : STRING is "parameter"
-	
+
 	t_sample : STRING is "sample"
-	
+
+	t_modules : STRING is "modules"
+
 feature -- Measurement
 
 feature -- Status report

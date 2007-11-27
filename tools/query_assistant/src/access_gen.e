@@ -23,8 +23,6 @@ inherit
 	SHARED_MAXIMUM_LENGTH
 	SHARED_USE_DECIMAL
 
-	ACCESS_MODULE_XML_CONSTANTS
-
 create
 
 	make
@@ -33,6 +31,8 @@ feature {NONE} -- Initialization
 
 	make is
 			-- generate access modules
+		local
+			adapter : ACCESS_MODULE_PERSISTENCE_ADAPTER
 		do
 			Arguments.set_program_name ("query_assistant")
 			create_error_handler
@@ -45,9 +45,10 @@ feature {NONE} -- Initialization
 				if default_schema /= Void then
 					set_shared_schema_name (default_schema)
 				end
-				parse_xml_input_file
-				if not has_error then
-					process_document
+				create adapter.make (error_handler)
+				adapter.read_from_file (in_filename)
+				if not adapter.has_error then
+					module := adapter.last_object
 					check_modules
 					resolve_parent_classes
 					generate_modules
@@ -121,11 +122,7 @@ feature -- Access (generation)
 	error_handler: QA_ERROR_HANDLER
 			-- Error handler
 
-	modules : DS_HASH_TABLE [RDBMS_ACCESS, STRING]
-
-	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
-
-	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
+	module : ACCESS_MODULE
 
 	parent_parameter_sets : DS_HASH_TABLE[PARENT_COLUMN_SET[RDBMS_ACCESS_PARAMETER], STRING]
 
@@ -139,22 +136,6 @@ feature -- Status report
 
 	has_error: BOOLEAN
 			-- has an error occurred during processing?
-
-feature -- Parser
-
-	fact: XM_EXPAT_PARSER_FACTORY is
-			-- Expat XML parser factory
-		once
-			create Result
-		ensure
-			factory_not_void: Result /= Void
-		end
-
-	event_parser: XM_PARSER
-			-- XML parser
-
-	tree_pipe: XM_TREE_CALLBACKS_PIPE
-			-- Tree generating callbacks
 
 feature -- Basic operations
 
@@ -171,110 +152,6 @@ feature -- Basic operations
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
 
-	process_document is
-			-- process XML document
-		require
-			parser_ok: event_parser.is_correct
-			tree_pipe_ok: not tree_pipe.error.has_error
-		local
-			root : XM_DOCUMENT
-			element : XM_ELEMENT
-			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			l_factory : RDBMS_ACCESS_FACTORY
-			l_module : RDBMS_ACCESS
-			l_result_sets : like result_sets
-			parameters_ok, results_ok : BOOLEAN
-		do
-			create modules.make (10)
-			create parameter_sets.make (10)
-			create l_result_sets.make (10)
-			from
-				root := tree_pipe.document
-				a_cursor := root.root_element.new_cursor
-				a_cursor.start
-				create l_factory.make (error_handler)
-			until
-				a_cursor.off
-			loop
-				element ?= a_cursor.item
-				if element /= Void then
-					if element.name.string.is_equal (t_access) then
-						l_factory.create_access_module (element)
-						l_module := l_factory.last_module
-						if not l_factory.is_error and then l_module /= Void then
-							modules.search (l_module.name)
-							if modules.found then
-								--| Error : module already exists
-								error_handler.report_already_exists (l_module.name, l_module.name, "Module")
-							else
-								parameters_ok := True
-								results_ok := True
-								parameter_sets.search (l_module.parameters.name)
-								if parameter_sets.found then
-									error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
-									parameters_ok := False
-								end
-								if l_module.results /= Void then
-									l_result_sets.search (l_module.results.name)
-									if l_result_sets.found  then
-										error_handler.report_already_exists (l_module.name, l_module.results.name, "Result set")
-										results_ok := False
-									end
-								end
-								if parameters_ok and results_ok then
-									modules.force (l_module, l_module.name)
-									parameter_sets.force (l_module.parameters, l_module.parameters.name)
-									if l_module.results /= Void then
-										l_result_sets.force (l_module.results, l_module.results.name)
-									end
-								else
-									error_handler.report_rejected (l_module.name)
-								end
-							end
-						end
-					elseif element.name.string.is_equal (t_parameter_map) then
-						l_factory.create_parameter_map (element)
-					end
-				end
-				a_cursor.forth
-			end
-			create result_sets.make (10)
-		ensure
-			modules_not_void: modules /= Void
-			parameter_sets_not_void: parameter_sets /= Void
-			result_sets_not_void: result_sets /= Void
-			result_sets_empty: result_sets.is_empty
-		end
-
-	parse_xml_input_file is
-			-- Do the real work of parsing the XML
-		require
-			in_filename_not_void: in_filename /= Void
-			parser_not_void: event_parser /= Void
-			pipe_not_void: tree_pipe /= Void
-		local
-			in: KL_TEXT_INPUT_FILE
-		do
-			has_error := False
-			error_handler.report_start ("Parsing XML file")
-			create in.make (in_filename)
-			in.open_read
-			if not in.is_open_read then
-				error_handler.report_cannot_read_file (in_filename)
-				has_error := True
-			else
-				event_parser.set_string_mode_mixed
-				event_parser.parse_from_stream (in)
-				in.close
-				if tree_pipe.error.has_error then
-					error_handler.report_parse_error (tree_pipe.last_error)
-					has_error := True
-				else
-				end
-			end
-			error_handler.report_end ("Parsing XML file", not has_error)
-		end
-
 	process_arguments is
 			-- Read and check command line arguments.
 		do
@@ -282,8 +159,8 @@ feature -- Basic operations
 			verify_arguments
 		ensure
 			in_filename_not_void: not has_error implies in_filename /= Void
-			parser_not_void: not has_error implies event_parser /= Void
-			pipe_not_void: not has_error implies tree_pipe /= Void
+--			parser_not_void: not has_error implies event_parser /= Void
+--			pipe_not_void: not has_error implies tree_pipe /= Void
 		end
 
 	parse_arguments is
@@ -308,15 +185,15 @@ feature -- Basic operations
 					in_filename := value
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-expat") then
-					if fact.is_expat_parser_available then
-						event_parser := fact.new_expat_parser
-					else
-						error_handler.report_xml_parser_unavailable ("EXPAT")
-						has_error := True
-					end
+--					if fact.is_expat_parser_available then
+--						event_parser := fact.new_expat_parser
+--					else
+--						error_handler.report_xml_parser_unavailable ("EXPAT")
+--						has_error := True
+--					end
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-eiffel") then
-					create {XM_EIFFEL_PARSER} event_parser.make
+--					create {XM_EIFFEL_PARSER} event_parser.make
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-verbose") then
 					is_verbose := True
@@ -373,19 +250,20 @@ feature -- Basic operations
 			error_message : STRING
 		do
 			-- Create standard pipe holder and bind it to event parser.
+			has_error := False
 			create error_message.make (0)
 			if not has_error then
-				if event_parser = Void then
-					create {XM_EIFFEL_PARSER} event_parser.make
-					error_handler.report_default_argument ("-eiffel|-expat", "Eiffel XML parser")
-				end
-				if event_parser /= Void then
-					create tree_pipe.make
-					event_parser.set_callbacks (tree_pipe.start)
-				else
-					has_error := True
-					error_handler.report_missing_argument ("-eiffel' or '-expat'", "An XML parser must be specified")
-				end
+--				if event_parser = Void then
+--					create {XM_EIFFEL_PARSER} event_parser.make
+--					error_handler.report_default_argument ("-eiffel|-expat", "Eiffel XML parser")
+--				end
+--				if event_parser /= Void then
+--					create tree_pipe.make
+--					event_parser.set_callbacks (tree_pipe.start)
+--				else
+--					has_error := True
+--					error_handler.report_missing_argument ("-eiffel' or '-expat'", "An XML parser must be specified")
+--				end
 			end
 			if user = Void then
 				has_error := True
@@ -439,9 +317,9 @@ feature -- Basic operations
 					end
 				end
 			end
-			if has_error then
-				error_handler.report_usage (Fact.is_expat_parser_available)
-			end
+--			if has_error then
+--				error_handler.report_usage (Fact.is_expat_parser_available)
+--			end
 			if not is_verbose then
 				error_handler.disable_verbose
 			end
@@ -464,8 +342,8 @@ feature {NONE} -- Implementation
 			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_PARAMETER]
 		do
 			create resolver
-			parent_parameter_sets := resolver.resolve_parents (parameter_sets, error_handler)
-			resolver.resolve_descendants (parameter_sets)
+			parent_parameter_sets := resolver.resolve_parents (module.parameter_sets, error_handler)
+			resolver.resolve_descendants (module.parameter_sets)
 		end
 
 	resolve_parent_result_sets is
@@ -474,8 +352,8 @@ feature {NONE} -- Implementation
 			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_RESULT]
 		do
 			create resolver
-			parent_result_sets := resolver.resolve_parents (result_sets, error_handler)
-			resolver.resolve_descendants (result_sets)
+			parent_result_sets := resolver.resolve_parents (module.result_sets, error_handler)
+			resolver.resolve_descendants (module.result_sets)
 		end
 
 	resolve_all_sets is
@@ -484,9 +362,9 @@ feature {NONE} -- Implementation
 			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_METADATA]
 			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
 		do
-			create all_sets.make (result_sets.count + parameter_sets.count)
+			create all_sets.make (module.result_sets.count + module.parameter_sets.count)
 			from
-				cursor := result_sets.new_cursor
+				cursor := module.result_sets.new_cursor
 				cursor.start
 			until
 				cursor.off
@@ -495,7 +373,7 @@ feature {NONE} -- Implementation
 				cursor.forth
 			end
 			from
-				cursor := parameter_sets.new_cursor
+				cursor := module.parameter_sets.new_cursor
 				cursor.start
 			until
 				cursor.off
@@ -516,7 +394,7 @@ feature {NONE} -- Implementation
 			l_name : STRING
 		do
 			from
-				cursor := modules.new_cursor
+				cursor := module.accesses.new_cursor
 				cursor.start
 			until
 				cursor.off
@@ -528,7 +406,7 @@ feature {NONE} -- Implementation
 					if cursor.item.is_valid then
 						error_handler.report_end ("Analyzing "+cursor.item.name,True)
 						if cursor.item.has_result_set then
-							result_sets.force (cursor.item.results, cursor.item.results.name)
+							module.result_sets.force (cursor.item.results, cursor.item.results.name)
 						else
 --							error_handler.report_rejected (cursor.item.name)
 							do_nothing
@@ -558,7 +436,7 @@ feature {NONE} -- Implementation
 			error_handler.report_start ("Class generation")
 			--| classes for modules
 			from
-				c := modules.new_cursor
+				c := module.accesses.new_cursor
 				c.start
 			until
 				c.off
@@ -583,40 +461,40 @@ feature {NONE} -- Implementation
 			end
 			if access_routines_prefix /= Void then
 				--| generate access routines
-				gen.create_access_routines_class (access_routines_prefix, modules, all_sets, no_prototypes)
+				gen.create_access_routines_class (access_routines_prefix, module.accesses, all_sets, no_prototypes)
 				gen.write_class (gen.access_routines_class, out_directory)
 			end
 			--| FIXME : report if class generation has produced an error
 			error_handler.report_end ("Class generation", True)
 		end
 
-	generate (module : RDBMS_ACCESS;a_error_handler : QA_ERROR_HANDLER) is
-			-- generate classes for `module', query + parameter_set + result_set classes
+	generate (access : RDBMS_ACCESS;a_error_handler : QA_ERROR_HANDLER) is
+			-- generate classes for `access', query + parameter_set + result_set classes
 		require
-			module_not_void: module /= Void
+			access_not_void: access /= Void
 		local
 			parent_class : STRING
 		do
 			create gen.make (a_error_handler)
-			a_error_handler.report_generating (module.name)
-			if module.has_result_set then
+			a_error_handler.report_generating (access.name)
+			if access.has_result_set then
 				parent_class := default_parent_cursor
 			else
 				parent_class := default_parent_modify
 			end
-			gen.create_cursor_class (module, parent_class)
+			gen.create_cursor_class (access, parent_class)
 			gen.write_class (gen.cursor_class,out_directory)
-			if module.parameters.parent_name = Void or else module.parameters.local_items.count > 0 then
-				if module.parameters.count > 0 then
-					a_error_handler.report_generating (module.parameters.name)
-					gen.create_parameters_class (module.parameters)
+			if access.parameters.parent_name = Void or else access.parameters.local_items.count > 0 then
+				if access.parameters.count > 0 then
+					a_error_handler.report_generating (access.parameters.name)
+					gen.create_parameters_class (access.parameters)
 					gen.write_class (gen.parameters_class, out_directory)
 				end
 			end
-			if module.has_result_set then
-				if module.results.parent_name = Void or else module.results.local_items.count > 0 then
-					a_error_handler.report_generating (module.results.name)
-					gen.create_results_class (module.results)
+			if access.has_result_set then
+				if access.results.parent_name = Void or else access.results.local_items.count > 0 then
+					a_error_handler.report_generating (access.results.name)
+					gen.create_results_class (access.results)
 					gen.write_class (gen.results_class, out_directory)
 				end
 			end

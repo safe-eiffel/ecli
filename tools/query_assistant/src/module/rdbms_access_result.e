@@ -1,5 +1,5 @@
 indexing
-	description: "Module result metadata."
+	description: "RDBMS result metadata."
 
 	library: "Access_gen : Access Modules Generators utilities"
 

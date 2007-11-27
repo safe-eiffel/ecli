@@ -8,7 +8,7 @@ class
 	ACCESS_TYPE
 
 create
-	make_from_string 
+	make_from_string
 
 feature -- Initialization
 
@@ -16,28 +16,34 @@ feature -- Initialization
 		require
 			name_not_void: name /= Void
 		do
-			if name.is_equal ("read") then
+			if name.is_equal (t_read) then
 				type := c_read
-			elseif name.is_equal ("write") then
+			elseif name.is_equal (t_write) then
 				type := c_write
-			elseif name.is_equal ("update") then
+			elseif name.is_equal (t_update) then
 				type := c_update
-			elseif name.is_equal ("delete") then
+			elseif name.is_equal (t_delete) then
 				type := c_delete
-			elseif name.is_equal ("exists") then
+			elseif name.is_equal (t_exists) then
 				type := c_exists
-			else 
+			else
 				type := c_extended
 			end
 		ensure
 			invalid_type_is_extended: not valid_type (name) implies is_extended
 		end
-		
+
 feature -- Access
 
 	type : INTEGER
-	
-feature -- Measurement
+
+feature -- Conversion
+
+	to_string : STRING is
+		do
+			Result := types.item (type)
+		end
+
 
 feature -- Status report
 
@@ -47,57 +53,59 @@ feature -- Status report
 	is_delete : BOOLEAN is do Result := (type = c_delete) end
 	is_exists : BOOLEAN is do Result := (type = c_exists) end
 	is_extended : BOOLEAN is do Result := (type = c_extended) end
-	
+
 	valid_type (name : STRING) : BOOLEAN is
 		require
 			name_not_void: name /= Void
 		do
-			if name.is_equal ("read") then
+			if name.is_equal (t_read) then
 				Result := True
-			elseif name.is_equal ("write") then
+			elseif name.is_equal (t_write) then
 				Result := True
-			elseif name.is_equal ("update") then
+			elseif name.is_equal (t_update) then
 				Result := True
-			elseif name.is_equal ("delete") then
+			elseif name.is_equal (t_delete) then
 				Result := True
-			elseif name.is_equal ("exists") then
+			elseif name.is_equal (t_exists) then
 				Result := True
-			elseif name.is_equal ("extended") then
+			elseif name.is_equal (t_extended) then
 				Result := True
-			else 
+			else
 				Result := False
 			end
 		end
-		
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
 
 feature -- constants
 
-	c_read, c_write, c_exists, c_update, c_delete, c_extended : INTEGER is unique
+	c_read : INTEGER is 1
+	c_write : INTEGER is 2
+	c_exists : INTEGER is 3
+	c_update : INTEGER is 4
+	c_delete : INTEGER is 5
+	c_extended : INTEGER is 6
+
+	t_read : STRING is "read"
+	t_write : STRING is "write"
+	t_exists : STRING is "update"
+	t_update : STRING is "delete"
+	t_delete : STRING is "exists"
+	t_extended : STRING is "extended"
+
 
 feature {NONE} -- Implementation
 
+	types : ARRAY[STRING] is
+		once
+			create Result.make (1,6)
+			Result.put (t_read, c_read)
+			Result.put (t_write, c_write)
+			Result.put (t_exists,c_exists)
+			Result.put (t_update, c_update)
+			Result.put (t_delete, c_delete)
+			Result.put (t_extended, c_extended)
+		end
+
 invariant
-	type_valid: type >= c_read and type <= c_extended 
+	type_valid: type >= c_read and type <= c_extended
 
 end -- class ACCESS_TYPE
