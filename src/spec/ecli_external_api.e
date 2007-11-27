@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"CLI C Interface."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,7 +14,7 @@ class ECLI_EXTERNAL_API
 inherit
 
 	ECLI_API_CONSTANTS
-	
+
 feature {NONE} -- Implementation
 
 	ecli_c_allocate_environment (penv : POINTER) : INTEGER is
@@ -47,27 +47,27 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	ecli_c_set_integer_statement_attribute (StatementHandle : POINTER; Attribute : INTEGER; ValuePtr : INTEGER)  : INTEGER is
+	ecli_c_set_integer_statement_attribute (StatementHandle : POINTER; an_attribute : INTEGER; ValuePtr : INTEGER)  : INTEGER is
 		external "C"
 		end
 
-	ecli_c_set_pointer_statement_attribute (StatementHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
+	ecli_c_set_pointer_statement_attribute (StatementHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
 		external "C"
 		end
 
-	ecli_c_set_integer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : INTEGER)  : INTEGER is
+	ecli_c_set_integer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : INTEGER)  : INTEGER is
 		external "C"
 		end
 
-	ecli_c_set_pointer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
+	ecli_c_set_pointer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
 		external "C"
 		end
 
-	ecli_c_get_pointer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER; BufferLength : INTEGER; StringLengthPtr : POINTER)  : INTEGER is
+	ecli_c_get_pointer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER; BufferLength : INTEGER; StringLengthPtr : POINTER)  : INTEGER is
 		external "C"
 		end
 
-	ecli_c_get_integer_connection_attribute (ConnectionHandle : POINTER; Attribute : INTEGER; ValuePtr : POINTER)  : INTEGER is
+	ecli_c_get_integer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER)  : INTEGER is
 		external "C"
 		end
 
@@ -110,11 +110,11 @@ feature {NONE} -- Implementation
 	ecli_c_rollback (con : POINTER) : INTEGER is
 		external "C"
 		end
-	
+
 	ecli_c_row_count (stmt : POINTER; count : POINTER) : INTEGER is
-		external "C" 
+		external "C"
 		end
-		
+
 	ecli_c_parameter_count (stmt : POINTER; count : POINTER) : INTEGER  is
 		external "C"
 		end
@@ -122,19 +122,19 @@ feature {NONE} -- Implementation
 	ecli_c_result_column_count (stmt : POINTER; count : POINTER) : INTEGER  is
 		external "C"
 		end
-	
+
 	ecli_c_prepare (stmt : POINTER; sql : POINTER) : INTEGER is
 		external "C"
 		end
-	
+
 	ecli_c_execute_direct (stmt : POINTER; sql : POINTER) : INTEGER is
 		external "C"
 		end
-	
+
 	ecli_c_execute (stmt : POINTER) : INTEGER  is
 		external "C"
 		end
-	
+
 	ecli_c_more_results (stmt : POINTER) : INTEGER  is
 		external "C"
 		end
@@ -144,7 +144,7 @@ feature {NONE} -- Implementation
 			value : POINTER; buffer_length : INTEGER; ptr_value_length : POINTER) : INTEGER  is
 		external "C"
 		end
-	
+
 	ecli_c_bind_result (stmt : POINTER; index, c_type : INTEGER; value : POINTER; buffer_length : INTEGER; len_indicator : POINTER) : INTEGER is
 		external "C"
 		end
@@ -160,11 +160,11 @@ feature {NONE} -- Implementation
 	ecli_c_get_type_info (stmt : POINTER; data_type : INTEGER) : INTEGER is
 		external "C"
 		end
-		
+
 	ecli_c_get_tables ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER ; TableType : POINTER ;  NameLength4 : INTEGER) : INTEGER is
 		external "C"
 		end
-		
+
 	ecli_c_get_procedures ( StatementHandle : POINTER ;  CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; ProcedureName : POINTER ;  NameLength3 : INTEGER) : INTEGER is
 		external "C"
 		end
@@ -181,7 +181,7 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	ecli_c_get_foreign_keys ( StatementHandle : POINTER ;  
+	ecli_c_get_foreign_keys ( StatementHandle : POINTER ;
 			CatalogName : POINTER ;  NameLength1 : INTEGER ; SchemaName : POINTER ;  NameLength2 : INTEGER ; TableName : POINTER ;  NameLength3 : INTEGER;
 			FKCatalogName : POINTER ;  NameLength4 : INTEGER ; FKSchemaName : POINTER ;  NameLength5 : INTEGER ; FKTableName : POINTER ;  NameLength6 : INTEGER) : INTEGER is
 		external "C"
@@ -214,15 +214,15 @@ feature {NONE} -- Implementation
 	ecli_c_close_cursor (stmt : POINTER) : INTEGER is
 		external "C"
 		end
-	
+
 	ecli_c_environment_error (handle : POINTER; record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER is
 		external "C"
 		end
-	
+
 	ecli_c_session_error (handle : POINTER; record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER is
 		external "C"
 		end
-	
+
 	ecli_c_statement_error (handle : POINTER; record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER is
 		external "C"
 		end
@@ -236,9 +236,9 @@ feature {NONE} -- Implementation
 		end
 
 	ecli_c_sql_get_info (handle : POINTER; info_type: INTEGER; info_value_ptr: POINTER; buffer_length : INTEGER; string_length_ptr: POINTER) : INTEGER is
-		external "C" 
+		external "C"
 		end
-		
+
 	ecli_c_sql_drivers (handle : POINTER;
 			Direction : INTEGER;
 			DriverDescription : POINTER;
@@ -247,9 +247,9 @@ feature {NONE} -- Implementation
 			DriverAttributes : POINTER;
 			BufferLength2 : INTEGER
 			AttributesLengthPtr : POINTER) : INTEGER is
-     	external "C" 
+     	external "C"
      	end
-     	
+
 
 feature {NONE} -- Data Srouce Configuration
 
@@ -301,7 +301,7 @@ feature {NONE} -- Value handling functions
 			-- assuming that value->length octets have to be transferred
 		external "C"
 		end
-	
+
 feature {NONE} -- Value handling functions for ARRAYED values
 
 	ecli_c_alloc_array_value (c_buffer_length : INTEGER; a_count : INTEGER)  : POINTER is
@@ -382,7 +382,7 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 		external "C"
 		end
 
-	-- TIME getters and setters 
+	-- TIME getters and setters
 	ecli_c_time_get_hour (tm : POINTER) : INTEGER is
 		external "C"
 		end
@@ -407,7 +407,7 @@ feature {NONE} -- TIME, DATE, TIMESTAMP getter and setter functions
 		external "C"
 		end
 
-	-- TIMESTAMP time getters and setters 
+	-- TIMESTAMP time getters and setters
 	ecli_c_timestamp_get_hour (tm : POINTER) : INTEGER is
 		external "C"
 		end
