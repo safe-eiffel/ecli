@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that parse SQL queries, searching for parameters."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,7 +14,7 @@ class ECLI_SQL_PARSER
 create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make is
@@ -24,23 +24,23 @@ feature {NONE} -- Initialization
 		ensure
 			parameter_marker_set: parameter_marker = '?'
 		end
-		
+
 feature -- Access
 
 	original_sql : STRING
 			-- Original SQL.
-	
+
 	parsed_sql : STRING
 			-- Parsed SQL.
 			-- Same as original SQL, but with parameter names stripped and parameter_marker replaced by cli_marker.
-	
+
 	parameter_marker : CHARACTER
 		-- parameter marker in input sql.
-	
+
 feature -- Measurement
 
 	parameters_count : INTEGER
-	
+
 feature -- Status setting
 
 	set_parameter_marker (marker : CHARACTER) is
@@ -50,7 +50,7 @@ feature -- Status setting
 		do
 			parameter_marker := marker
 		ensure
-			parameter_marker_set:	parameter_marker = marker		
+			parameter_marker_set:	parameter_marker = marker
 		end
 
 feature -- Basic operations
@@ -66,6 +66,8 @@ feature -- Basic operations
 			index, sql_count : INTEGER
 			c, previous_c : CHARACTER
 			parameter_begin, parameter_end : INTEGER
+			string_begin, string_end : INTEGER
+			table_begin, table_end : INTEGER
 			parameter : STRING
 		do
 			from
@@ -86,22 +88,25 @@ feature -- Basic operations
 				when State_sql then
 					inspect c
 					when single_quote then
+						string_begin := index
 						state := State_string_literal
 						parsed_sql.append_character (c)
-						previous_c := '%U'					
+						previous_c := '%U'
 					when double_quote then
+						table_begin := index
 						state := State_table_literal
 						parsed_sql.append_character (c)
-						previous_c := '%U'					
+						previous_c := '%U'
 					else
 						if c = parameter_marker then
 							state := State_parameter
+							callback.on_parameter_marker (sql, index)
 							parameter_begin := index + 1
 							parsed_sql.append_character (Cli_marker)
 						else
 							parsed_sql.append_character (c)
 						end
-						previous_c := c						
+						previous_c := c
 					end
 					index := index + 1
 				when State_string_literal then
@@ -116,12 +121,16 @@ feature -- Basic operations
 						index := index + 1
 					else
 						if escape then
+							string_end := index
+							callback.on_string_literal (sql, string_begin, string_end)
 							escape := False
 							state := state_sql
+							string_begin := 0
+							string_end := 0
 						else
 							parsed_sql.append_character (c)
 							index := index + 1
-						end		
+						end
 					end
 				when State_table_literal then
 					inspect c
@@ -135,12 +144,16 @@ feature -- Basic operations
 						index := index + 1
 					else
 						if escape then
+							table_end := index
+							callback.on_table_literal (sql, table_begin, table_end)
 							escape := False
 							state := state_sql
+							table_begin := 0
+							table_end := 0
 						else
 							parsed_sql.append_character (c)
 							index := index + 1
-						end		
+						end
 					end
 				when State_parameter then
 					inspect c
@@ -152,11 +165,12 @@ feature -- Basic operations
 						if parameter_begin > 0 and then parameter_begin <= parameter_end then
 							parameter := original_sql.substring (parameter_begin, parameter_end)
 							callback.add_new_parameter (parameter, parameters_count)
+							callback.on_parameter (sql, parameter_begin, parameter_end)
 							parameter_begin := 0
 							parameter_end := 0
 						end
 						state := State_sql
-					end	
+					end
 				end
 			end
 			if state = State_parameter then
@@ -165,6 +179,7 @@ feature -- Basic operations
 				if parameter_begin > 0 and then parameter_begin <= parameter_end then
 					parameter := original_sql.substring (parameter_begin, parameter_end)
 					callback.add_new_parameter (parameter, parameters_count)
+					callback.on_parameter (sql, parameter_begin, parameter_end)
 					parameter_begin := 0
 					parameter_end := 0
 				end
@@ -177,20 +192,20 @@ feature -- Basic operations
 			parsed_sql_set: parsed_sql /= Void -- and then parsed sql is equivalent to original sql
 --			name_to_position_set: name_to_position /= Void
 		end
-		
+
 feature {NONE} -- Implementation
 
 	state : INTEGER
-	
+
 	State_sql, State_string_literal, State_table_literal, State_parameter : INTEGER is unique
-	
+
 	single_quote : CHARACTER is '%''
 	double_quote : CHARACTER is '%"'
-	
+
 	cli_marker : CHARACTER is '?'
-	
+
 invariant
 	good_parameter_marker: (":?~°@§").has (parameter_marker)
 	good_state: state = State_sql implies not escape
-	
+
 end

@@ -28,4 +28,42 @@ feature -- Basic operations
 		deferred
 		end
 
+	on_parameter_marker (a_sql : STRING; index : INTEGER) is
+		require
+			a_sql_not_void: a_sql /= Void
+			index_positive: index > 0
+			valid_index: index >= 1 and index <= a_sql.count
+		deferred
+		end
+
+	on_string_literal (a_sql : STRING; i_begin, i_end : INTEGER) is
+		require
+			a_sql_not_void: a_sql /= Void
+			i_begin_positive: i_begin > 0
+			i_end_positive: i_end > 0
+			i_begin_le_end: i_begin <= i_end
+			valid_indexes: i_begin >= 1 and i_end <= a_sql.count
+		deferred
+		end
+
+	on_table_literal (a_sql : STRING; i_begin, i_end : INTEGER) is
+		require
+			a_sql_not_void: a_sql /= Void
+			i_begin_positive: i_begin > 0
+			i_end_positive: i_end > 0
+			i_begin_le_end: i_begin <= i_end
+			valid_indexes: i_begin >= 1 and i_end <= a_sql.count
+		deferred
+		end
+
+	on_parameter (a_sql : STRING; i_begin, i_end : INTEGER) is
+		require
+			a_sql_not_void: a_sql /= Void
+			i_begin_positive: i_begin > 0
+			i_end_positive: i_end > 0
+			i_begin_le_end: i_begin <= i_end
+			valid_indexes: i_begin >= 1 and i_end <= a_sql.count
+		deferred
+		end
+
 end
