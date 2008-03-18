@@ -41,7 +41,21 @@ feature -- Measurement
 
 	parameters_count : INTEGER
 
-feature -- Status setting
+feature -- Status report
+
+	escape : BOOLEAN
+
+	is_separator (c : CHARACTER) : BOOLEAN is
+		do
+			inspect c
+			when ' ', '%T', '%N', '%R', ',', ';', '(', ')', '{', '}' then
+				Result := True
+			else
+
+			end
+		end
+
+feature -- Element change
 
 	set_parameter_marker (marker : CHARACTER) is
 			-- set `parameter_marker'
@@ -56,10 +70,9 @@ feature -- Status setting
 feature -- Constants
 
 	allowed_parameter_markers : STRING is ":?~°@§"
-	
+
 feature -- Basic operations
 
-			escape : BOOLEAN
 
 	parse (sql : STRING; callback : ECLI_SQL_PARSER_CALLBACK) is
 			-- parse s, replacing every parameter by the ODBC/CLI marker '?'
@@ -72,6 +85,7 @@ feature -- Basic operations
 			parameter_begin, parameter_end : INTEGER
 			string_begin, string_end : INTEGER
 			table_begin, table_end : INTEGER
+			word_begin, word_end : INTEGER
 			parameter : STRING
 		do
 			from
@@ -81,6 +95,7 @@ feature -- Basic operations
 				parameters_count := 0
 				create parsed_sql.make (original_sql.count)
 				state := State_sql
+				word_begin := index
 			until
 				index > sql_count
 			loop
@@ -102,6 +117,15 @@ feature -- Basic operations
 						parsed_sql.append_character (c)
 						previous_c := '%U'
 					else
+						if (is_separator (c) or c = parameter_marker) and not is_separator (previous_c) and previous_c /= '%U' then
+							word_end := (index - 1).max (1)
+							if word_end >= word_begin then
+								callback.on_word (sql, word_begin, word_end)
+							end
+						end
+						if is_separator (previous_c) then
+							word_begin := index.max (1)
+						end
 						if c = parameter_marker then
 							state := State_parameter
 							callback.on_parameter_marker (sql, index)
@@ -129,6 +153,7 @@ feature -- Basic operations
 							callback.on_string_literal (sql, string_begin, string_end)
 							escape := False
 							state := state_sql
+							word_begin := index + 1
 							string_begin := 0
 							string_end := 0
 						else
@@ -152,6 +177,7 @@ feature -- Basic operations
 							callback.on_table_literal (sql, table_begin, table_end)
 							escape := False
 							state := state_sql
+							word_begin := index + 1
 							table_begin := 0
 							table_end := 0
 						else
@@ -174,6 +200,7 @@ feature -- Basic operations
 							parameter_end := 0
 						end
 						state := State_sql
+						word_begin := index + 1
 					end
 				end
 			end
@@ -200,6 +227,7 @@ feature -- Basic operations
 			parsed_sql_set: parsed_sql /= Void -- and then parsed sql is equivalent to original sql
 --			name_to_position_set: name_to_position /= Void
 		end
+
 
 feature {NONE} -- Implementation
 

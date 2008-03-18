@@ -371,10 +371,14 @@ feature {NONE} -- Implementation
 		do
 		end
 
+	on_word (sql: STRING; i_begin, i_end: INTEGER) is
+		do
+		end
+
 	on_parameter_marker (sql: STRING; index: INTEGER) is
 		do
 		end
-	
+
 	parameter_names	: DS_HASH_SET[STRING]
 
 	is_valid : BOOLEAN is do Result := True end

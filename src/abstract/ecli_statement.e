@@ -823,6 +823,10 @@ feature {ECLI_SQL_PARSER} -- Callback
 		do
 		end
 
+	on_word (a_sql: STRING; i_begin, i_end: INTEGER) is
+		do
+		end
+
 	on_parameter_marker (a_sql: STRING; index: INTEGER) is
 		do
 		end

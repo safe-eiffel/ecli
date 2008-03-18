@@ -167,7 +167,7 @@ feature -- Element change
 			sample_set: sample = s
 		end
 
-feature {NONE} -- Element change
+feature {EVTK_EDITOR} -- Element change
 
 	set_reference_column (a_reference_column: REFERENCE_COLUMN) is
 			-- Set `reference_column' to `a_reference_column'.

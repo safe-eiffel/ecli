@@ -46,6 +46,16 @@ feature -- Basic operations
 		deferred
 		end
 
+	on_word (a_sql : STRING; i_begin, i_end : INTEGER) is
+		require
+			a_sql_not_void: a_sql /= Void
+			i_begin_positive: i_begin > 0
+			i_end_positive: i_end > 0
+			i_begin_le_end: i_begin <= i_end
+			valid_indexes: i_begin >= 1 and i_end <= a_sql.count
+		deferred
+		end
+
 	on_table_literal (a_sql : STRING; i_begin, i_end : INTEGER) is
 		require
 			a_sql_not_void: a_sql /= Void

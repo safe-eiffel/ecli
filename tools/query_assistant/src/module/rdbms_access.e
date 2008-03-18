@@ -28,9 +28,11 @@ feature {NONE} -- Initialization
 		do
 			set_name (a_name.string)
 			set_query (a_query.string)
+			create type.make_from_string ("extended")
 		ensure
 			name_assigned: name.is_equal (a_name)
 			query_assigned: query.is_equal (a_query)
+			type_extended: type.is_extended
 		end
 
 feature -- Access
@@ -172,7 +174,19 @@ feature -- Element change
 			type_set: type = new_type
 		end
 
-feature {NONE} -- Element change
+	create_results is
+		do
+			create results.make (name+ default_name_prefix)
+		ensure
+			results_not_void: results /= Void
+			results_name_definition: results.name.is_equal (name + default_name_prefix)
+		end
+
+feature -- Constants
+
+	default_name_prefix : STRING is "_RESULTS"
+	
+feature {EVTK_EDITOR} -- Element change
 
 	set_query (a_query: STRING) is
 			-- Set `query' to `a_query'.
@@ -213,7 +227,7 @@ feature {NONE} -- Implementation
 			if query_statement.has_result_set then
 				query_statement.describe_results
 				if results = Void then
-					create results.make (name+"_RESULTS")
+					create_results
 				end
 				from
 					index := query_statement.results_description.lower
@@ -421,6 +435,7 @@ feature {NONE} -- Implementation
 			is_checked_query_trial: is_checked_query_trial
 			error_or_success: is_error xor is_query_valid
 		end
+
 
 invariant
 	name_not_void: name /= Void
