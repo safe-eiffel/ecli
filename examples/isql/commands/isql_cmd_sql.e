@@ -38,7 +38,6 @@ feature -- Basic operations
 		local
 			cursor : ECLI_ROW_CURSOR
 			after_first : BOOLEAN
-			a_statement : ECLI_STATEMENT
 		do
 --			if context.session.is_bind_arrayed_results_capable then
 --				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (context.session, text , 20)	

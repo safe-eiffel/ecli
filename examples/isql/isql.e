@@ -197,8 +197,6 @@ feature {NONE} -- Implementation
 
 	create_commands is
 			-- create command_stream set
-		local
-			l_command : ISQL_COMMAND
 		do
 			create commands.make
 		end

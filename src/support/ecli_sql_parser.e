@@ -73,7 +73,6 @@ feature -- Constants
 
 feature -- Basic operations
 
-
 	parse (sql : STRING; callback : ECLI_SQL_PARSER_CALLBACK) is
 			-- parse s, replacing every parameter by the ODBC/CLI marker '?'
 		require

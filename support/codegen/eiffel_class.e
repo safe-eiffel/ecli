@@ -190,7 +190,7 @@ feature {NONE} -- Implementation
 
 	write_creation_names (output: KI_TEXT_OUTPUT_STREAM) is
 		do
-			output.put_string ("creation")
+			output.put_string ("create")
 			output.put_new_line
 			output.put_new_line
 			from
@@ -243,7 +243,7 @@ feature {NONE} -- Implementation
 
 	write_end (output: KI_TEXT_OUTPUT_STREAM) is
 		do
-			output.put_string ("end -- class " + name)
+			output.put_string ("end")
 			output.put_new_line
 		end
 
