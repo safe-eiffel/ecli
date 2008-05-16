@@ -1,9 +1,9 @@
 indexing
 
-	description: 
-		
+	description:
+
 		"Objects that test ECLI_VALUE descendants."
-		
+
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
@@ -11,23 +11,23 @@ indexing
 
 deferred class
 	DATA_TEST_VALUES
-	
+
 inherit
 	DATA_TEST_HELPER
-	
+
 	KL_SHARED_PLATFORM
-	
-feature -- Access 
+
+feature -- Access
 
 	string_foo : STRING is "Foo"
-	
+
 	string_long : STRING is "The quick brown fox jumps over the lazy dog. %
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
-		
+
 	string_binary : STRING is "%/000/%/001/%/002/%/003/%/004/%/005/%/006/%/255/"
-	
+
 feature -- Basic operations
 
 	test_char is
@@ -42,14 +42,14 @@ feature -- Basic operations
 			assert ("set_null", v.is_null)
 			v.set_item (string_foo)
 			assert_char_equal ("set_item",string_foo,v.item)
-			
+
 			create z.make (10)
 			z.copy (v)
 			assert_equal("copy", v, z)
 		end
 
 	test_varchar is
-			-- test ECLI_VARCHAR 
+			-- test ECLI_VARCHAR
 		local
 			v, z : ECLI_VARCHAR
 		do
@@ -99,14 +99,14 @@ feature -- Basic operations
 			assert ("set_null", v.is_null)
 			v.set_item (string_binary)
 			assert_char_equal ("set_item",string_binary,v.item)
-			
+
 			create z.make (8)
 			z.copy (v)
 			assert_equal("copy", v, z)
 		end
 
 	test_varbinary is
-			-- test ECLI_VARBINARY 
+			-- test ECLI_VARBINARY
 		local
 			v, z : ECLI_VARBINARY
 		do
@@ -123,7 +123,7 @@ feature -- Basic operations
 		end
 
 	test_longvarbinary is
-			-- 
+			--
 		local
 			v, z : ECLI_LONGVARBINARY
 		do
@@ -142,7 +142,7 @@ feature -- Basic operations
 		end
 
 	test_date is
-			-- test ECLI_DATE 
+			-- test ECLI_DATE
 		local
 			v, z : ECLI_DATE
 			d : DT_DATE
@@ -162,7 +162,7 @@ feature -- Basic operations
 			z.copy (v)
 			assert_equal("copy", v, z)
 		end
-		
+
 	test_time is
 			-- test ECLI_TIME
 		local
@@ -181,11 +181,11 @@ feature -- Basic operations
 			assert_equal ("set_item2",t,v.item)
 			create z.make_default
 			z.copy (v)
-			assert_equal("copy", v, z)			
+			assert_equal("copy", v, z)
 		end
-		
+
 	test_timestamp is
-			-- test ECLI_TIMESTAMP 
+			-- test ECLI_TIMESTAMP
 		local
 			v, z : ECLI_TIMESTAMP
 			d : DT_DATE_TIME
@@ -202,9 +202,9 @@ feature -- Basic operations
 			assert_equal ("set_item2",d,v.item)
 			create z.make_default
 			z.copy (v)
-			assert_equal("copy", v, z)						
+			assert_equal("copy", v, z)
 		end
-	
+
 	test_integer is
 			-- test ECLI_INTEGER
 		local
@@ -220,7 +220,31 @@ feature -- Basic operations
 			assert_equal ("set_item2",Platform.Maximum_integer,v.item)
 			create z.make
 			z.copy (v)
-			assert_equal("copy", v, z)									
+			assert_equal("copy", v, z)
+		end
+
+	test_integer_64 is
+			-- test ECLI_INTEGER
+		local
+			v, z : ECLI_INTEGER_64
+		do
+			create v.make
+			assert ("is_null", v.is_null)
+			v.set_item (Platform.Minimum_integer)
+			assert_equal ("set_item_min32",Platform.Minimum_integer.to_integer_64,v.item)
+			v.set_null
+			assert ("set_null", v.is_null)
+			v.set_item (Platform.Maximum_integer)
+			assert_equal ("set_item_max32",Platform.Maximum_integer.to_integer_64,v.item)
+			v.set_item (Platform.Minimum_integer_64 + 1)
+			assert_equal ("set_item_64_MIN",Platform.Minimum_integer_64 + 1,v.item)
+			v.set_null
+			assert ("set_null", v.is_null)
+			v.set_item (Platform.Maximum_integer_64)
+			assert_equal ("set_item2_64_MAX",Platform.Maximum_integer_64,v.item)
+			create z.make
+			z.copy (v)
+			assert_equal("copy", v, z)
 		end
 
 	test_double is
@@ -231,7 +255,7 @@ feature -- Basic operations
 		do
 			create v.make
 			assert ("is_null", v.is_null)
-			r := 1.2345e-23 
+			r := 1.2345e-23
 			v.set_item (r)
 			assert_double_equal ("set_item", r, v.item)
 			v.set_null
@@ -275,7 +299,7 @@ feature -- Basic operations
 		do
 			create v.make
 			assert ("is_null", v.is_null)
-			r := 1.2345e-23 
+			r := 1.2345e-23
 			v.set_item (r)
 			assert_real_equal ("set_item", r, v.item)
 			v.set_null
@@ -296,7 +320,7 @@ feature -- Basic operations
 		do
 			create v.make
 			assert ("is_null", v.is_null)
-			r := 1.2345e-23 
+			r := 1.2345e-23
 			v.set_item (r)
 			assert_real_equal ("set_item", r, v.item)
 			v.set_null
@@ -308,5 +332,5 @@ feature -- Basic operations
 			z.copy (v)
 			assert_double_equal ("copy", v.item, z.item)
 		end
-	
+
 end
