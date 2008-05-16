@@ -24,7 +24,6 @@ feature {NONE}-- Initialization
 			-- creation using `a_name'
 		require
 			a_name_not_void: a_name /= Void
-			a_name_meaningful: a_name.count > 2
 		do
 			name := a_name
 			make_set (initial_size)
@@ -37,7 +36,6 @@ feature {NONE}-- Initialization
 			-- creation using `a_name' and `a_parent_name'
 		require
 			a_name_not_void: a_name /= Void
-			a_name_meaningful: a_name.count > 2
 			a_parent_name_not_void: a_parent_name /= Void
 		do
 			parent_name := a_parent_name

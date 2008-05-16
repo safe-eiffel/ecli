@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL INTEGER values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,7 +15,7 @@ inherit
 
 	ECLI_GENERIC_VALUE [INTEGER]
 		redefine
-			item, 
+			item,
 			out
 		end
 
@@ -83,6 +83,11 @@ feature -- Measurement
 feature -- Status report
 
 	convertible_as_integer : BOOLEAN is
+		do
+			Result := True
+		end
+
+	convertible_as_integer_64 : BOOLEAN is
 		do
 			Result := True
 		end
@@ -164,6 +169,11 @@ feature -- Conversion
 			Result := item
 		end
 
+	as_integer_64 : INTEGER_64 is
+		do
+			Result := item.to_integer_64
+		end
+
 	as_decimal : MA_DECIMAL is
 			-- Current converted to MA_DECIMAL.
 		local
@@ -190,7 +200,7 @@ feature -- Conversion
 		end
 
 	as_character : CHARACTER is
-			-- Current converted to CHARACTER 
+			-- Current converted to CHARACTER
 		do
 		end
 
@@ -240,11 +250,11 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	octet_size : INTEGER is 
-		do 
-			Result := 4 
-		ensure 
-			result_is_4: Result = 4 
+	octet_size : INTEGER is
+		do
+			Result := 4
+		ensure
+			result_is_4: Result = 4
 		end
 
 end

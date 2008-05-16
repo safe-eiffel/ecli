@@ -185,8 +185,8 @@ feature -- Element change
 feature -- Constants
 
 	default_name_prefix : STRING is "_RESULTS"
-	
-feature {EVTK_EDITOR} -- Element change
+
+feature {EVTK_EDITOR, ACCESS_MODULE} -- Element change
 
 	set_query (a_query: STRING) is
 			-- Set `query' to `a_query'.

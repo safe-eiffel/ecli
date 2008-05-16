@@ -9,7 +9,7 @@ class
 
 create
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (current_session : ECLI_SESSION) is
@@ -23,39 +23,24 @@ feature {NONE} -- Initialization
 		ensure
 			session_set: session = current_session
 		end
-		
+
 feature -- Access
 
 	last_column : ECLI_COLUMN
-	
-feature -- Measurement
+			-- Last column found in the repository
+
+	session : ECLI_SESSION
+			-- Session on which the database repository is searched.
 
 feature -- Status report
 
 	found : BOOLEAN
-	
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
+			-- Has the last search succeeded?
 
 feature -- Basic operations
 
 	search (catalog_name, schema_name, table_name, column_name : STRING) is
-			-- search columns corresponding to `catalog_name', `schema_name', `table_name', `column_name'
+			-- Search columns corresponding to `catalog_name', `schema_name', `table_name', `column_name'.
 		require
 			table_name_not_void: table_name /= Void
 			columne_name_not_void: column_name /= Void
@@ -97,11 +82,9 @@ feature -- Basic operations
 			else
 				found := True
 			end
+		ensure
+			found_implies_last_column_not_Void: found implies last_column /= Void
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
@@ -127,9 +110,7 @@ feature {NONE} -- Implementation
 		end
 
 	hash_delimiter : CHARACTER is '|'
-	
+
 	columns : DS_HASH_TABLE[ECLI_COLUMN, STRING]
-	
-	session : ECLI_SESSION
-	
+
 end -- class COLUMNS_REPOSITORY

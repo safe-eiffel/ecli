@@ -132,6 +132,11 @@ feature -- Status report
 			Result := not is_null and then item.is_integer
 		end
 
+	convertible_as_integer_64 : BOOLEAN is
+		do
+			Result := not is_null and then item.is_integer_64
+		end
+
 	convertible_as_double : BOOLEAN is
 		do
 			Result := not is_null and then item.is_double
@@ -230,7 +235,13 @@ feature -- Conversion
 		end
 
 	as_integer : INTEGER is
-			--
+			-- Conversion to INTEGER value
+		do
+			Result := item.to_integer
+		end
+
+	as_integer_64 : INTEGER_64 is
+			-- Conversion to INTEGER_64 value
 		do
 			Result := item.to_integer
 		end

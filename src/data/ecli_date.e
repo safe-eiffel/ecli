@@ -129,6 +129,12 @@ feature -- Status report
 			Result := False
 		end
 
+	convertible_as_integer_64 : BOOLEAN is
+			-- Is this value convertible to an integer_64 ?
+		do
+			Result := False
+		end
+
 	convertible_as_real : BOOLEAN is
 			-- Is this value convertible to a real ?
 		do
@@ -267,6 +273,11 @@ feature -- Conversion
 
 	as_integer : INTEGER is
 			-- Current converted to INTEGER
+		do
+		end
+
+	as_integer_64 : INTEGER_64 is
+			-- Current converted to INTEGER_64
 		do
 		end
 

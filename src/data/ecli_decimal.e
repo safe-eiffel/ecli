@@ -34,6 +34,11 @@ inherit
 			is_equal, copy, out
 		end
 
+	MA_DECIMAL_HANDLER
+		undefine
+			is_equal, copy, out
+		end
+		
 create
 
 	make
@@ -163,6 +168,12 @@ feature -- Status report
 			Result := not is_null
 		end
 
+	convertible_as_integer_64 : BOOLEAN is
+			-- Is this value convertible to an integer ?
+		do
+			Result := not is_null
+		end
+
 	convertible_as_double : BOOLEAN is
 			-- Is this value convertible to a double ?
 		do
@@ -234,6 +245,30 @@ feature -- Conversion
 	as_integer : INTEGER is
 		do
 			Result := item.to_integer
+		end
+
+	as_integer_64 : INTEGER_64 is
+		local
+			ctx : MA_DECIMAL_CONTEXT
+			temp : MA_DECIMAL
+			index: INTEGER
+		do
+			create ctx.make_double_extended
+			temp := item.round_to_integer (ctx)
+			from
+				index := temp.count - 1
+				Result := 0
+			variant
+				index + 1
+			until
+				index < 0
+			loop
+				Result := Result * 10 + temp.coefficient.item (index)
+				index := index - 1
+			end
+			if temp.is_negative then
+				Result := -Result
+			end
 		end
 
 	as_double : DOUBLE is

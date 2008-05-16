@@ -84,6 +84,11 @@ feature -- Status report
 		deferred
 		end
 
+	convertible_as_integer_64 : BOOLEAN is
+			-- Is this value convertible to an integer_64 ?
+		deferred
+		end
+
 	convertible_as_real : BOOLEAN is
 			-- Is this value convertible to a real ?
 		deferred
@@ -245,6 +250,14 @@ feature -- Conversion
 		deferred
 		end
 
+	as_integer_64 : INTEGER_64 is
+			-- Current converted to INTEGER_64
+		require
+			convertible: convertible_as_integer_64
+			not_null: not is_null
+		deferred
+		end
+		
 	as_real : REAL is
 			-- Current converted to REAL.
 		require

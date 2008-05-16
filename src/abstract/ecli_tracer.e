@@ -243,6 +243,14 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_integer.out)
 		end
 
+	put_integer_64 (a_integer_64 : ECLI_INTEGER_64) is
+			-- Put 'a_a_integer_64' as an integer constant
+		require
+			a_integer_64 /= Void and then not a_integer_64.is_null
+		do
+			medium.put_string (a_integer_64.out)
+		end
+
 	put_binary (a_binary : ECLI_STRING_VALUE) is
 			-- Put `a_binary' as binary value
 		require

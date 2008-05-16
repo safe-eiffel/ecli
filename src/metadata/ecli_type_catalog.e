@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Catalogs of types supported by a particular database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,16 +14,16 @@ class
 
 inherit
 	ANY
-	
+
 	ECLI_TYPE_CONSTANTS
---		export 
+--		export
 --			{NONE} all
 --		end
-		
+
 create
-	
+
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_session : ECLI_SESSION) is
@@ -34,9 +34,9 @@ feature {NONE} -- Initialization
 		local
 			cursor : ECLI_SQL_TYPES_CURSOR
 		do
-			create types.make (10)		
+			create types.make (10)
 			create cursor.make_all_types (a_session)
-			from 
+			from
 				cursor.start
 			until
 				cursor.off
@@ -45,7 +45,7 @@ feature {NONE} -- Initialization
 				cursor.forth
 			end
 		end
-		
+
 feature -- Access
 
 	types_for_id (id : INTEGER) : DS_LIST[ECLI_SQL_TYPE] is
@@ -57,7 +57,7 @@ feature -- Access
 		ensure
 			type_for_id_not_void: Result /= Void
 		end
-	
+
 	numeric_types : DS_LIST[ECLI_SQL_TYPE] is
 			-- Types that appear to be numeric
 		local
@@ -80,7 +80,7 @@ feature -- Access
 					until
 						l_cursor.off
 					loop
-						if l_cursor.item.is_unsigned_applicable 
+						if l_cursor.item.is_unsigned_applicable
 							and then l_cursor.item.is_auto_unique_value_applicable
 							and then not l_cursor.item.is_auto_unique_value then
 								Result.put_last (l_cursor.item)
@@ -94,7 +94,7 @@ feature -- Access
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -104,7 +104,7 @@ feature -- Status report
 		do
 			Result := types.has (id)
 		end
-		
+
 	has_binary : BOOLEAN is
 		do
 			Result := types.has (Sql_binary)
@@ -114,105 +114,81 @@ feature -- Status report
 		do
 			Result := types.has (Sql_char)
 		end
-		
+
 	has_date : BOOLEAN is
 		do
 			Result := types.has (Sql_type_date)
 		end
-	
+
 	has_date_time : BOOLEAN is
 		do
 			Result := types.has (Sql_type_timestamp)
 		end
-		
+
 	has_double : BOOLEAN is
 		do
 			Result := types.has (Sql_double)
 		end
-		
+
 	has_float : BOOLEAN is
 		do
 			Result := types.has (Sql_float)
 		end
-		
+
 	has_integer : BOOLEAN is
 		do
 			Result := types.has (Sql_integer)
 		end
-		
+
 	has_longvarbinary : BOOLEAN is
 		do
 			Result := types.has (Sql_longvarbinary)
 		end
-		
+
 	has_longvarchar : BOOLEAN is
 		do
 			Result := types.has (Sql_longvarchar)
 		end
-		
+
 	has_real : BOOLEAN is
 		do
 			Result := types.has (Sql_real)
 		end
-		
+
 	has_time : BOOLEAN is
 		do
 			Result := types.has (Sql_type_time)
 		end
-		
+
 	has_timestamp : BOOLEAN is
 		do
 			Result := types.has (Sql_type_timestamp)
 		end
-		
+
 	has_varbinary : BOOLEAN is
 		do
 			Result := types.has (Sql_varbinary)
 		end
-		
+
 	has_varchar : BOOLEAN is
 		do
 			Result := types.has (Sql_varchar)
 		end
-		
+
 	has_numeric : BOOLEAN is
 		do
 			Result := has_type_id (Sql_numeric)
 		end
-		
+
 	has_decimal : BOOLEAN is
 		do
 			Result := has_type_id (Sql_decimal)
 		end
 		
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	types : DS_HASH_TABLE[DS_LIST[ECLI_SQL_TYPE],INTEGER]
-	
+
 	add_type (type : ECLI_SQL_TYPE) is
 			-- Add `type' to Current catalog.
 		require
@@ -232,11 +208,11 @@ feature {NONE} -- Implementation
 			has_type_code: types.has (type.sql_type_code)
 			has_type: types.item (type.sql_type_code).has (type)
 		end
-		
+
 	numerics_table : like numeric_types
-	
+
 invariant
-	
+
 	types_not_void: types /= Void
 
 end -- class ECLI_TYPE_CATALOG

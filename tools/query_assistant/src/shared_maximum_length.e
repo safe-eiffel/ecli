@@ -13,7 +13,7 @@ feature -- Access
 		do
 			Result := maximum_length_cell.item
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -30,7 +30,7 @@ feature -- Element change
 		ensure
 			maximum_length_set: maximum_length = new_length
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -55,9 +55,9 @@ feature {NONE} -- Implementation
 		once
 			create Result.make (0)
 		end
-		
-		
+
+
 invariant
-	invariant_clause: True -- Your invariant here
+	maxumum_length_cell_not_void: maximum_length_cell /= Void
 
 end -- class SHARED_MAXIMUM_LENGTH

@@ -24,7 +24,7 @@ inherit
 
 	KL_IMPORTED_ARRAY_ROUTINES
 
-create 
+create
 
 	make
 
@@ -55,7 +55,17 @@ feature {NONE} -- Miscellaneous
 
 	create_decimal_value (precision, decimal_digits : INTEGER) is
 		do
-			create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
+			if decimal_digits = 0 then
+				if precision < 10 then
+						create_integer_value
+				elseif precision < 20 then
+				create_integer_64_value
+			else
+				create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
+			end
+			else
+				create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
+			end
 		end
 
 	create_real_value is
@@ -66,6 +76,11 @@ feature {NONE} -- Miscellaneous
 	create_integer_value is
 		do
 			create {ECLI_INTEGER}last_result.make
+		end
+
+	create_integer_64_value is
+		do
+			create {ECLI_INTEGER_64}last_result.make
 		end
 
 	create_char_value (column_precision : INTEGER) is
@@ -111,6 +126,8 @@ feature -- Basic operations
 					create_varchar_value (column_precision)
 			elseif db_type = sql_integer or db_type = sql_smallint then
 					create_integer_value
+			elseif db_type = sql_bigint then
+					create_integer_64_value
 			elseif db_type = sql_real then
 					create_real_value
 			elseif db_type = sql_double then
@@ -146,6 +163,7 @@ feature {NONE} -- Implementation
 				sql_double,
 				sql_float,
 				sql_integer,
+				sql_bigint,
 				sql_longvarbinary,
 				sql_longvarchar,
 				sql_numeric,

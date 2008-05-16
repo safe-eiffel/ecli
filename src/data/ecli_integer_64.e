@@ -2,20 +2,21 @@ indexing
 
 	description:
 
-		"SQL DOUBLE values."
+		"SQL INTEGER values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class ECLI_DOUBLE
+class ECLI_INTEGER_64
 
 inherit
 
-	ECLI_GENERIC_VALUE [DOUBLE]
+	ECLI_GENERIC_VALUE [INTEGER_64]
 		redefine
-			item, out
+			item,
+			out
 		end
 
 	XS_C_MEMORY_ROUTINES
@@ -31,7 +32,7 @@ feature -- Initialization
 
 	make is
 		do
-			buffer := ecli_c_alloc_value (transfer_octet_length)
+			buffer := ecli_c_alloc_value (8)
 			check_valid
 			set_null
 		ensure
@@ -40,26 +41,26 @@ feature -- Initialization
 
 feature -- Access
 
-	item : DOUBLE is
+	item : INTEGER_64 is
 		do
-			Result := c_memory_get_double (ecli_c_value_get_value(buffer))
+			Result := c_memory_get_int64 (ecli_c_value_get_value (buffer))
 		end
 
 	c_type_code: INTEGER is
 		once
-			Result := sql_c_double
+			Result := sql_c_sbigint
 		end
 
 	sql_type_code: INTEGER is
 		once
-			Result := sql_double
+			Result := sql_bigint
 		end
 
 feature -- Measurement
 
 	size : INTEGER is
 		do
-			Result := 15
+			Result := 19
 		end
 
 	decimal_digits: INTEGER is
@@ -69,26 +70,17 @@ feature -- Measurement
 
 	display_size: INTEGER is
 		do
-			Result := 22
+			Result := 20
 		end
 
 	transfer_octet_length: INTEGER is
 		do
 			Result := 8
+		ensure then
+			integer_64: Result = 8
 		end
 
 feature -- Status report
-
-	convertible_as_double : BOOLEAN is
-		do
-			Result := True
-		end
-
-	convertible_as_decimal : BOOLEAN is
-			-- Is this value convertible to a decimal ?
-		do
-			Result := True
-		end
 
 	convertible_as_integer : BOOLEAN is
 		do
@@ -96,6 +88,16 @@ feature -- Status report
 		end
 
 	convertible_as_integer_64 : BOOLEAN is
+		do
+			Result := True
+		end
+
+	convertible_as_double : BOOLEAN is
+		do
+			Result := True
+		end
+
+	convertible_as_decimal : BOOLEAN is
 		do
 			Result := True
 		end
@@ -145,10 +147,12 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : DOUBLE) is
+	set_item (value : INTEGER_64) is
 			-- set item to 'value', truncating if necessary
 		do
-			c_memory_put_double (ecli_c_value_get_value (buffer), value)
+			--impl_item := value
+			--ecli_c_value_set_value (buffer, $impl_item, transfer_octet_length)
+			c_memory_put_int64 (ecli_c_value_get_value(buffer), value)
 			ecli_c_value_set_length_indicator (buffer, transfer_octet_length)
 		end
 
@@ -160,6 +164,15 @@ feature -- Transformation
 
 feature -- Conversion
 
+	as_integer : INTEGER is
+		do
+			Result := item.as_integer_32
+		end
+
+	as_integer_64 : INTEGER_64 is
+		do
+			Result := item
+		end
 
 	as_decimal : MA_DECIMAL is
 			-- Current converted to MA_DECIMAL.
@@ -167,28 +180,21 @@ feature -- Conversion
 			ctx : MA_DECIMAL_CONTEXT
 		do
 			create ctx.make_double
-			create Result.make_from_string_ctx (as_real.out, ctx)
-		end	as_double : DOUBLE is
-		do
-			Result := item
-		end
-
-	as_integer : INTEGER is
-		do
-			Result := item.truncated_to_integer
-		end
-
-	as_integer_64 : INTEGER_64 is
-		do
-			Result := item.truncated_to_integer_64
+			create Result.make_from_string_ctx (as_integer_64.out, ctx)
 		end
 
 	as_real : REAL is
 		do
-			Result := item.truncated_to_real
+			Result := item
+		end
+
+	as_double : DOUBLE is
+		do
+			Result := item
 		end
 
 	as_string : STRING is
+			-- Current converted to STRING
 		do
 			Result := item.out
 		end
@@ -224,30 +230,31 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
-		do
-			a_tracer.put_double (Current)
-		end
-
 	out : STRING is
-		local
-			message_buffer : XS_C_STRING
 		do
 			if is_null then
 				Result := out_null
 			else
-				create message_buffer.make (50)
-				sprintf_double (message_buffer.handle, item.item)
-				Result := message_buffer.as_string
+				Result := item.out
 			end
 		end
 
+	trace (a_tracer : ECLI_TRACER) is
+		do
+			a_tracer.put_integer_64 (Current)
+		end
+
+feature -- Obsolete
+
+feature -- Inapplicable
+
 feature {NONE} -- Implementation
 
-	sprintf_double (s : POINTER; d : DOUBLE) is
-			--
-		external "C"
-		alias "ecli_c_sprintf_double"
+	octet_size : INTEGER is
+		do
+			Result := 8
+		ensure
+			result_is_8: Result = 8
 		end
 
 end
