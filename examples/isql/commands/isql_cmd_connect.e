@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "con"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is False
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -39,6 +39,12 @@ feature -- Basic operations
 			session : ECLI_SESSION
 			driver_strategy : ECLI_DRIVER_LOGIN
 			simple_login : ECLI_SIMPLE_LOGIN
+			info : ECLI_DBMS_INFORMATION
+			stmt : ECLI_STATEMENT
+			i64 : ECLI_INTEGER_64
+			i32 : ECLI_INTEGER
+			tc : ECLI_TYPE_CATALOG
+			can_i32, can_i64 : BOOLEAN
 		do
 			create worder.make (text, " %T")
 			user := ""
@@ -49,7 +55,7 @@ feature -- Basic operations
 			worder.read_quoted_word
 			if not worder.end_of_input then
 				if worder.is_last_string_quoted then
-					source := worder.last_string.substring (2,worder.last_string.count - 1)	
+					source := worder.last_string.substring (2,worder.last_string.count - 1)
 				else
 					source := clone (worder.last_string)
 				end
@@ -77,7 +83,13 @@ feature -- Basic operations
 					session.connect
 				end
 				if session.is_connected then
-					context.set_session (session)	
+					context.set_session (session)
+					info := session.info
+					create stmt.make (session)
+					create i64.make
+					create i32.make
+					can_i32 := session.info.can_bind (i32)
+					can_i64 := session.info.can_bind (i64)
 				else
 					context.filter.begin_error
 					context.filter.put_error (sql_error_msg (session,"NOT Connected"))
@@ -86,7 +98,7 @@ feature -- Basic operations
 			else
 				context.filter.begin_error
 				context.filter.put_error ("CONNECT : expecting a datasource name.")
-				context.filter.end_error			
+				context.filter.end_error
 			end
 		end
 

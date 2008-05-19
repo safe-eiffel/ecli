@@ -29,7 +29,11 @@ feature {NONE} -- Initialization
 			-- isql
 		local
 			simple_login : ECLI_SIMPLE_LOGIN
+			v : ECLI_INTEGER_64
 		do
+			create v.make
+			v.set_item ({INTEGER_64}.max_value)
+			v.set_item ({INTEGER_64}.min_value)
 			create_commands
 			create_initial_context
 			create_default_system_variables (current_context)

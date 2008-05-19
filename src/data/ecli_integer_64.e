@@ -249,12 +249,11 @@ feature -- Obsolete
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
-
-	octet_size : INTEGER is
-		do
-			Result := 8
-		ensure
-			result_is_8: Result = 8
-		end
+--	octet_size : INTEGER is
+--		do
+--			Result := 8
+--		ensure
+--			result_is_8: Result = 8
+--		end
 
 end

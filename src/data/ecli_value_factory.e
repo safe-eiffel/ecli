@@ -41,9 +41,49 @@ feature -- Access
 
 feature -- Status report
 
+	use_integer_64 : BOOLEAN
+
+	use_decimal : BOOLEAN
+
+feature -- Status report
+
 	valid_type (type_code : INTEGER) : BOOLEAN is
 		do
 			Result := array_routines.has(valid_types, type_code)
+		end
+
+feature -- Status setting
+
+	enable_integer_64 is
+			-- Enable usage of INTEGER_64
+		do
+			use_integer_64 := True
+		ensure
+			use_integer_64: use_integer_64
+		end
+
+	disable_integer_64 is
+			-- Disable usage of INTEGER_64
+		do
+			use_integer_64 := False
+		ensure
+			not_use_integer_64: not use_integer_64
+		end
+
+	enable_decimal is
+			-- Enable usage of MA_DECIMAL
+		do
+			use_decimal := True
+		ensure
+			use_decimal: use_decimal
+		end
+
+	disable_decimal is
+			-- Disable usage of MA_DECIMAL
+		do
+			use_decimal := False
+		ensure
+			not_use_decimal: not use_decimal
 		end
 
 feature {NONE} -- Miscellaneous
@@ -57,12 +97,12 @@ feature {NONE} -- Miscellaneous
 		do
 			if decimal_digits = 0 then
 				if precision < 10 then
-						create_integer_value
+					create_integer_value
 				elseif precision < 20 then
-				create_integer_64_value
-			else
-				create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
-			end
+					create_integer_64_value
+				else
+					create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
+				end
 			else
 				create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
 			end

@@ -184,7 +184,12 @@ feature -- Status report
 		do
 			Result := has_type_id (Sql_decimal)
 		end
-		
+
+	has_big_integer : BOOLEAN is
+		do
+			Result := has_type_id (sql_bigint)
+		end
+
 feature {NONE} -- Implementation
 
 	types : DS_HASH_TABLE[DS_LIST[ECLI_SQL_TYPE],INTEGER]
