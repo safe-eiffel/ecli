@@ -60,7 +60,7 @@ feature -- Cursor Movement
 			-- create item at current cursor position
 		do
 			if impl_item = Void then
-					!!impl_item.make (Current)
+					create impl_item.make (Current)
 					from
 						creating_item := True
 					until

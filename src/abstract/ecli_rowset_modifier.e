@@ -43,7 +43,7 @@ feature {NONE} -- Initialization
 		do
 			make_row_count_capable
 			row_capacity := a_row_capacity
-			!!rowset_status.make (row_capacity)
+			create rowset_status.make (row_capacity)
 			statement_make (a_session)
 			set_sql (a_sql)
 		ensure

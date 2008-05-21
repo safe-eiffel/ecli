@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 		local
 			search_criteria: ECLI_NAMED_METADATA
 		do
-			!!search_criteria.make (Void, Void, Void)
+			create search_criteria.make (Void, Void, Void)
 			make (search_criteria, a_session)
 		ensure
 			executed: is_ok implies is_executed
@@ -54,7 +54,7 @@ feature {NONE} -- Initialization
 		local
 			search_criteria: ECLI_NAMED_METADATA
 		do
-			!!search_criteria.make (Void, Void, a_table_name)
+			create search_criteria.make (Void, Void, a_table_name)
 			make (search_criteria, a_session)
 		end
 
@@ -72,7 +72,7 @@ feature -- Cursor Movement
 			-- create current item from buffer values
 		do
 			if not off then
-				!!impl_item.make (Current)
+				create impl_item.make (Current)
 			end
 		end
 

@@ -96,9 +96,9 @@ feature -- Initialization
 		do
 			if not a_tried then
 				a_tried := True
-				!!session.make("ecli_db", "u", "p")
+				create session.make("ecli_db", "u", "p")
 				session.connect
-				!!statement.make (session)
+				create statement.make (session)
 				-- loose references
 				session := Void
 				statement := Void

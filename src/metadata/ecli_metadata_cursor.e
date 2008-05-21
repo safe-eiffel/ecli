@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Cursors on database metadata."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -36,6 +36,7 @@ feature {NONE} -- Initialization
 			p_catalog, p_schema, p_name : POINTER
 		do
 			cursor_make (a_session)
+			set_metadata_id
 			if criteria.catalog /= Void then
 				create queried_catalog_impl.make_from_string (criteria.catalog)
 				catalog_length := criteria.catalog.count
@@ -52,9 +53,9 @@ feature {NONE} -- Initialization
 				p_name := queried_name_impl.handle
 			end
 			set_status (
-				do_query_metadata ( 
+				do_query_metadata (
 					p_catalog, catalog_length,
-					p_schema, schema_length, 
+					p_schema, schema_length,
 					p_name, name_length))
 			update_state_after_execution
 		ensure
@@ -73,15 +74,15 @@ feature -- Access
 				Result := queried_catalog_impl.as_string
 			end
 		end
-		
+
 	queried_schema : STRING is
 			-- queried schema name
 		do
 			if queried_name_impl /= Void then
 				Result := queried_schema_impl.as_string
-			end	
+			end
 		end
-		
+
 	queried_name : STRING is
 			-- queried name (table, column or procedure)
 		do
@@ -89,7 +90,7 @@ feature -- Access
 				Result := queried_name_impl.as_string
 			end
 		end
-		
+
 	item : ANY is
 			-- item at current cursor position
 		require
@@ -99,6 +100,18 @@ feature -- Access
 		ensure
 			definition: Result /= Void
 		end
+
+feature -- Status report
+
+	are_metadata_identifiers : BOOLEAN
+			-- Are metadata identifiers ?
+			--	True: the string argument of catalog functions are treated as identifiers.
+			--		  The case is not significant. For nondelimited strings, the driver removes any trailing spaces
+			--		  and the string is folded to uppercase. For delimited strings, the driver removes any leading or
+			--		  trailing spaces and takes whatever is between the delimiters literally.
+			--	False: the string arguments of catalog functions are not treated as identifiers.
+			--		 The case is significant. They can either contain a string search pattern or not,
+			--		 depending on the argument.
 
 feature -- Cursor Movement
 
@@ -171,5 +184,17 @@ feature {NONE} -- Implementation
 	queried_catalog_impl : XS_C_STRING
 	queried_schema_impl : XS_C_STRING
 	queried_name_impl : XS_C_STRING
-	
+
+	set_metadata_id is
+		local
+			v : INTEGER_32
+		do
+			if are_metadata_identifiers then
+				v := sql_true
+			else
+				v := sql_false
+			end
+			set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, v))
+		end
+
 end

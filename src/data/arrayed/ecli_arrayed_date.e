@@ -69,7 +69,6 @@ feature -- Access
 		
 	item : DT_DATE is
 		do
-			--!!Result.make (year, month, day)
 			impl_item.set_year_month_day (year, month, day)
 			Result := impl_item
 		end

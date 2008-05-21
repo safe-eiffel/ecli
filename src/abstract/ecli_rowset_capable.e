@@ -48,7 +48,7 @@ feature {NONE} -- Implementation
 			index: INTEGER
 		do
 			from index := 1
-				!!status_array.make (1, row_capacity)
+				create status_array.make (1, row_capacity)
 			until 
 				index > row_capacity
 			loop

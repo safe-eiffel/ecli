@@ -44,7 +44,7 @@ feature -- Initialization
 		do
 			row_capacity := a_row_capacity
 			make_row_count_capable
-			!!rowset_status.make (row_capacity)
+			create rowset_status.make (row_capacity)
 			row_cursor_make (a_session, a_definition)
 		ensure
 			valid: is_valid
@@ -85,7 +85,7 @@ feature -- Initialization
 		do
 			row_capacity := a_row_capacity
 			make_row_count_capable
-			!!rowset_status.make (row_capacity)
+			create rowset_status.make (row_capacity)
 			row_cursor_make_with_buffer_factory (a_session, sql_definition, a_buffer_factory)
 		ensure
 			valid: is_valid
@@ -137,7 +137,7 @@ feature {NONE} -- Implementation
 
 	create_buffer_factory is
 		do
-			!!buffer_factory.make (row_capacity)
+			create buffer_factory.make (row_capacity)
 		end
 		
 	create_row_buffers is

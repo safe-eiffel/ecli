@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "fk"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is True
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -45,16 +45,16 @@ feature -- Basic operations
 				--| try reading table_name
 				stream.read_quoted_word
 				if not stream.end_of_input then
-					l_table := clone (stream.last_string)
+					l_table := stream.last_string.twin
 					stream.read_quoted_word
 					if not stream.end_of_input then
 						l_schema := l_table
-						l_table := clone (stream.last_string)
+						l_table := stream.last_string.twin
 						stream.read_word
 						if not stream.end_of_input then
 							l_catalog := l_schema
 							l_schema := l_table
-							l_table := clone (stream.last_string)
+							l_table := stream.last_string.twin
 						end
 					end
 				end
@@ -70,11 +70,11 @@ feature -- Basic operations
 				cursor.close
 			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	put_results (a_cursor : ECLI_FOREIGN_KEYS_CURSOR; context : ISQL_CONTEXT) is
-			-- 
+			--
 		local
 			the_key : ECLI_FOREIGN_KEY
 			ref_key : ECLI_PRIMARY_KEY
@@ -104,7 +104,7 @@ feature {NONE} -- Implementation
 					not a_cursor.is_ok or else a_cursor.off
 				loop
 					the_key := a_cursor.item
-					ref_key := a_cursor.item.referenced_key 
+					ref_key := a_cursor.item.referenced_key
 					from
 						columns_cursor := the_key.columns.new_cursor
 						ref_cols_cursor := ref_key.columns.new_cursor
@@ -136,9 +136,9 @@ feature {NONE} -- Implementation
 						else
 							context.filter.put_column ("NULL")
 						end
-						
+
 						if the_key.is_deferrability_applicable then
-							context.filter.put_column (the_key.deferrability.out)						
+							context.filter.put_column (the_key.deferrability.out)
 						else
 							context.filter.put_column ("NULL")
 						end
@@ -148,12 +148,12 @@ feature {NONE} -- Implementation
 						index := index + 1
 					end
 					a_cursor.forth
-				end			
+				end
 			else
 				context.filter.begin_error
 				context.filter.put_error (sql_error_msg (a_cursor, "Cannot get foreign key metadata"))
 				context.filter.end_error
 			end
 		end
-		
+
 end -- class ISQL_CMD_FOREIGN_KEYS

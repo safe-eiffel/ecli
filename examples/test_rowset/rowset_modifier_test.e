@@ -131,7 +131,7 @@ feature -- Basic operations
 		local
 			i : INTEGER
 		do  
-			!!cursor.make (session, sql_count)
+			create cursor.make (session, sql_count)
 			cursor.start
 			i := cursor.item_by_index (1).as_integer
 			print ("Bulk insert : ")
@@ -155,7 +155,7 @@ feature -- Basic operations
 			print ("Trying bulk update...  %N")
 			print ("---------------------- %N")
 			-- create and setup update_array
-			!! update_array.make (ages.lower, ages.upper)
+			create  update_array.make (ages.lower, ages.upper)
 			from
 				index := ages.lower
 			until
@@ -175,7 +175,7 @@ feature -- Basic operations
 			index : INTEGER
 		do  
 			-- sweep through updated values
-			!!cursor.make (session, sql_select)
+			create cursor.make (session, sql_select)
 			from
 				cursor.start
 				ok := True
@@ -231,19 +231,19 @@ feature {NONE} -- Implementation
 	buffer_name : ECLI_ARRAYED_VARCHAR is
 			-- 
 		once
-			!!Result.make (30, row_count)
+			create Result.make (30, row_count)
 		end
 		
 	buffer_age : ECLI_ARRAYED_INTEGER is
 			-- 
 		once
-			!!Result.make (row_count)
+			create Result.make (row_count)
 		end
 		
 		
 	do_simple_sql (a_sql : STRING) is
 		do
-			!!statement.make (session)
+			create statement.make (session)
 			statement.set_sql (a_sql)
 			statement.execute
 			check
@@ -258,7 +258,7 @@ feature {NONE} -- Implementation
 			index, j : INTEGER
 		do
 			errors := 0
-			!! rowset_modifier.make (session, a_sql, row_count)
+			create  rowset_modifier.make (session, a_sql, row_count)
 			-- put values in array
 			from
 				index := 1; j := 1

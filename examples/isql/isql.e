@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 	set_error (message, value : STRING) is
 			-- set error_message to "<message> '<value>' "
 		do
-			!!error_message.make (0)
+			create error_message.make (0)
 			error_message.append_string (message)
 			error_message.append_string (" '")
 			error_message.append_string (value)

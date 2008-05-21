@@ -38,7 +38,7 @@ inherit
 		undefine
 			is_equal, copy, out
 		end
-		
+
 create
 
 	make
@@ -232,6 +232,33 @@ feature -- Element change
 				ext_item.from_string (s)
 			end
 			ecli_c_value_set_length_indicator (buffer, s.count)
+		end
+
+	set_from_double (d : DOUBLE) is
+			-- set Current to `d'
+		local
+			l : MA_DECIMAL
+		do
+			create l.make_from_string_ctx (d.out, rounding_context)
+			set_item (l)
+		end
+
+	set_from_integer (i : INTEGER) is
+			-- set Current to `i'
+		local
+			l : MA_DECIMAL
+		do
+			create l.make_from_integer (i)
+			set_item (l)
+		end
+
+	set_from_integer_64 (i : INTEGER_64) is
+			-- set Current to `i'
+		local
+			l : MA_DECIMAL
+		do
+			create l.make_from_string_ctx (i.out, rounding_context)
+			set_item (l)
 		end
 
 feature -- Conversion

@@ -39,7 +39,7 @@ feature -- Element change
 			-- create item at current cursor position
 		do
 			if not off then
-				!!impl_item.make (Current)
+				create impl_item.make (Current)
 			else
 				impl_item := Void
 			end

@@ -174,7 +174,7 @@ feature {NONE} -- Implementation
 
 	out_item_at (index : INTEGER) : STRING is
 		do
-			!!Result.make (10)
+			create Result.make (10)
 			Result.append_string ("'")
 			Result.append_string (item_at (index).out)
 			Result.append_string ("'")

@@ -1740,18 +1740,6 @@ feature -- Status report
 			Result := boolean_string_info (sql_row_updates)
 		end
 
-	can_bind (a_value : ECLI_VALUE) : BOOLEAN
-			-- Is `a_value' bindable ?
-		require
-			a_value_not_void: a_value /= Void
-			session_connected: session.is_connected
-		do
-			create_dummy_statement
-			dummy_statement.put_parameter (a_value, "parameter")
-			dummy_statement.bind_parameters
-			Result := dummy_statement.is_ok
-		end
-
 feature -- Status setting
 
 feature -- Cursor movement
@@ -1834,16 +1822,6 @@ feature {NONE} -- Implementation
 			-- To be redefined in descendant classes
 		do
 			Result := ecli_c_session_error (session.handle, record_index, state, native_error, message, buffer_length, length_indicator)
-		end
-
-	dummy_statement : ECLI_STATEMENT
-
-	create_dummy_statement is
-		do
-			if dummy_statement = Void then
-				create dummy_statement.make (session)
-				dummy_statement.set_sql ("select * from dummy_table where 1=?parameter")
-			end
 		end
 
 invariant

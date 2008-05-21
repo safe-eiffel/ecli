@@ -39,8 +39,6 @@ feature -- Basic operations
 			session : ECLI_SESSION
 			driver_strategy : ECLI_DRIVER_LOGIN
 			simple_login : ECLI_SIMPLE_LOGIN
-			info : ECLI_DBMS_INFORMATION
-			stmt : ECLI_STATEMENT
 			i64 : ECLI_INTEGER_64
 			i32 : ECLI_INTEGER
 			tc : ECLI_TYPE_CATALOG
@@ -57,14 +55,14 @@ feature -- Basic operations
 				if worder.is_last_string_quoted then
 					source := worder.last_string.substring (2,worder.last_string.count - 1)
 				else
-					source := clone (worder.last_string)
+					source := worder.last_string.twin
 				end
 				worder.read_word
 				if not worder.end_of_input then
-					user := clone (worder.last_string)
+					user := worder.last_string.twin
 					worder.read_word
 					if not worder.end_of_input then
-						password := clone (worder.last_string)
+						password := worder.last_string.twin
 					end
 				end
 				if context.session /= Void and then context.session.is_connected then
@@ -84,12 +82,11 @@ feature -- Basic operations
 				end
 				if session.is_connected then
 					context.set_session (session)
-					info := session.info
-					create stmt.make (session)
+					create tc.make (session)
 					create i64.make
 					create i32.make
-					can_i32 := session.info.can_bind (i32)
-					can_i64 := session.info.can_bind (i64)
+					can_i32 := tc.can_bind (i32)
+					can_i64 := tc.can_bind (i64)
 				else
 					context.filter.begin_error
 					context.filter.put_error (sql_error_msg (session,"NOT Connected"))

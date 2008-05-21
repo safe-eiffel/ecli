@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is once Result := "col" end
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is True
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -45,14 +45,14 @@ feature -- Basic operations
 				--| try reading table_name
 				stream.read_quoted_word
 				if not stream.end_of_input then
-					l_table := clone (stream.last_string)
+					l_table := stream.last_string.twin
 					if stream.is_last_string_quoted then
 						l_table := l_table.substring (2, l_table.count-1)
 					end
 					stream.read_quoted_word
 					if not stream.end_of_input then
 						l_schema := l_table
-						l_table := clone (stream.last_string)
+						l_table := stream.last_string.twin
 						if stream.is_last_string_quoted then
 							l_table := l_table.substring (2, l_table.count-1)
 						end
@@ -60,7 +60,7 @@ feature -- Basic operations
 						if not stream.end_of_input then
 							l_catalog := l_schema
 							l_schema := l_table
-							l_table := clone (stream.last_string)
+							l_table := stream.last_string.twin
 							if stream.is_last_string_quoted then
 								l_table := l_table.substring (2, l_table.count-1)
 							end
@@ -73,17 +73,17 @@ feature -- Basic operations
 				cursor.close
 			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	new_cursor (a_table: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_COLUMNS_CURSOR is
-			-- 
+			--
 		do
 				create Result.make (a_table, a_session)
 		end
-		
+
 	put_results (a_cursor : like cursor_type; context : ISQL_CONTEXT) is
-			-- 
+			--
 		local
 			the_column : like column_type
 		do
@@ -101,16 +101,16 @@ feature {NONE} -- Implementation
 					put_detail (the_column, context.filter)
 					context.filter.end_row
 					a_cursor.forth
-				end			
+				end
 			else
 				context.filter.begin_error
-				context.filter.put_error (sql_error_msg (a_cursor, "Cannot get columns metadata"))				
+				context.filter.put_error (sql_error_msg (a_cursor, "Cannot get columns metadata"))
 				context.filter.end_error
 			end
 		end
 
 	put_heading (filter : ISQL_FILTER) is
-			-- 
+			--
 		require
 			filter_not_void: filter /= Void
 			filter_heading_begun: filter.is_in_heading
@@ -123,9 +123,9 @@ feature {NONE} -- Implementation
 			filter.put_heading ("PRECISION_RADIX")
 			filter.put_heading ("DESCRIPTION")
 		end
-		
+
 	put_detail (the_column : like column_type; filter : ISQL_FILTER) is
-			-- 
+			--
 		require
 			the_column_not_void: the_column /= Void
 			filter_not_void: filter /= Void
@@ -155,9 +155,9 @@ feature {NONE} -- Implementation
 			end
 			filter.put_column (nullable_string (the_column.description))
 		end
-	
+
 	column_type : ECLI_COLUMN is do end
 	cursor_type : ECLI_COLUMNS_CURSOR is do end
-	
-	
+
+
 end -- class ISQL_CMD_COLUMNS

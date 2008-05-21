@@ -49,7 +49,7 @@ feature {ISQL} -- Inapplicable
 			string_routines : ECLI_STRING_ROUTINES
 			msg : STRING
 		do
-			!!string_routines
+			create string_routines
 			setting := s
 			assign_index := setting.index_of ('=',1)
 			if assign_index > 1 then

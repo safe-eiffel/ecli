@@ -1,6 +1,6 @@
 indexing
 
-	description: 
+	description:
 
 		"Objects that represent typed values to be exchanged with the database."
 
@@ -45,12 +45,12 @@ inherit
 		end
 
 	ECLI_LENGTH_INDICATOR_CONSTANTS
-		export 
+		export
 			{NONE} all
 		undefine
 			is_equal
 		end
-		
+
 feature -- Status report
 
 	is_null : BOOLEAN is
@@ -159,7 +159,7 @@ feature -- Status report
 	frozen convertible_to_timestamp : BOOLEAN is
 		obsolete "Use `convertible_as_timestamp' instead"
 		do
-			Result := convertible_as_timestamp		
+			Result := convertible_as_timestamp
 		end
 
 	can_trace : BOOLEAN is
@@ -168,7 +168,7 @@ feature -- Status report
 		ensure then
 			ok: Result
 		end
-		
+
 feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 
 	c_type_code : INTEGER is
@@ -191,7 +191,11 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 	length_indicator : INTEGER is
 			-- Length indicator for database Xfer.
 		do
-			Result := ecli_c_value_get_length_indicator (buffer)
+			if is_null then
+				Result := 0
+			else
+				Result := ecli_c_value_get_length_indicator (buffer)
+			end
 		end
 
 feature -- Element change
@@ -201,7 +205,7 @@ feature -- Element change
 		do
 			ecli_c_value_set_length_indicator (buffer, Sql_null_data)
 		ensure
-			null_value: is_null 
+			null_value: is_null
 		end
 
 feature -- Transformation
@@ -257,7 +261,7 @@ feature -- Conversion
 			not_null: not is_null
 		deferred
 		end
-		
+
 	as_real : REAL is
 			-- Current converted to REAL.
 		require
@@ -304,7 +308,7 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	frozen to_character : CHARACTER is 
+	frozen to_character : CHARACTER is
 		obsolete "Use `as_character' instead"
 			-- Current converted to CHARACTER .
 		require
@@ -314,7 +318,7 @@ feature -- Conversion
 			Result := as_character
 		end
 
-	frozen to_boolean : BOOLEAN is 
+	frozen to_boolean : BOOLEAN is
 		obsolete "Use `as_boolean' instead"
 			-- Current converted to BOOLEAN.
 		require
@@ -324,7 +328,7 @@ feature -- Conversion
 			Result := as_boolean
 		end
 
-	frozen to_integer : INTEGER is 
+	frozen to_integer : INTEGER is
 		obsolete "Use `as_integer' instead"
 			-- Current converted to INTEGER.
 		require
@@ -334,7 +338,7 @@ feature -- Conversion
 			Result := as_integer
 		end
 
-	frozen to_real : REAL is 
+	frozen to_real : REAL is
 		obsolete "Use `as_real' instead"
 			-- Current converted to REAL.
 		require
@@ -344,7 +348,7 @@ feature -- Conversion
 			Result := as_real
 		end
 
-	frozen to_double : DOUBLE is 
+	frozen to_double : DOUBLE is
 		obsolete "Use `as_double' instead"
 			-- Current converted to DOUBLE.
 		require
@@ -354,7 +358,7 @@ feature -- Conversion
 			Result := as_double
 		end
 
-	frozen to_date : DT_DATE is 
+	frozen to_date : DT_DATE is
 		obsolete "Use `as_date' instead"
 			-- Current converted to DATE.
 		require
@@ -366,7 +370,7 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	frozen to_time : DT_TIME is 
+	frozen to_time : DT_TIME is
 		obsolete "Use `as_time' instead"
 			-- Current converted to DT_TIME.
 		require
@@ -378,7 +382,7 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	frozen to_timestamp : DT_DATE_TIME is 
+	frozen to_timestamp : DT_DATE_TIME is
 		obsolete "Use `as_timestamp' instead"
 			-- Current converted to DT_DATE_TIME.
 		require
@@ -403,7 +407,7 @@ feature {NONE} -- Implementation
 		do
 			Result := ecli_c_value_get_value (buffer)
 		ensure
-			not_null: Result /= default_pointer	
+			not_null: Result /= default_pointer
 		end
 
 	length_indicator_pointer : POINTER is
@@ -433,7 +437,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- Bind Current as a result value.
 		require
-			stmt: stmt /= Void 
+			stmt: stmt /= Void
 			positive_index: index > 0
 		do
 			stmt.set_status (ecli_c_bind_result (
@@ -445,7 +449,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 					length_indicator_pointer)
 				)
 		end
-		
+
 	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- Bind this value as input parameter 'index' of 'stmt'.
 		require
@@ -512,9 +516,9 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 feature {NONE} -- Implementation values
 
 	is_ready_for_disposal : BOOLEAN is True
-	
+
 	disposal_failure_reason : STRING is do	end
-	
+
 	parameter_directions : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
 			-- Parameter direction constants.
 		once
@@ -523,5 +527,5 @@ feature {NONE} -- Implementation values
 
 invariant
 	is_valid: is_valid
-	
+
 end

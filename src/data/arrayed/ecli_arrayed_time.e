@@ -56,12 +56,12 @@ feature -- Access
 
 	item : DT_TIME is
 		do
-			!!Result.make_precise (hour, minute, second,0)
+			create Result.make_precise (hour, minute, second,0)
 		end
 
 	item_at (index : INTEGER) : like item is
 		do
-			!! Result.make (hour_at (index), minute_at (index), second_at (index))
+			create  Result.make (hour_at (index), minute_at (index), second_at (index))
 		end
 
 	hour : INTEGER is
@@ -201,7 +201,7 @@ feature {NONE} -- Implementation
 		do
 			save_index := cursor_index
 			cursor_index := index
-			!!Result.make (0)
+			create Result.make (10)
 			if not is_null then
 				Result.append_character (' ')
 				Result.append_string (Integer_format.pad_integer_2 (hour_at (index)))

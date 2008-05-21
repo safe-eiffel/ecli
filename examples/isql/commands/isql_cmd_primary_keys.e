@@ -19,16 +19,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "pk"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is True
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -45,16 +45,16 @@ feature -- Basic operations
 				--| try reading table_name
 				stream.read_word
 				if not stream.end_of_input then
-					l_table := clone (stream.last_string)
+					l_table := stream.last_string.twin
 					stream.read_word
 					if not stream.end_of_input then
 						l_schema := l_table
-						l_table := clone (stream.last_string)
+						l_table := stream.last_string.twin
 						stream.read_word
 						if not stream.end_of_input then
 							l_catalog := l_schema
 							l_schema := l_table
-							l_table := clone (stream.last_string)
+							l_table := stream.last_string.twin
 						end
 					end
 				end
@@ -64,11 +64,11 @@ feature -- Basic operations
 				cursor.close
 			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	put_results (a_cursor : ECLI_PRIMARY_KEY_CURSOR; context : ISQL_CONTEXT) is
-			-- 
+			--
 		local
 			the_key : ECLI_PRIMARY_KEY
 			index : INTEGER
@@ -108,12 +108,12 @@ feature {NONE} -- Implementation
 						index := index + 1
 					end
 					a_cursor.forth
-				end			
+				end
 			else
 				context.filter.begin_error
 				context.filter.put_error (sql_error_msg (a_cursor, "Cannot get primary key metadata"))
 				context.filter.end_error
 			end
 		end
-		
+
 end -- class ISQL_CMD_PRIMARY_KEYS

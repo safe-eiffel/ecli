@@ -21,7 +21,7 @@ inherit
 	SHARED_SCHEMA_NAME
 	SHARED_COLUMNS_REPOSITORY
 	SHARED_MAXIMUM_LENGTH
-	SHARED_USE_DECIMAL
+	SHARED_TYPE_USAGE
 
 create
 
@@ -232,7 +232,7 @@ feature -- Basic operations
 					maximum_length_string := value
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-use_decimal") then
-					set_use_decimal (True)
+					set_force_decimal (True)
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-no_prototypes") or else key.is_equal ("-no_prototype") then
 					no_prototypes := True
@@ -248,6 +248,7 @@ feature -- Basic operations
 			-- Verify parsed arguments.
 		local
 			error_message : STRING
+			type_catalog : ECLI_TYPE_CATALOG
 		do
 			-- Create standard pipe holder and bind it to event parser.
 			has_error := False
@@ -294,15 +295,18 @@ feature -- Basic operations
 			end
 			if dsn /= Void and then user /= Void and then password /= Void then
 				create session.make_default
-					session.set_login_strategy (create {ECLI_SIMPLE_LOGIN}.make(dsn, user, password))
-					session.connect
-					if session.is_connected then
-						create repository.make (session)
-						set_shared_columns_repository (repository)
-					else
-						error_handler.report_database_connection_failed (dsn)
-						has_error := True
-					end
+				session.set_login_strategy (create {ECLI_SIMPLE_LOGIN}.make(dsn, user, password))
+				session.connect
+				if session.is_connected then
+					create repository.make (session)
+					create type_catalog.make (session)
+					set_shared_columns_repository (repository)
+					set_use_decimal (type_catalog.can_bind (create {ECLI_DECIMAL}.make (10,2)))
+					set_use_integer_64 (type_catalog.can_bind (create {ECLI_INTEGER_64}.make))
+				else
+					error_handler.report_database_connection_failed (dsn)
+					has_error := True
+				end
 			end
 			if maximum_length_string /= Void then
 				if not maximum_length_string.is_double or else maximum_length_string.to_double <= 0 then

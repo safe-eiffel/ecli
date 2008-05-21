@@ -112,7 +112,7 @@ feature -- Basic operations
 			i : INTEGER
 		do
 			from i := 1
-				!!Result.make (10)
+				create Result.make (10)
 				Result.append_string ("<<")
 			until i > count
 			loop

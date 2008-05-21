@@ -57,7 +57,7 @@ feature -- Conversion
 	out : STRING is
 			-- terse visual representation
 		do
-			!!Result.make (128)
+			create Result.make (128)
 			Result.append_string (Precursor)
 			Result.append_string ("%T")
 			append_to_string (Result, type) Result.append_string ("%T")

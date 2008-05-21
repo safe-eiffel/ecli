@@ -176,7 +176,7 @@ feature -- Conversion
 		local
 			save_index : INTEGER
 		do
-			!!Result.make (10)
+			create Result.make (10)
 			if is_null_at (index) then
 				Result.append_string ("NULL")
 			else

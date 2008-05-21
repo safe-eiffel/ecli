@@ -93,7 +93,7 @@ feature -- Conversion
 	out : STRING is
 			-- terse printable representation
 		do
-			!!Result.make (0)
+			create Result.make (0)
 		end
 
 invariant

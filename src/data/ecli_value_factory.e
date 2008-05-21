@@ -41,9 +41,6 @@ feature -- Access
 
 feature -- Status report
 
-	use_integer_64 : BOOLEAN
-
-	use_decimal : BOOLEAN
 
 feature -- Status report
 
@@ -53,38 +50,6 @@ feature -- Status report
 		end
 
 feature -- Status setting
-
-	enable_integer_64 is
-			-- Enable usage of INTEGER_64
-		do
-			use_integer_64 := True
-		ensure
-			use_integer_64: use_integer_64
-		end
-
-	disable_integer_64 is
-			-- Disable usage of INTEGER_64
-		do
-			use_integer_64 := False
-		ensure
-			not_use_integer_64: not use_integer_64
-		end
-
-	enable_decimal is
-			-- Enable usage of MA_DECIMAL
-		do
-			use_decimal := True
-		ensure
-			use_decimal: use_decimal
-		end
-
-	disable_decimal is
-			-- Disable usage of MA_DECIMAL
-		do
-			use_decimal := False
-		ensure
-			not_use_decimal: not use_decimal
-		end
 
 feature {NONE} -- Miscellaneous
 

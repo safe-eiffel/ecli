@@ -175,7 +175,7 @@ feature {NONE} -- Implementation
 			if is_ok and then not is_no_data then
 				name := c_name.as_string
 				description := c_description.as_string
-				!!item_.make (Current)
+				create item_.make (Current)
 			else
 				item_ := Void
 				after := True

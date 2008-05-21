@@ -511,7 +511,7 @@ feature -- Basic operations
 			hh := s.substring (12,13).as_integer
 			mm := s.substring (15,16).as_integer
 			ss := s.substring (18,19).as_integer
-			!! Result.make(date.year, date.month, date.day, hh, mm, ss)
+			create  Result.make(date.year, date.month, date.day, hh, mm, ss)
 		end
 						
 feature -- Obsolete

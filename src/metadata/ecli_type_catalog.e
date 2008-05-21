@@ -35,6 +35,7 @@ feature {NONE} -- Initialization
 			cursor : ECLI_SQL_TYPES_CURSOR
 		do
 			create types.make (10)
+			session := a_session
 			create cursor.make_all_types (a_session)
 			from
 				cursor.start
@@ -47,6 +48,9 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
+
+	session : ECLI_SESSION
+			-- Session.
 
 	types_for_id (id : INTEGER) : DS_LIST[ECLI_SQL_TYPE] is
 			-- Types whose identifier is `id'.
@@ -98,6 +102,19 @@ feature -- Access
 feature -- Measurement
 
 feature -- Status report
+
+
+	can_bind (a_value : ECLI_VALUE) : BOOLEAN
+			-- Is `a_value' bindable ?
+		require
+			a_value_not_void: a_value /= Void
+			session_connected: session.is_connected
+		do
+			create_dummy_statement
+			dummy_statement.put_parameter (a_value, "parameter")
+			dummy_statement.bind_parameters
+			Result := dummy_statement.is_ok
+		end
 
 	has_type_id (id : INTEGER) : BOOLEAN is
 			-- Does type identifier `id' exist in the catalog?
@@ -216,8 +233,21 @@ feature {NONE} -- Implementation
 
 	numerics_table : like numeric_types
 
+	dummy_statement : ECLI_STATEMENT
+
+	create_dummy_statement is
+		do
+			if dummy_statement = Void then
+				create dummy_statement.make (session)
+				dummy_statement.set_sql (dummy_statement_sql)
+			end
+		end
+
+	dummy_statement_sql : STRING is "select * from dummy_table where 1=?parameter"
+
 invariant
 
 	types_not_void: types /= Void
+	session_not_void: session /= Void
 
 end -- class ECLI_TYPE_CATALOG
