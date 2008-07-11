@@ -143,16 +143,6 @@ feature -- Basic operations
 --				-input
 					in_filename := window.input_file_name.text
 --				-expat|-eiffel
-				if window.is_use_expat.is_selected then
-					if fact.is_expat_parser_available then
-						event_parser := fact.new_expat_parser
-					else
-						error_handler.report_xml_parser_unavailable ("EXPAT")
-						has_error := True
-					end
-				else
-					create {XM_EIFFEL_PARSER} event_parser.make
-				end
 --				"-dsn"
 					dsn := window.data_source_name.text
 --				"-user"
