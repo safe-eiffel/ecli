@@ -4,13 +4,13 @@ indexing
 			description: "Select participants matching a last name"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_NAME'. DO NOT EDIT!"
-	generated: "2006/03/21 14:12:57.015"
+	generated: "2008/07/11 16:04:38.224"
 
 class PARTICIPANTS_BY_NAME
 
 inherit
 
-	ECLI_CURSOR
+	
 
 
 create
@@ -39,10 +39,10 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "%N%
-%		select * from PARTICIPANT where%N%
-%			last_name = ?last_name%N%
-%		"
+	definition: STRING is "[
+select * from PARTICIPANT where
+			last_name = ?last_name
+]"
 
 feature {NONE} -- Implementation
 
@@ -65,4 +65,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end -- class PARTICIPANTS_BY_NAME
+end

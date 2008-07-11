@@ -2,7 +2,7 @@ indexing
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2006/03/21 14:12:57.093"
+	generated: "2008/07/11 16:04:38.427"
 
 class PARTICIPANT_ROW
 
@@ -52,4 +52,4 @@ feature  -- Access
 
 	country: ECLI_VARCHAR
 
-end -- class PARTICIPANT_ROW
+end

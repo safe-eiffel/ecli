@@ -2,7 +2,7 @@ indexing
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2006/03/21 14:12:57.109"
+	generated: "2008/07/11 16:04:38.443"
 
 class PARTICIPANT_COUNT
 
@@ -24,4 +24,4 @@ feature  -- Access
 
 	count: ECLI_INTEGER
 
-end -- class PARTICIPANT_COUNT
+end

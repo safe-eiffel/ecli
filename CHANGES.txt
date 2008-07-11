@@ -1,3 +1,9 @@
+20008-07-11
+
+	* ECLI_INTEGER_64 supported (Warning: Oracle driver does not support bindings with Integer_64).	
+	* Query Assistant : dropped usage of expat parser - just the Eiffel one.
+	* ECMA-367 minor changes.
+	
 2007-11-10
 	* Time tracing facility in ECLI_TRACER that outputs the time needed for executing a query.
 

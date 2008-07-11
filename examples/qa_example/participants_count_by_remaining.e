@@ -4,13 +4,13 @@ indexing
 			description: "Select participants count by remaining amount to pay"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_COUNT_BY_REMAINING'. DO NOT EDIT!"
-	generated: "2006/03/21 14:12:57.046"
+	generated: "2008/07/11 16:04:38.302"
 
 class PARTICIPANTS_COUNT_BY_REMAINING
 
 inherit
 
-	ECLI_CURSOR
+	
 
 
 create
@@ -39,11 +39,11 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "%N%
-%		select count (*) as count from PARTICIPANT p, REGISTRATION r where%N%
-%			r.participant_id = p.identifier AND%N%
-%			(r.fee - r.paid_amount) > ?remaining_amount%N%
-%		"
+	definition: STRING is "[
+select count (*) as count from PARTICIPANT p, REGISTRATION r where
+			r.participant_id = p.identifier AND
+			(r.fee - r.paid_amount) > ?remaining_amount
+]"
 
 feature {NONE} -- Implementation
 
@@ -58,4 +58,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end -- class PARTICIPANTS_COUNT_BY_REMAINING
+end

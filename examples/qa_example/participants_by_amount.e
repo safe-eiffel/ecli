@@ -4,13 +4,13 @@ indexing
 			description: "Select participants by amount already paid"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_AMOUNT'. DO NOT EDIT!"
-	generated: "2006/03/21 14:12:57.062"
+	generated: "2008/07/11 16:04:38.380"
 
 class PARTICIPANTS_BY_AMOUNT
 
 inherit
 
-	ECLI_CURSOR
+	
 
 
 create
@@ -39,12 +39,12 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "%N%
-%		select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,%N%
-%		 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where%N%
-%			r.participant_id = p.identifier AND%N%
-%			r.paid_amount = ?paid_amount%N%
-%		"
+	definition: STRING is "[
+select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
+		 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
+			r.participant_id = p.identifier AND
+			r.paid_amount = ?paid_amount
+]"
 
 feature {NONE} -- Implementation
 
@@ -69,4 +69,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end -- class PARTICIPANTS_BY_AMOUNT
+end

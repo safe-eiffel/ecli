@@ -2,7 +2,7 @@ indexing
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2006/03/21 14:12:57.046"
+	generated: "2008/07/11 16:04:38.302"
 
 class PARTICIPANTS_BY_ZIP_RESULTS
 
@@ -32,4 +32,4 @@ feature  -- Access
 
 	no: ECLI_VARCHAR
 
-end -- class PARTICIPANTS_BY_ZIP_RESULTS
+end

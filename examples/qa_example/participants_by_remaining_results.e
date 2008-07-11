@@ -2,7 +2,7 @@ indexing
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2006/03/21 14:12:57.062"
+	generated: "2008/07/11 16:04:38.365"
 
 class PARTICIPANTS_BY_REMAINING_RESULTS
 
@@ -40,4 +40,4 @@ feature  -- Access
 
 	remaining: ECLI_DOUBLE
 
-end -- class PARTICIPANTS_BY_REMAINING_RESULTS
+end
