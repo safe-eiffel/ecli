@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="ISO-8859-1"?><system xmlns="http://www.eiffel.com/developers/xml/configuration-1-0-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-0-0 http://www.eiffel.com/developers/xml/configuration-1-0-0.xsd" name="qagui" uuid="A66DBAD2-999D-466A-A661-609DAA61EAB6">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-4-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-4-0 http://www.eiffel.com/developers/xml/configuration-1-4-0.xsd" name="qagui" uuid="A66DBAD2-999D-466A-A661-609DAA61EAB6">
 	<target name="vision2_project">
 		<description>This configuration file has been generated for you by EiffelBuild.</description>
 		<root cluster="root_cluster" class="VISION2_APPLICATION" feature="make_and_launch"/>
 		<option warning="true">
-			<assertions precondition="true" postcondition="true" check="true" invariant="false" loop="false"/>
+			<assertions precondition="true" postcondition="true" check="true"/>
 		</option>
 		<setting name="exception_trace" value="true"/>
 		<setting name="inlining_size" value="10"/>
@@ -29,8 +30,8 @@
 			</file_rule>
 		</cluster>
 		<cluster name="ecli_support" location="$ECLI\support\" recursive="true"/>
-		<cluster name="qa" location="C:\User\eiffel\safe\safe\lib\ecli\tools\query_assistant\src\" recursive="true"/>
-		<cluster name="root_cluster" location="C:\User\eiffel\safe\safe\lib\ecli\tools\query_assistant\vision2\" recursive="true">
+		<cluster name="qa" location="$SAFE\lib\ecli\tools\query_assistant\src\" recursive="true"/>
+		<cluster name="root_cluster" location="$SAFE\lib\ecli\tools\query_assistant\vision2\" recursive="true">
 			<file_rule>
 				<exclude>/EIFGENs$</exclude>
 				<exclude>/.svn$</exclude>
@@ -44,6 +45,7 @@
 				<exclude>/C$</exclude>
 				<exclude>/linux$</exclude>
 				<exclude>/CVS$</exclude>
+				<exclude>/ge$</exclude>
 			</file_rule>
 		</cluster>
 	</target>
