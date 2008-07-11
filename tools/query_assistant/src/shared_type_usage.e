@@ -9,12 +9,10 @@ class
 
 feature -- Access
 
-
 	use_integer_64 : BOOLEAN is
 		do
 			Result := use_integer_64_cell.item
 		end
-
 
 	use_decimal : BOOLEAN is
 		do
