@@ -98,6 +98,27 @@ feature -- Access
 			end
 		end
 
+	item_for_name (a_name : STRING) : G  is
+			-- item whose name is `a_name'
+		require
+			a_name_not_void: a_name /= Void
+		local
+			c : like new_cursor
+		do
+			from
+				c := new_cursor
+				c.start
+			until
+				c.off or else c.item.name.is_equal (a_name)
+			loop
+				c.forth
+			end
+			if not c.off then
+				Result := c.item
+				c.finish
+			end
+		end
+
 feature -- Status report
 
 	is_flattened : BOOLEAN
