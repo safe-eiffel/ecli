@@ -56,11 +56,18 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : STRING is
+		local
+			l_count : INTEGER
 		do
 			if is_null then
 				Result := Void
 			else
-				ext_item.copy_to (impl_item)
+				l_count := count
+				if l_count > 0 then
+					ext_item.copy_substring_to (1, l_count, impl_item)
+				else
+					impl_item.keep_head (0)
+				end
 				Result := impl_item
 			end
 		end

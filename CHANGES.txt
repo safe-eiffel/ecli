@@ -1,3 +1,6 @@
+2008-08-07
+	* ECLI_STRING_VALUE : fixed problem when retrieving strings with embedded NULL characters in them.
+
 20008-07-11
 
 	* ECLI_INTEGER_64 supported (Warning: Oracle driver does not support bindings with Integer_64).	
