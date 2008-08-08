@@ -46,6 +46,7 @@ feature {NONE} -- Initialization
 		require
 			valid_n: n > 0
 		do
+			maximum_capacity_impl := n
 			make (n)
 		ensure
 			is_null: is_null
@@ -56,18 +57,11 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : STRING is
-		local
-			l_count : INTEGER
 		do
 			if is_null then
 				Result := Void
 			else
-				l_count := count
-				if l_count > 0 then
-					ext_item.copy_substring_to (1, l_count, impl_item)
-				else
-					impl_item.keep_head (0)
-				end
+				ext_item.copy_to (impl_item)
 				Result := impl_item
 			end
 		end

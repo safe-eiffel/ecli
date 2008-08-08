@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL CHAR (n) values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,16 +15,16 @@ inherit
 
 	ECLI_STRING_VALUE
 		redefine
-			make, 
-			count, 
-			item, 
+			make,
+			count,
+			item,
 			formatted
 		end
 
 create
 
 	make, make_force_maximum_capacity
-	
+
 feature {NONE} -- Initialization
 
 	make (n : INTEGER) is
@@ -41,7 +41,7 @@ feature -- Access
 		once
 			Result := 255
 		end
-		
+
 	count : INTEGER
 
 	item : STRING is
@@ -95,7 +95,7 @@ feature {NONE} -- Implementation
 				pad (s)
 			end
 		end
-	
+
 invariant
 
 	count_capacity: count = capacity
