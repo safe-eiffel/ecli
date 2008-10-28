@@ -113,6 +113,9 @@ feature -- Status report
 	no_prototypes : BOOLEAN
 		-- Does Current not generate function prototypes in class skeletons?
 
+	allow_integer_64 : BOOLEAN
+		-- Does Current allow generation of INTEGER_64 ?
+
 feature -- Constants
 
 	reasonable_maximum_length : INTEGER is 1_000_000
@@ -147,7 +150,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.2")
+			error_handler.report_banner ("v1.3")
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2008")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
@@ -185,15 +188,8 @@ feature -- Basic operations
 					in_filename := value
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-expat") then
---					if fact.is_expat_parser_available then
---						event_parser := fact.new_expat_parser
---					else
---						error_handler.report_xml_parser_unavailable ("EXPAT")
---						has_error := True
---					end
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-eiffel") then
---					create {XM_EIFFEL_PARSER} event_parser.make
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-verbose") then
 					is_verbose := True
@@ -231,8 +227,11 @@ feature -- Basic operations
 				elseif key.is_equal ("-max_length") then
 					maximum_length_string := value
 					arg_index := arg_index + 2
-				elseif key.is_equal ("-use_decimal") then
+				elseif key.is_equal ("-use_decimal") or else key.is_equal ("-force_decimal") then
 					set_force_decimal (True)
+					arg_index := arg_index + 1
+				elseif key.is_equal ("-allow_integer_64") then
+					allow_integer_64 := True
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-no_prototypes") or else key.is_equal ("-no_prototype") then
 					no_prototypes := True
@@ -302,7 +301,11 @@ feature -- Basic operations
 					create type_catalog.make (session)
 					set_shared_columns_repository (repository)
 					set_use_decimal (type_catalog.can_bind (create {ECLI_DECIMAL}.make (10,2)))
-					set_use_integer_64 (type_catalog.can_bind (create {ECLI_INTEGER_64}.make))
+					if allow_integer_64 then
+						set_use_integer_64 (type_catalog.can_bind (create {ECLI_INTEGER_64}.make))
+					else
+						set_use_integer_64 (False)
+					end
 				else
 					error_handler.report_database_connection_failed (dsn)
 					has_error := True
@@ -321,9 +324,9 @@ feature -- Basic operations
 					end
 				end
 			end
---			if has_error then
---				error_handler.report_usage (Fact.is_expat_parser_available)
---			end
+			if has_error and error_handler.has_missing_argument then
+				error_handler.report_usage (False)
+			end
 			if not is_verbose then
 				error_handler.disable_verbose
 			end
