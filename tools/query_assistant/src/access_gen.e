@@ -61,6 +61,8 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
+	version : STRING is "v1.3b"
+	
 feature -- Element change
 
 	set_access_routines_prefix (a_access_routines_prefix: STRING) is
@@ -116,6 +118,9 @@ feature -- Status report
 	allow_integer_64 : BOOLEAN
 		-- Does Current allow generation of INTEGER_64 ?
 
+	allow_decimal : BOOLEAN
+		-- Does Current allow generation of MA_DECIMAL ?
+
 feature -- Constants
 
 	reasonable_maximum_length : INTEGER is 1_000_000
@@ -150,7 +155,7 @@ feature -- Basic operations
 	print_prologue is
 			-- print application prologue
 		do
-			error_handler.report_banner ("v1.3")
+			error_handler.report_banner (version)
 			error_handler.report_copyright ("Paul G. Crismer and others", "2001-2008")
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
@@ -233,6 +238,9 @@ feature -- Basic operations
 				elseif key.is_equal ("-allow_integer_64") then
 					allow_integer_64 := True
 					arg_index := arg_index + 1
+				elseif key.is_equal ("-allow_decimal") then
+					allow_decimal := True
+					arg_index := arg_index + 1
 				elseif key.is_equal ("-no_prototypes") or else key.is_equal ("-no_prototype") then
 					no_prototypes := True
 					arg_index := arg_index + 1
@@ -300,7 +308,9 @@ feature -- Basic operations
 					create repository.make (session)
 					create type_catalog.make (session)
 					set_shared_columns_repository (repository)
-					set_use_decimal (type_catalog.can_bind (create {ECLI_DECIMAL}.make (10,2)))
+					if allow_decimal then
+						set_use_decimal (type_catalog.can_bind (create {ECLI_DECIMAL}.make (10,2)))
+					end
 					if allow_integer_64 then
 						set_use_integer_64 (type_catalog.can_bind (create {ECLI_INTEGER_64}.make))
 					else

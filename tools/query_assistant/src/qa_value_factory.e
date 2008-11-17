@@ -163,9 +163,11 @@ feature -- Miscellaneous
 			else
 				if decimal_digits = 0 then
 					if precision < 10 then
-							create_integer_value
+						create_integer_value
 					elseif use_integer_64 and then precision < 20 then
-							create_integer_64_value
+						create_integer_64_value
+					elseif not use_decimal then
+						create_double_value
 					else
 						create {QA_DECIMAL}last_result.make (precision, decimal_digits)
 					end
