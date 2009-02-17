@@ -60,17 +60,7 @@ feature {NONE} -- Miscellaneous
 
 	create_decimal_value (precision, decimal_digits : INTEGER) is
 		do
-			if decimal_digits = 0 then
-				if precision < 10 then
-					create_integer_value
-				elseif precision < 20 then
-					create_integer_64_value
-				else
-					create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
-				end
-			else
-				create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
-			end
+			create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
 		end
 
 	create_real_value is
