@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"ODBC Drivers."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -12,22 +12,23 @@ indexing
 class
 	ECLI_DRIVER
 
-creation
+create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (cursor : ECLI_DRIVERS_CURSOR) is
 			-- create from current item in cursor
 		require
 			cursor_valid: cursor /= Void and then not cursor.off
+			cursor_name_not_void: cursor.name /= Void
 		local
 			index, sep : INTEGER
 			start : INTEGER
 			att, item, key : STRING
 		do
-			name := clone (cursor.name)
+			name := cursor.name.twin
 			create attributes.make (10)
 			att := cursor.attributes
 			from
@@ -47,12 +48,12 @@ feature {NONE} -- Initialization
 				index := cursor.attributes.index_of ('%U', start)
 			end
 		end
-		
+
 feature -- Access
-	
+
 	name : STRING
 			-- Name.
-	
+
 	attributes : DS_HASH_TABLE[STRING, STRING]
 			-- Driver attribute values.
 
