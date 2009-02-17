@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Supporting string routines."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -22,20 +22,28 @@ feature
 		local
 			begin_index, end_index : INTEGER
 		do
-			from end_index := s.count
-			variant end_index
-			until end_index < 1 or else s.item (end_index) /= ' '
+			--| search backward for first non-blank character index
+			from
+				end_index := s.count
+			until
+				end_index < 1 or else s.item (end_index) /= ' '
 			loop
 				end_index := end_index - 1
-			end			
-			from begin_index := 1
-			until begin_index > s.count or else s.item (begin_index) /= ' '
+			variant
+				end_index
+			end
+			--| search forward for first non-blank character index
+			from
+				begin_index := 1
+			until
+				begin_index > s.count or else s.item (begin_index) /= ' '
 			loop
 				begin_index := begin_index + 1
 			end
-			if 		begin_index <= s.count 
+			--| create result
+			if 		begin_index <= s.count
 				and end_index >= 1
-				and begin_index <= end_index 
+				and begin_index <= end_index
 			then
 				Result := s.substring (begin_index, end_index)
 			else
@@ -44,10 +52,11 @@ feature
 		ensure
 			trimmed: not Result.is_empty implies (Result @ 1 /= ' ' and Result @ Result.count /= ' ')
 		end
-	
+
 	pad (s : STRING; a_capacity : INTEGER) is
 			-- pad 's' with blanks, until s.count = a_capacity
 		require
+			s_not_void: s /= Void
 			count_not_capacity: s.count <= a_capacity
 		do
 			from
@@ -59,12 +68,15 @@ feature
 		ensure
 			s.count = a_capacity
 		end
-	
+
 	padded (s : STRING; a_capacity : INTEGER) : STRING is
 			-- copy of `s' padded with blanks
+		require
+			s_not_void: s /= Void
+			a_capacity_greater_s_count: a_capacity >= s.count
 		do
-			Result := clone (s)
+			Result := s.twin
 			pad (Result, a_capacity)
 		end
-		
+
 end
