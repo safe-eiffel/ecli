@@ -285,13 +285,13 @@ feature -- Conversion
 			from
 				index := temp.count - 1
 				Result := 0
-			variant
-				index + 1
 			until
 				index < 0
 			loop
 				Result := Result * 10 + temp.coefficient.item (index)
 				index := index - 1
+			variant
+				index + 1
 			end
 			if temp.is_negative then
 				Result := -Result
