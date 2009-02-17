@@ -9,7 +9,7 @@ class
 
 inherit
 	ISQL_COMMAND
-	
+
 	KL_STANDARD_FILES
 
 feature -- Access
@@ -21,16 +21,16 @@ feature -- Access
 		end
 
 	match_string : STRING is "exec"
-	
+
 feature -- Status report
-	
+
 	needs_session : BOOLEAN is True
-	
+
 	matches (text: STRING) : BOOLEAN is
 		do
 			Result := matches_single_string (text, match_string)
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT) is
@@ -50,7 +50,7 @@ feature -- Basic operations
 				--| read filename
 				worder.read_quoted_word
 				if not worder.end_of_input then
-					filename := clone (worder.last_string)
+					filename := worder.last_string.twin
 					--| suppress eventual quotes
 					if filename.item (1) = '%"' and then filename.item (filename.count) = '%"'
 						or else filename.item (1) = '%'' and then filename.item (filename.count) = '%'' then
@@ -77,5 +77,5 @@ feature -- Basic operations
 				end
 			end
 		end
-		
+
 end -- class ISQL_CMD_EXECUTE
