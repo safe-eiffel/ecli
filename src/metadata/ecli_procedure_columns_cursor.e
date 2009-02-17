@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 		"Cursor on catalog metadata regarding columns of stored procedures. %N%
 		% Columns match search criterias : (1) catalog name, (2) schema name, (3) procedure name.%N%
 		% A Void criteria is considered as a wildcard."
@@ -21,18 +21,18 @@ inherit
 		    item, create_item, do_query_metadata, definition
 		end
 
-creation
+create
 
 	make
-	
+
 feature -- Access
 
 	item : ECLI_PROCEDURE_COLUMN is
-			-- 
+			--
 		do
 			Result := impl_item
 		end
-		
+
 feature -- Element change
 
 	create_item is
@@ -48,7 +48,7 @@ feature -- Element change
 feature -- Inapplicable
 
 	buffer_column_type : ECLI_INTEGER
-	
+
 feature {NONE} -- Implementation
 
 	create_buffer_values is
@@ -57,7 +57,7 @@ feature {NONE} -- Implementation
 			Precursor
 			create buffer_column_type.make
 		end
-	
+
 	set_buffer_values_array is
 		do
 			set_results (<<
@@ -101,7 +101,7 @@ feature {NONE} -- Implementation
 				a_name, a_name_length,
 				a_column, a_column_length)
 		end
-	
+
 invariant
 	invariant_clause: True -- Your invariant here
 

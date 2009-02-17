@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Primary keys of a table."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -21,15 +21,15 @@ inherit
 		undefine
 			out
 		end
-	
-creation
 
-	make 
+create
 
-creation
+	make
+
+create
 
 	{ECLI_FOREIGN_KEY} make_by_name
-	
+
 feature {NONE} -- Initialization
 
 	make (cursor : ECLI_PRIMARY_KEY_CURSOR) is
@@ -67,17 +67,17 @@ feature {NONE} -- Initialization
 			key_name_set: key_name = a_key_name
 			columns_has_name: columns.has (a_column_name) and then columns.count = 1
 		end
-		
+
 feature -- Access
 
 	key_name : STRING
 		-- name of the key if it is applicable
-	
+
 	columns : DS_LIST[STRING]
 		-- list of column names
-	
+
 feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
-	
+
 	add_column (a_column_name : STRING) is
 			-- add `a_column_name' in columns
 		require

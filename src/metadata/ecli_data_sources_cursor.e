@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that iterate over installed data sources."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -23,8 +23,8 @@ inherit
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
-	
-creation
+
+create
 
 	make_all, make_user, make_system
 
@@ -147,7 +147,7 @@ feature {ECLI_DATA_SOURCE} -- Implementation
 
 	name : STRING
 	description : STRING
-	
+
 	c_name : XS_C_STRING
 	c_description : XS_C_STRING
 

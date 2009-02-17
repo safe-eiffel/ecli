@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Procedures metadata."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -26,7 +26,7 @@ inherit
 			out
 		end
 
-creation
+create
 
 	make
 

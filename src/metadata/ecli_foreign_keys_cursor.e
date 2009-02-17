@@ -21,7 +21,7 @@ inherit
 			set_buffer_into_cursor, create_buffers, create_item
 		end
 
-creation
+create
 
 	make
 

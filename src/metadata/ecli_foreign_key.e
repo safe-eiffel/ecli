@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 		"Foreign keys of a table, referring to a primary key of other table.%
 		% The table identified by [catalog, schema, table] is the referring table.%
 		% The foreign key of the referring table is composed of `columns' and is identified by `key_name'.%
@@ -23,16 +23,16 @@ inherit
 		redefine
 			out
 		end
-	
+
 	ECLI_FOREIGN_KEY_CONSTANTS
 		undefine
 			out
 		end
-		
-creation
+
+create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (cursor : ECLI_FOREIGN_KEYS_CURSOR) is
@@ -66,7 +66,7 @@ feature {NONE} -- Initialization
 			columns.put_last (cursor.buffer_column_name.as_string)
 			create referenced_key.make_by_name (pk_catalog, pk_schema, pk_table, primary_key_name,cursor.buffer_pk_column_name.as_string)
 		end
-		
+
 feature -- Access
 
 	referenced_key : ECLI_PRIMARY_KEY
@@ -77,11 +77,11 @@ feature -- Access
 		require
 			update_rule_applicable: is_update_rule_applicable
 		do
-			Result := update_rule_impl 
+			Result := update_rule_impl
 		ensure
 			definition: (Result = Sql_cascade or else Result = Sql_set_null or else Result = Sql_set_default or else Result = Sql_no_action)
 		end
-		
+
 	delete_rule : INTEGER is
 			-- Action to be applied to the foreign key when the SQL operation is DELETE
 		require
@@ -91,17 +91,17 @@ feature -- Access
 		ensure
 			definition: (Result = Sql_cascade or else Result = Sql_set_null or else Result = Sql_set_default or else Result = Sql_no_action)
 		end
-		
+
 	deferrability : INTEGER is
-			--  deferrability of 
+			--  deferrability of
 		require
 			deferrability_applicable: is_deferrability_applicable
 		do
-			Result := deferrability_impl 
+			Result := deferrability_impl
 		ensure
 			definition: (Result = Sql_initially_deferred or else Result = Sql_initially_immediate or else Result = Sql_not_deferrable)
 		end
-	
+
 feature -- Status report
 
 	is_update_rule_applicable : BOOLEAN
@@ -109,7 +109,7 @@ feature -- Status report
 	is_deferrability_applicable : BOOLEAN
 
 feature -- Measurement
-	
+
 	add_column (a_column_name : STRING; a_pk_column_name : STRING) is
 			-- add `a_column_name' in columns with corresponding `a_pk_column_name' into `primary_key_c'
 		require
@@ -127,7 +127,7 @@ feature -- Conversion
 		do
 			create Result.make (0)
 		end
-		
+
 feature {NONE} -- Implementation
 
 	update_rule_impl : INTEGER

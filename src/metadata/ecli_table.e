@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that describe an SQL Table."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -21,7 +21,7 @@ inherit
 			out
 		end
 
-creation
+create
 
 	make
 
