@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL VARBINARY large data transferred from/into a file."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,15 +15,15 @@ inherit
 
 	ECLI_FILE_VALUE
 
-creation
+create
 
 	make_input, make_output
-	
+
 feature -- Access
-		
+
 	sql_type_code : INTEGER is
 		do
 			Result := Sql_varbinary
 		end
-		
+
 end

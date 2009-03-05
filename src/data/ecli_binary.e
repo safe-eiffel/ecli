@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL BINARY (n) data objects."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,11 +17,11 @@ inherit
 		redefine
 			valid_item
 		end
-		
-creation
+
+create
 
 	make, make_force_maximum_capacity
-	
+
 feature -- Access
 
 	default_maximum_capacity : INTEGER is
@@ -30,11 +30,11 @@ feature -- Access
 		end
 
 	sql_type_code : INTEGER is
-			-- 
+			--
 		once
 			Result := sql_binary
 		end
-		
+
 feature -- Status report
 
 	valid_item (value : STRING) : BOOLEAN is
@@ -44,5 +44,5 @@ feature -- Status report
 		ensure then
 			definition2: Result implies value.count = capacity
 		end
-		
+
 end

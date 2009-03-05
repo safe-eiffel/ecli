@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"CLI SQL INTEGER arrayed value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -26,14 +26,14 @@ inherit
 		export
 			{NONE} make_single
 		undefine
-			release_handle, length_indicator_pointer, 
+			release_handle, length_indicator_pointer,
 			to_external, is_null, set_null, set_item
 --			, as_string
 		redefine
 			item, transfer_octet_length, out, trace
 		end
 
-creation
+create
 
 	make
 

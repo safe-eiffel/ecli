@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL VARCHAR large data transferred from/into a file."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -18,15 +18,15 @@ inherit
 			sql_type_code
 		end
 
-creation
+create
 
 	make_input, make_output
-	
+
 feature -- Access
-		
+
 	sql_type_code : INTEGER is
 		do
 			Result := Sql_varchar
 		end
-		
+
 end

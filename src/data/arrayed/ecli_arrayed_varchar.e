@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL VARCHAR (n) arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,16 +15,10 @@ inherit
 
 	ECLI_ARRAYED_STRING_VALUE
 
-creation
+create
 
 	make
 
-feature -- Access
-
---	max_content_capacity : INTEGER is
---		do
---			Result := 255
---		end
 
 feature -- Status report
 
@@ -36,5 +30,5 @@ feature -- Status report
 feature {NONE} -- Implementation
 
 	default_maximum_capacity : INTEGER is 255
-	
+
 end

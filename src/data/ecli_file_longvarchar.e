@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL LONGVARCHAR large data transferred from/into a file."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -18,17 +18,17 @@ inherit
 			get_transfer_length
 		end
 
-creation
+create
 
 	make_input, make_output
-	
+
 feature -- Access
-		
+
 	sql_type_code : INTEGER is
 		do
 			Result := Sql_longvarchar
 		end
-		
+
 feature {NONE} -- Implementation
 
 	get_transfer_length : INTEGER is
@@ -36,7 +36,7 @@ feature {NONE} -- Implementation
 			Result := Precursor
 			if ext_item.item (Result) = '%U' then
 				Result := Result - 1
-			end			
+			end
 		end
-		
+
 end

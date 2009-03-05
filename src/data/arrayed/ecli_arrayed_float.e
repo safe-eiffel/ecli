@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"CLI SQL FLOAT value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -18,7 +18,7 @@ inherit
 			column_precision, sql_type_code, decimal_digits, display_size, transfer_octet_length
 		end
 
-creation
+create
 
 	make
 
@@ -41,9 +41,9 @@ feature -- Status setting
 		once
 			Result := sql_float
 		end
-	
+
 	decimal_digits: INTEGER is
-		do 
+		do
 			Result := 0
 		end
 
@@ -68,7 +68,7 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Conversion
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous

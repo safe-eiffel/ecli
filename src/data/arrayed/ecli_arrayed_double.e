@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"CLI SQL DOUBLE arrayed value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,7 +15,7 @@ inherit
 
 	ECLI_GENERIC_ARRAYED_VALUE [DOUBLE]
 		redefine
-			out		
+			out
 		select
 			is_equal, copy
 		end
@@ -24,12 +24,12 @@ inherit
 		rename
 			make as make_double, copy as copy_item, is_equal as is_equal_item
 		undefine
-			release_handle, length_indicator_pointer, to_external, 
+			release_handle, length_indicator_pointer, to_external,
 			is_null, set_null, out, item, transfer_octet_length, set_item
 			--, as_string
 		end
-		
-creation
+
+create
 
 	make
 
@@ -42,7 +42,7 @@ feature {NONE} -- Initialization
 			count := capacity
 			set_all_null
 		end
-		
+
 feature -- Access
 
 	item : DOUBLE is
@@ -56,7 +56,7 @@ feature -- Access
 			--Result := impl_item
 			Result := c_memory_get_double (ecli_c_array_value_get_value_at(buffer, index))
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -100,12 +100,12 @@ feature -- Basic operations
 			message_buffer : XS_C_STRING
 			i : INTEGER
 		do
-			from 
+			from
 				i := 1
 				create Result.make (10)
 				Result.append_string ("<<")
 				create message_buffer.make (50)
-			until i = count 
+			until i = count
 			loop
 				if is_null_at (i) then
 					Result.append_string (out_null)
@@ -114,7 +114,7 @@ feature -- Basic operations
 					Result.append_string (message_buffer.as_string)
 				end
 				if i < count then
-					Result.append_string (",")					
+					Result.append_string (",")
 				end
 				i := i + 1
 			end

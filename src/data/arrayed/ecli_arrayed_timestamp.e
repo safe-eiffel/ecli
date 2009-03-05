@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL TIMESTAMP arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -12,48 +12,6 @@ indexing
 class ECLI_ARRAYED_TIMESTAMP
 
 inherit
-
---	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE_TIME]
---		undefine
---			set_item, out_item_at
---		redefine
---		select
---			is_equal, copy
---		end
---	ECLI_ARRAYED_DATE
---		rename
---			make_single as make_single_date, make_default_single as make_default_1_date,
---			set_item as set_date_item, formatted as date_formatted, create_impl_item as create_date_impl_item,
---			copy_item as copy_item_date, is_equal_item as is_equal_item_date
---		export
---			{NONE} make_single_date, make_default_1_date, set_date_item, date_formatted
---		undefine
---			c_type_code,
---			column_precision,
---			convertible_as_string,
---			convertible_as_character,
---			convertible_as_boolean,
---			convertible_as_integer,
---			convertible_as_real,
---			convertible_as_double,
---			convertible_as_date, 
---			convertible_as_time,
---			convertible_as_timestamp , 			
---			as_boolean, as_character, as_integer, as_real, as_double, as_time, as_timestamp,
---			sql_type_code,
---			decimal_digits,
---			display_size,
---			item,
---			trace,
---			transfer_octet_length, days_in_month,
---			Integer_format, Calendar, size
---		redefine
-----			is_equal, copy, 
---			out_item_at, item_at, set_item_at, impl_item --, set_item, set_item_at,
---		select
---			set_date_item,
---			is_equal, copy
---		end
 
 	ECLI_GENERIC_ARRAYED_VALUE [DT_DATE_TIME]
 		redefine
@@ -68,7 +26,7 @@ inherit
 		redefine
 			out_item_at
 		end
-		
+
 	ECLI_TIMESTAMP
 		rename
 			make as make_single, set as set_single_timestamp,
@@ -83,18 +41,15 @@ inherit
 			month,
 			out,
 			release_handle,
---			set_date,
 			set_item,
 			to_external,
 			as_string,
 			year, hour, minute, second, nanosecond
---		redefine
---			trace, hour, minute, second, nanosecond
 		redefine
 			impl_item, create_impl_item
 		end
 
-creation
+create
 
 	make
 

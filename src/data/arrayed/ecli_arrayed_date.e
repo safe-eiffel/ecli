@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL DATE arrayed buffers."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -38,13 +38,13 @@ inherit
 		undefine
 			is_equal, copy, out
 		end
-	
-creation
+
+create
 
 	make
 
 feature {NONE} -- Initialization
-		
+
 	make (a_capacity : INTEGER) is
 			-- make array of null dates
 		do
@@ -54,7 +54,7 @@ feature {NONE} -- Initialization
 			set_all_null
 			create_impl_item
 		end
-		
+
 feature -- Access
 
 	item_at (index : INTEGER) : DT_DATE is
@@ -66,7 +66,7 @@ feature -- Access
 			Result := item
 			cursor_index := save_index
 		end
-		
+
 	item : DT_DATE is
 		do
 			impl_item.set_year_month_day (year, month, day)
@@ -101,7 +101,7 @@ feature {NONE} -- Implementation
 				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)
 			end
 		end
-		
+
 invariant
 
 	valid_month:	(not is_null) implies (month >= 1 and month <= 12)

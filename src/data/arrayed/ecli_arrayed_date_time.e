@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Arrayed buffers of DATETIME (synonym of TIMESTAMP) values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -15,10 +15,10 @@ inherit
 
 	ECLI_ARRAYED_TIMESTAMP
 		redefine
-			sql_type_code			
+			sql_type_code
 		end
 
-creation
+create
 
 	make
 

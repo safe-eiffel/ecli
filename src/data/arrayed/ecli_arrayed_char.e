@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL CHAR (n) arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,14 +14,10 @@ class ECLI_ARRAYED_CHAR
 inherit
 
 	ECLI_ARRAYED_STRING_VALUE
-		rename
-		export
-		undefine
 		redefine
-			make, 
-			content_count, 
+			make,
+			content_count,
 			item_at, formatted
-		select
 		end
 
 	ECLI_STRING_ROUTINES
@@ -31,7 +27,7 @@ inherit
 			out, is_equal, copy
 		end
 
-creation
+create
 
 	make
 
@@ -65,7 +61,7 @@ feature -- Measurement
 --		do
 --			Result := 255
 --		end
-		
+
 feature -- Status report
 
 	sql_type_code: INTEGER is
@@ -98,5 +94,5 @@ feature {NONE} -- Implementation
 feature {NONE} -- Implementation
 
 	default_maximum_capacity : INTEGER is 255
-	
+
 end

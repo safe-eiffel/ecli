@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL DATETIME values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,8 +17,8 @@ inherit
 		redefine
 			sql_type_code
 		end
-		
-creation
+
+create
 
 	make, make_first, make_default
 
@@ -28,5 +28,5 @@ feature
 		once
 			Result := Sql_type_timestamp
 		end
-		
+
 end

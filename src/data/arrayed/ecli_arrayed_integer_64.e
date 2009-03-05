@@ -28,12 +28,11 @@ inherit
 		undefine
 			release_handle, length_indicator_pointer,
 			to_external, is_null, set_null, set_item
---			, as_string
 		redefine
 			item, transfer_octet_length, out, trace
 		end
 
-creation
+create
 
 	make
 
@@ -50,22 +49,16 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : INTEGER is
+	item : INTEGER_64 is
 		do
 			Result := item_at (cursor_index)
 		end
 
-	item_at (index : INTEGER) : INTEGER is
+	item_at (index : INTEGER) : INTEGER_64 is
 			--
 		do
-			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
-			--Result := impl_item
 			Result := c_memory_get_int64 (ecli_c_array_value_get_value_at(buffer,index))
 		end
-
-feature -- Measurement
-
-feature -- Status report
 
 feature -- Status setting
 
@@ -74,36 +67,21 @@ feature -- Status setting
 			Result := ecli_c_array_value_get_length (buffer)
 		end
 
-feature -- Cursor movement
+ffeature -- Element change
 
-feature -- Element change
-
-	set_item (value : INTEGER) is
+	set_item (value : INTEGER_64) is
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
 		end
 
-	set_item_at (value : INTEGER; index : INTEGER) is
+	set_item_at (value : INTEGER_64; index : INTEGER) is
 			-- set item to 'value', truncating if necessary
 		do
-			--impl_item := value
-			--ecli_c_array_value_set_value_at (buffer, $impl_item, transfer_octet_length, index)
 			c_memory_put_int64 (ecli_c_array_value_get_value_at(buffer,index), value)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length, index)
 		end
 
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -134,13 +112,5 @@ feature -- Basic operations
 			a_tracer.put_integer_64 (Current)
 		end
 
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: -- Your invariant here
 
 end

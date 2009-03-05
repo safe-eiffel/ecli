@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that create arrayed buffers for rowset commands."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,11 +17,11 @@ inherit
 		redefine
 			value_factory, value_anchor
 		end
-	
-creation
+
+create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_row_count : INTEGER) is
@@ -31,13 +31,13 @@ feature {NONE} -- Initialization
 		ensure
 			row_count_set: row_count = a_row_count
 		end
-		
+
 feature -- Access
 
 feature -- Measurement
 
 	row_count : INTEGER
-	
+
 feature -- Status report
 
 feature -- Status setting
@@ -73,12 +73,12 @@ feature {NONE} -- Implementation
 			end
 			Result := impl_value_factory
 		end
-	
+
 	value_anchor : ECLI_ARRAYED_VALUE is
-			-- 
-		do			
+			--
+		do
 		end
-	
+
 invariant
 	invariant_clause: -- Your invariant here
 
