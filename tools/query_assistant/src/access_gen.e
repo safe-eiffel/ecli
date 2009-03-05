@@ -62,7 +62,7 @@ feature -- Access
 			-- prefix for naming the access_routines class
 
 	version : STRING is "v1.3b"
-	
+
 feature -- Element change
 
 	set_access_routines_prefix (a_access_routines_prefix: STRING) is
@@ -167,8 +167,6 @@ feature -- Basic operations
 			verify_arguments
 		ensure
 			in_filename_not_void: not has_error implies in_filename /= Void
---			parser_not_void: not has_error implies event_parser /= Void
---			pipe_not_void: not has_error implies tree_pipe /= Void
 		end
 
 	parse_arguments is
@@ -260,19 +258,6 @@ feature -- Basic operations
 			-- Create standard pipe holder and bind it to event parser.
 			has_error := False
 			create error_message.make (0)
-			if not has_error then
---				if event_parser = Void then
---					create {XM_EIFFEL_PARSER} event_parser.make
---					error_handler.report_default_argument ("-eiffel|-expat", "Eiffel XML parser")
---				end
---				if event_parser /= Void then
---					create tree_pipe.make
---					event_parser.set_callbacks (tree_pipe.start)
---				else
---					has_error := True
---					error_handler.report_missing_argument ("-eiffel' or '-expat'", "An XML parser must be specified")
---				end
-			end
 			if user = Void then
 				has_error := True
 				error_handler.report_missing_argument ("-user", "a user name must be specified")
@@ -348,9 +333,9 @@ feature {NONE} -- Implementation
 	resolve_parent_classes is
 			-- resolve parent classes for parameters and result sets
 		do
---			resolve_parent_parameter_sets
---			resolve_parent_result_sets
-			resolve_all_sets
+			resolve_parent_parameter_sets
+			resolve_parent_result_sets
+--			resolve_all_sets
 		end
 
 	resolve_parent_parameter_sets is
@@ -425,7 +410,6 @@ feature {NONE} -- Implementation
 						if cursor.item.has_result_set then
 							module.result_sets.force (cursor.item.results, cursor.item.results.name)
 						else
---							error_handler.report_rejected (cursor.item.name)
 							do_nothing
 						end
 					else
@@ -448,7 +432,8 @@ feature {NONE} -- Implementation
 			-- generate modules
 		local
 			c : DS_HASH_TABLE_CURSOR[RDBMS_ACCESS,STRING]
-			s : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
+			p : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[RDBMS_ACCESS_PARAMETER], STRING]
+			r : DS_HASH_TABLE_CURSOR[PARENT_COLUMN_SET[RDBMS_ACCESS_RESULT], STRING]
 		do
 			error_handler.report_start ("Class generation")
 			--| classes for modules
@@ -463,19 +448,43 @@ feature {NONE} -- Implementation
 				end
 				c.forth
 			end
-			create gen.make (error_handler)
+			create gen.make (error_handler,version)
+			--| classes for parent parameters
+			from
+				p := parent_parameter_sets.new_cursor
+				p.start
+			until
+				p.off
+			loop
+				error_handler.report_start ("Generating " + p.item.name)
+				gen.create_set_class (p.item)
+				gen.write_class (gen.set_class, out_directory)
+				p.forth
+			end
 			--| classes for parent results
 			from
-				s := all_parents_set.new_cursor
-				s.start
+				r := parent_result_sets.new_cursor
+				r.start
 			until
-				s.off
+				r.off
 			loop
-				error_handler.report_start ("Generating " + s.item.name)
-				gen.create_set_class (s.item)
+				error_handler.report_start ("Generating " + r.item.name)
+				gen.create_set_class (r.item)
 				gen.write_class (gen.set_class, out_directory)
-				s.forth
+				r.forth
 			end
+--			--| classes for parent results
+--			from
+--				s := all_parents_set.new_cursor
+--				s.start
+--			until
+--				s.off
+--			loop
+--				error_handler.report_start ("Generating " + s.item.name)
+--				gen.create_set_class (s.item)
+--				gen.write_class (gen.set_class, out_directory)
+--				s.forth
+--			end
 			if access_routines_prefix /= Void then
 				--| generate access routines
 				gen.create_access_routines_class (access_routines_prefix, module.accesses, all_sets, no_prototypes)
@@ -492,7 +501,7 @@ feature {NONE} -- Implementation
 		local
 			parent_class : STRING
 		do
-			create gen.make (a_error_handler)
+			create gen.make (a_error_handler, version)
 			a_error_handler.report_generating (access.name)
 			if access.has_result_set then
 				parent_class := default_parent_cursor

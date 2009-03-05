@@ -66,13 +66,13 @@ feature -- Access
 	local_items : DS_HASH_SET [G]
 		-- local items : difference between Current and parent
 
-	final_set : like Current is
+	final_set_name : STRING is
 			--
 		do
 			if parent /= Void and then local_items /= Void and then local_items.count = 0 then
-				Result := parent
+				Result := parent.name
 			else
-				Result := Current
+				Result := name
 			end
 		end
 

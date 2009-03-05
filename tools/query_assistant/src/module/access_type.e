@@ -16,15 +16,15 @@ feature -- Initialization
 		require
 			name_not_void: name /= Void
 		do
-			if name.is_equal (t_read) then
+			if name.same_string (t_read) then
 				type := c_read
-			elseif name.is_equal (t_write) then
+			elseif name.same_string (t_write) then
 				type := c_write
-			elseif name.is_equal (t_update) then
+			elseif name.same_string (t_update) then
 				type := c_update
-			elseif name.is_equal (t_delete) then
+			elseif name.same_string (t_delete) then
 				type := c_delete
-			elseif name.is_equal (t_exists) then
+			elseif name.same_string (t_exists) then
 				type := c_exists
 			else
 				type := c_extended
@@ -58,17 +58,17 @@ feature -- Status report
 		require
 			name_not_void: name /= Void
 		do
-			if name.is_equal (t_read) then
+			if name.same_string (t_read) then
 				Result := True
-			elseif name.is_equal (t_write) then
+			elseif name.same_string (t_write) then
 				Result := True
-			elseif name.is_equal (t_update) then
+			elseif name.same_string (t_update) then
 				Result := True
-			elseif name.is_equal (t_delete) then
+			elseif name.same_string (t_delete) then
 				Result := True
-			elseif name.is_equal (t_exists) then
+			elseif name.same_string (t_exists) then
 				Result := True
-			elseif name.is_equal (t_extended) then
+			elseif name.same_string (t_extended) then
 				Result := True
 			else
 				Result := False

@@ -18,6 +18,12 @@ inherit
 		
 feature -- Access
 
+	hash_code : INTEGER is
+			-- 
+		do
+			Result := name.hash_code
+		end
+
 	name : STRING is
 			-- name of metadata
 		require
@@ -129,13 +135,7 @@ feature {NONE} -- Implementation
 			end
 			Result := impl_value
 		end
-	
-	hash_code : INTEGER is
-			-- 
-		do
-			Result := name.hash_code
-		end
-		
+			
 invariant
 	name_not_void: name /= Void
 

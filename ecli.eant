@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="ecli" default="help">
+<project name="ecli2" default="help">
 
 	<description>
 		system: "ECLI parent project file."

@@ -26,16 +26,22 @@ create
 
 feature {NONE} -- Initialization
 
-	make (an_error_handler : QA_ERROR_HANDLER) is
+	make (an_error_handler : QA_ERROR_HANDLER; a_version : STRING) is
 		require
 			an_error_handler_not_void: an_error_handler /= Void
+			a_version_attached: a_version /= Void
 		do
 			error_handler := an_error_handler
+			version := a_version
 		ensure
 			error_handler_set: error_handler = an_error_handler
+			version_set: version = a_version
 		end
 
 feature -- Access
+
+	version : STRING
+		-- Generator Version
 
 	error_handler : QA_ERROR_HANDLER
 
@@ -89,7 +95,7 @@ feature -- Basic operations
 			cursor_class_and_module_have_same_name: cursor_class.name.is_equal (module.name)
 		end
 
-	create_parameters_class (parameter_set : COLUMN_SET[RDBMS_ACCESS_PARAMETER]) is
+	create_parameters_class (parameter_set : PARAMETER_SET) is
 			-- create class from `parameter_set' and write it into `directory_name'
 		require
 			parameter_set_not_void: parameter_set /= Void
@@ -100,7 +106,7 @@ feature -- Basic operations
 		end
 
 
-	create_results_class (result_set : COLUMN_SET[RDBMS_ACCESS_RESULT]) is
+	create_results_class (result_set : RESULT_SET) is
 			-- create class from `result_set' and write it into `directory_name'
 		require
 			result_set_not_void: result_set /= Void
@@ -345,6 +351,7 @@ feature {NONE} -- Basic operations
 			end
 			eiffel_class.add_indexing_clause ("status: %""+status_message+"%"")
 			eiffel_class.add_indexing_clause ("generated: %""+ system_clock.date_time_now.out +"%"")
+			eiffel_class.add_indexing_clause ("generator_version: %""+version+"%"")
 		end
 
 	put_element_change (module : RDBMS_ACCESS) is
@@ -462,7 +469,7 @@ feature {NONE} -- Basic operations
 			-- put `create_buffers'  features of `module' into `cursor_class'
 		local
 			i, count : INTEGER
-			c : DS_HASH_SET_CURSOR [RDBMS_ACCESS_RESULT]
+			c : DS_HASH_SET_CURSOR [RDBMS_ACCESS_METADATA]
 			routine : EIFFEL_ROUTINE
 			feature_group : EIFFEL_FEATURE_GROUP
 			line : STRING
@@ -623,7 +630,7 @@ feature {NONE} -- Implementation
 			eiffel_routine.add_body_line ("until")
 			eiffel_routine.add_body_line ("%Tstatus.is_error or else not cursor.is_ok or else cursor.off")
 			eiffel_routine.add_body_line ("loop")
-			eiffel_routine.add_body_line ("%Textend_cursor_from_"+as_lower (module.results.final_set.name)+" (cursor.item)")
+			eiffel_routine.add_body_line ("%Textend_cursor_from_"+as_lower (module.results.final_set_name)+" (cursor.item)")
 			eiffel_routine.add_body_line ("%Tcursor.forth")
 			eiffel_routine.add_body_line ("end")
 			eiffel_routine.add_body_line ("if cursor.is_error then")
@@ -649,11 +656,11 @@ feature {NONE} -- Implementation
 			--	deferred
 			--	end
 			create routine_name.make_from_string ("extend_cursor_from_")
-			routine_name.append_string (as_lower (module.results.final_set.name))
+			routine_name.append_string (as_lower (module.results.final_set_name))
 
 			if not access_create_object_routine_names.has (routine_name) then
 				create eiffel_routine.make (routine_name)
-				create routine_parameter.make ("row", as_upper (module.results.final_set.name))
+				create routine_parameter.make ("row", as_upper (module.results.final_set_name))
 				eiffel_routine.add_param (routine_parameter)
 				create routine_precondition.make ("row_not_void", "row /= Void")
 				eiffel_routine.add_precondition (routine_precondition)
