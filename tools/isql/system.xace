@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<system name="clisql">
+	<description>
+		system:      "ECLI interactive SQL example"
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<root class="ISQL" creation="make"/>
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
+	
+	<cluster name="isql" location="${ECLI}/tools/isql">
+		<cluster name="commands"/>
+	</cluster>
+
+	<mount location="${ECLI}/library.xace"/>
+</system>

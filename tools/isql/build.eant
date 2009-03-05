@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="clisql" default="help">
+
+	<description>
+		system: "Command Line Interactive SQL for ODBC datasources."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="clisql"/>
+		<set name="system_dir" value="${ECLI}/tools/isql"/>
+	</target>
+
+</project>
