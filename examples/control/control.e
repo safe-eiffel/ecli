@@ -3,7 +3,7 @@ class
 
 inherit
 	KL_SHARED_FILE_SYSTEM
-	
+
 create
 	make
 
@@ -15,12 +15,22 @@ feature
 			api_tracing : BOOLEAN
 			i : INTEGER
 			one_second : DT_TIME_DURATION
+			l_data_source, l_username, l_password: STRING
 		do
 			create session.make_default
 			api_tracing := session.is_api_tracing
-			create login.make ("SODEV4", "D51PRE1M2", "MESBAYV")
+			io.put_string ("Data Source: ")
+			io.read_line
+			l_data_source := io.last_string.twin
+			io.put_string ("User name  : ")
+			io.read_line l_username := io.last_string.twin
+			io.put_string ("Password   : ")
+			io.read_line
+			l_password := io.last_string.twin
+
+			create login.make (l_data_source, l_username, l_password)
 			d := session.login_timeout
-			session.set_api_trace_filename ("c:\soexp1_odbc.log", file_system)
+			session.set_api_trace_filename ("control_api_trace.log", file_system)
 			session.enable_api_tracing
 			create one_second.make_canonical (1)
 			session.set_login_timeout (one_second)

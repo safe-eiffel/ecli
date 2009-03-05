@@ -2,6 +2,16 @@ ECLI sample applications
 
 Directory	Application name	Description
 ---------	----------------	-------------------------------------------------------
+test1		test1			Your first sample application : create table, 
+					insert tuples, select tuples, drop table, put/get long binary data.
+					
+					usage: test1 <data_source_name> <user> <password> [trace_file_name]
+					* when trace_file_name parameter is used, all statements (correct or not) executed
+					  by the application are traced in a file.  
+					  This file can be read by isql.
+					  This is a very convenient way to troubleshoot your applications.
+					  That way it is possible to determine if the application logic or the SQL is wrong.
+					  
 control		control			An application that does nothing but reference all ECLI classes.
 
 isql		isql			Interactive SQL
@@ -10,22 +20,15 @@ isql		isql			Interactive SQL
 					* interactive (no sql_file_name parameter)
 					* batch : isql reads commands from file whose name is sql_file_name.
 						* echo is a flag that directs isql to echo commands when they are executed.
-					
-qa_example	
 
 test_decimal				Tests ECLI_DECIMAL
 
 test_procedures	test_procecedures	Test procedures on an SQL Server.
 
-test1		test1			Your first sample application : create table, 
-					insert tuples, select tuples, drop table
-					usage: test1 <data_source_name> <user> <password> [trace_file_name]
-					* when trace_file_name parameter is used, all statements (correct or not) executed
-					  by the application are traced in a file.  
-					  This file can be read by isql.
-					  This is a very convenient way to troubleshoot your applications.
-					  That way it is possible to determine if the application logic or the SQL is wrong.
-					  
+test_rowset	test_rowset		Test bulk insert/retrieve in a single query execution.
+
+
+test_values	test_values		Unit test of ECLI_VALUE descendants.
 
 test_Xaction	transact		Tests data source transaction capabilities
 					usage: transact <data_source_name> <user> <password>

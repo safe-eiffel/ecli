@@ -22,7 +22,7 @@
 <!-- Implementation -->
 
 	<target name="init_system">
-		<set name="system" value="test_Xaction"/>
+		<set name="system" value="transact"/>
 		<set name="system_dir" value="${ECLI}/examples/test_Xaction"/>
 	</target>
 

@@ -1,5 +1,14 @@
 indexing
-	description: "TEST1 sample application.";
+	description: "[
+			TEST1 sample application.
+			
+			Shows various topics : 
+			* create and drop tables (DDL)
+			* table insertion (basic, parameterized)
+			* selection
+			* putting and getting long data (photos in this case).
+	]";
+	
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

@@ -2,7 +2,8 @@ indexing
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2008/07/11 16:04:38.411"
+	generated: "2009/03/03 16:41:35.052"
+	generator_version: "v1.3b"
 
 class PARTICIPANTS_BY_REG_TIME_PARAMETERS
 

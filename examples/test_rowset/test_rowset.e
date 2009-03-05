@@ -1,5 +1,5 @@
 indexing
-	description: "ECLI test of rowset classes.";
+	description: "ECLI test of arrayed value classes. It allows bulk insert/retrieve in a single query execution.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"

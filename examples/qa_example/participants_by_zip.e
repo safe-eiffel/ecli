@@ -4,13 +4,14 @@ indexing
 			description: "Select participants by zip"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_ZIP'. DO NOT EDIT!"
-	generated: "2008/07/11 16:04:38.286"
+	generated: "2009/03/03 16:41:33.005"
+	generator_version: "v1.3b"
 
 class PARTICIPANTS_BY_ZIP
 
 inherit
 
-	
+	ECLI_CURSOR
 
 
 create

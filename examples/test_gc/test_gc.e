@@ -20,7 +20,7 @@ feature -- Initialization
 			if args.argument_count < 3 then
 				io.put_string ("Usage: test_gc <data_source> <user_name> <password>%N")
 			else
-				create session.make (args.argument (1), "sess0", args.argument (3))
+				create session.make (args.argument (1), args.argument (2), args.argument (3))
 				session.connect
 				if session.has_information_message then
 					io.put_string (session.cli_state) 
@@ -96,7 +96,8 @@ feature -- Initialization
 		do
 			if not a_tried then
 				a_tried := True
-				create session.make("ecli_db", "u", "p")
+				create session.make (args.argument (1), args.argument (2), args.argument (3))
+				
 				session.connect
 				create statement.make (session)
 				-- loose references

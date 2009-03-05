@@ -4,13 +4,14 @@ indexing
 			description: "Select participants by remaining amount to pay"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_REMAINING'. DO NOT EDIT!"
-	generated: "2008/07/11 16:04:38.349"
+	generated: "2009/03/03 16:41:33.771"
+	generator_version: "v1.3b"
 
 class PARTICIPANTS_BY_REMAINING
 
 inherit
 
-	
+	ECLI_CURSOR
 
 
 create

@@ -4,13 +4,14 @@ indexing
 			description: "Select participants matching a last name"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_NAME'. DO NOT EDIT!"
-	generated: "2008/07/11 16:04:38.224"
+	generated: "2009/03/03 16:41:32.552"
+	generator_version: "v1.3b"
 
 class PARTICIPANTS_BY_NAME
 
 inherit
 
-	
+	ECLI_CURSOR
 
 
 create
