@@ -109,9 +109,8 @@ available  on various platforms : Windows, Unix, Linux</DD>
 	<DT><b>Multicompiler</b></DT><DD>it uses as portable Eiffel   as
 possible, and has already been tested using
 		<UL>
-			<LI>ISE Eiffel 5.5, 5.6 and</LI>
-			<LI>GOBO-supported SmartEiffel, </LI>
-			<LI>Visual Eiffel 5.0.</LI>
+			<LI>ISE Eiffel 6.2, 6.3 and</LI>
+			<LI>Gobo Eiffel Compiler (gec) version 3.9</LI>
 
 		</DD>
 </DL>
@@ -120,7 +119,7 @@ possible, and has already been tested using
 <p>It currently has been tested with the following RDBMS drivers : MS-Access,
  Oracle 8, Oracle 8i, PostgreSQL, Interbase61, SQL Server.<p>
 <p>It has been built and run with the following
-OSes : Windows 32bits (98, NT4, 2000, XP), Caldera Linux 2.3, Suse Linux, Debian Linux. </p>
+OSes : Windows 32bits (98, NT4, 2000, XP), Suse Linux, Debian Linux, Ubuntu Linux </p>
 
 <h2>Related work</h2>
 
@@ -146,21 +145,21 @@ OSes : Windows 32bits (98, NT4, 2000, XP), Caldera Linux 2.3, Suse Linux, Debian
         <tr>
             <td>DALE</td>
             <td>Object-Tools</td>
-            <td>Visual Eiffel</td>
+            <td>* Deprecated * Visual Eiffel</td>
             <td>Windows, (Linux ?)</td>
             <td>ODBC</td>
         </tr>
         <tr>
             <td>pgsql</td>
             <td>Open Source</td>
-            <td>SmartEiffel</td>
+            <td>* Deprecated * SmartEiffel</td>
             <td>Unix, Linux, (Windows?)</td>
             <td>PostgreSQL</td>
         </tr>
         <tr>
             <td>elj project's database access</td>
             <td>Open Source</td>
-            <td>SmartEiffel</td>
+            <td>* Deprecated * SmartEiffel</td>
             <td>Windows, (linux?)</td>
             <td>Interbase, Isam, Berkeley DB, etc...</td>
         </tr>
@@ -788,6 +787,20 @@ users  from database idiosyncrasies.</i><i><br>
              </td>
         </tr>
         <tr>
+            <td valign="Top" width="33%">ECLI_INTEGER_64<br/>* availability depends on database driver</td>
+            <td valign="Top" width="33%">BIGINT or NUMERIC(n) where 10 <= n <= 18 </td>
+            <td valign="Top" width="33%">INTEGER_64</td>
+             <td valign="Top"><i>as_integer_64</i><br>
+             </td>
+        </tr>
+          <tr>
+            <td valign="Top" width="33%">ECLI_DECIMAL</td>
+            <td valign="Top" width="33%">DECIMAL</td>
+            <td valign="Top" width="33%">MA_DECIMAL</td>
+             <td valign="Top"><i>as_decimal</i><br>
+             </td>
+        </tr>
+      <tr>
             <td valign="Top" width="33%">ECLI_FLOAT</td>
             <td valign="Top" width="33%">FLOAT</td>
             <td valign="Top" width="33%">DOUBLE</td>
@@ -1096,6 +1109,47 @@ objects</td>
       </table>
     </center>
          </div>
+
+		<h2>Getting long data</h2>
+		<p>Getting long data with ECLI is possible through the ECLI_*LONG* classes<p>
+		<p>ECLI_LONGVARBINARY and ECLI_LONGVARCHAR classes allow you to store/retrieve long data provided their content is in memory.  The corresponding Eiffel type is a STRING instance.</p>
+		<p>ECLI_FILE_LONGVARBINARY and ECLI_FILE_LONGVARCHAR classes allow you to store/retrieve long data from/to a file. The ECLI_FILE* instances must be attached to an existing file before being used as parameter or result. The ECLI_FILE* interesting features are : </p>
+
+      <table width="80%" border="1" cellpadding="5" cellspacing="0">
+
+             <tr>
+				<td valign="Top" width="29%"><b>Commands</b> </td>
+				<td valign="Top" width="71%"><b>Description</b> </td>
+	        </tr>
+	         <tr>
+				<td valign="Top" width="29%"><i>make_input</i></td>
+				<td valign="Top" width="71%">make for reading from `an_input_file'.</td>
+			</tr>
+        <tr>
+            <td valign="Top" width="29%"><i>make_output</i></td>
+            <td valign="Top" width="71%">make for writing to `an_output_file'.</td>
+        </tr>
+      	<tr>
+            <td valign="Top" width="29%"><i>set_input_file</i></td>
+            <td valign="Top" width="71%">Change input_file to `an_input_file'.</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>set_output_file</i></td>
+            <td valign="Top" width="71%">Change output_file to `an_output_file'.</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><b>Queries</b> </td>
+            <td valign="Top" width="71%"><b>description</b> </td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>input_file</i></td>
+            <td valign="Top" width="71%">Input file for reading.</td>
+        </tr>
+        <tr>
+            <td valign="Top" width="29%"><i>output_file</i></td>
+            <td valign="Top" width="71%">Output file for writing.</td>
+        </tr>
+      </table>
 
       <h1><a name="Getting result-setmetadata"></a>
    Getting result-set metadata</h1>
@@ -1435,6 +1489,7 @@ bound.</td>
       <center></center>
       <a name="Tracing_"></a>
 Tracing</h1>
+<h2>ECLI Tracing</h2>
 When your application goes wrong, it is desirable to determine "what is wrong".
 &nbsp;Is it the application logic ? &nbsp;Is it the SQL ?<br>
 When your application is slow : is it related to the application logic, or
@@ -1463,8 +1518,15 @@ used for tracing.</td>
             <td width="71%">Disable tracing. &nbsp;Previous tracer reference
 is lost.<br>
             </td>
-          </tr>
           <tr>
+            <td width="29%"><i>enable_time_tracing</i></td>
+            <td width="71%">Enable time tracing.</td>
+          </tr>
+           <tr>
+            <td width="29%"><i>disable_time_tracing</i></td>
+            <td width="71%">Disable time tracing.</td>
+          </tr>
+         <tr>
             <td valign="Top" width="29%"><b>Queries</b></td>
             <td valign="Top" width="71%"><b>description</b></td>
           </tr>
@@ -1474,6 +1536,10 @@ is lost.<br>
 object.</td>
           </tr>
           <tr>
+            <td valign="Top" width="29%"><i>is_tracing_time</i></td>
+            <td valign="Top" width="71%">Is time tracing enabled ?</td>
+          </tr>
+		  <tr>
             <td valign="Top" width="29%"><i>tracer</i></td>
             <td valign="Top" width="71%">Current tracer object</td>
           </tr>
@@ -1512,10 +1578,55 @@ of SQL statements can be executed using this command :</>
 -user &lt;username&gt; -pwd &lt;password&gt; -sql_file_name /tmp/trace.sql
 </div>
 <p>
+<p>When time tracing is enabled, the duration of the SQL execution is added in the trace file. For example : <br/>
+<pre>
+select * from REGISTRATION;
+-- 0/0/0 0:0:0.16
+</pre>
+Time is noted as a comment for 'clisql'.  Its format is year/month/day hour:minute:second[.millisecond].
+In this example the query needed 16 ms to execute.
+</p>
 NOTE : This ECLI_TRACER tracing facility is *not* related to the low/level tracing facility of ODBC
-that trace C API calls and is activated through the ODBC configuration files.
+that trace C API calls and is activated through the ODBC configuration files or through specific ECLI_SESSION features (see below).
 
 ECLI_TRACER is a SQL tracing facility.
+
+<h2>ODBC Tracing</h2>
+<p>
+ODBC Tracing traces the low level ODBC API calls.
+ODBC API traces are controllable through the following ECLI_SESSION features :</p>
+
+      <table width="80%" border="1" cellpadding="5" cellspacing="0">
+
+          <tr>
+            <td valign="Top" width="29%"><b>Commands</b></td>
+            <td valign="Top" width="71%"><b>Description</b></td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>set_api_trace_file_name</i></td>
+            <td valign="Top" width="71%">Set `api_trace_filename' to `filename'.</td>
+          </tr>
+          <tr>
+            <td width="29%"><i>enable_api_tracing</i></td>
+            <td width="71%">Enable ODBC API tracing into `api_trace_filename'.<br>
+            </td>
+          <tr>
+            <td width="29%"><i>disable_api_tracing</i></td>
+            <td width="71%">Disable ODBC API tracing.</td>
+          </tr>
+         <tr>
+            <td valign="Top" width="29%"><b>Queries</b></td>
+            <td valign="Top" width="71%"><b>description</b></td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>is_api_tracing</i></td>
+            <td valign="Top" width="71%">Is this session tracing ODBC/CLI api calls ?.</td>
+          </tr>
+          <tr>
+            <td valign="Top" width="29%"><i>api_trace_filename</i></td>
+            <td valign="Top" width="71%">Name of the api trace file.</td>
+          </tr>
+      </table>
 </p>
 </div>
       </div>
