@@ -43,6 +43,7 @@ feature -- Basic operations
 			i32 : ECLI_INTEGER
 			tc : ECLI_TYPE_CATALOG
 			can_i32, can_i64 : BOOLEAN
+			t : ECLI_TRACER
 		do
 			create worder.make (text, " %T")
 			user := ""
@@ -80,6 +81,9 @@ feature -- Basic operations
 					session.set_login_strategy (simple_login)
 					session.connect
 				end
+					create t.make (create {KL_STDOUT_FILE}.make)
+					t.enable_time_tracing
+					session.set_tracer (t)
 				if session.is_connected then
 					context.set_session (session)
 					create tc.make (session)

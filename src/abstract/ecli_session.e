@@ -119,6 +119,7 @@ feature -- Access
 		end
 
 	info : ECLI_DBMS_INFORMATION
+			-- Various informations about underlying DBMS.
 
 	transaction_capability : INTEGER is
 			-- Transaction capability of established session

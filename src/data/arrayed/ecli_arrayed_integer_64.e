@@ -50,6 +50,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	item : INTEGER_64 is
+			-- <Precursor>
 		do
 			Result := item_at (cursor_index)
 		end
@@ -67,7 +68,7 @@ feature -- Status setting
 			Result := ecli_c_array_value_get_length (buffer)
 		end
 
-ffeature -- Element change
+feature -- Element change
 
 	set_item (value : INTEGER_64) is
 			-- set item to 'value', truncating if necessary
@@ -81,7 +82,6 @@ ffeature -- Element change
 			c_memory_put_int64 (ecli_c_array_value_get_value_at(buffer,index), value)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length, index)
 		end
-
 
 feature -- Basic operations
 
@@ -111,6 +111,5 @@ feature -- Basic operations
 		do
 			a_tracer.put_integer_64 (Current)
 		end
-
 
 end

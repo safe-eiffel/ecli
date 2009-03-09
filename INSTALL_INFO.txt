@@ -7,11 +7,10 @@ ECLI --
 
 1. Structure
 
-      ecli
+    + ecli
 	+- doc				-- documentation
 	+- examples			-- examples
 	|   +-	test1			-- table creation, insertions, selection, drop
-	|   +-	isql			-- CLISQL : Command Line Interactive SQL 
 	|   +-	qa_example		-- sample application for cursor generator
 	|   +-	test_Xaction		-- transaction test program
 	|   +-	test_gc			-- (obsolete) tests for problems with GC
@@ -30,19 +29,17 @@ ECLI --
 	|   |	   +-	ise			-- ise specific
 	|   |	   |	   +-	windows			Platform specific
 	|   |	   |	   +-	linux
-	|   |	   +-	se			-- SmallEiffel specific
-	|   |	   |	   +-	windows		 	...
-	|   |	   |	   +-	linux
-	|   |	   +-	ve			-- Visual Eiffel specific
-	|   |		   +-	windows		 	...
-	|   |		   +-	linux
+	|   |	   +-	ge			-- Gobo Eiffel Compiler (gec) specific
+	|   |	    	   +-	windows		 	...
+	|   |	    	   +-	linux
 	|   +-  support			-- various support classes
 	|
 	+- support			-- support classes that could be used in other projects
 	+- tools
-	   +-	query_assistant		-- cursor classes generator
+	    +-	isql			-- CLISQL : Command Line Interactive SQL 
+	    +-	query_assistant		-- cursor classes generator
 	   
-      kernel				-- the SAFE_KERNEL variable should point to it
+    + kernel				-- the SAFE_KERNEL variable should point to it
         +- external			-- external support for all SAFE projects
             +- src			
       
@@ -55,7 +52,7 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 
   NOTE for Linux/Unix (*n*x) users : 
 	This package uses unixodbc, avalaible at http://www.unixodbc.org
-	It has been tested with PostgreSQL 7.0.2 and 7.1.3.
+	It has been tested with PostgreSQL 7.0.2, 7.1.3, 8.2, 8.3
 
 	PLEASE, use the LATEST version available, to get the best benefits of this library.
 	
@@ -65,12 +62,10 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
   	GOBO_OS 	-  DO NOT FORGET to set it especially under linux (set it to 'linux')  
 	GOBO_CC		-  Windows specific: the C compiler you've used to compile the C wrapper library.
 			   Supported 'keys' : lcc, msc, bcc.
-	GOBO_EIFFEL	-  'se', 'ise' or 've'
-	SAFE_KERNEL	-  should point to the 'kernel' directory; this SAFE_KERNEL provides
+	GOBO_EIFFEL	-  'ge' or 'ise'
+	SAFE_KERNEL	-  should point to the 'kernel' directory; this SAFE_KERNEL provides various 
+			   utility classes and functions used by all SAFE projects libraries.
 	
-	SMARTEIFFELDIR	- Installation directory of SmartEiffel
-	ECLI_C_BCCDIR	- For users of borland compiler, this variable should point to the root path of the
-			  borland compiler tools; it helps finding the odbc32.lib library
 	
   2.1. Building the C libraries.
   
@@ -90,7 +85,7 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 	This builds a library named xs_c_${GOBO_CC}.${lib}
 	
 	Example: 
-		WIN32, se, lcc => xs_c_lcc.lib in SAFE_KERNEL/external/src/spec/se/windows
+		WIN32, ge, msc => xs_c_msc.lib in SAFE_KERNEL/external/src/spec/ge/windows
 		Linux, ise     => libxs_c.a  in SAFE_KERNEL/external/src/spec/ise/linux
 			
 	Known problems : makefiles or .bat files are known to work, but problems may still remain.
@@ -101,14 +96,17 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 	B) run the following command : geant install
 	
 	Example: 
-		WIN32, se, lcc => ecli_c_lcc.lib in ECLI/src/spec/se/windows
+		WIN32, ge, msc => ecli_c_lcc.lib in ECLI/src/spec/ge/windows
 		Linux, ise     => libecli_c.a  in ECLI/src/spec/ise/linux
 	
   2.2. Building the samples
 
-	A) go to the desired sample directory, e.g. 'cd $ECLI/examples/test1'
-	B) Run the following command : geant compile_<eiffel_compiler>
-	   where <eiffel_compiler> is 'se', 've', 'ise'
+	A) Building all the seamples
+		A.1) go to the ${ECLI}/examples directory
+		A.2) Run the command : geant compile
+	B) building a simple example application
+		B.1) go to the desired sample directory, e.g. 'cd $ECLI/examples/test1'
+		B.2) Run the following command : geant compile
 	
 3. Known Problems
 
@@ -119,35 +117,18 @@ This problem appeared on SUSE systems.
 PLEASE : find the ODBC.INI and ODBCINST.INI files.
 Verify that the datasources and drivers you've defined point to the unixodbc-provided drivers.
 
-	SmartEiffel 1.0 and greater
-Do NOT use manifest arrays to initialize the results-cursor or the parameters of a statement.
-SmartEiffel does not infer the good ARRAY-type, compiles OK, but application crashes at runtime !
 
 4. Tested on ...
 
 	OS			Database		Driver
 	----------		----------		---------
-	WIN98			Access			MS
-				Interbase61		Easysoft IB6
-	WINNT4			IBPhoenix/Interbase	IBPhoenix
-				Oracle8			Oracle
-				Oracle8i		Oracle
-				Access			MS
-				
-	WIN2000			Access, 		MS
-				MS SQL Server,		MS 
-				SQLITE			SQLITE
-				Interbase61		IBPhoenix ODBC driver
-				IBPhoenix
-				SAP-DB			SAP-DB
-				
+								
 	WIN XP			Oracle 8i, 9i, 10g	Oracle
 				Ms SQL Server		Sql Server
 				Access			MS
-				PostgreSQL 8.1		PostgreSQL
+				PostgreSQL 8.1, 8.2	PostgreSQL
 				Firebird 1.5		Firebird
 				
-	Linux Caldera 2.3	PostgreSQL 7.0.2	UnixODBC
-	Linux Caldera 2.3	PostgreSQL 7.1.3	UnixODBC
-	Suse Linux		PostgreSQL 7.1.3	UnixODBC
 	Debian Linux 3.0r	PostgreSQL 7.1.3	UnixODBC
+	Ubuntu (2009-03-05)	PostgreSQL 8.2		UnixODBC
+	
