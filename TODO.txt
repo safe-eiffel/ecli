@@ -57,7 +57,7 @@ DATA TYPES/VALUES
 
 	Implement other data values
 
-	* TINYINT, BIGINT
+	* TINYINT 
 	* BIT
 
 TESTING
@@ -77,6 +77,7 @@ General
 
 Functionality
 
+	** DONE 2008-xx-xx : BIGINT aka ECLI_INTEGER_64
 	** DONE 2006-01-xx : DBMS information - capabilities, various metadata
 	** DONE 2006-01-xx : Type catalog
 	** DONE 2005-xx-xx : Procedures + multiple result sets
@@ -91,11 +92,13 @@ Functionality
 	   
 Portability 
 
+	** DONE 2008-xx-xx : Port to Gobo Eiffel Compiler v3.9
 	** DONE: 2003-01 Port to Visual Eiffel - make changes so that the error with an anchored declaration can be avoided.
 	** DONE 2000-06-22 ** using UnixODBC : www.unixodbc.org
 
 Documentation
 
+	** DONE 2009-03-09 : Tutorial written with Open Office
 	** DONE 2006-02-27 : Index of classes
 	** DONE 2000-10-14 : Tutorial
 	** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **

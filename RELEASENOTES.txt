@@ -1,4 +1,4 @@
-ECLI V2.3
+ECLI V2.4
 	Now only tested on
 	- EiffelStudio 6.3
 	- gec 3.9
