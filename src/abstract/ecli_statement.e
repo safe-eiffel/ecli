@@ -572,7 +572,6 @@ feature -- Element change
 			row_not_void: row /= Void
 			row_lower: row.lower = 1
 			row_count: row.count > 0
---			is_executed: is_executed
 		do
 			results := row
 		ensure
@@ -650,10 +649,11 @@ feature -- Basic operations
 				end
 			else
 				impl_result_columns_count.put (0)
+				is_executed := False
 			end
 		ensure
-			executed: is_executed implies is_ok
-			cursor_state: is_executed implies
+			is_executed_implies_is_ok: is_executed implies is_ok
+			consistent_cursor_state: is_executed implies
 						((has_result_set implies before) or
 						(not has_result_set implies after))
 		end
