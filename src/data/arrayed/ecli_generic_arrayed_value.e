@@ -71,7 +71,12 @@ feature -- Transformation
 
 feature -- Duplication
 
-	copy (other : like Current) is
+	copy (other : like Current)
+		do
+			copy_arrayed_items (other)
+		end
+
+	copy_arrayed_items (other : like Current) is
 			-- copy 'other' to Current
 		local
 			index : INTEGER
