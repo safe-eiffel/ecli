@@ -223,11 +223,11 @@ feature -- Element change
 
 	set_item (value : MA_DECIMAL) is
 		local
-			l : MA_DECIMAL
+			new_item : MA_DECIMAL
 			s : STRING
 		do
-			l := value.rescale (-decimal_digits, rounding_context)
-			s := l.to_scientific_string
+			new_item := value.rescale (-decimal_digits, rounding_context)
+			s := new_item.to_scientific_string
 			if s.count <= transfer_octet_length then
 				ext_item.from_string (s)
 			end
@@ -237,28 +237,28 @@ feature -- Element change
 	set_from_double (d : DOUBLE) is
 			-- set Current to `d'
 		local
-			l : MA_DECIMAL
+			new_item : MA_DECIMAL
 		do
-			create l.make_from_string_ctx (d.out, rounding_context)
-			set_item (l)
+			create new_item.make_from_string_ctx (d.out, rounding_context)
+			set_item (new_item)
 		end
 
 	set_from_integer (i : INTEGER) is
 			-- set Current to `i'
 		local
-			l : MA_DECIMAL
+			new_item : MA_DECIMAL
 		do
-			create l.make_from_integer (i)
-			set_item (l)
+			create new_item.make_from_integer (i)
+			set_item (new_item)
 		end
 
 	set_from_integer_64 (i : INTEGER_64) is
 			-- set Current to `i'
 		local
-			l : MA_DECIMAL
+			new_item : MA_DECIMAL
 		do
-			create l.make_from_string_ctx (i.out, rounding_context)
-			set_item (l)
+			create new_item.make_from_string_ctx (i.out, rounding_context)
+			set_item (new_item)
 		end
 
 feature -- Conversion
