@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL Binary values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,7 +17,7 @@ inherit
 		redefine
 			item, c_type_code
 		end
-		
+
 feature -- Access
 
 
