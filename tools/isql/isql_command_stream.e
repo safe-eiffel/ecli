@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 	make_interactive is
 			-- make interactive
 		do
-			text := STRING_.make (1000)
+			create text.make (1000)
 		ensure
 			interactive: is_interactive
 		end

@@ -299,7 +299,7 @@ feature -- Basic operations
 				if history.count > 20 then
 					history.remove_first
 				end
-				history.put_last (clone (command_stream.text))
+				history.put_last (command_stream.text.twin)
 			end
 		end
 

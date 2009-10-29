@@ -28,7 +28,6 @@ feature {NONE} -- Initialization
 	make is
 			-- isql
 		local
-			simple_login : ECLI_SIMPLE_LOGIN
 			v : ECLI_INTEGER_64
 		do
 			create v.make
