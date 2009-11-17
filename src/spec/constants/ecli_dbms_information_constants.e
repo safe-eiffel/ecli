@@ -11,17 +11,17 @@ class ECLI_DBMS_INFORMATION_CONSTANTS
 
 inherit
 	ANY
-	
+
 	XS_UINT32_ROUTINES
 		export {NONE} all
 		end
-		
-feature -- Constants -- Info type 
+
+feature -- Constants -- Info type
 
 	sql_max_driver_connections :  INTEGER  is 0
-	sql_maximum_driver_connections : integer is do result := sql_max_driver_connections end 
+	sql_maximum_driver_connections : integer is do result := sql_max_driver_connections end
 	sql_max_concurrent_activities :  INTEGER  is 1
-	sql_maximum_concurrent_activities : integer is do result := sql_max_concurrent_activities end 
+	sql_maximum_concurrent_activities : integer is do result := sql_max_concurrent_activities end
 	sql_data_source_name :  INTEGER  is 2
 	sql_fetch_direction :  INTEGER  is 8
 	sql_server_name :  INTEGER  is 13
@@ -36,20 +36,20 @@ feature -- Constants -- Info type
 	sql_identifier_case :  INTEGER  is 28
 	sql_identifier_quote_char :  INTEGER  is 29
 	sql_max_column_name_len :  INTEGER  is 30
-	sql_maximum_column_name_length : integer is do result := sql_max_column_name_len end 
+	sql_maximum_column_name_length : integer is do result := sql_max_column_name_len end
 	sql_max_cursor_name_len :  INTEGER  is 31
-	sql_maximum_cursor_name_length : integer is do result := sql_max_cursor_name_len end 
+	sql_maximum_cursor_name_length : integer is do result := sql_max_cursor_name_len end
 	sql_max_schema_name_len :  INTEGER  is 32
-	sql_maximum_schema_name_length : integer is do result := sql_max_schema_name_len end 
+	sql_maximum_schema_name_length : integer is do result := sql_max_schema_name_len end
 	sql_max_catalog_name_len :  INTEGER  is 34
-	sql_maximum_catalog_name_length : integer is do result := sql_max_catalog_name_len end 
+	sql_maximum_catalog_name_length : integer is do result := sql_max_catalog_name_len end
 	sql_max_table_name_len :  INTEGER  is 35
 	sql_scroll_concurrency :  INTEGER  is 43
 	sql_txn_capable :  INTEGER  is 46
-	sql_transaction_capable : integer is do result := sql_txn_capable end 
+	sql_transaction_capable : integer is do result := sql_txn_capable end
 	sql_user_name :  INTEGER  is 47
 	sql_txn_isolation_option :  INTEGER  is 72
-	sql_transaction_isolation_option : integer is do result := sql_txn_isolation_option end 
+	sql_transaction_isolation_option : integer is do result := sql_txn_isolation_option end
 	sql_integrity :  INTEGER  is 73
 	sql_getdata_extensions :  INTEGER  is 81
 	sql_null_collation :  INTEGER  is 85
@@ -57,35 +57,35 @@ feature -- Constants -- Info type
 	sql_order_by_columns_in_select :  INTEGER  is 90
 	sql_special_characters :  INTEGER  is 94
 	sql_max_columns_in_group_by :  INTEGER  is 97
-	sql_maximum_columns_in_group_by : integer is do result := sql_max_columns_in_group_by end 
+	sql_maximum_columns_in_group_by : integer is do result := sql_max_columns_in_group_by end
 	sql_max_columns_in_index :  INTEGER  is 98
-	sql_maximum_columns_in_index : integer is do result := sql_max_columns_in_index end 
+	sql_maximum_columns_in_index : integer is do result := sql_max_columns_in_index end
 	sql_max_columns_in_order_by :  INTEGER  is 99
-	sql_maximum_columns_in_order_by : integer is do result := sql_max_columns_in_order_by end 
+	sql_maximum_columns_in_order_by : integer is do result := sql_max_columns_in_order_by end
 	sql_max_columns_in_select :  INTEGER  is 100
-	sql_maximum_columns_in_select : integer is do result := sql_max_columns_in_select end 
+	sql_maximum_columns_in_select : integer is do result := sql_max_columns_in_select end
 	sql_max_columns_in_table :  INTEGER  is 101
 	sql_max_index_size :  INTEGER  is 102
-	sql_maximum_index_size : integer is do result := sql_max_index_size end 
+	sql_maximum_index_size : integer is do result := sql_max_index_size end
 	sql_max_row_size :  INTEGER  is 104
-	sql_maximum_row_size : integer is do result := sql_max_row_size end 
+	sql_maximum_row_size : integer is do result := sql_max_row_size end
 	sql_max_statement_len :  INTEGER  is 105
-	sql_maximum_statement_length : integer is do result := sql_max_statement_len end 
+	sql_maximum_statement_length : integer is do result := sql_max_statement_len end
 	sql_max_tables_in_select :  INTEGER  is 106
-	sql_maximum_tables_in_select : integer is do result := sql_max_tables_in_select end 
+	sql_maximum_tables_in_select : integer is do result := sql_max_tables_in_select end
 	sql_max_user_name_len :  INTEGER  is 107
-	sql_maximum_user_name_length : integer is do result := sql_max_user_name_len end 
-	
+	sql_maximum_user_name_length : integer is do result := sql_max_user_name_len end
+
 	sql_oj_capabilities :  INTEGER  is 115
-	sql_outer_join_capabilities : integer is do result := sql_oj_capabilities end 
-	
+	sql_outer_join_capabilities : integer is do result := sql_oj_capabilities end
+
 	sql_xopen_cli_year :  INTEGER  is 10000
 	sql_cursor_sensitivity :  INTEGER  is 10001
 	sql_describe_parameter :  INTEGER  is 10002
 	sql_catalog_name :  INTEGER  is 10003
 	sql_collation_seq :  INTEGER  is 10004
 	sql_max_identifier_len :  INTEGER  is 10005
-	sql_maximum_identifier_length : integer is do result := sql_max_identifier_len end 
+	sql_maximum_identifier_length : integer is do result := sql_max_identifier_len end
 
 	sql_info_first :  INTEGER  is 0
 	sql_active_connections :  INTEGER  is 0
@@ -172,14 +172,14 @@ feature -- Constants -- SQLGetInfo values not part of X/Open standard
 
 	sql_active_environments :  INTEGER  is 116
 	sql_alter_domain :  INTEGER  is 117
-	
+
 	sql_sql_conformance :  INTEGER  is 118
 	sql_datetime_literals :  INTEGER  is 119
-	
+
 	sql_async_mode :  INTEGER  is 10021
 	sql_batch_row_count :  INTEGER  is 120
 	sql_batch_support :  INTEGER  is 121
-	sql_catalog_location : integer is do result := sql_qualifier_location end 
+	sql_catalog_location : integer is do result := sql_qualifier_location end
 	sql_catalog_name_separator	: INTEGER is do Result := sql_qualifier_name_separator end
 	sql_catalog_term : INTEGER is do Result := sql_qualifier_term end
 	sql_catalog_usage : INTEGER is do Result := sql_qualifier_usage end
@@ -207,7 +207,7 @@ feature -- Constants -- SQLGetInfo values not part of X/Open standard
 	sql_drop_view :  INTEGER  is 143
 	sql_dynamic_cursor_attributes1 : INTEGER is	144
 	sql_dynamic_cursor_attributes2 : INTEGER is	145
-	sql_forward_only_cursor_attributes1 : INTEGER is	146	
+	sql_forward_only_cursor_attributes1 : INTEGER is	146
 	sql_forward_only_cursor_attributes2 : INTEGER is	147
 	sql_index_keywords :  INTEGER  is 148
 	sql_info_schema_views :  INTEGER  is 149
@@ -220,8 +220,8 @@ feature -- Constants -- SQLGetInfo values not part of X/Open standard
 	sql_schema_term : INTEGER is	do Result := sql_owner_term end
 	sql_schema_usage : INTEGER is	do Result := sql_owner_usage end
 	sql_sql92_datetime_functions : INTEGER is	155
-	sql_sql92_foreign_key_delete_rule : INTEGER is	156	
-	sql_sql92_foreign_key_update_rule : INTEGER is	157	
+	sql_sql92_foreign_key_delete_rule : INTEGER is	156
+	sql_sql92_foreign_key_update_rule : INTEGER is	157
 	sql_sql92_grant : INTEGER is	158
 	sql_sql92_numeric_value_functions : INTEGER is	159
 	sql_sql92_predicates : INTEGER is	160
@@ -231,16 +231,16 @@ feature -- Constants -- SQLGetInfo values not part of X/Open standard
 	sql_sql92_string_functions : INTEGER is	164
 	sql_sql92_value_expressions : INTEGER is	165
 	sql_standard_cli_conformance :  INTEGER  is 166
-	sql_static_cursor_attributes1 : INTEGER is	167	
+	sql_static_cursor_attributes1 : INTEGER is	167
 	sql_static_cursor_attributes2 : INTEGER is	168
-	
+
 	sql_aggregate_functions :  INTEGER  is 169
 	sql_ddl_index :  INTEGER  is 170
 	sql_dm_ver :  INTEGER  is 171
 	sql_insert_statement :  INTEGER  is 172
 	sql_convert_guid :  INTEGER  is 173
-	sql_union_statement : integer is do result := sql_union end 
-	
+	sql_union_statement : integer is do result := sql_union end
+
 	sql_dtc_transition_cost :  INTEGER  is 1750
 
 feature -- Constants -- Alter table
@@ -248,7 +248,7 @@ feature -- Constants -- Alter table
 	sql_at_add_column :  INTEGER  is 0x00000001
 	sql_at_drop_column :  INTEGER  is 0x00000002
 	sql_at_add_constraint :  INTEGER  is 0x00000008
-	
+
 	sql_at_add_column_single :  INTEGER  is 0x00000020
 	sql_at_add_column_default :  INTEGER  is 0x00000040
 	sql_at_add_column_collation :  INTEGER  is 0x00000080
@@ -307,7 +307,7 @@ feature -- Constants -- Outer joins
 	sql_oj_inner :  INTEGER  is 0x00000020
 	sql_oj_all_comparison_ops :  INTEGER  is 0x00000040
 
-feature -- Constants -- Scroll concurrency 
+feature -- Constants -- Scroll concurrency
 
 	sql_scco_read_only :  INTEGER  is 0x00000001
 	sql_scco_lock :  INTEGER  is 0x00000002
@@ -325,13 +325,13 @@ feature -- Constants -- TXN capability
 feature -- Constants -- Transaction isolation options
 
 	sql_txn_read_uncommitted :  INTEGER  is 0x00000001
-	sql_transaction_read_uncommitted : integer is do result := sql_txn_read_uncommitted end 
+	sql_transaction_read_uncommitted : integer is do result := sql_txn_read_uncommitted end
 	sql_txn_read_committed :  INTEGER  is 0x00000002
-	sql_transaction_read_committed : integer is do result := sql_txn_read_committed end 
+	sql_transaction_read_committed : integer is do result := sql_txn_read_committed end
 	sql_txn_repeatable_read :  INTEGER  is 0x00000004
-	sql_transaction_repeatable_read : integer is do result := sql_txn_repeatable_read end 
+	sql_transaction_repeatable_read : integer is do result := sql_txn_repeatable_read end
 	sql_txn_serializable :  INTEGER  is 0x00000008
-	sql_transaction_serializable : integer is do result := sql_txn_serializable end 
+	sql_transaction_serializable : integer is do result := sql_txn_serializable end
 
 feature -- Constants -- conversion
 
@@ -354,19 +354,19 @@ feature -- Constants -- conversion
 	sql_cvt_time :  INTEGER  is 0x00010000
 	sql_cvt_timestamp :  INTEGER  is 0x00020000
 	sql_cvt_longvarbinary :  INTEGER  is 0x00040000
-	
+
 	sql_cvt_interval_year_month :  INTEGER  is 0x00080000
 	sql_cvt_interval_day_time :  INTEGER  is 0x00100000
 	sql_cvt_wchar :  INTEGER  is 0x00200000
 	sql_cvt_wlongvarchar :  INTEGER  is 0x00400000
 	sql_cvt_wvarchar :  INTEGER  is 0x00800000
 	sql_cvt_guid :  INTEGER  is 0x01000000
-	
+
 feature -- Constants -- Convert functions
 
 	sql_fn_cvt_convert :  INTEGER  is 0x00000001
 	sql_fn_cvt_cast :  INTEGER  is 0x00000002
-	
+
 feature -- Constants -- String functions
 
 	sql_fn_str_concat :  INTEGER  is 0x00000001
@@ -490,93 +490,93 @@ feature -- Constants -- TIMEDATE Add/Diff functions
 	sql_fn_tsi_quarter :  INTEGER  is 0x00000080
 	sql_fn_tsi_year :  INTEGER  is 0x00000100
 
-feature -- Constants -- Cursor and keyset attribute values (SQL_DYNAMIC_CURSOR_ATTRIBUTES1, SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES1, SQL_KEYSET_CURSOR_ATTRIBUTES1, and SQL_STATIC_CURSOR_ATTRIBUTES1 
+feature -- Constants -- Cursor and keyset attribute values (SQL_DYNAMIC_CURSOR_ATTRIBUTES1, SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES1, SQL_KEYSET_CURSOR_ATTRIBUTES1, and SQL_STATIC_CURSOR_ATTRIBUTES1
 
 	sql_ca1_next : integer is 0x00000001
 	sql_ca1_absolute : integer is 0x00000002
 	sql_ca1_relative : integer is 0x00000004
 	sql_ca1_bookmark : integer is 0x00000008
 
---/* supported SQLSetPos LockType's 
+--/* supported SQLSetPos LockType's
 	sql_ca1_lock_no_change : integer is 0x00000040
 	sql_ca1_lock_exclusive : integer is 0x00000080
 	sql_ca1_lock_unlock : integer is 0x00000100
 
---/* supported SQLSetPos Operations 
+--/* supported SQLSetPos Operations
 	sql_ca1_pos_position : integer is 0x00000200
 	sql_ca1_pos_update : integer is 0x00000400
 	sql_ca1_pos_delete : integer is 0x00000800
 	sql_ca1_pos_refresh : integer is 0x00001000
 
---/* positioned updates and deletes 
+--/* positioned updates and deletes
 	sql_ca1_positioned_update : integer is 0x00002000
 	sql_ca1_positioned_delete : integer is 0x00004000
 	sql_ca1_select_for_update : integer is 0x00008000
 
---/* supported SQLBulkOperations operations 
+--/* supported SQLBulkOperations operations
 	sql_ca1_bulk_add : integer is 0x00010000
 	sql_ca1_bulk_update_by_bookmark : integer is 0x00020000
 	sql_ca1_bulk_delete_by_bookmark : integer is 0x00040000
 	sql_ca1_bulk_fetch_by_bookmark : integer is 0x00080000
 
 --/* bitmasks for SQL_DYNAMIC_CURSOR_ATTRIBUTES2,
--- * SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES2, 
--- * SQL_KEYSET_CURSOR_ATTRIBUTES2, and SQL_STATIC_CURSOR_ATTRIBUTES2 
--- 
+-- * SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES2,
+-- * SQL_KEYSET_CURSOR_ATTRIBUTES2, and SQL_STATIC_CURSOR_ATTRIBUTES2
+--
 --#if (ODBCVER >= 0x0300)
---/* supported values for SQL_ATTR_SCROLL_CONCURRENCY 
+--/* supported values for SQL_ATTR_SCROLL_CONCURRENCY
 	sql_ca2_read_only_concurrency : integer is 0x00000001
 	sql_ca2_lock_concurrency : integer is 0x00000002
 	sql_ca2_opt_rowver_concurrency : integer is 0x00000004
 	sql_ca2_opt_values_concurrency : integer is 0x00000008
 
---/* sensitivity of the cursor to its own inserts, deletes, and updates 
+--/* sensitivity of the cursor to its own inserts, deletes, and updates
 	sql_ca2_sensitivity_additions : integer is 0x00000010
 	sql_ca2_sensitivity_deletions : integer is 0x00000020
 	sql_ca2_sensitivity_updates : integer is 0x00000040
 
---/* semantics of SQL_ATTR_MAX_ROWS 
+--/* semantics of SQL_ATTR_MAX_ROWS
 	sql_ca2_max_rows_select : integer is 0x00000080
 	sql_ca2_max_rows_insert : integer is 0x00000100
 	sql_ca2_max_rows_delete : integer is 0x00000200
 	sql_ca2_max_rows_update : integer is 0x00000400
 	sql_ca2_max_rows_catalog : integer is 0x00000800
-sql_ca2_max_rows_affects_all : INTEGER is do	
-		Result := u_or (sql_ca2_max_rows_select,
-				  u_or (sql_ca2_max_rows_insert,
-				  u_or (sql_ca2_max_rows_delete,
-				  u_or (sql_ca2_max_rows_update, sql_ca2_max_rows_catalog))))
+sql_ca2_max_rows_affects_all : INTEGER is do
+		Result := c_u_or (sql_ca2_max_rows_select,
+				  c_u_or (sql_ca2_max_rows_insert,
+				  c_u_or (sql_ca2_max_rows_delete,
+				  c_u_or (sql_ca2_max_rows_update, sql_ca2_max_rows_catalog))))
 		end
-		
---/* semantics of SQL_DIAG_CURSOR_ROW_COUNT 
+
+--/* semantics of SQL_DIAG_CURSOR_ROW_COUNT
 	sql_ca2_crc_exact : integer is 0x00001000
 	sql_ca2_crc_approximate : integer is 0x00002000
 
---/* the kinds of positioned statements that can be simulated 
+--/* the kinds of positioned statements that can be simulated
 	sql_ca2_simulate_non_unique : integer is 0x00004000
 	sql_ca2_simulate_try_unique : integer is 0x00008000
 	sql_ca2_simulate_unique : integer is 0x00010000
 
 
 feature -- Constants -- ODBC API Conformance values
-	
+
 	sql_oac_none :  INTEGER  is 0x0000
 	sql_oac_level1 : integer is 0x0001
 	sql_oac_level2 : integer is 0x0002
-	
-feature -- Constants -- SQL_ODBC_SAG_CLI_CONFORMANCE values 
+
+feature -- Constants -- SQL_ODBC_SAG_CLI_CONFORMANCE values
 
 	sql_oscc_not_compliant :  INTEGER  is 0x0000
 	sql_oscc_compliant :  INTEGER  is 0x0001
 
-feature -- Constants -- SQL_ODBC_SQL_CONFORMANCE values 
+feature -- Constants -- SQL_ODBC_SQL_CONFORMANCE values
 
 	sql_osc_minimum :  INTEGER  is 0x0000
 	sql_osc_core :  INTEGER  is 0x0001
 	sql_osc_extended :  INTEGER  is 0x0002
 
 
-feature -- Constants -- SQL_CONCAT_NULL_BEHAVIOR values 
+feature -- Constants -- SQL_CONCAT_NULL_BEHAVIOR values
 
 	sql_cb_null :  INTEGER  is 0x0000
 	sql_cb_non_null :  INTEGER  is 0x0001
@@ -601,23 +601,23 @@ feature -- Constants -- SQL_TXN_ISOLATION_OPTION masks
 sql_txn_versioning :  INTEGER  is 0x00000010
 --
 
-feature -- Constants -- SQL_CORRELATION_NAME values 
+feature -- Constants -- SQL_CORRELATION_NAME values
 
 sql_cn_none :  INTEGER  is 0x0000
 sql_cn_different :  INTEGER  is 0x0001
 sql_cn_any :  INTEGER  is 0x0002
 
-feature -- Constants -- SQL_NON_NULLABLE_COLUMNS values 
+feature -- Constants -- SQL_NON_NULLABLE_COLUMNS values
 
 sql_nnc_null :  INTEGER  is 0x0000
 sql_nnc_non_null :  INTEGER  is 0x0001
 
-feature -- Constants -- SQL_NULL_COLLATION values 
+feature -- Constants -- SQL_NULL_COLLATION values
 
 sql_nc_start :  INTEGER  is 0x0002
 sql_nc_end :  INTEGER  is 0x0004
 
-feature -- Constants -- SQL_FILE_USAGE values 
+feature -- Constants -- SQL_FILE_USAGE values
 
 sql_file_not_supported :  INTEGER  is 0x0000
 sql_file_table :  INTEGER  is 0x0001
@@ -625,7 +625,7 @@ sql_file_qualifier :  INTEGER  is 0x0002
 sql_file_catalog : integer is do result := sql_file_qualifier end
 
 
-feature -- Constants -- SQL_GETDATA_EXTENSIONS values 
+feature -- Constants -- SQL_GETDATA_EXTENSIONS values
 
 sql_gd_block :  INTEGER  is 0x00000004
 sql_gd_bound :  INTEGER  is 0x00000008
@@ -636,7 +636,7 @@ sql_ps_positioned_delete :  INTEGER  is 0x00000001
 sql_ps_positioned_update :  INTEGER  is 0x00000002
 sql_ps_select_for_update :  INTEGER  is 0x00000004
 
-feature -- Constants -- SQL_GROUP_BY values 
+feature -- Constants -- SQL_GROUP_BY values
 
 sql_gb_not_supported :  INTEGER  is 0x0000
 sql_gb_group_by_equals_select :  INTEGER  is 0x0001
@@ -645,7 +645,7 @@ sql_gb_no_relation :  INTEGER  is 0x0003
 --#if (ODBCVER >= 0x0300)
 sql_gb_collate :  INTEGER  is 0x0004
 
---#endif /* ODBCVER >= 0x0300 
+--#endif /* ODBCVER >= 0x0300
 
 feature -- Constants -- SQL_OWNER_USAGE masks
 
@@ -657,12 +657,12 @@ sql_ou_privilege_definition :  INTEGER  is 0x00000010
 
 feature -- Constants -- SQL_SCHEMA_USAGE masks
 --#if (ODBCVER >= 0x0300)
-sql_su_dml_statements : integer is do result := sql_ou_dml_statements end  
-sql_su_procedure_invocation : integer is do result := sql_ou_procedure_invocation end 
-sql_su_table_definition : integer is do result := sql_ou_table_definition end 
-sql_su_index_definition : integer is do result := sql_ou_index_definition end 
-sql_su_privilege_definition : integer is do result := sql_ou_privilege_definition end 
---#endif /* ODBCVER >= 0x0300 
+sql_su_dml_statements : integer is do result := sql_ou_dml_statements end
+sql_su_procedure_invocation : integer is do result := sql_ou_procedure_invocation end
+sql_su_table_definition : integer is do result := sql_ou_table_definition end
+sql_su_index_definition : integer is do result := sql_ou_index_definition end
+sql_su_privilege_definition : integer is do result := sql_ou_privilege_definition end
+--#endif /* ODBCVER >= 0x0300
 
 feature -- Constants -- SQL_QUALIFIER_USAGE masks
 
@@ -674,12 +674,12 @@ sql_qu_privilege_definition :  INTEGER  is 0x00000010
 
 --#if (ODBCVER >= 0x0300)
 feature -- Constants -- SQL_CATALOG_USAGE masks
-sql_cu_dml_statements : integer is do result := sql_qu_dml_statements end 
-sql_cu_procedure_invocation : integer is do result := sql_qu_procedure_invocation end  
-sql_cu_table_definition : integer is do result := sql_qu_table_definition end 
-sql_cu_index_definition : integer is do result := sql_qu_index_definition end  
-sql_cu_privilege_definition : integer is do result := sql_qu_privilege_definition end  
---#endif /* ODBCVER >= 0x0300 
+sql_cu_dml_statements : integer is do result := sql_qu_dml_statements end
+sql_cu_procedure_invocation : integer is do result := sql_qu_procedure_invocation end
+sql_cu_table_definition : integer is do result := sql_qu_table_definition end
+sql_cu_index_definition : integer is do result := sql_qu_index_definition end
+sql_cu_privilege_definition : integer is do result := sql_qu_privilege_definition end
+--#endif /* ODBCVER >= 0x0300
 
 feature -- Constants -- SQL_SUBQUERIES masks
 
@@ -694,7 +694,7 @@ feature -- Constants -- SQL_UNION masks
 sql_u_union :  INTEGER  is 0x00000001
 sql_u_union_all :  INTEGER  is 0x00000002
 
-feature -- Constants -- SQL_BOOKMARK_PERSISTENCE values 
+feature -- Constants -- SQL_BOOKMARK_PERSISTENCE values
 
 sql_bp_close :  INTEGER  is 0x00000001
 sql_bp_delete :  INTEGER  is 0x00000002
@@ -704,13 +704,13 @@ sql_bp_update :  INTEGER  is 0x00000010
 sql_bp_other_hstmt :  INTEGER  is 0x00000020
 sql_bp_scroll :  INTEGER  is 0x00000040
 
-feature -- Constants -- SQL_STATIC_SENSITIVITY values 
+feature -- Constants -- SQL_STATIC_SENSITIVITY values
 
 sql_ss_additions :  INTEGER  is 0x00000001
 sql_ss_deletions :  INTEGER  is 0x00000002
 sql_ss_updates :  INTEGER  is 0x00000004
 
-feature -- Constants -- SQL_VIEW values 
+feature -- Constants -- SQL_VIEW values
 sql_cv_create_view :  INTEGER  is 0x00000001
 sql_cv_check_option :  INTEGER  is 0x00000002
 sql_cv_cascaded :  INTEGER  is 0x00000004
@@ -730,12 +730,12 @@ sql_pos_update :  INTEGER  is 0x00000004
 sql_pos_delete :  INTEGER  is 0x00000008
 sql_pos_add :  INTEGER  is 0x00000010
 
-feature -- Constants -- SQL_QUALIFIER_LOCATION values 
+feature -- Constants -- SQL_QUALIFIER_LOCATION values
 
 sql_ql_start :  INTEGER  is 0x0001
 sql_ql_end :  INTEGER  is 0x0002
 
---/* Here start return values for ODBC 3.0 SQLGetInfo 
+--/* Here start return values for ODBC 3.0 SQLGetInfo
 
 --#if (ODBCVER >= 0x0300)
 feature -- Constants -- SQL_AGGREGATE_FUNCTIONS bitmasks
@@ -771,31 +771,31 @@ sql_dl_sql92_interval_hour_to_minute : integer is 0x00002000
 sql_dl_sql92_interval_hour_to_second : integer is 0x00004000
 sql_dl_sql92_interval_minute_to_second : integer is 0x00008000
 
-feature -- Constants -- SQL_CATALOG_LOCATION values 
-sql_cl_start : integer is do result := sql_ql_start end 
-sql_cl_end : integer is do result := sql_ql_end end 
+feature -- Constants -- SQL_CATALOG_LOCATION values
+sql_cl_start : integer is do result := sql_ql_start end
+sql_cl_end : integer is do result := sql_ql_end end
 
-feature -- Constants -- SQL_BATCH_ROW_COUNT 
+feature -- Constants -- SQL_BATCH_ROW_COUNT
 sql_brc_procedures :  INTEGER  is 0x0000001
 sql_brc_explicit :  INTEGER  is 0x0000002
 sql_brc_rolled_up :  INTEGER  is 0x0000004
 
-feature -- Constants -- SQL_BATCH_SUPPORT 
+feature -- Constants -- SQL_BATCH_SUPPORT
 sql_bs_select_explicit :  INTEGER  is 0x00000001
 sql_bs_row_count_explicit :  INTEGER  is 0x00000002
 sql_bs_select_proc :  INTEGER  is 0x00000004
 sql_bs_row_count_proc :  INTEGER  is 0x00000008
 
-feature -- Constants -- SQL_PARAM_ARRAY_ROW_COUNTS getinfo 
+feature -- Constants -- SQL_PARAM_ARRAY_ROW_COUNTS getinfo
 sql_parc_batch :  INTEGER  is 1
 sql_parc_no_batch :  INTEGER  is 2
 
-feature -- Constants -- SQL_PARAM_ARRAY_SELECTS 
+feature -- Constants -- SQL_PARAM_ARRAY_SELECTS
 sql_pas_batch :  INTEGER  is 1
 sql_pas_no_batch :  INTEGER  is 2
 sql_pas_no_select :  INTEGER  is 3
 
-feature -- Constants -- SQL_INDEX_KEYWORDS 
+feature -- Constants -- SQL_INDEX_KEYWORDS
 sql_ik_none :  INTEGER  is 0x00000000
 sql_ik_asc :  INTEGER  is 0x00000001
 sql_ik_desc :  INTEGER  is 0x00000002
@@ -936,7 +936,7 @@ sql_is_insert_literals :  INTEGER  is 0x00000001
 sql_is_insert_searched :  INTEGER  is 0x00000002
 sql_is_select_into :  INTEGER  is 0x00000004
 
-feature -- Constants -- SQL_ODBC_INTERFACE_CONFORMANCE values 
+feature -- Constants -- SQL_ODBC_INTERFACE_CONFORMANCE values
 sql_oic_core :  INTEGER  is 1
 sql_oic_level1 : integer is 2
 sql_oic_level2 : integer is 3
@@ -1030,10 +1030,10 @@ sql_scc_xopen_cli_version1 : integer is 0x00000001
 sql_scc_iso92_cli : integer is 0x00000002
 
 feature -- Constants -- SQL_UNION_STATEMENT bitmasks
-sql_us_union : integer is do result := sql_u_union end 
-sql_us_union_all : integer is do result := sql_u_union_all end 
+sql_us_union : integer is do result := sql_u_union end
+sql_us_union_all : integer is do result := sql_u_union_all end
 
---#endif /* ODBCVER >= 0x0300 
+--#endif /* ODBCVER >= 0x0300
 
 feature -- Constants -- DTC transition cost
 
