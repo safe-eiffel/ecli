@@ -57,8 +57,6 @@ feature -- Access
 feature -- Basic operations
 
 	put_heading (s: STRING_8) is
-		local
-			h : EV_HEADER_ITEM
 		do
 			precursor (s)
 			current_headings.put_last (s)
@@ -93,15 +91,9 @@ feature -- Basic operations
 	end_heading is
 		local
 			i : INTEGER
-			h : EV_HEADER
-			to_remove : INTEGER
 		do
 			row_index := 1; column_index := 1
 			precursor
---			h := sql_data.header
---			if h.count > 0 then
---				h.wipe_out
---			end
 			sql_data.lock_update
 			if sql_data.column_count < current_headings.count then
 				sql_data.set_column_count_to (current_headings.count)
@@ -120,7 +112,6 @@ feature -- Basic operations
 			until
 				current_headings.after
 			loop
---					h.extend (create {EV_HEADER_ITEM}.make_with_text (current_headings.item_for_iteration))
 				sql_data.column (i).set_title (current_headings.item_for_iteration)
 				sql_data.column (i).set_width (current_headings.item_for_iteration.capacity * 10)
 				current_headings.forth
