@@ -250,4 +250,29 @@ feature -- Basic operations
 			assert_double_equal ("copy", v.item_at (3), z.item_at (3))
 		end
 
+
+	test_arrayed_decimal is
+		local
+			v, z : ECLI_ARRAYED_DECIMAL
+			l_zero : MA_DECIMAL
+			l_one: MA_DECIMAL
+			l_pi : MA_DECIMAL
+			l_ctx: MA_DECIMAL_CONTEXT
+		do
+			create l_ctx.make_double_extended
+			create v.make_with_rounding (3, l_ctx.precision, 8, l_ctx.rounding_mode)
+			create l_zero.make_zero
+			create l_one.make_one
+			create l_pi.make_from_string ("3.1415927")
+			v.set_item_at (l_zero, 1)
+			v.set_item_at (l_one, 2)
+			v.set_item_at (l_pi, 3)
+			create z.make_with_rounding (3, 18, 5, 0)
+			z.copy (v)
+			if v.is_equal (z) then
+				print ("ADECIMAL: V=Z%N")
+			end
+			z.set_null_at (2)
+		end
+
 end
