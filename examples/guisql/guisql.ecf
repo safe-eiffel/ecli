@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-2-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-2-0 http://www.eiffel.com/developers/xml/configuration-1-2-0.xsd" name="guisql" uuid="A8297D11-D097-4B90-B2EE-9D2197C79125">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-5-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-5-0 http://www.eiffel.com/developers/xml/configuration-1-5-0.xsd" name="guisql" uuid="A8297D11-D097-4B90-B2EE-9D2197C79125">
 	<target name="guisql">
 		<root class="GUISQL" feature="make_and_launch"/>
-		<option trace="false" profile="false" debug="false" warning="true">
+		<option trace="false" profile="false" debug="false" warning="true" syntax="transitional">
 			<assertions precondition="true"/>
 			<warning name="export_class_missing" enabled="false"/>
 			<warning name="old_verbatim_strings" enabled="false"/>
@@ -29,23 +29,12 @@
 		<external_object location="ODBCCP32.lib"/>
 		<external_object location="$(SAFE_KERNEL)\external\src\spec\ise\windows\xs_c_msc.lib"/>
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
-		<library name="time" location="$ISE_LIBRARY\library\time\time.ecf"/>
+		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel.ecf"/>
+		<library name="gobo_math" location="$ISE_LIBRARY\library\gobo\gobo_math.ecf"/>
+		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string.ecf"/>
+		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure.ecf"/>
+		<library name="gobo_time" location="$ISE_LIBRARY\library\gobo\gobo_time.ecf"/>
 		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2.ecf"/>
-		<cluster name="ds_structure" location="${GOBO}\library\structure\">
-			<cluster name="ds_container" location="$|container\"/>
-			<cluster name="ds_dispenser" location="$|dispenser\"/>
-			<cluster name="ds_list" location="$|list\"/>
-			<cluster name="ds_set" location="$|set\"/>
-			<cluster name="ds_sort" location="$|sort\"/>
-			<cluster name="ds_support" location="$|support\"/>
-			<cluster name="ds_table" location="$|table\"/>
-		</cluster>
-		<cluster name="dt_time" location="${GOBO}\library\time\">
-			<cluster name="dt_clock" location="$|clock\"/>
-			<cluster name="dt_date" location="$|date\"/>
-			<cluster name="dt_format" location="$|format\"/>
-			<cluster name="dt_time_zone" location="$|time_zone\"/>
-		</cluster>
 		<cluster name="ecli_ecli" location="${ECLI}\src\">
 			<cluster name="ecli_abstract" location="$|abstract\"/>
 			<cluster name="ecli_data" location="$|data\">
@@ -61,44 +50,8 @@
 		</cluster>
 		<cluster name="guisql" location="${ECLI}\examples\guisql\"/>
 		<cluster name="ise" location="${ISE_EIFFEL}\library\"/>
-		<cluster name="isql" location="${ECLI}\examples\isql\">
+		<cluster name="isql" location="${ECLI}\tools\isql\">
 			<cluster name="commands" location="$|commands\"/>
-		</cluster>
-		<cluster name="kl_kernel" location="${GOBO}\library\kernel\">
-			<cluster name="kl_basic" location="$|basic\"/>
-			<cluster name="kl_elks" location="$|elks\"/>
-			<cluster name="kl_io" location="$|io\"/>
-			<cluster name="kl_misc" location="$|misc\"/>
-			<cluster name="kl_unicode" location="$|unicode\"/>
-			<cluster name="kl_support" location="$|support\"/>
-			<cluster name="kl_spec" location="$|spec\">
-				<cluster name="kl_spec_ise" location="$|ise\"/>
-			</cluster>
-		</cluster>
-		<cluster name="ma_math" location="${GOBO}\library\math\">
-			<cluster name="ma_decimal" location="$|decimal\"/>
-		</cluster>
-		<cluster name="rx_regexp" location="${GOBO}\library\regexp\">
-			<cluster name="rx_interface" location="$|interface\"/>
-			<cluster name="rx_pcre" location="$|pcre\"/>
-			<cluster name="rx_support" location="$|support\"/>
-		</cluster>
-		<cluster name="st_string" location="${GOBO}\library\string\">
-			<cluster name="st_collation" location="$|collation\"/>
-			<cluster name="st_unicode" location="$|unicode\"/>
-			<cluster name="st_support" location="$|support\"/>
-			<cluster name="st_formatter" location="$|formatter\">
-				<cluster name="st_general" location="$|general\"/>
-				<cluster name="st_parameter" location="$|parameter\"/>
-			</cluster>
-		</cluster>
-		<cluster name="ut_utility" location="${GOBO}\library\utility\">
-			<cluster name="ut_error" location="$|error\"/>
-			<cluster name="ut_formatter" location="$|formatter\"/>
-			<cluster name="ut_command" location="$|command\"/>
-			<cluster name="ut_support" location="$|support\"/>
-			<cluster name="ut_transcoder" location="$|transcoder\"/>
-			<cluster name="ut_uri" location="$|uri\"/>
 		</cluster>
 		<cluster name="xs_c_src" location="${SAFE_KERNEL}\external\src\">
 			<cluster name="xs_c_spec" location="$|spec\">
