@@ -1,10 +1,10 @@
 class
 	TEST_VALUES
-	
+
 create
 	make
-	
-feature 
+
+feature
 
 	make is
 		do
@@ -14,11 +14,17 @@ feature
 		end
 
 	string_foo : STRING is "Foo"
-	
+
 	string_long : STRING is "The quick brown fox jumps over the lazy dog. %
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
+
+	factory : ECLI_VALUE_FACTORY
+
+	arrayed_factory : ECLI_ARRAYED_VALUE_FACTORY
+
+	string_file : KL_STRING_INPUT_FILE
 	
 	do_tests is
 			-- run test on ECLI_VALUE descendants
@@ -60,11 +66,12 @@ feature
 			test_arrayed_double
 			test_arrayed_real
 			test_arrayed_float
+			test_arrayed_decimal
 		end
 
-		
+
 	test_char is
-			-- 
+			--
 		local
 			v, z : ECLI_CHAR
 		do
@@ -76,9 +83,9 @@ feature
 				print ("V = Z%N")
 			end
 		end
-	
+
 	test_varchar is
-			-- 
+			--
 		local
 			v : ECLI_VARCHAR
 			b : BOOLEAN
@@ -89,7 +96,7 @@ feature
 		end
 
 	test_longvarchar is
-			-- 
+			--
 		local
 			v : ECLI_LONGVARCHAR
 		do
@@ -100,7 +107,7 @@ feature
 		end
 
 	test_longvarbinary is
-			-- 
+			--
 		local
 			v : ECLI_LONGVARBINARY
 		do
@@ -111,7 +118,7 @@ feature
 		end
 
 	test_date is
-			-- 
+			--
 		local
 			v, z : ECLI_DATE
 			d : DT_DATE
@@ -128,9 +135,9 @@ feature
 				print ("DATE: V = Z%N")
 			end
 		end
-		
+
 	test_time is
-			-- 
+			--
 		local
 			v : ECLI_TIME
 			t : DT_TIME
@@ -142,9 +149,9 @@ feature
 			create t.make (1,1,0)
 			v.set_item (t)
 		end
-		
+
 	test_timestamp is
-			-- 
+			--
 		local
 			v : ECLI_TIMESTAMP
 			d : DT_DATE_TIME
@@ -156,9 +163,9 @@ feature
 			create d.make (1889,12,10, 1,1,0)
 			v.set_item (d)
 		end
-	
+
 	test_integer is
-			-- 
+			--
 		local
 			v : ECLI_INTEGER
 		do
@@ -169,43 +176,43 @@ feature
 		end
 
 	test_double is
-			-- 
+			--
 		local
 			v : ECLI_DOUBLE
 		do
 			create v.make
 			v.set_item (1.2345e-23)
 			v.set_null
-			v.set_item (-1.2345e23)			
+			v.set_item (-1.2345e23)
 		end
 
 	test_real is
-			-- 
+			--
 		local
 			v : ECLI_REAL
 			r : REAL
 		do
 			create v.make
-			r := 1.2345e-23 
+			r := 1.2345e-23
 			v.set_item (r)
 			v.set_null
 			r := -1.2345e23
-			v.set_item (r)			
+			v.set_item (r)
 		end
 
 	test_float is
-			-- 
+			--
 		local
 			v : ECLI_FLOAT
 		do
 			create v.make
 			v.set_item (1.2345e-23)
 			v.set_null
-			v.set_item (-1.2345e23)			
+			v.set_item (-1.2345e23)
 		end
 
 	test_arrayed_char is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_CHAR
 			b : BOOLEAN
@@ -217,9 +224,9 @@ feature
 			v.set_item_at (string_foo, 3)
 			v.set_null_at (2)
 		end
-	
+
 	test_arrayed_varchar is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_VARCHAR
 		do
@@ -231,7 +238,7 @@ feature
 		end
 
 	test_arrayed_longvarchar is
-			-- 
+			--
 		local
 			v, z : ECLI_ARRAYED_LONGVARCHAR
 		do
@@ -249,7 +256,7 @@ feature
 		end
 
 	test_arrayed_date is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_DATE
 			d : DT_DATE
@@ -263,9 +270,9 @@ feature
 			create d.make (1889,12,10)
 			v.set_item_at (d, 3)
 		end
-		
+
 	test_arrayed_time is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_TIME
 			t : DT_TIME
@@ -279,9 +286,9 @@ feature
 			create t.make (1,1,0)
 			v.set_item_at (t,3)
 		end
-		
+
 	test_arrayed_timestamp is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_TIMESTAMP
 			d : DT_DATE_TIME
@@ -295,9 +302,9 @@ feature
 			create d.make (1889,12,10, 1,1,0)
 			v.set_item_at (d,3)
 		end
-	
+
 	test_arrayed_integer is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_INTEGER
 		do
@@ -308,32 +315,32 @@ feature
 		end
 
 	test_arrayed_double is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_DOUBLE
 		do
 			create v.make (3)
 			v.set_item_at (1.2345e-23, 1)
 			v.set_null_at (2)
-			v.set_item_at (-1.2345e23, 3)			
+			v.set_item_at (-1.2345e23, 3)
 		end
 
 	test_arrayed_real is
-			-- 
+			--
 		local
 			v : ECLI_ARRAYED_REAL
 			r : REAL
 		do
 			create v.make (3)
-			r := 1.2345e-23 
+			r := 1.2345e-23
 			v.set_item_at (r, 1)
 			v.set_null_at (2)
 			r := -1.2345e23
-			v.set_item_at (r, 3)			
+			v.set_item_at (r, 3)
 		end
 
 	test_arrayed_float is
-			-- 
+			--
 		local
 			v,z : ECLI_ARRAYED_FLOAT
 		do
@@ -346,5 +353,30 @@ feature
 			if v.is_equal (z) then
 				print ("AFLOAT: V=Z%N")
 			end
-		end	
+		end
+
+	test_arrayed_decimal is
+		local
+			v, z : ECLI_ARRAYED_DECIMAL
+			l_zero : MA_DECIMAL
+			l_one: MA_DECIMAL
+			l_pi : MA_DECIMAL
+			l_ctx: MA_DECIMAL_CONTEXT
+		do
+			create l_ctx.make_double_extended
+			create v.make_with_rounding (3, l_ctx.precision, 8, l_ctx.rounding_mode)
+			create l_zero.make_zero
+			create l_one.make_one
+			create l_pi.make_from_string ("3.1415927")
+			v.set_item_at (l_zero, 1)
+			v.set_item_at (l_one, 2)
+			v.set_item_at (l_pi, 3)
+			create z.make_with_rounding (3, 18, 5, 0)
+			z.copy (v)
+			if v.is_equal (z) then
+				print ("ADECIMAL: V=Z%N")
+			end
+			z.set_null_at (2)
+		end
+
 end
