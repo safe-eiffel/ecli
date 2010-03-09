@@ -51,6 +51,7 @@ feature {NONE} -- Initialization
 			name_assigned: name = a_name
 			reference_column_assigned: reference_column = a_reference_column
 			maximum_length_impl_assigned: maximum_length > 0 implies maximum_length_impl = maximum_length
+			is_input: is_input
 		end
 
 feature -- Access
@@ -99,6 +100,24 @@ feature -- Status report
 	is_valid : BOOLEAN
 
 	has_sample : BOOLEAN is do Result := sample /= Void end
+
+	is_input : BOOLEAN is
+			-- Is this an input parameter?
+		do
+			Result:= direction = c_input
+		end
+
+	is_output : BOOLEAN is
+			-- Is this an output parameter?
+		do
+			Result:= direction = c_output
+		end
+
+	is_input_output : BOOLEAN is
+			-- Is this an input-output parameter?
+		do
+			Result:= direction = c_input_output
+		end
 
 feature -- Status setting
 
@@ -153,6 +172,27 @@ feature -- Status setting
 			ensure
 				valid_and_metadata: is_valid implies metadata /= Void
 			end
+
+	enable_input is
+		do
+			direction := c_input
+		ensure
+			is_input: is_input
+		end
+
+	enable_output is
+		do
+			direction := c_output
+		ensure
+			is_output: is_output
+		end
+
+	enable_input_output is
+		do
+			direction := c_input_output
+		ensure
+			is_input_output: is_input_output
+		end
 
 feature -- Element change
 
@@ -218,6 +258,12 @@ feature -- Duplication
 feature {NONE} -- Implementation
 
 	maximum_length_impl : INTEGER
+
+	direction : INTEGER
+
+	c_input : INTEGER is 0
+	c_output : INTEGER is 1
+	c_input_output : INTEGER is 3
 
 invariant
 	name_not_void: name /= Void

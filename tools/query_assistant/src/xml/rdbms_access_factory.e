@@ -309,6 +309,9 @@ feature {NONE} -- Implementation
 					if element.has_attribute_by_name (t_sample) then
 						last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
 					end
+					if element.has_attribute_by_name (t_direction) then
+						set_parameter_direction (last_parameter, element.attribute_by_name (t_direction).value.string)
+					end
 				end
 			else
 				-- impossible
@@ -419,6 +422,17 @@ feature {NONE} -- Implementation
 					end
 					parameter_names.forth
 				end
+			end
+		end
+
+	set_parameter_direction (a_parameter : like last_parameter; a_value : STRING) is
+		do
+			if a_value.is_equal (v_input) then
+				a_parameter.enable_input
+			elseif a_value.is_equal (v_output) then
+				a_parameter.enable_output
+			elseif a_value.is_equal (v_input_output) then
+				a_parameter.enable_input_output
 			end
 		end
 

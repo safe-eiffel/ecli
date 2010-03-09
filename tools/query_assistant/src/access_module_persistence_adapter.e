@@ -235,6 +235,11 @@ feature {NONE} -- Implementation
 			if parameter.sample /= Void then
 				element.add_attribute (t_sample, ns_empty, parameter.sample)
 			end
+			if parameter.is_output then
+				element.add_attribute (t_direction, ns_empty, v_output)
+			elseif parameter.is_input_output then
+				element.add_attribute (t_direction, ns_empty, v_input_output)
+			end
 		end
 
 	put_parameter_set (parent : XM_ELEMENT; parameter_set : PARAMETER_SET) is

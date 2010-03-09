@@ -33,9 +33,15 @@ feature -- Access
 
 	t_parameter : STRING is "parameter"
 
+	t_direction : STRING is "direction"
+
 	t_sample : STRING is "sample"
 
 	t_modules : STRING is "modules"
+
+	v_input : STRING is "input"
+	v_output: STRING is "output"
+	v_input_output: STRING is "input-output"
 
 feature -- Measurement
 
