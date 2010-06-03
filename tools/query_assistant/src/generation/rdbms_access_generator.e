@@ -362,6 +362,8 @@ feature {NONE} -- Basic operations
 			parameter, pre,post : DS_PAIR[STRING,STRING]
 			cursor : DS_HASH_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 			pname : STRING
+			l_parameter : RDBMS_ACCESS_PARAMETER
+			l_put_parameter_feature_call : STRING
 		do
 			if module.parameters.count > 0 then
 				create feature_group.make ("-- Element change")
@@ -384,8 +386,18 @@ feature {NONE} -- Basic operations
 				until
 					cursor.off
 				loop
+					l_parameter := cursor.item
 					pname := cursor.item.name
-					a_feature.add_body_line ("put_parameter (parameters_object." + pname + ",%"" + pname + "%")")
+					if l_parameter.is_input_explicit then
+						l_put_parameter_feature_call := "put_input_parameter"
+					elseif l_parameter.is_input then
+						l_put_parameter_feature_call := "put_parameter"
+					elseif l_parameter.is_output then
+						l_put_parameter_feature_call := "put_output_parameter"
+					else
+						l_put_parameter_feature_call := "put_input_output_parameter"
+					end
+					a_feature.add_body_line (l_put_parameter_feature_call + " (parameters_object." + pname + ",%"" + pname + "%")")
 					cursor.forth
 				end
 				--| bind parameters
@@ -425,13 +437,13 @@ feature {NONE} -- Basic operations
 				if parent_name /= Void then
 					parent_clause.append_string (parent_name)
 				else
-					parent_clause.append_string ("ECLI_CURSOR")
+					parent_clause.append_string (c_cursor_parent_name)
 				end
 			else
 				if parent_name /= Void then
 					parent_clause.append_string (parent_name)
 				else
-					parent_clause.append_string ("ECLI_QUERY")
+					parent_clause.append_string (c_query_parent_name)
 				end
 			end
 			parent_clause.append_character ('%N')
@@ -508,6 +520,11 @@ feature {NONE} -- Basic operations
 			feature_group.add_feature (routine)
 			cursor_class.add_feature_group (feature_group)
 		end
+
+feature {NONE} -- Implementation
+
+	c_cursor_parent_name : STRING = "ECLI_CURSOR"
+	c_query_parent_name : STRING = "ECLI_QUERY"
 
 feature {NONE} -- Implementation
 

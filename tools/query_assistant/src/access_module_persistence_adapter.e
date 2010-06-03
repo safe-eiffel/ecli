@@ -16,6 +16,7 @@ create
 feature {} -- Initialization
 
 	make (an_error_handler : QA_ERROR_HANDLER) is
+			-- Make adapter using `an_error_handler'.
 		require
 			an_error_handler_not_void: an_error_handler /= Void
 		do
@@ -28,14 +29,17 @@ feature {} -- Initialization
 feature -- Access
 
 	last_object: ACCESS_MODULE
+			-- last object created.
 
 	error_handler : QA_ERROR_HANDLER
+			-- Error handler.
 
 feature -- Measurement
 
 feature -- Status Report
 
 	has_error : BOOLEAN
+			-- Has last operation caused an error?
 
 feature -- Status setting
 
@@ -49,7 +53,7 @@ feature -- Basic operations
 			in: KL_TEXT_INPUT_FILE
 		do
 			has_error := False
-			error_handler.report_start ("Parsing XML file")
+			error_handler.report_start (s_parsing_xml_file)
 			create in.make (a_file_name)
 			in.open_read
 			if not in.is_open_read then
@@ -67,11 +71,12 @@ feature -- Basic operations
 					create last_object.make_from_tables (modules, parameter_sets, result_sets, parameter_map)
 				end
 			end
-			error_handler.report_end ("Parsing XML file", not has_error)
+			error_handler.report_end (s_parsing_xml_file, not has_error)
 
 		end
 
 	write_to_file (module : ACCESS_MODULE; a_file_name : STRING) is
+			-- write `module' to file with name `a_file_name'.
 		require
 			a_file_name_not_void: a_file_name /= Void
 		local
@@ -95,9 +100,35 @@ feature -- Basic operations
 			end
 		end
 
-feature {NONE} -- Implementation
+feature {NONE} -- Implementation - Access
+
+
+	tree_pipe: XM_TREE_CALLBACKS_PIPE
+			-- Tree generating callbacks
+
+	last_document : XM_DOCUMENT
+			-- Last XML document
+
+	event_parser : XM_EIFFEL_PARSER
+
+	modules : DS_HASH_TABLE [RDBMS_ACCESS, STRING]
+
+	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
+
+	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
+
+	parameter_map : PARAMETER_MAP
+
+
+feature {NONE} -- Implementation - Constants
+
+	s_parsing_xml_file: STRING = "Parsing XML file"
+
+feature {NONE} -- Implementation - Operations
+
 
 	create_event_parser is
+			-- Create event parser.
 		do
 			create {XM_EIFFEL_PARSER} event_parser.make
 			create tree_pipe.make
@@ -105,7 +136,7 @@ feature {NONE} -- Implementation
 		end
 
 	process_document is
-			-- process XML document
+			-- Process XML document.
 		require
 			parser_ok: event_parser.is_correct
 			tree_pipe_ok: not tree_pipe.error.has_error
@@ -182,22 +213,8 @@ feature {NONE} -- Implementation
 			result_sets_empty: result_sets.is_empty
 		end
 
-	tree_pipe: XM_TREE_CALLBACKS_PIPE
-			-- Tree generating callbacks
-
-	event_parser : XM_EIFFEL_PARSER
-
-	modules : DS_HASH_TABLE [RDBMS_ACCESS, STRING]
-
-	parameter_sets: DS_HASH_TABLE[PARAMETER_SET, STRING]
-
-	result_sets : DS_HASH_TABLE[RESULT_SET, STRING]
-
-	parameter_map : PARAMETER_MAP
-
-	last_document : XM_DOCUMENT
-
 	put_document (module : ACCESS_MODULE) is
+			-- Put `module' to last_document
 		require
 			module_not_void: module /= Void
 		local
@@ -235,7 +252,9 @@ feature {NONE} -- Implementation
 			if parameter.sample /= Void then
 				element.add_attribute (t_sample, ns_empty, parameter.sample)
 			end
-			if parameter.is_output then
+			if parameter.is_input_explicit then
+				element.add_attribute (t_direction, ns_empty, v_input)
+			elseif parameter.is_output then
 				element.add_attribute (t_direction, ns_empty, v_output)
 			elseif parameter.is_input_output then
 				element.add_attribute (t_direction, ns_empty, v_input_output)
@@ -285,7 +304,11 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	ns_empty : XM_NAMESPACE is once create Result.make_default end
+	ns_empty : XM_NAMESPACE
+			-- Empty namespace
+		once
+			create Result.make_default
+		end
 
 invariant
 

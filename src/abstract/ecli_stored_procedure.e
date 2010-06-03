@@ -14,14 +14,15 @@ class ECLI_STORED_PROCEDURE
 inherit
 
 	ECLI_STATEMENT
-		rename
-			put_parameter as put_input_parameter
+--		rename
+--			put_parameter as put_input_parameter
 		redefine
+			put_parameter,
 			create_parameters,
 			put_single_parameter_with_hint,
 			put_parameter_with_hint,
-			bind_one_parameter,
-			put_input_parameter
+			bind_one_parameter --,
+--			put_input_parameter
 
 		end
 
@@ -41,8 +42,47 @@ feature -- Access
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
+feature -- Status report
+
+	is_parameter_input (a_parameter_name : STRING) : BOOLEAN
+			-- Is `a_parameter_name' parameter for input ?
+		require
+			a_parameter_name_not_void: a_parameter_name /= Void
+			known_parameter: has_parameter (a_parameter_name)
+		do
+			Result := directed_parameter (a_parameter_name).is_input
+		end
+
+	is_parameter_output (a_parameter_name : STRING) : BOOLEAN
+			-- Is `a_parameter_name' parameter for output?
+		require
+			a_parameter_name_not_void: a_parameter_name /= Void
+			known_parameter: has_parameter (a_parameter_name)
+		do
+			Result := directed_parameter (a_parameter_name).is_output
+		end
+
+	is_parameter_input_output (a_parameter_name : STRING) : BOOLEAN
+			-- Is `a_parameter_name' parameter for input/output ?
+		require
+			a_parameter_name_not_void: a_parameter_name /= Void
+			known_parameter: has_parameter (a_parameter_name)
+		do
+			Result := directed_parameter (a_parameter_name).is_input_output
+		end
+
 feature -- Element change
+
+	put_parameter (value: like parameter_anchor; key : STRING)
+			-- <Precursor>
+		do
+			put_input_parameter (value, key)
+		ensure then
+			parameter_set: directed_parameter (key).item = value
+			direction_set: directed_parameter (key).is_input
+			not_bound: not bound_parameters
+		end
 
 	put_output_parameter (value: like parameter_anchor; key: STRING) is
 			-- Put `value' as output parameter.
@@ -71,7 +111,7 @@ feature -- Element change
 		do
 			create direction.make (value)
 			put_parameter_with_hint (value, key, direction)
-		ensure then
+		ensure
 			parameter_set: directed_parameter (key).item = value
 			direction_set: directed_parameter (key).is_input
 			not_bound: not bound_parameters
