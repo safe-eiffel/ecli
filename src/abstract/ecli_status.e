@@ -45,6 +45,9 @@ feature -- Access
 			Result := impl_error_message
 		end
 
+	last_external_feature: STRING
+			-- Name of the last called external feature
+
 	cli_state : STRING is
 			-- Name of the internal CLI state
 		do
@@ -59,9 +62,7 @@ feature -- Access
 			Result := impl_native_code.item
 		end
 
---	information_actions : ACTION_SEQUENCE[TUPLE[code: INTEGER;state : STRING;diagnostic: STRING]]
-
---	error_actions : ACTION_SEQUENCE[TUPLE[code: INTEGER;state : STRING;diagnostic: STRING]]
+	error_handler : ECLI_ERROR_HANDLER
 
 feature -- Status report
 
@@ -129,32 +130,45 @@ feature -- Status setting
 			continue_on_error: not exception_on_error
 		end
 
+	set_error_handler (an_error_handler : ECLI_ERROR_HANDLER)
+			-- Set `error_handler' to `an_error_handler'.
+		do
+			error_handler := an_error_handler
+		ensure
+			error_handler_set: error_handler = an_error_handler
+		end
+
 feature {NONE} -- Implementation
 
 	reset_status is
 			-- reset status to `is_ok'
 		do
-			set_status (Sql_success)
+			set_status ("Sql_success", Sql_success)
 		ensure
 			is_ok: is_ok
 		end
 
-	set_status (v : INTEGER) is
+	set_status (an_external_feature: STRING; v : INTEGER) is
 		require
+			an_external_feature_not_void: an_external_feature /= Void
 			valid_status_v: valid_status (v)
 		do
 			status := v
 			need_diagnostics := True
+			last_external_feature := an_external_feature
 			if status = sql_invalid_handle then
 				raise ("[ECLI][Internal] Invalid Handle")
 			elseif exception_on_error and then not is_ok then
 				raise (diagnostic_message)
-			elseif status = sql_success_with_info or status = sql_row_success_with_info then
---				information_actions.call ([native_code, cli_state, diagnostic_message])
+			elseif status = sql_row_success_with_info then
+				error_handler.report_row_success_with_info (last_external_feature, native_code, cli_state, diagnostic_message)
+			elseif status = sql_success_with_info then
+				error_handler.report_success_with_info (last_external_feature, native_code, cli_state, diagnostic_message)
 			elseif status = sql_error then
---				error_actions.call ([native_code, cli_state, diagnostic_message])
+				error_handler.report_error (last_external_feature, native_code, cli_state, diagnostic_message)
 			end
 		ensure
+			last_external_feature_not_void: last_external_feature = an_external_feature
 			status: status = v
 		end
 
@@ -226,5 +240,6 @@ feature {NONE} -- Implementation
 invariant
 
 	valid_status: valid_status (status)
+	error_handler_not_void: error_handler /= Void
 
 end

@@ -60,8 +60,7 @@ feature -- Initialization
 			eq : KL_EQUALITY_TESTER[DS_LIST[INTEGER]]
 			ext_handle : XS_C_POINTER
 		do
---			create information_actions
---			create error_actions
+			create error_handler.make_null
 
 			create ext_handle.make
 			create impl_result_columns_count.make
@@ -69,7 +68,7 @@ feature -- Initialization
 			if session.exception_on_error then
 				raise_exception_on_error
 			end
-			set_status (ecli_c_allocate_statement (session.handle, ext_handle.handle))
+			set_status ("ecli_c_allocate_statement", ecli_c_allocate_statement (session.handle, ext_handle.handle))
 			handle := ext_handle.item
 			if is_valid then
 				session.register_statement (Current)
@@ -450,7 +449,7 @@ feature -- Cursor movement
 			if not after then
 				set_cursor_after
 				has_another_result_set := False
-				set_status (ecli_c_close_cursor (handle))
+				set_status ("ecli_c_close_cursor", ecli_c_close_cursor (handle))
 			end
 			fetched_columns_count := 0
 		ensure
@@ -467,7 +466,7 @@ feature -- Cursor movement
 		do
 			if not after then
 				set_cursor_after
-				set_status (ecli_c_more_results (handle))
+				set_status ("ecli_c_more_results", ecli_c_more_results (handle))
 				if is_ok and then not is_no_data then
 					has_another_result_set := True
 				else
@@ -595,7 +594,7 @@ feature {NONE} -- Miscellaneous
 
 	release_handle is
 		do
-			set_status (ecli_c_free_statement (handle))
+			set_status ("ecli_c_free_statement", ecli_c_free_statement (handle))
 			set_handle ( default_pointer)
 		end
 
@@ -621,9 +620,9 @@ feature -- Basic operations
 				end
 			end
 			if is_prepared_execution_mode then
-				set_status (ecli_c_execute (handle) )
+				set_status ("ecli_c_execute", ecli_c_execute (handle) )
 			else
-				set_status (ecli_c_execute_direct (handle, impl_sql.handle))
+				set_status ("ecli_c_execute_direct", ecli_c_execute_direct (handle, impl_sql.handle))
 			end
 			if session.is_tracing then
 				trace (session.tracer)
@@ -634,12 +633,12 @@ feature -- Basic operations
 			if status = Sql_need_data then
 				create value_pointer.make
 				from
-					set_status (ecli_c_param_data (handle, value_pointer.handle))
+					set_status ("ecli_c_param_data", ecli_c_param_data (handle, value_pointer.handle))
 				until
 					status /= Sql_need_data
 				loop
 					parameters.item (value_pointer.item).put_parameter (Current, value_pointer.item)
-					set_status (ecli_c_param_data (handle, value_pointer.handle))
+					set_status ("ecli_c_param_data", ecli_c_param_data (handle, value_pointer.handle))
 				end
 			end
 			if is_ok then
@@ -771,7 +770,7 @@ feature -- Basic operations
 			if is_executed and then (has_result_set and  not after) then
 				finish
 			end
-			set_status (ecli_c_prepare (handle, impl_sql.handle))
+			set_status ("ecli_c_prepare", ecli_c_prepare (handle, impl_sql.handle))
 			if is_ok then
 				get_result_columns_count
 				--| getting result columns count can get more error than a single prepare
@@ -839,16 +838,16 @@ feature {ECLI_STATUS} -- Inapplicable
 	can_use_arrayed_parameters : BOOLEAN is
 			-- Can we use arrayed parameters ?
 		do
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 2))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 2))
 			Result := is_ok
 			--| get back to original situation
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 1))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, 1))
 		end
 
 	can_use_arrayed_results : BOOLEAN is
 			-- Can we use arrayed results ?
 		do
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
 			Result := is_ok
 		end
 
@@ -867,7 +866,7 @@ feature {NONE} -- Implementation
 		require
 			valid_statement: is_valid
 		do
-			set_status (ecli_c_result_column_count (handle, impl_result_columns_count.handle))
+			set_status ("ecli_c_result_column_count", ecli_c_result_column_count (handle, impl_result_columns_count.handle))
 		end
 
 	bind_one_parameter (i : INTEGER) is
@@ -954,7 +953,7 @@ feature {NONE} -- Implementation
 		require
 			valid_statement: is_valid
 		do
-			set_status (ecli_c_fetch (handle))
+			set_status ("ecli_c_fetch", ecli_c_fetch (handle))
 			if status = sql_no_data then
 				go_after
 			else
@@ -1048,7 +1047,7 @@ feature {NONE} -- Hooks for descendants
 			if impl_row_count = Void then
 				create impl_row_count.make
 			end
-			set_status (ecli_c_row_count (handle, impl_row_count.handle))
+			set_status ("ecli_c_row_count", ecli_c_row_count (handle, impl_row_count.handle))
 		ensure
 			impl_row_count_not_void: impl_row_count /= Void
 		end

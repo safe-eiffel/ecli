@@ -104,7 +104,7 @@ feature {ECLI_SESSION} -- Basic operations
 	Connect (the_session : ECLI_SESSION) is
 			-- do login `the_session'
 		do
-			the_session.set_status (ecli_c_connect (the_session.handle,
+			the_session.set_status ("ecli_c_connect", ecli_c_connect (the_session.handle,
 					impl_datasource_name.handle,
 					impl_user_name.handle,
 					impl_password.handle))

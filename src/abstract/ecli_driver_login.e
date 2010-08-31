@@ -102,7 +102,7 @@ feature -- Basic operations
 			create actual_length.make
 			create impl_connection_string.make_from_string (connection_string)
 			create impl_completed_connection_string.make (completed_connection_string_default_length)
-			the_session.set_status (ecli_c_driver_connect (
+			the_session.set_status ("ecli_c_driver_connect", ecli_c_driver_connect (
 				the_session.handle,
 				parent_window_handle,
 				impl_connection_string.handle,

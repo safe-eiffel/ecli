@@ -13,13 +13,13 @@ deferred class ECLI_FILE_VALUE
 
 inherit
 
-	ECLI_VALUE
+	ECLI_STREAM_VALUE
+
 		redefine
-			read_result,
-			put_parameter,
-			bind_as_parameter
+			put_parameter_finish
 		end
 
+inherit {NONE}
 	ECLI_STATUS_CONSTANTS
 		export
 			{NONE} all
@@ -84,7 +84,7 @@ feature -- Measurement
 			Result := size
 		end
 
-	transfer_octet_length: INTEGER is 4096
+	transfer_octet_length: INTEGER = 4096
 
 
 feature -- Status report
@@ -159,7 +159,7 @@ feature -- Status report
 			Result := False
 		end
 
-	convertible_as_integer_64 : BOOLEAN is 
+	convertible_as_integer_64 : BOOLEAN is
 			-- Is this value convertible to a INTEGER_64 ?
 		do
 			Result := False
@@ -249,89 +249,61 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	bind_as_parameter (stmt: ECLI_STATEMENT; index: INTEGER) is
-			-- bind as `index'-th parameter of `stmt'
-		local
-			length_at_execution : XS_C_INT32
-			parameter_rank : XS_C_INT32
-		do
-			create parameter_rank.make
-			create length_at_execution.make
-			parameter_rank.put (index)
-			if stmt.info.need_long_data_len then
-				length_at_execution.put (ecli_c_len_data_at_exe (size))
-			else
-				length_at_execution.put (sql_data_at_exec)
-			end
-			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
-				index,
-				Parameter_directions.Sql_param_input,
-				c_type_code,
-				sql_type_code,
-				size,
-				decimal_digits,
-				parameter_rank.as_pointer,
-				transfer_octet_length,
-				length_at_execution.handle))
-		end
+--	bind_as_parameter (stmt: ECLI_STATEMENT; index: INTEGER) is
+--			-- bind as `index'-th parameter of `stmt'
+--		local
+--			length_at_execution : XS_C_INT32
+--			parameter_rank : XS_C_INT32
+--		do
+--			create parameter_rank.make
+--			create length_at_execution.make
+--			parameter_rank.put (index)
+--			if stmt.info.need_long_data_len then
+--				length_at_execution.put (ecli_c_len_data_at_exe (size))
+--			else
+--				length_at_execution.put (sql_data_at_exec)
+--			end
+--			stmt.set_status ("ecli_c_bind_parameter", ecli_c_bind_parameter (stmt.handle,
+--				index,
+--				Parameter_directions.Sql_param_input,
+--				c_type_code,
+--				sql_type_code,
+--				size,
+--				decimal_digits,
+--				parameter_rank.as_pointer,
+--				transfer_octet_length,
+--				length_at_execution.handle))
+--		end
 
-	read_result (stmt: ECLI_STATEMENT; index: INTEGER) is
-			-- read `index'-th result of `stmt', writing into `output_file'
-		local
-			transfer_string : STRING
-			transfer_length : INTEGER
-		do
-			from
-				output_file.open_write
-				stmt.set_status (ecli_c_get_data (
-					stmt.handle,
-					index,
-					c_type_code,
-					to_external,
-					Transfer_octet_length,
-					ecli_c_value_get_length_indicator_pointer (buffer)))
-				create transfer_string.make (Transfer_octet_length)
-			until
-				is_null or else stmt.status = sql_no_data
-			loop
-				transfer_string.wipe_out
-				transfer_length := get_transfer_length
-				ext_item.append_substring_to (1, transfer_length, transfer_string)
-				output_file.put_string (transfer_string)
-				stmt.set_status (ecli_c_get_data (
-					stmt.handle,
-					index,
-					c_type_code,
-					to_external,
-					Transfer_octet_length,
-					ecli_c_value_get_length_indicator_pointer (buffer)))
-			end
-			output_file.close
-		end
-
-	put_parameter (stmt: ECLI_STATEMENT; index: INTEGER) is
-			-- Put `index'-th parameter of `stmt' by reading data from `input_file'.
-		local
-			l_total, l_count : INTEGER
-		do
-			if not is_null then
-				from
-					input_file.open_read
-					input_file.read_string (Transfer_octet_length)
-				until
-					input_file.end_of_input
-				loop
-					l_count := input_file.last_string.count
-					l_total := l_total + l_count
-					ext_item.from_string (input_file.last_string)
-					stmt.set_status (ecli_c_put_data (stmt.handle, to_external, l_count))
-					input_file.read_string (Transfer_octet_length)
-				end
-				input_file.close
-			else
-				stmt.set_status (ecli_c_put_data (stmt.handle, to_external, ecli_c_value_get_length_indicator (buffer)))
-			end
-		end
+--	read_result (stmt: ECLI_STATEMENT; index: INTEGER) is
+--			-- read `index'-th result of `stmt', writing into `output_file'
+--		local
+--		do
+--			from
+--				stmt.set_status ("ecli_c_get_data", ecli_c_get_data (
+--					stmt.handle,
+--					index,
+--					c_type_code,
+--					to_external,
+--					Transfer_octet_length,
+--					ecli_c_value_get_length_indicator_pointer (buffer)))
+--			until
+--				is_null or else stmt.status = sql_no_data
+--			loop
+--				transfer_length := get_transfer_length
+--				transfer_string.wipe_out
+--				ext_item.append_substring_to (1, transfer_length, transfer_string)
+--				output_file.put_string (transfer_string)
+--				stmt.set_status ("ecli_c_get_data", ecli_c_get_data (
+--					stmt.handle,
+--					index,
+--					c_type_code,
+--					to_external,
+--					Transfer_octet_length,
+--					ecli_c_value_get_length_indicator_pointer (buffer)))
+--			end
+--			output_file.close
+--		end
 
 feature {NONE} -- Implementation
 
@@ -344,13 +316,76 @@ feature {NONE} -- Implementation
 	ext_item : XS_C_STRING
 			-- handle to buffer seen as a string
 
-	get_transfer_length : INTEGER is
+	transfer_string : STRING
+	transfer_length : INTEGER
+
+	put_parameter_off: BOOLEAN
 		do
-				Result := ecli_c_value_get_length_indicator (buffer)
-				if Result = Sql_no_total or else Result > Transfer_octet_length then
-					Result := Transfer_octet_length
-				end
+			Result := input_file.end_of_input
 		end
+
+	put_parameter_forth
+		do
+			input_file.read_string (Transfer_octet_length)
+		end
+
+	put_parameter_start
+		do
+			input_file.open_read
+			input_file.read_string (Transfer_octet_length)
+		end
+
+	put_parameter_finish
+		do
+			input_file.close
+		end
+
+	read_result_start
+		do
+			output_file.open_write
+			create transfer_string.make (Transfer_octet_length)
+		end
+
+	read_result_finish
+		do
+			output_file.close
+		end
+
+	copy_item_chunck_to_buffer (a_length: INTEGER_32)
+		do
+			ext_item.from_string (input_file.last_string)
+		end
+
+	copy_buffer_to_item (a_length: INTEGER_32)
+		do
+			transfer_string.wipe_out
+			ext_item.append_substring_to (1, a_length, transfer_string)
+			output_file.put_string (transfer_string)
+		end
+
+	parameter_count_to_transfer: INTEGER_32
+		do
+			Result := input_file.last_string.count
+		end
+
+	capacity: INTEGER_32
+		do
+			Result := transfer_octet_length
+		end
+
+	input_count: INTEGER_32
+		do
+			if input_file.is_closed then
+				input_count_impl := input_file.count
+			end
+			Result := input_count_impl
+		end
+
+--	length: INTEGER_32
+--		do
+--		end
+
+	input_count_impl : INTEGER
 
 invariant
 

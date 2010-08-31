@@ -171,7 +171,7 @@ feature {NONE} -- Implementation
 	do_fetch (direction : INTEGER) is
 			-- actual external query
 		do
-			set_status (ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, actual_name_length.handle, c_description.handle, max_source_description_length, actual_description_length.handle))
+			set_status ("ecli_c_get_datasources", ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, actual_name_length.handle, c_description.handle, max_source_description_length, actual_description_length.handle))
 			if is_ok and then not is_no_data then
 				name := c_name.as_string
 				description := c_description.as_string

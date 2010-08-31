@@ -57,7 +57,7 @@ feature {NONE} -- Initialization
 				ext_size.handle,
 				ext_decimal_digits.handle,
 				ext_nullability.handle)
-			stmt.set_status (stat)
+			stmt.set_status ("stat", stat)
 			name := c_name.as_string
 			--actual_name_length := ext_actual_name_length.item
 			sql_type_code := ext_sql_type_code.item

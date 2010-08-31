@@ -104,9 +104,9 @@ feature -- Basic operations
 			index : INTEGER
 		do
 			--| advise ODBC that we are using parameter arrays, by column
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_param_bind_type, Sql_parameter_bind_by_column))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_param_bind_type, Sql_parameter_bind_by_column))
 			--| bind status array
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_param_status_ptr, rowset_status.to_external, 0))
+			set_status ("ecli_c_set_pointer_statement_attribute", ecli_c_set_pointer_statement_attribute (handle, Sql_attr_param_status_ptr, rowset_status.to_external, 0))
 			
 			--| bind parameter arrays
 			from index := 1
@@ -127,8 +127,8 @@ feature {NONE} -- Implementation
 			valid_count: a_count <= row_capacity
 			valid_parameters_count: valid_parameters_count (a_count)
 		do
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_params_processed_ptr, impl_row_count.handle, 0))
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, a_count))
+			set_status ("ecli_c_set_pointer_statement_attribute", ecli_c_set_pointer_statement_attribute (handle, Sql_attr_params_processed_ptr, impl_row_count.handle, 0))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_paramset_size, a_count))
 			statement_execute
 			fill_status_array
 		ensure

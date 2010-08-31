@@ -233,7 +233,7 @@ feature {NONE} -- Implementation
 	get_type_info (type : INTEGER) is
 			-- get information on `type'
 		do
-			set_status (ecli_c_get_type_info (handle, type))
+			set_status ("ecli_c_get_type_info", ecli_c_get_type_info (handle, type))
 			if is_ok then
 				get_result_columns_count
 				is_executed := True

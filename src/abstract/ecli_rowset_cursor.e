@@ -155,11 +155,11 @@ feature {NONE} -- Implementation
 			index : INTEGER
 		do
 			--| Bind by column
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_bind_type, Sql_bind_by_column))
 			--| Declare maximum number of retrieved values at a time
-			set_status (ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_capacity))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_row_array_size, row_capacity))
 			--| Declare status indicator array
-			set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.to_external, 0))
+			set_status ("ecli_c_set_pointer_statement_attribute", ecli_c_set_pointer_statement_attribute (handle, Sql_attr_row_status_ptr, rowset_status.to_external, 0))
 			from index := 1
 			until index > result_columns_count
 			loop
@@ -202,7 +202,7 @@ feature {NONE} -- Implementation
 			else
 				if fetch_increment \\ row_capacity = 0 then
 					--| Bind `row_count' for getting the actual number of rows fetched
-					set_status (ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, impl_row_count.handle, 0))			
+					set_status ("ecli_c_set_pointer_statement_attribute", ecli_c_set_pointer_statement_attribute (handle, Sql_attr_rows_fetched_ptr, impl_row_count.handle, 0))			
 					--| Do actual fetch
 					Precursor
 					fill_status_array

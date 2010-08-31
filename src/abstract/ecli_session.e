@@ -84,8 +84,7 @@ feature -- Initialization
 		require
 			is_closed: is_closed
 		do
---			create information_actions
---			create error_actions
+			create error_handler.make_null
 			allocate
 			reset_implementation
 			create info.make (Current)
@@ -130,7 +129,7 @@ feature -- Access
 		do
 			--| evaluate capability
 			if impl_transaction_capability < sql_tc_none then
-				set_status (ecli_c_transaction_capable (handle, ext_transaction_capability.handle))
+				set_status ("ecli_c_transaction_capable", ecli_c_transaction_capable (handle, ext_transaction_capability.handle))
 			end
 			Result := impl_transaction_capability
 		ensure
@@ -149,7 +148,7 @@ feature -- Access
 		do
 			create ext_string.make (2048)
 			create int32.make
-			set_status (ecli_c_get_pointer_connection_attribute (handle, att.sql_attr_tracefile, ext_string.handle, ext_string.capacity, int32.handle))
+			set_status ("ecli_c_get_pointer_connection_attribute", ecli_c_get_pointer_connection_attribute (handle, att.sql_attr_tracefile, ext_string.handle, ext_string.capacity, int32.handle))
 			Result := ext_string.substring (1, int32.item)
 		ensure
 			api_trace_filename_not_void: Result /= Void
@@ -161,7 +160,7 @@ feature -- Access
 			ext_txn_isolation : XS_C_UINT32
 		do
 			create ext_txn_isolation.make
-			set_status (ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_txn_isolation , ext_txn_isolation.handle))
+			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_txn_isolation , ext_txn_isolation.handle))
 			create Result.make (ext_txn_isolation.item)
 		ensure
 			transaction_isolation_not_void: Result /= Void
@@ -175,7 +174,7 @@ feature -- Access
 			ext_connection_timeout: XS_C_UINT32
 		do
 			create ext_connection_timeout.make
-			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_connection_timeout, ext_connection_timeout.handle))
+			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.sql_attr_connection_timeout, ext_connection_timeout.handle))
 			create Result.make_canonical (ext_connection_timeout.item)
 		ensure
 			connection_timeout_not_void: Result /= Void
@@ -189,7 +188,7 @@ feature -- Access
 			ext_connection_timeout: XS_C_UINT32
 		do
 			create ext_connection_timeout.make
-			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_login_timeout, ext_connection_timeout.handle))
+			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.sql_attr_login_timeout, ext_connection_timeout.handle))
 			create Result.make_canonical (ext_connection_timeout.item)
 		ensure
 			login_timeout_not_void: Result /= Void
@@ -203,7 +202,7 @@ feature -- Access
 			uint32 : XS_C_UINT32
 		do
 			create uint32.make
-			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_packet_size, uint32.handle))
+			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.sql_attr_packet_size, uint32.handle))
 			Result := uint32.item
 		end
 
@@ -215,7 +214,7 @@ feature -- Access
 			new_size_positive: new_size > 0
 			not_connected: not is_connected
 		do
-			set_status (ecli_c_set_integer_connection_attribute(handle, att.sql_attr_packet_size, new_size))
+			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute(handle, att.sql_attr_packet_size, new_size))
 		ensure
 			network_packet_size_set: (is_ok and not cli_state.is_equal ("01S02")) implies network_packet_size = new_size
 		end
@@ -234,7 +233,7 @@ feature -- Status report
 			valid: is_valid
 			connected: is_connected
 		do
-			set_status (ecli_c_is_manual_commit (handle, ext_is_manual_commit.handle))
+			set_status ("ecli_c_is_manual_commit", ecli_c_is_manual_commit (handle, ext_is_manual_commit.handle))
 			Result := impl_is_manual_commit
 		end
 
@@ -260,7 +259,7 @@ feature -- Status report
 			uint_result : XS_C_UINT32
 		do
 			create uint_result.make
-			set_status (ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_connection_dead,uint_result.handle))
+			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_connection_dead,uint_result.handle))
 			Result := (uint_result.item = att.Sql_cd_true)
 		end
 
@@ -283,7 +282,7 @@ feature -- Status report
 		do
 			create functions
 			if impl_describe_parameters_capability < sql_false then
-				set_status (ecli_c_sql_get_functions (handle, functions.Sql_api_sqldescribeparam, ext_describe_parameters_capability.handle))
+				set_status ("ecli_c_sql_get_functions", ecli_c_sql_get_functions (handle, functions.Sql_api_sqldescribeparam, ext_describe_parameters_capability.handle))
 			end
 			Result := impl_describe_parameters_capability = sql_true
 		end
@@ -336,7 +335,7 @@ feature -- Status report
 			uint32 : XS_C_UINT32
 		do
 			create uint32.make
-			set_status (ecli_c_get_integer_connection_attribute (handle, att.sql_attr_trace,uint32.handle))
+			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.sql_attr_trace,uint32.handle))
 			Result := (uint32.item = att.sql_opt_trace_on)
 		end
 
@@ -350,7 +349,7 @@ feature -- Status setting
 			capable : is_transaction_capable
 		do
 			--| actual setting of manual commit
-			set_status (ecli_c_set_manual_commit (handle, True))
+			set_status ("ecli_c_set_manual_commit", ecli_c_set_manual_commit (handle, True))
 		ensure
 			is_manual_commit
 		end
@@ -362,7 +361,7 @@ feature -- Status setting
 			connected: is_connected
 		do
 			--| actual setting of automatic commit
-			set_status (ecli_c_set_manual_commit (handle, False))
+			set_status ("ecli_c_set_manual_commit", ecli_c_set_manual_commit (handle, False))
 		ensure
 			automatic_commit: not is_manual_commit
 		end
@@ -383,13 +382,13 @@ feature -- Status setting
 --		require
 --			-- FIXME: api_trace_filename set.
 		do
-			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
+			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
 		end
 
 	disable_api_tracing is
 			-- Disable ODBC API tracing.
 		do
-			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_off))
+			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_off))
 		end
 
 --SQL_ATTR_TRACE
@@ -485,7 +484,7 @@ feature -- Element change
 			an_isolation_not_void: an_isolation /= Void
 			no_pending_transaction: not has_pending_transaction
 		do
-			set_status (ecli_c_set_integer_connection_attribute (handle, att.Sql_attr_txn_isolation,  an_isolation.value))
+			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.Sql_attr_txn_isolation,  an_isolation.value))
 		ensure
 			done_when_ok: is_ok implies (transaction_isolation.is_equal (an_isolation))
 		end
@@ -502,7 +501,7 @@ feature -- Element change
 		do
 			create uint32.make
 			uint32.put (duration.second_count)
-			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_login_timeout,  uint32.item))
+			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.sql_attr_login_timeout,  uint32.item))
 		ensure
 			login_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies login_timeout.is_equal (duration)
 		end
@@ -519,7 +518,7 @@ feature -- Element change
 		do
 			create uint32.make
 			uint32.put (duration.second_count)
-			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_connection_timeout,  uint32.item))
+			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.sql_attr_connection_timeout,  uint32.item))
 		ensure
 			connection_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies connection_timeout.is_equal (duration)
 		end
@@ -535,7 +534,7 @@ feature -- Element change
 			xs_string : XS_C_STRING
 		do
 			create xs_string.make_from_string (filename)
-			set_status (ecli_c_set_pointer_connection_attribute (handle, att.sql_attr_tracefile, xs_string.handle, filename.count))
+			set_status ("ecli_c_set_pointer_connection_attribute", ecli_c_set_pointer_connection_attribute (handle, att.sql_attr_tracefile, xs_string.handle, filename.count))
 		ensure
 			api_trace_filename_set: is_ok implies file_system.basename (api_trace_filename).is_equal (file_system.basename (filename))
 		end
@@ -568,7 +567,7 @@ feature -- Basic Operations
 			manual_commit: is_manual_commit
 			pending_transaction: has_pending_transaction
 		do
-			set_status (ecli_c_commit (handle))
+			set_status ("ecli_c_commit", ecli_c_commit (handle))
 			if is_ok then
 				impl_has_pending_transaction := False
 			end
@@ -589,7 +588,7 @@ feature -- Basic Operations
 			manual_commit: is_manual_commit
 			pending_transaction: has_pending_transaction
 		do
-			set_status (ecli_c_rollback (handle))
+			set_status ("ecli_c_rollback", ecli_c_rollback (handle))
 			if is_ok then
 				impl_has_pending_transaction := False
 			end
@@ -712,7 +711,7 @@ feature {NONE} -- Implementation
 				do_disconnect
 			end
 			if handle /= default_pointer then
-				set_status (ecli_c_free_connection (handle))
+				set_status ("ecli_c_free_connection", ecli_c_free_connection (handle))
 			end
 			set_handle ( default_pointer)
 		end
@@ -773,7 +772,7 @@ feature {NONE} -- Implementation
 			-- | Allocate session handle
 			environment := shared_environment
 			henv := environment.handle
-			set_status (ecli_c_allocate_connection(henv, ext_handle.handle))
+			set_status ("ecli_c_allocate_connection", ecli_c_allocate_connection(henv, ext_handle.handle))
 			handle := ext_handle.item
 			--| register with environment
 			environment.register_session (Current)
@@ -799,7 +798,7 @@ feature {NONE} -- Implementation
 			-- Do disconnect
 		do
 			--| actual disconnect
-			set_status (ecli_c_disconnect (handle))
+			set_status ("ecli_c_disconnect", ecli_c_disconnect (handle))
 			if is_ok then
 				set_disconnected
 			end

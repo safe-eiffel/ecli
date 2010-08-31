@@ -31,6 +31,7 @@ feature {NONE} -- Initialization
 		require
 			a_session_not_void: a_session /= Void
 		do
+			create error_handler.make_null
 			session := a_session
 		ensure
 			session_set: session = a_session
@@ -1770,7 +1771,7 @@ feature {NONE} -- Implementation
 
 	integer32_info (information_type : INTEGER) : INTEGER is
 		do
-			set_status (ecli_c_sql_get_info (session.handle, information_type, ext_integer_32.handle, 0, default_pointer))
+			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_integer_32.handle, 0, default_pointer))
 			if is_ok then
 				Result := ext_integer_32.item
 			end
@@ -1778,7 +1779,7 @@ feature {NONE} -- Implementation
 
 	integer16_info (information_type : INTEGER) : INTEGER is
 		do
-			set_status (ecli_c_sql_get_info (session.handle, information_type, ext_integer_16.handle, 0, default_pointer))
+			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_integer_16.handle, 0, default_pointer))
 			if is_ok then
 				Result := ext_integer_16.item
 			end
@@ -1794,7 +1795,7 @@ feature {NONE} -- Implementation
 
 	string_info (information_type : INTEGER) : STRING is
 		do
-			set_status (ecli_c_sql_get_info (session.handle, information_type, ext_string.handle, string_length, ext_integer_32.handle))
+			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_string.handle, string_length, ext_integer_32.handle))
 			if is_ok and ext_integer_32.item > 0 then
 				Result := ext_string.substring (1, ext_integer_32.item)
 			end

@@ -194,7 +194,7 @@ feature {NONE} -- Implementation
 			else
 				v := sql_false
 			end
-			set_status (ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, v))
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, sql_attr_metadata_id, v))
 		end
 
 end
