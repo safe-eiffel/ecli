@@ -16,16 +16,18 @@ feature -- Access
 	reserved_words : ARRAY[STRING] is
 		once
 			Result := <<
-				"agent","alias","all","and","as","assign","attribute",
+				"agent","alias","all","and","as","assign", "attached", "attribute",
 				"check","class","convert","create","Current",
-				"debug","deferred","do",
+				"debug","deferred","detachable","do",
 				"else","elseif","end","ensure","expanded","export","external",
 				"False","feature","from","frozen",
 				"if","implies","inherit","indexing","inspect","invariant",
 				"like","local","loop",
-				"not","note","obsolete","old","once","only","or",
+				"not","note",
+				"obsolete","old","once","only","or",
 				"Precursor","redefine","reference","rename","require","rescue","Result","retry",
-				"select","separate","then","True","TUPLE",
+				"select","separate",
+				"then","True","TUPLE",
 				"undefine","until",
 				"variant","Void",
 				"when",
