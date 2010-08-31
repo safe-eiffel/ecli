@@ -1,6 +1,6 @@
 indexing
 
-	description: 
+	description:
 
 		"Objects that represent a CLI status, reflects its various values%
 		% and associated information messages"
@@ -21,7 +21,7 @@ inherit
 	ECLI_STATUS_CONSTANTS
 		export {NONE} all
 		end
-		
+
 	EXCEPTIONS
 		export {NONE} all
 		end
@@ -31,7 +31,7 @@ inherit
 		end
 
 	ANY
-	
+
 feature -- Access
 
 	status : INTEGER
@@ -59,6 +59,10 @@ feature -- Access
 			Result := impl_native_code.item
 		end
 
+--	information_actions : ACTION_SEQUENCE[TUPLE[code: INTEGER;state : STRING;diagnostic: STRING]]
+
+--	error_actions : ACTION_SEQUENCE[TUPLE[code: INTEGER;state : STRING;diagnostic: STRING]]
+
 feature -- Status report
 
 	has_information_message : BOOLEAN is
@@ -72,8 +76,8 @@ feature -- Status report
 	is_ok : BOOLEAN is
 			-- Is last CLI command ok ?
 		do
-			Result := status = sql_success or else has_information_message 
-				or else  status = sql_no_data 
+			Result := status = sql_success or else has_information_message
+				or else  status = sql_no_data
 			    	or else status = sql_need_data;
 		end
 
@@ -82,7 +86,7 @@ feature -- Status report
 		do
 			Result := status = sql_no_data;
 		end
-		
+
 	is_error : BOOLEAN is
 			-- Is last CLI command in error ?
 		do
@@ -96,12 +100,12 @@ feature -- Status report
 			inspect code
 			when Sql_success, Sql_success_with_info then
 			when Sql_no_data, Sql_need_data, Sql_still_executing then
-			when Sql_error, Sql_invalid_handle then					
+			when Sql_error, Sql_invalid_handle then
 			else
 				Result := False
 			end
 		end
-		
+
 feature -- Status report
 
 	exception_on_error : BOOLEAN
@@ -116,7 +120,7 @@ feature -- Status setting
 		ensure
 			exception_on_error: exception_on_error
 		end
-	
+
 	disable_exception_on_error is
 			-- Disable exceptions for CLI operation failures
 		do
@@ -134,7 +138,7 @@ feature {NONE} -- Implementation
 		ensure
 			is_ok: is_ok
 		end
-		
+
 	set_status (v : INTEGER) is
 		require
 			valid_status_v: valid_status (v)
@@ -145,6 +149,10 @@ feature {NONE} -- Implementation
 				raise ("[ECLI][Internal] Invalid Handle")
 			elseif exception_on_error and then not is_ok then
 				raise (diagnostic_message)
+			elseif status = sql_success_with_info or status = sql_row_success_with_info then
+--				information_actions.call ([native_code, cli_state, diagnostic_message])
+			elseif status = sql_error then
+--				error_actions.call ([native_code, cli_state, diagnostic_message])
 			end
 		ensure
 			status: status = v
@@ -165,12 +173,12 @@ feature {NONE} -- Implementation
 		do
 			if need_diagnostics then
 				--impl_cli_state := STRING_.make_buffer (6)
-				if impl_cli_state = Void then 
-					create impl_cli_state.make (6) 
+				if impl_cli_state = Void then
+					create impl_cli_state.make (6)
 				else
 					impl_cli_state.wipe_out
 				end
-				if impl_error_buffer = Void then 
+				if impl_error_buffer = Void then
 					create impl_error_buffer.make (512) -- SQL_MAX_MSG_LEN
 				else
 					impl_error_buffer.wipe_out
@@ -181,12 +189,12 @@ feature {NONE} -- Implementation
 				from
 					count := 1
 					retcode := sql_success
-				until 
+				until
 					retcode = sql_no_data or retcode = sql_invalid_handle or retcode = sql_error
 				loop
-					retcode := get_error_diagnostic (count, 
+					retcode := get_error_diagnostic (count,
 							impl_cli_state.handle,
-							impl_native_code.handle, 
+							impl_native_code.handle,
 							impl_error_buffer.handle,
 							impl_error_buffer.capacity,
 							impl_buffer_length_indicator.handle)
@@ -198,7 +206,7 @@ feature {NONE} -- Implementation
 						impl_error_message.append_string ("%N")
 						saved_native_code := impl_native_code.item
 						count := count + 1
-					end	
+					end
 				end
 				impl_native_code.put (saved_native_code)
 				need_diagnostics := False
@@ -214,7 +222,7 @@ feature {NONE} -- Implementation
 	need_diagnostics : BOOLEAN
 
 	impl_buffer_length_indicator : XS_C_INT32
-	
+
 invariant
 
 	valid_status: valid_status (status)

@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 		"Encapsulation of CLI environment.%
 				% There should be a single object of this type in a system.%
 				% This object is a handle to the CLI facilities : it is the first%
@@ -21,7 +21,7 @@ inherit
 	ECLI_EXTERNAL_API
 
 	ECLI_STATUS
-		
+
 	PAT_PUBLISHER [ECLI_SESSION]
 		rename
 			subscribe as register_session,
@@ -48,6 +48,8 @@ feature {NONE} -- Initialization
 		local
 			ext_handle : XS_C_POINTER
 		do
+--			create information_actions
+--			create error_actions
 			-- | Actual allocation of CLI handle
 			create ext_handle.make
 			set_status (ecli_c_allocate_environment (ext_handle.handle))
@@ -60,12 +62,12 @@ feature {NONE} -- Implementation
 		do
 			Result := sessions_count = 0
 		end
-	
+
 	disposal_failure_reason : STRING is
 		once
 			Result := "ECLI_SESSIONS still open; check your code and close them before exiting."
 		end
-			
+
 	release_handle is
 			-- Release environment handle
 		do

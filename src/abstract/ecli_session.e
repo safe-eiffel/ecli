@@ -84,6 +84,8 @@ feature -- Initialization
 		require
 			is_closed: is_closed
 		do
+--			create information_actions
+--			create error_actions
 			allocate
 			reset_implementation
 			create info.make (Current)
@@ -378,6 +380,8 @@ feature -- Status setting
 
 	enable_api_tracing is
 			-- Enable ODBC API tracing into `api_trace_filename'.
+--		require
+--			-- FIXME: api_trace_filename set.
 		do
 			set_status (ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
 		end

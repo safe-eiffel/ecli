@@ -60,6 +60,9 @@ feature -- Initialization
 			eq : KL_EQUALITY_TESTER[DS_LIST[INTEGER]]
 			ext_handle : XS_C_POINTER
 		do
+--			create information_actions
+--			create error_actions
+
 			create ext_handle.make
 			create impl_result_columns_count.make
 			session := a_session
