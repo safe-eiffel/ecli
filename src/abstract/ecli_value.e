@@ -59,6 +59,12 @@ feature -- Status report
 			Result := ecli_c_value_get_length_indicator (buffer) = Sql_null_data
 		end
 
+	is_buffer_too_small : BOOLEAN
+			-- Is buffer capacity too small for actual data?
+		do
+			Result := False
+		end
+
 	convertible_as_string : BOOLEAN is
 			-- Is this value convertible to a string ?
 		deferred
@@ -456,16 +462,9 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
 		do
-			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
+			bind_parameter (stmt,
 				index,
-				Parameter_directions.Sql_param_input,
-				c_type_code,
-				sql_type_code,
-				size,
-				decimal_digits,
-				to_external,
-				transfer_octet_length,
-				length_indicator_pointer))
+				Parameter_directions.Sql_param_input)
 		end
 
 	bind_as_input_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
@@ -474,16 +473,9 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
 		do
-			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
+			bind_parameter (stmt,
 				index,
-				Parameter_directions.Sql_param_input_output,
-				c_type_code,
-				sql_type_code,
-				size,
-				decimal_digits,
-				to_external,
-				transfer_octet_length,
-				length_indicator_pointer))
+				Parameter_directions.Sql_param_input_output)
 		end
 
 	bind_as_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
@@ -492,21 +484,15 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 			stmt: stmt /= Void and then stmt.parameters_count > 0
 			positive_index: index > 0
 		do
-			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
+			bind_parameter (stmt,
 				index,
-				Parameter_directions.Sql_param_output,
-				c_type_code,
-				sql_type_code,
-				size,
-				decimal_digits,
-				to_external,
-				transfer_octet_length,
-				length_indicator_pointer))
+				Parameter_directions.Sql_param_output)
 		end
 
 	put_parameter (stmt : ECLI_STATEMENT; index : INTEGER) is
-			-- Put parameter 'index' data at execution of 'stmt'.
+			-- Put parameter `index' data at execution of `stmt'.
 			-- Redefine in descendant classes if needed.
+			-- Useful when length of data is not known before `stmt' execution.
 		require
 			stmt: stmt /= Void
 			positive_index: index > 0
@@ -523,6 +509,34 @@ feature {NONE} -- Implementation values
 			-- Parameter direction constants.
 		once
 			create Result
+		end
+
+feature {NONE} -- Implementation
+
+	bind_parameter (stmt : ECLI_STATEMENT; index : INTEGER; direction : INTEGER)
+			-- Bind as `index'-th parameter in `stmt', for `direction' transfer.
+		require
+			stmt_not_void: stmt /= Void
+			valid_index: index >= 1 and index <= stmt.parameters_count
+			valid_direction: valid_directions.has (direction)
+		do
+			stmt.set_status (ecli_c_bind_parameter (stmt.handle,
+				index,
+				direction,
+				c_type_code,
+				sql_type_code,
+				size,
+				decimal_digits,
+				to_external,
+				transfer_octet_length,
+				length_indicator_pointer))
+		end
+
+	valid_directions : ARRAY[INTEGER] is
+		once
+			Result := << parameter_directions.sql_param_input,
+						 parameter_directions.sql_param_input_output,
+						 parameter_directions.sql_param_output >>
 		end
 
 invariant
