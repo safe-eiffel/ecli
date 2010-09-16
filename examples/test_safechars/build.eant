@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="test_safechars" default="help">
+
+	<description>
+		system: "test_safechars test application for stream character data."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2010, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="test_safechars"/>
+		<set name="system_dir" value="${ECLI}/examples/test_safechars"/>
+	</target>
+
+</project>
