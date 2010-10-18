@@ -57,6 +57,15 @@ feature -- Status report
 
 feature -- Conversion
 
+	canonical_class_name (string : STRING) : STRING is
+			-- convert `string' to an eiffel canonical class name
+		require
+			string_not_void: string /= Void
+		do
+			create Result.make_from_string (string)
+			Result.replace_substring_all (".", "_")
+		end
+
 	camel_to_class_name (string : STRING) : STRING is
 			-- convert `string' from camel case to an eiffel class name
 		require
