@@ -21,14 +21,14 @@ feature -- Basic operations
 	report_row_success_with_info (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING)
 		do
 			if info_file /= null_output_stream then
-				report_info_message ("[ECLI-I-SUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
+				report_info_message ("[ECLI-I-ROWSUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
 			end
 		end
 
 	report_success_with_info (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING)
 		do
 			if info_file /= null_output_stream then
-				report_info_message ("[ECLI-I-ROWSUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
+				report_info_message ("[ECLI-I-SUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
 			end
 		end
 
