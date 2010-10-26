@@ -29,23 +29,15 @@ inherit
 		end
 
 create
-	make_char,
-	make_varchar,
-	make_longvarchar
+	make_longvarchar,
+	make_longvarbinary
 
 feature {NONE} -- Implementation
 
-	make_char (n : INTEGER)
-			-- Make as `CHAR' data, reserving a `n' bytes buffer.
+	make_longvarbinary (n : INTEGER)
+			-- Make as `LONGVARBINARY' data, reserving a `n' bytes buffer.
 		do
-			sql_type_code_impl := sql_char
-			make (n)
-		end
-
-	make_varchar (n : INTEGER)
-			-- Make as `VARCHAR' data, reserving a `n' bytes buffer.
-		do
-			sql_type_code_impl := sql_varchar
+			sql_type_code_impl := sql_longvarbinary
 			make (n)
 		end
 
