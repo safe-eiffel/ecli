@@ -24,6 +24,7 @@ inherit
 			create_integer_64_value,
 			create_char_value,
 			create_varchar_value,
+			create_longvarchar_value,
 			create_date_value,
 			create_timestamp_value,
 			create_time_value,
@@ -54,8 +55,8 @@ feature -- Element change
 	create_value_from_sample (sample : STRING) is
 			-- create a value from `sample'; last_result is an instance of
 			-- * ECLI_VARCHAR if sample is "NULL" or none of the following
-			-- * ECLI_DATE if sample is a valid CLI date literal {t 'hh:mm:ss[.nnn ]'}
-			-- * ECLI_TIME if sample is a valid CLI time literal {d 'yyyy-mm-dd'}
+			-- * ECLI_DATE if sample is a valid CLI date literal {d 'yyyy-mm-dd'}
+			-- * ECLI_TIME if sample is a valid CLI time literal {t 'hh:mm:ss[.nnn ]'}
 			-- * ECLI_TIMESTAMP if sample if a valid CLI timestamp literal {ts 'yyyy-mm-dd hh:mm:ss[.nnn ]'}
 		require
 			sample_not_void: sample /= Void
@@ -158,7 +159,7 @@ feature -- Miscellaneous
 
 	create_decimal_value (precision: INTEGER; decimal_digits: INTEGER) is
 		do
-			if force_decimal then
+			if force_decimal or is_straigth_factory then
 				create {QA_DECIMAL}last_result.make (precision, decimal_digits)
 			else
 				if decimal_digits = 0 then
@@ -189,9 +190,15 @@ feature -- Miscellaneous
 			end
 		end
 
+
+	create_longvarchar_value (precision: INTEGER_32) is
+		do
+			create {QA_LONGVARCHAR} last_result.make (precision)
+		end
+
 	create_varchar_value (column_precision : INTEGER) is
 		do
-			if column_precision > 254 then
+			if not is_straigth_factory and then column_precision > 254 then
 				create {QA_LONGVARCHAR} last_result.make (column_precision)
 			else
 				create {QA_VARCHAR}last_result.make (column_precision)
