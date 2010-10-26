@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"SQL VARCHAR (n) values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,10 +14,10 @@ class ECLI_VARCHAR
 inherit
 
 	ECLI_STRING_VALUE
-		
+
 create
 
-	make
+	make, make_force_maximum_capacity
 
 feature -- Constants
 

@@ -7,23 +7,21 @@ indexing
 class
 	QA_LONGVARCHAR
 
-	-- Replace ANY below by the name of parent class if any (adding more parents
-	-- if necessary); otherwise you can remove inheritance clause altogether.
 inherit
 
 	ECLI_LONGVARCHAR
-	
+
 	QA_VALUE
-		
+
 create
-	make
+	make, make_force_maximum_capacity
 
 feature
 
 	ecli_type : STRING is "ECLI_LONGVARCHAR"
-		
+
 	value_type : STRING is "STRING"
-		
+
 	creation_call : STRING is
 		do
 			Result := make_call_with_precision
