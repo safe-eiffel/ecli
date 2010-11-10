@@ -112,4 +112,7 @@ feature {NONE} -- Implementation
 				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
 		end
 
+	query_metadata_feature_name : STRING is do Result := "ecli_c_get_procedures" end
+
+
 end

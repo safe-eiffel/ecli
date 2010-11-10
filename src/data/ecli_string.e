@@ -1,6 +1,6 @@
 indexing
-	description: 
-	
+	description:
+
 		"Objects that map database character data to Eiffel STRING instances."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -112,7 +112,6 @@ feature -- Duplication
 feature -- Miscellaneous
 
 feature -- Basic operations
-
 
 feature -- Obsolete
 

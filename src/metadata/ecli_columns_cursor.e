@@ -189,4 +189,6 @@ feature {NONE} -- Implementation
 
 	queried_column_impl : XS_C_STRING
 
+	query_metadata_feature_name : STRING is do Result := "ecli_c_get_columns" end
+	
 end

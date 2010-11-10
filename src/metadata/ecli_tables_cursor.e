@@ -113,4 +113,6 @@ feature {NONE} -- Implementation
 			Result := ecli_c_get_tables (handle, a_catalog, a_catalog_length, a_schema, a_schema_length, a_name, a_name_length, default_pointer, 0)
 		end
 
+	query_metadata_feature_name : STRING is do Result := "ecli_c_get_tables" end
+
 end

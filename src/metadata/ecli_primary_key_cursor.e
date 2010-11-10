@@ -132,4 +132,6 @@ feature {NONE} -- Implementation
 
 	creating_item : BOOLEAN
 
+	query_metadata_feature_name : STRING is do Result := "ecli_c_get_primary_keys" end
+
 end

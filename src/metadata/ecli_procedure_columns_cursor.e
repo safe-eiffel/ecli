@@ -102,6 +102,8 @@ feature {NONE} -- Implementation
 				a_column, a_column_length)
 		end
 
+	query_metadata_feature_name : STRING is do Result := "ecli_c_get_procedure_columns" end
+
 invariant
 	invariant_clause: True -- Your invariant here
 

@@ -52,7 +52,7 @@ feature {NONE} -- Initialization
 				name_length := criteria.name.count
 				p_name := queried_name_impl.handle
 			end
-			set_status (
+			set_status (query_metadata_feature_name,
 				do_query_metadata (
 					p_catalog, catalog_length,
 					p_schema, schema_length,
@@ -179,6 +179,13 @@ feature {NONE} -- Implementation
 		a_name : POINTER; a_name_length : INTEGER) : INTEGER is
 			-- query metadata
 		deferred
+		end
+
+	query_metadata_feature_name : STRING is
+			-- query metadata feature name
+		deferred
+		ensure
+			query_metadata_feature_name_not_void: Result /= Void
 		end
 
 	queried_catalog_impl : XS_C_STRING
