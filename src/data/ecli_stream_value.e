@@ -143,7 +143,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 					Transfer_octet_length,
 					ecli_c_value_get_length_indicator_pointer (buffer)))
 			end
-			if stmt.status = {ECLI_STATUS_CONSTANTS}.sql_success then
+			if stmt.status = {ECLI_STATUS_CONSTANTS}.sql_success and then not is_null then
 				-- copy_buffer_to_item (actual_transfer_length)
 				copy_buffer_to_item (actual_transfer_length)
 			end
