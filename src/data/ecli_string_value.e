@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 		ensure
 			is_null: is_null
 			capacity: capacity = n
-			maximum_capacity: maximum_capacity = default_maximum_capacity
+--			maximum_capacity: maximum_capacity = default_maximum_capacity
 		end
 
 	make_force_maximum_capacity (n : INTEGER) is
@@ -95,8 +95,8 @@ feature -- Access
 		end
 
 	c_type_code: INTEGER is
-		once
-			Result := sql_c_char
+		do
+			Result := sql_c_default
 		end
 
 feature -- Measurement
