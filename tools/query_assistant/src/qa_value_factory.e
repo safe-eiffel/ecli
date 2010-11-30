@@ -14,6 +14,7 @@ class
 inherit
 
 	SHARED_TYPE_USAGE
+	SHARED_MAXIMUM_LENGTH
 
 	ECLI_VALUE_FACTORY
 		redefine
@@ -154,7 +155,15 @@ feature -- Miscellaneous
 
 	create_char_value (column_precision : INTEGER) is
 		do
-			create {QA_CHAR}last_result.make (column_precision)
+			if is_string_forced then
+				create {QA_STRING_LONGVARCHAR}last_result.make (column_precision)
+			else
+				if column_precision > maximum_length then
+					create {QA_STRING_LONGVARCHAR}last_result.make_force_maximum_capacity (maximum_length)
+				else
+					create {QA_CHAR}last_result.make (column_precision)
+				end
+			end
 		end
 
 	create_decimal_value (precision: INTEGER; decimal_digits: INTEGER) is
@@ -193,13 +202,23 @@ feature -- Miscellaneous
 
 	create_longvarchar_value (precision: INTEGER_32) is
 		do
-			create {QA_LONGVARCHAR} last_result.make (precision)
+			if is_string_forced then
+				create {QA_STRING_LONGVARCHAR}last_result.make_force_maximum_capacity (precision)
+			else
+				if precision > maximum_length then
+					create {QA_STRING_LONGVARCHAR}last_result.make_force_maximum_capacity (maximum_length)
+				else
+					create {QA_LONGVARCHAR} last_result.make (precision)
+				end
+			end
 		end
 
 	create_varchar_value (column_precision : INTEGER) is
 		do
-			if not is_straigth_factory and then column_precision > 254 then
-				create {QA_LONGVARCHAR} last_result.make (column_precision)
+			if is_string_forced then
+				create {QA_STRING_LONGVARCHAR}last_result.make_force_maximum_capacity (column_precision)
+			elseif not is_straigth_factory and then column_precision > 254 then
+				create_longvarchar_value (column_precision)
 			else
 				create {QA_VARCHAR}last_result.make (column_precision)
 			end
