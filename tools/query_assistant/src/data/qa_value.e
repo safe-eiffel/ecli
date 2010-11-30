@@ -1,5 +1,5 @@
 indexing
-	description: 
+	description:
 
 		"ECLI_VALUE with eiffel generation metadata."
 
@@ -21,17 +21,17 @@ inherit
 
 feature
 
-	ecli_type : STRING is 
+	ecli_type : STRING is
 		deferred
 		end
-		
+
 	value_type : STRING is
 		deferred
 		end
-		
+
 	creation_call : STRING is
 		deferred
-		ensure			
+		ensure
 		end
 
 feature {NONE} -- implementation
@@ -66,7 +66,7 @@ feature {NONE} -- implementation
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 	make_first_call : STRING is
 		once
 			create Result.make (12)
@@ -74,15 +74,15 @@ feature {NONE} -- implementation
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 	make_default_call : STRING is
-			-- 
+			--
 		once
 			create Result.make_from_string ("make_default")
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 	make_null_call : STRING is
 		do
 			create Result.make (12)
@@ -90,7 +90,7 @@ feature {NONE} -- implementation
 		ensure
 			result_not_void: Result /= Void
 		end
-		
+
 end -- class QA_VALUE
 --
 -- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>

@@ -12,7 +12,7 @@ inherit
 
 	ECLI_VARCHAR
 
-	QA_VALUE
+	QA_CHAR_VALUE
 
 create
 	make, make_force_maximum_capacity
