@@ -169,8 +169,10 @@ feature -- Status setting
 							name,
 							size,
 							True)
+						is_valid := False
+					else
+						is_valid := True
 					end
-					is_valid := True
 				else
 					metadata := Void
 					is_valid := False
