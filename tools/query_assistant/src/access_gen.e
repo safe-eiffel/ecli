@@ -62,7 +62,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.4a"
+	version : STRING is "v1.5b"
 
 feature -- Element change
 
@@ -79,51 +79,90 @@ feature -- Access (Command line arguments)
 	in_filename: STRING
 			-- Name of the input file
 
+	option_in_filename : AP_STRING_OPTION
+
 	out_directory: STRING
 			-- Name of the output file (see use_std_out)
+
+	option_out_directory : AP_STRING_OPTION
 
 	dsn : STRING
 			-- data source name
 
+	option_dsn : AP_STRING_OPTION
+
 	user : STRING
 			-- user name
+
+	option_user : AP_STRING_OPTION
 
 	password : STRING
 			-- password
 
+	option_password  : AP_STRING_OPTION
+
 	class_filter : STRING
 			-- class name to generate
+
+	option_class_filter : AP_STRING_OPTION
 
 	default_catalog : STRING
 			-- default catalog for metadata queries
 
+	option_default_catalog  : AP_STRING_OPTION
+
 	default_schema : STRING
 			-- default schema for metadata queries
+
+	option_default_schema  : AP_STRING_OPTION
 
 	maximum_length_string : STRING
 			-- maximum length for long data without length limit
 
+	option_maximum_length : AP_INTEGER_OPTION
+
 	default_parent_cursor : STRING
 			-- default parent class name for cursors.
+
+	option_default_parent_cursor  : AP_STRING_OPTION
 
 	default_parent_modify : STRING
 			-- default parent class name for modifiers.
 
-	straigth_option : BOOLEAN
-			-- straigth factory option (i.e. no intelligence in type resolution).
-			
+	option_default_parent_modify : AP_STRING_OPTION
+
 feature -- Status report
 
 	is_verbose : BOOLEAN
 
+	option_is_verbose : AP_BOOLEAN_OPTION
+
 	no_prototypes : BOOLEAN
 		-- Does Current not generate function prototypes in class skeletons?
+
+	option_no_prototypes : AP_BOOLEAN_OPTION
 
 	allow_integer_64 : BOOLEAN
 		-- Does Current allow generation of INTEGER_64 ?
 
+	option_allow_integer_64  : AP_BOOLEAN_OPTION
+
 	allow_decimal : BOOLEAN
 		-- Does Current allow generation of MA_DECIMAL ?
+
+	option_allow_decimal  : AP_BOOLEAN_OPTION
+
+	straigth_option : BOOLEAN
+			-- straigth factory option (i.e. no intelligence in type resolution).
+
+	option_straight_option  : AP_BOOLEAN_OPTION
+
+	force_string_option : BOOLEAN
+			-- force string factory option (i.e. STRING_LONGVARCHAR type for any *CHAR* data type)
+
+	option_force_string_option : AP_BOOLEAN_OPTION
+
+	option_force_decimal_option : AP_BOOLEAN_OPTION
 
 feature -- Constants
 
@@ -171,6 +210,149 @@ feature -- Basic operations
 			verify_arguments
 		ensure
 			in_filename_not_void: not has_error implies in_filename /= Void
+		end
+
+	create_argument_parser is
+		do
+				create option_in_filename.make_with_long_form("input")
+				option_in_filename.set_description (" Name of the input file")
+				option_in_filename.enable_mandatory
+				argument_parser.options.force_last (option_in_filename)
+
+				create option_out_directory.make_with_long_form("output_dir")
+				option_out_directory.set_description (" Name of the output directory")
+				option_out_directory.enable_mandatory
+				argument_parser.options.force_last (option_out_directory)
+
+				create option_dsn.make_with_long_form("dsn")
+				option_dsn.set_description (" data source name")
+				option_dsn.enable_mandatory
+				argument_parser.options.force_last (option_dsn)
+
+				create option_user.make_with_long_form("user")
+				option_user.set_description (" user name")
+				option_user.enable_mandatory
+				argument_parser.options.force_last (option_user)
+
+				create option_password.make_with_long_form("pwd")
+				option_password.set_description (" password")
+				option_password.enable_mandatory
+				argument_parser.options.force_last (option_password)
+
+				create option_class_filter.make_with_long_form("class")
+				option_class_filter.set_description (" class name to filter and generate")
+				argument_parser.options.force_last (option_class_filter)
+
+				create option_default_catalog.make_with_long_form("catalog")
+				option_default_catalog.set_description (" default catalog for metadata queries")
+				argument_parser.options.force_last (option_default_catalog)
+
+				create option_default_schema.make_with_long_form("schema")
+				option_default_schema.set_description (" default schema for metadata queries")
+				argument_parser.options.force_last (option_default_schema)
+
+				create option_maximum_length.make_with_long_form("maximum_length")
+				option_maximum_length.set_description (" maximum length for long data without length limit")
+				argument_parser.options.force_last (option_maximum_length)
+
+				create option_default_parent_cursor.make_with_long_form("parent_cursor")
+				option_default_parent_cursor.set_description (" default parent class name for cursors.")
+				argument_parser.options.force_last (option_default_parent_cursor)
+
+				create option_default_parent_modify.make_with_long_form("parent_modify")
+				option_default_parent_modify.set_description (" default parent class name for modifiers.")
+				argument_parser.options.force_last (option_default_parent_modify)
+
+				create option_is_verbose.make_with_long_form("verbose")
+				argument_parser.options.force_last (option_is_verbose)
+
+				create option_no_prototypes.make_with_long_form("no_prototypes")
+				option_no_prototypes.set_description (" Does Current not generate function prototypes in class skeletons?")
+				argument_parser.options.force_last (option_no_prototypes)
+
+				create option_allow_integer_64.make_with_long_form("allow_integer_64")
+				option_allow_integer_64.set_description (" Does Current allow generation of INTEGER_64 ?")
+				argument_parser.options.force_last (option_allow_integer_64)
+
+				create option_allow_decimal.make_with_long_form("allow_decimal")
+				option_allow_decimal.set_description (" Does Current allow generation of MA_DECIMAL ?")
+				argument_parser.options.force_last (option_allow_decimal)
+
+				create option_straight_option.make_with_long_form("dumb")
+				option_straight_option.set_description (" dumb factory option (i.e. no intelligence in type resolution).")
+				argument_parser.options.force_last (option_straight_option)
+
+				create option_force_string_option.make_with_long_form("")
+				option_force_string_option.set_description (" force string factory option (i.e. ECLI_STRING_LONGVARCHAR type for any *CHAR* data type)")
+				argument_parser.options.force_last (option_force_string_option)
+
+				create option_force_decimal_option.make_with_long_form ("force_decimal")
+				option_force_decimal_option.set_description (" force MA_DECIMAL for all numeric types")
+				argument_parser.options.force_last (option_force_decimal_option)
+
+		end
+
+	get_options is
+		do
+				-- Mandatory
+				in_filename := option_in_filename.parameter
+				out_directory := option_out_directory.parameter
+				dsn := option_dsn.parameter
+				user := option_user.parameter
+				password := option_password.parameter
+
+				-- Optional
+				if option_class_filter.was_found then
+					class_filter := option_class_filter.parameter
+				end
+				if option_default_catalog.was_found then
+					default_catalog := option_default_catalog.parameter
+				end
+				if option_default_schema.was_found then
+					default_schema := option_default_schema.parameter
+				end
+				if option_maximum_length.was_found then
+					if option_maximum_length.parameter < 200 then
+						error_handler.report_invalid_argument ("maximum_length", "should be a positive integer greater or equal to 200")
+					else
+						set_maximum_length (option_maximum_length.parameter)
+					end
+				end
+
+				create option_default_parent_cursor.make_with_long_form("parent_cursor")
+				option_default_parent_cursor.set_description (" default parent class name for cursors.")
+				argument_parser.options.force_last (option_default_parent_cursor)
+
+				create option_default_parent_modify.make_with_long_form("parent_modify")
+				option_default_parent_modify.set_description (" default parent class name for modifiers.")
+				argument_parser.options.force_last (option_default_parent_modify)
+
+				create option_is_verbose.make_with_long_form("verbose")
+				argument_parser.options.force_last (option_is_verbose)
+
+				create option_no_prototypes.make_with_long_form("no_prototypes")
+				option_no_prototypes.set_description (" Does Current not generate function prototypes in class skeletons?")
+				argument_parser.options.force_last (option_no_prototypes)
+
+				create option_allow_integer_64.make_with_long_form("allow_integer_64")
+				option_allow_integer_64.set_description (" Does Current allow generation of INTEGER_64 ?")
+				argument_parser.options.force_last (option_allow_integer_64)
+
+				create option_allow_decimal.make_with_long_form("allow_decimal")
+				option_allow_decimal.set_description (" Does Current allow generation of MA_DECIMAL ?")
+				argument_parser.options.force_last (option_allow_decimal)
+
+				create option_straight_option.make_with_long_form("dumb")
+				option_straight_option.set_description (" dumb factory option (i.e. no intelligence in type resolution).")
+				argument_parser.options.force_last (option_straight_option)
+
+				create option_force_string_option.make_with_long_form("")
+				option_force_string_option.set_description (" force string factory option (i.e. ECLI_STRING_LONGVARCHAR type for any *CHAR* data type)")
+				argument_parser.options.force_last (option_force_string_option)
+
+				create option_force_decimal_option.make_with_long_form ("force_decimal")
+				option_force_decimal_option.set_description (" force MA_DECIMAL for all numeric types")
+				argument_parser.options.force_last (option_force_decimal_option)
 		end
 
 	parse_arguments is
@@ -245,6 +427,9 @@ feature -- Basic operations
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-straigth") then
 					straigth_option := True
+					arg_index := arg_index + 1
+				elseif key.is_equal ("-force_string") then
+					force_string_option := True
 					arg_index := arg_index + 1
 				elseif key.is_equal ("-no_prototypes") or else key.is_equal ("-no_prototype") then
 					no_prototypes := True
@@ -329,6 +514,9 @@ feature -- Basic operations
 			if straigth_option then
 				set_is_straigth_factory (straigth_option)
 			end
+			if force_string_option then
+				set_is_string_forced (force_string_option)
+			end
 			if has_error and error_handler.has_missing_argument then
 				error_handler.report_usage (False)
 			end
@@ -339,6 +527,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
+	argument_parser : AP_PARSER
 
 	resolve_parent_classes is
 			-- resolve parent classes for parameters and result sets
