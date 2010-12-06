@@ -27,4 +27,5 @@
 	<cluster name="test_safechars" location="${ECLI}/examples/test_safechars"/>
 
 	<mount location="${ECLI}/library.xace"/>
+	<mount location="${GOBO}/library/argument/library.xace"/>
 </system>
