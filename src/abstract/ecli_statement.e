@@ -611,8 +611,11 @@ feature -- Basic operations
 			value_pointer : XS_C_INT32
 		do
 			reset_status
-			if is_executed and then has_result_set and then not after then
-				finish
+			if is_executed then
+				if has_result_set and then not after then
+					finish
+				end
+				bind_parameters
 			end
 			if session.is_tracing then
 				if session.tracer.is_tracing_time then
@@ -739,6 +742,7 @@ feature -- Basic operations
 			parameters_exist: parameters /= Void and then parameters.count >= parameters_count
 		local
 			parameter_index : INTEGER
+			l_parameter : like parameter_anchor
 		do
 			from
 				parameter_index := 1
@@ -746,7 +750,11 @@ feature -- Basic operations
 			until
 				not is_ok or else parameter_index > parameters.count
 			loop
-				bind_one_parameter (parameter_index)
+				if bound_parameters then
+					rebind_parameter_if_buffer_too_small (parameter_index)
+				else
+					bind_one_parameter (parameter_index)
+				end
 				parameter_index := parameter_index + 1
 			end
 			if is_ok then
@@ -877,6 +885,16 @@ feature {NONE} -- Implementation
 		do
 			a_parameter := parameters.item (i)
 			a_parameter.bind_as_parameter (Current, i)
+		end
+
+	rebind_parameter_if_buffer_too_small (i : INTEGER)
+		local
+			l_parameter : ECLI_VALUE
+		do
+			l_parameter := parameters.item (i)
+			if l_parameter.is_buffer_too_small then
+				bind_one_parameter (i)
+			end
 		end
 
 	fill_results is
