@@ -95,6 +95,7 @@ feature -- Element change
 		ensure
 			has_access_access: has_access (access)
 			has_access_name: has (access.name)
+			inserted: accesses.item (access.name) = access
 		end
 
 invariant
