@@ -1,3 +1,11 @@
+2010-12-20
+	* New error reporting in ECLI_STATUS descendant classes
+	* New "stream" datatypes; you do not have to know the size on long (varchar or binary) data before reading/writing.
+	* Query Assistant:
+	  - support of output parameters
+	  - new options: -straigth = generate without any type inference on database data
+	                 -force_string = all character data are declared as ECLI_STRING_LONGVARCHAR (no fixed lenght anymore)
+
 2009-03-05
 	* Build automation:
 		- ${ECLI}/build.eant - install => compiles libraries and tools
