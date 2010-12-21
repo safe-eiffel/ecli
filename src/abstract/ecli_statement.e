@@ -742,7 +742,6 @@ feature -- Basic operations
 			parameters_exist: parameters /= Void and then parameters.count >= parameters_count
 		local
 			parameter_index : INTEGER
-			l_parameter : like parameter_anchor
 		do
 			from
 				parameter_index := 1
