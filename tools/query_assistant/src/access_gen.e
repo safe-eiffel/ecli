@@ -33,7 +33,6 @@ feature {NONE} -- Initialization
 			-- generate access modules
 		local
 			adapter : ACCESS_MODULE_PERSISTENCE_ADAPTER
-			sp : ECLI_STORED_PROCEDURE
 		do
 			Arguments.set_program_name ("query_assistant")
 			create_error_handler
