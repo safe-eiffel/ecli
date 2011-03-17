@@ -91,6 +91,7 @@ feature -- Basic operations
 				create filter.make_null
 				filter.set_output_stream (file)
 				filter.set_indent (filter.default_indent)
+				filter.enable_empty_element_tags
 				put_document (module)
 				create processor.make (filter)
 				last_document.process (processor)
