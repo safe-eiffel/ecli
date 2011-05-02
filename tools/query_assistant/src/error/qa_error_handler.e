@@ -152,6 +152,18 @@ feature -- Database
 
 feature -- Information
 
+	report_processing_file (in_filename : STRING) is
+			-- Report that `in_filename' is being processed
+		require
+			in_filename_not_void: in_filename /= Void
+		local
+			error: QA_INFORMATION
+		do
+			create error.make_processing_file (in_filename)
+			report_error (error)
+		end
+
+
 	report_copyright (author, period: STRING) is
 			-- Report  copyright message with `author' for `period'.
 		require

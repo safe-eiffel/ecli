@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Information messages."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -12,17 +12,18 @@ indexing
 class QA_INFORMATION
 
 inherit
-	
+
 	QA_ERROR
 
 create
-	
+
 	make_copyright,
 	make_banner,
 	make_license,
 	make_start,
 	make_end,
-	make_generating
+	make_generating,
+	make_processing_file
 
 feature {NONE} -- Initialization
 
@@ -37,8 +38,17 @@ feature {NONE} -- Initialization
 			parameters.put (author, 1)
 			parameters.put (period, 2)
 		end
-		
-	
+
+	make_processing_file (in_filename : STRING) is
+			-- Make processing file `in_filename'.
+		require
+			in_filename_not_void: in_filename /= Void
+		do
+			default_template := processing_file_template
+			create parameters.make (1,1)
+			parameters.put (in_filename, 1)
+		end
+
 	make_banner (version : STRING) is
 			-- Make banner `version'.
 		require
@@ -48,8 +58,8 @@ feature {NONE} -- Initialization
 			create parameters.make (1,1)
 			parameters.put (version, 1)
 		end
-		
-	
+
+
 	make_license (license_name, version : STRING) is
 			-- Make license message for `license_name', `version'.
 		require
@@ -61,8 +71,8 @@ feature {NONE} -- Initialization
 			parameters.put (license_name, 1)
 			parameters.put (version, 2)
 		end
-		
-	
+
+
 	make_start (process : STRING) is
 			-- Make information on starting `process'.
 		require
@@ -72,7 +82,7 @@ feature {NONE} -- Initialization
 			create parameters.make (1, 1)
 			parameters.put (process, 1)
 		end
-		
+
 	make_generating (generated : STRING) is
 			-- Make information on generating `generated'.
 		require
@@ -82,7 +92,7 @@ feature {NONE} -- Initialization
 			create parameters.make (1, 1)
 			parameters.put (generated, 1)
 		end
-	
+
 	make_end (process : STRING; success : BOOLEAN) is
 			-- Make information on ending `process' with `success'.
 		require
@@ -96,7 +106,7 @@ feature {NONE} -- Initialization
 			create parameters.make (1, 1)
 			parameters.put (process, 1)
 		end
-		
+
 feature -- Access
 
 feature -- Measurement
@@ -134,6 +144,8 @@ feature {NONE} -- Implementation
 	procfail_template : STRING is  "$1 : fail."
 	cprght_template : STRING is    "***        Copyright $2 by $1."
 	license_template : STRING is   "***        Released under $1 license, version $2."
-	banner_template : STRING is    "***        $0 Application $1."
+	banner_template : STRING is    "***    $0 Application $1."
     generating_template : STRING is "+ Generating $1."
+    processing_file_template: STRING is "***        Processing file: $1."
+
 end -- class QA_INFORMATION
