@@ -2,7 +2,7 @@ indexing
 
 	description:
 
-	    "Objects that..."
+	    "Buffers of type CHAR(n)."
 
 	usage: ""
 	quality: ""
@@ -79,9 +79,3 @@ invariant
 	invariant_clause: -- Your invariant here
 
 end
-
---
---    copyright: "Groupe S (c)"
---    licence: "All rights reserved. Duplication and distribution prohibited."
---
---    source: "$Source: F:/CVSRoot/doc/Se2000/Projet/Standards/full.e.tpl,v ";

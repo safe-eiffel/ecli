@@ -2,7 +2,7 @@ indexing
 
 	description:
 
-	    "Objects that..."
+	    "Buffers for LONGVARCHAR(n) data accessed through STRING objects."
 
 	usage: ""
 	quality: ""
@@ -42,9 +42,3 @@ feature
 		end
 
 end
-
---
---    copyright: "Groupe S (c)"
---    licence: "All rights reserved. Duplication and distribution prohibited."
---
---    source: "$Source: F:/CVSRoot/doc/Se2000/Projet/Standards/full.e.tpl,v ";
