@@ -36,8 +36,8 @@ feature {NONE} -- Initialization
 		do
 			Arguments.set_program_name ("query_assistant")
 			create_error_handler
-			print_prologue
 			process_arguments
+			print_prologue
 			if not has_error then
 				if default_catalog /= Void then
 					set_shared_catalog_name (default_catalog)
@@ -48,6 +48,7 @@ feature {NONE} -- Initialization
 				create adapter.make (error_handler)
 				adapter.read_from_file (in_filename)
 				if not adapter.has_error then
+					error_handler.report_processing_file (in_filename)
 					module := adapter.last_object
 					check_modules
 					resolve_parent_classes
@@ -61,7 +62,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.5b"
+	version : STRING is "v1.5c"
 
 feature -- Element change
 
@@ -646,7 +647,7 @@ feature {NONE} -- Implementation
 				end
 				c.forth
 			end
-			create gen.make (error_handler,version)
+			create gen.make (error_handler,version, in_filename)
 			--| classes for parent parameters
 			from
 				p := parent_parameter_sets.new_cursor
@@ -699,7 +700,7 @@ feature {NONE} -- Implementation
 		local
 			parent_class : STRING
 		do
-			create gen.make (a_error_handler, version)
+			create gen.make (a_error_handler, version, in_filename)
 			a_error_handler.report_generating (access.name)
 			if access.has_result_set then
 				parent_class := default_parent_cursor
