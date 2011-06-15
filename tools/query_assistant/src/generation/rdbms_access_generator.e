@@ -645,7 +645,7 @@ feature {NONE} -- Implementation
 				eiffel_routine.add_body_line ("cursor.set_parameters_object (parameters)")
 			end
 			check
-				results_in_sets: all_sets.has_item (module.results)
+--				results_in_sets: all_sets.has_item (module.results)
 				results_flattened: module.results.is_flattened
 			end
 			eiffel_routine.add_body_line ("from")

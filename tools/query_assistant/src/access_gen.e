@@ -62,7 +62,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.5c"
+	version : STRING is "v1.5d"
 
 feature -- Element change
 
@@ -317,6 +317,8 @@ feature -- Basic operations
 					else
 						set_maximum_length (option_maximum_length.parameter)
 					end
+				else
+					set_maximum_length (reasonable_maximum_length)
 				end
 
 				create option_default_parent_cursor.make_with_long_form("parent_cursor")
@@ -510,6 +512,8 @@ feature -- Basic operations
 						set_maximum_length (maximum_length_string.to_integer)
 					end
 				end
+			else
+				set_maximum_length (reasonable_maximum_length)
 			end
 			if straigth_option then
 				set_is_straigth_factory (straigth_option)
