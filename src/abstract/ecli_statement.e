@@ -615,7 +615,9 @@ feature -- Basic operations
 				if has_result_set and then not after then
 					finish
 				end
-				bind_parameters
+				if parameters_count > 0 then
+					bind_parameters
+				end
 			end
 			if session.is_tracing then
 				if session.tracer.is_tracing_time then
@@ -739,7 +741,8 @@ feature -- Basic operations
 			-- Bind parameters
 		require
 			valid_statement: is_valid
-			parameters_exist: parameters /= Void and then parameters.count >= parameters_count
+			parameters_exist: parameters_count > 0
+			parameters_are_set: parameters /= Void and then parameters.count >= parameters_count
 		local
 			parameter_index : INTEGER
 		do
