@@ -33,6 +33,7 @@ feature {NONE} -- Initialization
 	make_all is
 			-- make cursor on 'all' datasources
 		do
+			create error_handler.make_null
 			fetch_first_operation := Sql_fetch_first
 			is_all_datasources := True
 			before := True

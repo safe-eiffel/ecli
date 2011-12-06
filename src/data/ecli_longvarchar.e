@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"SQL LONGVARCHAR (n) values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,11 +14,11 @@ class ECLI_LONGVARCHAR
 inherit
 
 	ECLI_STRING_VALUE
-	
+
 create
 
 	make, make_force_maximum_capacity
-	
+
 feature -- Access
 
 	default_maximum_capacity : INTEGER is
@@ -30,5 +30,5 @@ feature -- Access
 		once
 			Result := sql_longvarchar
 		end
-	
+
 end

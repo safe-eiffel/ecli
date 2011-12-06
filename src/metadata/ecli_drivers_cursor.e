@@ -33,6 +33,7 @@ feature {NONE} -- Initialization
 	make is
 			-- Make cursor on drivers.
 		do
+			create error_handler.make_null
 			before := True
 		ensure
 			before: before

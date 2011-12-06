@@ -57,25 +57,31 @@ feature -- Initialization
 			a_session_connected: a_session.is_connected
 			not_valid: not is_valid
 		local
-			eq : KL_EQUALITY_TESTER[DS_LIST[INTEGER]]
 			ext_handle : XS_C_POINTER
 		do
-			create error_handler.make_null
+			--| error handler
+			create_error_handler
 
+			--| external values
 			create ext_handle.make
 			create impl_result_columns_count.make
+
+			--| session
 			session := a_session
 			if session.exception_on_error then
 				raise_exception_on_error
 			end
+
+			--| statement handle
 			set_status ("ecli_c_allocate_statement", ecli_c_allocate_statement (session.handle, ext_handle.handle))
 			handle := ext_handle.item
 			if is_valid then
 				session.register_statement (Current)
 			end
+
+			--| name to position map table for parameters
 			create name_to_position.make (10)
-			create eq
-			name_to_position.set_equality_tester (eq)
+			name_to_position.set_equality_tester (create {KL_EQUALITY_TESTER[DS_LIST[INTEGER]]})
 		ensure
 			session_ok: session = a_session and not is_closed
 			registered: session.is_registered_statement (Current)
@@ -83,18 +89,18 @@ feature -- Initialization
 			valid: 	is_valid
 		end
 
-feature -- Obsolete
+feature {NONE} -- Initialization
 
-	attach (a_session : ECLI_SESSION) is
-		obsolete "Use open/close instead of attach/release"
+	create_error_handler is
+			-- create `error_handler´
 		do
+			if error_handler = Void then
+				create error_handler.make_null
+			end
+		ensure
+			error_handler_created: error_handler /= Void
 		end
-
-	release is
-		obsolete "Use open/close instead of attach/release"
-		do
-		end
-
+		
 feature -- Basic operations
 
 	close is

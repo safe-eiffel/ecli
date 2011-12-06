@@ -18,8 +18,9 @@ inherit
 	ECLI_COLUMNS_CURSOR
 		redefine
 			set_buffer_values_array, create_buffer_values,
-		    item, create_item, do_query_metadata, definition
-		end
+		    item, create_item, definition,
+ 			do_query_metadata, query_metadata_feature_name
+ 		end
 
 create
 

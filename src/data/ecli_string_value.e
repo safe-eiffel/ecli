@@ -96,7 +96,7 @@ feature -- Access
 
 	c_type_code: INTEGER is
 		do
-			Result := sql_c_default
+			Result := sql_c_char
 		end
 
 feature -- Measurement
