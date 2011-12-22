@@ -66,7 +66,9 @@ feature {ECLI_STATEMENT} -- Basic operations
 		do
 			-- If buffer is large enough, transfer in one piece
 			if not is_buffer_too_small then
-				ecli_c_value_set_length_indicator (buffer, input_count)
+				if not is_null then
+					ecli_c_value_set_length_indicator (buffer, input_count)
+				end
 				Precursor (stmt, index)
 			else
 				-- Transfer in multiple pieces with parameters at execution.

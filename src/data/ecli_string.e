@@ -13,10 +13,12 @@ class
 
 inherit
 	ECLI_STREAM_VALUE
+		undefine
+			out
+		end
 
 	ECLI_STRING_VALUE
 		undefine
-			out,
 			count,
 			set_item,
 			copy,
