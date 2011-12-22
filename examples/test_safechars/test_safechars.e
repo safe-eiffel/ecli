@@ -113,10 +113,15 @@ feature -- Measurement
 feature -- Basic operations
 
 	do_connect is
+		local
+			tracefile: KL_TEXT_OUTPUT_FILE
 		do
 			create session.make_default
 			session.set_login_strategy (ecli_login)
 			session.connect
+			create tracefile.make ("sql_trace.log")
+			tracefile.open_write
+			session.set_tracer (create {ECLI_TRACER}.make(tracefile))
 		end
 
 	create_buffers
