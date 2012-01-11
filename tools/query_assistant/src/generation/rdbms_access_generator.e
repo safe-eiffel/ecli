@@ -105,6 +105,7 @@ feature -- Basic operations
 			-- create class from `parameter_set' and write it into `directory_name'
 		require
 			parameter_set_not_void: parameter_set /= Void
+			parameter_set_generatable: parameter_set.is_generatable
 		do
 			parameters_class := virtual_row_class (parameter_set)
 		ensure
@@ -116,6 +117,7 @@ feature -- Basic operations
 			-- create class from `result_set' and write it into `directory_name'
 		require
 			result_set_not_void: result_set /= Void
+			result_set_generatable: result_set.is_generatable
 		do
 			results_class := virtual_row_class (result_set)
 		ensure

@@ -419,6 +419,19 @@ feature -- Validity
 			report_error (error)
 		end
 
+	report_same_parameter_set_parent_name  (module, name, parent_name : STRING) is
+			-- Report same parameter-set parent name `parent_name' as the parameter-set name `name' in `module'.
+		require
+			module_not_void: module /= void
+			name_not_void: name /= Void
+			parent_name_not_void: name /= void
+		local
+			error : QA_VALIDITY_ERROR
+		do
+			create error.make_parameter_set_parent_same_name (module, name, parent_name)
+			report_error (error)
+		end
+
 	report_parameter_unknown (module, name : STRING) is
 			-- Report parameter `name' in `module' is unknown but defined.
 		require

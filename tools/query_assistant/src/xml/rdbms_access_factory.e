@@ -85,6 +85,7 @@ feature -- Basic operations
 					if element.has_element_by_name (t_sql) then
 						query := element.element_by_name (t_sql)
 						create last_access.make (module_name (name), query.text.string)
+						last_access.enable_generatable
 						if element.has_element_by_name (t_description) then
 							description := element.element_by_name (t_description)
 							last_access.set_description (description.text.string)
@@ -108,10 +109,18 @@ feature -- Basic operations
 						-- analyze SQL and infer parameter_set
 						fill_parameter_set (last_access.query)
 						if last_parameter_set /= Void then
-							last_access.set_parameters (last_parameter_set)
+							if last_parameter_set.is_generatable then
+								last_access.set_parameters (last_parameter_set)
+							else
+								last_access.disable_generatable
+							end
 						end
 						if last_result_set /= Void then
-							last_access.set_results (last_result_set)
+							if last_result_set.is_generatable then
+								last_access.set_results (last_result_set)
+							else
+								last_access.disable_generatable
+							end
 						end
 						if type_att /= Void then
 							create module_type.make_from_string (type_att.value)
@@ -144,11 +153,17 @@ feature -- Basic operations
 			end
 			if element.has_attribute_by_name (t_extends) then
 				parent := element.attribute_by_name (t_extends).value.string
-				create last_parameter_set.make_with_parent_name (name, parent)
+				if parent.same_string (name) then
+					-- error_handler
+					error_handler.report_same_parameter_set_parent_name (last_access.name, name, parent)
+					is_error := True
+				else
+					create last_parameter_set.make_with_parent_name (name, parent)
+				end
 			else
 				create last_parameter_set.make (name)
 			end
-			if element.has_element_by_name (T_parameter) then
+			if not is_error and then element.has_element_by_name (T_parameter) then
 				populate_parameter_set (element)
 			end
 		end
@@ -396,7 +411,7 @@ feature {NONE} -- Implementation
 			parameter_names.wipe_out
 			parameter_names.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
 			sql_parser.parse (sql, Current)
-			if last_parameter_set = Void or else last_parameter_set.count < parameter_names.count then
+			if last_parameter_set /= Void and then last_parameter_set.count < parameter_names.count then
 				-- remove parameter names that already exist
 				from
 					cursor := last_parameter_set.new_cursor

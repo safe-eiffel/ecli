@@ -15,6 +15,8 @@ inherit
 	SHARED_CATALOG_NAME
 	SHARED_MAXIMUM_LENGTH
 
+	RDBMS_ACCESS_ITEM
+
 create
 	make
 
@@ -55,6 +57,8 @@ feature -- Access
 	type : ACCESS_TYPE
 
 feature -- Status report
+
+	is_generatable : BOOLEAN
 
 	is_prepared: BOOLEAN
 
@@ -122,6 +126,16 @@ feature -- Status setting
 			query_statement.close
 		ensure
 			is_validity_checked: is_validity_checked
+		end
+
+	enable_generatable
+		do
+			is_generatable := True
+		end
+
+	disable_generatable
+		do
+			is_generatable := False
 		end
 
 feature -- Element change

@@ -172,29 +172,37 @@ feature {NONE} -- Implementation - Operations
 								--| Error : module already exists
 								error_handler.report_already_exists (l_module.name, l_module.name, "Module")
 							else
-								parameters_ok := True
-								results_ok := True
-								parameter_sets.search (l_module.parameters.name)
-								if parameter_sets.found then
-									error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
-									parameters_ok := False
-								end
-								if l_module.results /= Void then
-									l_result_sets.search (l_module.results.name)
-									if l_result_sets.found  then
-										error_handler.report_already_exists (l_module.name, l_module.results.name, "Result set")
-										results_ok := False
+								if l_module.is_generatable then
+									parameters_ok := True
+									results_ok := True
+									parameter_sets.search (l_module.parameters.name)
+									if parameter_sets.found then
+										error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
+										parameters_ok := False
 									end
-								end
-								if parameters_ok and results_ok then
-									modules.force (l_module, l_module.name)
-									parameter_sets.force (l_module.parameters, l_module.parameters.name)
 									if l_module.results /= Void then
-										l_result_sets.force (l_module.results, l_module.results.name)
+										l_result_sets.search (l_module.results.name)
+										if l_result_sets.found  then
+											error_handler.report_already_exists (l_module.name, l_module.results.name, "Result set")
+											results_ok := False
+										end
+									end
+									if parameters_ok and results_ok then
+										modules.force (l_module, l_module.name)
+										parameter_sets.force (l_module.parameters, l_module.parameters.name)
+										if l_module.results /= Void then
+											l_result_sets.force (l_module.results, l_module.results.name)
+										end
+									else
+										error_handler.report_rejected (l_module.name)
 									end
 								else
 									error_handler.report_rejected (l_module.name)
 								end
+							end
+						else
+							if l_module /= Void then
+								error_handler.report_rejected (l_module.name)
 							end
 						end
 					elseif element.name.string.is_equal (t_parameter_map) then

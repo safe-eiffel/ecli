@@ -62,7 +62,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.5d"
+	version : STRING is "v1.5e"
 
 feature -- Element change
 
@@ -561,35 +561,35 @@ feature {NONE} -- Implementation
 			resolver.resolve_descendants (module.result_sets)
 		end
 
-	resolve_all_sets is
-			--
-		local
-			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_METADATA]
-			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
-		do
-			create all_sets.make (module.result_sets.count + module.parameter_sets.count)
-			from
-				cursor := module.result_sets.new_cursor
-				cursor.start
-			until
-				cursor.off
-			loop
-				all_sets.force (cursor.item, cursor.key)
-				cursor.forth
-			end
-			from
-				cursor := module.parameter_sets.new_cursor
-				cursor.start
-			until
-				cursor.off
-			loop
-				all_sets.force (cursor.item, cursor.key)
-				cursor.forth
-			end
-			create resolver
-			all_parents_set := resolver.resolve_parents (all_sets, error_handler)
-			resolver.resolve_descendants (all_sets)
-		end
+--	resolve_all_sets is
+--			--
+--		local
+--			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_METADATA]
+--			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET[RDBMS_ACCESS_METADATA], STRING]
+--		do
+--			create all_sets.make (module.result_sets.count + module.parameter_sets.count)
+--			from
+--				cursor := module.result_sets.new_cursor
+--				cursor.start
+--			until
+--				cursor.off
+--			loop
+--				all_sets.force (cursor.item, cursor.key)
+--				cursor.forth
+--			end
+--			from
+--				cursor := module.parameter_sets.new_cursor
+--				cursor.start
+--			until
+--				cursor.off
+--			loop
+--				all_sets.force (cursor.item, cursor.key)
+--				cursor.forth
+--			end
+--			create resolver
+--			all_parents_set := resolver.resolve_parents (all_sets, error_handler)
+--			resolver.resolve_descendants (all_sets)
+--		end
 
 
 	check_modules is
@@ -697,10 +697,11 @@ feature {NONE} -- Implementation
 			error_handler.report_end ("Class generation", True)
 		end
 
-	generate (access : RDBMS_ACCESS;a_error_handler : QA_ERROR_HANDLER) is
+	generate (access : RDBMS_ACCESS; a_error_handler : QA_ERROR_HANDLER) is
 			-- generate classes for `access', query + parameter_set + result_set classes
 		require
 			access_not_void: access /= Void
+			access_is_generatable: access.is_generatable
 		local
 			parent_class : STRING
 		do
