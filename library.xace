@@ -54,11 +54,12 @@
 
 	<mount location="${SAFE_KERNEL}/library.xace"/>
 	<mount location="${GOBO}/library/kernel.xace"/>
-	<mount location="${GOBO}/library/kernel/library.xace"/>
+<!--	<mount location="${GOBO}/library/kernel/library.xace"/>
 	<mount location="${GOBO}/library/structure/library.xace"/>
 	<mount location="${GOBO}/library/time/library.xace"/>
 	<mount location="${GOBO}/library/utility/library.xace"/>
 	<mount location="${GOBO}/library/regexp/library.xace"/>
 	<mount location="${GOBO}/library/math/library.xace"/>
-	<mount location="${GOBO}/library/string/library.xace"/>
+	<mount location="${GOBO}/library/string/library.xace"/> -->
+	<mount location="${GOBO}/library/library.xace"/>
 </library>
