@@ -235,6 +235,14 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_float.out)
 		end
 
+	put_integer_16 (a_integer : ECLI_INTEGER_16) is
+			-- Put 'a_integer' as an integer constant
+		require
+			a_integer /= Void and then not a_integer.is_null
+		do
+			medium.put_string (a_integer.out)
+		end
+
 	put_integer (a_integer : ECLI_INTEGER) is
 			-- Put 'a_integer' as an integer constant
 		require
