@@ -51,13 +51,15 @@ feature -- Initialization
 			create error_handler.make_standard
 			if arguments_ok then
 				do_connect
-				create_table
-				create_buffers
-				test_insert
-				test_select
---				test_select_p
-				print_diagnostics
-				session.disconnect
+				if session.is_connected then
+					create_table
+					create_buffers
+					test_insert
+					test_select
+--					test_select_p
+					print_diagnostics
+					session.disconnect
+				end
 			end
 		end
 
