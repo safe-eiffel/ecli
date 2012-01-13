@@ -7,6 +7,11 @@ indexing
 	date: "$Date$"
 	revision: "$Revision$"
 
+	todo: "[
+		* fully implement get_options
+		* take into account -ecma367 execution flag
+		]"
+
 
 class
 	ACCESS_GEN
@@ -136,6 +141,10 @@ feature -- Status report
 	is_verbose : BOOLEAN
 
 	option_is_verbose : AP_BOOLEAN_OPTION
+
+	is_ecma367v2 : BOOLEAN
+
+	option_is_ecma367v2 : AP_BOOLEAN_OPTION
 
 	no_prototypes : BOOLEAN
 		-- Does Current not generate function prototypes in class skeletons?
@@ -282,13 +291,17 @@ feature -- Basic operations
 				option_straight_option.set_description (" dumb factory option (i.e. no intelligence in type resolution).")
 				argument_parser.options.force_last (option_straight_option)
 
-				create option_force_string_option.make_with_long_form("")
+				create option_force_string_option.make_with_long_form("force_string")
 				option_force_string_option.set_description (" force string factory option (i.e. ECLI_STRING_LONGVARCHAR type for any *CHAR* data type)")
 				argument_parser.options.force_last (option_force_string_option)
 
 				create option_force_decimal_option.make_with_long_form ("force_decimal")
 				option_force_decimal_option.set_description (" force MA_DECIMAL for all numeric types")
 				argument_parser.options.force_last (option_force_decimal_option)
+
+				create option_is_ecma367v2.make_with_long_form ("ecma367")
+				option_is_ecma367v2.set_description (" use ECMA367v2 syntax for generated files")
+				argument_parser.options.force_last (option_is_ecma367v2)
 
 		end
 
@@ -348,13 +361,14 @@ feature -- Basic operations
 				option_straight_option.set_description (" dumb factory option (i.e. no intelligence in type resolution).")
 				argument_parser.options.force_last (option_straight_option)
 
-				create option_force_string_option.make_with_long_form("")
+				create option_force_string_option.make_with_long_form("force_string")
 				option_force_string_option.set_description (" force string factory option (i.e. ECLI_STRING_LONGVARCHAR type for any *CHAR* data type)")
 				argument_parser.options.force_last (option_force_string_option)
 
 				create option_force_decimal_option.make_with_long_form ("force_decimal")
 				option_force_decimal_option.set_description (" force MA_DECIMAL for all numeric types")
 				argument_parser.options.force_last (option_force_decimal_option)
+
 		end
 
 	parse_arguments is
