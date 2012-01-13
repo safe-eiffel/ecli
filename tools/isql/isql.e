@@ -27,12 +27,7 @@ feature {NONE} -- Initialization
 
 	make is
 			-- isql
-		local
-			v : ECLI_INTEGER_64
 		do
-			create v.make
-			v.set_item ({INTEGER_64}.max_value)
-			v.set_item ({INTEGER_64}.min_value)
 			create_commands
 			create_initial_context
 			create_default_system_variables (current_context)
@@ -50,12 +45,6 @@ feature {NONE} -- Initialization
 						%Please connect first using 'CONNECT' command.%N")
 					current_context.filter.end_error
 				end
---				if sql_file_name /= Void then
---					commands.execute ("execute "+sql_file_name, current_context)
---				else
---					commands.execute ("execute", current_context)
---				end
---				-- disconnecting and closing session
 				do_session
 				do_final_disconnection
 			end;
