@@ -27,7 +27,7 @@ feature -- Initialization
 			class_name_not_void: class_name /= Void
 		do
 			set_name (class_name)
-			create indexing_clauses.make			
+			create indexing_clauses.make
 			create parents.make
 			create creation_procedure_names.make
 			create feature_groups.make
@@ -41,7 +41,7 @@ feature -- Access
 
 	indexing_clauses: DS_LINKED_LIST [STRING]
 			-- Indexing clauses
-			
+
 	parents: DS_LINKED_LIST [STRING]
 			-- Class parents
 
@@ -52,12 +52,12 @@ feature -- Access
 			-- Feature groups
 
 	invariants : DS_LINKED_LIST [DS_PAIR[STRING, STRING]]
-	
+
 feature -- Status report
 
 	is_deferred : BOOLEAN
 			-- is this a deferred class ?
-			
+
 feature -- Status setting
 
 	set_name (new_name: like name) is
@@ -75,7 +75,7 @@ feature -- Status setting
 		do
 			indexing_clauses.force_last (new_indexing)
 		end
-	
+
 	add_parent (new_parent: STRING) is
 			-- Add 'new_parent' to parents
 		require
@@ -109,7 +109,7 @@ feature -- Status setting
 		do
 			invariants.put_last (new_invariant_clause)
 		end
-		
+
 	set_deferred is
 			-- set this a deferred class
 		do
@@ -117,17 +117,17 @@ feature -- Status setting
 		ensure
 			is_deferred
 		end
-		
+
 feature -- Basic operations
 
 	write (output: KI_TEXT_OUTPUT_STREAM) is
 			-- Print source code representation of this class
 		do
 			if not indexing_clauses.is_empty then
-				write_indexing (output)			
+				write_indexing (output)
 			end
 			write_header (output)
-			if not parents.is_empty then	
+			if not parents.is_empty then
 				write_parents (output)
 			end
 			if not creation_procedure_names.is_empty then
@@ -146,7 +146,11 @@ feature {NONE} -- Implementation
 
 	write_indexing (output: KI_TEXT_OUTPUT_STREAM) is
 		do
-			output.put_string ("indexing")
+			if is_ecma367v2 then
+				output.put_string ("note")
+			else
+				output.put_string ("indexing")
+			end
 			output.put_new_line
 			output.put_new_line
 			from
@@ -158,9 +162,9 @@ feature {NONE} -- Implementation
 				output.put_new_line
 				indexing_clauses.forth
 			end
-			output.put_new_line			
+			output.put_new_line
 		end
-	
+
 	write_header (output: KI_TEXT_OUTPUT_STREAM) is
 		do
 			if is_deferred then

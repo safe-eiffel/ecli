@@ -64,7 +64,11 @@ feature -- Basic operations
 		do
 			output.put_string ("%T" + name + ": " + type)
 			if value /= Void then
-				output.put_string (" is " + value)
+				if is_ecma367v2 then
+					output.put_string (" = " + value)
+				else
+					output.put_string (" is " + value)
+				end
 			end
 			if comment /= Void then
 				output.put_new_line

@@ -16,7 +16,7 @@ inherit
 		rename
 			make as feature_make
 		end
-		
+
 create
 
 	make
@@ -39,10 +39,10 @@ feature -- Access
 
 	preconditions: DS_LINKED_LIST [DS_PAIR [STRING, STRING]]
 			-- Preconditions (label, expression) of this routine.
-			
+
 	postconditions: DS_LINKED_LIST [DS_PAIR [STRING, STRING]]
 			-- Postconditions (label, expression) of this routine.
-			
+
 	params: DS_LINKED_LIST [DS_PAIR [STRING, STRING]]
 			-- Parameter pairs (name, type) of this routine.
 
@@ -67,18 +67,18 @@ feature -- Access
 	is_once : BOOLEAN
 
 	is_require_else : BOOLEAN
-	
+
 	is_ensure_then : BOOLEAN
-	
+
 feature -- Status setting
 
-	set_once is 
-		do 
-			is_once := True 
-		ensure 
-			is_once: is_once 
+	set_once is
+		do
+			is_once := True
+		ensure
+			is_once: is_once
 		end
-	
+
 	set_type (new_type: STRING) is
 			-- Set the type of this routine to 'type'
 		require
@@ -122,7 +122,7 @@ feature -- Status setting
 			end
 			body.force_last (line)
 		end
-		
+
 	add_refined_precondition (precondition: DS_PAIR [STRING, STRING]) is
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
@@ -134,7 +134,7 @@ feature -- Status setting
 		ensure
 			is_require_else: is_require_else
 		end
-		
+
 	add_precondition (precondition: DS_PAIR [STRING, STRING]) is
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
@@ -158,7 +158,7 @@ feature -- Status setting
 		ensure
 			is_ensure_then: is_ensure_then
 		end
-		
+
 	add_postcondition (postcondition: DS_PAIR [STRING, STRING]) is
 			-- Add a postcondition with the expression 'postcondition.first' and
 			-- label 'postcondition.second' to this routine.
@@ -170,7 +170,7 @@ feature -- Status setting
 			end
 			postconditions.force_last (postcondition)
 		end
-		
+
 feature -- Basic operations
 
 	write (output: KI_TEXT_OUTPUT_STREAM) is
@@ -183,7 +183,11 @@ feature -- Basic operations
 			if is_function then
 				output.put_string (": " + type)
 			end
-			output.put_string (" is")
+			if is_ecma367v2 then
+				do_nothing
+			else
+				output.put_string (" is")
+			end
 			if comment /= Void then
 				output.put_new_line
 				output.put_string ("%T%T%T-- "+comment)
@@ -219,7 +223,7 @@ feature {NONE} -- Implementation
 			until
 				params.off
 			loop
-				output.put_string (params.item_for_iteration.first 
+				output.put_string (params.item_for_iteration.first
 					+ ": " + params.item_for_iteration.second)
 				if not params.is_last then
 					output.put_string ("; ")
@@ -238,7 +242,7 @@ feature {NONE} -- Implementation
 			until
 				locals.off
 			loop
-				output.put_string ("%T%T%T" + locals.item_for_iteration.first 
+				output.put_string ("%T%T%T" + locals.item_for_iteration.first
 					+ ": " + locals.item_for_iteration.second)
 				output.put_new_line
 				locals.forth
@@ -308,5 +312,5 @@ invariant
 	deferred_definition: is_deferred implies (body = Void and locals = Void)
 	no_body_or_locals: body = Void implies locals = Void
 	params_not_void: params /= Void
-		
+
 end -- class EIFFEL_ROUTINE

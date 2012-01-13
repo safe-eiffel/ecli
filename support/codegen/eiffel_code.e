@@ -11,6 +11,20 @@ indexing
 deferred class
 	EIFFEL_CODE
 
+feature -- Status Report
+
+	is_ecma367v2 : BOOLEAN
+
+feature -- Element change
+
+	enable_ecma367v2
+			-- Enable ECMA367v2 syntax
+		do
+			is_ecma367v2 := True
+		ensure
+			is_ecma367v2: is_ecma367v2
+		end
+
 feature -- Basic operations
 
 	write (output: KI_TEXT_OUTPUT_STREAM) is
