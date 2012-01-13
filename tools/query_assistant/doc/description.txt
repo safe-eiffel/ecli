@@ -47,3 +47,53 @@ Scenario
 6. current row values are obtained from c.item which is of type r
 
 
+Generation of of "access routines" class:
+class <name_prefix>_ACCESS_ROUTINES
+inherit
+ PO_STATUS_USE
+ PO_STATUS_MANAGEMENT
+
+
+feature --Access
+ last_object : PO_PERSISTENT
+ last_cursor : PO_CURSOR[like last_object]
+
+feature --Status report
+ is_error : BOOLEAN
+
+
+ do_<module_name> (cursor : <module_name>,
+	signature des paramètres)
+	local
+		parameters: <module_name_parameters>
+	do
+		create parameters.make
+		@foreach parameter
+			parameters.<parameter_name>.set_item (<parameter>)
+		cursor.set_parameters_object(parameters)
+		from
+			cursor.start
+			status.reset
+		until
+			status.is_error or else not cursor.is_ok or else cursor.off
+		loop
+			extend_cursor_from_<module_results> (cursor.item)
+			cursor.forth
+		end		
+		if cursor.is_error then
+			status.set_datastore_error (...)
+		elseif cursor.is_ok and cursor.has_information_message then
+			status.set_datastore_warning (...)
+		end
+		
+	end
+
+extend_cursor_from_<module_results> (row : <module_results>)
+	require
+		row_not_void
+	deferred
+	ensure
+		last_cursor_extended
+	end
+	
+GRRR: part du principe que c'est pour créer des objets.
