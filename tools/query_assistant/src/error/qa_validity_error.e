@@ -24,7 +24,8 @@ create
 	make_parameter_already_defined,
 	make_parameter_unknown,
 	make_rejected,
-	make_parameter_set_parent_same_name
+	make_parameter_set_parent_same_name,
+	make_parameter_type_mismatch
 
 feature {NONE} -- Initializaiton
 
@@ -135,6 +136,23 @@ feature {NONE} -- Initializaiton
 			parameters.put (name, 2)
 		end
 
+	make_parameter_type_mismatch (access_name, name, declared_type, sample_type: STRING) is
+			-- Report parameter `name' in `access_name' has an already defined `attribute_name' attribute.
+		require
+			access_name_not_void: access_name /= void
+			name_not_void: name /= Void
+			declared_type_not_void: declared_type /= void
+			sample_type_not_void: sample_type /= void
+		do
+			default_template := partypmis_template
+			create parameters.make (1,4)
+			parameters.put (access_name, 1)
+			parameters.put (name, 2)
+			parameters.put (declared_type, 3)
+			parameters.put (sample_type, 4)
+
+		end
+
 feature {NONE} -- Implementation
 
 	alex_template : STRING is       "[E-VAL-ALRDYEX] Module $1 : $3 `$2' already exists."
@@ -146,4 +164,6 @@ feature {NONE} -- Implementation
 	parparsame_template : STRING is "[E-VAL-PARNSAM] Module $1 : Parameter-set $2 and parent name '$3' are the same : they must be different."
 	parunknown_template : STRING is "[E-VAL-PARUNKN] Module $1 : Parameter $2 has been defined but does not appear in SQL."
 	reject_template : STRING is 	"[W-VAL-MREJECT] Module $1 has been rejected because of errors in its XML definition."
+	partypmis_template : STRING is  "[W-VAL-PARTYPM] Module $1 : Parameter $2 type '$3' mismatch with sample type '$4'. Todo: check parameter sample string; use ODBC escape syntax for date, time and timestamp."
+
 end -- class QA_VALIDITY_ERROR

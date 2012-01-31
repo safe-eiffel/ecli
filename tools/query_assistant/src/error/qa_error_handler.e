@@ -406,6 +406,20 @@ feature -- Validity
 			report_error (error)
 		end
 
+	report_parameter_type_mismatch (access_name, name, declared_type, sample_type: STRING) is
+			-- Report parameter `name' in `access_name' has an already defined `attribute_name' attribute.
+		require
+			access_name_not_void: access_name /= void
+			name_not_void: name /= Void
+			declared_type_not_void: declared_type /= void
+			sample_type_not_void: sample_type /= void
+		local
+			error : QA_VALIDITY_ERROR
+		do
+			create error.make_parameter_type_mismatch (access_name, name, declared_type, sample_type)
+			report_warning (error)
+		end
+
 	report_parameter_already_defined (module, name, attribute_name : STRING) is
 			-- Report parameter `name' in `module' has an already defined `attribute_name' attribute.
 		require

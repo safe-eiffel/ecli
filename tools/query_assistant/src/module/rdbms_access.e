@@ -116,11 +116,11 @@ feature -- Status setting
 			query_statement.set_sql (query)
 			prepare_query (query_statement, a_error_handler)
 			if query_statement.is_ok then
-				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size)
 				check_parameters (query_statement, query_session, a_error_handler, reasonable_maximum_size)
-				if is_parameters_valid and is_results_valid then
+				if is_parameters_valid then -- and is_results_valid then
 					try_query (query_statement, a_session, a_error_handler)
 				end
+				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size)
 			end
 			is_validity_checked := True
 			query_statement.close
@@ -391,7 +391,11 @@ feature {NONE} -- Implementation
 			cs : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 			factory : QA_VALUE_FACTORY
 			parameters_put : INTEGER
+			tracer : ECLI_TRACER
+			sample_value : QA_VALUE
+			paramet_metadata : RDBMS_ACCESS_PARAMETER
 		do
+			create tracer.make (a_error_handler.warning_file)
 			create factory.make
 			if query_statement.is_ok and then query_statement.is_prepared then
 				if parameters.count = 0 or else (parameters.count = query_statement.parameter_names.count and then parameters.has_samples) then
@@ -410,6 +414,9 @@ feature {NONE} -- Implementation
 									is_error := True
 									a_error_handler.report_could_not_create_parameter (name, cs.item.name, factory.last_error)
 								else
+									sample_value := factory.last_result
+									parameter_metadata := cs.item
+									check_sample_type (parameter_metadata, sample_value, a_error_handler)
 									query_statement.put_parameter (factory.last_result, cs.item.name)
 									parameters_put := parameters_put + 1
 								end
@@ -431,6 +438,7 @@ feature {NONE} -- Implementation
 								is_query_valid := True
 							else
 								a_error_handler.report_query_execution_failed (query_statement.sql, query_statement.diagnostic_message, name)
+								query_statement.trace (tracer)
 								is_error := True
 							end
 							-- rollback
@@ -450,6 +458,34 @@ feature {NONE} -- Implementation
 			error_or_success: is_error xor is_query_valid
 		end
 
+	check_sample_type (a_parameter : RDBMS_ACCESS_PARAMETER; sample_data : QA_VALUE; an_error_handler: QA_ERROR_HANDLER)
+		local
+			error : BOOLEAN
+		do
+			if a_parameter.metadata_available then
+				inspect a_parameter.metadata.type_code
+				when {ECLI_TYPE_CONSTANTS}.sql_type_date then
+					if sample_data.sql_type_code /= {ECLI_TYPE_CONSTANTS}.sql_type_date then
+					else
+						error := True
+					end
+				when {ECLI_TYPE_CONSTANTS}.sql_type_time then
+					if sample_data.sql_type_code = {ECLI_TYPE_CONSTANTS}.sql_type_time then
+					else
+						error := True
+					end
+				when {ECLI_TYPE_CONSTANTS}.sql_type_timestamp then
+					if sample_data.sql_type_code = {ECLI_TYPE_CONSTANTS}.sql_type_date or else sample_data.sql_type_code = {ECLI_TYPE_CONSTANTS}.sql_type_timestamp then
+					else
+						error := True
+					end
+				else
+				end
+				if error then
+					an_error_handler.report_parameter_type_mismatch (name, a_parameter.name, a_parameter.ecli_type, sample_data.ecli_type)
+				end
+			end
+		end
 
 invariant
 	name_not_void: name /= Void

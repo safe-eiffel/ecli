@@ -67,7 +67,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.5e"
+	version : STRING is "v1.5f"
 
 feature -- Element change
 
