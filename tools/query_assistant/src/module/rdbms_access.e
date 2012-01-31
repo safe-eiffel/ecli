@@ -393,7 +393,7 @@ feature {NONE} -- Implementation
 			parameters_put : INTEGER
 			tracer : ECLI_TRACER
 			sample_value : QA_VALUE
-			paramet_metadata : RDBMS_ACCESS_PARAMETER
+			parameter_metadata : RDBMS_ACCESS_PARAMETER
 		do
 			create tracer.make (a_error_handler.warning_file)
 			create factory.make
