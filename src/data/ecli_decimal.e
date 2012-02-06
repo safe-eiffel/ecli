@@ -110,7 +110,7 @@ feature -- Measurement
 			Result := precision + 2
 		end
 
-	size: INTEGER is
+	size: INTEGER_64 is
 			-- Size as synonym of precision.
 		do
 			Result := precision

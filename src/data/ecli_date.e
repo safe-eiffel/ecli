@@ -177,7 +177,7 @@ feature -- Measurement
 			Result := calendar.days_in_month(a_month, a_year)
 		end
 
-	size : INTEGER is
+	size : INTEGER_64 is
 		do
 			Result := 10
 		end

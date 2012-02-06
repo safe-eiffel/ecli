@@ -54,7 +54,7 @@ feature -- Access
 	sql_type_code : INTEGER
 			-- type code of SQL data type
 
-	size : INTEGER
+	size : INTEGER_64
 			-- The column size of numeric data types is defined as the maximum number of digits used
 			-- by the data type of the column or parameter, or the precision of the data.
 			-- For character types, this is the length in characters of the data;
@@ -70,7 +70,7 @@ feature -- Comparison
 feature {NONE} -- Implementation
 
 		ext_sql_type_code : XS_C_INT32 is once create Result.make end
-		ext_size : XS_C_INT32 is once create Result.make end
+		ext_size : XS_C_INT64 is once create Result.make end
 		ext_decimal_digits : XS_C_INT32 is once create Result.make end
 		ext_nullability : XS_C_INT32 is once create Result.make end
 

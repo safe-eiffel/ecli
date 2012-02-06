@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-		
+	description:
+
 		"SQL FLOAT values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -32,7 +32,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	column_precision: INTEGER is
+	column_precision: INTEGER_64 is
 		do
 			Result := 15
 		end
@@ -41,9 +41,9 @@ feature -- Status setting
 		once
 			Result := sql_float
 		end
-	
+
 	decimal_digits: INTEGER is
-		do 
+		do
 			Result := 0
 		end
 
@@ -63,7 +63,7 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Conversion
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
