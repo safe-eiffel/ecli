@@ -1,3 +1,5 @@
+#ifndef ECLI_C_H
+#define ECLI_C_H
 #include <ecli_c_spec.h>
 
 struct ecli_c_value {
@@ -15,3 +17,4 @@ struct ecli_c_array_value {
 		char values [count][length]
 	*/
 };
+#endif
