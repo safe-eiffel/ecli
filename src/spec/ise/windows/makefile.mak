@@ -1,6 +1,6 @@
 CC = cl
-ISE_PLATFORM=windows
-CFLAGS = -c -Ox -W3 -I$(ISE_EIFFEL)\studio\spec\$(ISE_PLATFORM)\include -I.
+ISE_PLATFORM=$(ISE_PLATFORM)
+CFLAGS = -c -Ox -W3 -I"$(ISE_EIFFEL)\studio\spec\$(ISE_PLATFORM)\include" -I.
 OBJ = ecli_msc.obj
 
 all:: ecli_var clean ecli_msc.lib
