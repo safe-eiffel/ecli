@@ -1,3 +1,36 @@
+2012-02-06	pgcrism
+	* Port to 64 bits:
+		Reviewed External API.
+		Experimented with inlining C code.
+		
+	!! On 64 bits platform, the size of the data is expressed in 64 bits; 
+	   However ECLI has an limited the size of data to 32 bits to stay compatible with 32 bits implementation.
+	   
+2012-01-13	pgcrism
+	* Support for smallint - INTEGER_16
+
+2011-12-22	pgcrism
+	* [FIX] Added environment Variables ODBC32LIBPATH and 
+		ODBCCP32LIBPATH to cope with Windows SDK7.1 linking error - 
+		
+		"The ODBC team investigated and confirmed that the issue exists in the version of ODBCCP32.LIB that 
+		is included with Visual Studio 2010 and the Windows 7 SDK. 
+		Two workarounds are currently available. 
+		One is using /MD instead of /MT. 
+		The other is to use the version of ODBCCP32.LIB from the Vista SDK. 
+		I hope one of these workarounds will help you.
+		Mike Robinson
+		Program Manager
+		Windows SDK Team"
+		
+		The added environment variables allow one to use the Vista SDK libraries. (This solution is fully working).
+
+		TODO:
+		 use those environment variables to target the SDK 6 librarires
+
+2011-09-05	pgcrism
+	* Fix: ECLI_STATEMENT: execute/bind_parameters only when parameters_count > 0
+
 2010-12-20
 	* New error reporting in ECLI_STATUS descendant classes
 	* New "stream" datatypes; you do not have to know the size on long (varchar or binary) data before reading/writing.
@@ -21,7 +54,7 @@
 2008-08-07
 	* ECLI_STRING_VALUE : fixed problem when retrieving strings with embedded NULL characters in them.
 
-20008-07-11
+2008-07-11
 
 	* ECLI_INTEGER_64 supported (Warning: Oracle driver does not support bindings with Integer_64).	
 	* Query Assistant : dropped usage of expat parser - just the Eiffel one.
