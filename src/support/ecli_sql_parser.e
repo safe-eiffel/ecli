@@ -21,6 +21,8 @@ feature {NONE} -- Initialization
 			-- initialize
 		do
 			parameter_marker := cli_marker
+			original_sql := ""
+			parsed_sql := ""
 		ensure
 			parameter_marker_set: parameter_marker = '?'
 		end
@@ -55,6 +57,18 @@ feature -- Status report
 			end
 		end
 
+	is_parameter_marker (c : CHARACTER) : BOOLEAN is
+		do
+			inspect c
+			when '?',':' then
+				Result := True
+			else
+				if c = parameter_marker then
+					Result := True
+				end
+			end
+		end
+
 feature -- Element change
 
 	set_parameter_marker (marker : CHARACTER) is
@@ -69,7 +83,7 @@ feature -- Element change
 
 feature -- Constants
 
-	allowed_parameter_markers : STRING is ":?~°@§"
+	allowed_parameter_markers : STRING is ":?~°§"
 
 feature -- Basic operations
 
@@ -99,7 +113,7 @@ feature -- Basic operations
 				index > sql_count
 			loop
 				c := original_sql.item (index)
-				if c= parameter_marker then
+				if is_parameter_marker (c) then
 					do_nothing
 				end
 				inspect state
@@ -116,7 +130,7 @@ feature -- Basic operations
 						parsed_sql.append_character (c)
 						previous_c := '%U'
 					else
-						if (is_separator (c) or c = parameter_marker) and not is_separator (previous_c) and previous_c /= '%U' then
+						if (is_separator (c) or is_parameter_marker (c)) and not is_separator (previous_c) and previous_c /= '%U' then
 							word_end := (index - 1).max (1)
 							if word_end >= word_begin then
 								callback.on_word (sql, word_begin, word_end)
@@ -125,7 +139,7 @@ feature -- Basic operations
 						if is_separator (previous_c) then
 							word_begin := index.max (1)
 						end
-						if c = parameter_marker then
+						if is_parameter_marker (c) then
 							state := State_parameter
 							callback.on_parameter_marker (sql, index)
 							parameter_begin := index + 1
@@ -232,7 +246,10 @@ feature {NONE} -- Implementation
 
 	state : INTEGER
 
-	State_sql, State_string_literal, State_table_literal, State_parameter : INTEGER is unique
+	State_sql : INTEGER = 101
+	State_string_literal : INTEGER = 102
+	State_table_literal : INTEGER = 103
+	State_parameter : INTEGER = 104
 
 	single_quote : CHARACTER is '%''
 	double_quote : CHARACTER is '%"'
