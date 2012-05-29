@@ -142,7 +142,7 @@ feature {NONE} -- Implementation
 			l_statement : ECLI_STATEMENT
 		do
 			l_statement ?= cursor
-			l_capacity := l_statement.results_description.item (i).size.min (50)
+			l_capacity := l_statement.results_description.item (i).size.min (50).as_integer_32
 			create Result.make (l_capacity)
 			Result.append_string (cursor.column_name (i))
 		end

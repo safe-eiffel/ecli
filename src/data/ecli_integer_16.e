@@ -58,7 +58,7 @@ feature -- Access
 
 feature -- Measurement
 
-	size : INTEGER is
+	size : INTEGER_64 is
 		do
 			Result := 5
 		end

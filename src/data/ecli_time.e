@@ -173,7 +173,7 @@ feature -- Status report
 
 feature -- Measurement
 
-	size : INTEGER is
+	size : INTEGER_64 is
 		do
 			Result := 8
 		end
@@ -190,7 +190,7 @@ feature -- Measurement
 
 	display_size: INTEGER is
 		do
-			Result := size
+			Result := size.as_integer_32
 		end
 
 feature -- Status setting

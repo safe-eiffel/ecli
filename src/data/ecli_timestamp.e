@@ -165,7 +165,7 @@ feature -- Measurement
 			days_in_month_not_more_31: Result <= 31
 		end
 
-	size : INTEGER is
+	size : INTEGER_64 is
 		local
 			l_decimal_digits : INTEGER
 		do
@@ -182,7 +182,7 @@ feature -- Measurement
 
 	display_size: INTEGER is
 		do
-			Result := size
+			Result := size.as_integer_32
 		end
 
 feature -- Status report

@@ -11,7 +11,7 @@
 			 * ECLI_C_BCCDIR	directory where bcc resides if it is used
 			 * GOBO_CC		type of C compiler; values (bcc|msc|lcc|gcc)
 			 * GOBO_OS		Operating system; values (windows|linux)
-			 * GOBO_EIFFEL		Eiffel compiler (ise|se|ve)
+			 * GOBO_EIFFEL		Eiffel compiler (ise|ve)
 			 * SAFE_KERNEL		path of SAFE kernel
 			]
 
@@ -38,16 +38,18 @@
 		<cluster name="support"/>
 
 		<option unless="${GOBO_OS}=windows">
+			<option name="c_compiler_options" value="-I${ECLI}/src/spec/C"/>
+			<option name="c_compiler_options" value="-I${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}"/>
 			<option name="link" value="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libecli_c.a"/>
 			<option name="link" value="-lodbc"/>
 			<option name="link" value="-lodbcinst"/>
 		</option>
 		<option if="${GOBO_OS}=windows">
+			<option name="c_compiler_options" value="-I${ECLI}/src/spec/C"/>
+			<option name="c_compiler_options" value="-I${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}"/>
 			<option name="link" value="${ECLI}\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\ecli_${GOBO_CC}.lib"/>
 			<option name="link" value="${ODBC32LIBPATH}ODBC32.lib" unless="${GOBO_CC}=bcc"/>
 			<option name="link" value="${ODBCCP32LIBPATH}ODBCCP32.lib" unless="${GOBO_CC}=bcc"/>
-			<option name="link" value="${ECLI_C_BCCDIR}\lib\PSDK\ODBC32.lib" if="${GOBO_CC}=bcc"/>
-			<option name="link" value="${ECLI_C_BCCDIR}\lib\PSDK\ODBCCP32.lib" if="${GOBO_CC}=bcc"/>
 			<option name="link" value="-lodbc32" if="${GOBO_CC}=gcc"/>
 		</option>
 	</cluster>

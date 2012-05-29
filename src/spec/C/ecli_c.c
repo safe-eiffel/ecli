@@ -599,13 +599,15 @@ EIF_BOOLEAN ecli_c_sql_config_datasource (EIF_POINTER hwndParent, EIF_INTEGER fR
 }
 
 /* Accessors and Modifiers for struct ecli_c_value data type */
+/* WARNING: 64 bit sensible */
 
-EIF_POINTER ecli_c_alloc_value (EIF_INTEGER c_buffer_length) {
+/*64 bit*/
+EIF_POINTER ecli_c_alloc_value (EIF_INTEGER_64 c_buffer_length) {
 	struct ecli_c_value *res;
 
 	res = (struct ecli_c_value *) calloc(sizeof(struct ecli_c_value)+c_buffer_length, 1);
 	if (res)
-		res->length = (long) c_buffer_length;
+		res->length = (SQLLEN) c_buffer_length;
 	return (EIF_POINTER) res;
 }
 
@@ -613,12 +615,16 @@ void ecli_c_free_value (EIF_POINTER ptr) {
 	free (ptr);
 }
 
-void ecli_c_value_set_length_indicator (EIF_POINTER v, EIF_INTEGER li) {
-	((struct ecli_c_value*)v)->length_indicator = (long) li;
+/*64 bit*/
+
+/* length: buffer length */
+EIF_INTEGER_64 ecli_c_value_get_length (EIF_POINTER v) {
+	return (EIF_INTEGER_64) 	((struct ecli_c_value*)v)->length;
 }
 
-EIF_INTEGER ecli_c_value_get_length (EIF_POINTER v) {
-	return (EIF_INTEGER) 	((struct ecli_c_value*)v)->length;
+/* length_indicator: element length */
+void ecli_c_value_set_length_indicator (EIF_POINTER v, EIF_INTEGER_64 li) {
+	((struct ecli_c_value*)v)->length_indicator = (SQLLEN) li;
 }
 
 EIF_INTEGER ecli_c_value_get_length_indicator (EIF_POINTER v) {
@@ -629,6 +635,7 @@ EIF_POINTER ecli_c_value_get_length_indicator_pointer (EIF_POINTER v) {
 	return (EIF_POINTER) 	&(((struct ecli_c_value*)v)->length_indicator);
 }
 
+/* value */
 void ecli_c_value_set_value (EIF_POINTER v, EIF_POINTER new_value, EIF_INTEGER actual_length) {
 	memcpy ((void*)((struct ecli_c_value*)v)->value, (const void*)new_value, actual_length);
 }

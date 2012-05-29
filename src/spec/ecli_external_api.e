@@ -4,6 +4,13 @@ indexing
 
 			"CLI C Interface."
 
+	implementation_note: "[
+			64 bit:
+			
+			All sizes/length are 64 bit; is current platform is 32 bit, a precondition tests the value.
+
+			]"
+
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
@@ -14,6 +21,25 @@ class ECLI_EXTERNAL_API
 inherit
 
 	ECLI_API_CONSTANTS
+
+	KL_SHARED_PLATFORM
+
+feature -- Status report
+
+	platform_compatible_length (a_length : INTEGER_64) : BOOLEAN
+		local
+			max_bits : INTEGER_32
+			max_val : INTEGER_64
+			l_natural : NATURAL_64
+		do
+			max_bits := platform.pointer_bits
+			if max_bits > 32 then
+				max_val := platform.maximum_integer_64
+			else
+				max_val := platform.maximum_integer
+			end
+			Result := a_length <= max_val
+		end
 
 feature {NONE} -- Implementation
 
@@ -57,6 +83,15 @@ feature {NONE} -- Implementation
 
 	ecli_c_set_integer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : INTEGER)  : INTEGER is
 		external "C"
+--SQLSetConnectAttr
+--When the Attribute parameter has one of the following values, a 64-bit value is passed in Value:
+--SQL_ATTR_QUIET_MODE
+--SQLSetConnectAttr
+--When the Option parameter has one of the following values, a 64-bit value is passed in *Value:
+--SQL_MAX_LENGTH
+--SQL_MAX_ROWS
+--SQL_ROWSET_SIZE
+--SQL_KEYSET_SIZE
 		end
 
 	ecli_c_set_pointer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
@@ -68,6 +103,10 @@ feature {NONE} -- Implementation
 		end
 
 	ecli_c_get_integer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER)  : INTEGER is
+--SQLGetConnectAttr
+--When the Attribute parameter has one of the following values, a 64-bit value is returned in Value:
+--SQL_ATTR_QUIET_MODE
+
 		external "C"
 		end
 
@@ -112,7 +151,17 @@ feature {NONE} -- Implementation
 		end
 
 	ecli_c_row_count (stmt : POINTER; count : POINTER) : INTEGER is
-		external "C"
+			-- Note: 64 bit
+		external "C inline use <sql.h>"
+--SQLRowCount (SQLHSTMT StatementHandle, SQLLEN* RowCount);
+		alias
+			"[
+				return (EIF_INTEGER) 
+					(SQLRowCount (
+						(SQLHSTMT) $stmt, 
+						(SQLLEN*) $count)
+					);
+			]"
 		end
 
 	ecli_c_parameter_count (stmt : POINTER; count : POINTER) : INTEGER  is
@@ -140,21 +189,98 @@ feature {NONE} -- Implementation
 		end
 
 	ecli_c_bind_parameter (stmt : POINTER;
-			index, direction, c_type, sql_type, sql_size, sql_decimal_digits : INTEGER;
-			value : POINTER; buffer_length : INTEGER; ptr_value_length : POINTER) : INTEGER  is
-		external "C"
+			index, direction, c_type, sql_type: INTEGER;
+			sql_size : INTEGER_64;
+			sql_decimal_digits : INTEGER;
+			value : POINTER;
+			buffer_length : INTEGER_64;
+			ptr_value_length : POINTER) : INTEGER  is
+		require
+			buffer_length_platform_compatible: platform_compatible_length (buffer_length)
+			sql_size_platform_compatible: platform_compatible_length (sql_size)
+		external "C inline use <sql.h>"
+--SQLBindParameter (
+-- 	* SQLHSTMT hstmt,
+--	* SQLUSMALLINT ipar,
+--  * SQLSMALLINT fParamType,
+--	*  SQLSMALLINT fCType,
+--  * SQLSMALLINT fSqlType,
+--	* SQLULEN cbColDef,
+-- 	* SQLSMALLINT ibScale,
+--  * SQLPOINTER rgbValue,
+--	 SQLLEN cbValueMax,
+--	 SQLLEN *pcbValue);
+		alias "[
+			return (EIF_INTEGER) SQLBindParameter(
+									(SQLHSTMT) 		$stmt,
+									(SQLUSMALLINT)	$index,
+									(SQLSMALLINT)	$direction,
+									(SQLSMALLINT)	$c_type,
+									(SQLSMALLINT)	$sql_type,
+									(SQLULEN)		$sql_size,
+									(SQLSMALLINT)	$sql_decimal_digits,
+									(SQLPOINTER)	$value,
+									(SQLLEN)		$buffer_length,
+									(SQLLEN *)		$ptr_value_length);
+			]"
 		end
 
-	ecli_c_bind_result (stmt : POINTER; index, c_type : INTEGER; value : POINTER; buffer_length : INTEGER; len_indicator : POINTER) : INTEGER is
-		external "C"
+	ecli_c_bind_result (stmt : POINTER; index, c_type : INTEGER; value : POINTER; buffer_length : INTEGER_64; len_indicator : POINTER) : INTEGER is
+			-- note: 64bit
+		require
+			buffer_length_ok: platform_compatible_length (buffer_length)
+		external "C inline use <ecli_c.h>"
+--SQLBindCol (SQLHSTMT StatementHandle, SQLUSMALLINT ColumnNumber,
+--   SQLSMALLINT TargetType, SQLPOINTER TargetValue, SQLLEN BufferLength,
+--   SQLLEN * StrLen_or_Ind);
+		alias "[
+			return (EIF_INTEGER) (SQLBindCol(
+					(SQLHSTMT)			$stmt,
+					(SQLUSMALLINT)	    $index,
+					(SQLSMALLINT)		$c_type,
+					(SQLPOINTER)		$value,
+					(SQLLEN)			$buffer_length,
+					(SQLLEN*)		$len_indicator));
+		]"
 		end
 
 	ecli_c_describe_parameter (stmt : POINTER; index : INTEGER; sql_type, sql_size, sql_decimal_digits, sql_nullability : POINTER) : INTEGER is
-		external "C"
+		external "C inline use <ecli_c.h>"
+--SQLDescribeParam (
+-- SQLHSTMT hstmt,
+-- SQLUSMALLINT ipar,
+-- SQLSMALLINT *pfSqlType,
+-- SQLULEN *pcbParamDef,
+-- SQLSMALLINT *pibScale,
+-- SQLSMALLINT *pfNullable);
+		alias "[
+				SQLSMALLINT p_sql_type;
+				SQLUINTEGER p_sql_size;
+				SQLSMALLINT p_sql_decimal_digits;
+				SQLSMALLINT p_sql_nullability;
+				EIF_INTEGER res;
+				res = (EIF_INTEGER) SQLDescribeParam (
+											(SQLHSTMT) 		$stmt,
+											(SQLUSMALLINT) 	$index,
+											(SQLSMALLINT *)	&p_sql_type,
+											(SQLULEN *)	&p_sql_size,
+											(SQLSMALLINT *)	&p_sql_decimal_digits,
+											(SQLSMALLINT *)	&p_sql_nullability);
+				*((EIF_INTEGER*) $sql_type)= (EIF_INTEGER) p_sql_type;
+				*((EIF_INTEGER_64*) $sql_size)= (EIF_INTEGER_64) p_sql_size;
+				*((EIF_INTEGER*) $sql_decimal_digits)= (EIF_INTEGER) p_sql_decimal_digits;
+				*((EIF_INTEGER*) $sql_nullability)= (EIF_INTEGER) p_sql_nullability;
+				return res;
+		]"
 		end
 
 	ecli_c_describe_column (stmt : POINTER; index : INTEGER; col_name : POINTER; max_name_length : INTEGER; actual_name_length : POINTER; sql_type, sql_size, sql_decimal_digits, sql_nullability : POINTER) : INTEGER is
 		external "C"
+--SQLDescribeCol (SQLHSTMT StatementHandle, SQLUSMALLINT ColumnNumber,
+--   SQLCHAR *ColumnName, SQLSMALLINT BufferLength,
+--   SQLSMALLINT *NameLength, SQLSMALLINT *DataType, SQLULEN *ColumnSize,
+--   SQLSMALLINT *DecimalDigits, SQLSMALLINT *Nullable);
+
 		end
 
 	ecli_c_get_type_info (stmt : POINTER; data_type : INTEGER) : INTEGER is
@@ -193,6 +319,10 @@ feature {NONE} -- Implementation
 
 	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER; len_indicator_pointer : POINTER) : INTEGER is
 		external "C"
+--SQLGetData (SQLHSTMT StatementHandle, SQLUSMALLINT ColumnNumber,
+--   SQLSMALLINT TargetType, SQLPOINTER TargetValue, SQLLEN BufferLength,
+--   SQLLEN *StrLen_or_Ind);
+
 		end
 
 	ecli_c_param_data (stmt, value_ptr_ptr : POINTER)  : INTEGER is
@@ -201,6 +331,8 @@ feature {NONE} -- Implementation
 
 	ecli_c_put_data (stmt, data_ptr : POINTER; str_len_or_ind : INTEGER)  : INTEGER is
 		external "C"
+--SQLPutData (SQLHSTMT StatementHandle, SQLPOINTER Data,
+--   SQLLEN StrLen_or_Ind);
 		end
 
 	ecli_c_len_data_at_exe (len : INTEGER) : INTEGER is
@@ -237,6 +369,14 @@ feature {NONE} -- Implementation
 
 	ecli_c_sql_get_info (handle : POINTER; info_type: INTEGER; info_value_ptr: POINTER; buffer_length : INTEGER; string_length_ptr: POINTER) : INTEGER is
 		external "C"
+--SQLGetInfo
+--When the InfoType parameter has one of the following values, a 64-bit value is returned in *InfoValuePtr:
+--SQL_DRIVER_HENV
+--SQL_DRIVER_HDBC
+--SQL_DRIVER_HLIB
+--When InfoType has either of the following 2 values *InfoValuePtr is 64-bits on both input and ouput:
+--SQL_DRIVER_HSTMT
+--SQL_DRIVER_HDESC
 		end
 
 	ecli_c_sql_drivers (handle : POINTER;
@@ -264,7 +404,10 @@ feature {NONE} -- Data Srouce Configuration
 --		 StringLength	:	POINTER -- *POINTER -- *SQLSMALLINT			
 feature {NONE} -- Value handling functions
 
-	ecli_c_alloc_value (buffer_length : INTEGER) : POINTER is
+	ecli_c_alloc_value (buffer_length : INTEGER_64) : POINTER is
+-- 64 bit: length of elementary data cannot be larger than 2**32-1
+		require
+			platform_compatible_length (buffer_length)
 		external "C"
 		end
 
@@ -272,8 +415,15 @@ feature {NONE} -- Value handling functions
 		external "C"
 		end
 
-	ecli_c_value_set_length_indicator (pointer : POINTER; length : INTEGER) is
-		external "C"
+	ecli_c_value_set_length_indicator (pointer : POINTER; length : INTEGER_64) is
+-- 64 bit: length indicator = actual length of data.
+		require
+			platform_compatible_length (length)
+		external "C inline use <ecli_c.h>"
+		alias
+			"[
+				((struct ecli_c_value*) $pointer)->length_indicator = (SQLLEN) $length;
+			]"
 		end
 
 	ecli_c_value_get_length (pointer : POINTER) : INTEGER is

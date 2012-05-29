@@ -77,11 +77,11 @@ feature -- Measurement
 	decimal_digits: INTEGER
 			-- number of decimal digits
 
-	size: INTEGER
+	size: INTEGER_64
 
 	display_size: INTEGER is
 		do
-			Result := size
+			Result := size.as_integer_32
 		end
 
 	transfer_octet_length: INTEGER = 4096
