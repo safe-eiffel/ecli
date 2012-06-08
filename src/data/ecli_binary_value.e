@@ -24,7 +24,7 @@ feature -- Access
 	item : STRING is
 		do
 			if is_null then
-				Result := Void
+				create Result.make_empty
 			else
 				ext_item.copy_substring_to (1, count, impl_item)
 				Result := impl_item

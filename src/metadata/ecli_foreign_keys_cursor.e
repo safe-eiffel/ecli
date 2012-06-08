@@ -18,7 +18,8 @@ inherit
 	ECLI_PRIMARY_KEY_CURSOR
 		redefine
 			item, make, forth, do_query_metadata, definition,
-			set_buffer_into_cursor, create_buffers, create_item
+			set_buffer_into_cursor, create_buffers, create_item,
+			create_buffer_objects
 		end
 
 create
@@ -38,21 +39,23 @@ feature -- Access
 	item : ECLI_FOREIGN_KEY is
 			-- current type description
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		end
 
-	next_item : like item
+	next_item : detachable like item
 
 feature -- Cursor Movement
 
 	forth is
 			-- advance cursor to next item if any
 		do
-			if impl_item = Void or else creating_item or else next_item /= Void then
+			if not attached impl_item or else creating_item or else next_item /= Void then
 				if creating_item then
 					fetch_next_row
-				elseif next_item /= Void then
-					impl_item := next_item
+				elseif attached next_item as l_next_item then
+					impl_item := l_next_item
 					next_item := Void
 					fill_item
 				end
@@ -64,11 +67,11 @@ feature -- Cursor Movement
 	create_item is
 			-- create item at current cursor position
 		do
-			if next_item /= Void then
-				impl_item := next_item
+			if attached next_item as ni then
+				impl_item := ni
 				next_item := Void
 				fill_item
-			elseif impl_item = Void then
+			elseif not attached impl_item then
 				create impl_item.make (Current)
 				fill_item
 			else
@@ -122,6 +125,12 @@ feature {NONE} -- Implementation
 	create_buffers is
 			-- create buffers for cursor
 		do
+			Precursor
+		end
+
+	create_buffer_objects
+		do
+			Precursor
 			create buffer_pk_table_cat.make (255)
 			create buffer_pk_table_schem.make (255)
 			create buffer_pk_table_name.make (255)
@@ -131,7 +140,6 @@ feature {NONE} -- Implementation
 			create buffer_pk_name.make (255)
 			create buffer_fk_name.make (255)
 			create buffer_deferrability.make
-			Precursor
 		end
 
 	set_buffer_into_cursor is

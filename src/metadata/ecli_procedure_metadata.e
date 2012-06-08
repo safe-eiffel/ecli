@@ -23,7 +23,7 @@ inherit
 
 	ECLI_API_CONSTANTS
 		undefine
-			out
+			out, default_create
 		end
 
 create
@@ -35,8 +35,10 @@ feature {NONE} -- Initilization
 	make (cursor : ECLI_PROCEDURES_CURSOR) is
 			--
 		require
-			cursor_valid: cursor /= Void and then not cursor.off
+			cursor_not_void: cursor /= Void  --FIXME: VS-DEL
+			cursor_not_off: not cursor.off
 		do
+			default_create
 			set_catalog (cursor.buffer_catalog_name)
 			set_schema (cursor.buffer_schema_name)
 			set_name (cursor.buffer_procedure_name)
@@ -50,7 +52,7 @@ feature {NONE} -- Initilization
 
 feature -- Access
 
-	description : STRING
+	description : detachable STRING
 			-- Description of procedure.
 
 	type : INTEGER

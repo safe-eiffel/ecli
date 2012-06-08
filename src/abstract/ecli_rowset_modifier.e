@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that modify the database one rowset at a time."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,28 +17,38 @@ inherit
 		rename
 			make as statement_make, open as statement_open, bind_parameters as statement_bind_parameters,
 			execute as statement_execute
-		export 
-			{NONE} results, results_description, start, forth, go_after, off, set_results, close_cursor, 
+		export
+			{NONE} results, results_description, start, forth, go_after, off, set_results, close_cursor,
 				describe_results, after, before, cursor_status, Cursor_after, Cursor_before, Cursor_in,
-				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql, 
+				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql,
 				cursor, set_cursor
 		redefine
-			parameter_anchor
+			parameter_anchor, default_create, default_parameter
 		end
-	
+
 	ECLI_ROWSET_CAPABLE
-	
+		undefine
+			default_create
+		end
+
 create
 
 	make
-	
+
 feature {NONE} -- Initialization
+
+	default_create
+		do
+			Precursor {ECLI_STATEMENT}
+			create status_array.make_empty
+		end
 
 	make, open (a_session : ECLI_SESSION; a_sql : STRING; a_row_capacity : INTEGER) is
 			-- create modifier on `a_session', using SQL `a_sql' for maximum `a_row_capacity' rows
 		require
-			session_connected: a_session /= Void and then a_session.is_connected
-			sql_not_void: a_sql /= Void
+			asession_not_void: a_session /= Void --FIXME: VS-DEL
+			a_session_connected: a_session.is_connected
+			sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			a_row_capacity_valid: a_row_capacity >= 1
 		do
 			make_row_count_capable
@@ -55,9 +65,9 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
-	
-	parameter_anchor : ECLI_ARRAYED_VALUE is do end
-	
+
+	parameter_anchor : detachable ECLI_ARRAYED_VALUE is do end
+
 feature -- Status report
 
 	valid_parameters_count (a_row_count : INTEGER) : BOOLEAN is
@@ -69,11 +79,11 @@ feature -- Status report
 			Result := a_row_count <= row_capacity
 			from
 				index := 1
-				last_count := -1 
+				last_count := -1
 			until
 				index > parameters.count
 			loop
-				Result := Result and a_row_count <= parameters.item (index).count 
+				Result := Result and a_row_count <= parameters.item (index).count
 				if last_count > -1 then
 					Result := Result and (last_count = parameters.item (index).count)
 				end
@@ -99,7 +109,7 @@ feature -- Basic operations
 		end
 
 	bind_parameters is
-			-- bind parameters 
+			-- bind parameters
 		local
 			index : INTEGER
 		do
@@ -107,7 +117,7 @@ feature -- Basic operations
 			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_param_bind_type, Sql_parameter_bind_by_column))
 			--| bind status array
 			set_status ("ecli_c_set_pointer_statement_attribute", ecli_c_set_pointer_statement_attribute (handle, Sql_attr_param_status_ptr, rowset_status.to_external, 0))
-			
+
 			--| bind parameter arrays
 			from index := 1
 			until index > parameters.upper
@@ -118,7 +128,7 @@ feature -- Basic operations
 			bound_parameters := True
 		ensure
 			bound_parameters: bound_parameters
-		end		
+		end
 
 feature {NONE} -- Implementation
 
@@ -134,11 +144,16 @@ feature {NONE} -- Implementation
 		ensure
 			command: not has_result_set
 		end
-	
+
 	make_row_count_capable is
-			-- 
+			--
 		do
 			create impl_row_count.make
 		end
-		
+
+	default_parameter : attached like parameter_anchor
+		do
+			create {ECLI_ARRAYED_VARCHAR}Result.make (1, row_count)
+		end
+
 end

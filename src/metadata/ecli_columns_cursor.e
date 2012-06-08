@@ -19,32 +19,22 @@ inherit
 		rename
 			queried_name as queried_table
 		redefine
-			item, impl_item, make
+			item, impl_item, make, default_create
 		end
 
 create
 
-	make, make_query_column, make_all_columns
+	make, make_query_column -- , make_all_columns
 
 feature {NONE} -- Initialization
 
-	make_all_columns (a_session : ECLI_SESSION; a_table : STRING) is
-			-- make cursor on all columns of `a_table'
-		obsolete
-			"Use `make' or `make_query_column'"
-		require
-			session_opened: a_session /= Void and then a_session.is_connected
-			a_table_not_void: a_table /= Void
-		local
-			search_criteria : ECLI_NAMED_METADATA
+	default_create
 		do
-			create search_criteria.make (Void, Void, a_table)
-			make (search_criteria, a_session)
-		ensure
-			executed: is_ok implies is_executed
+			Precursor
+			create_buffer_values
 		end
 
-	make_query_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : STRING; a_session : ECLI_SESSION) is
+	make_query_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : detachable STRING; a_session : ECLI_SESSION) is
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
@@ -62,19 +52,25 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	queried_column : STRING is
+	queried_column : detachable STRING is
 			-- queried column name; Void if all columns in a table
 		do
-			if queried_column_impl /= Void then
-				Result := queried_column_impl.as_string
+			if attached queried_column_impl as q then
+				Result := q.as_string
 			end
 		end
 
 	item : ECLI_COLUMN is
 			-- item at current cursor position
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		end
+
+feature -- Status report
+
+-- 	buffers_created : BOOLEAN
 
 feature -- Cursor Movement
 
@@ -116,8 +112,11 @@ feature {NONE} -- Implementation
 	create_buffers is
 				-- create buffers for cursor
 		do
-			create_buffer_values
-			set_buffer_values_array
+--			if not buffers_created then
+--				create_buffer_values
+				set_buffer_values_array
+--				buffers_created := True
+--	end
 		end
 
 	create_buffer_values is
@@ -166,7 +165,7 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	impl_item : like item
+	impl_item : detachable like item
 
 	definition : STRING is once Result := "SQLColumns" end
 
@@ -178,7 +177,7 @@ feature {NONE} -- Implementation
 		do
 			if queried_column /= Void then
 				a_column := queried_column_impl.handle
-				a_column_length := queried_column.count
+				a_column_length := queried_column_impl.count
 			end
 			Result := ecli_c_get_columns ( handle,
 				a_catalog, a_catalog_length,
@@ -187,8 +186,8 @@ feature {NONE} -- Implementation
 				a_column, a_column_length)
 		end
 
-	queried_column_impl : XS_C_STRING
+	queried_column_impl : detachable XS_C_STRING
 
 	query_metadata_feature_name : STRING is do Result := "ecli_c_get_columns" end
-	
+
 end

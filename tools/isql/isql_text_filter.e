@@ -25,9 +25,23 @@ feature {NONE} -- Initialization
 		require
 			a_context_not_void: a_context /= Void
 		do
+			default_create
 			context := a_context
 		ensure
 			context_set: context = a_context
+		end
+
+	make_null
+		do
+			default_create
+
+		end
+
+feature -- Trick
+
+	set_context (a_context: like context)
+		do
+
 		end
 
 feature -- Access

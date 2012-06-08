@@ -34,11 +34,11 @@ feature {NONE} -- Initialization
 			print_banner
 			-- session opening
 			parse_arguments
-			if error_message /= Void then
+			if not error_message.is_empty then
 				print_usage
 			else
 				do_initial_connection
-				if session = Void or else session /= Void and then not session.is_connected then
+				if session = Void or else attached session as l_session and then not l_session.is_connected then
 					current_context.filter.begin_error
 					current_context.filter.put_error ("WARNING : NO session connected !%N%
 						%Commands usage is restricted. Type HELP more information.%N%
@@ -52,13 +52,13 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	dsn : STRING
+	dsn : detachable STRING
 				-- Data source name
 
-	user: STRING
+	user: detachable STRING
 				-- User name
 
-	password : STRING
+	password : detachable STRING
 				-- Password
 
 	sql_file_name : STRING
@@ -67,7 +67,7 @@ feature -- Access
 	error_message : STRING
 				-- current error message
 
-	session : ECLI_SESSION
+	session : detachable ECLI_SESSION
 				-- database session
 
 	output_file : KI_TEXT_OUTPUT_STREAM
@@ -107,9 +107,10 @@ feature {NONE} -- Implementation
 		do
 			from
 				index := 1
-				error_message := Void
+				create error_message.make_empty
+				create sql_file_name.make_empty
 			until
-				error_message /= Void or else index > Arguments.argument_count
+				not error_message.is_empty or else index > Arguments.argument_count
 			loop
 				current_argument := Arguments.argument (index)
 				if current_argument.item (1) = '-' then
@@ -148,7 +149,7 @@ feature {NONE} -- Implementation
 			error_message.append_string (value)
 			error_message.append_string ("'")
 		ensure
-			error_message /= Void
+			not_error_message_empty: not error_message.is_empty
 		end
 
 	print_banner is
@@ -206,8 +207,10 @@ feature {NONE} -- Implementation
 			std : KL_STANDARD_FILES
 		do
 			create std
-			output_file := std.output
-			create_current_context (output_file, commands)
+			check attached std.output as o then
+				output_file := o
+				create_current_context (output_file, commands)
+			end
 		ensure
 			current_context_created: current_context /= Void
 		end
@@ -215,23 +218,25 @@ feature {NONE} -- Implementation
 	do_initial_connection is
 		local
 			simple_login : ECLI_SIMPLE_LOGIN
+			l_session : attached like session
 		do
 			if echo_output then
 				current_context.enable_echo_output
 			end
-			if dsn /= Void and then user /= Void and then password /= Void then
-				create session.make_default
-				create simple_login.make (dsn, user, password)
-				session.set_login_strategy (simple_login)
-				session.connect
-				current_context.set_session (session)
-				if session.is_connected then
+			if attached dsn as l_dsn and then attached user as l_user and then attached password as l_password then
+				create l_session.make_default
+				session := l_session
+				create simple_login.make (l_dsn, l_user, l_password)
+				l_session.set_login_strategy (simple_login)
+				l_session.connect
+				current_context.set_session (l_session)
+				if l_session.is_connected then
 					--| create default values for system variables
 					current_context.filter.begin_error
 					current_context.filter.put_error ("Connected %N")
 					current_context.filter.end_error
 				else
-					print_error (session)
+					print_error (l_session)
 				end
 			end
 		end

@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Publisher part of the publish/subscribe pattern."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -9,28 +9,41 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class PAT_PUBLISHER [G -> PAT_SUBSCRIBER]
+class PAT_PUBLISHER [G -> PAT_SUBSCRIBER[PAT_PUBLISHER[G]]]
+
+inherit
+	ANY
+		redefine
+			default_create
+		end
+
+feature {} -- Initialization
+
+	default_create
+		do
+			create {DS_LINKED_LIST[G]}subscribers.make
+		end
 
 feature -- Status report
 
 	has_subscribed (subscriber : G) : BOOLEAN is
 			-- has this 'subscriber' subscribed to this service ?
 		require
-			valid_subscriber: subscriber /= Void
+			valid_subscriber: subscriber /= Void --FIXME: VS-DEL
 		do
 			Result := subscribers.has (subscriber)
 		end
 
 	count : INTEGER
 		-- count of subscribers
-		
+
 feature -- Element change
 
 	subscribe (subscriber : G) is
 			-- subscribe statement 's'
 		require
-			valid_statement: subscriber /= Void
-			not_subscribeed:  not has_subscribed (subscriber)
+			valid_subscriber: subscriber /= Void --FIXME: VS-DEL
+			not_already_subscribed:  not has_subscribed (subscriber)
 		do
 			subscribers.put_last (subscriber)
 			count := count + 1
@@ -44,7 +57,7 @@ feature -- Removal
 	unsubscribe (subscriber : G) is
 			-- de-subscribe statement 's'
 		require
-			valid_statement: subscriber /= Void
+			valid_subscriber: subscriber /= Void --FIXME: VS-DEL
 			subscribed: has_subscribed (subscriber)
 		do
 			subscribers.delete (subscriber)
@@ -56,16 +69,6 @@ feature -- Removal
 
 feature {NONE} -- Implementation
 
-	subscribers : DS_LIST[G] is
-		do
-			if impl_subscribers = Void then
-				create {DS_LINKED_LIST[G]} impl_subscribers.make
-			end
-			Result := impl_subscribers
-		ensure
-			Result /= Void
-		end
-
-	impl_subscribers : DS_LIST [G]
+	subscribers : DS_LIST[G]
 
 end

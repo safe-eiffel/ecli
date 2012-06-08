@@ -19,43 +19,19 @@ inherit
 		rename
 			queried_name as queried_table
 		redefine
-			item, impl_item
+			item, impl_item, default_create
 		end
 
 create
 
-	make_all_tables, make_table, make
+	make
 
 feature {NONE} -- Initialization
 
-	make_all_tables (a_session : ECLI_SESSION) is
-			-- make cursor on all tables of database underlying `session'
-		obsolete
-			"Use feature `make' ."
-		require
-			session_opened: a_session /= Void and then a_session.is_connected
-		local
-			search_criteria: ECLI_NAMED_METADATA
+	default_create
 		do
-			create search_criteria.make (Void, Void, Void)
-			make (search_criteria, a_session)
-		ensure
-			executed: is_ok implies is_executed
-		end
-
-	make_table (a_table_name : STRING; a_session : ECLI_SESSION) is
-			-- make for `a_table_name'
-		obsolete
-			" Use feature `make'."
-		require
-			a_table_name_not_void: a_table_name /= Void
-			a_sessin_not_void: a_session /= Void
-			a_session_connected: a_session.is_connected
-		local
-			search_criteria: ECLI_NAMED_METADATA
-		do
-			create search_criteria.make (Void, Void, a_table_name)
-			make (search_criteria, a_session)
+			Precursor
+			create_object_buffers
 		end
 
 feature -- Access
@@ -63,7 +39,9 @@ feature -- Access
 	item : ECLI_TABLE is
 			-- item at current cursor position
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		end
 
 feature -- Cursor Movement
@@ -89,12 +67,6 @@ feature {NONE} -- Implementation
 	create_buffers is
 				-- create buffers for cursor
 		do
-			create buffer_catalog_name.make (255)
-			create buffer_schema_name.make (255)
-			create buffer_table_name.make (255)
-			create buffer_table_type.make (255)
-			create buffer_description.make (255)
-
 			set_results (<<
 					buffer_catalog_name,
 					buffer_schema_name,
@@ -104,7 +76,17 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	impl_item : like item
+	create_object_buffers
+		do
+			create buffer_catalog_name.make (255)
+			create buffer_schema_name.make (255)
+			create buffer_table_name.make (255)
+			create buffer_table_type.make (255)
+			create buffer_description.make (255)
+
+		end
+
+	impl_item : detachable like item
 
 	definition : STRING is once Result := "SQLTables" end
 

@@ -35,13 +35,13 @@ feature {NONE} -- Initialization
 	make (cursor : ECLI_COLUMNS_CURSOR) is
 			-- create from `cursor' current position
 		require
-			cursor_not_void: cursor /= Void
+			cursor_not_void: cursor /= Void --FIXME: VS-DEL
 			cursor_not_off: not cursor.off
 		do
 			set_catalog (cursor.buffer_table_cat)
 			set_schema (cursor.buffer_table_schem )
 			if cursor.buffer_table_name.is_null then
-
+				table := ""
 			else
 				table := cursor.buffer_table_name.as_string
 			end
@@ -67,6 +67,9 @@ feature {NONE} -- Initialization
 			nullability := cursor.buffer_nullable.as_integer
 			if not cursor.buffer_remarks.is_null then
 				description := cursor.buffer_remarks.as_string
+				is_description_applicable := True
+			else
+				create description.make_empty
 			end
 		end
 
@@ -110,6 +113,9 @@ feature -- Measurement
 	is_precision_radix_applicable : BOOLEAN
 			-- is this a numeric type, where 'precision_radix' is applicable ?
 
+	is_description_applicable : BOOLEAN
+			-- is the description applicable ?
+			
 feature -- Conversion
 
 	out : STRING is
@@ -145,7 +151,7 @@ feature -- Conversion
 				Result.append_string (precision_radix.out)
 			end
 			Result.append_string ("%T")
-			if description /= Void then
+			if is_description_applicable then
 				Result.append_string (description)
 			end
 		end

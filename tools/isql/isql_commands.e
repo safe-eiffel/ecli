@@ -82,7 +82,9 @@ feature -- Access
 
 	new_cursor : DS_LIST_CURSOR [ISQL_COMMAND] is
 		do
-			Result := commands.new_cursor
+			check attached commands.new_cursor as c then
+				Result := c
+			end
 		end
 
 feature -- Measurement
@@ -115,7 +117,7 @@ feature -- Basic operations
 		do
 			create l_command_text.make (40)
 			l_command_text.append_string ("execute")
-			if file_name /= Void then
+			if not file_name.is_empty then
 				l_command_text.append_character (' ')
 				l_command_text.append_string (file_name)
 			end

@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Objects that know the iso TIMESTAMP format and are able to convert from/to it."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,13 +14,27 @@ class ECLI_TIMESTAMP_FORMAT
 inherit
 
 	ECLI_FORMAT [DT_DATE_TIME]
-	
+		redefine
+			default_create
+		end
+
 	ECLI_ISO_FORMAT_CONSTANTS
-	
+		redefine
+			default_create
+		end
+
+feature {} -- Initialization
+
+	default_create
+		do
+			create last_result.make_from_epoch (0)
+		end
+
+
 feature -- Access
 
-	item : DT_DATE_TIME
-	
+--	item : DT_DATE_TIME
+
 feature -- Measurement
 
 feature -- Status report
@@ -32,13 +46,14 @@ feature -- Cursor movement
 feature -- Element change
 
 	create_from_string (string : STRING) is
+			-- Create `last_result' from `string'
 		local
 			year, month, day, hour, minute, second, fraction : INTEGER
 		do
 			regex.match (string)
 			year := regex.captured_substring (1).to_integer
 			month := regex.captured_substring (2).to_integer
-			day := regex.captured_substring (3).to_integer 
+			day := regex.captured_substring (3).to_integer
 			hour := regex.captured_substring (4).to_integer
 			minute := regex.captured_substring (5).to_integer
 			second := regex.captured_substring (6).to_integer
@@ -49,9 +64,8 @@ feature -- Element change
 			if fraction > 0 then
 				last_result.set_millisecond (fraction)
 			end
-			
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -67,7 +81,7 @@ feature -- Conversion
 			Result.append_string (timestamp_to_string (value))
 			Result.append_string ("'}")
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -94,18 +108,18 @@ feature {NONE} -- Implementation
 			cli_regex_string.append_string ("'}")
 			Result.compile (cli_regex_string)
 		ensure then
-			regex_not_void: Result /= Void
+			regex_not_void: Result /= Void --FIXME: VS-DEL
 		end
-	
+
 	ifmt : ECLI_FORMAT_INTEGER is
 		once
 			create Result
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 		end
-		
+
 	regex_component_count : INTEGER is 7
-	
+
 invariant
 	invariant_clause: True -- Your invariant here
 

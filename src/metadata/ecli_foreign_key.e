@@ -26,7 +26,7 @@ inherit
 
 	ECLI_FOREIGN_KEY_CONSTANTS
 		undefine
-			out
+			default_create, out
 		end
 
 create
@@ -38,11 +38,13 @@ feature {NONE} -- Initialization
 	make (cursor : ECLI_FOREIGN_KEYS_CURSOR) is
 			-- create from `cursor' current position
 		require
-			cursor_not_void: cursor /= Void
+			cursor_not_void: cursor /= Void  --FIXME: VS-DEL
 			cursor_not_off: not cursor.off
 		local
-			pk_catalog, pk_schema, pk_table, primary_key_name : STRING
+			pk_catalog, pk_schema, primary_key_name : detachable STRING
+			pk_table : STRING
 		do
+			default_create
 			set_catalog (cursor.buffer_table_cat)
 			set_schema (cursor.buffer_table_schem )
 			set_name (cursor.buffer_table_name)
@@ -55,6 +57,9 @@ feature {NONE} -- Initialization
 			end
 			if not cursor.buffer_pk_table_name.is_null then
 				pk_table := cursor.buffer_pk_table_name.as_string
+			else
+				--| Impossible !
+				pk_table := ""
 			end
 			if not cursor.buffer_pk_name.is_null then
 				primary_key_name := cursor.buffer_pk_name.as_string
@@ -113,8 +118,8 @@ feature -- Measurement
 	add_column (a_column_name : STRING; a_pk_column_name : STRING) is
 			-- add `a_column_name' in columns with corresponding `a_pk_column_name' into `primary_key_c'
 		require
-			a_column_name_not_void: a_column_name /= Void
-			a_pk_column_name_not_void: a_pk_column_name /= Void
+			a_column_name_not_void: a_column_name /= Void --FIXME: VS-DEL
+			a_pk_column_name_not_void: a_pk_column_name /= Void --FIXME: VS-DEL
 		do
 			columns.put_last (a_column_name)
 			referenced_key.add_column (a_pk_column_name)
@@ -135,7 +140,7 @@ feature {NONE} -- Implementation
 	deferrability_impl : INTEGER
 
 invariant
-	referenced_key_not_void: referenced_key /= Void
+	referenced_key_not_void: referenced_key /= Void --FIXME: VS-DEL
 	columns_count_equal: columns.count = referenced_key.columns.count
 	update_rule_value: is_update_rule_applicable implies (update_rule = Sql_cascade or else update_rule = Sql_set_null or else update_rule = Sql_set_default or else update_rule = Sql_no_action)
 	delete_rule_value: is_delete_rule_applicable implies (delete_rule = Sql_cascade or else delete_rule = Sql_set_null or else delete_rule = Sql_set_default or else delete_rule = Sql_no_action)

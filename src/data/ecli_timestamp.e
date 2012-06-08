@@ -403,11 +403,17 @@ feature -- Conversion
 	as_decimal : MA_DECIMAL is
 			-- Current converted to MA_DECIMAL.
 		do
+			check False then
+				create Result.make_zero
+			end
 		end
 
 	as_time : DT_TIME is
 			-- Current converted to DT_TIME
 		do
+			check False then
+				create Result.make_from_second_count (0)
+			end
 		end
 
 feature -- Basic operations

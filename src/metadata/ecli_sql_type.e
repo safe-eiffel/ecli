@@ -15,7 +15,7 @@ inherit
 
 	ECLI_NULLABLE_METADATA
 		redefine
-			out
+			out, default_create
 		end
 
 create
@@ -24,12 +24,18 @@ create
 
 feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 
+	default_create
+		do
+			Precursor
+		end
+
 	make (type_cursor : ECLI_SQL_TYPES_CURSOR) is
 			-- create type description from current cursor tuple
 		require
-			type_cursor: type_cursor /= Void
+			type_cursor: type_cursor /= Void --FIXME: VS-DEL
 			current_exists: not type_cursor.off
 		do
+			default_create
 			impl_name := type_cursor.buffer_type_name.as_string
 			impl_sql_type_code := type_cursor.buffer_data_type.as_integer
 			if not type_cursor.buffer_column_size.is_null then
@@ -49,6 +55,7 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 				is_create_params_applicable := True
 			end
 			nullability := type_cursor.buffer_nullable.as_integer
+			impl_case_sensitive := type_cursor.buffer_case_sensitive.as_integer
 			impl_searchable := type_cursor.buffer_searchable.as_integer
 			if not type_cursor.buffer_unsigned_attribute.is_null then
 				impl_unsigned := type_cursor.buffer_unsigned_attribute.as_integer
@@ -98,7 +105,7 @@ feature -- Access
 		do
 			Result := impl_name
 		ensure
-			exists: Result /= Void
+			exists: Result /= Void --FIXME: VS-DEL
 		end
 
 	sql_type_code : INTEGER is
@@ -121,18 +128,26 @@ feature -- Access
 
 	literal_prefix : STRING is
 			-- Character(s) used to prefix a literal
+		require
+			significant: is_literal_prefix_applicable
 		do
-			Result := impl_literal_prefix
+			check attached impl_literal_prefix as lit then
+				Result := lit
+			end
 		ensure
-			significant: is_literal_prefix_applicable implies Result /= Void
+			significant: is_literal_prefix_applicable implies Result /= Void --FIXME: VS-DEL
 		end
 
 	literal_suffix : STRING is
 			-- Character(s) used to suffix a literal
+		require
+			significant: is_literal_suffix_applicable
 		do
-			Result := impl_literal_suffix
+			check attached impl_literal_suffix as lit then
+				Result := lit
+			end
 		ensure
-			significant: is_literal_prefix_applicable implies Result /= Void
+			significant: is_literal_prefix_applicable implies Result /= Void --FIXME: VS-DEL
 		end
 
 	create_params : STRING is
@@ -143,10 +158,14 @@ feature -- Access
 			-- length, precision, scale.
 			-- They appear in the order that the syntax requires that they be used.
 			-- The driver supplies the CREATE_PARAMS text in the language of the country where it is used.
+		require
+			significant: is_create_params_applicable
 		do
-			Result := impl_create_params
+			check attached impl_create_params as icp then
+				Result := icp
+			end
 		ensure
-			significant: is_create_params_applicable implies Result /= Void
+			significant: is_create_params_applicable implies Result /= Void --FIXME: VS-DEL
 		end
 
 	create_parameters : DS_LIST[STRING] is
@@ -154,18 +173,21 @@ feature -- Access
 		local
 			splitter : ST_SPLITTER
 		do
-			if impl_create_parameters = Void then
+			if attached impl_create_parameters as p then
+				Result := p
+			else
 				create splitter.make
 				splitter.set_separators (",")
-				impl_create_parameters := splitter.split (create_params)
+				create {DS_LINKED_LIST[STRING]}Result.make
+				splitter.split (create_params).do_all (agent Result.put_last (?))
+				impl_create_parameters := Result
 			end
-			Result := impl_create_parameters
 		end
 
 	data_definition (parameters : ARRAY[INTEGER]) : STRING is
 			-- Data definition string for Current type with `parameters'.
 		require
-			parameters_for_create_parameters: create_parameters.count > 0 implies (parameters /= Void and parameters.count = create_parameters.count)
+			parameters_for_create_parameters: create_parameters.count > 0 implies (parameters /= Void and then parameters.count = create_parameters.count)
 		local
 			i : INTEGER
 		do
@@ -187,43 +209,16 @@ feature -- Access
 			end
 		end
 
-	is_case_sensitive : BOOLEAN is
-			-- If a character datatype, denotes the case sensitivity in comparisons
-			-- and in collations
-		do
-			Result := impl_case_sensitive = sql_true
-		end
-
 	searchable : INTEGER is
 			-- is this type searchable ?
 		do
 			Result := impl_searchable
 		end
 
-	is_unsigned : BOOLEAN is
-			-- is it unsigned ?
-		require
-			is_unsigned_applicable
-		do
-			Result := impl_unsigned	= sql_true
-		end
-
-	is_fixed_precision_scale : BOOLEAN is
-			-- is the precision scale fixed ?
-		do
-			Result := impl_fixed_precision_scale = sql_true
-		end
-
-	is_auto_unique_value : BOOLEAN is
-			-- Is the data type auto incrementing ?
-		require
-			is_auto_unique_value_applicable
-		do
-			Result := impl_auto_unique_value = sql_true
-		end
-
-	local_type_name : STRING is
+	local_type_name : detachable STRING is
 			-- Localized version of the type name
+		require
+			is_local_type_name_applicable: is_local_type_name_applicable
 		do
 			Result := impl_local_type_name
 		ensure
@@ -276,6 +271,35 @@ feature -- Access
 			exists_interval_precision
 		do
 			Result := impl_interval_precision
+		end
+
+	is_case_sensitive : BOOLEAN is
+			-- If a character datatype, denotes the case sensitivity in comparisons
+			-- and in collations
+		do
+			Result := impl_case_sensitive = sql_true
+		end
+
+	is_unsigned : BOOLEAN is
+			-- is it unsigned ?
+		require
+			is_unsigned_applicable
+		do
+			Result := impl_unsigned	= sql_true
+		end
+
+	is_fixed_precision_scale : BOOLEAN is
+			-- is the precision scale fixed ?
+		do
+			Result := impl_fixed_precision_scale = sql_true
+		end
+
+	is_auto_unique_value : BOOLEAN is
+			-- Is the data type auto incrementing ?
+		require
+			is_auto_unique_value_applicable
+		do
+			Result := impl_auto_unique_value = sql_true
 		end
 
 feature -- Measurement
@@ -358,16 +382,16 @@ feature {NONE} -- Implementation
 	impl_name : STRING
 	impl_sql_type_code : INTEGER
 	impl_size : INTEGER
-	impl_literal_prefix : STRING
-	impl_literal_suffix : STRING
-	impl_create_params : STRING
-	impl_create_parameters : DS_LIST[STRING]
+	impl_literal_prefix : detachable STRING
+	impl_literal_suffix : detachable STRING
+	impl_create_params : detachable STRING
+	impl_create_parameters : detachable DS_LIST[STRING]
 	impl_case_sensitive : INTEGER
 	impl_searchable : INTEGER
 	impl_unsigned : INTEGER
 	impl_fixed_precision_scale : INTEGER
 	impl_auto_unique_value : INTEGER
-	impl_local_type_name : STRING
+	impl_local_type_name : detachable STRING
 	impl_minimum_scale : INTEGER
 	impl_maximum_scale : INTEGER
 	impl_sql_data_type : INTEGER

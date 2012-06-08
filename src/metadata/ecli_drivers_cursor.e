@@ -14,15 +14,26 @@ class ECLI_DRIVERS_CURSOR
 inherit
 
 	ECLI_SHARED_ENVIRONMENT
+		undefine
+			default_create
+		end
 
 	ECLI_HANDLE
+		undefine
+			default_create
+		end
 
 	ECLI_STATUS
 		export
 			{ANY} Sql_fetch_first
+		redefine
+			default_create
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			default_create
+		end
 
 create
 
@@ -30,9 +41,22 @@ create
 
 feature {NONE} -- Initialization
 
+	default_create
+		do
+			Precursor {ECLI_STATUS}
+			create attributes.make_empty
+			create name.make_empty
+		end
+
 	make is
 			-- Make cursor on drivers.
 		do
+			default_create
+			create c_name.make (max_source_name_length + 1)
+			create c_attributes.make (max_attributes_length + 1)
+			create actual_name_length.make
+			create actual_attributes_length.make
+
 			create error_handler.make_null
 			before := True
 		ensure
@@ -43,10 +67,14 @@ feature -- Access
 
 	item: ECLI_DRIVER is
 			-- current item
+		require
+			not_off: not off
 		do
-			Result := item_
+			check attached item_ as i then
+				Result := i
+			end
 		ensure
-			definition: Result /= Void implies not off
+			definition: Result /= Void implies not off  --FIXME: VS-DEL
 		end
 
 feature -- Measurement
@@ -75,10 +103,10 @@ feature -- Cursor movement
 		do
 			before := False
 			after := False
-			create c_name.make (max_source_name_length + 1)
-			create c_attributes.make (max_attributes_length + 1)
-			create actual_name_length.make
-			create actual_attributes_length.make
+			c_name.wipe_out
+			c_attributes.wipe_out
+			actual_name_length.put (0)
+			actual_attributes_length.put (0)
 			item_ := Void
 			do_fetch (sql_fetch_first)
 		ensure
@@ -157,7 +185,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	item_: ECLI_DRIVER
+	item_: detachable like item
 
 	max_source_name_length: INTEGER is 1024
 

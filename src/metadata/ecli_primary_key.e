@@ -20,6 +20,8 @@ inherit
 		export {NONE} make_metadata
 		undefine
 			out
+		redefine
+			default_create
 		end
 
 create
@@ -32,12 +34,20 @@ create
 
 feature {NONE} -- Initialization
 
+	default_create
+		do
+			Precursor
+			create key_name.make_empty
+			create {DS_LINKED_LIST[STRING]}columns.make
+		end
+
 	make (cursor : ECLI_PRIMARY_KEY_CURSOR) is
 			-- create from `cursor' current position
 		require
-			cursor_not_void: cursor /= Void
+			cursor_not_void: cursor /= Void --FIXME: VS-DEL
 			cursor_not_off: not cursor.off
 		do
+			default_create
 			set_catalog (cursor.buffer_table_cat)
 			set_schema (cursor.buffer_table_schem )
 			set_name (cursor.buffer_table_name)
@@ -48,12 +58,13 @@ feature {NONE} -- Initialization
 			columns.put_last (cursor.buffer_column_name.as_string)
 		end
 
-	make_by_name (a_catalog_name, a_schema_name, a_table_name, a_key_name, a_column_name : STRING) is
+	make_by_name (a_catalog_name, a_schema_name : detachable STRING; a_table_name : STRING; a_key_name : detachable STRING ; a_column_name : STRING) is
 			-- create for `a_catalog_name', `a_schema_name', `a_table_name', `a_key_name', `a_column_name'
 		require
-			a_table_name_not_void: a_table_name /= Void
-			a_column_name_not_void: a_column_name /= Void
+			a_table_name_not_void: a_table_name /= Void --FIXME: VS-DEL
+			a_column_name_not_void: a_column_name /= Void --FIXME: VS-DEL
 		do
+			default_create
 			catalog := a_catalog_name
 			schema := a_schema_name
 			table := a_table_name
@@ -70,7 +81,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	key_name : STRING
+	key_name : detachable STRING
 		-- name of the key if it is applicable
 
 	columns : DS_LIST[STRING]
@@ -81,7 +92,7 @@ feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 	add_column (a_column_name : STRING) is
 			-- add `a_column_name' in columns
 		require
-			a_column_name_not_void: a_column_name /= Void
+			a_column_name_not_void: a_column_name /= Void --FIXME: VS-DEL
 		do
 			columns.put_last (a_column_name)
 		ensure
@@ -97,7 +108,7 @@ feature -- Conversion
 		end
 
 invariant
-	table_name_not_void: table /= Void
-	columns_not_void: columns /= Void and then not columns.has (Void)
+	table_name_not_void: table /= Void --FIXME: VS-DEL
+--	columns_not_void: columns /= Void and then not columns.has (Void)
 
 end

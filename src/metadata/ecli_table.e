@@ -18,7 +18,7 @@ inherit
 			make as make_metadata
 		export {NONE} make_metadata
 		redefine
-			out
+			out, default_create
 		end
 
 create
@@ -27,12 +27,19 @@ create
 
 feature {NONE} -- Initialization
 
+	default_create
+		do
+			Precursor
+
+		end
+
 	make (tables_cursor : ECLI_TABLES_CURSOR) is
 			-- create table from `tables_cursor' item from `a_repository'
 		require
-			cursor_not_void: tables_cursor /= Void
+			cursor_not_void: tables_cursor /= Void --FIXME: VS-DEL
 			cursor_not_off:  not tables_cursor.off
 		do
+			default_create
 			set_catalog (tables_cursor.buffer_catalog_name)
 			set_schema (tables_cursor.buffer_schema_name)
 			set_name (tables_cursor.buffer_table_name)
@@ -46,10 +53,10 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	type : STRING
+	type : detachable STRING
 			-- table type
 
-	description : STRING
+	description : detachable STRING
 			-- description, comment or remarks
 
 feature -- Conversion

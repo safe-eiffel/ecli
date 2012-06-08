@@ -49,6 +49,8 @@ feature -- Access
 			if not is_null then
 				Result := Precursor
 				format (Result)
+			else
+				Result := ""
 			end
 		ensure then
 			Result.count = count
@@ -87,7 +89,7 @@ feature {NONE} -- Implementation
 	format (s : STRING) is
 			-- format 's' according to 'capacity'
 		require
-			s_not_void: s /= Void
+			s_not_void: s /= Void --FIXME: VS-DEL
 		do
 			if s.count > count then
 				s.keep_head (capacity)

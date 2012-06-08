@@ -31,16 +31,17 @@ inherit
 			is_equal
 		end
 
-create 
+create
 
-	make
+	make, make_iznogoud
 
 feature {NONE} -- Initialization
 
 	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER) is
 			-- Describe `index'th column of current result-set of `stmt', limiting the name length to `max_name_length'
 		require
-			stmt_prepared_or_executed : stmt /= Void and then stmt.is_prepared or stmt.is_executed
+			stmt_attached: stmt /= Void --FIXME: VS-DEL
+			prepared_or_executed : stmt.is_prepared or stmt.is_executed
 			valid_index: index > 0
 			valid_maximum: max_name_length > 0
 		local
@@ -66,10 +67,20 @@ feature {NONE} -- Initialization
 			nullability := ext_nullability.item
 		end
 
+	make_iznogoud
+		do
+			name := ""
+			iznogoud := True
+		end
+
 feature -- Access
 
 	name : STRING
 			-- column name
+
+feature -- Status Report
+
+	iznogoud : BOOLEAN
 
 feature -- Measurement
 
@@ -91,6 +102,6 @@ feature {NONE} -- Implementation
 	ext_actual_name_length : XS_C_INT32 is once create Result.make end
 
 invariant
-	name_not_void: name /= Void
+	name_significant: not iznogoud implies not name.is_empty
 
 end

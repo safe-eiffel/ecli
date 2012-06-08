@@ -34,10 +34,11 @@ inherit {NONE}
 
 feature {NONE} -- Initialization
 
-	make_input (an_input_file : like input_file) is
+	make_input (an_input_file : attached like input_file) is
 			-- make for reading from `an_input_file'
 		require
-			an_input_file_exists: an_input_file /= Void and then an_input_file.exists
+			an_input_file_not_void: an_input_file /= Void --FIXME: VS-DEL
+			an_input_file_exists: an_input_file.exists
 			an_input_file_not_open: not an_input_file.is_open_read
 		do
 			set_input_file (an_input_file)
@@ -47,10 +48,10 @@ feature {NONE} -- Initialization
 			size_set: size = input_file.count
 		end
 
-	make_output (an_output_file : like output_file) is
+	make_output (an_output_file : attached like output_file) is
 			-- make for writing to `an_output_file'
 		require
-			an_output_file_not_void: an_output_file /= Void
+			an_output_file_not_void: an_output_file /= Void --FIXME: VS-DEL
 			an_output_file_not_open: not an_output_file.is_open_write
 		do
 			size := an_output_file.count
@@ -63,9 +64,9 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	input_file : KI_BINARY_INPUT_FILE
+	input_file : detachable KI_INPUT_FILE
 
-	output_file : KI_BINARY_OUTPUT_FILE
+	output_file : detachable KI_OUTPUT_FILE
 
 	c_type_code: INTEGER is
 		do
@@ -92,17 +93,17 @@ feature -- Status report
 	is_input : BOOLEAN is
 			-- Is Current a buffer for database input ?
 		do
-			Result := input_file /= Void
+			Result := attached input_file
 		ensure
-			definition: Result = (input_file /= Void)
+			definition: Result = attached input_file
 		end
 
 	is_output : BOOLEAN is
 			-- Is Current a buffer for database output ?
 		do
-			Result := output_file /= Void
+			Result := attached output_file
 		ensure
-			definition: Result = (output_file /= Void)
+			definition: Result = attached output_file
 		end
 
 	convertible_as_boolean: BOOLEAN is
@@ -179,11 +180,12 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_input_file (an_input_file : like input_file) is
+	set_input_file (an_input_file : attached like input_file) is
 			-- change `input_file' to `an_input_file'
 		require
 			not_is_output: not is_output
-			an_input_file_exists: an_input_file /= Void and then an_input_file.exists
+			an_input_file_not_void: an_input_file /= Void
+			an_input_file_exists: an_input_file.exists
 			an_input_file_not_open: not an_input_file.is_open_read
 		do
 			input_file := an_input_file
@@ -193,11 +195,12 @@ feature -- Element change
 			size_set: size = input_file.count
 		end
 
-	set_output_file (an_output_file : like output_file) is
+	set_output_file (an_output_file : attached like output_file) is
 			-- change `output_file' to `an_output_file'
 		require
 			not_is_input: not is_input
-			an_output_file_exists: an_output_file /= Void and then an_output_file.exists
+			an_output_file_not_void: an_output_file /= Void
+			an_output_fileexists: an_output_file.exists
 			an_output_file_not_open: not an_output_file.is_open_write
 		do
 			output_file := an_output_file
@@ -222,25 +225,35 @@ feature -- Conversion
 
 	as_boolean: BOOLEAN is do  end
 	as_character: CHARACTER is do  end
-	as_date: DT_DATE is do  end
+	as_date: DT_DATE is do check False then create Result.make_from_day_count (0) end end
 	as_double: DOUBLE is do  end
-	as_decimal : MA_DECIMAL is do end
+	as_decimal : MA_DECIMAL is do check False then create Result.make_zero end end
 	as_integer: INTEGER is do  end
 	as_integer_64: INTEGER_64 is do  end
 	as_real: REAL is do  end
-	as_string: STRING is do  end
-	as_time: DT_TIME is do  end
-	as_timestamp: DT_DATE_TIME is do  end
+	as_string: STRING is do check False then create Result.make_empty end end
+	as_time: DT_TIME is do check False then create Result.make_from_second_count (0) end end
+	as_timestamp: DT_DATE_TIME is do check False then create Result.make_from_epoch (0) end end
 
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
 		do
-			if input_file /= Void and then other.input_file /= Void then
-				Result := input_file.name.is_equal (other.input_file.name)
-			elseif output_file /= Void and then other.output_file /= Void then
-				Result := output_file.name.is_equal (other.output_file.name)
+			if attached input_file as l_if then
+				if attached l_if.name as l_if_name and then attached other.input_file.name as l_oif_name then
+					Result := l_if_name.is_equal (l_oif_name)
+				end
+			elseif attached output_file as l_of then
+				if attached l_of.name as l_of_name and then attached other.output_file.name as l_oof_name then
+					Result := l_of_name.is_equal (l_oof_name)
+				end
 			end
+
+--			if input_file /= Void and then other.input_file /= Void then
+--				Result := input_file.name.is_equal (other.input_file.name)
+--			elseif output_file /= Void and then other.output_file /= Void then
+--				Result := output_file.name.is_equal (other.output_file.name)
+--			end
 		end
 
 feature -- Duplication
@@ -311,6 +324,7 @@ feature {NONE} -- Implementation
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
 			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), Transfer_octet_length)
+			create transfer_string.make_empty
 		end
 
 	ext_item : XS_C_STRING
@@ -353,7 +367,9 @@ feature {NONE} -- Implementation
 
 	copy_item_chunck_to_buffer (a_length: INTEGER_32)
 		do
-			ext_item.from_string (input_file.last_string)
+			if attached input_file as in and then attached in.last_string as ls then
+				ext_item.from_string (ls)
+			end
 		end
 
 	copy_buffer_to_item (a_length: INTEGER_32)

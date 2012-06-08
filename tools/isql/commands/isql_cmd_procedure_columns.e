@@ -1,10 +1,10 @@
 indexing
 	description: "Commands that list the columns of a stored procedure."
 	author: "Paul G. Crismer"
-	
+
 	application: "clisql"
 	library: "ECLI"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -21,10 +21,13 @@ inherit
 			new_cursor,
 			column_type,
 			cursor_type
-		end	
-	
+		end
+
 	ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS
-	
+		undefine
+			default_create
+		end
+
 feature -- Access
 
 	help_message : STRING is
@@ -42,21 +45,21 @@ feature {NONE} -- Implementation
 		do
 			create Result.make (a_procedure, a_session)
 		end
-		
+
 	put_heading (filter: ISQL_FILTER) is
 			-- put heading in `filter' stream
 		do
 			Precursor (filter)
 			filter.put_heading ("Type")
 		end
-		
-	put_detail (the_column: like column_type; filter: ISQL_FILTER) is
+
+	put_detail (the_column: attached like column_type; filter: ISQL_FILTER) is
 			-- put `the_column' in `filter' stream
 		local
 			type_label : STRING
 		do
 			Precursor (the_column, filter)
-			inspect the_column.column_type 
+			inspect the_column.column_type
 			when Sql_result_col then
 				type_label := "Result-set"
 			when Sql_param_input_output then
@@ -67,13 +70,13 @@ feature {NONE} -- Implementation
 				type_label := "Output"
 			when Sql_return_value then
 				type_label := "Function Result"
-			else									
+			else
 				type_label := "Unknown"
 			end
 			filter.put_column (type_label)
 		end
-		
-	column_type : ECLI_PROCEDURE_COLUMN is do end
-	cursor_type:  ECLI_PROCEDURE_COLUMNS_CURSOR is do end
-	
+
+	column_type : detachable ECLI_PROCEDURE_COLUMN is do end
+	cursor_type:  detachable ECLI_PROCEDURE_COLUMNS_CURSOR is do end
+
 end -- class ISQL_CMD_PROCEDURE_COLUMNS

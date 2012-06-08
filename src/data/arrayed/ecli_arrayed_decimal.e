@@ -56,6 +56,12 @@ feature {NONE} -- Initialization
 			valid_new_decimal_digits: new_decimal_digits >=0 and new_decimal_digits <= new_precision
 		do
 			make_with_rounding (a_capacity, new_precision, new_decimal_digits, default_rounding_mode)
+		ensure
+			is_null: is_null
+			precision_set: precision = new_precision
+			decimal_digits_set: decimal_digits = new_decimal_digits
+			rounding_context_set: rounding_context /= Void and then rounding_context.digits = new_precision
+			round_mode_set: rounding_context.rounding_mode = default_rounding_mode
 		end
 
 	make_with_rounding (a_capacity : INTEGER; new_precision, new_decimal_digits, new_rounding_mode : INTEGER) is
@@ -75,6 +81,7 @@ feature {NONE} -- Initialization
 			set_all_null
 			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1),
 					transfer_octet_length)
+			create impl_item.make (precision)
 		ensure
 			is_null: is_null
 			precision_set: precision = new_precision
@@ -99,7 +106,7 @@ feature -- Access
 			--
 		do
 			if is_null_at (index) then
-				Result := Void
+				create Result.make_zero
 			else
 				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index),
 					ecli_c_array_value_get_length_indicator_at(buffer,index))

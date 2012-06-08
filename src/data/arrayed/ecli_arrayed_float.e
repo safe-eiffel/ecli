@@ -32,7 +32,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	column_precision: INTEGER is
+	column_precision: INTEGER_64 is
 		do
 			Result := 15
 		end

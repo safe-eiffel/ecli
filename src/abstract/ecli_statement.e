@@ -18,49 +18,64 @@ inherit
 	ECLI_STATUS
 		export
 			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} set_status
+		redefine
+			default_create
 		end
 
 	ECLI_HANDLE
 		export
 			{ECLI_STATEMENT, ECLI_DATA_DESCRIPTION, ECLI_VALUE} handle
+		undefine
+			default_create
 		end
 
 	ECLI_TRACEABLE
+		undefine
+			default_create
+		end
 
-	PAT_SUBSCRIBER
+	PAT_SUBSCRIBER[ECLI_SESSION]
 		rename
 			publisher as session,
 			published as session_disconnect,
 			has_publisher as has_session,
 			unsubscribed as is_closed
+		undefine
+			default_create
 		redefine
-			session_disconnect
+			session_disconnect, session
 		end
 
 	KL_IMPORTED_ARRAY_ROUTINES
 		export
 			{NONE} all
+		undefine
+			default_create
 		end
 
 	ECLI_SQL_PARSER_CALLBACK
+		undefine
+			default_create
+		end
 
 create
 
 	make
 
-feature -- Initialization
+feature {} -- Initialization
 
 	make, open (a_session : ECLI_SESSION) is
 			-- Create a statement for use on `session'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
 			not_valid: not is_valid
 		local
 			ext_handle : XS_C_POINTER
 		do
+			default_create
 			--| error handler
-			create_error_handler
+	--		create_error_handler
 
 			--| external values
 			create ext_handle.make
@@ -75,13 +90,13 @@ feature -- Initialization
 			--| statement handle
 			set_status ("ecli_c_allocate_statement", ecli_c_allocate_statement (session.handle, ext_handle.handle))
 			handle := ext_handle.item
-			if is_valid then
-				session.register_statement (Current)
-			end
 
 			--| name to position map table for parameters
 			create name_to_position.make (10)
 			name_to_position.set_equality_tester (create {KL_EQUALITY_TESTER[DS_LIST[INTEGER]]})
+			if is_valid then
+				session.register_statement (Current)
+			end
 		ensure
 			session_ok: session = a_session and not is_closed
 			registered: session.is_registered_statement (Current)
@@ -91,15 +106,33 @@ feature -- Initialization
 
 feature {NONE} -- Initialization
 
-	create_error_handler is
-			-- create `error_handler´
+	default_create
 		do
-			if error_handler = Void then
-				create error_handler.make_null
-			end
-		ensure
-			error_handler_created: error_handler /= Void
+			Precursor {ECLI_HANDLE}
+			Precursor {ECLI_STATUS}
+			--|
+			create sql.make_empty
+			create results.make_empty
+			create parameters.make_empty
+			--| metadata
+			create parameters_description.make_empty
+			create results_description.make_empty
+			--| internals
+			create impl_row_count.make
+			create name_to_position.make (0)
+			create impl_sql.make (1)
+			create {DS_LINKED_LIST[STRING]}impl_parameter_names.make
 		end
+
+--	create_error_handler is
+--			-- create `error_handler´
+--		do
+--			if error_handler = Void then
+--				create error_handler.make_null
+--			end
+--		ensure
+--			error_handler_created: error_handler /= Void
+--		end
 
 feature -- Basic operations
 
@@ -117,7 +150,7 @@ feature -- Basic operations
 			closed: 		is_closed
 			unregistered: 	not (old session).is_registered_statement (Current)
 			not_valid:  	not is_valid
-			no_session: 	session = Void
+			no_session: 	not (attached session)
 		end
 
 feature {ECLI_SESSION} -- Basic Operations
@@ -127,12 +160,14 @@ feature {ECLI_SESSION} -- Basic Operations
 		require
 			valid_statement: is_valid
 			not_closed: not is_closed
+		local
+			session_default : like session
 		do
-			session := Void
+			session := session_default
 			release_handle
 		ensure
 			not_valid:  	not is_valid
-			no_session: 	session = Void
+			no_session: 	not attached session
 		end
 
 feature -- Access
@@ -140,9 +175,10 @@ feature -- Access
 	info : ECLI_DBMS_INFORMATION is
 			-- DBMS information
 		do
+-- ?? Not VEVI error while session is detachable???
 			Result := session.info
 		ensure
-			info_not_void: Result /= Void
+			info_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	sql : STRING
@@ -152,13 +188,14 @@ feature -- Access
 			-- Positions of parameter `parameter_name' in `sql' statement.
 		require
 			valid_statement: is_valid
-			parameter_name_ok: parameter_name /= Void
+			parameter_name_ok: parameter_name /= Void --FIXME: VS-DEL
 			has_parameter: parameters_count > 0
 			defined_parameter: has_parameter (parameter_name)
 		do
 			Result := name_to_position.item (parameter_name)
 		ensure
-			Result_not_empty: Result /= Void and not Result.is_empty
+			Result_not_void: Result /= Void
+			Result_not_empty: not Result.is_empty
 		end
 
 	parameter (parameter_name : STRING) : like parameter_anchor is
@@ -180,37 +217,36 @@ feature -- Access
 			--| FIXME: this should be a DS_SET[STRING] !
 		require
 			valid_statement: is_valid
-		local
-			table_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[INTEGER],STRING]
 		do
-			if impl_parameter_names = Void then
+			if impl_parameter_names.is_empty and then not name_to_position.is_empty then
 				create {DS_LINKED_LIST[STRING]} impl_parameter_names.make
-				table_cursor := name_to_position.new_cursor
-				from
-					table_cursor.start
-				until
-					table_cursor.off
-				loop
-					impl_parameter_names.put_right (table_cursor.key)
-					table_cursor.forth
+				if attached name_to_position.new_cursor as table_cursor then
+					from
+						table_cursor.start
+					until
+						table_cursor.off
+					loop
+						impl_parameter_names.put_right (table_cursor.key)
+						table_cursor.forth
+					end
 				end
 			end
 			Result := impl_parameter_names
 		ensure
-			Result_not_void: Result /= Void
+			Result_not_void: Result /= Void --FIXME: VS-DEL
 			Result_count_less_or_equal_parameters_count: Result.count <= parameters_count
 		end
 
-	cursor : ARRAY[like value_anchor] is
+	cursor : ARRAY[attached like value_anchor] is
 		obsolete "Use `results'"
 		do Result := results end
 
-	results : ARRAY[like value_anchor]
+	results : ARRAY[attached like value_anchor]
 			-- Container of result values (i.e. buffers for transferring
 			-- data from program to database) content is meaningful only
 			-- while sweeping through a result set, i.e. `not off and has_result_set'
 
-	parameters : ARRAY[like parameter_anchor]
+	parameters : ARRAY[attached like parameter_anchor]
 			-- Current parameter values for the statement
 
 	parameters_description : ARRAY[ECLI_PARAMETER_DESCRIPTION]
@@ -249,7 +285,7 @@ feature -- Measurement
 			-- Number of parameters in `sql'
 		require
 			valid_statement: is_valid
-			sql_not_void: sql /= Void
+--			sql_meaningful: not sql.is_empty
 		do
 			Result := parameters_count_impl
 		end
@@ -313,7 +349,7 @@ feature -- Status Report
 			-- Has this statement some parameters ?
 		require
 			valid_statement: is_valid
-			request: sql /= Void
+--			request: sql /= Void
 		do
 			Result := (parameters_count > 0)
 		ensure
@@ -374,7 +410,7 @@ feature -- Status Report
 			-- Has the statement a `name' parameter ?
 		require
 			valid_statement: is_valid
-			name_ok: name /= Void
+			name_ok: name /= Void --FIXME: VS-DEL
 		do
 			Result := name_to_position.has (name)
 		end
@@ -423,7 +459,7 @@ feature -- Cursor movement
 			valid_statement: is_valid
 			executed: is_executed and is_ok
 			before: before
-			results_ready: results /= Void and then not array_routines.has(results,Void)
+--			results_ready: results /= Void and then not array_routines.has(results,Void)
 		do
 			set_cursor_in
 			fetch_next_row
@@ -438,7 +474,7 @@ feature -- Cursor movement
 			valid_statement: is_valid
 			executed: is_executed
 			result_pending: not off and not before
-			results_ready: results /= Void and then not array_routines.has (results,Void)
+--			results_ready: results /= Void and then not array_routines.has (results,Void)
 		do
 			fetch_next_row
 		ensure
@@ -507,6 +543,7 @@ feature -- Element change
 			-- Set `sql' statement to `new_sql'
 		require
 			valid_statement: is_valid
+			sql_meaningful: not new_sql.is_empty
 		do
 			reset_status
 			sql := new_sql
@@ -515,13 +552,13 @@ feature -- Element change
 			create impl_sql.make_from_string (parser.parsed_sql)
 			set_parsed
 			parameters_count_impl := parser.parameters_count
-			impl_parameter_names := Void
+			create {DS_LINKED_LIST[STRING]}impl_parameter_names.make
 			impl_result_columns_count.put (-1) -- do not know
 			is_executed := False
 			is_prepared := False
-			results_description := Void
-			parameters_description := Void
-			parameters := Void
+			create results_description.make_empty
+			create parameters_description.make_empty
+			create parameters.make_empty
 			last_bound_parameter_index := 0
 			bound_parameters := False
 		ensure
@@ -530,8 +567,8 @@ feature -- Element change
 			not_executed: not is_executed
 			not_prepared: not is_prepared
 			no_bound_parameters: not bound_parameters and then last_bound_parameter_index = 0
-			no_more_parameters: parameters = Void
-			reset_descriptions: parameters_description = Void and results_description = Void
+			no_more_parameters: parameters.is_empty
+			reset_descriptions: parameters_description.is_empty and results_description.is_empty
 			is_ok: is_ok
 		end
 
@@ -540,9 +577,9 @@ feature -- Element change
 			-- all parameters are taken as input parameters
 		require
 			valid_statement: is_valid
-			parameters_array_not_void: parameters_array /= Void
+			parameters_array_not_void: parameters_array /= Void --FIXME: VS-DEL
 			parameters_array_valid_bounds: parameters_array.lower = 1 and then parameters_array.count = parameters_count
-			no_void_parameter: not array_routines.has (parameters_array, Void)
+---			no_void_parameter: not array_routines.has (parameters_array, Void)
 		do
 			parameters := parameters_array
 			bound_parameters := False
@@ -551,17 +588,17 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_parameter (value : like parameter_anchor; parameter_name : STRING) is
+	put_parameter (value : attached like parameter_anchor; parameter_name : STRING) is
 			-- Put `value' as `parameter_name'
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid
 			statement_has_parameters: has_parameters
-			value_not_void: value /= Void
-			parameter_name_exists : parameter_name /= Void
+			value_not_void: value /= Void --FIXME: VS-DEL
+			parameter_name_exists : parameter_name /= Void --FIXME: VS-DEL
 			known_parameter_name: has_parameter (parameter_name)
 		do
-			put_parameter_with_hint (value, parameter_name, Void)
+			put_parameter_with_hint (value, parameter_name, create {ECLI_INPUT_PARAMETER}.make (value))
 		ensure
 			parameter_set: parameter (parameter_name) = value --for each i in parameter_positions(key) it_holds parameters.item (i) = value
 			not_bound: not bound_parameters
@@ -577,7 +614,7 @@ feature -- Element change
 			-- Set `results' container with `row'
 		require
 			valid_statement: is_valid
-			row_not_void: row /= Void
+			row_not_void: row /= Void --FIXME: VS-DEL
 			row_lower: row.lower = 1
 			row_count: row.count > 0
 		do
@@ -638,8 +675,8 @@ feature -- Basic operations
 			if is_ok then
 				get_result_columns_count
 			end
-			if session.is_tracing then
-				trace (session.tracer)
+			if session.is_tracing and then attached session.tracer as l_tracer then
+				trace (l_tracer)
 				if session.tracer.is_tracing_time then
 					session.tracer.end_execution_timing
 				end
@@ -703,11 +740,11 @@ feature -- Basic operations
 				count := count + 1
 			end
 			if not is_ok then
-				parameters_description := Void
+				create parameters_description.make_empty
 			end
 		ensure
 			parameter_description_updated: is_ok implies
-				(parameters_description /= Void and then
+				(not parameters_description.is_empty and then
 				 parameters_description.count = parameters_count)
 		end
 
@@ -728,7 +765,7 @@ feature -- Basic operations
 			description : ECLI_COLUMN_DESCRIPTION
 		do
 			limit := result_columns_count
-			create results_description.make (1, limit)
+			create results_description.make_filled (create {ECLI_COLUMN_DESCRIPTION}.make_iznogoud, 1, limit)
 			from
 				count := 1
 				reset_status
@@ -739,11 +776,11 @@ feature -- Basic operations
 				count := count + 1
 			end
 			if not is_ok then
-				results_description := Void
+				create results_description.make_empty
 			end
 		ensure
 			results_described: is_ok implies
-				(results_description /= Void and then results_description.lower = 1 and then results_description.count = result_columns_count)
+				(not results_description.is_empty and then results_description.lower = 1 and then results_description.count = result_columns_count)
 		end
 
 	bind_parameters is
@@ -751,7 +788,8 @@ feature -- Basic operations
 		require
 			valid_statement: is_valid
 			parameters_exist: parameters_count > 0
-			parameters_are_set: parameters /= Void and then parameters.count >= parameters_count
+			parameters_not_void: parameters /= Void --FIXME: VS-DEL
+			parameters_are_set: parameters.count >= parameters_count
 		local
 			parameter_index : INTEGER
 		do
@@ -806,16 +844,16 @@ feature -- Basic operations
 
 feature -- Inapplicable
 
-	value_anchor : ECLI_VALUE is
+	value_anchor : detachable ECLI_VALUE is
 		do
 		end
 
-	parameter_anchor : ECLI_VALUE is
+	parameter_anchor : detachable ECLI_VALUE is
 		do
 		end
 
 
-	array_routines : KL_ARRAY_ROUTINES[ANY] is do Result := Any_array_ end
+--	array_routines : KL_ARRAY_ROUTINES[ANY] is do Result := Any_array_ end
 
 feature {ECLI_SQL_PARSER} -- Callback
 
@@ -911,7 +949,8 @@ feature {NONE} -- Implementation
 	fill_results is
 		require
 			valid_statement: is_valid
-			results_not_void: results /= Void
+			results_not_void: results /= Void --FIXME: VS-DEL
+			results_not_empty: not results.is_empty
 			-- results_arity: results.count >= result_columns_count
 		local
 			index, index_max : INTEGER
@@ -934,7 +973,7 @@ feature {NONE} -- Implementation
 			fetched_columns_count_set: fetched_columns_count = result_columns_count.min (results.count)
 		end
 
-	session : ECLI_SESSION
+	session : detachable ECLI_SESSION
 
 	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- Implementation of deferred feature
@@ -1002,45 +1041,48 @@ feature {NONE} -- Implementation
 			Result := "ECLI_STATEMENT must be closed te be disposable."
 		end
 
-	parser_impl : ECLI_SQL_PARSER
+	parser_impl : detachable ECLI_SQL_PARSER
 
 	parser : ECLI_SQL_PARSER is
 		do
-			if parser_impl = Void then
-				create parser_impl.make
+			if attached parser_impl as p then
+				Result := p
+			else
+				create Result.make
+				parser_impl := Result
 			end
-			Result := parser_impl
 		end
 
 		parameters_count_impl : INTEGER
 
 	create_parameters is
 		require
-			parameters_void: parameters = Void
+			parameters_empty: parameters.is_empty
 		do
-			create parameters.make (1, parameters_count)
+			create parameters.make_filled (default_parameter, 1, parameters_count)
 		ensure
-			parameters_exist: parameters /= Void and then parameters.count = parameters_count
+			parameters_not_void: parameters /= Void --FIXME: VS-DEL
+			parameters_count_consistent: parameters.count = parameters_count
 		end
 
-	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
+	put_single_parameter_with_hint (value : attached like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
 		do
 			parameters.put (value, position)
 		end
 
-	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
+	put_parameter_with_hint (value : attached like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
 			-- Set all parameters named `key' occurring in `sql' with `value'
 			-- WARNING : Case sensitive !
 		require
 			valid_statement: is_valid
 			has_parameters: parameters_count > 0
-			value_ok: value /= Void
-			key_ok : key /= Void
+			value_ok: value /= Void --FIXME: VS-DEL
+			key_ok : key /= Void --FIXME: VS-DEL
 			known_key: has_parameter (key)
 		local
 			plist : DS_LIST[INTEGER]
 		do
-			if parameters = Void then
+			if parameters.is_empty then
 				create_parameters
 			end
 			from plist := parameter_positions (key)
@@ -1073,17 +1115,22 @@ feature {NONE} -- Hooks for descendants
 			executed: is_executed
 			not_has_result_set: not has_result_set
 		do
-			if impl_row_count = Void then
-				create impl_row_count.make
-			end
+			if impl_row_count = Void then --FIXME: VS-DEL
+				create impl_row_count.make --FIXME: VS-DEL
+			end --FIXME: VS-DEL
 			set_status ("ecli_c_row_count", ecli_c_row_count (handle, impl_row_count.handle))
 		ensure
-			impl_row_count_not_void: impl_row_count /= Void
+			impl_row_count_not_void: impl_row_count /= Void --FIXME: VS-DEL
+		end
+
+	default_parameter : attached like parameter_anchor
+		do
+			create {ECLI_VARCHAR}Result.make (1)
 		end
 
 invariant
-	existing_session_implies_not_closed: session /= Void implies not is_closed
-	parameter_index_bounds: last_bound_parameter_index >= 0 and then (parameters /= Void implies last_bound_parameter_index <= parameters.upper)
-	parameters_description_without_void: parameters_description /= Void implies not array_routines.has (parameters_description,Void)
+	existing_session_implies_not_closed: attached session implies not is_closed
+	parameter_index_bounds: last_bound_parameter_index >= 0 and then (parameters /= Void implies last_bound_parameter_index <= parameters.upper) --FIXME: VS-DEL
+--	parameters_description_without_void: parameters_description /= Void implies not array_routines.has (parameters_description,Void)
 
 end

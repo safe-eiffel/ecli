@@ -11,6 +11,9 @@ inherit
 	ISQL_COMMAND
 
 	KL_STANDARD_FILES
+		undefine
+			default_create
+		end
 
 feature -- Access
 
@@ -67,7 +70,7 @@ feature -- Basic operations
 					check
 						context.parent_context = Void
 					end
-					stream := Input
+					stream := attached_input
 					current_context := context
 				end
 				current_context.create_command_stream (stream)
@@ -78,4 +81,12 @@ feature -- Basic operations
 			end
 		end
 
+feature -- Implementation
+
+	attached_input : attached like Input
+		do
+			check attached Input as i then
+				Result := i
+			end
+		end
 end -- class ISQL_CMD_EXECUTE

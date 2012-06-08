@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Cursors over SQL query result set. Starting iteration creates `results' object through `create_buffers'."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,22 +17,22 @@ inherit
 		redefine
 			real_execution
 		end
-		
+
 feature -- Status report
 
 	real_execution : BOOLEAN is
 		do
 			Result := True
 		end
-		
-			
+
+
 feature -- Cursor movement
 
 	start is
 			-- Start sweeping through cursor, after execution of `sql'
 		require
-			sql_set: sql /= Void
-			parameters_set: parameters_count > 0 implies (parameters.count = parameters_count and then not array_routines.has (parameters, Void))
+			sql_set: sql /= Void --FIXME: VS-DEL
+			parameters_set: parameters_count > 0 implies (parameters.count = parameters_count)
 		do
 			if parameters_count > 0 and then not bound_parameters then
 				bind_parameters
@@ -57,6 +57,6 @@ feature {NONE} -- Implementation
 		ensure
 			results_set: results /= Void
 		end
-	
+
 end
 

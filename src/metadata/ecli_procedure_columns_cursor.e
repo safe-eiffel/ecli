@@ -31,7 +31,9 @@ feature -- Access
 	item : ECLI_PROCEDURE_COLUMN is
 			--
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		end
 
 feature -- Element change

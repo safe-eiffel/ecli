@@ -7,6 +7,19 @@ indexing
 deferred class
 	ISQL_FILTER
 
+inherit
+	ANY
+		redefine
+			default_create
+		end
+
+feature {} -- Initialization
+
+	default_create
+		do
+			create {KL_NULL_TEXT_OUTPUT_STREAM}output_file.make ("/dev/null")
+		end
+
 feature -- Access
 
 	output_file : KI_TEXT_OUTPUT_STREAM

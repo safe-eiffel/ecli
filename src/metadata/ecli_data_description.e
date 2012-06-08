@@ -59,7 +59,7 @@ feature -- Comparison
 
 	same_description (other : like Current) : BOOLEAN is
 		require
-			other_not_void: other /= Void
+			other_not_void: other /= Void -- FIXME: VS-DEL
 		do
 			Result := (sql_type_code = other.sql_type_code
 								and then size = other.size

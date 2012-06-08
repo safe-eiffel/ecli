@@ -21,7 +21,8 @@ inherit
 			create_parameters,
 			put_single_parameter_with_hint,
 			put_parameter_with_hint,
-			bind_one_parameter --,
+			bind_one_parameter,
+			default_create --,
 --			put_input_parameter
 
 		end
@@ -30,17 +31,25 @@ create
 
 	make
 
+feature {} -- Initialization
+
+	default_create
+		do
+			Precursor
+			create directed_parameters.make_empty
+		end
+
 feature -- Access
 
 	directed_parameter (name : STRING) : ECLI_STATEMENT_PARAMETER is
 			-- parameter related to `key'.
 		require
-			name_not_void: name /= Void
+			name_not_void: name /= Void --FIXME: VS-DEL
 			has_parameter_of_name: has_parameter (name)
 		do
 			Result := directed_parameters.item (parameter_positions (name).first)
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Status report
@@ -48,7 +57,7 @@ feature -- Status report
 	is_parameter_input (a_parameter_name : STRING) : BOOLEAN
 			-- Is `a_parameter_name' parameter for input ?
 		require
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			known_parameter: has_parameter (a_parameter_name)
 		do
 			Result := directed_parameter (a_parameter_name).is_input
@@ -57,7 +66,7 @@ feature -- Status report
 	is_parameter_output (a_parameter_name : STRING) : BOOLEAN
 			-- Is `a_parameter_name' parameter for output?
 		require
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			known_parameter: has_parameter (a_parameter_name)
 		do
 			Result := directed_parameter (a_parameter_name).is_output
@@ -66,7 +75,7 @@ feature -- Status report
 	is_parameter_input_output (a_parameter_name : STRING) : BOOLEAN
 			-- Is `a_parameter_name' parameter for input/output ?
 		require
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			known_parameter: has_parameter (a_parameter_name)
 		do
 			Result := directed_parameter (a_parameter_name).is_input_output
@@ -74,7 +83,7 @@ feature -- Status report
 
 feature -- Element change
 
-	put_parameter (value: like parameter_anchor; key : STRING)
+	put_parameter (value: attached like parameter_anchor; key : STRING)
 			-- <Precursor>
 		do
 			put_input_parameter (value, key)
@@ -84,7 +93,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_output_parameter (value: like parameter_anchor; key: STRING) is
+	put_output_parameter (value: attached like parameter_anchor; key: STRING) is
 			-- Put `value' as output parameter.
 			-- Its value can be set by the procedure and be accessed after the procedure exits.
 		require
@@ -104,7 +113,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_input_parameter (value : like parameter_anchor; key : STRING) is
+	put_input_parameter (value : attached like parameter_anchor; key : STRING) is
 			-- Put `value' as input parameter.
 		local
 			direction : ECLI_INPUT_PARAMETER
@@ -117,7 +126,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_input_output_parameter (value: like parameter_anchor; key: STRING) is
+	put_input_output_parameter (value: attached like parameter_anchor; key: STRING) is
 			-- Put `value' as input/output parameter.
 		require
 			valid_statement: is_valid
@@ -147,12 +156,12 @@ feature {NONE} -- Implementation
 			create directed_parameters.make (1, parameters_count)
 		end
 
-	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
+	put_parameter_with_hint (value : attached like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
 		do
 			Precursor (value, key, hint)
 		end
 
-	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
+	put_single_parameter_with_hint (value : attached like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
 			--
 		do
 			Precursor (value, position, hint)

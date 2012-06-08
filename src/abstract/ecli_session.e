@@ -16,15 +16,22 @@ inherit
 	ECLI_STATUS
 		export
 			{ECLI_LOGIN_STRATEGY} set_status
+		redefine
+			default_create
 		end
 
 	ECLI_HANDLE
 		export
 			{ANY} is_valid;
 			{ECLI_LOGIN_STRATEGY, ECLI_HANDLE, ECLI_DBMS_INFORMATION} handle
+		undefine
+			default_create
 		end
 
 	ECLI_SHARED_ENVIRONMENT
+		undefine
+			default_create
+		end
 
 	PAT_PUBLISHER [ECLI_STATEMENT]
 		rename
@@ -32,70 +39,64 @@ inherit
 			unsubscribe as unregister_statement,
 			has_subscribed as is_registered_statement,
 			subscribers as statements,
-			impl_subscribers as impl_statements,
 			count as statements_count
 		export
 			{ECLI_STATEMENT}
 				register_statement,
 				unregister_statement,
 				is_registered_statement
+		redefine
+			default_create
 		end
 
-	PAT_SUBSCRIBER
+	PAT_SUBSCRIBER[ECLI_ENVIRONMENT]
 		rename
 			publisher as environment,
 			published as environment_release,
 			has_publisher as has_environment,
 			unsubscribed as is_closed
+		undefine
+			default_create
 		redefine
-			environment_release
+			environment_release,
+			environment
 		end
 
+
 	ECLI_TRANSACTION_CAPABILITY_CONSTANTS
+		undefine
+			default_create
+		end
 
 create
 
-	make, make_default
+--	make,
+	make_default
 
-feature -- Initialization
-
-	make, open (a_data_source, a_user_name, a_password : STRING) is
-			-- Make session using `a_data_source', `a_user_name', `a_password'.
-		obsolete "[2005-01-04] Use `make_default' followed by `set_login_strategy' instead."
-		require
-			data_source_defined: a_data_source /= Void
-			user_name_defined: a_user_name/= Void
-			password_defined: a_password /= Void
-			closed: is_closed
-		do
-			make_default
-			create {ECLI_SIMPLE_LOGIN}login_strategy.make (a_data_source, a_user_name, a_password)
-		ensure
-			data_source_set : data_source.is_equal (a_data_source)
-			user_name_set : user_name.is_equal (a_user_name)
-			password_set : password.is_equal (a_password)
-			ready_to_connect: is_ready_to_connect
-			valid: is_valid
-			open:  not is_closed
-		end
+feature {} -- Initialization
 
 	make_default is
 			-- Default creation.
 		require
 			is_closed: is_closed
 		do
+			default_create
 			create error_handler.make_null
 			allocate
 			reset_implementation
-			create info.make (Current)
 		ensure
 			valid: is_valid
 			open: not is_closed
 		end
 
+	default_create
+		do
+			Precursor {ECLI_STATUS}
+			Precursor {PAT_PUBLISHER}
+		end
 feature -- Access
 
-	login_strategy : ECLI_LOGIN_STRATEGY
+	login_strategy : detachable ECLI_LOGIN_STRATEGY
 			-- Login strategy used for connection.
 
 	data_source : STRING is
@@ -121,6 +122,14 @@ feature -- Access
 
 	info : ECLI_DBMS_INFORMATION
 			-- Various informations about underlying DBMS.
+		do
+			if attached impl_info as l_info then
+				Result := l_info
+			else
+				create Result.make (Current)
+				impl_info := Result
+			end
+		end
 
 	transaction_capability : INTEGER is
 			-- Transaction capability of established session
@@ -137,7 +146,7 @@ feature -- Access
 				or else Result = Sql_tc_dml or else Result = Sql_tc_none
 		end
 
-	tracer : ECLI_TRACER
+	tracer : detachable ECLI_TRACER
 			-- Tracer of all SQL. Void implies no trace.
 
 	api_trace_filename : STRING is
@@ -151,7 +160,7 @@ feature -- Access
 			set_status ("ecli_c_get_pointer_connection_attribute", ecli_c_get_pointer_connection_attribute (handle, att.sql_attr_tracefile, ext_string.handle, ext_string.capacity, int32.handle))
 			Result := ext_string.substring (1, int32.item)
 		ensure
-			api_trace_filename_not_void: Result /= Void
+			api_trace_filename_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	transaction_isolation : ECLI_TRANSACTION_ISOLATION is
@@ -163,7 +172,7 @@ feature -- Access
 			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.Sql_attr_txn_isolation , ext_txn_isolation.handle))
 			create Result.make (ext_txn_isolation.item)
 		ensure
-			transaction_isolation_not_void: Result /= Void
+			transaction_isolation_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	connection_timeout : DT_TIME_DURATION is
@@ -177,7 +186,7 @@ feature -- Access
 			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.sql_attr_connection_timeout, ext_connection_timeout.handle))
 			create Result.make_canonical (ext_connection_timeout.item)
 		ensure
-			connection_timeout_not_void: Result /= Void
+			connection_timeout_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	login_timeout : DT_TIME_DURATION is
@@ -191,7 +200,7 @@ feature -- Access
 			set_status ("ecli_c_get_integer_connection_attribute", ecli_c_get_integer_connection_attribute (handle, att.sql_attr_login_timeout, ext_connection_timeout.handle))
 			create Result.make_canonical (ext_connection_timeout.item)
 		ensure
-			login_timeout_not_void: Result /= Void
+			login_timeout_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	network_packet_size : INTEGER is
@@ -240,9 +249,9 @@ feature -- Status report
 	is_ready_to_connect : BOOLEAN is
 			-- Is this session ready to be connected ?
 		do
-			Result := (login_strategy /= Void)
+			Result := attached login_strategy
 		ensure
-			definition: Result = (login_strategy /= Void)
+			definition: Result = (attached login_strategy)
 		end
 
 	is_connected : BOOLEAN is
@@ -324,9 +333,9 @@ feature -- Status report
 	is_tracing : BOOLEAN is
 			-- Is this session tracing SQL statements ?
 		do
-			Result := tracer /= Void
+			Result := attached tracer
 		ensure
-			tracing_is_tracer_not_void: Result = (tracer /= Void)
+			tracing_is_tracer_not_void: Result = (attached tracer)
 		end
 
 	is_api_tracing : BOOLEAN is
@@ -374,7 +383,7 @@ feature -- Status setting
 			tracer := Void
 		ensure
 			not_tracing: not is_tracing
-			no_tracer: tracer = Void
+			no_tracer: not attached tracer
 		end
 
 	enable_api_tracing is
@@ -436,7 +445,7 @@ feature -- Element change
 		obsolete "[2004-12-23]Use `login_strategy' instead."
 		require
 			not_connected: not is_connected
-			a_user_ok: a_user_name/= Void
+			a_user_ok: a_user_name/= Void --FIXME: VS-DEL
 		do
 			simple_login.set_user_name (a_user_name)
 		ensure
@@ -448,7 +457,7 @@ feature -- Element change
 		obsolete "[2004-12-23]Use `set_login_strategy' instead."
 		require
 			not_connected: not is_connected
-			a_data_source_ok: a_data_source /= Void
+			a_data_source_ok: a_data_source /= Void --FIXME: VS-DEL
 		do
 			simple_login.set_datasource_name (a_data_source)
 		ensure
@@ -460,7 +469,7 @@ feature -- Element change
 		obsolete "[2004-12-23]Use `set_login_strategy' instead."
 		require
 			not_connected: not is_connected
-			a_password_ok: a_password /= Void
+			a_password_ok: a_password /= Void --FIXME: VS-DEL
 		do
 			simple_login.set_password (a_password)
 		ensure
@@ -470,7 +479,7 @@ feature -- Element change
 	set_tracer (a_tracer : ECLI_TRACER) is
 			-- Trace SQL with `a_tracer'.
 		require
-			tracer_ok: a_tracer /= Void
+			tracer_ok: a_tracer /= Void --FIXME: VS-DEL
 		do
 			tracer := a_tracer
 		ensure
@@ -481,7 +490,7 @@ feature -- Element change
 	set_transaction_isolation (an_isolation : ECLI_TRANSACTION_ISOLATION) is
 			-- Change transaction isolation level
 		require
-			an_isolation_not_void: an_isolation /= Void
+			an_isolation_not_void: an_isolation /= Void --FIXME: VS-DEL
 			no_pending_transaction: not has_pending_transaction
 		do
 			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.Sql_attr_txn_isolation,  an_isolation.value))
@@ -495,7 +504,7 @@ feature -- Element change
 			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
 		require
 			not_connected: not is_connected
-			duration_not_void: duration /= Void
+			duration_not_void: duration /= Void --FIXME: VS-DEL
 		local
 			uint32: XS_C_UINT32
 		do
@@ -512,7 +521,7 @@ feature -- Element change
 			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
 		require
 			not_connected: not is_connected
-			duration_not_void: duration /= Void
+			duration_not_void: duration /= Void --FIXME: VS-DEL
 		local
 			uint32: XS_C_UINT32
 		do
@@ -526,8 +535,8 @@ feature -- Element change
 	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM) is
 			-- Set `api_trace_filename' to `filename'.
 		require
-			filename_not_void: filename /= Void
-			file_system_not_void: file_system /= Void
+			filename_not_void: filename /= Void --FIXME: VS-DEL
+			file_system_not_void: file_system /= Void --FIXME: VS-DEL
 			file_name_valid: file_system.directory_exists (file_system.dirname (filename))
 			not_api_tracing: not is_api_tracing
 		local
@@ -536,7 +545,7 @@ feature -- Element change
 			create xs_string.make_from_string (filename)
 			set_status ("ecli_c_set_pointer_connection_attribute", ecli_c_set_pointer_connection_attribute (handle, att.sql_attr_tracefile, xs_string.handle, filename.count))
 		ensure
-			api_trace_filename_set: is_ok implies file_system.basename (api_trace_filename).is_equal (file_system.basename (filename))
+			api_trace_filename_set: is_ok implies attached file_system.basename (api_trace_filename) as f_api and then attached file_system.basename (filename) as fn and then f_api.is_equal (fn)
 		end
 
 feature -- Basic Operations
@@ -634,19 +643,18 @@ feature -- Basic Operations
 		require
 			is_valid: is_valid
 			connected: is_connected
-		local
-			statements_cursor : DS_LIST_CURSOR[ECLI_STATEMENT]
 		do
 			-- First close all statements, if any
 			if statements_count > 0 then
-				from
-					statements_cursor := statements.new_cursor
-					statements_cursor.start
-				until
-					statements_cursor.off
-				loop
-					statements_cursor.item.do_close
-					statements_cursor.forth
+				if attached statements.new_cursor as statements_cursor then
+					from
+						statements_cursor.start
+					until
+						statements_cursor.off
+					loop
+						statements_cursor.item.do_close
+						statements_cursor.forth
+					end
 				end
 				statements.wipe_out
 				statements_count := 0
@@ -691,9 +699,11 @@ feature {ECLI_ENVIRONMENT} --
 
 feature {NONE} -- Implementation
 
-	simple_login : ECLI_SIMPLE_LOGIN is
+	simple_login : detachable ECLI_SIMPLE_LOGIN is
 		do
-			Result ?= login_strategy
+			if attached {ECLI_SIMPLE_LOGIN} login_strategy as l then
+				Result := l
+			end
 		end
 
 	reset_implementation is
@@ -729,6 +739,8 @@ feature {NONE} -- Implementation
 		end
 
 	impl_is_connected : BOOLEAN
+
+	impl_info : detachable like info
 
 	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
 			-- To be redefined in descendant classes
@@ -792,7 +804,7 @@ feature {NONE} -- Implementation
 			Result := "ECLI_STATEMENT still opened on Current; Close them before closing this session."
 		end
 
-	environment : ECLI_ENVIRONMENT
+	environment : detachable ECLI_ENVIRONMENT
 
 	do_disconnect is
 			-- Do disconnect
@@ -810,6 +822,6 @@ feature {NONE} -- Implementation
 		end
 
 invariant
-	valid_session: environment /= Void implies environment = shared_environment
-	info_not_void: info /= Void
+	valid_session: (attached environment) implies environment = shared_environment
+	info_not_void: info /= Void --FIXME: VS-DEL
 end

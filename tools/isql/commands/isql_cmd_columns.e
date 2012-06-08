@@ -35,10 +35,12 @@ feature -- Basic operations
 			-- show columns
 		local
 			stream : KL_WORD_INPUT_STREAM
-			l_table, l_schema, l_catalog : STRING
+			l_catalog, l_schema : detachable STRING
+			l_table : STRING
 			query : ECLI_NAMED_METADATA
-			cursor : like cursor_type
+			cursor : attached like cursor_type
 		do
+			l_table := ""
 			create stream.make (text, " %T")
 			stream.read_word
 			if not stream.end_of_input then
@@ -68,9 +70,11 @@ feature -- Basic operations
 					end
 				end
 				create query.make (l_catalog, l_schema, l_table)
-				cursor := new_cursor (query, context.session)
-				put_results (cursor, context)
-				cursor.close
+				check attached context.session as l_session then
+					cursor := new_cursor (query, l_session)
+					put_results (cursor, context)
+					cursor.close
+				end
 			end
 		end
 
@@ -82,10 +86,10 @@ feature {NONE} -- Implementation
 				create Result.make (a_table, a_session)
 		end
 
-	put_results (a_cursor : like cursor_type; context : ISQL_CONTEXT) is
+	put_results (a_cursor : attached like cursor_type; context : ISQL_CONTEXT) is
 			--
 		local
-			the_column : like column_type
+			the_column : attached like column_type
 		do
 			if a_cursor.is_executed then
 				from
@@ -124,7 +128,7 @@ feature {NONE} -- Implementation
 			filter.put_heading ("DESCRIPTION")
 		end
 
-	put_detail (the_column : like column_type; filter : ISQL_FILTER) is
+	put_detail (the_column : attached like column_type; filter : ISQL_FILTER) is
 			--
 		require
 			the_column_not_void: the_column /= Void
@@ -156,8 +160,8 @@ feature {NONE} -- Implementation
 			filter.put_column (nullable_string (the_column.description))
 		end
 
-	column_type : ECLI_COLUMN is do end
-	cursor_type : ECLI_COLUMNS_CURSOR is do end
+	column_type : detachable ECLI_COLUMN is do end
+	cursor_type : detachable ECLI_COLUMNS_CURSOR is do end
 
 
 end -- class ISQL_CMD_COLUMNS

@@ -90,8 +90,8 @@ feature -- Basic operations
 	parse (sql : STRING; callback : ECLI_SQL_PARSER_CALLBACK) is
 			-- parse s, replacing every parameter by the ODBC/CLI marker '?'
 		require
-			sql_not_void: sql /= Void
-			callback_not_void: callback /= Void
+			sql_not_void: sql /= Void --FIXME: VS-DEL
+			callback_not_void: callback /= Void --FIXME: VS-DEL
 		local
 			index, sql_count : INTEGER
 			c, previous_c : CHARACTER
@@ -237,8 +237,7 @@ feature -- Basic operations
 			end
 		ensure
 			original_sql_set: original_sql = sql
-			parsed_sql_set: parsed_sql /= Void -- and then parsed sql is equivalent to original sql
---			name_to_position_set: name_to_position /= Void
+			parsed_sql_set: original_sql.count > 0 implies not parsed_sql.is_empty -- and then parsed sql is equivalent to original sql
 		end
 
 

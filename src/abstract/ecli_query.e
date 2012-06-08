@@ -24,7 +24,7 @@ inherit
 				is_closed, is_ok, is_error, is_prepared, is_prepared_execution_mode, is_executed, is_valid,
 				off, before, after,
 				has_information_message, diagnostic_message, sql, results,
-				go_after, array_routines, has_result_set,
+				go_after, has_result_set,
 				has_parameters, execute, bind_parameters, put_parameter, put_input_parameter, put_output_parameter, put_input_output_parameter, prepare, parameters_count, bound_parameters,
 				is_parsed, parameters, has_parameter, native_code, raise_exception_on_error, exception_on_error
 		redefine
@@ -32,6 +32,9 @@ inherit
 		end
 
 	ANY
+		undefine
+			default_create
+		end
 
 feature -- Initialization
 
@@ -85,15 +88,16 @@ feature -- Basic operations
 			else
 				reset_status
 				is_executed := True
-				if session.is_tracing then
-					trace (session.tracer)
+				if attached session.tracer as l_tracer then
+					trace (l_tracer)
 				end
 			end
 		end
 
 invariant
-	definition_not_void: definition /= Void
-	sql_is_definition: sql /= Void and then sql.is_equal (definition)
+	definition_not_void: definition /= Void --FIXME: VS-DEL
+	sql_not_void: sql /= Void --FIXME: VS-DEL
+	sql_is_definition: sql.is_equal (definition)
 
 end
 

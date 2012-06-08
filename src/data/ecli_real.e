@@ -210,16 +210,25 @@ feature -- Conversion
 	as_date : DT_DATE is
 			-- Current converted to DATE
 		do
+			check False then
+				create Result.make_from_day_count (0)
+			end
 		end
 
 	as_time : DT_TIME is
 			-- Current converted to DT_TIME
 		do
+			check False then
+				create Result.make_from_second_count (0)
+			end
 		end
 
 	as_timestamp : DT_DATE_TIME is
 			-- Current converted to DT_DATE_TIME
 		do
+			check False then
+				create Result.make_from_epoch (0)
+			end
 		end
 
 feature -- Duplication

@@ -67,7 +67,8 @@ feature {NONE} -- Implementation
 invariant
 	row_capacity_valid: row_capacity >= 1
 	row_count_valid: row_count <= row_capacity
-	impl_row_count_not_void: impl_row_count /= Void
-	rowset_status_capacity: rowset_status /= Void and then rowset_status.count = row_capacity
+	impl_row_count_not_void: impl_row_count /= Void --FIXME: VS-DEL
+	rowset_status_not_void:rowset_status /= Void 
+	rowset_capacity: rowset_status.count = row_capacity
 	
 end

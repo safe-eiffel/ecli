@@ -294,7 +294,8 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 	read_result (stmt : ECLI_STATEMENT; index : INTEGER) is
 			-- Read value from current result column 'index' of 'stmt'.
 		require
-			stmt: stmt /= Void and then (stmt.is_executed and not stmt.off)
+			stmt_not_void: stmt /= Void --FIXME: VS-DEL
+			stmt_executed_and_not_off: stmt.is_executed and not stmt.off
 			positive_index: index > 0
 		do
 			stmt.set_status ("ecli_c_get_data", ecli_c_get_data (
@@ -310,7 +311,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- Bind Current as a result value.
 		require
-			stmt: stmt /= Void
+			stmt: stmt /= Void --FIXME: VS-DEL
 			positive_index: index > 0
 		do
 			stmt.set_status ("ecli_c_bind_result", ecli_c_bind_result (
@@ -326,7 +327,8 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- Bind this value as input parameter 'index' of 'stmt'.
 		require
-			stmt: stmt /= Void and then stmt.parameters_count > 0
+			stmt_not_void: stmt /= Void --FIXME: VS-DEL
+			stmt_has_parameters: stmt.parameters_count > 0
 			positive_index: index > 0
 		do
 			bind_parameter (stmt,
@@ -337,7 +339,8 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 	bind_as_input_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- Bind this value as input/output parameter 'index' of 'stmt'.
 		require
-			stmt: stmt /= Void and then stmt.parameters_count > 0
+			stmt_not_void: stmt /= Void --FIXME: VS-DEL
+			stmt_has_parameters: stmt.parameters_count > 0
 			positive_index: index > 0
 		do
 			bind_parameter (stmt,
@@ -348,7 +351,8 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 	bind_as_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
 			-- Bind this value as output parameter 'index' of 'stmt'.
 		require
-			stmt: stmt /= Void and then stmt.parameters_count > 0
+			stmt_not_void: stmt /= Void --FIXME: VS-DEL
+			stmt_has_parameters: stmt.parameters_count > 0
 			positive_index: index > 0
 		do
 			bind_parameter (stmt,
@@ -361,7 +365,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 			-- Redefine in descendant classes if needed.
 			-- Useful when length of data is not known before `stmt' execution.
 		require
-			stmt: stmt /= Void
+			stmt_not_void: stmt /= Void --FIXME: VS-DEL
 			positive_index: index > 0
 		do
 		end
@@ -370,7 +374,7 @@ feature {NONE} -- Implementation values
 
 	is_ready_for_disposal : BOOLEAN is True
 
-	disposal_failure_reason : STRING is do	end
+	disposal_failure_reason : STRING is do	Result := once "" end
 
 	parameter_directions : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
 			-- Parameter direction constants.
@@ -383,7 +387,7 @@ feature {NONE} -- Implementation
 	bind_parameter (stmt : ECLI_STATEMENT; index : INTEGER; direction : INTEGER)
 			-- Bind as `index'-th parameter in `stmt', for `direction' transfer.
 		require
-			stmt_not_void: stmt /= Void
+			stmt_not_void: stmt /= Void --FIXME: VS-DEL
 			valid_index: index >= 1 and index <= stmt.parameters_count
 			valid_direction: valid_directions.has (direction)
 		do
