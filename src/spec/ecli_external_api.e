@@ -454,7 +454,9 @@ feature {NONE} -- Value handling functions
 
 feature {NONE} -- Value handling functions for ARRAYED values
 
-	ecli_c_alloc_array_value (c_buffer_length : INTEGER; a_count : INTEGER)  : POINTER is
+	ecli_c_alloc_array_value (c_buffer_length : INTEGER_64; a_count : INTEGER)  : POINTER is
+		require
+			platform_compatible_length (c_buffer_length)
 		external "C"
 		end
 
