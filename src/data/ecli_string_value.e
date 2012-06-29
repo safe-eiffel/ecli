@@ -83,14 +83,14 @@ feature -- Access
 
 	capacity : INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer) - 1
+			Result := (ecli_c_value_get_length (buffer) - 1).as_integer_32
 		end
 
 	count : INTEGER is
 			-- actual length of item
 		do
 			if not is_null then
-				Result := ecli_c_value_get_length_indicator (buffer)
+				Result := ecli_c_value_get_length_indicator (buffer).as_integer_32 -- FIXME 64/32 bits
 			end
 		end
 
@@ -118,7 +118,7 @@ feature -- Measurement
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := ecli_c_value_get_length (buffer).as_integer_32 -- FIXME 64/32 bits
 		end
 
 feature -- Status report

@@ -216,7 +216,7 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status report
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := ecli_c_value_get_length (buffer).as_integer_32 -- FIXME 64/32 bits
 		end
 
 feature -- Element change

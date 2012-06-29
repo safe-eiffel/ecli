@@ -147,7 +147,7 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 		deferred
 		end
 
-	length_indicator : INTEGER is
+	length_indicator : INTEGER_64 is
 			-- Length indicator for database Xfer.
 		do
 			if is_null then
