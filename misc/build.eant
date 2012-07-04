@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+
+<project name="ecli_build" default="help">
+
+	<description>
+		system: "ECLI parent project file."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init"/>
+			<redefine target="prepare_compile"/>
+			<redefine target="help"/>
+			<redefine target="install"/>
+			<redefine target="clean"/>
+			<redefine target="clobber"/>
+			<redefine target="xace"/>
+		</parent>
+	</inherit>
+
+<!-- Implementation -->
+
+	<target name="xace" depend="init">
+		<argument name="a_compiler"/>
+		<argument name="a_output"/>
+		<description>
+			Build Ace, Xace or ECF file for Eiffel compiler ${a_compiler}.
+			Generate file in ${a_output} if specified.
+			Pass $DEBUG option to 'gexace' if ${debug} is defined.
+			Pass $GOBO_EIFFEL value to 'gexace'.
+			Pass $GOBO_OS value to 'gexace'.
+			Pass $GOBO_CC value to 'gexace' if defined.
+			Pass $GOBO_XML_EXPAT option to 'gexace' if defined.
+			Pass $GOBO_DOTNET option to 'gexace' if defined.
+			Pass $BOEHM_GC option to 'gexace' if defined.
+			To be redefined in descendant if additional options are
+			necessary.
+		</description>
+
+		<set name="a_format" value="${xace_format}" if="${xace_format}"/>
+		<set name="a_format" value="" unless="${xace_format}"/>
+		<gexace system="${a_compiler}" output="${a_output}" format="${a_format}" xace="${system_dir}/system.xace">
+			<define name="DEBUG" value="${debug}" if="${debug}"/>
+			<define name="GOBO_EIFFEL" value="${eiffel}"/>
+			<define name="GOBO_OS" value="${GOBO_OS}"/>
+			<define name="GOBO_CC" value="${GOBO_CC}" if="${GOBO_CC}"/>
+			<define name="GOBO_XML_EXPAT" value="true" if="${GOBO_XML_EXPAT}"/>
+			<define name="GOBO_DOTNET" value="true" if="${GOBO_DOTNET}"/>
+			<define name="BOEHM_GC" value="${BOEHM_GC}" if="${BOEHM_GC}"/>
+			<define name="VOIDCONFIDENT" value="${VOIDCONFIDENT}" if="${VOIDCONFIDENT}"/>
+		</gexace>
+	</target>
+
+	<target name="init">
+		<precursor/>
+		<geant target="check_ecli_variables"/>
+	</target>
+
+	<target name="check_ecli_variables">
+		<echo message="ERROR: GOBO_EIFFEL must be set." unless="${GOBO_EIFFEL}"/>
+		<echo message="WARNING: ECLI variable not set" unless="${ECLI}"/>
+		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
+		<echo message="WARNING: ECLI_C_BCC_DIR variable not set" if="${GOBO_CC}=bcc" unless="${ECLI_C_BCCDIR}"/>
+		<echo message="WARNING: SAFE_KERNEL variable not set" unless="${SAFE_KERNEL}"/>
+		<echo message="WARNING: SMARTEIFFELDIR variable not set" unless="${SMARTEIFFELDIR}" if="${GOBO_EIFFEL}=se"/>
+	</target>
+
+	<target unless="${GOBO_OS}=windows" name="prepare_compile" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+                <exec executable="make"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}"/>
+                <exec executable="make"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}"/>
+        </target>
+
+	<target if="${GOBO_OS}=windows" name="prepare_compile_windows" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- safe kernel lib Compile them if necessary -->
+                <exec executable="nmake -f makefile.mak" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+                <exec executable="make -f makefile.bcc"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+                <exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>                
+                <exec executable="make -f Makefile.gcc"  dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
+                
+		<!-- Compile them if necessary -->
+                <exec executable="nmake -f makefile.mak" dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+                <exec executable="make -f makefile.bcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc"/>
+                <exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR}"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc"/>                
+                <exec executable="make -f Makefile.gcc"  dir="${ECLI}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc"/>
+
+        </target>
+
+	<target name="install" depend="compile_libs, compile_tools">
+		<description>
+			Call 'geant' with the same target ${target}
+			in all subdirectories.
+		</description>
+	
+	</target>
+	
+        <target name="compile_libs" depend="prepare_compile, prepare_compile_windows">
+	</target>
+	
+        <target name="compile_tools">
+		<description>
+			Compile tools
+		</description>
+		<geant file="build.eant" target="compile" dir="${ECLI}/tools"/>
+	</target>
+	
+	<target name="help">
+		<precursor/>
+		<echo message="ecli_specific:"/>
+		<echo message="   geant compile_libs"/>
+		<echo message="   geant compile_tools"/>
+	</target>
+
+	<target name="help2">
+		<echo message="   geant compile_libs"/>
+		<echo message="   geant install"/>
+		<echo message="   geant compile"/>
+		<echo message="   geant compile_ise"/>
+		<echo message="   geant compile_ge"/>
+		<echo message="   geant compile_se"/>
+		<echo message="   geant compile_debug_ise"/>
+		<echo message="   geant compile_debug_ge"/>
+		<echo message="   geant compile_debug_se"/>
+		<echo message="   geant clean"/>
+		<echo message="   geant clobber"/>
+	</target>
+
+	<target name="clean">
+		<set name="target" value="clean"/>
+		<geant target="do_all"/>
+	</target>
+
+
+	<target name="clobber">
+		<set name="target" value="clobber"/>
+		<geant target="do_all"/>
+	</target>
+	
+<!-- Implementation -->
+
+	<target name="do_all">
+		<geant file="build.eant" target="${target}" dir="${ECLI}/tools"/>
+	</target>
+</project>

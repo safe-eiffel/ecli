@@ -14,7 +14,7 @@ inherit
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
 		end
-		
+
 create
 
 	make
@@ -22,10 +22,11 @@ create
 feature -- Initialization
 
 	make is
-		do			
+		do
+			create  session.make_default
 			-- session opening
 			parse_arguments
-			if error_message /= Void then
+			if not error_message.is_empty then
 				print_usage
 			else
 				-- check for mandatory parameters
@@ -39,7 +40,7 @@ feature -- Initialization
 					set_error ("Missign data source name. Specify parameter", "-dsn")
 					print_usage
 				else
-					create  session.make (dsn, user, password)
+					session.set_login_strategy  (create {ECLI_SIMPLE_LOGIN}.make (attached_string (dsn), attached_string(user), attached_string (password)))
 					session.connect
 					if session.is_connected then
 						io.put_string ("+ Connected %N")
@@ -58,19 +59,12 @@ feature -- Initialization
 
 feature -- Access
 
-	dsn : STRING
-	user: STRING
-	password : STRING
-	sql : STRING
-	
+	dsn : detachable STRING
+	user: detachable STRING
+	password : detachable STRING
 	session : ECLI_SESSION
-	
-	statement : ECLI_STATEMENT
-		
 	error_message : STRING
 
-	rowset_cursor: ECLI_ROWSET_CURSOR
-	
 feature -- Status Report
 
 feature -- Status setting
@@ -78,6 +72,13 @@ feature -- Status setting
 feature -- Element change
 
 feature -- Basic Operations
+
+	attached_string (s : detachable STRING) : STRING
+		do
+			check attached s as l_s then
+				Result := l_s
+			end
+		end
 
 	do_tests is
 		local
@@ -89,7 +90,7 @@ feature -- Basic Operations
 					io.put_string ("The current datasource does not support operations with arrayed parameters%N")
 				end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	parse_arguments is
@@ -99,9 +100,9 @@ feature {NONE} -- Implementation
 		do
 			from
 				index := 1
-				error_message := Void
+				create error_message.make_empty
 			until
-				error_message /= Void or else index > Arguments.argument_count
+				not error_message.is_empty or else index > Arguments.argument_count
 			loop
 				current_argument := Arguments.argument (index)
 				if current_argument.item (1) = '-' then
@@ -121,19 +122,19 @@ feature {NONE} -- Implementation
 					index := index + 1
 				end
 			end
-		end		
-	
+		end
+
 	set_error (message, value : STRING) is
 		do
 			create error_message.make (0)
 			error_message.append_string (message)
 			error_message.append_string (" '")
 			error_message.append_string (value)
-			error_message.append_string ("'")		
+			error_message.append_string ("'")
 		ensure
 			error_message /= Void
 		end
-			
+
 	print_usage is
 		do
 			if error_message /= Void then
@@ -146,17 +147,17 @@ feature {NONE} -- Implementation
 						%%T-pwd password%T%Tpassword for database login%N")
 		end
 
-		
+
 	print_error (stmt : ECLI_STATUS) is
 		do
 			io.put_string ("** ERROR **%N")
 			io.put_string (stmt.diagnostic_message)
 			io.put_character ('%N')
 		end
-		
+
 end -- class TEST_ROWSET
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -9,7 +9,7 @@ class
 
 create
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (a_session : ECLI_SESSION) is
@@ -23,7 +23,7 @@ feature {NONE} -- Initialization
 			do_update
 			test_update
 		end
-		
+
 feature -- Access
 
 	names : ARRAY [STRING] is
@@ -58,7 +58,7 @@ feature -- Access
 				"z"
 			>>
 		end
-		
+
 	ages : ARRAY [INTEGER] is
 			-- array of ages
 		once
@@ -68,7 +68,7 @@ feature -- Access
 				21, 22, 23, 24, 25, 26
 			>>
 		end
-		
+
 --| ffeature -- Measurement
 
 --| ffeature -- Status report
@@ -80,19 +80,19 @@ feature -- Access
 feature -- Constants
 
 	sql_create : STRING is "CREATE TABLE ROWSETSAMPLE (NAME VARCHAR(5), AGE INTEGER)"
-	
+
 	sql_insert : STRING is "INSERT INTO ROWSETSAMPLE VALUES (?name, ?age)"
-	
+
 	sql_update : STRING is "UPDATE ROWSETSAMPLE SET AGE = ?age WHERE NAME = ?name"
-	
+
 	sql_select : STRING is "SELECT NAME, AGE FROM ROWSETSAMPLE"
-	
+
 	sql_delete : STRING is "DELETE FROM ROWSETSAMPLE WHERE AGE = ?age"
-	
+
 	sql_drop : STRING is "DROP TABLE ROWSETSAMPLE"
-	
+
 	sql_count : STRING is "SELECT COUNT(*) AS ROW_COUNT FROM ROWSETSAMPLE"
-	
+
 --| feature -- Removal
 
 --| feature -- Resizing
@@ -108,29 +108,29 @@ feature -- Constants
 feature -- Basic operations
 
 	create_table is
-			-- 
+			--
 		do
-			do_simple_sql (sql_create)
-		end
-	
-	drop_table is
-			-- 
-		do
-			do_simple_sql (sql_drop)
+			do_simple_sql (sql_create, True)
 		end
 
-	do_insert is 
-		do  
+	drop_table is
+			--
+		do
+			do_simple_sql (sql_drop, False)
+		end
+
+	do_insert is
+		do
 			print ("Trying bulk insert ... %N")
 			print ("---------------------- %N")
 			do_rowset_modify (sql_insert, names, ages)
 			inserted_count := names.count - errors
 		end
-		
-	test_insert is 
+
+	test_insert is
 		local
 			i : INTEGER
-		do  
+		do
 			create cursor.make (session, sql_count)
 			cursor.start
 			i := cursor.item_by_index (1).as_integer
@@ -146,12 +146,12 @@ feature -- Basic operations
 			print ("%N")
 			cursor.close
 		end
-		
-	do_update is 
+
+	do_update is
 		local
 			update_array : ARRAY[INTEGER]
 			index : INTEGER
-		do  
+		do
 			print ("Trying bulk update...  %N")
 			print ("---------------------- %N")
 			-- create and setup update_array
@@ -166,14 +166,14 @@ feature -- Basic operations
 			end
 			-- do update
 			do_rowset_modify (sql_update, names, update_array)
-		end		
-		
+		end
+
 	test_update is
 			-- test if bulk update was ok
 		local
 			ok : BOOLEAN
 			index : INTEGER
-		do  
+		do
 			-- sweep through updated values
 			create cursor.make (session, sql_select)
 			from
@@ -198,7 +198,7 @@ feature -- Basic operations
 			else
 				print ("Failed")
 			end
-			print ("%N")			
+			print ("%N")
 		end
 
 	index_of_array_string (a : ARRAY[STRING]; s : STRING) : INTEGER is
@@ -219,41 +219,43 @@ feature -- Basic operations
 				Result := 0
 			end
 		end
-		
+
 --| feature -- Obsolete
 
 --| feature -- Inapplicable
 
 feature {NONE} -- Implementation
-	
+
 	session : ECLI_SESSION
-	
+
 	buffer_name : ECLI_ARRAYED_VARCHAR is
-			-- 
+			--
 		once
 			create Result.make (30, row_count)
 		end
-		
+
 	buffer_age : ECLI_ARRAYED_INTEGER is
-			-- 
+			--
 		once
 			create Result.make (row_count)
 		end
-		
-		
-	do_simple_sql (a_sql : STRING) is
+
+
+	do_simple_sql (a_sql : STRING; checked : BOOLEAN) is
 		do
 			create statement.make (session)
 			statement.set_sql (a_sql)
 			statement.execute
-			check
-				statement.is_ok
+			if checked then
+				check
+					statement.is_ok
+				end
 			end
 			statement.close
 		end
-	
+
 	do_rowset_modify (a_sql : STRING; name_array : ARRAY[STRING]; age_array : ARRAY[INTEGER]) is
-			-- 
+			--
 		local
 			index, j : INTEGER
 		do
@@ -285,18 +287,18 @@ feature {NONE} -- Implementation
 		end
 
 	statement : ECLI_STATEMENT
-	
+
 	cursor : ECLI_ROW_CURSOR
-	
+
 	rowset_modifier : ECLI_ROWSET_MODIFIER
-	
+
 	row_count : INTEGER is 10;
 
 	errors : INTEGER
-	
+
 	inserted_count : INTEGER
 	updated_count : INTEGER
-	
+
 	handle_modifier_errors (r : ECLI_ROWSET_MODIFIER) is
 			-- handle errors on 'r' after execution
 			-- examine each status:
@@ -307,13 +309,13 @@ feature {NONE} -- Implementation
 			stmt : ECLI_STATEMENT
 			p_age : ECLI_INTEGER
 			p_name : ECLI_VARCHAR
-			
+
 		do
 			create const
 			-- Error handling with bulk operations is not straigthforward.
 			-- First, locate offending parameter set
 			-- Then retry query with non-arrayed parameters and get the error information
-			from 
+			from
 				index := 1
 				create p_age.make
 				create p_name.make (30)
@@ -343,9 +345,9 @@ feature {NONE} -- Implementation
 					stmt.close
 					errors := errors + 1
 				end
-				
+
 				index := index + 1
 			end
 		end
-		
+
 end -- class ROWSET_MODIFIER_TEST

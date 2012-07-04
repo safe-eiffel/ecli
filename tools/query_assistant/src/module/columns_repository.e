@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	last_column : ECLI_COLUMN
+	last_column : detachable ECLI_COLUMN
 			-- Last column found in the repository
 
 	session : ECLI_SESSION
@@ -111,6 +111,6 @@ feature {NONE} -- Implementation
 
 	hash_delimiter : CHARACTER is '|'
 
-	columns : DS_HASH_TABLE[ECLI_COLUMN, STRING]
+	columns : DS_HASH_TABLE[detachable ECLI_COLUMN, STRING]
 
 end -- class COLUMNS_REPOSITORY

@@ -13,6 +13,9 @@
 	</description>
 
 	<root class="TEST_VALUES" creation="make"/>
+<option name="void_safety" value="on_demand"/>
+<option name="attached_by_default" value="true"/>
+<option name="full_class_checking" value="true"/>
 
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
@@ -28,5 +31,6 @@
 
 	<cluster name="test1" location="${ECLI}/examples/test_values"/>
 
-	<mount location="${ECLI}/library.xace"/>
+	<mount location="${ECLI}/library-voidconfident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
 </system>

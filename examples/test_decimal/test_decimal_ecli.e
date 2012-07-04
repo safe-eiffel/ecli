@@ -7,21 +7,32 @@ inherit
 	MA_DECIMAL_CONSTANTS
 
 	KL_SHARED_ARGUMENTS
-	
+
 create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
-	make is 
+	make is
 			-- Create and execute test.
-		do 
+		do
 			io.put_string ("*** test_decimal : Test DECIMAL input/output ***%N%N")
+			create session.make_default
+			create decimal_18_0.make(18, 0)
+			create decimal_18_2.make(18, 2)
+			create decimal_5_3.make (5, 3)
+			create decimal_18_4.make(18, 4)
+
 			if arguments.argument_count < 3 then
 				io.put_string ("Usage: test_decimal <data_source> <user_name> <password>%N")
 			else
-				create session.make (arguments.argument (1), arguments.argument (2), arguments.argument (3))
+				session.set_login_strategy (
+					create {ECLI_SIMPLE_LOGIN}.make (
+						attached_string (arguments.argument (1)),
+						attached_string (arguments.argument (2)),
+						attached_string (arguments.argument (3)))
+					)
 				session.connect
 				if session.is_connected then
 					create stmt.make (session)
@@ -55,10 +66,6 @@ feature -- Basic operations
 
 	show_table_content is
 		do
-			create decimal_18_0.make(19, 0)
-			create decimal_18_2.make(18, 2)
-			create decimal_5_3.make (5, 3)
-			create decimal_18_4.make(18, 4)
 			create stmt.make (session)
 			stmt.set_sql ("select * from TEST_DECIMAL")
 			stmt.execute
@@ -67,7 +74,7 @@ feature -- Basic operations
 				from
 					stmt.set_results (<<decimal_18_0, decimal_18_2, decimal_5_3, decimal_18_4>>)
 					stmt.start
-				until not stmt.is_ok or else stmt.off 
+				until not stmt.is_ok or else stmt.off
 				loop
 					print (decimal_18_0.out)
 					print ("%T")
@@ -88,18 +95,13 @@ feature -- Basic operations
 			end
 			stmt.close
 		end
-		
+
 	execute_insert_test is
 		local
 			ctx : MA_DECIMAL_CONTEXT
-			insert : ECLI_STATEMENT		
+			insert : ECLI_STATEMENT
 			my_decimal, ten : MA_DECIMAL
 		do
-			create decimal_18_0.make(19, 0)
-			create decimal_18_2.make(18, 2)
-			create decimal_5_3.make (5, 3)
-			create decimal_18_4.make(18, 4)
-
 			--| 1 insert
 			create ctx.make (189,0)
 			create my_decimal.make_from_string_ctx ("12345", ctx)
@@ -123,7 +125,7 @@ feature -- Basic operations
 			insert.set_sql ("insert into TEST_DECIMAL (d184) VALUES (?)")
 			test_insert (insert, decimal_18_4)
 		end
-		
+
 	test_insert (insert : ECLI_STATEMENT; value : ECLI_DECIMAL) is
 		do
 				insert.set_parameters (<<value>>)
@@ -131,9 +133,9 @@ feature -- Basic operations
 						print (value.out)
 						print ("%T")
 				insert.bind_parameters
-				insert.execute			
+				insert.execute
 				if not insert.is_ok then
-					print ("Error : %T")	
+					print ("Error : %T")
 					print (insert.cli_state)
 					print (" ")
 					print (insert.native_code.out)
@@ -144,53 +146,64 @@ feature -- Basic operations
 					print ("OK%N")
 				end
 		end
-		
+
 feature -- Access
 
 	session : ECLI_SESSION
-	stmt : ECLI_STATEMENT
-	
+	stmt : detachable ECLI_STATEMENT
+		note
+			stable: stable
+		attribute
+		end
+
 	decimal_18_0 : ECLI_DECIMAL
 	decimal_18_2 : ECLI_DECIMAL
 	decimal_5_3 : ECLI_DECIMAL
 	decimal_18_4 : ECLI_DECIMAL
 
-	tables_cursor: ECLI_TABLES_CURSOR	
-	
-	type_catalog : ECLI_TYPE_CATALOG
+--	tables_cursor: ECLI_TABLES_CURSOR
+
+--	type_catalog : ECLI_TYPE_CATALOG
 
 feature -- Constants
 
 	ddl_sql_server : STRING is "[
 		CREATE TABLE TEST_DECIMAL (d18 NUMERIC(18,0), d182 NUMERIC (18,2), dl83 NUMERIC (18,3), d184 NUMERIC(18,4))
 		]"
-	
+
 	ddl_firebird_interbase : STRING is "[
 		CREATE TABLE TEST_DECIMAL (d18 DECIMAL(18,0), d182 DECIMAL (18,2), dl83 DECIMAL (5,3), d184 DECIMAL(18,4))
 		]"
-	
+
 	ddl_sql92 : STRING is "[
 		CREATE TABLE TEST_DECIMAL (d18 DECIMAL(18,0), d182 DECIMAL (18,2), dl83 DECIMAL (5,3), d184 DECIMAL(18,4))
 		]"
-	
+
 	ddl_access : STRING is "[
 		CREATE TABLE TEST_DECIMAL (d18 CURRENCY, d182 CURRENCY, dl83 CURRENCY, d184 CURRENCY)
 		]"
 
 	dbms_sql_server : STRING is "Microsoft SQL Server"
-	
+
 	dbms_firebird : STRING is "Firebird 1.5"
-		
+
 	dbms_access : STRING is "ACCESS"
-	
+
 feature -- Implementation
-	
-	create_test_table is	
+
+	attached_string (s : detachable STRING) : STRING
+		do
+			check attached s as l_s then
+				Result := l_s.twin
+			end
+		end
+
+	create_test_table is
 		local
 			dbms : STRING
 		do
 			drop_test_table
-			dbms := session.info.dbms_name			
+			dbms := session.info.dbms_name
 			if dbms.is_equal (dbms_sql_server) then
 					stmt.set_sql (ddl_sql_server)
 			elseif dbms.is_equal (dbms_firebird) then
@@ -201,13 +214,14 @@ feature -- Implementation
 				io.put_string ("Do not know this DBMS: '"+dbms+"' - trying SQL 92%N")
 				stmt.set_sql (ddl_sql92)
 			end
-			stmt.execute			
+			stmt.execute
 		end
-		
+
 	drop_test_table is
 		local
 			nm : ECLI_NAMED_METADATA
 			table_exists : BOOLEAN
+			tables_cursor : ECLI_TABLES_CURSOR
 		do
 			create nm.make (Void, Void, "TEST_DECIMAL");
 			create tables_cursor.make (nm, session)
@@ -218,12 +232,13 @@ feature -- Implementation
 				stmt.set_sql ("drop table test_decimal")
 				stmt.execute
 			else
-			end			
+			end
 		end
 
-	show_supported_numeric_types is		
+	show_supported_numeric_types is
 		local
-			numerics : DS_LIST[ECLI_SQL_TYPE]		
+			numerics : DS_LIST[ECLI_SQL_TYPE]
+			type_catalog : ECLI_TYPE_CATALOG
 		do
 			create type_catalog.make (session)
 			numerics := type_catalog.numeric_types
@@ -242,5 +257,5 @@ feature -- Implementation
 				numerics.forth
 			end
 		end
-		
+
 end

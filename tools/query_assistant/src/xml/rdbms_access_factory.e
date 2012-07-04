@@ -35,17 +35,17 @@ feature -- Access
 
 	error_handler : QA_ERROR_HANDLER
 
-	last_result_set : RESULT_SET
+	last_result_set : detachable RESULT_SET
 
-	last_parameter_set: PARAMETER_SET
+	last_parameter_set: detachable PARAMETER_SET
 
-	last_access : RDBMS_ACCESS
+	last_access : detachable RDBMS_ACCESS
 
 	parameter_map : PARAMETER_MAP
 
 feature {NONE} -- Access
 
-	last_parameter : RDBMS_ACCESS_PARAMETER
+	last_parameter : detachable RDBMS_ACCESS_PARAMETER
 
 feature -- Status report
 
@@ -60,7 +60,7 @@ feature -- Basic operations
 			element_not_void: element /= Void
 			element_name_access: element.name.string.is_equal (t_access)
 		local
-			name_att, type_att : XM_ATTRIBUTE
+			name_att, type_att : detachable XM_ATTRIBUTE
 			name : STRING
 			description, query : XM_ELEMENT
 			module_type : ACCESS_TYPE
@@ -145,10 +145,12 @@ feature -- Basic operations
 		local
 			name, parent : STRING
 		do
+			name := ""
+			parent := ""
 			if element.has_attribute_by_name (t_name) then
 				name := element.attribute_by_name (t_name).value.string
 			end
-			if name = Void or else name.is_empty then
+			if name.is_empty then
 				name := default_name
 			end
 			if element.has_attribute_by_name (t_extends) then
@@ -177,10 +179,12 @@ feature -- Basic operations
 		local
 			name, parent : STRING
 		do
+			name := ""
+			parent := ""
 			if element.has_attribute_by_name (t_name) then
 				name := element.attribute_by_name (t_name).value.string
 			end
-			if name = Void or else name.is_empty then
+			if name.is_empty then
 				name := default_name
 			end
 			if element.has_attribute_by_name (t_extends) then
@@ -233,20 +237,20 @@ feature {NONE} -- Implementation
 			element_not_void: element /= Void
 			element_has_parameter_element: element.has_element_by_name (t_parameter)
 		local
- 			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			parameter : XM_ELEMENT
+ 			parameter_cursor : DS_LINEAR_CURSOR [detachable XM_NODE]
+--			parameter : XM_ELEMENT
 		do
 			from
-				parameter_cursor := element.new_cursor
+				parameter_cursor := attached_ (element.new_cursor)
 				parameter_cursor.start
 			until
 				parameter_cursor.off
 			loop
-				parameter ?= parameter_cursor.item
-				if parameter /= Void and then parameter.name.string.is_equal (t_parameter) then
+--				parameter ?= parameter_cursor.item
+				if attached {XM_ELEMENT}parameter_cursor.item as parameter and then parameter.name.string.is_equal (t_parameter) then
 					create_parameter (parameter, False)
-					if last_parameter /= Void then
-						last_parameter_set.force (last_parameter)
+					if attached last_parameter as l_param then
+						last_parameter_set.force (l_param)
 					end
 				end
 				parameter_cursor.forth
@@ -259,28 +263,37 @@ feature {NONE} -- Implementation
 			element_not_void: element /= Void
 			element_has_parameter_element: element.has_element_by_name (t_parameter)
 		local
- 			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			parameter : XM_ELEMENT
+ 			parameter_cursor : DS_LINEAR_CURSOR [detachable XM_NODE]
+--			parameter : XM_ELEMENT
 		do
-			from
-				parameter_cursor := element.new_cursor
-				parameter_cursor.start
-			until
-				parameter_cursor.off
-			loop
-				parameter ?= parameter_cursor.item
-				if parameter /= Void and then parameter.name.string.is_equal (t_parameter) then
-					create_parameter (parameter, True)
-					if last_parameter /= Void then
-						if parameter_map.has (last_parameter.name) then
-							is_error := True
-							error_handler.report_duplicate_element ("?", last_parameter.name, element.name)
-						else
-							parameter_map.force (last_parameter, last_parameter.name)
+--			if attached element.new_cursor as parameter_cursor then
+				from
+					parameter_cursor := attached_ (element.new_cursor)
+					parameter_cursor.start
+				until
+					parameter_cursor.off
+				loop
+--					parameter ?= parameter_cursor.item
+					if attached {XM_ELEMENT} parameter_cursor.item as parameter and then parameter.name.string.is_equal (t_parameter) then
+						create_parameter (parameter, True)
+						if attached last_parameter as l_param then
+							if parameter_map.has (l_param.name) then
+								is_error := True
+								error_handler.report_duplicate_element ("?", l_param.name, attached_ (element.name))
+							else
+								parameter_map.force (l_param, l_param.name)
+							end
 						end
 					end
+					parameter_cursor.forth
 				end
-				parameter_cursor.forth
+--			end
+		end
+
+	attached_ (a : detachable ANY) : attached like a
+		do
+			check attached a as l_result then
+				Result := l_result
 			end
 		end
 
@@ -296,10 +309,13 @@ feature {NONE} -- Implementation
 		do
 			is_error := False
 			last_parameter := Void
+			l_name := ""
+			l_table := ""
+			l_column := ""
 			if element.has_attribute_by_name (t_name) then
 				l_name := element.attribute_by_name (t_name).value.string
 			else
-				error_handler.report_missing_attribute (last_access.name, T_name, element.name)
+				error_handler.report_missing_attribute (last_access.name, T_name, attached_ (element.name))
 				is_error := True
 			end
 			if not is_error and then parameter_map /= Void and then parameter_map.has (l_name) then
@@ -309,16 +325,16 @@ feature {NONE} -- Implementation
 				if element.has_attribute_by_name (t_table) then
 					l_table := element.attribute_by_name (t_table).value.string
 				else
-					error_handler.report_missing_attribute (last_access.name, t_table, element.name)
+					error_handler.report_missing_attribute (last_access.name, t_table, attached_ (element.name))
 					is_error := True
 				end
 				if element.has_attribute_by_name (t_column) then
 					l_column := element.attribute_by_name (t_column).value.string
 				else
-					error_handler.report_missing_attribute (last_access.name, T_column, element.name)
+					error_handler.report_missing_attribute (last_access.name, T_column, attached_ (element.name))
 					is_error := True
 				end
-				if l_name /= Void and then l_table /= Void and then l_column /= Void then
+				if l_name.count > 0 and then l_table.count > 0 and then l_column.count > 0 then
 					create l_reference.make (l_table, l_column)
 					create last_parameter.make (l_name, l_reference, maximum_length)
 					if element.has_attribute_by_name (t_sample) then
@@ -405,7 +421,7 @@ feature {NONE} -- Implementation
 			--
 		local
 			sql_parser : ECLI_SQL_PARSER
-			cursor : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
+--			cursor : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 		do
 			create sql_parser.make
 			parameter_names.wipe_out
@@ -413,17 +429,19 @@ feature {NONE} -- Implementation
 			sql_parser.parse (sql, Current)
 			if last_parameter_set /= Void and then last_parameter_set.count < parameter_names.count then
 				-- remove parameter names that already exist
-				from
-					cursor := last_parameter_set.new_cursor
-					cursor.start
-				until
-					cursor.off
-				loop
-					parameter_names.search (cursor.item.name)
-					if parameter_names.found then
-						parameter_names.remove_found_item
+				if attached last_parameter_set.new_cursor as cursor then
+					from
+--						cursor := last_parameter_set.new_cursor
+						cursor.start
+					until
+						cursor.off
+					loop
+						parameter_names.search (cursor.item.name)
+						if parameter_names.found then
+							parameter_names.remove_found_item
+						end
+						cursor.forth
 					end
-					cursor.forth
 				end
 				-- fill parameter names that could exist in the parameter_map
 				from

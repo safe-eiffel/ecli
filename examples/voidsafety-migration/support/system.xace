@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<system name="vsmig_control">
+	<description>
+		system:      "ECLI control application. Just includes all classes of ECLI Library."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<root class="VSMIG_SUPPORT" creation="make"/>
+	
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+	
+	<cluster name="control" location="${ECLI}/examples/voidsafety-migration/support"/>
+
+	<mount location="${ECLI}/library-voidconfident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
+
+</system>

@@ -26,6 +26,12 @@
 
 	<cluster name="control" location="${ECLI}/examples/control"/>
 
-	<mount location="${ECLI}/library.xace"/>
+
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+	
+	<mount location="${ECLI}/library-voidconfident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
 
 </system>

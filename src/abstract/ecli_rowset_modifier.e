@@ -153,7 +153,7 @@ feature {NONE} -- Implementation
 
 	default_parameter : attached like parameter_anchor
 		do
-			create {ECLI_ARRAYED_VARCHAR}Result.make (1, row_count)
+			create {ECLI_ARRAYED_VARCHAR}Result.make (1, row_capacity)
 		end
 
 end

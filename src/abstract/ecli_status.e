@@ -58,6 +58,19 @@ feature {} -- Initialization
 				create error_handler.make_null
 		end
 
+	make_copy (other : ECLI_STATUS)
+		do
+			default_create
+			--set_status (other.last_external_feature, other.status)
+			last_external_feature := other.last_external_feature.twin
+			status := other.status
+			impl_error_message := other.diagnostic_message.twin
+			need_diagnostics := False
+			create impl_cli_state.make_from_string (other.cli_state)
+			impl_native_code.put (other.native_code)
+			error_handler := other.error_handler
+		end
+
 feature -- Access
 
 	status : INTEGER

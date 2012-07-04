@@ -119,7 +119,7 @@ feature {NONE} -- Initialization
 			create results_description.make_empty
 			--| internals
 			create impl_row_count.make
-			create name_to_position.make (0)
+			create name_to_position.make_default
 			create impl_sql.make (1)
 			create {DS_LINKED_LIST[STRING]}impl_parameter_names.make
 		end
@@ -652,6 +652,9 @@ feature -- Basic operations
 			parameters_set: parameters_count > 0 implies bound_parameters
 		local
 			value_pointer : XS_C_INT32
+			b_executed, b_resultcols : BOOLEAN
+			exec_status : ECLI_STATUS_VALUE
+--			colcount_status : ECLI_STATUS_VALUE
 		do
 			reset_status
 			if is_executed then
@@ -672,15 +675,18 @@ feature -- Basic operations
 			else
 				set_status ("ecli_c_execute_direct", ecli_c_execute_direct (handle, impl_sql.handle))
 			end
-			if is_ok then
-				get_result_columns_count
-			end
+			create exec_status.make_copy (Current)
+			--| reset column count
+			reset_result_columns_count
+			--|
 			if session.is_tracing and then attached session.tracer as l_tracer then
 				trace (l_tracer)
 				if session.tracer.is_tracing_time then
 					session.tracer.end_execution_timing
 				end
 			end
+			--| restore status
+			status := exec_status.status
 			if status = Sql_need_data then
 				create value_pointer.make
 				from
@@ -919,11 +925,21 @@ feature {NONE} -- Implementation
 			impl_is_parsed := True
 		end
 
+	reset_result_columns_count
+		do
+			impl_result_columns_count.put (-1)
+		ensure
+			reset: impl_result_columns_count.item = -1
+		end
+
 	get_result_columns_count is
 		require
 			valid_statement: is_valid
 		do
 			set_status ("ecli_c_result_column_count", ecli_c_result_column_count (handle, impl_result_columns_count.handle))
+			if not is_ok then
+				impl_result_columns_count.put (-1)
+			end
 		end
 
 	bind_one_parameter (i : INTEGER) is

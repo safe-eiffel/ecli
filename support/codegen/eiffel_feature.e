@@ -23,6 +23,7 @@ feature -- Initialization
 			name_not_void: new_name /= Void
 		do
 			set_name (new_name)
+			create comment.make_empty
 		end
 
 feature -- Access
@@ -32,7 +33,7 @@ feature -- Access
 
 	comment : STRING
 			-- Comment of feature
-			
+
 feature -- Status setting
 
 	set_name (new_name: STRING) is

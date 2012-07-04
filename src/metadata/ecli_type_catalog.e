@@ -80,7 +80,7 @@ feature -- Access
 				Result := n
 			else
 				create {DS_LINKED_LIST[ECLI_SQL_TYPE]}Result.make
-				if attached types.new_cursor as ht_cursor then
+					if attached types.new_cursor as ht_cursor then
 					from
 						ht_cursor.start
 					until

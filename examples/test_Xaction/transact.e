@@ -19,14 +19,20 @@ feature -- Initialization
 			args : ARGUMENTS
 		do
 			create args
+			create session.make_default
 			-- session opening
 			if args.argument_count < 3 then
 				io.put_string ("Usage: transact <data_source> <user_name> <password>%N")
 			else
-				create  session.make (args.argument (1), args.argument (2), args.argument (3))
+				session.set_login_strategy (
+					create {ECLI_SIMPLE_LOGIN}.make (
+							attached_string (args.argument (1)),
+							attached_string (args.argument (2)),
+							attached_string (args.argument (3)))
+							)
 				session.connect
 				if session.has_information_message then
-					io.put_string (session.cli_state) 
+					io.put_string (session.cli_state)
 					io.put_string (session.diagnostic_message)
 				end
 				if session.is_connected then
@@ -35,7 +41,7 @@ feature -- Initialization
 				-- definition of statement on session
 				create  statement.make (session)
 				--
-				-- actual test 
+				-- actual test
 				--
 				if session.is_transaction_capable then
 					do_test
@@ -49,28 +55,35 @@ feature -- Initialization
 				session.close
 			end;
 		end
-				
+
+	attached_string (s : detachable STRING): STRING
+		do
+			check attached s as l_s then
+				Result := l_s
+			end
+		end
+
 	do_test is
 		do
 			show_initial_message
 			create_table
 			io.put_string ("* Trying 'commit'%N")
-			
+
 			io.put_string ("-2- Begin transaction%N")
 			session.begin_transaction
-			
+
 			insert_tuple ("Henry", "James")
 			io.put_string ("  > Commit <%N")
 			session.commit
 			if is_tuple_inserted ("Henry", "James") then
 				io.put_string (    "*** -- commit worked%N")
 			else
-				io.put_string (    ":(  -- commit failed ****%N")			
+				io.put_string (    ":(  -- commit failed ****%N")
 			end
 
 			io.put_string ("* Trying 'rollback%N")
 			io.put_string ("-3- Begin transaction%N")
-			
+
 			session.begin_transaction
 			insert_tuple ("James", "Henry")
 			io.put_string ("  > Rollback <%N")
@@ -79,11 +92,11 @@ feature -- Initialization
 				io.put_string ("    *** -- rollback worked%N")
 			else
 				io.put_string ("    :(  -- rollback failed ****%N")
-			end			
+			end
 
 			drop_table
 			io.put_string ("All done!%N")
-			
+
 		end
 
 	print_error is
@@ -92,7 +105,7 @@ feature -- Initialization
 			io.put_string (statement.diagnostic_message)
 			io.put_character ('%N')
 		end
-	
+
 	create_table is
 		do
 			io.put_string ("-1- Table creation. ")
@@ -105,11 +118,11 @@ feature -- Initialization
 				print_error
 			end
 		end
-		
+
 	drop_table is
 		do
 			io.put_string ("-4- Table destruction. ")
-			statement.set_sql ("drop table EXTRANSACT") 
+			statement.set_sql ("drop table EXTRANSACT")
 			statement.execute
 			if statement.is_ok then
 				io.put_string (" OK%N")
@@ -129,7 +142,7 @@ feature -- Initialization
 				print_error
 			end
 		end
-		
+
 	is_tuple_inserted (first, last : STRING) : BOOLEAN is
 		local
 			n : INTEGER
@@ -154,9 +167,9 @@ feature -- Initialization
 				io.put_string ("    - failure : selection does not work %N")
 				print_error
 			end
-			Result := n > 0		
+			Result := n > 0
 		end
-		
+
 	launch_statement (stmt, last, first : STRING) is
 		local
 			param : ECLI_VARCHAR
@@ -168,7 +181,7 @@ feature -- Initialization
 			io.put_string ("', last='")
 			io.put_string (last)
 			io.put_string ("'%N")
-			
+
 			statement.set_sql (stmt)
 			create  param.make (20)
 			param.set_item (first)
@@ -179,9 +192,13 @@ feature -- Initialization
 			statement.bind_parameters
 			statement.execute
 		end
-	
-	statement : ECLI_STATEMENT
-	
+
+	statement : detachable ECLI_STATEMENT
+		note
+			stable: stable
+		attribute
+		end
+
 	session : ECLI_SESSION
 
 	create_compatible_cursor is
@@ -193,12 +210,12 @@ feature -- Initialization
 			from
 				i := 1
 				cols := statement.result_columns_count
-				create  cursor.make (1, cols)
+				create  cursor.make_filled (create {ECLI_CHAR}.make (1), 1, cols)
 				statement.describe_results
 			until
 				i > cols
 			loop
-				create  v.make (statement.results_description.item (i).size)
+				create  v.make (statement.results_description.item (i).size.as_integer_32)
 				cursor.put (v, i)
 				i := i + 1
 			end

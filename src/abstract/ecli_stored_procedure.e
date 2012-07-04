@@ -42,7 +42,7 @@ feature {} -- Initialization
 feature -- Access
 
 	directed_parameter (name : STRING) : ECLI_STATEMENT_PARAMETER is
-			-- parameter related to `key'.
+			-- Parameter related to `key'.
 		require
 			name_not_void: name /= Void --FIXME: VS-DEL
 			has_parameter_of_name: has_parameter (name)
@@ -153,7 +153,7 @@ feature {NONE} -- Implementation
 			--
 		do
 			Precursor
-			create directed_parameters.make (1, parameters_count)
+			create directed_parameters.make_filled (default_directed_parameter, 1, parameters_count)
 		end
 
 	put_parameter_with_hint (value : attached like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
@@ -175,5 +175,13 @@ feature {NONE} -- Implementation
 		do
 			directed_parameters.item (i).bind (Current, i)
 		end
+
+feature {} -- Implementation / Auxiliary
+
+	default_directed_parameter : ECLI_STATEMENT_PARAMETER
+		do
+			create {ECLI_INPUT_PARAMETER}Result.make (default_parameter)
+		end
+
 
 end

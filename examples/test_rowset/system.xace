@@ -26,7 +26,11 @@
 		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
 	</option>
 
+	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+
 	<cluster name="test_rowset" location="${ECLI}/examples/test_rowset"/>
 
-	<mount location="${ECLI}/library.xace"/>
+	<mount location="${ECLI}/library-voidconfident.xace"/>
 </system>

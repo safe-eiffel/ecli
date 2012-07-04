@@ -47,6 +47,8 @@ feature -- Initialization
 		local
 			c : ECLI_CHAR
 		do
+			create ecli_login.make ("", "", "")
+			create_buffers
 			parse_arguments
 			create error_handler.make_standard
 			if arguments_ok then
@@ -56,7 +58,7 @@ feature -- Initialization
 					create_buffers
 					test_insert
 					test_select
---					test_select_p
+					test_select_p
 					print_diagnostics
 					session.disconnect
 				end
@@ -86,10 +88,14 @@ feature -- Access
 
 	p_greater : ECLI_VARCHAR
 
-	session : ECLI_SESSION
+	session : detachable ECLI_SESSION
+		note
+			stable: stable
+		attribute
+		end
 
-	selection : ECLI_STATEMENT
-	insertion : ECLI_STATEMENT
+	selection : detachable ECLI_STATEMENT
+	insertion : detachable ECLI_STATEMENT
 
 	s_selection : STRING is "select a, b from TSTECLIDATA where a=?"
 	s_insertion : STRING is "insert into TSTECLIDATA (a, b) values (?, ?)"
@@ -99,7 +105,7 @@ feature -- Access
 ]"
 	s_delete_content : STRING is "delete from TSTECLIDATA";
 
-	v_file : ECLI_FILE_LONGVARBINARY
+--	v_file : ECLI_FILE_LONGVARBINARY
 
 	error_handler : ECLI_ERROR_HANDLER
 
@@ -151,23 +157,25 @@ feature -- Basic operations
 			create_option : STRING
 		do
 			print ("create table%N")
-			if arg_create_option.was_found then
-				create_option := arg_create_option.parameter.twin
-			else
-				create_option := ""
-			end
-			create table_create.make (session)
-			table_create.set_error_handler (error_handler)
-			table_create.set_sql (s_create + create_option)
-			table_create.execute
-			if table_create.is_executed then
-			else
-				print ("deleting previous content%N")
-				table_create.set_sql (s_delete_content)
+			if attached session as l_session then
+				if arg_create_option.was_found then
+					create_option := arg_create_option.parameter.twin
+				else
+					create_option := ""
+				end
+				create table_create.make (l_session)
+				table_create.set_error_handler (error_handler)
+				table_create.set_sql (s_create + create_option)
 				table_create.execute
+				if table_create.is_executed then
+				else
+					print ("deleting previous content%N")
+					table_create.set_sql (s_delete_content)
+					table_create.execute
+				end
+				print_ecli_diagnostic (table_create)
+				table_create.close
 			end
-			print_ecli_diagnostic (table_create)
-			table_create.close
 		end
 
 	test_insert
@@ -175,19 +183,21 @@ feature -- Basic operations
 			stmt : ECLI_STATEMENT
 		do
 			print ("** insert%N")
-			create stmt.make (session)
-			stmt.set_error_handler (error_handler)
-			stmt.set_sql (s_insertion)
-			test_insert_less (stmt)
-			test_insert_same (stmt)
-			test_insert_greater_buffer (stmt)
-			test_insert_larger_column (stmt)
-			test_insert_null (stmt)
+			if	attached session as l_session then
+				create stmt.make (l_session)
+				stmt.set_error_handler (error_handler)
+				stmt.set_sql (s_insertion)
+				test_insert_less (stmt)
+				test_insert_same (stmt)
+				test_insert_greater_buffer (stmt)
+				test_insert_larger_column (stmt)
+				test_insert_null (stmt)
 
-			stmt.close
+				stmt.close
+			end
 		end
 
-	do_execute_with_parameters (stmt : ECLI_STATEMENT; parameters : ARRAY[ECLI_VALUE]; results : ARRAY[ECLI_VALUE]) is
+	do_execute_with_parameters (stmt : ECLI_STATEMENT; parameters : detachable ARRAY[ECLI_VALUE]; results : detachable ARRAY[ECLI_VALUE]) is
 		do
 			if parameters /= Void then
 				stmt.set_parameters (parameters)
@@ -282,20 +292,22 @@ feature -- Basic operations
 			stmt : ECLI_STATEMENT
 		do
 			print ("** select%N")
-			create stmt.make (session)
-			stmt.set_error_handler (error_handler)
-			stmt.set_sql (s_selection)
+			if attached session as l_session then
+				create stmt.make (l_session)
+				stmt.set_error_handler (error_handler)
+				stmt.set_sql (s_selection)
 
-			test_select_less (stmt)
-			test_select_same (stmt)
-			test_select_greater (stmt)
-			test_select_null (stmt)
+				test_select_less (stmt)
+				test_select_same (stmt)
+				test_select_greater (stmt)
+				test_select_null (stmt)
 
-			stmt.close
+				stmt.close
+			end
 		end
 
 
-	ecli_string_longvarchar_object (n : INTEGER; value : STRING) : ECLI_STRING_LONGVARCHAR is
+	ecli_string_longvarchar_object (n : INTEGER; value : detachable STRING) : ECLI_STRING_LONGVARCHAR is
 		do
 			create Result.make (n)
 			if value /= Void then
@@ -303,7 +315,7 @@ feature -- Basic operations
 			end
 		end
 
-	ecli_varchar (n : INTEGER; value : STRING) : ECLI_VARCHAR is
+	ecli_varchar (n : INTEGER; value : detachable STRING) : ECLI_VARCHAR is
 		do
 			Create Result.make (n)
 			if value /= Void then
@@ -344,23 +356,25 @@ feature -- Basic operations
 			stmt : ECLI_STATEMENT
 		do
 			print ("select_p")
-			create stmt.make (session)
-			stmt.set_error_handler (error_handler)
-			p_less.set_item (out_greater.item) --.substring (1, 20))
-			stmt.set_sql (s_param)
-			stmt.set_parameters (<<p_less>>)
-			stmt.bind_parameters
-			stmt.set_results (<<in_less, in_same, in_greater>>)
-			stmt.execute
-			print_ecli_diagnostic (stmt)
-			stmt.start
-			print_ecli_diagnostic (stmt)
-			if not stmt.off then
-				print (stmt.sql)
-				print ("%N")
-				stmt.results.do_all (agent print_value (?))
+			if attached session as l_session then
+				create stmt.make (l_session)
+				stmt.set_error_handler (error_handler)
+				p_less.set_item (out_greater.item) --.substring (1, 20))
+				stmt.set_sql (s_param)
+				stmt.set_parameters (<<p_less>>)
+				stmt.bind_parameters
+				stmt.set_results (<<in_less, in_same, in_greater>>)
+				stmt.execute
+				print_ecli_diagnostic (stmt)
+				stmt.start
+				print_ecli_diagnostic (stmt)
+				if not stmt.off then
+					print (stmt.sql)
+					print ("%N")
+					stmt.results.do_all (agent print_value (?))
+				end
+				stmt.close
 			end
-			stmt.close
 		end
 
 	print_success_info (code : INTEGER; status : STRING; diagnostic : STRING)
@@ -426,8 +440,13 @@ feature {} -- Implementation
 			ap_parser.options.force_last (arg_create_option)
 			ap_parser.parse_arguments
 			if ap_parser.valid_options then
-				create ecli_login.make (arg_datasource.parameter, arg_username.parameter, arg_password.parameter)
-				arguments_ok := True
+				if 	attached arg_datasource.parameter as l_dsn and then
+				   		attached arg_username.parameter as l_username and then
+				   		attached arg_password.parameter as l_pwd
+				then
+					create ecli_login.make (l_dsn, l_username, l_pwd)
+					arguments_ok := True
+				end
 			else
 				arguments_ok := False
 			end

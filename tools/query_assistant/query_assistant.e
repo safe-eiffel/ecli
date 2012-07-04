@@ -363,72 +363,66 @@ feature -- Basic operations
 
 	define_parameters is
 		local
-			a_parameter : 	QA_VALUE
-			a_char : 		QA_CHAR
-			a_varchar : 	QA_VARCHAR
-			a_float : 		QA_FLOAT
-			a_double : 		QA_DOUBLE
-			a_integer : 	QA_INTEGER
-			a_real : 		QA_REAL
-			a_date : 		QA_DATE
-			a_timestamp : 	QA_TIMESTAMP
-			pcursor : 		DS_LIST_CURSOR[STRING]
+--			a_parameter : 	QA_VALUE
+--			a_char : 		QA_CHAR
+--			a_varchar : 	QA_VARCHAR
+--			a_float : 		QA_FLOAT
+--			a_double : 		QA_DOUBLE
+--			a_integer : 	QA_INTEGER
+--			a_real : 		QA_REAL
+--			a_date : 		QA_DATE
+--			a_timestamp : 	QA_TIMESTAMP
+--			pcursor : 		DS_LIST_CURSOR[STRING]
 		do
 			io.put_string ("? Please give value to parameters so that the query can be executed.%N")
 			-- iterate on parameter names
-			pcursor := qacursor.parameter_names.new_cursor
-			from
-				pcursor.start
-			until
-				pcursor.off
-			loop
-				io.put_string ("? Value of '")
-				io.put_string (pcursor.item)
-				io.put_string ("' : ")
-				a_parameter := qacursor.parameter (pcursor.item)
-				a_char ?= a_parameter
-				if a_char /= Void then
-					io.read_line
-					a_char.set_item (io.last_string)
-				else
-					a_varchar ?= a_parameter
-					if a_varchar /= Void then
+			if attached qacursor.parameter_names.new_cursor as pcursor
+				from
+					pcursor.start
+				until
+					pcursor.off
+				loop
+					io.put_string ("? Value of '")
+					io.put_string (pcursor.item)
+					io.put_string ("' : ")
+					a_parameter := qacursor.parameter (pcursor.item)
+					if attached {QA_CHAR} a_parameter as a_charthen
 						io.read_line
-						a_varchar.set_item (io.last_string)
+						a_char.set_item (io.last_string)
 					else
-						a_double ?= a_parameter
-						if a_double /= Void then
-							io.read_double
-							a_double.set_item (io.last_double)
+						if attached {QA_VARCHAR} a_parameter as a_varcharthen
+							io.read_line
+							a_varchar.set_item (io.last_string)
 						else
-							a_real ?= a_parameter
-							if a_real /= Void then
-								io.read_real
-								a_real.set_item (io.last_real)
+							if attached {QA_DOUBLE} a_parameter as a_doublethen
+								io.read_double
+								a_double.set_item (io.last_double)
 							else
-								a_integer ?= a_parameter
-								if a_integer /= Void then
-									io.read_integer
-									a_integer.set_item (io.last_integer)
+								if attached {QA_REAL} a_parameter as a_realthen
+									io.read_real
+									a_real.set_item (io.last_real)
 								else
-									a_date ?= a_parameter
-									if a_date /= Void then
-										io.put_string ("YYYY-MM-DD >")
-										io.read_line
-										a_date.set_item (date_from_string (io.last_string))
+									if {QA_INTEGER} a_parameter as a_integer then
+										io.read_integer
+										a_integer.set_item (io.last_integer)
 									else
-										a_timestamp ?= a_parameter
-										if a_timestamp /= Void then
+										if attached {QA_DATE} a_parameter as a_date then
+											io.put_string ("YYYY-MM-DD >")
 											io.read_line
-											a_timestamp.set_item (timestamp_from_string (io.last_string))
+											a_date.set_item (date_from_string (io.last_string))
+										else
+											if attached {QA_TIMESTAMP} a_parameter as a_timestamp then
+												io.read_line
+												a_timestamp.set_item (timestamp_from_string (io.last_string))
+											end
 										end
 									end
 								end
 							end
 						end
 					end
+					pcursor.forth
 				end
-				pcursor.forth
 			end
 		end
 

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="control" default="help">
+
+	<description>
+		system: "VSMIG_SUPPORT test application : migration to void-safety."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${ECLI}/misc/build.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="support"/>
+		<set name="system_dir" value="${ECLI}/examples/voidsafety-migration\${system}"/>
+	</target>
+
+</project>
