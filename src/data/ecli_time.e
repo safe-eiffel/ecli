@@ -178,7 +178,7 @@ feature -- Measurement
 			Result := 8
 		end
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_sizeof_time_struct
 		end

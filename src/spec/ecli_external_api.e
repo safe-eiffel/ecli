@@ -318,7 +318,9 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER; len_indicator_pointer : POINTER) : INTEGER is
+	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER_64; len_indicator_pointer : POINTER) : INTEGER is
+		require
+			platform_compatible_buffer_length: platform_compatible_length (buffer_length)
 		external "C"
 --SQLGetData (SQLHSTMT StatementHandle, SQLUSMALLINT ColumnNumber,
 --   SQLSMALLINT TargetType, SQLPOINTER TargetValue, SQLLEN BufferLength,

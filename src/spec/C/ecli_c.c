@@ -437,7 +437,7 @@ EIF_INTEGER ecli_c_get_data (EIF_POINTER stmt,
 							 EIF_INTEGER column_number,
 							 EIF_INTEGER c_type,
 							 EIF_POINTER target_pointer,
-							 EIF_INTEGER buffer_length,
+							 EIF_INTEGER_64 buffer_length,
 							 EIF_POINTER len_indicator_pointer) {
 	return (EIF_INTEGER) SQLGetData(
 		(SQLHSTMT)			stmt,

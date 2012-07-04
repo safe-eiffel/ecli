@@ -135,7 +135,7 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 		deferred
 		end
 
-	transfer_octet_length : INTEGER is
+	transfer_octet_length : INTEGER_64 is
 			-- Actual buffer capacity for underlying data transfer.
 			-- (redefine in descendant classes)
 		deferred

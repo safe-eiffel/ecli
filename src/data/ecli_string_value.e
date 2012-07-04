@@ -113,10 +113,10 @@ feature -- Measurement
 
 	display_size: INTEGER is
 		do
-			Result := transfer_octet_length - 1
+			Result := transfer_octet_length.as_integer_32 - 1
 		end
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_value_get_length (buffer).as_integer_32 -- FIXME 64/32 bits
 		end
@@ -329,7 +329,11 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	octet_size : INTEGER is do Result := transfer_octet_length end
+	octet_size : INTEGER is
+			-- FIXME: 64 bits
+		do
+			Result := transfer_octet_length.as_integer_32
+		end
 
 	impl_item : STRING
 

@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 		"Objects that are able of operating on a rowset%N%
 		% A rowset is an array  of `row_capacity' rows.%N%
 		% Database operations occur one rowset at a time.%N%
@@ -26,48 +26,48 @@ feature -- Access
 
 	rowset_status : ECLI_ROWSET_STATUS
 			-- Status of last operation, one per row in the set
-	
+
 feature -- Measurement
 
 	row_capacity : INTEGER
 			-- Maximum number of rows in this rowset
-	
-	row_count : INTEGER is
+
+	row_count : INTEGER_64 is
 			-- Number of rows processed by rowset operation
 		do
 			Result := impl_row_count.item
 		end
-		
+
 feature {NONE} -- Implementation
-	
+
 	status_array : ARRAY[INTEGER]
 			-- For debugging purposes : rowset_status content cannot be viewed in the debugger
-	
+
 	fill_status_array is
 		local
 			index: INTEGER
 		do
 			from index := 1
 				create status_array.make (1, row_capacity)
-			until 
+			until
 				index > row_capacity
 			loop
 				status_array.put (rowset_status.item (index), index)
 				index := index + 1
 			end
 		end
-		
-	impl_row_count : XS_C_INT32 is deferred end
+
+	impl_row_count : ECLI_API_SQLLEN is deferred end
 
 	make_row_count_capable is
-			-- 
+			--
 		deferred
 		end
-		
+
 invariant
 	row_capacity_valid: row_capacity >= 1
 	row_count_valid: row_count <= row_capacity
 	impl_row_count_not_void: impl_row_count /= Void
 	rowset_status_capacity: rowset_status /= Void and then rowset_status.count = row_capacity
-	
+
 end

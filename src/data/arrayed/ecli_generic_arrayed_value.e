@@ -39,7 +39,7 @@ feature -- Access
 
 feature -- Measurement
 
-	item_size : INTEGER is
+	item_size : INTEGER_64 is
 			-- maximum size of one item
 		do
 			Result := ecli_c_array_value_get_length (buffer)

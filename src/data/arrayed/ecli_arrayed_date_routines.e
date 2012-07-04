@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Routines for handling arrayed buffers of DATEs or date part of TIMESTAMPs."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,26 +14,26 @@ deferred class ECLI_ARRAYED_DATE_ROUTINES
 inherit
 
 	ECLI_EXTERNAL_API
-		export 
+		export
 			{NONE} all
 		end
-	
+
 	ANY
-	
+
 feature -- Access
 
 	buffer : POINTER is
 		deferred
 		end
 
-	transfer_octet_length : INTEGER is
+	transfer_octet_length : INTEGER_64 is
 		deferred
 		end
-		
+
 	cursor_index : INTEGER is
 		deferred
 		end
-		
+
 	year : INTEGER is
 			-- year_at (cursor_index)
 		do
@@ -115,22 +115,22 @@ feature -- Measurement
 	upper : INTEGER is
 		deferred
 		end
-		
-		
+
+
 feature -- Status report
 
 	is_null : BOOLEAN is
 		deferred
 		end
-		
+
 	off : BOOLEAN is
 		deferred
 		end
-		
+
 	is_null_at (index : INTEGER) : BOOLEAN is
 		deferred
 		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -151,14 +151,14 @@ feature -- Element change
 			date_pointer := ecli_c_array_value_get_value_at (buffer, index)
 			ecli_c_date_set_year (date_pointer, a_year)
 			ecli_c_date_set_month (date_pointer, a_month)
-			ecli_c_date_set_day (date_pointer, a_day)			
+			ecli_c_date_set_day (date_pointer, a_day)
 			ecli_c_array_value_set_length_indicator_at (buffer, transfer_octet_length,index)
 		ensure
 			year_set: year_at (index) = a_year
 			month_set: month_at (index) = a_month
 			day_set: day_at (index) = a_day
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -171,7 +171,7 @@ feature -- Conversion
 		do
 			Result := out_item_at (cursor_index)
 		end
-		
+
 	out_item_at (index : INTEGER) : STRING is
 		local
 			save_index : INTEGER
@@ -206,7 +206,7 @@ feature {NONE} -- Implementation
 	Integer_format : ECLI_FORMAT_INTEGER is
 		deferred
 		end
-		
+
 invariant
 	invariant_clause: True -- Your invariant here
 
