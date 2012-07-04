@@ -941,7 +941,7 @@ feature {NONE} -- Implementation
 			Result := ecli_c_statement_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
 
-	impl_row_count : XS_C_INT64
+	impl_row_count : ECLI_API_SQLLEN
 		-- Buffer for storing number of rows affected
 
 	impl_result_columns_count : XS_C_INT32

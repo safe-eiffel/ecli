@@ -7,7 +7,7 @@ indexing
 	implementation_note: "[
 			64 bit:
 			
-			All sizes/length are 64 bit; is current platform is 32 bit, a precondition tests the value.
+			All sizes/length are 64 bit; if current platform is 32 bit, a precondition tests the value.
 
 			]"
 
