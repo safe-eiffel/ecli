@@ -67,7 +67,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.5g"
+	version : STRING is "v1.6"
 
 feature -- Element change
 
@@ -624,7 +624,7 @@ feature {NONE} -- Implementation
 					cursor.item.check_validity (session, error_handler, Reasonable_maximum_length)
 					if cursor.item.is_valid then
 						error_handler.report_end ("Analyzing "+cursor.item.name,True)
-						if cursor.item.has_result_set then
+						if cursor.item.has_result_set and cursor.item.is_results_valid then
 							module.result_sets.force (cursor.item.results, cursor.item.results.name)
 						else
 							do_nothing
@@ -662,6 +662,8 @@ feature {NONE} -- Implementation
 			loop
 				if c.item.is_valid then
 					generate (c.item, error_handler)
+				else
+					error_handler.report_rejected (c.item.name)
 				end
 				c.forth
 			end
@@ -673,9 +675,13 @@ feature {NONE} -- Implementation
 			until
 				p.off
 			loop
-				error_handler.report_start ("Generating " + p.item.name)
-				gen.create_set_class (p.item)
-				gen.write_class (gen.set_class, out_directory)
+				if p.item.is_generatable then
+					error_handler.report_start ("Generating " + p.item.name)
+					gen.create_set_class (p.item)
+					gen.write_class (gen.set_class, out_directory)
+				else
+					error_handler.report_rejected (p.item.name)
+				end
 				p.forth
 			end
 			--| classes for parent results
@@ -685,9 +691,13 @@ feature {NONE} -- Implementation
 			until
 				r.off
 			loop
-				error_handler.report_start ("Generating " + r.item.name)
-				gen.create_set_class (r.item)
-				gen.write_class (gen.set_class, out_directory)
+				if r.item.is_generatable then
+					error_handler.report_start ("Generating " + r.item.name)
+					gen.create_set_class (r.item)
+					gen.write_class (gen.set_class, out_directory)
+				else
+					error_handler.report_rejected (r.item.name)
+				end
 				r.forth
 			end
 --			--| classes for parent results

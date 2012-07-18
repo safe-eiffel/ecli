@@ -2,7 +2,7 @@ indexing
 	description: "Objects that resolve access module metadata references to parents or descendants."
 
 	library: "Access_gen : Access Modules Generators utilities"
-	
+
 	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
@@ -28,7 +28,7 @@ feature -- Basic operations
 				cursor.off
 			loop
 				set := cursor.item
-				if set.parent_name /= Void then
+				if set.is_generatable and then set.parent_name /= Void then
 					Result.search (set.parent_name)
 					if not Result.found then
 						create parent_column_set.make (set.parent_name)
@@ -51,7 +51,7 @@ feature -- Basic operations
 				if parent_cursor.item.count = 0 then
 					error_handler.report_parent_class_empty (parent_cursor.item.name)
 				end
-				parent_cursor.forth	
+				parent_cursor.forth
 			end
 		end
 
@@ -66,11 +66,13 @@ feature -- Basic operations
 			until
 				cursor.off
 			loop
-				cursor.item.flatten
+				if cursor.item.is_generatable then
+					cursor.item.flatten
+				end
 				cursor.forth
 			end
 		end
-		
+
 end -- class REFERENCE_RESOLVER
 --
 -- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>

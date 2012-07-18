@@ -119,6 +119,8 @@ feature -- Status setting
 				check_parameters (query_statement, query_session, a_error_handler, reasonable_maximum_size)
 				if is_parameters_valid then -- and is_results_valid then
 					try_query (query_statement, a_session, a_error_handler)
+				else
+					parameters.disable_generatable
 				end
 				describe_result_set (query_statement, a_error_handler, reasonable_maximum_size)
 			end
@@ -254,11 +256,11 @@ feature {NONE} -- Implementation
 						if  (maximum_length > 0 and then current_description.size > maximum_length) then
 							a_error_handler.report_column_length_truncated (name, current_description.name, maximum_length, False)
 						else
-							a_error_handler.report_column_length_too_large (name, current_description.name, current_description.size, False)
+							a_error_handler.report_column_length_too_large (name, current_description.name, current_description.size.as_integer_32, False)
 						end
 						create current_result.make(current_description, maximum_length)
 					else
-						create current_result.make(current_description, current_description.size)
+						create current_result.make(current_description, current_description.size.as_integer_32)
 					end
 					if results.has (current_result) then
 						a_error_handler.report_already_exists (results.name, current_result.name, "result column")
