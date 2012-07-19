@@ -61,8 +61,7 @@ feature -- Basic operations
 			element_name_access: element.name.string.is_equal (t_access)
 		local
 			name_att, type_att : detachable XM_ATTRIBUTE
-			name : STRING
-			description, query : XM_ELEMENT
+			name : detachable STRING
 			module_type : ACCESS_TYPE
 		do
 			is_error := False
@@ -80,22 +79,22 @@ feature -- Basic operations
 				is_error := True
 			else
 				name := name_att.value
---				type := type_att.value
+--vs				type := type_att.value
 				if name /= Void then --and type /= Void then
-					if element.has_element_by_name (t_sql) then
-						query := element.element_by_name (t_sql)
+					if attached {XM_ELEMENT} element.element_by_name (t_sql) as query then
+--vs						query := element.element_by_name (t_sql)
 						create last_access.make (module_name (name), query.text.string)
 						last_access.enable_generatable
-						if element.has_element_by_name (t_description) then
-							description := element.element_by_name (t_description)
+						if attached element.element_by_name (t_description) as description then
+--vs							description := element.element_by_name (t_description)
 							last_access.set_description (description.text.string)
 						end
 						if element.has_element_by_name (t_parameter_set) then
-							if element.has_element_by_name (t_parameter) then
+							if attached element.element_by_name (t_parameter) as l_parameter then
+								create_parameter_set (l_parameter, parameter_set_name (name))
+							else
 								error_handler.report_exclusive_element (name, "parameter", "parameter_set", "access")
 								is_error := True
-							else
-								create_parameter_set (element.element_by_name (t_parameter_set), parameter_set_name (name))
 							end
 						else
 							create last_parameter_set.make (parameter_set_name (name))
@@ -103,27 +102,27 @@ feature -- Basic operations
 								populate_parameter_set (element)
 							end
 						end
-						if element.has_element_by_name (t_result_set) then
-							create_result_set (element.element_by_name (t_result_set), result_set_name (name))
+						if attached element.element_by_name (t_result_set) as l_result_set then
+							create_result_set (l_result_set, result_set_name (name))
 						end
 						-- analyze SQL and infer parameter_set
 						fill_parameter_set (last_access.query)
-						if last_parameter_set /= Void then
-							if last_parameter_set.is_generatable then
-								last_access.set_parameters (last_parameter_set)
+						if attached last_parameter_set as l_last_parameter_set then
+							if l_last_parameter_set.is_generatable then
+								last_access.set_parameters (l_last_parameter_set)
 							else
 								last_access.disable_generatable
 							end
 						end
-						if last_result_set /= Void then
-							if last_result_set.is_generatable then
-								last_access.set_results (last_result_set)
+						if attached last_result_set as l_last_result_set then
+							if l_last_result_set.is_generatable then
+								last_access.set_results (l_last_result_set)
 							else
 								last_access.disable_generatable
 							end
 						end
-						if type_att /= Void then
-							create module_type.make_from_string (type_att.value)
+						if attached type_att as l_type_att then
+							create module_type.make_from_string (l_type_att.value)
 							last_access.set_type (module_type)
 						end
 					else
