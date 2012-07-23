@@ -1,0 +1,7 @@
+EIFGENs
+*.melted
+*.rc
+compile_ise.ecf
+*.exe
+ecli_*.obj
+ecli_*.lib
