@@ -49,7 +49,7 @@ feature {NONE} -- Initialization
 			impl_item := s
 			--| create ext_item, with dummy values
 			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1),
-				ecli_c_array_value_get_length_indicator_at(buffer,1))
+				ecli_c_array_value_get_length_indicator_at(buffer,1).as_integer_32)
 			set_all_null
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
@@ -72,7 +72,7 @@ feature -- Access
 				create Result.make_empty
 			else
 				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index),
-					ecli_c_array_value_get_length_indicator_at(buffer,index))
+					ecli_c_array_value_get_length_indicator_at(buffer,index).as_integer_32)
 				ext_item.copy_to (impl_item)
 				Result := impl_item
 			end
@@ -87,7 +87,7 @@ feature -- Access
 	content_capacity : INTEGER is
 			-- Capacity of a single value
 		do
-			Result := ecli_c_array_value_get_length (buffer) - 1
+			Result := (ecli_c_array_value_get_length (buffer) - 1).as_integer_32
 		end
 
 	content_count : INTEGER is
@@ -100,13 +100,13 @@ feature -- Access
 			-- Length of `index'th
 		do
 			if not is_null_at (index) then
-				Result := ecli_c_array_value_get_length_indicator_at (buffer, index)
+				Result := ecli_c_array_value_get_length_indicator_at (buffer, index).as_integer_32
 			end
 		end
 
 feature -- Measurement
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_array_value_get_length (buffer)
 		end

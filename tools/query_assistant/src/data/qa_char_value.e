@@ -55,7 +55,7 @@ feature -- Conversion
 			if size > default_maximum_capacity then
 				create Result.make (10)
 				Result.append_string ("make_force_maximum_capacity (")
-				Result.append_integer (size)
+				Result.append_integer (size.as_integer_32)
 				Result.append_string (")")
 			else
 				Result := Precursor

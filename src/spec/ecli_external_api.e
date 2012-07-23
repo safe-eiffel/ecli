@@ -7,7 +7,7 @@ indexing
 	implementation_note: "[
 			64 bit:
 			
-			All sizes/length are 64 bit; is current platform is 32 bit, a precondition tests the value.
+			All sizes/length are 64 bit; if current platform is 32 bit, a precondition tests the value.
 
 			]"
 
@@ -94,6 +94,14 @@ feature {NONE} -- Implementation
 --SQL_KEYSET_SIZE
 		end
 
+	ecli_c_get_integer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER)  : INTEGER is
+--SQLGetConnectAttr
+--When the Attribute parameter has one of the following values, a 64-bit value is returned in Value:
+--SQL_ATTR_QUIET_MODE
+
+		external "C"
+		end
+
 	ecli_c_set_pointer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
 		external "C"
 		end
@@ -102,13 +110,6 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	ecli_c_get_integer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER)  : INTEGER is
---SQLGetConnectAttr
---When the Attribute parameter has one of the following values, a 64-bit value is returned in Value:
---SQL_ATTR_QUIET_MODE
-
-		external "C"
-		end
 
 	ecli_c_connect (con : POINTER; data_source, user, password : POINTER) : INTEGER is
 			-- connect 'con' on 'data_source' for 'user' with 'password'
@@ -281,7 +282,7 @@ feature {NONE} -- Implementation
 --   SQLSMALLINT *NameLength, SQLSMALLINT *DataType, SQLULEN *ColumnSize,
 --   SQLSMALLINT *DecimalDigits, SQLSMALLINT *Nullable);
 
-		end
+		end --FIXME 64 bits: verify for sql_size
 
 	ecli_c_get_type_info (stmt : POINTER; data_type : INTEGER) : INTEGER is
 		external "C"
@@ -317,7 +318,9 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER; len_indicator_pointer : POINTER) : INTEGER is
+	ecli_c_get_data (stmt : POINTER; column_number, c_type : INTEGER; target_pointer : POINTER; buffer_length : INTEGER_64; len_indicator_pointer : POINTER) : INTEGER is
+		require
+			platform_compatible_buffer_length: platform_compatible_length (buffer_length)
 		external "C"
 --SQLGetData (SQLHSTMT StatementHandle, SQLUSMALLINT ColumnNumber,
 --   SQLSMALLINT TargetType, SQLPOINTER TargetValue, SQLLEN BufferLength,
@@ -329,13 +332,13 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
-	ecli_c_put_data (stmt, data_ptr : POINTER; str_len_or_ind : INTEGER)  : INTEGER is
+	ecli_c_put_data (stmt, data_ptr : POINTER; str_len_or_ind : INTEGER_64)  : INTEGER is
 		external "C"
 --SQLPutData (SQLHSTMT StatementHandle, SQLPOINTER Data,
 --   SQLLEN StrLen_or_Ind);
 		end
 
-	ecli_c_len_data_at_exe (len : INTEGER) : INTEGER is
+	ecli_c_len_data_at_exe (len : INTEGER_64) : INTEGER_64 is
 		external "C"
 		end
 
@@ -415,6 +418,11 @@ feature {NONE} -- Value handling functions
 		external "C"
 		end
 
+	ecli_c_value_get_length (pointer : POINTER) : INTEGER_64 is
+			-- Length of buffer
+		external "C"
+		end
+
 	ecli_c_value_set_length_indicator (pointer : POINTER; length : INTEGER_64) is
 -- 64 bit: length indicator = actual length of data.
 		require
@@ -426,11 +434,8 @@ feature {NONE} -- Value handling functions
 			]"
 		end
 
-	ecli_c_value_get_length (pointer : POINTER) : INTEGER is
-		external "C"
-		end
-
-	ecli_c_value_get_length_indicator (pointer : POINTER) : INTEGER is
+	ecli_c_value_get_length_indicator (pointer : POINTER) : INTEGER_64 is
+			-- Actual length of data
 		external "C"
 		end
 
@@ -439,6 +444,7 @@ feature {NONE} -- Value handling functions
 		end
 
 	ecli_c_value_set_value (pointer, new_value : POINTER; actual_length : INTEGER) is
+			-- FIXME: Do we only support 32 bit length for values ?
 		external "C"
 		end
 
@@ -464,7 +470,7 @@ feature {NONE} -- Value handling functions for ARRAYED values
 		external "C"
 		end
 
-	ecli_c_array_value_get_length (v : POINTER)  : INTEGER is
+	ecli_c_array_value_get_length (v : POINTER)  : INTEGER_64 is
 			-- maximum length of elements
 		external "C"
 		end
@@ -479,12 +485,12 @@ feature {NONE} -- Value handling functions for ARRAYED values
 		external "C"
 		end
 
-	ecli_c_array_value_set_length_indicator_at (v : POINTER; li : INTEGER; index : INTEGER) is
+	ecli_c_array_value_set_length_indicator_at (v : POINTER; li : INTEGER_64; index : INTEGER) is
 			-- set `index'th length indicator
 		external "C"
 		end
 
-	ecli_c_array_value_get_length_indicator_at (v : POINTER; index : INTEGER)  : INTEGER is
+	ecli_c_array_value_get_length_indicator_at (v : POINTER; index : INTEGER)  : INTEGER_64 is
 			-- get `index'th length indicator
 		external "C"
 		end

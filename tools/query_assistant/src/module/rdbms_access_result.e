@@ -30,9 +30,9 @@ feature {NONE} -- Initialization
 		do
 			metadata := the_metadata
 			if maximum_length > 0 then
-				size_impl := maximum_length.min (metadata.size)
+				size_impl := maximum_length.min (metadata.size.as_integer_32)
 			else
-				size_impl := metadata.size
+				size_impl := metadata.size.as_integer_32
 			end
 		ensure
 			metadata_assigned: metadata = the_metadata

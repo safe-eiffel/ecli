@@ -61,7 +61,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 	bind_as_parameter (stmt: ECLI_STATEMENT; index: INTEGER_32)
 			-- <Precursor>
 		local
-			length_at_execution : XS_C_INT32
+			length_at_execution : XS_C_INT64 --FIXME 64/32 bits
 			parameter_rank : XS_C_INT32
 		do
 			-- If buffer is large enough, transfer in one piece
@@ -162,11 +162,14 @@ feature {NONE} -- Implementation
 
 	actual_transfer_length : INTEGER is
 			-- <Precursor>
+		local
+			l_res : INTEGER_64
 		do
-				Result := ecli_c_value_get_length_indicator (buffer)
-				if Result = {ECLI_STATUS_CONSTANTS}.Sql_no_total or else Result > transfer_octet_length then
-					Result := transfer_octet_length
+				l_res := ecli_c_value_get_length_indicator (buffer)
+				if l_res = {ECLI_STATUS_CONSTANTS}.Sql_no_total or else l_res > transfer_octet_length then
+					l_res := transfer_octet_length
 				end
+				Result := l_res.as_integer_32 -- FIXME 64/32 bits
 		ensure
 			actual_transfer_length_not_greater_transfert_octet_length: Result <= transfer_octet_length
 		end
@@ -206,7 +209,7 @@ feature {NONE} -- Implementation
 		deferred
 		end
 
-	copy_buffer_to_item (a_length : INTEGER)
+	copy_buffer_to_item (a_length : INTEGER_32)
 			-- Copy internal buffer to `item' implementation.
 		require
 			length_not_greater_transfer_octet_length: a_length >= 0 and a_length <= transfer_octet_length

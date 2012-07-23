@@ -115,8 +115,15 @@ feature -- Basic operations
 
 	drop_table is
 			--
+		local
+			tables_cursor: ECLI_TABLES_CURSOR
 		do
-			do_simple_sql (sql_drop, False)
+			create tables_cursor.make (create {ECLI_NAMED_METADATA}.make (Void, Void, "ROWSETSAMPLE"), session)
+			tables_cursor.start
+			if not tables_cursor.after then
+				do_simple_sql (sql_drop)
+
+			end
 		end
 
 	do_insert is

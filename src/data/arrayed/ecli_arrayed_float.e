@@ -52,7 +52,7 @@ feature -- Status setting
 			Result := 22
 		end
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_array_value_get_length (buffer)
 		end

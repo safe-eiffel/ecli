@@ -85,7 +85,7 @@ feature -- Measurement
 			Result := size.as_integer_32
 		end
 
-	transfer_octet_length: INTEGER = 4096
+	transfer_octet_length: INTEGER_64 = 4096
 
 
 feature -- Status report
@@ -323,7 +323,7 @@ feature {NONE} -- Implementation
 	internal_make is
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
-			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), Transfer_octet_length)
+			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), Transfer_octet_length.as_integer_32)
 			create transfer_string.make_empty
 		end
 
@@ -340,13 +340,13 @@ feature {NONE} -- Implementation
 
 	put_parameter_forth
 		do
-			input_file.read_string (Transfer_octet_length)
+			input_file.read_string (Transfer_octet_length.as_integer_32)
 		end
 
 	put_parameter_start
 		do
 			input_file.open_read
-			input_file.read_string (Transfer_octet_length)
+			input_file.read_string (Transfer_octet_length.as_integer_32)
 		end
 
 	put_parameter_finish
@@ -357,7 +357,7 @@ feature {NONE} -- Implementation
 	read_result_start
 		do
 			output_file.open_write
-			create transfer_string.make (Transfer_octet_length)
+			create transfer_string.make (Transfer_octet_length.as_integer_32)
 		end
 
 	read_result_finish
@@ -385,8 +385,9 @@ feature {NONE} -- Implementation
 		end
 
 	capacity: INTEGER_32
+			-- FIXME: 64 bits
 		do
-			Result := transfer_octet_length
+			Result := transfer_octet_length.as_integer_32
 		end
 
 	input_count: INTEGER_32

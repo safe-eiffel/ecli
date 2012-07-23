@@ -72,7 +72,7 @@ feature {NONE} -- Initialization
 			create rounding_context.make (precision, new_rounding_mode)
 			buffer := ecli_c_alloc_value (new_precision + 3)
 			set_null
-			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_octet_length)
+			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_octet_length.as_integer_32)
 			create impl_item.make (precision)
 		ensure
 			is_null: is_null
@@ -215,9 +215,9 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status report
 			Result := Sql_decimal
 		end
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
-			Result := ecli_c_value_get_length (buffer)
+			Result := ecli_c_value_get_length (buffer).as_integer_32 -- FIXME 64/32 bits
 		end
 
 feature -- Element change

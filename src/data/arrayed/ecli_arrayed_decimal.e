@@ -80,7 +80,7 @@ feature {NONE} -- Initialization
 			buffer := ecli_c_alloc_array_value (new_precision + 3, a_capacity)
 			set_all_null
 			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1),
-					transfer_octet_length)
+					transfer_octet_length.as_integer_32)
 			create impl_item.make (precision)
 		ensure
 			is_null: is_null
@@ -109,7 +109,7 @@ feature -- Access
 				create Result.make_zero
 			else
 				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index),
-					ecli_c_array_value_get_length_indicator_at(buffer,index))
+					ecli_c_array_value_get_length_indicator_at(buffer,index).as_integer_32)
 				create Result.make_from_string_ctx (ext_item.as_string, rounding_context)
 			end
 		end
@@ -120,7 +120,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_array_value_get_length (buffer)
 		end
@@ -143,7 +143,7 @@ feature -- Element change
 			l := value.rescale (-decimal_digits, rounding_context)
 			s := l.to_scientific_string
 			if s.count <= transfer_octet_length then
-				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), transfer_octet_length )
+				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), transfer_octet_length.as_integer_32 )
 				ext_item.from_string (s)
 			end
 			ecli_c_array_value_set_length_indicator_at (buffer, s.count, index)

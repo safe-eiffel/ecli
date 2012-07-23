@@ -200,7 +200,7 @@ feature {NONE} -- Implementation
 			from index := 1
 			until index > result_columns_count
 			loop
-				results.item (index).set_count (row_count)
+				results.item (index).set_count (row_count.as_integer_32)
 				index := index + 1
 			end
 			fetched_columns_count := result_columns_count

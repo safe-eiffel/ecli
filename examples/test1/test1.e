@@ -176,6 +176,7 @@ feature --  Basic operations
 			if session.is_connected then
 				error_handler.report_info_message ("SUCCESS: Connected")
 			end
+			session.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
 		ensure
 			session_not_void: session /= Void
 		end
@@ -215,6 +216,7 @@ feature --  Basic operations
 			error_handler.report_info_message ("=> STATEMENT - Creation")
 			-- definition of statement on session
 			create  stmt_impl.make (session)
+			stmt.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
 		ensure
 			stmt_not_void: stmt /= Void
 		end

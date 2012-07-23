@@ -28,12 +28,12 @@ feature -- Access
 
 feature {NONE} -- Implementation
 
-	get_transfer_length : INTEGER is
-		do
+--	get_transfer_length : INTEGER is
+--		do
 --			Result := Precursor
-			if ext_item.item (Result) = '%U' then
-				Result := Result - 1
-			end
-		end
+--			if ext_item.item (Result) = '%U' then
+--				Result := Result - 1
+--			end
+--		end
 
 end

@@ -73,7 +73,7 @@ feature -- Measurement
 			Result := 11
 		end
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := 4
 		ensure then
