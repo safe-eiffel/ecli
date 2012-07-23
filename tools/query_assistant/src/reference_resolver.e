@@ -29,7 +29,7 @@ feature -- Basic operations
 					cursor.off
 				loop
 					set := cursor.item
-				        if set.is_generatable and then set.parent_name /= Void then
+				    if set.is_generatable and then set.parent_name /= Void then
 						Result.search (set.parent_name)
 						if not Result.found then
 							create parent_column_set.make (set.parent_name)
