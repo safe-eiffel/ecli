@@ -238,7 +238,7 @@ feature -- Measurement
 			executed: is_executed
 			not_a_query: not has_result_set
 		do
-			Result := impl_row_count.item
+			Result := impl_row_count.item.as_integer_32 --FIXME 64/32 bits
 		end
 
 	parameter_count : INTEGER is
@@ -635,9 +635,6 @@ feature -- Basic operations
 			else
 				set_status ("ecli_c_execute_direct", ecli_c_execute_direct (handle, impl_sql.handle))
 			end
-			if is_ok then
-				get_result_columns_count
-			end
 			if session.is_tracing then
 				trace (session.tracer)
 				if session.tracer.is_tracing_time then
@@ -944,7 +941,7 @@ feature {NONE} -- Implementation
 			Result := ecli_c_statement_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
 
-	impl_row_count : XS_C_INT32
+	impl_row_count : ECLI_API_SQLLEN
 		-- Buffer for storing number of rows affected
 
 	impl_result_columns_count : XS_C_INT32

@@ -192,7 +192,7 @@ feature -- Measurement
 			Result := 10
 		end
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_sizeof_date_struct
 		end
