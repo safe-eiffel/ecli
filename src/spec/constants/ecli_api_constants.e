@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"CLI/ODBC API constants."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -25,6 +25,7 @@ feature {NONE} -- statement attributes
 	Sql_attr_paramset_size	: INTEGER is 22
 	Sql_attr_param_status_ptr	: INTEGER is 20
 	Sql_attr_params_processed_ptr	: INTEGER is 21
+
 
 feature {NONE} -- row status
 
@@ -75,7 +76,7 @@ feature {NONE} -- Options for SQLConfigDatasource
 	Odbc_add_sys_dsn : INTEGER is 4 --  add a system DSN -- ODBCVER >= 0x0250
 	Odbc_config_sys_dsn : INTEGER is 5 --  Configure a system DSN  -- ODBCVER >= 0x0250
 	Odbc_remove_sys_dsn : INTEGER is 6 --  remove a system DSN -- ODBCVER >= 0x0250
-	
+
 	Odbc_remove_default_dsn : INTEGER is 7 --  remove the default DSN -- ODBCVER >= 0x0300
 
 end

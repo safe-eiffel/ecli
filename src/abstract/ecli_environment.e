@@ -55,6 +55,9 @@ feature {NONE} -- Initialization
 			handle := ext_handle.item
 		end
 
+feature -- Basic operations
+
+
 feature {NONE} -- Implementation
 
 	is_ready_for_disposal : BOOLEAN is

@@ -95,7 +95,11 @@ feature {NONE} -- Initialization
 			-- create `error_handler´
 		do
 			if error_handler = Void then
-				create error_handler.make_null
+				if session.error_handler /= Void then
+					error_handler := session.error_handler
+				else
+					create error_handler.make_null
+				end
 			end
 		ensure
 			error_handler_created: error_handler /= Void

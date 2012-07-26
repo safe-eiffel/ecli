@@ -102,6 +102,30 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 
+	ecli_c_set_integer_environment_attribute (env : POINTER; an_attribute: INTEGER; value : INTEGER; length : INTEGER) : INTEGER
+		external "C inline use <sql.h>"
+		alias
+			"[
+				return SQLSetEnvAttr(
+				     (SQLHENV )     $env,
+				     (SQLINTEGER)   $an_attribute,
+				     (SQLPOINTER)   $value,
+				     (SQLINTEGER)   $length);
+     		]"
+		end
+
+	ecli_c_set_natural_environment_attribute (env : POINTER; an_attribute: INTEGER; value : NATURAL_32; length : INTEGER) : INTEGER
+		external "C inline use <sql.h>"
+		alias
+			"[
+				return SQLSetEnvAttr(
+				     (SQLHENV )     $env,
+				     (SQLINTEGER)   $an_attribute,
+				     (SQLPOINTER)   $value,
+				     (SQLINTEGER)   $length);
+     		]"
+		end
+
 	ecli_c_set_pointer_connection_attribute (ConnectionHandle : POINTER; an_attribute : INTEGER; ValuePtr : POINTER; StringLength : INTEGER)  : INTEGER is
 		external "C"
 		end

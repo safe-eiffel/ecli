@@ -44,6 +44,7 @@ feature -- Basic operations
 			tc : ECLI_TYPE_CATALOG
 			can_i32, can_i64 : BOOLEAN
 			t : ECLI_TRACER
+			st : DT_STOPWATCH
 		do
 			create worder.make (text, " %T")
 			user := ""
@@ -70,21 +71,30 @@ feature -- Basic operations
 					context.session.disconnect
 					context.session.close
 				end
+				create st.make
 				if source.has_substring ("DSN=") or else source.has_substring ("DRIVER=") then
 					create driver_strategy.make (source)
 					create session.make_default
 					session.set_login_strategy (driver_strategy)
+					st.start
 					session.connect
+					st.stop
 				else
 					create session.make_default
 					create simple_login.make (source, user, password)
 					session.set_login_strategy (simple_login)
+					st.start
 					session.connect
+					st.stop
 				end
 					create t.make (create {KL_STDOUT_FILE}.make)
 					t.enable_time_tracing
 					session.set_tracer (t)
 				if session.is_connected then
+					context.filter.begin_message
+					context.filter.put_message ("Connected in " + st.elapsed_time.out + ";")
+					context.filter.end_message
+
 					context.set_session (session)
 					create tc.make (session)
 					create i64.make
