@@ -711,7 +711,7 @@ feature {NONE} -- Implementation
 				do_disconnect
 			end
 			if handle /= default_pointer then
-				set_status ("ecli_c_free_connection", ecli_c_free_connection (handle))
+				set_status_without_report ("ecli_c_free_connection", ecli_c_free_connection (handle))
 			end
 			set_handle ( default_pointer)
 		end

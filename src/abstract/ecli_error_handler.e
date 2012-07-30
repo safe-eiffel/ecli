@@ -39,6 +39,11 @@ feature -- Basic operations
 			end
 		end
 
+	report_diagnostics (status : INTEGER; external_feature, cli_state : STRING; native_code : INTEGER; diagnostic_message : STRING)
+		do
+			do_nothing
+		end
+
 feature {} -- Implementation
 
 	formatted_message (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING) : STRING

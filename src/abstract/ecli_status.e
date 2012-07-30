@@ -52,7 +52,7 @@ feature -- Access
 			-- Name of the internal CLI state
 		do
 			get_diagnostics
-			Result := impl_cli_state.as_string.substring(1,5)
+			Result := impl_cli_state.substring(1,5)
 		end
 
 	native_code : INTEGER is
@@ -143,19 +143,39 @@ feature {NONE} -- Implementation
 	reset_status is
 			-- reset status to `is_ok'
 		do
-			set_status ("Sql_success", Sql_success)
+			set_status_without_report ("Sql_success", Sql_success)
 		ensure
 			is_ok: is_ok
 		end
 
 	set_status (an_external_feature: STRING; v : INTEGER) is
 		require
-			an_external_feature_not_void: an_external_feature /= Void
+			an_external_feature_not_void: an_external_feature /= Void --FIXME: VS-DEL
+			valid_status_v: valid_status (v)
+		do
+			set_status_internal (an_external_feature, v, True)
+		end
+
+	set_status_without_report (an_external_feature: STRING; v : INTEGER)
+		require
+			an_external_feature_not_void: an_external_feature /= Void --FIXME: VS-DEL
+			valid_status_v: valid_status (v)
+		do
+			set_status_internal (an_external_feature, v, False)
+		end
+
+	set_status_internal (an_external_feature: STRING; v : INTEGER; do_report: BOOLEAN) is
+		require
+			an_external_feature_not_void: an_external_feature /= Void --FIXME: VS-DEL
 			valid_status_v: valid_status (v)
 		do
 			status := v
-			need_diagnostics := True
+			need_diagnostics := do_report
 			last_external_feature := an_external_feature
+---
+---			Get all diagnostics
+---
+			get_diagnostics
 			if status = sql_invalid_handle then
 				raise ("[ECLI][Internal] Invalid Handle")
 			elseif exception_on_error and then not is_ok then
@@ -212,6 +232,13 @@ feature {NONE} -- Implementation
 							impl_error_buffer.handle,
 							impl_error_buffer.capacity,
 							impl_buffer_length_indicator.handle)
+					if retcode = sql_success or else retcode = sql_success_with_info then
+					error_handler.report_diagnostics (status, last_external_feature,
+							impl_cli_state.substring (1, 5),
+							impl_native_code.item,
+							impl_error_buffer.substring (1,impl_buffer_length_indicator.item))
+
+					end
 					if retcode = sql_success_with_info and then impl_buffer_length_indicator.item > impl_error_buffer.capacity then
 						create impl_error_buffer.make (impl_buffer_length_indicator.item)
 					elseif retcode = sql_success or else retcode = sql_success_with_info then

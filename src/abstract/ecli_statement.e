@@ -600,7 +600,7 @@ feature {NONE} -- Miscellaneous
 
 	release_handle is
 		do
-			set_status ("ecli_c_free_statement", ecli_c_free_statement (handle))
+			set_status_without_report ("ecli_c_free_statement", ecli_c_free_statement (handle))
 			set_handle ( default_pointer)
 		end
 

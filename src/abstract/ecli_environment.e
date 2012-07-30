@@ -71,7 +71,7 @@ feature {NONE} -- Implementation
 			-- Release environment handle
 		do
 			-- | actual release of the handle.
-			set_status ("ecli_c_free_environment", ecli_c_free_environment (handle))
+			set_status_without_report ("ecli_c_free_environment", ecli_c_free_environment (handle))
 			set_handle (default_pointer)
 		end
 
