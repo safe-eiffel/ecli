@@ -86,7 +86,7 @@ feature -- Access
 
 	content_capacity : INTEGER is
 		do
-			Result := ecli_c_array_value_get_length (buffer).as_integer_32 - 1
+			Result := (ecli_c_array_value_get_length (buffer) - 1).as_integer_32
 		end
 
 	content_count : INTEGER is
@@ -105,7 +105,7 @@ feature -- Access
 
 feature -- Measurement
 
-	transfer_octet_length: INTEGER is
+	transfer_octet_length: INTEGER_64 is
 		do
 			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end

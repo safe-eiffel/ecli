@@ -430,7 +430,7 @@ feature -- Basic operations
 
 feature -- Inapplicable
 
-	transfer_octet_length : INTEGER is
+	transfer_octet_length : INTEGER_64 is
 		do
 			Result := ecli_c_sizeof_timestamp_struct
 		end

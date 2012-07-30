@@ -27,7 +27,12 @@ feature {NONE} -- Initialization
 
 	make is
 			-- isql
+		local
+			env : ECLI_SHARED_ENVIRONMENT
 		do
+			create env
+			env.enable_connection_pooling
+			
 			create_commands
 			create_initial_context
 			create_default_system_variables (current_context)

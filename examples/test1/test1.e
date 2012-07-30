@@ -154,6 +154,7 @@ feature --  Basic operations
 			if session.is_connected then
 				error_handler.report_info_message ("SUCCESS: Connected")
 			end
+			session.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
 		ensure
 			session_not_void: session /= Void
 		end
@@ -193,6 +194,7 @@ feature --  Basic operations
 			error_handler.report_info_message ("=> STATEMENT - Creation")
 			-- definition of statement on session
 			create  stmt.make (session)
+			stmt.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
 		ensure
 			stmt_not_void: stmt /= Void
 		end
@@ -671,7 +673,7 @@ feature {NONE} -- Implementation
 		local
 			width : INTEGER
 		do
-			width := d.size
+			width := d.size.as_integer_32
 			if d.sql_type_code = sql_integer
 			   or else d.sql_type_code = sql_double
 			   or else d.sql_type_code = Sql_float then

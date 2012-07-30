@@ -4,19 +4,19 @@
 
 struct ecli_c_value {
 	SQLLEN	length; /* buffer_length */
-	SQLLEN	length_indicator;
+	SQLLEN	length_indicator; /* length of data in the buffer */
 	char	value[1]; /* beginning of buffer*/
 };
 
 struct ecli_c_array_value {
-	SQLLEN	length; /* length of a single element */
+	SQLLEN	length; /* length of a single element buffer*/
 	long 	count;  /* count of elements */
 	SQLLEN* length_indicators;
 	char *  values;
 	char	buffer[1]; /* beginning of buffer*/
 	/* buffer is organized like this
-		SQLLEN length_indicator [count]
-		char values [count][length]
+		SQLLEN length_indicator [count] -- array of actual element length
+		char values [count][length]   -- array of element buffer
 	*/
 };
 #endif

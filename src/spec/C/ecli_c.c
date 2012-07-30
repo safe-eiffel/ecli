@@ -62,7 +62,7 @@ EIF_INTEGER ecli_c_set_integer_connection_attribute (EIF_POINTER ConnectionHandl
 				(SQLINTEGER)	Attribute,
 				(SQLPOINTER)	ValuePtr,
 				(SQLINTEGER)	SQL_IS_UINTEGER);
-}
+} /* FIXME 64 bits */
 
 EIF_INTEGER ecli_c_get_integer_connection_attribute (EIF_POINTER ConnectionHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr) {
 	return (EIF_INTEGER) SQLGetConnectAttr (
@@ -71,7 +71,7 @@ EIF_INTEGER ecli_c_get_integer_connection_attribute (EIF_POINTER ConnectionHandl
 				(SQLPOINTER)	ValuePtr,
 				(SQLINTEGER)	SQL_IS_UINTEGER,
 				NULL);
-}
+}/* FIXME 64 bits */
 
 EIF_INTEGER ecli_c_set_pointer_connection_attribute (EIF_POINTER ConnectionHandle, EIF_INTEGER Attribute, EIF_POINTER ValuePtr, EIF_INTEGER StringLength) {
 	return (EIF_INTEGER) SQLSetConnectAttr (
@@ -156,14 +156,14 @@ EIF_INTEGER ecli_c_rollback (EIF_POINTER con)  {
 	return (EIF_INTEGER) SQLEndTran(SQL_HANDLE_DBC,(SQLHDBC) con, SQL_ROLLBACK);
 }
 
-EIF_INTEGER ecli_c_row_count (EIF_POINTER stmt, EIF_POINTER count)  {
-	SQLINTEGER row_count;
+/* EIF_INTEGER ecli_c_row_count (EIF_POINTER stmt, EIF_POINTER count)  {
+	SQLLEN row_count;
 	SQLRETURN retcode;
 
 	retcode = SQLRowCount ((SQLHSTMT)stmt, &row_count);
 	*((EIF_INTEGER*)count) = (EIF_INTEGER) row_count;
 	return (EIF_INTEGER) retcode;
-}
+} */
 
 EIF_INTEGER ecli_c_parameter_count (EIF_POINTER stmt, EIF_POINTER count)  {
 	SQLSMALLINT param_count;
@@ -199,7 +199,7 @@ EIF_INTEGER ecli_c_more_results (EIF_POINTER stmt) {
 	return (EIF_INTEGER) SQLMoreResults ((SQLHSTMT)stmt);
 }
 
-EIF_INTEGER ecli_c_bind_parameter (EIF_POINTER stmt,
+/* EIF_INTEGER ecli_c_bind_parameter (EIF_POINTER stmt,
 								   EIF_INTEGER index,
 								   EIF_INTEGER direction,
 								   EIF_INTEGER c_type,
@@ -215,15 +215,15 @@ EIF_INTEGER ecli_c_bind_parameter (EIF_POINTER stmt,
 							(SQLSMALLINT)	direction,
 							(SQLSMALLINT)		c_type,
 							(SQLSMALLINT)		sql_type,
-							(SQLUINTEGER)		sql_size,
+							(SQLULEN)			sql_size,
 							(SQLSMALLINT)		sql_decimal_digits,
 							(SQLPOINTER)		value,
-							(SQLINTEGER)		buffer_length,
-							(SQLINTEGER *)		ptr_value_length);
+							(SQLLEN)		buffer_length,
+							(SQLLEN *)		ptr_value_length);
 
-}
+} */
 
-EIF_INTEGER ecli_c_bind_result (EIF_POINTER stmt,
+/* EIF_INTEGER ecli_c_bind_result (EIF_POINTER stmt,
 								EIF_INTEGER index,
 								EIF_INTEGER c_type,
 								EIF_POINTER value,
@@ -234,12 +234,12 @@ EIF_INTEGER ecli_c_bind_result (EIF_POINTER stmt,
 			(SQLUSMALLINT)	index,
 			(SQLSMALLINT)		c_type,
 			(SQLPOINTER)		value,
-			(SQLINTEGER)		buffer_length,
-			(SQLINTEGER *)		len_indicator);
-}
+			(SQLLEN)		buffer_length,
+			(SQLLEN *)		len_indicator);
+} */
 
 
-EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
+/* EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
 							 EIF_INTEGER 	column_number,
 							 EIF_POINTER 	sql_type,
 							 EIF_POINTER  	sql_size,
@@ -247,7 +247,7 @@ EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
 							 EIF_POINTER  	sql_nullability)
 {
 	SQLSMALLINT p_sql_type;
-	SQLUINTEGER p_sql_size;
+	SQLULEN p_sql_size;
 	SQLSMALLINT p_sql_decimal_digits;
 	SQLSMALLINT p_sql_nullability;
 	EIF_INTEGER res;
@@ -255,7 +255,7 @@ EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
 								(SQLHSTMT) 		stmt,
 								(SQLUSMALLINT) 	column_number,
 								(SQLSMALLINT *)	&p_sql_type,
-								(SQLUINTEGER *)	&p_sql_size,
+								(SQLULEN *)	&p_sql_size,
 								(SQLSMALLINT *)	&p_sql_decimal_digits,
 								(SQLSMALLINT *)	&p_sql_nullability);
 	*((EIF_INTEGER*) sql_type)= (EIF_INTEGER) p_sql_type;
@@ -263,7 +263,7 @@ EIF_INTEGER	ecli_c_describe_parameter (EIF_POINTER stmt,
 	*((EIF_INTEGER*) sql_decimal_digits)= (EIF_INTEGER) p_sql_decimal_digits;
 	*((EIF_INTEGER*) sql_nullability)= (EIF_INTEGER) p_sql_nullability;
 	return res;
-}
+} */
 
 EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 							 EIF_INTEGER 	column_number,
@@ -277,7 +277,7 @@ EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 {
 	SQLSMALLINT p_actual_name_length;
 	SQLSMALLINT p_sql_type;
-	SQLUINTEGER p_sql_size;
+	SQLULEN p_sql_size;
 	SQLSMALLINT p_sql_decimal_digits;
 	SQLSMALLINT p_sql_nullability;
 	EIF_INTEGER res;
@@ -288,7 +288,7 @@ EIF_INTEGER	ecli_c_describe_column (EIF_POINTER stmt,
 								(SQLSMALLINT)	max_name_length,
 								(SQLSMALLINT *)	&p_actual_name_length,
 								(SQLSMALLINT *)	&p_sql_type,
-								(SQLUINTEGER *)	&p_sql_size,
+								(SQLULEN *)	&p_sql_size,
 								(SQLSMALLINT *)	&p_sql_decimal_digits,
 								(SQLSMALLINT *)	&p_sql_nullability);
 	*((EIF_INTEGER*) actual_name_length) = 	(EIF_INTEGER) p_actual_name_length;
@@ -437,15 +437,15 @@ EIF_INTEGER ecli_c_get_data (EIF_POINTER stmt,
 							 EIF_INTEGER column_number,
 							 EIF_INTEGER c_type,
 							 EIF_POINTER target_pointer,
-							 EIF_INTEGER buffer_length,
+							 EIF_INTEGER_64 buffer_length,
 							 EIF_POINTER len_indicator_pointer) {
 	return (EIF_INTEGER) SQLGetData(
 		(SQLHSTMT)			stmt,
 		(SQLUSMALLINT)	column_number,
 		(SQLSMALLINT)		c_type,
 		(SQLPOINTER)		target_pointer,
-		(SQLINTEGER)		buffer_length,
-		(SQLINTEGER *)		len_indicator_pointer);
+		(SQLLEN)		buffer_length,
+		(SQLLEN *)		len_indicator_pointer);
 }
 
 EIF_INTEGER ecli_c_param_data (EIF_POINTER stmt, EIF_POINTER value_ptr_ptr) {
@@ -456,15 +456,15 @@ EIF_INTEGER ecli_c_param_data (EIF_POINTER stmt, EIF_POINTER value_ptr_ptr) {
 
 EIF_INTEGER ecli_c_put_data (EIF_POINTER stmt,
 							 EIF_POINTER data_ptr,
-							 EIF_INTEGER str_len_or_ind) {
+							 EIF_INTEGER_64 str_len_or_ind) {
 	return (EIF_INTEGER) SQLPutData(
      	(SQLHSTMT)     stmt,
      	(SQLPOINTER)     data_ptr,
-     	(SQLINTEGER)     str_len_or_ind);
+     	(SQLLEN)     str_len_or_ind);
 }
 
-EIF_INTEGER ecli_c_len_data_at_exe (EIF_INTEGER len) {
-	return (EIF_INTEGER) (SQL_LEN_DATA_AT_EXEC(len));
+EIF_INTEGER_64 ecli_c_len_data_at_exe (EIF_INTEGER_64 len) {
+	return (EIF_INTEGER_64) (SQL_LEN_DATA_AT_EXEC(len));
 }
 
 EIF_INTEGER ecli_c_fetch (EIF_POINTER handle) {
@@ -654,7 +654,7 @@ EIF_POINTER ecli_c_alloc_array_value (EIF_INTEGER_64 c_buffer_length, EIF_INTEGE
 
 	res = (struct ecli_c_array_value *) calloc(
 				(sizeof(struct ecli_c_array_value) + 	/* header */
-				  + (sizeof(SQLLEN)* a_count) 			/* array of length indicators */
+				  + (sizeof(SQLLEN) * a_count) 			/* array of length indicators */
 				  + (c_buffer_length * a_count)			/* array of values */
 				 ) /* conversion of EIF_INTEGER_64 to size_t : possible loss of data */
 				 , 1
