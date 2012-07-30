@@ -1,7 +1,7 @@
 indexing
 
 	description:
-	
+
 			"Arrayed buffers of string."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -19,7 +19,7 @@ inherit
 			count as content_count, is_equal as is_equal_item, copy as copy_item
 		undefine
 			release_handle, length_indicator_pointer, to_external, is_null, set_null, out, trace,
-			set_item, transfer_octet_length--, 
+			set_item, transfer_octet_length--,
 		redefine
 			item, content_capacity, content_count
 		end
@@ -48,8 +48,8 @@ feature {NONE} -- Initialization
 			create s.make (0)
 			impl_item := s
 			--| create ext_item, with dummy values
-			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1), 
-				ecli_c_array_value_get_length_indicator_at(buffer,1))
+			create ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, 1),
+				ecli_c_array_value_get_length_indicator_at(buffer,1).as_integer_32)
 			set_all_null
 		ensure
 			content_capacity_set: content_capacity = a_content_capacity
@@ -71,8 +71,8 @@ feature -- Access
 			if is_null_at (index) then
 				Result := Void
 			else
-				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index), 
-					ecli_c_array_value_get_length_indicator_at(buffer,index))
+				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index),
+					ecli_c_array_value_get_length_indicator_at(buffer,index).as_integer_32)
 				ext_item.copy_to (impl_item)
 				Result := impl_item
 			end
@@ -86,7 +86,7 @@ feature -- Access
 
 	content_capacity : INTEGER is
 		do
-			Result := ecli_c_array_value_get_length (buffer) - 1
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32 - 1
 		end
 
 	content_count : INTEGER is
@@ -99,7 +99,7 @@ feature -- Access
 			-- length of `index'th
 		do
 			if not is_null_at (index) then
-				Result := ecli_c_array_value_get_length_indicator_at (buffer, index)
+				Result := ecli_c_array_value_get_length_indicator_at (buffer, index).as_integer_32
 			end
 		end
 
@@ -107,7 +107,7 @@ feature -- Measurement
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Status report

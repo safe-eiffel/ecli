@@ -42,7 +42,7 @@ feature -- Measurement
 	item_size : INTEGER is
 			-- maximum size of one item
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Element change

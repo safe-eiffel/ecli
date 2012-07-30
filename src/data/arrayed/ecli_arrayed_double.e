@@ -65,7 +65,7 @@ feature -- Status setting
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Cursor movement

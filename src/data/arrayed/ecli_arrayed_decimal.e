@@ -102,7 +102,7 @@ feature -- Access
 				Result := Void
 			else
 				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index),
-					ecli_c_array_value_get_length_indicator_at(buffer,index))
+					ecli_c_array_value_get_length_indicator_at(buffer,index).as_integer_32)
 				create Result.make_from_string_ctx (ext_item.as_string, rounding_context)
 			end
 		end
@@ -115,7 +115,7 @@ feature -- Status setting
 
 	transfer_octet_length: INTEGER is
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Cursor movement
