@@ -464,7 +464,7 @@ feature {NONE} -- Value handling functions for ARRAYED values
 		external "C"
 		end
 
-	ecli_c_array_value_get_length (v : POINTER)  : INTEGER is
+	ecli_c_array_value_get_length (v : POINTER)  : INTEGER_64 is
 			-- maximum length of elements
 		external "C"
 		end
@@ -479,12 +479,12 @@ feature {NONE} -- Value handling functions for ARRAYED values
 		external "C"
 		end
 
-	ecli_c_array_value_set_length_indicator_at (v : POINTER; li : INTEGER; index : INTEGER) is
+	ecli_c_array_value_set_length_indicator_at (v : POINTER; li : INTEGER_64; index : INTEGER) is
 			-- set `index'th length indicator
 		external "C"
 		end
 
-	ecli_c_array_value_get_length_indicator_at (v : POINTER; index : INTEGER)  : INTEGER is
+	ecli_c_array_value_get_length_indicator_at (v : POINTER; index : INTEGER)  : INTEGER_64 is
 			-- get `index'th length indicator
 		external "C"
 		end
