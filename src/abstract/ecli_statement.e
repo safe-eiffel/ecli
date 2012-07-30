@@ -59,9 +59,6 @@ feature -- Initialization
 		local
 			ext_handle : XS_C_POINTER
 		do
-			--| error handler
-			create_error_handler
-
 			--| external values
 			create ext_handle.make
 			create impl_result_columns_count.make
@@ -71,6 +68,9 @@ feature -- Initialization
 			if session.exception_on_error then
 				raise_exception_on_error
 			end
+
+			--| error handler
+			create_error_handler
 
 			--| statement handle
 			set_status ("ecli_c_allocate_statement", ecli_c_allocate_statement (session.handle, ext_handle.handle))
@@ -93,6 +93,8 @@ feature {NONE} -- Initialization
 
 	create_error_handler is
 			-- create `error_handler´
+		require
+			session_attached: attached session
 		do
 			if error_handler = Void then
 				if session.error_handler /= Void then
