@@ -233,7 +233,7 @@ feature {NONE} -- Implementation
 							impl_error_buffer.capacity,
 							impl_buffer_length_indicator.handle)
 					if retcode = sql_success or else retcode = sql_success_with_info then
-					error_handler.report_diagnostics (status, last_external_feature,
+						error_handler.report_diagnostics (status, last_external_feature,
 							impl_cli_state.substring (1, 5),
 							impl_native_code.item,
 							impl_error_buffer.substring (1,impl_buffer_length_indicator.item))

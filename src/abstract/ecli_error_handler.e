@@ -1,6 +1,6 @@
 indexing
-	description: "Summary description for {ECLI_ERROR_HANDLER}."
-	author: ""
+	description: "Object that report errors or diagnostics."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -19,6 +19,7 @@ create
 feature -- Basic operations
 
 	report_row_success_with_info (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING)
+			--
 		do
 			if info_file /= null_output_stream then
 				report_info_message ("[ECLI-I-ROWSUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
