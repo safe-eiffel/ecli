@@ -149,7 +149,11 @@ feature {NONE} -- Implementation
 				max_attributes_length, actual_attributes_length.handle))
 			if is_ok and then not is_no_data then
 				name := c_name.as_string
-				attributes := c_attributes.substring (1, actual_attributes_length.item)
+				if actual_attributes_length.item > 0 then
+					attributes := c_attributes.substring (1, actual_attributes_length.item)
+				else
+					attributes := ""
+				end
 				create item_.make (Current)
 			else
 				item_ := Void
