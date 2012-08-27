@@ -32,7 +32,7 @@ feature {NONE} -- Initialization
 		do
 			create env
 			env.enable_connection_pooling
-			
+
 			create_commands
 			create_initial_context
 			create_default_system_variables (current_context)
@@ -228,6 +228,7 @@ feature {NONE} -- Implementation
 				create session.make_default
 				create simple_login.make (dsn, user, password)
 				session.set_login_strategy (simple_login)
+				session.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
 				session.connect
 				current_context.set_session (session)
 				if session.is_connected then
