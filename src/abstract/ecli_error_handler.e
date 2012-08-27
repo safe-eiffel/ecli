@@ -39,9 +39,10 @@ feature -- Basic operations
 			end
 		end
 
-	report_diagnostics (status : INTEGER; external_feature, cli_state : STRING; native_code : INTEGER; diagnostic_message : STRING)
+	report_diagnostics (status : INTEGER; last_external_feature, cli_state : STRING; native_code : INTEGER; diagnostic_message : STRING)
 		do
 			do_nothing
+--			report_info_message ("[ECLI-I-DIAG]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
 		end
 
 feature {} -- Implementation
