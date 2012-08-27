@@ -76,20 +76,19 @@ feature -- Basic operations
 					create driver_strategy.make (source)
 					create session.make_default
 					session.set_login_strategy (driver_strategy)
-					st.start
-					session.connect
-					st.stop
 				else
 					create session.make_default
 					create simple_login.make (source, user, password)
 					session.set_login_strategy (simple_login)
-					st.start
-					session.connect
-					st.stop
 				end
-					create t.make (create {KL_STDOUT_FILE}.make)
-					t.enable_time_tracing
-					session.set_tracer (t)
+				session.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
+				st.start
+				session.connect
+				st.stop
+
+				create t.make (create {KL_STDOUT_FILE}.make)
+				t.enable_time_tracing
+				session.set_tracer (t)
 				if session.is_connected then
 					context.filter.begin_message
 					context.filter.put_message ("Connected in " + st.elapsed_time.out + ";")
