@@ -59,6 +59,9 @@ feature -- Initialization
 		local
 			ext_handle : XS_C_POINTER
 		do
+			--| error handler
+			create_error_handler (a_session)
+
 			--| external values
 			create ext_handle.make
 			create impl_result_columns_count.make
@@ -68,9 +71,6 @@ feature -- Initialization
 			if session.exception_on_error then
 				raise_exception_on_error
 			end
-
-			--| error handler
-			create_error_handler
 
 			--| statement handle
 			set_status ("ecli_c_allocate_statement", ecli_c_allocate_statement (session.handle, ext_handle.handle))
@@ -86,25 +86,26 @@ feature -- Initialization
 			session_ok: session = a_session and not is_closed
 			registered: session.is_registered_statement (Current)
 			same_exception_on_error: exception_on_error = session.exception_on_error
+			same_error_handler: error_handler = session.error_handler
 			valid: 	is_valid
 		end
 
 feature {NONE} -- Initialization
 
-	create_error_handler is
+	create_error_handler (a_session : ECLI_SESSION) is
 			-- create `error_handler´
-		require
-			session_attached: attached session
 		do
-			if error_handler = Void then
-				if session.error_handler /= Void then
-					error_handler := session.error_handler
-				else
-					create error_handler.make_null
-				end
-			end
+--			if error_handler = Void then
+--				if a_session.error_handler /= Void then
+--					error_handler := a_session.error_handler
+--				else
+--					create error_handler.make_null
+--				end
+--			end
+			error_handler := a_session.error_handler
 		ensure
-			error_handler_created: error_handler /= Void
+--			error_handler_created: error_handler /= Void
+			error_handler_set: error_handler = a_session.error_handler
 		end
 
 feature -- Basic operations
@@ -606,7 +607,7 @@ feature {NONE} -- Miscellaneous
 
 	release_handle is
 		do
-			set_status_without_report ("ecli_c_free_statement", ecli_c_free_statement (handle))
+			set_status ("ecli_c_free_statement", ecli_c_free_statement (handle))
 			set_handle ( default_pointer)
 		end
 
