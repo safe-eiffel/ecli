@@ -242,8 +242,7 @@ feature {NONE} -- Implementation
 					if retcode = sql_success_with_info and then impl_buffer_length_indicator.item > impl_error_buffer.capacity then
 						create impl_error_buffer.make (impl_buffer_length_indicator.item)
 					elseif retcode = sql_success or else retcode = sql_success_with_info then
-						impl_error_message.append_string (
-								impl_error_buffer.as_string)
+						impl_error_message.append_string (impl_error_buffer.as_string)
 						impl_error_message.append_string ("%N")
 						saved_native_code := impl_native_code.item
 						count := count + 1
