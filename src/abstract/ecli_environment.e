@@ -51,7 +51,7 @@ feature {NONE} -- Initialization
 			create error_handler.make_null
 			-- | Actual allocation of CLI handle
 			create ext_handle.make
-			set_status ("ecli_c_allocate_environment", ecli_c_allocate_environment (ext_handle.handle))
+			set_status_without_report ("ecli_c_allocate_environment", ecli_c_allocate_environment (ext_handle.handle))
 			handle := ext_handle.item
 		end
 

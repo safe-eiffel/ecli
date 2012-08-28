@@ -772,7 +772,7 @@ feature {NONE} -- Implementation
 			-- | Allocate session handle
 			environment := shared_environment
 			henv := environment.handle
-			set_status ("ecli_c_allocate_connection", ecli_c_allocate_connection(henv, ext_handle.handle))
+			set_status_without_report ("ecli_c_allocate_connection", ecli_c_allocate_connection(henv, ext_handle.handle))
 			handle := ext_handle.item
 			--| register with environment
 			environment.register_session (Current)
