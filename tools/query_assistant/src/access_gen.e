@@ -1,4 +1,4 @@
-indexing
+note
 	description	: "Access Modules generators"
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -34,7 +34,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- generate access modules
 		local
 			adapter : ACCESS_MODULE_PERSISTENCE_ADAPTER
@@ -67,11 +67,11 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING is "v1.6"
+	version : STRING = "v1.6"
 
 feature -- Element change
 
-	set_access_routines_prefix (a_access_routines_prefix: STRING) is
+	set_access_routines_prefix (a_access_routines_prefix: STRING)
 			-- Set `access_routines_prefix' to `a_access_routines_prefix'.
 		do
 			access_routines_prefix := a_access_routines_prefix
@@ -175,7 +175,7 @@ feature -- Status report
 
 feature -- Constants
 
-	reasonable_maximum_length : INTEGER is 1_000_000
+	reasonable_maximum_length : INTEGER = 1_000_000
 
 feature -- Access (generation)
 
@@ -199,12 +199,12 @@ feature -- Status report
 
 feature -- Basic operations
 
-	create_error_handler is
+	create_error_handler
 		do
 			create error_handler.make_standard
 		end
 
-	print_prologue is
+	print_prologue
 			-- print application prologue
 		do
 			error_handler.report_banner (version)
@@ -212,7 +212,7 @@ feature -- Basic operations
 			error_handler.report_license ("Eiffel Forum", "2.0")
 		end
 
-	process_arguments is
+	process_arguments
 			-- Read and check command line arguments.
 		do
 			parse_arguments
@@ -221,7 +221,7 @@ feature -- Basic operations
 			in_filename_not_void: not has_error implies in_filename /= Void
 		end
 
-	create_argument_parser is
+	create_argument_parser
 		do
 				create option_in_filename.make_with_long_form("input")
 				option_in_filename.set_description (" Name of the input file")
@@ -305,7 +305,7 @@ feature -- Basic operations
 
 		end
 
-	get_options is
+	get_options
 		do
 				-- Mandatory
 				in_filename := option_in_filename.parameter
@@ -371,7 +371,7 @@ feature -- Basic operations
 
 		end
 
-	parse_arguments is
+	parse_arguments
 			-- Parse command line arguments.
 		local
 			key : STRING
@@ -457,7 +457,7 @@ feature -- Basic operations
 			end
 		end
 
-	verify_arguments is
+	verify_arguments
 			-- Verify parsed arguments.
 		local
 			error_message : STRING
@@ -547,7 +547,7 @@ feature {NONE} -- Implementation
 
 	argument_parser : AP_PARSER
 
-	resolve_parent_classes is
+	resolve_parent_classes
 			-- resolve parent classes for parameters and result sets
 		do
 			resolve_parent_parameter_sets
@@ -555,7 +555,7 @@ feature {NONE} -- Implementation
 --			resolve_all_sets
 		end
 
-	resolve_parent_parameter_sets is
+	resolve_parent_parameter_sets
 			-- resolve parent classes for parameter sets
 		local
 			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_PARAMETER]
@@ -565,7 +565,7 @@ feature {NONE} -- Implementation
 			resolver.resolve_descendants (module.parameter_sets)
 		end
 
-	resolve_parent_result_sets is
+	resolve_parent_result_sets
 			-- resolve parent classes for parameter sets
 		local
 			resolver : REFERENCE_RESOLVER[RDBMS_ACCESS_RESULT]
@@ -606,7 +606,7 @@ feature {NONE} -- Implementation
 --		end
 
 
-	check_modules is
+	check_modules
 			-- check modules
 		local
 			cursor : DS_HASH_TABLE_CURSOR[RDBMS_ACCESS,STRING]
@@ -645,7 +645,7 @@ feature {NONE} -- Implementation
 			session.close
 		end
 
-	generate_modules is
+	generate_modules
 			-- generate modules
 		local
 			c : DS_HASH_TABLE_CURSOR[RDBMS_ACCESS,STRING]
@@ -721,7 +721,7 @@ feature {NONE} -- Implementation
 			error_handler.report_end ("Class generation", True)
 		end
 
-	generate (access : RDBMS_ACCESS; a_error_handler : QA_ERROR_HANDLER) is
+	generate (access : RDBMS_ACCESS; a_error_handler : QA_ERROR_HANDLER)
 			-- generate classes for `access', query + parameter_set + result_set classes
 		require
 			access_not_void: access /= Void

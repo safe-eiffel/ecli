@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -27,7 +27,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (tables_cursor : ECLI_TABLES_CURSOR) is
+	make (tables_cursor : ECLI_TABLES_CURSOR)
 			-- create table from `tables_cursor' item from `a_repository'
 		require
 			cursor_not_void: tables_cursor /= Void
@@ -54,7 +54,7 @@ feature -- Access
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse visual representation
 		do
 			create Result.make (128)

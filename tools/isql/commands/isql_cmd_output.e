@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that direct further output to a specific file."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -14,26 +14,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("out[put] <filename>|stdout", Command_width)
 			Result.append_string ("Direct output to <filename> | stdout.")
 		end
 
-	match_string : STRING is "out"
+	match_string : STRING = "out"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- execute an output redirection
 		local
 			worder : KL_WORD_INPUT_STREAM

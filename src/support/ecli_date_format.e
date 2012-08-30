@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -29,7 +29,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	create_from_string (string : STRING) is
+	create_from_string (string : STRING)
 		local
 			year, month, day : INTEGER
 			s : STRING
@@ -50,7 +50,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	formatted (value : DT_DATE) : STRING is
+	formatted (value : DT_DATE) : STRING
 		do
 			create Result.make (20)
 			Result.append_string ("{d '")
@@ -70,7 +70,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	regex : RX_PCRE_REGULAR_EXPRESSION is
+	regex : RX_PCRE_REGULAR_EXPRESSION
 		local
 			cli_regex : STRING	
 		once
@@ -81,9 +81,9 @@ feature {NONE} -- Implementation
 			Result.compile (cli_regex) -- "([0-9]{1,4})\-([0-9]{2})\-([0-9]{2}))
 		end
 		
-	ifmt : ECLI_FORMAT_INTEGER is once create Result end
+	ifmt : ECLI_FORMAT_INTEGER once create Result end
 	
-	regex_component_count : INTEGER is 3
+	regex_component_count : INTEGER = 3
 	
 invariant
 	invariant_clause: True -- Your invariant here

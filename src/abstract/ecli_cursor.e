@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -20,7 +20,7 @@ inherit
 		
 feature -- Status report
 
-	real_execution : BOOLEAN is
+	real_execution : BOOLEAN
 		do
 			Result := True
 		end
@@ -28,7 +28,7 @@ feature -- Status report
 			
 feature -- Cursor movement
 
-	start is
+	start
 			-- Start sweeping through cursor, after execution of `sql'
 		require
 			sql_set: sql /= Void
@@ -51,7 +51,7 @@ feature -- Cursor movement
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create all ECLI_VALUE objects
 		deferred
 		ensure

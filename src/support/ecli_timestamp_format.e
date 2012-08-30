@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -31,7 +31,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	create_from_string (string : STRING) is
+	create_from_string (string : STRING)
 		local
 			year, month, day, hour, minute, second, fraction : INTEGER
 		do
@@ -60,7 +60,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	formatted (value : DT_DATE_TIME) : STRING is
+	formatted (value : DT_DATE_TIME) : STRING
 		do
 			create Result.make (20)
 			Result.append_string ("{ts '")
@@ -80,7 +80,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	regex : RX_PCRE_REGULAR_EXPRESSION is
+	regex : RX_PCRE_REGULAR_EXPRESSION
 			-- regular expression for pattern matching
 		local
 			cli_regex_string : STRING
@@ -97,14 +97,14 @@ feature {NONE} -- Implementation
 			regex_not_void: Result /= Void
 		end
 	
-	ifmt : ECLI_FORMAT_INTEGER is
+	ifmt : ECLI_FORMAT_INTEGER
 		once
 			create Result
 		ensure
 			result_not_void: Result /= Void
 		end
 		
-	regex_component_count : INTEGER is 7
+	regex_component_count : INTEGER = 7
 	
 invariant
 	invariant_clause: True -- Your invariant here

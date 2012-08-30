@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -32,7 +32,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_COLUMNS_CURSOR) is
+	make (cursor : ECLI_COLUMNS_CURSOR)
 			-- create from `cursor' current position
 		require
 			cursor_not_void: cursor /= Void
@@ -112,7 +112,7 @@ feature -- Measurement
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse visual representation
 		do
 			create Result.make (0)

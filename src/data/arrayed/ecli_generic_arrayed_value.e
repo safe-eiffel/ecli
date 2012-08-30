@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -29,7 +29,7 @@ inherit
 
 feature -- Access
 
-	item_at (index : INTEGER) : G is
+	item_at (index : INTEGER) : G
 			-- item at `index'th position
 		require
 			valid_index: index >= lower and index <= count
@@ -39,7 +39,7 @@ feature -- Access
 
 feature -- Measurement
 
-	item_size : INTEGER_64 is
+	item_size : INTEGER_64
 			-- maximum size of one item
 		do
 			Result := ecli_c_array_value_get_length (buffer).as_integer_32
@@ -47,7 +47,7 @@ feature -- Measurement
 
 feature -- Element change
 
-	set_item_at (value : G; index : INTEGER) is
+	set_item_at (value : G; index : INTEGER)
 			-- set `index'th value to `value'
 		require
 			valid_index: index >= lower and index <= count
@@ -57,7 +57,7 @@ feature -- Element change
 			not_null: not is_null_at (index)
 		end
 
-	set_item (value : G) is
+	set_item (value : G)
 			-- affect 'value' to 'item'
 		do
 			set_item_at (value, cursor_index)
@@ -76,7 +76,7 @@ feature -- Duplication
 			copy_arrayed_items (other)
 		end
 
-	copy_arrayed_items (other : like Current) is
+	copy_arrayed_items (other : like Current)
 			-- copy 'other' to Current
 		local
 			index : INTEGER
@@ -103,7 +103,7 @@ feature -- Duplication
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 		local
 			index : INTEGER
 		do
@@ -126,7 +126,7 @@ feature -- Comparison
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 		local
 			i : INTEGER
 		do
@@ -148,7 +148,7 @@ feature -- Conversion
 			Result.append_string (">>")
 		end
 
-	formatted (value : G) : G is
+	formatted (value : G) : G
 			-- formatted 'value' - does nothing except for CHAR data
 			-- where the result is truncated or padded
 		deferred
@@ -156,7 +156,7 @@ feature -- Conversion
 
 feature {NONE} -- Implementation
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 		do
 			Result := item_at (index).out
 		end

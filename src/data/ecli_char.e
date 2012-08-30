@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -27,7 +27,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (n : INTEGER) is
+	make (n : INTEGER)
 		do
 			Precursor (n)
 			count := n
@@ -37,14 +37,14 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	default_maximum_capacity : INTEGER is
+	default_maximum_capacity : INTEGER
 		once
 			Result := 255
 		end
 
 	count : INTEGER
 
-	item : STRING is
+	item : STRING
 		do
 			if not is_null then
 				Result := Precursor
@@ -56,14 +56,14 @@ feature -- Access
 
 feature -- Status report
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_varchar
 		end
 
 feature -- Transformation
 
-	formatted (v : like item) : like item is
+	formatted (v : like item) : like item
 		do
 			create Result.make_from_string (v)
 			format (Result)
@@ -71,7 +71,7 @@ feature -- Transformation
 
 feature {NONE} -- Implementation
 
-	pad (s : STRING) is
+	pad (s : STRING)
 			-- pad 's' with blanks
 		do
 			from
@@ -84,7 +84,7 @@ feature {NONE} -- Implementation
 			s.count = capacity
 		end
 
-	format (s : STRING) is
+	format (s : STRING)
 			-- format 's' according to 'capacity'
 		require
 			s_not_void: s /= Void

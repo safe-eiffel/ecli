@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Factories of ECLI_VALUEs that offer introspection/generation facilities."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -53,7 +53,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	create_value_from_sample (sample : STRING) is
+	create_value_from_sample (sample : STRING)
 			-- create a value from `sample'; last_result is an instance of
 			-- * ECLI_VARCHAR if sample is "NULL" or none of the following
 			-- * ECLI_DATE if sample is a valid CLI date literal {d 'yyyy-mm-dd'}
@@ -133,27 +133,27 @@ feature -- Duplication
 
 feature -- Miscellaneous
 
-	create_double_value is
+	create_double_value
 		do
 			create {QA_DOUBLE}last_result.make
 		end
 
-	create_real_value is
+	create_real_value
 		do
 			create {QA_REAL}last_result.make
 		end
 
-	create_integer_value is
+	create_integer_value
 		do
 			create {QA_INTEGER}last_result.make
 		end
 
-	create_integer_64_value is
+	create_integer_64_value
 		do
 			create {QA_INTEGER_64}last_result.make
 		end
 
-	create_char_value (column_precision : INTEGER) is
+	create_char_value (column_precision : INTEGER)
 		do
 			if is_string_forced then
 				create {QA_STRING_LONGVARCHAR}last_result.make (column_precision)
@@ -166,7 +166,7 @@ feature -- Miscellaneous
 			end
 		end
 
-	create_decimal_value (precision: INTEGER; decimal_digits: INTEGER) is
+	create_decimal_value (precision: INTEGER; decimal_digits: INTEGER)
 		do
 			if force_decimal or is_straigth_factory then
 				create {QA_DECIMAL}last_result.make (precision, decimal_digits)
@@ -200,7 +200,7 @@ feature -- Miscellaneous
 		end
 
 
-	create_longvarchar_value (precision: INTEGER_32) is
+	create_longvarchar_value (precision: INTEGER_32)
 		do
 			if is_string_forced then
 				create {QA_STRING_LONGVARCHAR}last_result.make_force_maximum_capacity (precision)
@@ -213,7 +213,7 @@ feature -- Miscellaneous
 			end
 		end
 
-	create_varchar_value (column_precision : INTEGER) is
+	create_varchar_value (column_precision : INTEGER)
 		do
 			if is_string_forced then
 				create {QA_STRING_LONGVARCHAR}last_result.make_force_maximum_capacity (column_precision)
@@ -224,26 +224,26 @@ feature -- Miscellaneous
 			end
 		end
 
-	create_date_value is
+	create_date_value
 		do
 			create {QA_DATE}last_result.make_default
 		end
 
-	create_timestamp_value is
+	create_timestamp_value
 		do
 			create {QA_TIMESTAMP}last_result.make_default
 		end
 
-	create_time_value is
+	create_time_value
 		do
 			create {QA_TIME}last_result.make_default
 		end
 
 feature {NONE} -- Implementation
 
-	fmt_date : ECLI_DATE_FORMAT is once create Result end
-	fmt_time : ECLI_TIME_FORMAT is once create Result end
-	fmt_timestamp : ECLI_TIMESTAMP_FORMAT is once create Result end
+	fmt_date : ECLI_DATE_FORMAT once create Result end
+	fmt_time : ECLI_TIME_FORMAT once create Result end
+	fmt_timestamp : ECLI_TIMESTAMP_FORMAT once create Result end
 
 end -- class QA_VALUE_FACTORY
 --

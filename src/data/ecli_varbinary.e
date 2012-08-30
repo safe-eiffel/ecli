@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -21,12 +21,12 @@ create
 
 feature -- Access
 
-	default_maximum_capacity : INTEGER is
+	default_maximum_capacity : INTEGER
 		do
 			Result := 8_192
 		end
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 			--
 		once
 			Result := sql_varbinary

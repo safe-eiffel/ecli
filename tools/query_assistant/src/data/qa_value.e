@@ -1,4 +1,4 @@
-indexing
+note
 	description:
 
 		"ECLI_VALUE with eiffel generation metadata."
@@ -21,22 +21,22 @@ inherit
 
 feature
 
-	ecli_type : STRING is
+	ecli_type : STRING
 		deferred
 		end
 
-	value_type : STRING is
+	value_type : STRING
 		deferred
 		end
 
-	creation_call : STRING is
+	creation_call : STRING
 		deferred
 		ensure
 		end
 
 feature {NONE} -- implementation
 
-	make_call : STRING is
+	make_call : STRING
 		do
 			create Result.make (12)
 			Result.append ("make")
@@ -45,7 +45,7 @@ feature {NONE} -- implementation
 		end
 
 
-	make_call_with_precision : STRING is
+	make_call_with_precision : STRING
 		do
 			create Result.make (12)
 			Result.append ("make (")
@@ -55,7 +55,7 @@ feature {NONE} -- implementation
 			result_not_void: Result /= Void
 		end
 
-	make_call_with_precision_and_digits : STRING is
+	make_call_with_precision_and_digits : STRING
 		do
 			create Result.make (25)
 			Result.append_string ("make (")
@@ -67,7 +67,7 @@ feature {NONE} -- implementation
 			result_not_void: Result /= Void
 		end
 
-	make_first_call : STRING is
+	make_first_call : STRING
 		once
 			create Result.make (12)
 			Result.append ("make_first")
@@ -75,7 +75,7 @@ feature {NONE} -- implementation
 			result_not_void: Result /= Void
 		end
 
-	make_default_call : STRING is
+	make_default_call : STRING
 			--
 		once
 			create Result.make_from_string ("make_default")
@@ -83,7 +83,7 @@ feature {NONE} -- implementation
 			result_not_void: Result /= Void
 		end
 
-	make_null_call : STRING is
+	make_null_call : STRING
 		do
 			create Result.make (12)
 			Result.append_string ("make_null")

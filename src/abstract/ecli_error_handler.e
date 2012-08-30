@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Summary description for {ECLI_ERROR_HANDLER}."
 	author: ""
 	date: "$Date$"

@@ -1,4 +1,4 @@
-indexing
+note
 	description:
 
 		"Objects that map database LONGVARBINARY data to Eiffel STRING instances."

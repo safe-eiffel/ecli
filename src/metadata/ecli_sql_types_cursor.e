@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -48,7 +48,7 @@ create
 
 feature -- Initialization
 
-	make_all_types, open_all_types (a_session : ECLI_SESSION) is
+	make_all_types, open_all_types (a_session : ECLI_SESSION)
 			-- make cursor for all types supported by `a_session'
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
@@ -60,7 +60,7 @@ feature -- Initialization
 			open: not is_closed
 		end
 
-	make_by_type, open_by_type (a_session : ECLI_SESSION; a_type : INTEGER) is
+	make_by_type, open_by_type (a_session : ECLI_SESSION; a_type : INTEGER)
 		obsolete
 			" Use `make' ."
 		require
@@ -74,7 +74,7 @@ feature -- Initialization
 			open: not is_closed
 		end
 
-	make (a_type : INTEGER; a_session : ECLI_SESSION) is
+	make (a_type : INTEGER; a_session : ECLI_SESSION)
 			-- make cursor for `a_type', if it is a type known by the datasource
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
@@ -90,7 +90,7 @@ feature -- Initialization
 
 feature -- Access
 
-	item : ECLI_SQL_TYPE is
+	item : ECLI_SQL_TYPE
 			-- item at current cursor position
 		require
 			not_off: not off
@@ -100,7 +100,7 @@ feature -- Access
 			definition: Result /= Void
 		end
 
-	supported_types : ARRAY[INTEGER] is
+	supported_types : ARRAY[INTEGER]
 			-- array of supported types
 		once
 			Result := <<
@@ -123,7 +123,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-	start is
+	start
 			-- advance cursor to first position if any
 		do
 			if results  = Void then
@@ -135,7 +135,7 @@ feature -- Cursor Movement
 			end
 		end
 
-	forth is
+	forth
 			-- advance cursor to next position
 		do
 			Precursor
@@ -148,7 +148,7 @@ feature -- Cursor Movement
 
 feature {ECLI_SQL_TYPE} -- Status
 
-	is_odbc_v3 : BOOLEAN is
+	is_odbc_v3 : BOOLEAN
 			-- does this type description contain ODBC > 3.x information ?
 		do
 			Result := result_columns_count > 15
@@ -179,7 +179,7 @@ feature {ECLI_SQL_TYPE} -- Access
 
 feature {NONE} -- Implementation
 
-		create_buffers is
+		create_buffers
 				-- create buffers for results
 		do
 			create buffer_type_name.make (40)
@@ -228,9 +228,9 @@ feature {NONE} -- Implementation
 
 	impl_item : ECLI_SQL_TYPE
 
-	definition : STRING is once Result := "SQLGetTypeInfo" end
+	definition : STRING once Result := "SQLGetTypeInfo" end
 
-	get_type_info (type : INTEGER) is
+	get_type_info (type : INTEGER)
 			-- get information on `type'
 		do
 			set_status ("ecli_c_get_type_info", ecli_c_get_type_info (handle, type))

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "SQL VARCHAR (n) values."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -20,11 +20,11 @@ create
 feature
 
 
-	ecli_type : STRING is "ECLI_VARCHAR"
+	ecli_type : STRING = "ECLI_VARCHAR"
 
-	value_type : STRING is "STRING"
+	value_type : STRING = "STRING"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call_with_precision
 		end

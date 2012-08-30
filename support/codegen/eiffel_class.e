@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that represent an Eiffel code class."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
@@ -21,7 +21,7 @@ create
 
 feature -- Initialization
 
-	make (class_name: like name) is
+	make (class_name: like name)
 			-- Create new code class with 'name'
 		require
 			class_name_not_void: class_name /= Void
@@ -60,7 +60,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	set_name (new_name: like name) is
+	set_name (new_name: like name)
 			-- Set the class name
 		require
 			new_name_not_void: new_name /= Void
@@ -68,7 +68,7 @@ feature -- Status setting
 			name := new_name
 		end
 
-	add_indexing_clause (new_indexing: STRING) is
+	add_indexing_clause (new_indexing: STRING)
 			-- Add 'new_indexing' as an indexing clause for this class
 		require
 			new_clause_not_void: new_indexing /= Void
@@ -76,7 +76,7 @@ feature -- Status setting
 			indexing_clauses.force_last (new_indexing)
 		end
 
-	add_parent (new_parent: STRING) is
+	add_parent (new_parent: STRING)
 			-- Add 'new_parent' to parents
 		require
 			new_parent_not_void: new_parent /= Void
@@ -84,7 +84,7 @@ feature -- Status setting
 			parents.force_last (new_parent)
 		end
 
-	add_creation_procedure_name (new_name: STRING) is
+	add_creation_procedure_name (new_name: STRING)
 			-- Add 'new_name' as the name of a creation procedure.
 		require
 			new_name_not_void: new_name /= Void
@@ -92,7 +92,7 @@ feature -- Status setting
 			creation_procedure_names.force_last (new_name)
 		end
 
-	add_feature_group (new_group: EIFFEL_FEATURE_GROUP) is
+	add_feature_group (new_group: EIFFEL_FEATURE_GROUP)
 			-- Add 'new_group' to the feature groups of this class.
 		require
 			new_group_not_void: new_group /= Void
@@ -100,7 +100,7 @@ feature -- Status setting
 			feature_groups.force_last (new_group)
 		end
 
-	add_invariant (new_invariant_clause : DS_PAIR[STRING,STRING]) is
+	add_invariant (new_invariant_clause : DS_PAIR[STRING,STRING])
 			-- Add `new_invariant_clause' to the invariants of this class.
 		require
 			new_invariant_clause_not_void: new_invariant_clause /= Void
@@ -110,7 +110,7 @@ feature -- Status setting
 			invariants.put_last (new_invariant_clause)
 		end
 
-	set_deferred is
+	set_deferred
 			-- set this a deferred class
 		do
 			is_deferred := True
@@ -120,7 +120,7 @@ feature -- Status setting
 
 feature -- Basic operations
 
-	write (output: KI_TEXT_OUTPUT_STREAM) is
+	write (output: KI_TEXT_OUTPUT_STREAM)
 			-- Print source code representation of this class
 		do
 			if not indexing_clauses.is_empty then
@@ -144,7 +144,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	write_indexing (output: KI_TEXT_OUTPUT_STREAM) is
+	write_indexing (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			if is_ecma367v2 then
 				output.put_string ("note")
@@ -165,7 +165,7 @@ feature {NONE} -- Implementation
 			output.put_new_line
 		end
 
-	write_header (output: KI_TEXT_OUTPUT_STREAM) is
+	write_header (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			if is_deferred then
 				output.put_string ("deferred ")
@@ -175,7 +175,7 @@ feature {NONE} -- Implementation
 			output.put_new_line
 		end
 
-	write_parents (output: KI_TEXT_OUTPUT_STREAM) is
+	write_parents (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("inherit")
 			output.put_new_line
@@ -192,7 +192,7 @@ feature {NONE} -- Implementation
 			output.put_new_line
 		end
 
-	write_creation_names (output: KI_TEXT_OUTPUT_STREAM) is
+	write_creation_names (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("create")
 			output.put_new_line
@@ -213,7 +213,7 @@ feature {NONE} -- Implementation
 			output.put_new_line
 		end
 
-	write_feature_groups (output: KI_TEXT_OUTPUT_STREAM) is
+	write_feature_groups (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			from
 				feature_groups.start
@@ -225,7 +225,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	write_invariants (output: KI_TEXT_OUTPUT_STREAM) is
+	write_invariants (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("invariant")
 			output.put_new_line
@@ -245,7 +245,7 @@ feature {NONE} -- Implementation
 			output.put_new_line
 		end
 
-	write_end (output: KI_TEXT_OUTPUT_STREAM) is
+	write_end (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("end")
 			output.put_new_line

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that ..."
 	author: ""
 	date: "$Date$"
@@ -20,7 +20,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_gui (a_data : like sql_data ; a_messages : EV_TEXT; a_status : EV_TEXTABLE; an_output_file : like output_file; a_commands : like commands) is
+	make_gui (a_data : like sql_data ; a_messages : EV_TEXT; a_status : EV_TEXTABLE; an_output_file : like output_file; a_commands : like commands)
 		do
 			sql_data := a_data
 			messages := a_messages
@@ -41,7 +41,7 @@ feature -- Access
 
 feature -- Measurement
 
-	execute_text (a_text : EV_TEXT) is
+	execute_text (a_text : EV_TEXT)
 		local
 			input_stream : KL_STRING_INPUT_STREAM
 		do
@@ -50,14 +50,14 @@ feature -- Measurement
 			do_session
 		end
 
-	do_session is
+	do_session
 		do
 			precursor
 		end
 
 feature -- Status report
 
-	query_text (a_text : EV_TEXT) : STRING is
+	query_text (a_text : EV_TEXT) : STRING
 		local
 			l_begin, l_end : INTEGER
 			l_semicolon : INTEGER
@@ -120,12 +120,12 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	create_filter is
+	create_filter
 		do
 			create filter.make (sql_data, messages, status_messages)
 		end
 
-	create_command_stream (stream: KI_TEXT_INPUT_STREAM) is
+	create_command_stream (stream: KI_TEXT_INPUT_STREAM)
 		do
 			precursor (stream)
 		end

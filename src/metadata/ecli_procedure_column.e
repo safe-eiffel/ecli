@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -31,7 +31,7 @@ create
 
 feature -- Initialization
 
-	make (cursor : ECLI_PROCEDURE_COLUMNS_CURSOR) is
+	make (cursor : ECLI_PROCEDURE_COLUMNS_CURSOR)
 			-- create from `cursor' current position
 		do
 			Precursor (cursor)

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that share a same schema name."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -12,7 +12,7 @@ class
 
 feature -- Access
 
-	shared_schema_name : STRING is
+	shared_schema_name : STRING
 			-- 
 		once
 			create Result.make (0)
@@ -20,7 +20,7 @@ feature -- Access
 		
 feature -- Element change
 
-	set_shared_schema_name (a_name : STRING) is
+	set_shared_schema_name (a_name : STRING)
 			-- 
 		require
 			a_name_not_void: a_name /= Void

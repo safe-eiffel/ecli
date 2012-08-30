@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -17,7 +17,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_DATA_SOURCES_CURSOR) is
+	make (cursor : ECLI_DATA_SOURCES_CURSOR)
 			-- create from current item in cursor
 		require
 			cursor_valid: cursor /= Void and then not cursor.off

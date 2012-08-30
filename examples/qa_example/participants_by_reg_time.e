@@ -1,4 +1,4 @@
-indexing
+note
 
 	
 			description: "Select participants by amount already paid"
@@ -26,7 +26,7 @@ feature  -- -- Access
 
 feature  -- -- Element change
 
-	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_REG_TIME_PARAMETERS) is
+	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_REG_TIME_PARAMETERS)
 			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
@@ -40,7 +40,7 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
+	definition: STRING = "[
 select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
 		 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
 			r.participant_id = p.identifier AND
@@ -49,7 +49,7 @@ select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.cit
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]

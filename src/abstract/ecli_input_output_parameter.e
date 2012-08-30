@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -21,21 +21,21 @@ create
 	
 feature -- Status report
 
-	is_input : BOOLEAN is 
+	is_input : BOOLEAN 
 		do 
 			Result := False 
 		ensure then
 			is_false: not Result
 		end
 		
-	is_input_output : BOOLEAN is 
+	is_input_output : BOOLEAN 
 		do 
 			Result := True 
 		ensure then
 			is_true: Result
 		end
 		
-	is_output : BOOLEAN is 
+	is_output : BOOLEAN 
 		do 
 			Result := False 
 		ensure then
@@ -44,7 +44,7 @@ feature -- Status report
 
 feature {ECLI_STATEMENT} -- Basic operations
 
-	bind (statement : ECLI_STATEMENT; position : INTEGER) is
+	bind (statement : ECLI_STATEMENT; position : INTEGER)
 		do
 			item.bind_as_input_output_parameter (statement, position)
 		end

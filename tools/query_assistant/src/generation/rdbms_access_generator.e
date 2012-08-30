@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Cursor class generators."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -26,7 +26,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (an_error_handler : QA_ERROR_HANDLER; a_version : STRING; a_source_filename : STRING) is
+	make (an_error_handler : QA_ERROR_HANDLER; a_version : STRING; a_source_filename : STRING)
 		require
 			an_error_handler_not_void: an_error_handler /= Void
 			a_version_attached: a_version /= Void
@@ -65,7 +65,7 @@ feature -- Access
 
 feature -- Basic operations
 
-	write_class (a_class : EIFFEL_CLASS; a_target_directory : STRING) is
+	write_class (a_class : EIFFEL_CLASS; a_target_directory : STRING)
 			-- write `a_class' as an eiffel file into `a_target_directory'
 		require
 			a_class_not_void: a_class /= Void
@@ -87,7 +87,7 @@ feature -- Basic operations
 			end
 		end
 
-	create_cursor_class (module : RDBMS_ACCESS; parent_name : STRING) is
+	create_cursor_class (module : RDBMS_ACCESS; parent_name : STRING)
 			-- create class from `module' and write it into `directory_name'
 		require
 			module_not_void: module /= Void
@@ -101,7 +101,7 @@ feature -- Basic operations
 			cursor_class_and_module_have_same_name: cursor_class.name.is_equal (module.name)
 		end
 
-	create_parameters_class (parameter_set : PARAMETER_SET) is
+	create_parameters_class (parameter_set : PARAMETER_SET)
 			-- create class from `parameter_set' and write it into `directory_name'
 		require
 			parameter_set_not_void: parameter_set /= Void
@@ -113,7 +113,7 @@ feature -- Basic operations
 		end
 
 
-	create_results_class (result_set : RESULT_SET) is
+	create_results_class (result_set : RESULT_SET)
 			-- create class from `result_set' and write it into `directory_name'
 		require
 			result_set_not_void: result_set /= Void
@@ -124,7 +124,7 @@ feature -- Basic operations
 			results_class_generated: results_class /= Void and then results_class.name.is_equal (result_set.name)
 		end
 
-	create_set_class (set : COLUMN_SET[RDBMS_ACCESS_METADATA]) is
+	create_set_class (set : COLUMN_SET[RDBMS_ACCESS_METADATA])
 			-- create class from `result_set' and write it into `directory_name'
 		require
 			set_not_void: set /= Void
@@ -134,7 +134,7 @@ feature -- Basic operations
 			set_class_generated: set_class /= Void and then set_class.name.is_equal (set.name)
 		end
 
-	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[RDBMS_ACCESS, STRING]; sets : like all_sets; without_prototypes : BOOLEAN) is
+	create_access_routines_class (name_prefix : STRING; modules : DS_HASH_TABLE[RDBMS_ACCESS, STRING]; sets : like all_sets; without_prototypes : BOOLEAN)
 			-- create deferred access routines helper class
 		require
 			prefix_not_void: name_prefix /= Void
@@ -205,7 +205,7 @@ feature -- Basic operations
 
 feature {NONE} -- Basic operations
 
-	virtual_row_class (column_set : COLUMN_SET[RDBMS_ACCESS_METADATA]) : EIFFEL_CLASS is
+	virtual_row_class (column_set : COLUMN_SET[RDBMS_ACCESS_METADATA]) : EIFFEL_CLASS
 			-- create virtual row class reflecting `column_set'
 		require
 			column_set_not_void: column_set /= Void
@@ -305,7 +305,7 @@ feature {NONE} -- Basic operations
 		end
 
 
-	put_visible_features(module : RDBMS_ACCESS) is
+	put_visible_features(module : RDBMS_ACCESS)
 			-- put visible features of `module' into `cursor_class'
 		do
 			put_access (module)
@@ -313,7 +313,7 @@ feature {NONE} -- Basic operations
 			put_definition (module)
 		end
 
-	put_access (module : RDBMS_ACCESS) is
+	put_access (module : RDBMS_ACCESS)
 			-- put access features of `module' into `cursor_class'
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
@@ -347,7 +347,7 @@ feature {NONE} -- Basic operations
 			cursor_class.add_feature_group (feature_group)
 		end
 
-	put_indexing_clause (eiffel_class : EIFFEL_CLASS; description : STRING; status_message : STRING) is
+	put_indexing_clause (eiffel_class : EIFFEL_CLASS; description : STRING; status_message : STRING)
 		require
 			description_not_void: description /= Void
 			status_message_not_void: status_message /= Void
@@ -363,7 +363,7 @@ feature {NONE} -- Basic operations
 			eiffel_class.add_indexing_clause ("source_filename: %""+source_filename+"%"")
 		end
 
-	put_element_change (module : RDBMS_ACCESS) is
+	put_element_change (module : RDBMS_ACCESS)
 			-- put element change  features of `module' into `cursor_class'
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
@@ -421,7 +421,7 @@ feature {NONE} -- Basic operations
 			end
 		end
 
-	put_invisible_features (module : RDBMS_ACCESS) is
+	put_invisible_features (module : RDBMS_ACCESS)
 			-- put invisible  features of `module' into `cursor_class'
 		do
 			if module.has_result_set then
@@ -429,7 +429,7 @@ feature {NONE} -- Basic operations
 			end
 		end
 
-	put_heading (module : RDBMS_ACCESS; parent_name : STRING) is
+	put_heading (module : RDBMS_ACCESS; parent_name : STRING)
 			-- put indexing, class name, inheritance and creation
 		local
 			parent_clause : STRING
@@ -462,7 +462,7 @@ feature {NONE} -- Basic operations
 			cursor_class.add_creation_procedure_name ("make")
 		end
 
-	put_definition (module : RDBMS_ACCESS) is
+	put_definition (module : RDBMS_ACCESS)
 			-- put cursor definition  features of `module' into `cursor_class'
 		local
 			feature_group : EIFFEL_FEATURE_GROUP
@@ -486,7 +486,7 @@ feature {NONE} -- Basic operations
 			cursor_class.add_feature_group (feature_group)
 		end
 
-	put_create_buffers (module : RDBMS_ACCESS) is
+	put_create_buffers (module : RDBMS_ACCESS)
 			-- put `create_buffers'  features of `module' into `cursor_class'
 		local
 			i, count : INTEGER
@@ -537,13 +537,13 @@ feature {NONE} -- Implementation
 
 feature {NONE} -- Implementation
 
-	class_name (module : RDBMS_ACCESS) : STRING is
+	class_name (module : RDBMS_ACCESS) : STRING
 		do
 			Result := module.name.twin
 			Result.to_upper
 		end
 
-	as_lower (s : STRING) : STRING is
+	as_lower (s : STRING) : STRING
 		require
 			s_not_void: s /= Void
 		do
@@ -553,7 +553,7 @@ feature {NONE} -- Implementation
 			as_lower_not_void: Result /= Void
 		end
 
-	as_upper (s : STRING) : STRING is
+	as_upper (s : STRING) : STRING
 		require
 			s_not_void: s /= Void
 		do
@@ -563,7 +563,7 @@ feature {NONE} -- Implementation
 			as_upper_not_void: Result /= Void
 		end
 
-	put_access_routine (module : RDBMS_ACCESS; group : EIFFEL_FEATURE_GROUP) is
+	put_access_routine (module : RDBMS_ACCESS; group : EIFFEL_FEATURE_GROUP)
 			-- put access routines for `module' into `group'
 		require
 			module_not_void: module /= Void
@@ -585,7 +585,7 @@ feature {NONE} -- Implementation
 			group.add_feature (eiffel_routine)
 		end
 
-	put_helper_access_routine (module : RDBMS_ACCESS; group : EIFFEL_FEATURE_GROUP) is
+	put_helper_access_routine (module : RDBMS_ACCESS; group : EIFFEL_FEATURE_GROUP)
 			-- put helper access routine for `module' into `group';
 			-- the routine is named 'do_<module.name>'
 		require
@@ -667,7 +667,7 @@ feature {NONE} -- Implementation
 			group.add_feature (eiffel_routine)
 		end
 
-	put_access_create_object (module : RDBMS_ACCESS; group : EIFFEL_FEATURE_GROUP; access_create_object_routine_names : DS_HASH_TABLE[BOOLEAN,STRING]) is
+	put_access_create_object (module : RDBMS_ACCESS; group : EIFFEL_FEATURE_GROUP; access_create_object_routine_names : DS_HASH_TABLE[BOOLEAN,STRING])
 			-- put `create_object_from_<module.results>' into `group'
 		require
 			module_not_void: module /= Void
@@ -699,7 +699,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	put_signature_to_routine (set : COLUMN_SET[RDBMS_ACCESS_METADATA]; eiffel_routine : EIFFEL_ROUTINE) is
+	put_signature_to_routine (set : COLUMN_SET[RDBMS_ACCESS_METADATA]; eiffel_routine : EIFFEL_ROUTINE)
 			-- put signature representing `set' to `eiffel_routine'.
 		local
 			p_cursor : DS_SET_CURSOR[RDBMS_ACCESS_METADATA]

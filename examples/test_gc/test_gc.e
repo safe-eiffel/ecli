@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Test for objects garbage collection.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -13,7 +13,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 			-- test_gc			
 		do
 			-- session opening
@@ -35,12 +35,12 @@ feature -- Initialization
 			end;
 		end
 	
-	test_gc is
+	test_gc
 		do
 			do_case_a
 		end
 	
-	other_test is
+	other_test
 		local
 			stmt0, stmt11, stmt21, stmt22 : ECLI_STATEMENT
 			m : MEMORY
@@ -92,7 +92,7 @@ feature -- Initialization
 	a_ok, b_ok, c_ok, d_ok, e_ok : BOOLEAN
 	a_tried, b_tried, c_tried, d_tried, e_tried : BOOLEAN
 	
-	do_case_a is
+	do_case_a
 		do
 			if not a_tried then
 				a_tried := True
@@ -110,29 +110,29 @@ feature -- Initialization
 			retry
 		end
 	
-	do_case_b is
+	do_case_b
 		do
 		end
 	
-	do_case_c is
+	do_case_c
 		do
 		end
 		
-	do_case_d is
+	do_case_d
 		do
 		end
 		
-	do_case_e is
+	do_case_e
 		do
 		end
 
 	
-	args : ARGUMENTS is once create Result end 
+	args : ARGUMENTS once create Result end 
 
 	session : ECLI_SESSION
 	statement : ECLI_STATEMENT
 	
-	memory : MEMORY is once create Result end
+	memory : MEMORY once create Result end
 	
 end -- class TEST_GC
 --

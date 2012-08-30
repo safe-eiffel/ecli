@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -19,18 +19,18 @@ inherit
 
 feature -- Access
 
-	string_foo : STRING is "Foo"
+	string_foo : STRING = "Foo"
 
-	string_long : STRING is "The quick brown fox jumps over the lazy dog. %
+	string_long : STRING = "The quick brown fox jumps over the lazy dog. %
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
 
-	string_binary : STRING is "%/000/%/001/%/002/%/003/%/004/%/005/%/006/%/255/"
+	string_binary : STRING = "%/000/%/001/%/002/%/003/%/004/%/005/%/006/%/255/"
 
 feature -- Basic operations
 
-	test_char is
+	test_char
 			-- test ECLI_CHAR
 		local
 			v, z : ECLI_CHAR
@@ -48,7 +48,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_varchar is
+	test_varchar
 			-- test ECLI_VARCHAR
 		local
 			v, z : ECLI_VARCHAR
@@ -68,7 +68,7 @@ feature -- Basic operations
 			assert_equal("empty_as_string", v.as_string, "")
 		end
 
-	test_longvarchar is
+	test_longvarchar
 			-- test ECLI_LONGVARCHAR
 		local
 			v, z : ECLI_LONGVARCHAR
@@ -87,7 +87,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_binary is
+	test_binary
 			-- test ECLI_BINARY
 		local
 			v, z : ECLI_BINARY
@@ -105,7 +105,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_varbinary is
+	test_varbinary
 			-- test ECLI_VARBINARY
 		local
 			v, z : ECLI_VARBINARY
@@ -122,7 +122,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_longvarbinary is
+	test_longvarbinary
 			--
 		local
 			v, z : ECLI_LONGVARBINARY
@@ -141,7 +141,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_date is
+	test_date
 			-- test ECLI_DATE
 		local
 			v, z : ECLI_DATE
@@ -163,7 +163,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_time is
+	test_time
 			-- test ECLI_TIME
 		local
 			v, z : ECLI_TIME
@@ -184,7 +184,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_timestamp is
+	test_timestamp
 			-- test ECLI_TIMESTAMP
 		local
 			v, z : ECLI_TIMESTAMP
@@ -205,7 +205,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_integer is
+	test_integer
 			-- test ECLI_INTEGER
 		local
 			v, z : ECLI_INTEGER
@@ -223,7 +223,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_integer_64 is
+	test_integer_64
 			-- test ECLI_INTEGER
 		local
 			v, z : ECLI_INTEGER_64
@@ -247,7 +247,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_double is
+	test_double
 			-- test ECLI_DOUBLE
 		local
 			v, z : ECLI_DOUBLE
@@ -268,7 +268,7 @@ feature -- Basic operations
 			assert_double_equal ("copy", v.item, z.item)
 		end
 
-	test_decimal is
+	test_decimal
 			-- test ECLI_DOUBLE
 		local
 			v, z : ECLI_DECIMAL
@@ -291,7 +291,7 @@ feature -- Basic operations
 			assert_equal ("copy", v.item, z.item)
 		end
 
-	test_real is
+	test_real
 			-- test ECLI_REAL
 		local
 			v, z : ECLI_REAL
@@ -312,7 +312,7 @@ feature -- Basic operations
 			assert_double_equal ("copy", v.item, z.item)
 		end
 
-	test_float is
+	test_float
 			-- test ECLI_FLOAT
 		local
 			v, z : ECLI_FLOAT

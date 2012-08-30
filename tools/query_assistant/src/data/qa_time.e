@@ -1,4 +1,4 @@
-indexing
+note
 	description: "SQL TIME value."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -18,11 +18,11 @@ create
 	
 feature
 
-	ecli_type : STRING is "ECLI_TIME"
+	ecli_type : STRING = "ECLI_TIME"
 		
-	value_type : STRING is "DT_TIME"
+	value_type : STRING = "DT_TIME"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_null_call
 		end

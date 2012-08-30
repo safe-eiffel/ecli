@@ -1,4 +1,4 @@
-indexing
+note
 	description:
 
 		"Objects that map database character data to Eiffel STRING instances."

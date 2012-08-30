@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -37,7 +37,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER) is
+	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER)
 			-- Describe `index'th column of current result-set of `stmt', limiting the name length to `max_name_length'
 		require
 			stmt_prepared_or_executed : stmt /= Void and then stmt.is_prepared or stmt.is_executed
@@ -73,14 +73,14 @@ feature -- Access
 
 feature -- Measurement
 
-	hash_code : INTEGER is
+	hash_code : INTEGER
 		do
 			Result := name.hash_code
 		end
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			--
 		do
 			Result := same_description (other) and then name.is_equal (other.name)
@@ -88,7 +88,7 @@ feature -- Comparison
 
 feature {NONE} -- Implementation
 
-	ext_actual_name_length : XS_C_INT32 is once create Result.make end
+	ext_actual_name_length : XS_C_INT32 once create Result.make end
 
 invariant
 	name_not_void: name /= Void

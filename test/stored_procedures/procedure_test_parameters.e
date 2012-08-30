@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -19,7 +19,7 @@ inherit
 
 feature -- Basic operations
 
-	test_input_parameter is
+	test_input_parameter
 		local
 			pin : ECLI_STORED_PROCEDURE
 			input, res : ECLI_INTEGER
@@ -42,7 +42,7 @@ feature -- Basic operations
 			pin.close
 		end
 		
-	test_output_parameter is
+	test_output_parameter
 		local
 			pout : ECLI_STORED_PROCEDURE
 			input, output : ECLI_INTEGER
@@ -61,7 +61,7 @@ feature -- Basic operations
 			pout.close
 		end
 		
-	test_input_output_parameter is
+	test_input_output_parameter
 		local
 			pinout : ECLI_STORED_PROCEDURE
 			input, output : ECLI_INTEGER
@@ -82,7 +82,7 @@ feature -- Basic operations
 			pinout.close
 		end
 		
-	test_fun is
+	test_fun
 			-- test function
 		local
 			fun : ECLI_STORED_PROCEDURE

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -24,7 +24,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make_could_not_create_parameter (module, name, diagnostic : STRING) is
+	make_could_not_create_parameter (module, name, diagnostic : STRING)
 			-- Could not create parameter `name' in `module'.
 		require
 			name_not_void: name /= Void
@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 			parameters.put (diagnostic, 3)
 		end
 		
-	make_xml_parser_unavailable (name : STRING) is
+	make_xml_parser_unavailable (name : STRING)
 			-- XML Parser `name' not available.
 		require
 			name_not_void: name /= Void
@@ -48,7 +48,7 @@ feature {NONE} -- Initialization
 			parameters.put (name, 1)
 		end
 		
-	make_column_length_too_large (module, column : STRING; length : INTEGER; parameter : BOOLEAN) is
+	make_column_length_too_large (module, column : STRING; length : INTEGER; parameter : BOOLEAN)
 			-- Length `length' of `column' `parameter/result' in `module' is too large.
 		require
 			module_not_void: module /= Void
@@ -67,7 +67,7 @@ feature {NONE} -- Initialization
 			end
 		end
 		
-	make_column_length_truncated (module, column : STRING; length : INTEGER; parameter : BOOLEAN) is
+	make_column_length_truncated (module, column : STRING; length : INTEGER; parameter : BOOLEAN)
 			-- Length of `column' `parameter/result' in `module' has been truncated to `length'.
 		require
 			module_not_void: module /= Void
@@ -88,12 +88,12 @@ feature {NONE} -- Initialization
 		
 feature {NONE} -- Implementation
 
-	cncp_template : STRING is   "[E-INT-CNCRPAR] Could not create parameter $1 in module $2. $3."
-	xpunvl_template : STRING is "[E-INT-PARSNVL] XML parser $1 not available. Please choose another one."
-	ctool_template : STRING is  "[W-INT-COLNTOL] Length of `$1' $4 in `$2' is too large : `$3' bytes."
-	ctrunc_template : STRING is "[W-INT-COLNTRC] Length of `$1' $4 in `$2' has been truncated to `$3' bytes."
+	cncp_template : STRING =   "[E-INT-CNCRPAR] Could not create parameter $1 in module $2. $3."
+	xpunvl_template : STRING = "[E-INT-PARSNVL] XML parser $1 not available. Please choose another one."
+	ctool_template : STRING =  "[W-INT-COLNTOL] Length of `$1' $4 in `$2' is too large : `$3' bytes."
+	ctrunc_template : STRING = "[W-INT-COLNTRC] Length of `$1' $4 in `$2' has been truncated to `$3' bytes."
 	
-	parameter_constant : STRING is "parameter"
-	result_constant : STRING is "result"
+	parameter_constant : STRING = "parameter"
+	result_constant : STRING = "result"
 	
 end -- class QA_INTERNAL_ERROR

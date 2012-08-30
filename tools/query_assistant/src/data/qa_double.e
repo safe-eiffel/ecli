@@ -1,4 +1,4 @@
-indexing
+note
 	description: "CLI SQL DOUBLE value."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -20,11 +20,11 @@ create
 feature
 
 
-	ecli_type : STRING is "ECLI_DOUBLE"
+	ecli_type : STRING = "ECLI_DOUBLE"
 		
-	value_type : STRING is "DOUBLE"
+	value_type : STRING = "DOUBLE"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call
 		end

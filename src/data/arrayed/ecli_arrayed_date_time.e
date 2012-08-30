@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -24,7 +24,7 @@ create
 
 feature -- Access
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 		once
 			Result := Sql_type_timestamp
 		end

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "RDBMS result metadata."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -23,7 +23,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (the_metadata : ECLI_COLUMN_DESCRIPTION; maximum_length : INTEGER) is
+	make (the_metadata : ECLI_COLUMN_DESCRIPTION; maximum_length : INTEGER)
 			-- Initialize `Current'.
 		require
 			the_metadata_not_void: the_metadata /= Void
@@ -45,22 +45,22 @@ feature {NONE}-- Access
 feature -- Access
 
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 		do
 			Result := metadata.sql_type_code
 		end
 
-	size : INTEGER is
+	size : INTEGER
 		do
 			Result := size_impl -- metadata.size
 		end
 
-	decimal_digits : INTEGER is
+	decimal_digits : INTEGER
 		do
 			Result := metadata.decimal_digits
 		end
 
-	name : STRING is
+	name : STRING
 		do
 			Result := metadata.name.twin
 			Result.to_lower
@@ -68,7 +68,7 @@ feature -- Access
 
 feature -- Status report
 
-	metadata_available : BOOLEAN is
+	metadata_available : BOOLEAN
 		do
 			Result := metadata /= Void
 		end

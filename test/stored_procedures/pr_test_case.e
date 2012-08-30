@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -21,7 +21,7 @@ inherit
 
 feature -- Basic operations
 
-	set_up is
+	set_up
 			-- setup test
 		local
 			exception : EXCEPTIONS
@@ -36,7 +36,7 @@ feature -- Basic operations
 			end
 		end
 	
-	tear_down is
+	tear_down
 			-- tear down test
 		do
 			if session.is_connected then
@@ -51,7 +51,7 @@ feature -- Access
 	session : ECLI_SESSION
 			-- Database session on datasource
 
-	trace_file_name : STRING is "trace_stored_procedures.log"
+	trace_file_name : STRING = "trace_stored_procedures.log"
 			-- Name of trace file, if any
 	
 feature -- Status setting
@@ -61,7 +61,7 @@ feature -- Status setting
 
 feature --  Basic operations
 
-	create_procedures is
+	create_procedures
 		local
 			stmt : ECLI_STATEMENT
 		do
@@ -108,7 +108,7 @@ feature --  Basic operations
 			stmt.close
 		end
 				
-	drop_procedures is
+	drop_procedures
 		local
 			stmt : ECLI_STATEMENT
 		do
@@ -137,7 +137,7 @@ feature --  Basic operations
 		end
 		
 
-	trace_if_necessary is
+	trace_if_necessary
 			-- activate trace if trace_file_name exists
 		local
 			f : KL_TEXT_OUTPUT_FILE
@@ -152,7 +152,7 @@ feature --  Basic operations
 			assert ("tracing", session.is_tracing)
 		end
 		
-	create_and_connect_session is
+	create_and_connect_session
 			-- create session and connect user `data_source_name', `user_name' and `password'
 		local
 			strategy : ECLI_DRIVER_LOGIN
@@ -166,14 +166,14 @@ feature --  Basic operations
 			session_not_void: session /= Void
 		end
 
-	disconnect_session is
+	disconnect_session
 			-- disconnect session before closing
 		do
 			-- session disconnection
 			session.disconnect
 		end
 
-	close_session is
+	close_session
 			-- close `session'
 		do
 			session.close

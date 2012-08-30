@@ -1,4 +1,4 @@
-indexing
+note
 	description: "SQL LONGVARCHAR (n) values."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -18,11 +18,11 @@ create
 
 feature
 
-	ecli_type : STRING is do Result := "ECLI_LONGVARCHAR" end
+	ecli_type : STRING do Result := "ECLI_LONGVARCHAR" end
 
-	value_type : STRING is "STRING"
+	value_type : STRING = "STRING"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call_with_precision
 		end

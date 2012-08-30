@@ -1,4 +1,4 @@
-indexing
+note
 
 	
 			description: "Select participants matching a last name"
@@ -26,7 +26,7 @@ feature  -- -- Access
 
 feature  -- -- Element change
 
-	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_NAME_PARAMETERS) is
+	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_NAME_PARAMETERS)
 			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
@@ -40,14 +40,14 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
+	definition: STRING = "[
 select * from PARTICIPANT where
 			last_name = ?last_name
 ]"
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]

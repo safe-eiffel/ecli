@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -15,20 +15,20 @@ feature -- Initialization
 
 feature -- Access
 
-	publisher : PAT_PUBLISHER [PAT_SUBSCRIBER] is
+	publisher : PAT_PUBLISHER [PAT_SUBSCRIBER]
 		deferred
 		end
 
 feature -- Status report
 
-	unsubscribed : BOOLEAN is
+	unsubscribed : BOOLEAN
 		do
 			Result := (publisher = Void)
 		ensure
 			definition: Result = (publisher = Void)
 		end
 
-	has_publisher : BOOLEAN is
+	has_publisher : BOOLEAN
 		do
 			Result := (publisher /= Void)
 		ensure
@@ -37,7 +37,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	published (a_publisher : like publisher) is
+	published (a_publisher : like publisher)
 			-- called by publisher
 			-- redefine in descendant classes
 		do

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
@@ -13,7 +13,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- Creation of buffers
 		do
 			create last_name.make (30)

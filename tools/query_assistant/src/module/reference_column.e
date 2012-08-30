@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Reference columns for parameters."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -21,7 +21,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_table, a_column : STRING) is
+	make (a_table, a_column : STRING)
 			-- Initialize `Current'.
 		require
 			a_table_not_void: a_table /= Void
@@ -49,7 +49,7 @@ feature -- Cursor movement
 
 feature {EVTK_EDITOR} -- Element change
 
-	set_column (a_column: STRING) is
+	set_column (a_column: STRING)
 			-- Set `column' to `a_column'.
 		require
 			a_column_not_void: a_column /= Void
@@ -59,7 +59,7 @@ feature {EVTK_EDITOR} -- Element change
 			column_assigned: column = a_column
 		end
 
-	set_table (a_table: STRING) is
+	set_table (a_table: STRING)
 			-- Set `table' to `a_table'.
 		require
 			a_table_not_void: a_table /= Void
@@ -85,7 +85,7 @@ feature -- Basic operations
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			--
 		do
 			Result := column.is_equal (other.column) and then table.is_equal (other.table)

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -13,7 +13,7 @@ class PAT_PUBLISHER [G -> PAT_SUBSCRIBER]
 
 feature -- Status report
 
-	has_subscribed (subscriber : G) : BOOLEAN is
+	has_subscribed (subscriber : G) : BOOLEAN
 			-- has this 'subscriber' subscribed to this service ?
 		require
 			valid_subscriber: subscriber /= Void
@@ -26,7 +26,7 @@ feature -- Status report
 		
 feature -- Element change
 
-	subscribe (subscriber : G) is
+	subscribe (subscriber : G)
 			-- subscribe statement 's'
 		require
 			valid_statement: subscriber /= Void
@@ -41,7 +41,7 @@ feature -- Element change
 
 feature -- Removal
 
-	unsubscribe (subscriber : G) is
+	unsubscribe (subscriber : G)
 			-- de-subscribe statement 's'
 		require
 			valid_statement: subscriber /= Void
@@ -56,7 +56,7 @@ feature -- Removal
 
 feature {NONE} -- Implementation
 
-	subscribers : DS_LIST[G] is
+	subscribers : DS_LIST[G]
 		do
 			if impl_subscribers = Void then
 				create {DS_LINKED_LIST[G]} impl_subscribers.make

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Result sets."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -23,7 +23,7 @@ create
 	
 feature {NONE} -- Initialization
 
-		make (a_name: STRING) is
+		make (a_name: STRING)
 			-- create result set with `a_name'
 			do
 				Precursor (a_name)
@@ -38,7 +38,7 @@ feature -- Access
 			
 feature -- Element change
 
-	put (column : like item; column_rank : INTEGER) is
+	put (column : like item; column_rank : INTEGER)
 			-- put `column' with position `column_rank'
 		require
 			column_not_void: column /= Void
@@ -48,7 +48,7 @@ feature -- Element change
 			rank.put (column_rank, column.name)
 		end
 
-	force (column : like item; column_rank : INTEGER) is
+	force (column : like item; column_rank : INTEGER)
 			-- force `column' with position `column_rank'
 		require
 			column_not_void: column /= Void
@@ -60,12 +60,12 @@ feature -- Element change
 
 feature {NONE} -- Implementation
 
-	item_eiffel_type (an_item : like item) : STRING is
+	item_eiffel_type (an_item : like item) : STRING
 		do
 			Result := an_item.value_type
 		end
 		
-	item_eiffel_name (an_item : like item) : STRING is
+	item_eiffel_name (an_item : like item) : STRING
 			-- 
 		do
 			Result := an_item.eiffel_name

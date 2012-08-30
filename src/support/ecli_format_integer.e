@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -13,7 +13,7 @@ class ECLI_FORMAT_INTEGER
 
 feature -- Conversion
 
-	pad_integer_4 (value : INTEGER) : STRING is
+	pad_integer_4 (value : INTEGER) : STRING
 		do
 			create Result.make (4)
 			if value < 10 then
@@ -26,7 +26,7 @@ feature -- Conversion
 			Result.append_string (value.out)
 		end
 
-	pad_integer_2 (value : INTEGER) : STRING is
+	pad_integer_2 (value : INTEGER) : STRING
 		do
 			create Result.make (2)
 			if value < 10 then

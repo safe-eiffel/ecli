@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that list the command history."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("hist[ory]", Command_width)
 			Result.append_string ("Print the commands history.")
 		end
 
-	match_string : STRING is "hist"
+	match_string : STRING = "hist"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show history
 		local
 			cursor : DS_LINKED_LIST_CURSOR[STRING]

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -38,7 +38,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make, open (a_session : ECLI_SESSION; sql_definition : STRING) is
+	make, open (a_session : ECLI_SESSION; sql_definition : STRING)
 			-- Make cursor for `a_session' on `sql_definition'
 		require
 			a_session_not_void: a_session /= Void
@@ -56,7 +56,7 @@ feature {NONE} -- Initialization
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 		end
 
-	make_prepared, open_prepared (a_session : ECLI_SESSION; sql_definition : STRING) is
+	make_prepared, open_prepared (a_session : ECLI_SESSION; sql_definition : STRING)
 			-- Make prepared cursor for `a_session' on `sql_definition'
 		require
 			a_session_not_void: a_session /= Void
@@ -74,7 +74,7 @@ feature {NONE} -- Initialization
 			prepared_if_ok: is_ok implies is_prepared
 		end
 
-	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory : like buffer_factory) is
+	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory : like buffer_factory)
 			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
 			a_session_not_void: a_session /= Void
@@ -92,7 +92,7 @@ feature {NONE} -- Initialization
 			buffer_factory_assigned: buffer_factory = a_buffer_factory
 		end
 		
-	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory :  like buffer_factory) is
+	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory :  like buffer_factory)
 			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
 			a_session_not_void: a_session /= Void
@@ -118,7 +118,7 @@ feature -- Access
 	definition : STRING
 			-- Definition as an SQL query
 
-	item (name : STRING) : like value_anchor is
+	item (name : STRING) : like value_anchor
 			-- Column item by `name'
 		require
 			is_executed: is_executed
@@ -128,7 +128,7 @@ feature -- Access
 			Result := results.item (name_to_index.item (name))
 		end
 
-	item_by_index (index : INTEGER) : like value_anchor is
+	item_by_index (index : INTEGER) : like value_anchor
 			-- Column item by `index'
 		require
 			is_executed: is_executed
@@ -137,7 +137,7 @@ feature -- Access
 			Result := results.item (index)
 		end
 
-	column_name (index : INTEGER) : STRING is
+	column_name (index : INTEGER) : STRING
 			-- Column name by `index'
 		require
 			valid_index: index >= lower and index <= upper
@@ -149,7 +149,7 @@ feature -- Access
 
 feature -- Measurement
 
-	lower : INTEGER is
+	lower : INTEGER
 			-- Lower cursor index
 		require
 			is_executed: is_executed
@@ -157,7 +157,7 @@ feature -- Measurement
 			Result := results.lower
 		end
 
-	upper : INTEGER is
+	upper : INTEGER
 			-- Upper cursor index; i.e. number of elements in result row
 		require
 			is_executed: is_executed
@@ -167,7 +167,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	has_column (name : STRING) : BOOLEAN is
+	has_column (name : STRING) : BOOLEAN
 			-- Does `name' match the name of a column in Current ?
 		require
 			name_not_void: name /= Void
@@ -177,7 +177,7 @@ feature -- Status report
 
 feature -- Cursor movement
 
-	start is
+	start
 			-- Execute and start iterating on result set
 		require
 			prepared: is_prepared_execution_mode implies is_prepared
@@ -209,12 +209,12 @@ feature {NONE} -- Implementation
 	name_to_index : DS_HASH_TABLE [INTEGER, STRING]
 			-- Table mapping column name to column index
 
-	create_buffer_factory is
+	create_buffer_factory
 		do
 			create buffer_factory
 		end
 
-	create_row_buffers is
+	create_row_buffers
 			-- Describe results and create data-transfer buffers using `buffer_factory'
 		do
 			describe_results

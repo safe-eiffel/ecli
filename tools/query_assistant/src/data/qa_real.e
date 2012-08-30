@@ -1,4 +1,4 @@
-indexing
+note
 	description: "CLI SQL REAL value."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -19,11 +19,11 @@ create
 feature
 
 
-	ecli_type : STRING is "ECLI_REAL"
+	ecli_type : STRING = "ECLI_REAL"
 		
-	value_type : STRING is "REAL"
+	value_type : STRING = "REAL"
 		
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call
 		end

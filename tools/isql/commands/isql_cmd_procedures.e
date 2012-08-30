@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that list procedures available on a datasource."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("pro[cedures]", command_width)
 			Result.append_string ("List all procedures in current catalog")
 		end
 
-	match_string : STRING is "pro"
+	match_string : STRING = "pro"
 	
 feature -- Status report
 	
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 	
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 		
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show procedures of current datasource
 		local
 			query : ECLI_NAMED_METADATA

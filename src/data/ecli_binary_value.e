@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -21,7 +21,7 @@ inherit
 feature -- Access
 
 
-	item : STRING is
+	item : STRING
 		do
 			if is_null then
 				Result := Void
@@ -31,7 +31,7 @@ feature -- Access
 			end
 		end
 
-	c_type_code : INTEGER is
+	c_type_code : INTEGER
 		once
 			Result := sql_c_binary
 		end

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -28,7 +28,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	disable_verbose is
+	disable_verbose
 		do
 			info_file := Null_output_stream
 		ensure
@@ -37,7 +37,7 @@ feature -- Status setting
 
 feature -- Arguments
 
-	report_missing_argument (argument_name, explanation: STRING) is
+	report_missing_argument (argument_name, explanation: STRING)
 			-- Report missing `argument_name' using `explanation'.
 		require
 			argument_name_not_void: argument_name /= void
@@ -52,7 +52,7 @@ feature -- Arguments
 			has_missing_argument: has_missing_argument
 		end
 
-	report_invalid_argument (argument_name, explanation: STRING) is
+	report_invalid_argument (argument_name, explanation: STRING)
 			-- Report invalid `argument_name' using `explanation'.
 		require
 			argument_name_not_void: argument_name /= void
@@ -64,7 +64,7 @@ feature -- Arguments
 			report_error (error)
 		end
 
-	report_default_argument (argument_name, value: STRING) is
+	report_default_argument (argument_name, value: STRING)
 			-- Report usage of default argument `value' for `argument_name'.
 		require
 			argument_name_not_void: argument_name /= void
@@ -78,7 +78,7 @@ feature -- Arguments
 
 feature -- File
 
-	report_cannot_read_file (file_name : STRING) is
+	report_cannot_read_file (file_name : STRING)
 			-- Report file `file_name' cannot be read.
 		require
 			file_name_not_void: file_name /= Void
@@ -89,7 +89,7 @@ feature -- File
 			report_error (error)
 		end
 
-	report_cannot_write_file (file_name : STRING) is
+	report_cannot_write_file (file_name : STRING)
 			-- Report file `file_name' cannot' be written.
 		require
 			file_name_not_void: file_name /= Void
@@ -102,7 +102,7 @@ feature -- File
 
 feature -- Database
 
-	report_database_connection_failed (data_source_name: STRING) is
+	report_database_connection_failed (data_source_name: STRING)
 			-- Report connection failed on `data_source_name'.
 		require
 			data_source_name_not_void: data_source_name /= void
@@ -113,7 +113,7 @@ feature -- Database
 			report_error (error)
 		end
 
-	report_query_execution_failed (query, diagnostic, module_name: STRING) is
+	report_query_execution_failed (query, diagnostic, module_name: STRING)
 			-- Exectution of `query' failed with `diagnostic' for `module_name'.
 		require
 			query_not_void: query /= void
@@ -126,7 +126,7 @@ feature -- Database
 			report_error (error)
 		end
 
-	report_prepare_query_failed (query, diagnostic, module_name: STRING) is
+	report_prepare_query_failed (query, diagnostic, module_name: STRING)
 			-- Preparation of `query' failed with `diagnostic' for `module_name'.
 		require
 			query_not_void: query /= void
@@ -139,7 +139,7 @@ feature -- Database
 			report_error (error)
 		end
 
-	report_query_only_prepared (module_name: STRING) is
+	report_query_only_prepared (module_name: STRING)
 			-- Query of `module_name' has been prepared.
 		require
 			module_name_not_void: module_name /= void
@@ -152,7 +152,7 @@ feature -- Database
 
 feature -- Information
 
-	report_processing_file (in_filename : STRING) is
+	report_processing_file (in_filename : STRING)
 			-- Report that `in_filename' is being processed
 		require
 			in_filename_not_void: in_filename /= Void
@@ -164,7 +164,7 @@ feature -- Information
 		end
 
 
-	report_copyright (author, period: STRING) is
+	report_copyright (author, period: STRING)
 			-- Report  copyright message with `author' for `period'.
 		require
 			author_not_void: author /= void
@@ -176,7 +176,7 @@ feature -- Information
 			report_info (error)
 		end
 
-	report_banner (version: STRING) is
+	report_banner (version: STRING)
 			-- Report  banner `version'.
 		require
 			version_not_void: version /= void
@@ -187,7 +187,7 @@ feature -- Information
 			report_error (error)
 		end
 
-	report_license (license_name, version: STRING) is
+	report_license (license_name, version: STRING)
 			-- Report  license message for `license_name', `version'.
 		require
 			license_name_not_void: license_name /= void
@@ -199,7 +199,7 @@ feature -- Information
 			report_info (error)
 		end
 
-	report_start (process: STRING) is
+	report_start (process: STRING)
 			-- Report  information on starting `process'.
 		require
 			process_not_void: process /= void
@@ -210,7 +210,7 @@ feature -- Information
 			report_info (error)
 		end
 
-	report_generating (generated: STRING) is
+	report_generating (generated: STRING)
 			-- Report  information on starting `generated'.
 		require
 			generated_not_void: generated /= void
@@ -221,7 +221,7 @@ feature -- Information
 			report_info (error)
 		end
 
-	report_end (process: STRING; success: BOOLEAN) is
+	report_end (process: STRING; success: BOOLEAN)
 			-- Report  information on ending `process' with `success'.
 		require
 			process_not_void: process /= void
@@ -234,7 +234,7 @@ feature -- Information
 
 feature -- Internal
 
-	report_could_not_create_parameter (module, name, diagnostic : STRING) is
+	report_could_not_create_parameter (module, name, diagnostic : STRING)
 			-- Could not create parameter `name' in `module' because of `diagnostic'.
 		require
 			name_not_void: name /= void
@@ -247,7 +247,7 @@ feature -- Internal
 			report_error (error)
 		end
 
-	report_xml_parser_unavailable (name: STRING) is
+	report_xml_parser_unavailable (name: STRING)
 			-- XML Parser `name' not available.
 		require
 			name_not_void: name /= void
@@ -258,7 +258,7 @@ feature -- Internal
 			report_error (error)
 		end
 
-	report_column_length_too_large (module, column: STRING; length: INTEGER; parameter: BOOLEAN) is
+	report_column_length_too_large (module, column: STRING; length: INTEGER; parameter: BOOLEAN)
 			-- Length `length' of `column' `parameter/result' in `module' is too large.
 		require
 			module_not_void: module /= void
@@ -271,7 +271,7 @@ feature -- Internal
 			report_error (error)
 		end
 
-	report_column_length_truncated (module, column: STRING; length: INTEGER; parameter: BOOLEAN) is
+	report_column_length_truncated (module, column: STRING; length: INTEGER; parameter: BOOLEAN)
 			-- Length of `column' `parameter/result' in `module' has been truncated to `length'.
 		require
 			module_not_void: module /= void
@@ -286,7 +286,7 @@ feature -- Internal
 
 feature -- Syntax
 
-	report_duplicate_element (module, element, parent: STRING) is
+	report_duplicate_element (module, element, parent: STRING)
 			-- Report duplicate `element' in `parent' for `module'.
 		require
 			module_not_void: module /= void
@@ -299,7 +299,7 @@ feature -- Syntax
 			report_error (error)
 		end
 
-report_exclusive_element (module, element_a, element_b, parent: STRING) is
+report_exclusive_element (module, element_a, element_b, parent: STRING)
 			-- Report `element_a' exclusive of `element_b' in `parent' for `module'.
 		require
 			module_not_void: module /= void
@@ -313,7 +313,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			report_error (error)
 		end
 
-	report_missing_element (module, element, parent: STRING) is
+	report_missing_element (module, element, parent: STRING)
 			-- Report missing `element' in `parent' for `module'.
 		require
 			module_not_void: module /= void
@@ -325,7 +325,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			report_error (error)
 		end
 
-	report_missing_attribute (module, an_attribute, element: STRING) is
+	report_missing_attribute (module, an_attribute, element: STRING)
 			-- Report missing `attribute' in `element' for `module'.
 		require
 			module_not_void: module /= void
@@ -338,7 +338,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 			report_error (error)
 		end
 
-	report_parse_error (diagnostic: STRING) is
+	report_parse_error (diagnostic: STRING)
 			-- Report XML parse error with `diagnostic'.
 		require
 			diagnostic_not_void: diagnostic /= void
@@ -351,7 +351,7 @@ report_exclusive_element (module, element_a, element_b, parent: STRING) is
 
 feature -- Usage
 
-	report_usage (has_expat: BOOLEAN) is
+	report_usage (has_expat: BOOLEAN)
 		local
 			error : QA_USAGE_MESSAGE
 		do
@@ -361,7 +361,7 @@ feature -- Usage
 
 feature -- Validity
 
-	report_already_exists (who, what, type: STRING) is
+	report_already_exists (who, what, type: STRING)
 			-- Report  `who' already has an existing `what' of type `type'
 		require
 			who_not_void: who /= void
@@ -374,7 +374,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_rejected (module_name : STRING) is
+	report_rejected (module_name : STRING)
 			-- Report `module_name' is rejected.
 		require
 			module_name_not_void: module_name /= Void
@@ -385,7 +385,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_invalid_reference_column (module, name, table, column: STRING) is
+	report_invalid_reference_column (module, name, table, column: STRING)
 			-- Report  `name' in `module' has an invalid reference column as `table'.`column'.
 		local
 			error : QA_VALIDITY_ERROR
@@ -394,7 +394,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_parameter_not_described (module, name: STRING) is
+	report_parameter_not_described (module, name: STRING)
 			-- Report  missing description for parameter `name' in `module'.
 		require
 			module_not_void: module /= void
@@ -406,7 +406,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_parameter_type_mismatch (access_name, name, declared_type, sample_type: STRING) is
+	report_parameter_type_mismatch (access_name, name, declared_type, sample_type: STRING)
 			-- Report parameter `name' in `access_name' has an already defined `attribute_name' attribute.
 		require
 			access_name_not_void: access_name /= void
@@ -420,7 +420,7 @@ feature -- Validity
 			report_warning (error)
 		end
 
-	report_parameter_already_defined (module, name, attribute_name : STRING) is
+	report_parameter_already_defined (module, name, attribute_name : STRING)
 			-- Report parameter `name' in `module' has an already defined `attribute_name' attribute.
 		require
 			module_not_void: module /= void
@@ -433,7 +433,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_same_parameter_set_parent_name  (module, name, parent_name : STRING) is
+	report_same_parameter_set_parent_name  (module, name, parent_name : STRING)
 			-- Report same parameter-set parent name `parent_name' as the parameter-set name `name' in `module'.
 		require
 			module_not_void: module /= void
@@ -446,7 +446,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_parameter_unknown (module, name : STRING) is
+	report_parameter_unknown (module, name : STRING)
 			-- Report parameter `name' in `module' is unknown but defined.
 		require
 			module_not_void: module /= Void
@@ -459,7 +459,7 @@ feature -- Validity
 		end
 
 
-	report_parameter_count_mismatch (module: STRING) is
+	report_parameter_count_mismatch (module: STRING)
 			-- Report  parameter count mismatch in `module'.
 		require
 			module_not_void: module /= void
@@ -470,7 +470,7 @@ feature -- Validity
 			report_error (error)
 		end
 
-	report_parent_class_empty (parent: STRING) is
+	report_parent_class_empty (parent: STRING)
 			-- Report  warning `parent' class is empty.
 		require
 			parent_not_void: parent /= void

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Name routines that help follow the Eiffel style rules."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -13,7 +13,7 @@ inherit
 
 feature -- Access
 
-	reserved_words : ARRAY[STRING] is
+	reserved_words : ARRAY[STRING]
 		once
 			Result := <<
 				"agent","alias","all","and","as","assign", "attached", "attribute",
@@ -38,7 +38,7 @@ feature -- Access
 
 feature -- Status report
 
-	is_reserved_word (a_word : STRING) : BOOLEAN is
+	is_reserved_word (a_word : STRING) : BOOLEAN
 			-- Case insensitive search of `a_word' into `reserved_words'.
 		require
 			a_word_not_void: a_word /= Void
@@ -57,7 +57,7 @@ feature -- Status report
 
 feature -- Conversion
 
-	canonical_class_name (string : STRING) : STRING is
+	canonical_class_name (string : STRING) : STRING
 			-- convert `string' to an eiffel canonical class name
 		require
 			string_not_void: string /= Void
@@ -66,7 +66,7 @@ feature -- Conversion
 			Result.replace_substring_all (".", "_")
 		end
 
-	camel_to_class_name (string : STRING) : STRING is
+	camel_to_class_name (string : STRING) : STRING
 			-- convert `string' from camel case to an eiffel class name
 		require
 			string_not_void: string /= Void
@@ -77,7 +77,7 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
 
-	camel_to_feature_name (string : STRING) : STRING is
+	camel_to_feature_name (string : STRING) : STRING
 			-- convert `string' from camel case to an eiffel feature name
 		require
 			string_not_void: string /= Void
@@ -91,7 +91,7 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
 
-	camel_to_constant_name (string : STRING) : STRING is
+	camel_to_constant_name (string : STRING) : STRING
 			-- convert `string' from camel case to an eiffel constant name
 		require
 			string_not_void: string /= Void
@@ -102,7 +102,7 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
 
- 	put_manifest_string_constant (stream : KI_CHARACTER_OUTPUT_STREAM; string : STRING) is
+ 	put_manifest_string_constant (stream : KI_CHARACTER_OUTPUT_STREAM; string : STRING)
  		require
  			stream_not_void: stream /= Void
  			stream_open: stream.is_open_write
@@ -130,7 +130,7 @@ feature -- Conversion
 			stream.put_character ('"')
  		end
 
-	manifest_string_constant (string : STRING) : STRING is
+	manifest_string_constant (string : STRING) : STRING
 			-- Convert `string' to a manifest string constant.
 		require
 			string_not_void: string /= Void
@@ -161,7 +161,7 @@ feature -- Conversion
 			manifest_string: Result.item (1) = '"' and Result.item (Result.count)= '"'
 		end
 
-	verbatim_string (string : STRING; left_adjusted : BOOLEAN; discriminant : STRING) : STRING is
+	verbatim_string (string : STRING; left_adjusted : BOOLEAN; discriminant : STRING) : STRING
 			-- Convert `string' to a verbatim string, possibly `left_adjusted', with `discriminant' in the opener/closer.
 		require
 			string_not_void: string /= Void
@@ -201,14 +201,14 @@ feature -- Conversion
 
 feature -- Constants
 
-	verbatim_left_adjusted_opener : CHARACTER is '['
-	verbatim_opener : CHARACTER is '{'
-	verbatim_left_adjusted_closer : CHARACTER is ']'
-	verbatim_closer : CHARACTER is '}'
+	verbatim_left_adjusted_opener : CHARACTER = '['
+	verbatim_opener : CHARACTER = '{'
+	verbatim_left_adjusted_closer : CHARACTER = ']'
+	verbatim_closer : CHARACTER = '}'
 
 feature {NONE} -- Implementation
 
-	camel_to_eiffel_words (string : STRING)  : STRING is
+	camel_to_eiffel_words (string : STRING)  : STRING
 			-- convert `string' from camel case to eiffel words separated by '_'
 		require
 			string_not_void: string /= Void

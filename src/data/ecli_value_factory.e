@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -30,7 +30,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 		do
 		end
 
@@ -44,7 +44,7 @@ feature -- Status report
 
 feature -- Status report
 
-	valid_type (type_code : INTEGER) : BOOLEAN is
+	valid_type (type_code : INTEGER) : BOOLEAN
 		do
 			Result := array_routines.has(valid_types, type_code)
 		end
@@ -75,32 +75,32 @@ feature {NONE} -- Miscellaneous
 			create {ECLI_BINARY}last_result.make (column_precision)
 		end
 
-	create_char_value (column_precision : INTEGER) is
+	create_char_value (column_precision : INTEGER)
 		do
 			create {ECLI_CHAR}last_result.make (column_precision)
 		end
 
-	create_date_value is
+	create_date_value
 		do
 			create {ECLI_DATE}last_result.make_default
 		end
 
-	create_decimal_value (precision, decimal_digits : INTEGER) is
+	create_decimal_value (precision, decimal_digits : INTEGER)
 		do
 			create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
 		end
 
-	create_double_value is
+	create_double_value
 		do
 			create {ECLI_DOUBLE}last_result.make
 		end
 
-	create_integer_value is
+	create_integer_value
 		do
 			create {ECLI_INTEGER}last_result.make
 		end
 
-	create_integer_64_value is
+	create_integer_64_value
 		do
 			create {ECLI_INTEGER_64}last_result.make
 		end
@@ -120,12 +120,12 @@ feature {NONE} -- Miscellaneous
 			create {ECLI_DECIMAL}last_result.make (precision, decimal_digits)
 		end
 
-	create_real_value is
+	create_real_value
 		do
 			create {ECLI_REAL}last_result.make
 		end
 
-	create_varchar_value (column_precision : INTEGER) is
+	create_varchar_value (column_precision : INTEGER)
 		do
 			if column_precision > 254 then
 				create_longvarchar_value (column_precision)
@@ -134,19 +134,19 @@ feature {NONE} -- Miscellaneous
 			end
 		end
 
-	create_time_value is
+	create_time_value
 		do
 			create {ECLI_TIME}last_result.make_default
 		end
 
-	create_timestamp_value is
+	create_timestamp_value
 		do
 			create {ECLI_TIMESTAMP}last_result.make_default
 		end
 
 feature -- Basic operations
 
-	create_instance (db_type, column_precision, decimal_digits : INTEGER)  is
+	create_instance (db_type, column_precision, decimal_digits : INTEGER)
 			-- create instance of an ECLI_VALUE descendant best matching `db_type', `column_precision', `decimal_digits'
 		require
 			db_type_ok: valid_type (db_type)
@@ -192,7 +192,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	valid_types : ARRAY[INTEGER] is
+	valid_types : ARRAY[INTEGER]
 		once
 			Result := <<
 				sql_binary,
@@ -214,6 +214,6 @@ feature {NONE} -- Implementation
 			>>
 		end
 
-	array_routines : KL_ARRAY_ROUTINES[INTEGER] is do Result := Integer_array_ end
+	array_routines : KL_ARRAY_ROUTINES[INTEGER] do Result := Integer_array_ end
 
 end

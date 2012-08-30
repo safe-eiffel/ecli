@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -27,7 +27,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_copyright (author, period : STRING)  is
+	make_copyright (author, period : STRING)
 			-- Make copyright message with `author' for `period'.
 		require
 			author_not_void: author /= Void
@@ -39,7 +39,7 @@ feature {NONE} -- Initialization
 			parameters.put (period, 2)
 		end
 
-	make_processing_file (in_filename : STRING) is
+	make_processing_file (in_filename : STRING)
 			-- Make processing file `in_filename'.
 		require
 			in_filename_not_void: in_filename /= Void
@@ -49,7 +49,7 @@ feature {NONE} -- Initialization
 			parameters.put (in_filename, 1)
 		end
 
-	make_banner (version : STRING) is
+	make_banner (version : STRING)
 			-- Make banner `version'.
 		require
 			version_not_void: version /= Void
@@ -60,7 +60,7 @@ feature {NONE} -- Initialization
 		end
 
 
-	make_license (license_name, version : STRING) is
+	make_license (license_name, version : STRING)
 			-- Make license message for `license_name', `version'.
 		require
 			license_name_not_void: license_name /= Void
@@ -73,7 +73,7 @@ feature {NONE} -- Initialization
 		end
 
 
-	make_start (process : STRING) is
+	make_start (process : STRING)
 			-- Make information on starting `process'.
 		require
 			process_not_void: process /= Void
@@ -83,7 +83,7 @@ feature {NONE} -- Initialization
 			parameters.put (process, 1)
 		end
 
-	make_generating (generated : STRING) is
+	make_generating (generated : STRING)
 			-- Make information on generating `generated'.
 		require
 			generated_not_void: generated /= Void
@@ -93,7 +93,7 @@ feature {NONE} -- Initialization
 			parameters.put (generated, 1)
 		end
 
-	make_end (process : STRING; success : BOOLEAN) is
+	make_end (process : STRING; success : BOOLEAN)
 			-- Make information on ending `process' with `success'.
 		require
 			process_not_void: process /= Void
@@ -139,13 +139,13 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	procstart_template : STRING is "$1 : start."
-	procend_template : STRING is   "$1 : end."
-	procfail_template : STRING is  "$1 : fail."
-	cprght_template : STRING is    "***        Copyright $2 by $1."
-	license_template : STRING is   "***        Released under $1 license, version $2."
-	banner_template : STRING is    "***    $0 Application $1."
-    generating_template : STRING is "+ Generating $1."
-    processing_file_template: STRING is "***        Processing file: $1."
+	procstart_template : STRING = "$1 : start."
+	procend_template : STRING =   "$1 : end."
+	procfail_template : STRING =  "$1 : fail."
+	cprght_template : STRING =    "***        Copyright $2 by $1."
+	license_template : STRING =   "***        Released under $1 license, version $2."
+	banner_template : STRING =    "***    $0 Application $1."
+    generating_template : STRING = "+ Generating $1."
+    processing_file_template: STRING = "***        Processing file: $1."
 
 end -- class QA_INFORMATION

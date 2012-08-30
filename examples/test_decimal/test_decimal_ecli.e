@@ -1,4 +1,4 @@
-indexing
+note
 
 class TEST_DECIMAL_ECLI
 
@@ -14,7 +14,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make is 
+	make 
 			-- Create and execute test.
 		do 
 			io.put_string ("*** test_decimal : Test DECIMAL input/output ***%N%N")
@@ -53,7 +53,7 @@ feature {NONE} -- Initialization
 
 feature -- Basic operations
 
-	show_table_content is
+	show_table_content
 		do
 			create decimal_18_0.make(19, 0)
 			create decimal_18_2.make(18, 2)
@@ -89,7 +89,7 @@ feature -- Basic operations
 			stmt.close
 		end
 		
-	execute_insert_test is
+	execute_insert_test
 		local
 			ctx : MA_DECIMAL_CONTEXT
 			insert : ECLI_STATEMENT		
@@ -124,7 +124,7 @@ feature -- Basic operations
 			test_insert (insert, decimal_18_4)
 		end
 		
-	test_insert (insert : ECLI_STATEMENT; value : ECLI_DECIMAL) is
+	test_insert (insert : ECLI_STATEMENT; value : ECLI_DECIMAL)
 		do
 				insert.set_parameters (<<value>>)
 				print ("Trying to insert%T")
@@ -161,31 +161,31 @@ feature -- Access
 
 feature -- Constants
 
-	ddl_sql_server : STRING is "[
+	ddl_sql_server : STRING = "[
 		CREATE TABLE TEST_DECIMAL (d18 NUMERIC(18,0), d182 NUMERIC (18,2), dl83 NUMERIC (18,3), d184 NUMERIC(18,4))
 		]"
 	
-	ddl_firebird_interbase : STRING is "[
+	ddl_firebird_interbase : STRING = "[
 		CREATE TABLE TEST_DECIMAL (d18 DECIMAL(18,0), d182 DECIMAL (18,2), dl83 DECIMAL (5,3), d184 DECIMAL(18,4))
 		]"
 	
-	ddl_sql92 : STRING is "[
+	ddl_sql92 : STRING = "[
 		CREATE TABLE TEST_DECIMAL (d18 DECIMAL(18,0), d182 DECIMAL (18,2), dl83 DECIMAL (5,3), d184 DECIMAL(18,4))
 		]"
 	
-	ddl_access : STRING is "[
+	ddl_access : STRING = "[
 		CREATE TABLE TEST_DECIMAL (d18 CURRENCY, d182 CURRENCY, dl83 CURRENCY, d184 CURRENCY)
 		]"
 
-	dbms_sql_server : STRING is "Microsoft SQL Server"
+	dbms_sql_server : STRING = "Microsoft SQL Server"
 	
-	dbms_firebird : STRING is "Firebird 1.5"
+	dbms_firebird : STRING = "Firebird 1.5"
 		
-	dbms_access : STRING is "ACCESS"
+	dbms_access : STRING = "ACCESS"
 	
 feature -- Implementation
 	
-	create_test_table is	
+	create_test_table	
 		local
 			dbms : STRING
 		do
@@ -204,7 +204,7 @@ feature -- Implementation
 			stmt.execute			
 		end
 		
-	drop_test_table is
+	drop_test_table
 		local
 			nm : ECLI_NAMED_METADATA
 			table_exists : BOOLEAN
@@ -221,7 +221,7 @@ feature -- Implementation
 			end			
 		end
 
-	show_supported_numeric_types is		
+	show_supported_numeric_types		
 		local
 			numerics : DS_LIST[ECLI_SQL_TYPE]		
 		do

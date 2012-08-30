@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Command Line Interactive SQL for ODBC datasources.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -25,7 +25,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- isql
 		local
 			env : ECLI_SHARED_ENVIRONMENT
@@ -87,7 +87,7 @@ feature -- Status Report
 
 feature -- Element change
 
-	create_default_system_variables (a_context : ISQL_CONTEXT) is
+	create_default_system_variables (a_context : ISQL_CONTEXT)
 			-- create default system variables and their value
 		do
 			a_context.set_variable ("", a_context.var_heading_begin)
@@ -105,7 +105,7 @@ feature -- Element change
 
 feature {NONE} -- Implementation
 
-	parse_arguments is
+	parse_arguments
 		local
 			index : INTEGER
 			current_argument : STRING
@@ -144,7 +144,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	set_error (message, value : STRING) is
+	set_error (message, value : STRING)
 			-- set error_message to "<message> '<value>' "
 		do
 			create error_message.make (0)
@@ -156,7 +156,7 @@ feature {NONE} -- Implementation
 			error_message /= Void
 		end
 
-	print_banner is
+	print_banner
 			-- print banner
 		do
 			current_context.filter.begin_message
@@ -172,7 +172,7 @@ feature {NONE} -- Implementation
 			current_context.filter.end_message
 		end
 
-	print_usage is
+	print_usage
 			-- print command usage
 		do
 			if error_message /= Void then
@@ -184,7 +184,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	print_error (status : ECLI_STATUS) is
+	print_error (status : ECLI_STATUS)
 			-- print error message relative to `status'
 		do
 			current_context.filter.begin_error
@@ -192,7 +192,7 @@ feature {NONE} -- Implementation
 			current_context.filter.end_error
 		end
 
-	create_commands is
+	create_commands
 			-- create command_stream set
 		do
 			create commands.make
@@ -201,12 +201,12 @@ feature {NONE} -- Implementation
 	commands : ISQL_COMMANDS
 				-- list of supported commands
 
-	create_current_context  (a_output_file : KI_TEXT_OUTPUT_STREAM; a_commands : ISQL_COMMANDS) is
+	create_current_context  (a_output_file : KI_TEXT_OUTPUT_STREAM; a_commands : ISQL_COMMANDS)
 		do
 			create current_context.make (a_output_file, a_commands)
 		end
 
-	create_initial_context is
+	create_initial_context
 		local
 			std : KL_STANDARD_FILES
 		do
@@ -217,7 +217,7 @@ feature {NONE} -- Implementation
 			current_context_created: current_context /= Void
 		end
 
-	do_initial_connection is
+	do_initial_connection
 		local
 			simple_login : ECLI_SIMPLE_LOGIN
 		do
@@ -242,12 +242,12 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	do_session is
+	do_session
 		do
 			commands.do_session (current_context, sql_file_name)
 		end
 
-	do_final_disconnection is
+	do_final_disconnection
 		do
 			if current_context.session /= Void then
 				if current_context.session.is_connected then

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -38,7 +38,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- make with `capacity' values
 		do
 			buffer := ecli_c_alloc_array_value (8, a_capacity)
@@ -49,13 +49,13 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : INTEGER_64 is
+	item : INTEGER_64
 			-- <Precursor>
 		do
 			Result := item_at (cursor_index)
 		end
 
-	item_at (index : INTEGER) : INTEGER_64 is
+	item_at (index : INTEGER) : INTEGER_64
 			--
 		do
 			Result := c_memory_get_int64 (ecli_c_array_value_get_value_at(buffer,index))
@@ -63,20 +63,20 @@ feature -- Access
 
 feature -- Status setting
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
 			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Element change
 
-	set_item (value : INTEGER_64) is
+	set_item (value : INTEGER_64)
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
 		end
 
-	set_item_at (value : INTEGER_64; index : INTEGER) is
+	set_item_at (value : INTEGER_64; index : INTEGER)
 			-- set item to 'value', truncating if necessary
 		do
 			c_memory_put_int64 (ecli_c_array_value_get_value_at(buffer,index), value)
@@ -85,7 +85,7 @@ feature -- Element change
 
 feature -- Basic operations
 
-	out : STRING is
+	out : STRING
 		local
 			i : INTEGER
 		do
@@ -107,7 +107,7 @@ feature -- Basic operations
 			Result.append_string (">>")
 		end
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_integer_64 (Current)
 		end

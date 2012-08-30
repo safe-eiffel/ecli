@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -35,13 +35,13 @@ inherit
 
 feature -- Initialization
 
-	make (a_session : ECLI_SESSION) is
+	make (a_session : ECLI_SESSION)
 		do
 			Precursor (a_session)
 			set_sql (definition)
 		end
 
-	make_prepared (a_session : ECLI_SESSION) is
+	make_prepared (a_session : ECLI_SESSION)
 		require
 			a_session_not_void: a_session /= void
 			a_session_connected: a_session.is_connected
@@ -59,14 +59,14 @@ feature -- Initialization
 
 feature -- Access
 
-	definition : STRING	is
+	definition : STRING
 			-- Cursor definition (i.e. SQL text); remains constant.
 		deferred
 		end
 
 feature -- Status report
 
-	real_execution : BOOLEAN is
+	real_execution : BOOLEAN
 			-- Is this statement really executed?
 		do
 			Result := True
@@ -78,7 +78,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	execute is
+	execute
 		do
 			if real_execution then
 				Precursor

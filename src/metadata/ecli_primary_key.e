@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -32,7 +32,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_PRIMARY_KEY_CURSOR) is
+	make (cursor : ECLI_PRIMARY_KEY_CURSOR)
 			-- create from `cursor' current position
 		require
 			cursor_not_void: cursor /= Void
@@ -48,7 +48,7 @@ feature {NONE} -- Initialization
 			columns.put_last (cursor.buffer_column_name.as_string)
 		end
 
-	make_by_name (a_catalog_name, a_schema_name, a_table_name, a_key_name, a_column_name : STRING) is
+	make_by_name (a_catalog_name, a_schema_name, a_table_name, a_key_name, a_column_name : STRING)
 			-- create for `a_catalog_name', `a_schema_name', `a_table_name', `a_key_name', `a_column_name'
 		require
 			a_table_name_not_void: a_table_name /= Void
@@ -78,7 +78,7 @@ feature -- Access
 
 feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 
-	add_column (a_column_name : STRING) is
+	add_column (a_column_name : STRING)
 			-- add `a_column_name' in columns
 		require
 			a_column_name_not_void: a_column_name /= Void
@@ -90,7 +90,7 @@ feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse printable representation
 		do
 			create Result.make (0)

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -24,12 +24,12 @@ create
 
 feature -- Access
 
-	default_maximum_capacity : INTEGER is
+	default_maximum_capacity : INTEGER
 		do
 			Result := 8_192
 		end
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 			--
 		once
 			Result := sql_binary
@@ -37,7 +37,7 @@ feature -- Access
 
 feature -- Status report
 
-	valid_item (value : STRING) : BOOLEAN is
+	valid_item (value : STRING) : BOOLEAN
 		do
 			Result := Precursor (value)
 			Result := Result and value.count = capacity

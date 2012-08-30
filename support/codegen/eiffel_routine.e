@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that can represent either Eiffel functions or procedures."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
@@ -23,7 +23,7 @@ create
 
 feature -- Initialisation
 
-	make (new_name: STRING) is
+	make (new_name: STRING)
 			-- Create new routine with 'name'
 		require
 			new_name_not_void: new_name /= Void
@@ -52,13 +52,13 @@ feature -- Access
 	body: DS_LINKED_LIST [STRING]
 			-- Source code lines that constitute the body of the routine.
 
-	is_function: BOOLEAN is
+	is_function: BOOLEAN
 			-- Is this routine a function?
 		do
 			Result := type /= Void
 		end
 
-	is_deferred: BOOLEAN is
+	is_deferred: BOOLEAN
 			-- Is this routine deferred?
 		do
 			Result := body = Void
@@ -72,14 +72,14 @@ feature -- Access
 
 feature -- Status setting
 
-	set_once is
+	set_once
 		do
 			is_once := True
 		ensure
 			is_once: is_once
 		end
 
-	set_type (new_type: STRING) is
+	set_type (new_type: STRING)
 			-- Set the type of this routine to 'type'
 		require
 			new_type_not_void: new_type /= Void
@@ -87,7 +87,7 @@ feature -- Status setting
 			type := new_type
 		end
 
-	add_param (new_parameter: DS_PAIR [STRING, STRING]) is
+	add_param (new_parameter: DS_PAIR [STRING, STRING])
 			-- Add new parameter with name 'new_parameter.first' and value 'new_parameter.second'
 		require
 			new_parameter_not_void: new_parameter /= Void
@@ -97,7 +97,7 @@ feature -- Status setting
 			params.force_last (new_parameter)
 		end
 
-	add_local (new_local: DS_PAIR [STRING, STRING]) is
+	add_local (new_local: DS_PAIR [STRING, STRING])
 			-- Add new local with name 'new_local.first' and type 'new_local.second'
 		require
 			new_local_not_void: new_local /= Void
@@ -111,7 +111,7 @@ feature -- Status setting
 			locals.force_last (new_local)
 		end
 
-	add_body_line (line: STRING) is
+	add_body_line (line: STRING)
 			-- Add 'line' to the body of this routine
 		require
 			line_not_void: line /= Void
@@ -123,7 +123,7 @@ feature -- Status setting
 			body.force_last (line)
 		end
 
-	add_refined_precondition (precondition: DS_PAIR [STRING, STRING]) is
+	add_refined_precondition (precondition: DS_PAIR [STRING, STRING])
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
 		require
@@ -135,7 +135,7 @@ feature -- Status setting
 			is_require_else: is_require_else
 		end
 
-	add_precondition (precondition: DS_PAIR [STRING, STRING]) is
+	add_precondition (precondition: DS_PAIR [STRING, STRING])
 			-- Add a precondition with the expression 'precondition.first' and
 			-- label 'precondition.second' to this routine.
 		require
@@ -147,7 +147,7 @@ feature -- Status setting
 			preconditions.force_last (precondition)
 		end
 
-	add_refined_postcondition	(postcondition: DS_PAIR [STRING, STRING]) is
+	add_refined_postcondition	(postcondition: DS_PAIR [STRING, STRING])
 			-- Add a postcondition with the expression 'postcondition.first' and
 			-- label 'postcondition.second' to this routine.
 		require
@@ -159,7 +159,7 @@ feature -- Status setting
 			is_ensure_then: is_ensure_then
 		end
 
-	add_postcondition (postcondition: DS_PAIR [STRING, STRING]) is
+	add_postcondition (postcondition: DS_PAIR [STRING, STRING])
 			-- Add a postcondition with the expression 'postcondition.first' and
 			-- label 'postcondition.second' to this routine.
 		require
@@ -173,7 +173,7 @@ feature -- Status setting
 
 feature -- Basic operations
 
-	write (output: KI_TEXT_OUTPUT_STREAM) is
+	write (output: KI_TEXT_OUTPUT_STREAM)
 			-- Print source code representation of this routine on 'output'
 		do
 			output.put_string ("%T" + name)
@@ -215,7 +215,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	write_params (output: KI_TEXT_OUTPUT_STREAM) is
+	write_params (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string (" (")
 			from
@@ -233,7 +233,7 @@ feature {NONE} -- Implementation
 			output.put_string (")")
 		end
 
-	write_locals (output: KI_TEXT_OUTPUT_STREAM) is
+	write_locals (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("%T%Tlocal")
 			output.put_new_line
@@ -249,7 +249,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	write_body (output: KI_TEXT_OUTPUT_STREAM) is
+	write_body (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			if is_once then
 				output.put_string ("%T%Tonce")
@@ -268,7 +268,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	write_preconditions (output: KI_TEXT_OUTPUT_STREAM) is
+	write_preconditions (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("%T%Trequire")
 			if is_require_else then
@@ -287,7 +287,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	write_postconditions (output: KI_TEXT_OUTPUT_STREAM) is
+	write_postconditions (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("%T%Tensure")
 			if is_ensure_then then

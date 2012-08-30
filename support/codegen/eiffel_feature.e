@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that represent an Eiffel feature, either an attribute, function or procedure."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
@@ -17,7 +17,7 @@ inherit
 
 feature -- Initialization
 
-	make (new_name: STRING) is
+	make (new_name: STRING)
 			-- Create a new Eiffel feature with 'name'
 		require
 			name_not_void: new_name /= Void
@@ -35,7 +35,7 @@ feature -- Access
 			
 feature -- Status setting
 
-	set_name (new_name: STRING) is
+	set_name (new_name: STRING)
 			-- Set feature name to 'name'
 		require
 			name_not_void: new_name /= Void
@@ -43,7 +43,7 @@ feature -- Status setting
 			name := new_name
 		end
 
-	set_comment (new_comment: STRING) is
+	set_comment (new_comment: STRING)
 			-- Set feature comment to 'new_comment'
 		require
 			comment_not_void: new_comment /= Void

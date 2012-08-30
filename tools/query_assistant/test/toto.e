@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Generated cursor 'toto' : DO NOT EDIT !"
 	author: "QUERY_ASSISTANT"
 	date: "$Date : $"
@@ -18,7 +18,7 @@ create
 
 feature -- Basic Operations
 
-	start (a_weight : INTEGER) is
+	start (a_weight : INTEGER)
 			-- position cursor at first position of result-set obtained
 			-- by applying actual parameters to definition
 		do
@@ -29,7 +29,7 @@ feature -- Basic Operations
 
 feature -- Access
 
-	definition : STRING is
+	definition : STRING
 			-- SQL definition of Current
 		once
 			Result := "select * from toto where weight = ?weight"
@@ -47,7 +47,7 @@ feature -- Access (results)
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create all attribute objects
 		do
 			-- create cursor values array

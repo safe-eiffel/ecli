@@ -9,7 +9,7 @@ create
 
 feature
 
-	make is
+	make
 		local
 			d : DT_TIME_DURATION
 			api_tracing : BOOLEAN

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that hold shared information about ECLI_DECIMAL usage."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -9,19 +9,19 @@ class
 
 feature -- Access
 
-	use_integer_64 : BOOLEAN is
+	use_integer_64 : BOOLEAN
 			-- Is INTEGER_64 desirable?
 		do
 			Result := use_integer_64_cell.item
 		end
 
-	use_decimal : BOOLEAN is
+	use_decimal : BOOLEAN
 			-- Is MA_DECIMAL desirable?
 		do
 			Result := use_decimal_cell.item
 		end
 
-	force_decimal : BOOLEAN is
+	force_decimal : BOOLEAN
 			-- Is MA_DECIMAL used for every numeric type?
 		do
 			Result := force_decimal_cell.item
@@ -47,37 +47,37 @@ feature -- Access
 
 feature {ACCESS_GEN} -- Element change
 
-	set_use_decimal (value : BOOLEAN) is
+	set_use_decimal (value : BOOLEAN)
 			-- Set `use_decimal' to `value'.
 		do
 			use_decimal_cell.put (value)
 		end
 
-	set_use_integer_64 (value : BOOLEAN) is
+	set_use_integer_64 (value : BOOLEAN)
 			-- Set `use_integer_64' to `value'.
 		do
 			use_integer_64_cell.put (value)
 		end
 
-	set_force_decimal (value : BOOLEAN) is
+	set_force_decimal (value : BOOLEAN)
 			-- Set `use_integer_64' to `value'.
 		do
 			use_integer_64_cell.put (value)
 		end
 
-	set_minimum_character_buffer_size (value : INTEGER) is
+	set_minimum_character_buffer_size (value : INTEGER)
 			-- Set `minimimum_character_buffer_size'.
 		do
 			minimum_character_buffer_size_cell.put (value)
 		end
 
-	set_is_straigth_factory (value : BOOLEAN) is
+	set_is_straigth_factory (value : BOOLEAN)
 			-- Set `is_straigth_factory'
 		do
 			is_straigth_factory_cell.put (value)
 		end
 
-	set_is_string_forced (value: BOOLEAN) is
+	set_is_string_forced (value: BOOLEAN)
 			-- set `is_string_forced'
 		do
 			is_string_forced_cell.put (value)
@@ -85,32 +85,32 @@ feature {ACCESS_GEN} -- Element change
 
 feature {NONE} -- Implementation
 
-	use_decimal_cell : DS_CELL [BOOLEAN] is
+	use_decimal_cell : DS_CELL [BOOLEAN]
 		once
 			create Result.make (False)
 		end
 
-	use_integer_64_cell : DS_CELL [BOOLEAN] is
+	use_integer_64_cell : DS_CELL [BOOLEAN]
 		once
 			create Result.make (False)
 		end
 
-	force_decimal_cell : DS_CELL[BOOLEAN] is
+	force_decimal_cell : DS_CELL[BOOLEAN]
 		once
 			create Result.make (False)
 		end
 
-	minimum_character_buffer_size_cell : DS_CELL[INTEGER] is
+	minimum_character_buffer_size_cell : DS_CELL[INTEGER]
 		once
 			create Result.make (0)
 		end
 
-	is_straigth_factory_cell : DS_CELL[BOOLEAN] is
+	is_straigth_factory_cell : DS_CELL[BOOLEAN]
 		once
 			create Result.make (False)
 		end
 
-	is_string_forced_cell : DS_CELL[BOOLEAN] is
+	is_string_forced_cell : DS_CELL[BOOLEAN]
 		once
 			create Result.make (False)
 		end

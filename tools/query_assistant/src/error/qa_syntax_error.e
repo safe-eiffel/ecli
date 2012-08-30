@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -25,7 +25,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_duplicate_element (module, element, parent : STRING) is
+	make_duplicate_element (module, element, parent : STRING)
 			-- Make for duplicate `element' in `parent' for `module'.
 		require
 			module_not_void: module /= Void
@@ -41,7 +41,7 @@ feature {NONE} -- Initialization
 			parameters.put (code, 4)
 		end
 
-	make_exclusive_element (module, element_a, element_b, parent : STRING) is
+	make_exclusive_element (module, element_a, element_b, parent : STRING)
 			-- Make for `element_a' exclusive of `element_b' in `parent' for `module'.
 		require
 			module_not_void: module /= Void
@@ -59,7 +59,7 @@ feature {NONE} -- Initialization
 			parameters.put (code, 5)
 		end
 
-	make_missing_element (module, element, parent : STRING) is
+	make_missing_element (module, element, parent : STRING)
 			-- Make for missing `element' in `parent' for `module'.
 		require
 			module_not_void: module /= Void
@@ -74,7 +74,7 @@ feature {NONE} -- Initialization
 			parameters.put (code, 4)
 		end
 
-	make_missing_attribute (module, an_attribute, element : STRING) is
+	make_missing_attribute (module, an_attribute, element : STRING)
 			-- Make for missing `attribute' in `element' for `module'.
 		require
 			module_not_void: module /= Void
@@ -90,7 +90,7 @@ feature {NONE} -- Initialization
 			parameters.put (code, 4)
 		end
 
-	make_parse_error (diagnostic : STRING) is
+	make_parse_error (diagnostic : STRING)
 			-- Make for XML parse error with `diagnostic'.
 		require
 			diagnostic_not_void: diagnostic /= Void
@@ -104,16 +104,16 @@ feature {NONE} -- Initialization
 
 feature {NONE} -- Implementation
 
-	dupel_template : STRING is "[$4] Module `$1' : duplicate element `$2' in element `$3'."
-	excel_template : STRING is "[$5] Module `$1' : `$2' and `$3' are exclusive elements in `$4'."
-	misel_template : STRING is "[$4] Module `$1' : element `$2' is missing in parent `$3'."
-	misat_template : STRING is "[$4] Module `$1' : attribute `$2' is missing in element `$3'."
-	parer_template : STRING is "[$2] XML Parse error : `$1'."
+	dupel_template : STRING = "[$4] Module `$1' : duplicate element `$2' in element `$3'."
+	excel_template : STRING = "[$5] Module `$1' : `$2' and `$3' are exclusive elements in `$4'."
+	misel_template : STRING = "[$4] Module `$1' : element `$2' is missing in parent `$3'."
+	misat_template : STRING = "[$4] Module `$1' : attribute `$2' is missing in element `$3'."
+	parer_template : STRING = "[$2] XML Parse error : `$1'."
 
-	dupel_code : STRING is "E-SYN-DUPELEM"
-	excel_code : STRING is "E-SYN-EXCELEM"
-	misel_code : STRING is "E-SYN-MISELEM"
-	misat_code : STRING is "E-SYN-MISATTR"
-	parer_code : STRING is "E-SYN-PARSERR"
+	dupel_code : STRING = "E-SYN-DUPELEM"
+	excel_code : STRING = "E-SYN-EXCELEM"
+	misel_code : STRING = "E-SYN-MISELEM"
+	misat_code : STRING = "E-SYN-MISATTR"
+	parer_code : STRING = "E-SYN-PARSERR"
 
 end -- class QA_SYNTAX_ERROR

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -55,7 +55,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- make array of null dates
 		do
 			capacity := a_capacity
@@ -67,7 +67,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item_at (index: INTEGER) : DT_DATE_TIME is
+	item_at (index: INTEGER) : DT_DATE_TIME
 			--
 		local
 			save_index : INTEGER
@@ -78,7 +78,7 @@ feature -- Access
 			cursor_index := save_index
 		end
 
-	hour : INTEGER is
+	hour : INTEGER
 		local
 			timestamp_pointer : POINTER
 		do
@@ -88,7 +88,7 @@ feature -- Access
 			end
 		end
 
-	minute : INTEGER is
+	minute : INTEGER
 		local
 			timestamp_pointer : POINTER
 		do
@@ -98,7 +98,7 @@ feature -- Access
 			end
 		end
 
-	second : INTEGER is
+	second : INTEGER
 		local
 			timestamp_pointer : POINTER
 		do
@@ -108,7 +108,7 @@ feature -- Access
 			end
 		end
 
-	nanosecond : INTEGER is
+	nanosecond : INTEGER
 		local
 			timestamp_pointer : POINTER
 		do
@@ -118,7 +118,7 @@ feature -- Access
 			end
 		end
 
-	hour_at (index : INTEGER) : INTEGER is
+	hour_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= upper
 		local
@@ -130,7 +130,7 @@ feature -- Access
 			end
 		end
 
-	minute_at (index : INTEGER) : INTEGER is
+	minute_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= upper
 		local
@@ -142,7 +142,7 @@ feature -- Access
 			end
 		end
 
-	second_at (index : INTEGER) : INTEGER is
+	second_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= upper
 		local
@@ -154,7 +154,7 @@ feature -- Access
 			end
 		end
 
-	nanosecond_at (index : INTEGER) : INTEGER is
+	nanosecond_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= upper
 		local
@@ -168,7 +168,7 @@ feature -- Access
 
 feature -- Measurement
 
-	set_time_at (a_hour, a_minute, a_second, a_nanosecond : INTEGER; index : INTEGER ) is
+	set_time_at (a_hour, a_minute, a_second, a_nanosecond : INTEGER; index : INTEGER )
 		require
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
@@ -191,7 +191,7 @@ feature -- Measurement
 			nanosecond_set: nanosecond_at (index) = a_nanosecond
 		end
 
-	set_at (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER; index : INTEGER) is
+	set_at (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER; index : INTEGER)
 		require
 			month: a_month > 0 and a_month <= 12
 			day: a_day > 0 and a_day <= days_in_month (a_month, a_year)
@@ -214,7 +214,7 @@ feature -- Measurement
 			not_null: not is_null_at (index)
 		end
 
-	set_item (other : like item) is
+	set_item (other : like item)
 		do
 			set_at (other.year, other.month, other.day,
 				other.hour, other.minute, other.second,
@@ -222,7 +222,7 @@ feature -- Measurement
 				cursor_index)
 		end
 
-	set_item_at (other : like item; index : INTEGER) is
+	set_item_at (other : like item; index : INTEGER)
 		do
 			set_at (other.year, other.month, other.day,
 				other.hour, other.minute, other.second,
@@ -246,7 +246,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 		local
 			save_index : INTEGER
 		do
@@ -290,14 +290,14 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	allocate_buffer is
+	allocate_buffer
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)
 			end
 		end
 
-	create_impl_item is
+	create_impl_item
 			do
 				 Precursor {ECLI_TIMESTAMP}
 			end

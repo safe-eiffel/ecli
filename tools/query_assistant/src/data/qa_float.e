@@ -1,4 +1,4 @@
-indexing
+note
 	description: "CLI SQL FLOAT value."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -18,11 +18,11 @@ create
 	
 feature
 
-	ecli_type : STRING is "ECLI_FLOAT"
+	ecli_type : STRING = "ECLI_FLOAT"
 		
-	value_type : STRING is "DOUBLE"
+	value_type : STRING = "DOUBLE"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call
 		end

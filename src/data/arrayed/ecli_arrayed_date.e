@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -45,7 +45,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- make array of null dates
 		do
 			capacity := a_capacity
@@ -57,7 +57,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item_at (index : INTEGER) : DT_DATE is
+	item_at (index : INTEGER) : DT_DATE
 		local
 			save_index : INTEGER
 		do
@@ -67,7 +67,7 @@ feature -- Access
 			cursor_index := save_index
 		end
 
-	item : DT_DATE is
+	item : DT_DATE
 		do
 			impl_item.set_year_month_day (year, month, day)
 			Result := impl_item
@@ -76,26 +76,26 @@ feature -- Access
 
 feature -- Element change
 
-	set_item (other : DT_DATE) is
+	set_item (other : DT_DATE)
 		do
 			set_item_at (other, cursor_index)
 		end
 
-	set_item_at (other : DT_DATE; index : INTEGER) is
+	set_item_at (other : DT_DATE; index : INTEGER)
 		do
 			set_date_at (other.year, other.month, other.day, index)
 		end
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_date (Current)
 		end
 
 feature {NONE} -- Implementation
 
-	allocate_buffer is
+	allocate_buffer
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)

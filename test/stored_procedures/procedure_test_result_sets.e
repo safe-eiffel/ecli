@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -18,7 +18,7 @@ inherit
 
 feature -- Basic operations
 
-	test_result_sets is
+	test_result_sets
 		local
 			mulres : ECLI_STORED_PROCEDURE
 			input : ECLI_INTEGER

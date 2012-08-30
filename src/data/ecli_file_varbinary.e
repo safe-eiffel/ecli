@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -21,7 +21,7 @@ create
 
 feature -- Access
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 		do
 			Result := Sql_varbinary
 		end

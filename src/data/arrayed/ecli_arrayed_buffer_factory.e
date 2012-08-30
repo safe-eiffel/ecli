@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -24,7 +24,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_row_count : INTEGER) is
+	make (a_row_count : INTEGER)
 			-- make buffer for 'a_row_count'
 		do
 			row_count := a_row_count
@@ -66,7 +66,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	value_factory : ECLI_ARRAYED_VALUE_FACTORY is
+	value_factory : ECLI_ARRAYED_VALUE_FACTORY
 		do
 			if impl_value_factory = Void then
 				create impl_value_factory.make (row_count)
@@ -74,7 +74,7 @@ feature {NONE} -- Implementation
 			Result := impl_value_factory
 		end
 
-	value_anchor : ECLI_ARRAYED_VALUE is
+	value_anchor : ECLI_ARRAYED_VALUE
 			--
 		do
 		end

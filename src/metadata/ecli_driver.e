@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -18,7 +18,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_DRIVERS_CURSOR) is
+	make (cursor : ECLI_DRIVERS_CURSOR)
 			-- create from current item in cursor
 		require
 			cursor_valid: cursor /= Void and then not cursor.off

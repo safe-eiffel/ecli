@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -35,7 +35,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_FOREIGN_KEYS_CURSOR) is
+	make (cursor : ECLI_FOREIGN_KEYS_CURSOR)
 			-- create from `cursor' current position
 		require
 			cursor_not_void: cursor /= Void
@@ -72,7 +72,7 @@ feature -- Access
 	referenced_key : ECLI_PRIMARY_KEY
 		-- key of referenced table
 
-	update_rule : INTEGER is
+	update_rule : INTEGER
 			-- update rule
 		require
 			update_rule_applicable: is_update_rule_applicable
@@ -82,7 +82,7 @@ feature -- Access
 			definition: (Result = Sql_cascade or else Result = Sql_set_null or else Result = Sql_set_default or else Result = Sql_no_action)
 		end
 
-	delete_rule : INTEGER is
+	delete_rule : INTEGER
 			-- Action to be applied to the foreign key when the SQL operation is DELETE
 		require
 			delete_rule_applicable: is_delete_rule_applicable
@@ -92,7 +92,7 @@ feature -- Access
 			definition: (Result = Sql_cascade or else Result = Sql_set_null or else Result = Sql_set_default or else Result = Sql_no_action)
 		end
 
-	deferrability : INTEGER is
+	deferrability : INTEGER
 			--  deferrability of
 		require
 			deferrability_applicable: is_deferrability_applicable
@@ -110,7 +110,7 @@ feature -- Status report
 
 feature -- Measurement
 
-	add_column (a_column_name : STRING; a_pk_column_name : STRING) is
+	add_column (a_column_name : STRING; a_pk_column_name : STRING)
 			-- add `a_column_name' in columns with corresponding `a_pk_column_name' into `primary_key_c'
 		require
 			a_column_name_not_void: a_column_name /= Void
@@ -122,7 +122,7 @@ feature -- Measurement
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse printable representation
 		do
 			create Result.make (0)

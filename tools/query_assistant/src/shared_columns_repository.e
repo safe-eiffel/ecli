@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that give access to a shared columns repository object."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -9,7 +9,7 @@ class
 
 feature -- Access
 
-	shared_columns_repository : COLUMNS_REPOSITORY is
+	shared_columns_repository : COLUMNS_REPOSITORY
 			-- shared columns repository object
 		do
 			Result := columns_repository_cell.item	
@@ -19,7 +19,7 @@ feature -- Access
 		
 feature -- Element change
 
-	set_shared_columns_repository (new_columns_repository : COLUMNS_REPOSITORY) is
+	set_shared_columns_repository (new_columns_repository : COLUMNS_REPOSITORY)
 			-- set shared object as `new_columns_repository'
 		require
 			new_columns_repository_not_void: new_columns_repository /= Void
@@ -31,7 +31,7 @@ feature -- Element change
 
 feature -- Implementation
 
-	columns_repository_cell : DS_CELL[COLUMNS_REPOSITORY] is
+	columns_repository_cell : DS_CELL[COLUMNS_REPOSITORY]
 			-- 
 		once
 			create Result.make (Void)

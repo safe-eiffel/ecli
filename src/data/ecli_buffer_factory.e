@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -19,9 +19,9 @@ feature -- Initialization
 
 feature -- Access
 
-	Default_precision_limit : INTEGER is 8192
+	Default_precision_limit : INTEGER = 8192
 
-	precision_limit : INTEGER is
+	precision_limit : INTEGER
 			-- maximum acceptable precision
 		do
 			if precision_limit_impl /= 0 then
@@ -34,7 +34,7 @@ feature -- Access
 	last_buffers : ARRAY [like value_anchor]
 			-- last created buffers
 
-	last_buffer : like last_buffers is
+	last_buffer : like last_buffers
 			obsolete "Use `last_buffers' (plural) instead."
 			do
 				Result := last_buffers
@@ -45,7 +45,7 @@ feature -- Access
 
 feature -- Element change
 
-	set_precision_limit (p : INTEGER) is
+	set_precision_limit (p : INTEGER)
 			-- set maximum number of characters retrieved for each item
 		require
 			greater_than_zero: p > 0
@@ -69,7 +69,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-		create_buffers (cursor_description :ARRAY [ECLI_COLUMN_DESCRIPTION]) is
+		create_buffers (cursor_description :ARRAY [ECLI_COLUMN_DESCRIPTION])
 			-- Create all ECLI_VALUE objects.
 			-- Empty column names are replaced by the column index.
 		require
@@ -125,7 +125,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	map_name_to_index (index : INTEGER; name : STRING) is
+	map_name_to_index (index : INTEGER; name : STRING)
 			-- hook: map column `name' to column `index'
 		require
 			index > 0
@@ -134,7 +134,7 @@ feature {NONE} -- Implementation
 			last_index_table.put (index, name)
 		end
 
-	create_name_to_index (size : INTEGER) is
+	create_name_to_index (size : INTEGER)
 			-- hook: create name to index map
 		do
 			create last_index_table.make (size)
@@ -144,7 +144,7 @@ feature {NONE} -- Implementation
 
 	impl_value_factory : like value_factory
 
-	value_factory : ECLI_VALUE_FACTORY is
+	value_factory : ECLI_VALUE_FACTORY
 		do
 			if impl_value_factory = Void then
 				create impl_value_factory.make
@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 			result_not_void: Result /= Void
 		end
 
-	value_anchor : ECLI_VALUE is
+	value_anchor : ECLI_VALUE
 		do
 		end
 

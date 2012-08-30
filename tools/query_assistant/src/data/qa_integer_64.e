@@ -1,4 +1,4 @@
-indexing
+note
 	description: "CLI SQL INTEGER value."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -19,11 +19,11 @@ create
 
 feature
 
-	ecli_type : STRING is "ECLI_INTEGER_64"
+	ecli_type : STRING = "ECLI_INTEGER_64"
 
-	value_type : STRING is "INTEGER_64"
+	value_type : STRING = "INTEGER_64"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call
 		end

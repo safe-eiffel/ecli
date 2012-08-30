@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Column sets with descendants."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -21,7 +21,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make (a_name: STRING) is
+	make (a_name: STRING)
 		do
 			create {DS_LINKED_LIST[like column_set_anchor]} descendants.make
 			Precursor (a_name)
@@ -31,11 +31,11 @@ feature -- Access
 
 	descendants : DS_LIST [like column_set_anchor]
 	
-	column_set_anchor : COLUMN_SET[G] is do end
+	column_set_anchor : COLUMN_SET[G] do end
 	
 feature -- Basic operations
 
-	copy (other : like Current) is
+	copy (other : like Current)
 		do
 			Precursor (other)
 			if other.descendants /= Void then
@@ -46,7 +46,7 @@ feature -- Basic operations
 			end
 		end
 
-	flatten is
+	flatten
 		local
 			cursor : DS_LIST_CURSOR [like column_set_anchor]
 			set, item_as_set_metadata : DS_HASH_SET [G]
@@ -77,12 +77,12 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	item_eiffel_type (an_item : like item) : STRING is
+	item_eiffel_type (an_item : like item) : STRING
 		do
 			Result := an_item.value_type
 		end
 		
-	item_eiffel_name (an_item : like item) : STRING is
+	item_eiffel_name (an_item : like item) : STRING
 			-- 
 		do
 			Result := an_item.eiffel_name

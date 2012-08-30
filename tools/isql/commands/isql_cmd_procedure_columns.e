@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that list the columns of a stored procedure."
 	author: "Paul G. Crismer"
 	
@@ -27,30 +27,30 @@ inherit
 	
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("pcol[umns] <procedure-name>", command_width)
 			Result.append_string ("List all columns in <procedure-name>.")
 		end
 
-	match_string : STRING is "pcol"
+	match_string : STRING = "pcol"
 
 feature {NONE} -- Implementation
 
-	new_cursor (a_procedure : ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_PROCEDURE_COLUMNS_CURSOR is
+	new_cursor (a_procedure : ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_PROCEDURE_COLUMNS_CURSOR
 			-- new cursor on `a_procedure' columns metadata, querying `a_session' catalog.
 		do
 			create Result.make (a_procedure, a_session)
 		end
 		
-	put_heading (filter: ISQL_FILTER) is
+	put_heading (filter: ISQL_FILTER)
 			-- put heading in `filter' stream
 		do
 			Precursor (filter)
 			filter.put_heading ("Type")
 		end
 		
-	put_detail (the_column: like column_type; filter: ISQL_FILTER) is
+	put_detail (the_column: like column_type; filter: ISQL_FILTER)
 			-- put `the_column' in `filter' stream
 		local
 			type_label : STRING
@@ -73,7 +73,7 @@ feature {NONE} -- Implementation
 			filter.put_column (type_label)
 		end
 		
-	column_type : ECLI_PROCEDURE_COLUMN is do end
-	cursor_type:  ECLI_PROCEDURE_COLUMNS_CURSOR is do end
+	column_type : ECLI_PROCEDURE_COLUMN do end
+	cursor_type:  ECLI_PROCEDURE_COLUMNS_CURSOR do end
 	
 end -- class ISQL_CMD_PROCEDURE_COLUMNS

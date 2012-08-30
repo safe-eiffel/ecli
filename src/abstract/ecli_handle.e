@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -36,14 +36,14 @@ feature {ECLI_HANDLE} -- Access
 
 	handle : POINTER
 
-	disposal_failure_reason : STRING is
+	disposal_failure_reason : STRING
 			-- Why is this object not ready_for_disposal
 		deferred
 		end
 		
 feature {ANY} -- Status report
 
-	is_valid : BOOLEAN is
+	is_valid : BOOLEAN
 			-- Is the associated CLI handle valid ?
 		do
 			Result := handle /= default_pointer
@@ -51,21 +51,21 @@ feature {ANY} -- Status report
 
 feature {ECLI_HANDLE} -- Status report
 
-	is_ready_for_disposal : BOOLEAN is
+	is_ready_for_disposal : BOOLEAN
 			-- Is this object ready for disposal ?
 		deferred
 		end
 
 feature {NONE} -- Implementation
 
-	set_handle (h : POINTER) is
+	set_handle (h : POINTER)
 		do
 			handle := h
 		ensure
 			handle = h
 		end
 
-	dispose is
+	dispose
 		do
 			if is_valid then
 				if not is_ready_for_disposal then
@@ -77,7 +77,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	release_handle is
+	release_handle
 			-- Release the CLI handle
 		require
 			ready_for_disposal: is_ready_for_disposal
@@ -86,7 +86,7 @@ feature {NONE} -- Implementation
 			invalid:    not is_valid
 		end
 
-	check_valid is
+	check_valid
 			-- Check if memory has been allocated; if not, raise an exception
 		local
 			e : EXCEPTIONS

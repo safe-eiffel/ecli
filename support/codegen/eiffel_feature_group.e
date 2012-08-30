@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that represent a group of Eiffel feature with common export status."
 	project: "Project Goanna <http://sourceforge.net/projects/goanna>"
 	library: "Eiffel Code Generator"
@@ -21,7 +21,7 @@ create
 
 feature -- Initialization
 
-	make (new_comment: STRING) is
+	make (new_comment: STRING)
 			-- Create an empty feature group with 'comment'
 		require
 			comment_not_void: new_comment /= Void
@@ -44,7 +44,7 @@ feature -- Access
 
 feature -- Status setting
 
-	set_comment (new_comment: like comment) is
+	set_comment (new_comment: like comment)
 			-- Set the comment for this feature group.
 		require
 			new_comment_not_void: new_comment /= Void
@@ -52,7 +52,7 @@ feature -- Status setting
 			comment := new_comment
 		end
 
-	add_export (class_name: STRING) is
+	add_export (class_name: STRING)
 			-- Add 'class_name' to export list for this group.
 		require
 			class_name_not_void: class_name /= Void
@@ -60,7 +60,7 @@ feature -- Status setting
 			exports.force_last (class_name)
 		end
 
-	add_feature (new_feature: EIFFEL_FEATURE) is
+	add_feature (new_feature: EIFFEL_FEATURE)
 			-- Add 'new_feature' to the features of this group.
 		require
 			new_feature_not_void: new_feature /= Void
@@ -70,7 +70,7 @@ feature -- Status setting
 
 feature -- Basic operations
 
-	write (output: KI_TEXT_OUTPUT_STREAM) is
+	write (output: KI_TEXT_OUTPUT_STREAM)
 			-- Print code representation of this feature group to 'output'
 		do
 			write_header (output)
@@ -79,7 +79,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	write_header (output: KI_TEXT_OUTPUT_STREAM) is
+	write_header (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("feature ")
 			if not exports.is_empty then
@@ -90,7 +90,7 @@ feature {NONE} -- Implementation
 			output.put_new_line
 		end
 
-	write_exports (output: KI_TEXT_OUTPUT_STREAM) is
+	write_exports (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			output.put_string ("{")
 			from
@@ -107,7 +107,7 @@ feature {NONE} -- Implementation
 			output.put_string ("}")
 		end
 
-	write_features (output: KI_TEXT_OUTPUT_STREAM) is
+	write_features (output: KI_TEXT_OUTPUT_STREAM)
 		do
 			from
 				features.start

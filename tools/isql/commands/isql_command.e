@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that abstract ISQL commands."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -20,7 +20,7 @@ inherit
 		
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 			-- help message for current command
 		deferred
 		end
@@ -29,26 +29,26 @@ feature -- Access
 	
 feature -- Status report
 
-	matches (text : STRING) : BOOLEAN is
+	matches (text : STRING) : BOOLEAN
 			-- does `text' match current command
 		deferred
 		end
 
-	is_error : BOOLEAN is
+	is_error : BOOLEAN
 		do
 			Result := error_message /= Void
 		ensure
 			definition: Result = (error_message /= Void)
 		end
 
-	needs_session : BOOLEAN is
+	needs_session : BOOLEAN
 			-- does this command need a connected session ?
 		deferred
 		end
 		
 feature -- Element change
 
-	set_error (a_message : STRING) is
+	set_error (a_message : STRING)
 			-- set error_message to `a_message'
 		require
 			a_message_not_void: a_message /= Void
@@ -60,7 +60,7 @@ feature -- Element change
 		
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- execute `text' within `context'
 		require
 			text_not_void: text /= Void
@@ -72,7 +72,7 @@ feature -- Basic operations
 		
 feature {NONE} -- Implementation
 
-	matches_single_string (text : STRING; matcher : STRING) : BOOLEAN is
+	matches_single_string (text : STRING; matcher : STRING) : BOOLEAN
 		local
 			stream : KL_WORD_INPUT_STREAM
 			temp : STRING
@@ -86,7 +86,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	print_string (output : KI_TEXT_OUTPUT_STREAM; s : STRING) is
+	print_string (output : KI_TEXT_OUTPUT_STREAM; s : STRING)
 		do
 			if s /= Void then
 				output.put_string (s)
@@ -95,7 +95,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	nullable_string (s : STRING) : STRING is
+	nullable_string (s : STRING) : STRING
 		do
 			if s/= Void then
 				Result := s
@@ -104,14 +104,14 @@ feature {NONE} -- Implementation
 			end
 		end
 		
-	command_width : INTEGER is 30
-	sql_error (stmt : ECLI_STATUS) : STRING is
+	command_width : INTEGER = 30
+	sql_error (stmt : ECLI_STATUS) : STRING
 			-- 
 		do
 			Result := sql_error_msg (stmt, Void)
 		end
 		
-	sql_error_msg (stmt : ECLI_STATUS; msg : STRING) : STRING is
+	sql_error_msg (stmt : ECLI_STATUS; msg : STRING) : STRING
 		do
 			create Result.make (0)
 			Result.append_string ("* ERROR")
@@ -128,6 +128,6 @@ feature {NONE} -- Implementation
 			Result.append_string (stmt.diagnostic_message)
 		end
 	
-	null_constant : STRING is "NULL"
+	null_constant : STRING = "NULL"
 	
 end -- class ISQL_COMMAND

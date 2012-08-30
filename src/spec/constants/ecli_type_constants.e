@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -50,34 +50,34 @@ class ECLI_TYPE_CONSTANTS
 
 feature {ANY} -- SQL data type indicators
 
-	Sql_all_types	:	INTEGER is	0
+	Sql_all_types	:	INTEGER =	0
 		--  GetTypeInfo() request for all data types 
 
-	Sql_unknown_type	:	INTEGER is	0
+	Sql_unknown_type	:	INTEGER =	0
 
-	Sql_char	:	INTEGER is	1
-	Sql_numeric	:	INTEGER is	2
-	Sql_decimal	:	INTEGER is	3
-	Sql_integer	:	INTEGER is	4
-	Sql_smallint	:	INTEGER is	5
-	Sql_float	:	INTEGER is	6
-	Sql_real	:	INTEGER is	7
-	Sql_double	:	INTEGER is	8
-	Sql_varchar	:	INTEGER is	12
+	Sql_char	:	INTEGER =	1
+	Sql_numeric	:	INTEGER =	2
+	Sql_decimal	:	INTEGER =	3
+	Sql_integer	:	INTEGER =	4
+	Sql_smallint	:	INTEGER =	5
+	Sql_float	:	INTEGER =	6
+	Sql_real	:	INTEGER =	7
+	Sql_double	:	INTEGER =	8
+	Sql_varchar	:	INTEGER =	12
 
-	Sql_type_date	:	INTEGER is	91
-	Sql_type_time	:	INTEGER is	92
-	Sql_type_timestamp	:	INTEGER is	93
+	Sql_type_date	:	INTEGER =	91
+	Sql_type_time	:	INTEGER =	92
+	Sql_type_timestamp	:	INTEGER =	93
 
-	Sql_interval	:	INTEGER is	10 
-	Sql_longvarchar	:	INTEGER is	-1
-	Sql_binary	:	INTEGER is	-2
-	Sql_varbinary	:	INTEGER is	-3
-	Sql_longvarbinary	:	INTEGER is	-4
-	Sql_bigint	:	INTEGER is	-5
-	Sql_tinyint	:	INTEGER is	-6
-	Sql_bit	:	INTEGER is	-7
-	Sql_guid	:	INTEGER is	-11 
+	Sql_interval	:	INTEGER =	10 
+	Sql_longvarchar	:	INTEGER =	-1
+	Sql_binary	:	INTEGER =	-2
+	Sql_varbinary	:	INTEGER =	-3
+	Sql_longvarbinary	:	INTEGER =	-4
+	Sql_bigint	:	INTEGER =	-5
+	Sql_tinyint	:	INTEGER =	-6
+	Sql_bit	:	INTEGER =	-7
+	Sql_guid	:	INTEGER =	-11 
 
 feature {NONE} -- Not yet supported
 	
@@ -134,20 +134,20 @@ feature {NONE} -- C data type indicators
 --SQL_C_NUMERIC
 --SQL_C_GUID
 
-	Sql_c_char	:	INTEGER is do Result := Sql_char end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC 
-	Sql_c_long	:	INTEGER is do Result := Sql_integer end		   --  INTEGER					  
-	Sql_c_short	:	INTEGER is do Result := Sql_smallint end		  --  SMALLINT					 
-	Sql_c_float	:	INTEGER is do Result := Sql_real end			  --  REAL						 
-	Sql_c_double	:	INTEGER is do Result := Sql_double end			--  FLOAT, DOUBLE				
-	Sql_c_numeric	:	INTEGER is do Result := Sql_numeric end  
-	Sql_c_default	:	INTEGER is	99
+	Sql_c_char	:	INTEGER do Result := Sql_char end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC 
+	Sql_c_long	:	INTEGER do Result := Sql_integer end		   --  INTEGER					  
+	Sql_c_short	:	INTEGER do Result := Sql_smallint end		  --  SMALLINT					 
+	Sql_c_float	:	INTEGER do Result := Sql_real end			  --  REAL						 
+	Sql_c_double	:	INTEGER do Result := Sql_double end			--  FLOAT, DOUBLE				
+	Sql_c_numeric	:	INTEGER do Result := Sql_numeric end  
+	Sql_c_default	:	INTEGER =	99
 
-	Sql_signed_offset	:	INTEGER is	-20
-	Sql_unsigned_offset	:	INTEGER is	-22
+	Sql_signed_offset	:	INTEGER =	-20
+	Sql_unsigned_offset	:	INTEGER =	-22
 
-	Sql_c_type_date	:	INTEGER is do Result := Sql_type_date end
-	Sql_c_type_time	:	INTEGER is do Result := Sql_type_time end
-	Sql_c_type_timestamp	:	INTEGER is do Result := Sql_type_timestamp end
+	Sql_c_type_date	:	INTEGER do Result := Sql_type_date end
+	Sql_c_type_time	:	INTEGER do Result := Sql_type_time end
+	Sql_c_type_timestamp	:	INTEGER do Result := Sql_type_timestamp end
 
 --	Sql_c_interval_year	:	INTEGER is do Result := Sql_interval_year end
 --	Sql_c_interval_month	:	INTEGER is do Result := Sql_interval_month end
@@ -163,26 +163,26 @@ feature {NONE} -- C data type indicators
 --	Sql_c_interval_hour_to_second	:	INTEGER is do Result := Sql_interval_hour_to_second end
 --	Sql_c_interval_minute_to_second	:	INTEGER is do Result := Sql_interval_minute_to_second end
 
-	Sql_c_binary	:	INTEGER is do Result := Sql_binary end
-	Sql_c_bit	:	INTEGER is do Result := Sql_bit end
+	Sql_c_binary	:	INTEGER do Result := Sql_binary end
+	Sql_c_bit	:	INTEGER do Result := Sql_bit end
 
-	Sql_c_sbigint	:	INTEGER is do Result := (Sql_bigint+Sql_signed_offset) end		--  SIGNED BIGINT 
-	Sql_c_ubigint	:	INTEGER is do Result := (Sql_bigint+Sql_unsigned_offset) end	--  UNSIGNED BIGINT 
+	Sql_c_sbigint	:	INTEGER do Result := (Sql_bigint+Sql_signed_offset) end		--  SIGNED BIGINT 
+	Sql_c_ubigint	:	INTEGER do Result := (Sql_bigint+Sql_unsigned_offset) end	--  UNSIGNED BIGINT 
 
-	Sql_c_tinyint	:	INTEGER is do Result := Sql_tinyint end
-	Sql_c_slong	:	INTEGER is do Result := (Sql_c_long+Sql_signed_offset) end	 --  SIGNED INTEGER  
-	Sql_c_sshort	:	INTEGER is do Result := (Sql_c_short+Sql_signed_offset) end	--  SIGNED SMALLINT 
-	Sql_c_stinyint	:	INTEGER is do Result := (Sql_tinyint+Sql_signed_offset) end	--  SIGNED TINYINT  
+	Sql_c_tinyint	:	INTEGER do Result := Sql_tinyint end
+	Sql_c_slong	:	INTEGER do Result := (Sql_c_long+Sql_signed_offset) end	 --  SIGNED INTEGER  
+	Sql_c_sshort	:	INTEGER do Result := (Sql_c_short+Sql_signed_offset) end	--  SIGNED SMALLINT 
+	Sql_c_stinyint	:	INTEGER do Result := (Sql_tinyint+Sql_signed_offset) end	--  SIGNED TINYINT  
 
-	Sql_c_ulong	:	INTEGER is do Result := (Sql_c_long+Sql_unsigned_offset) end   --  UNSIGNED INTEGER
-	Sql_c_ushort	:	INTEGER is do Result := (Sql_c_short+Sql_unsigned_offset) end  --  UNSIGNED SMALLINT
-	Sql_c_utinyint	:	INTEGER is do Result := (Sql_tinyint+Sql_unsigned_offset) end  --  UNSIGNED TINYINT
+	Sql_c_ulong	:	INTEGER do Result := (Sql_c_long+Sql_unsigned_offset) end   --  UNSIGNED INTEGER
+	Sql_c_ushort	:	INTEGER do Result := (Sql_c_short+Sql_unsigned_offset) end  --  UNSIGNED SMALLINT
+	Sql_c_utinyint	:	INTEGER do Result := (Sql_tinyint+Sql_unsigned_offset) end  --  UNSIGNED TINYINT
 
-	Sql_c_bookmark	:	INTEGER is do Result := Sql_c_ulong end						--  BOOKMARK		
-	Sql_c_varbookmark	:	INTEGER is do Result := Sql_c_binary end -- (ODBCVER >= 0x0300)   --  ODBCVER >= 0x0300 
+	Sql_c_bookmark	:	INTEGER do Result := Sql_c_ulong end						--  BOOKMARK		
+	Sql_c_varbookmark	:	INTEGER do Result := Sql_c_binary end -- (ODBCVER >= 0x0300)   --  ODBCVER >= 0x0300 
 
-	Sql_c_guid	:	INTEGER is do Result := Sql_guid end -- (ODBCVER >= 0x0350)   --  ODBCVER >= 0x0350 
+	Sql_c_guid	:	INTEGER do Result := Sql_guid end -- (ODBCVER >= 0x0350)   --  ODBCVER >= 0x0350 
 
-	Sql_type_null	:	INTEGER is	0
+	Sql_type_null	:	INTEGER =	0
 
 end

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -34,7 +34,7 @@ feature -- Basic operations
 
 feature -- Access
 
-	shared_environment : ECLI_ENVIRONMENT is
+	shared_environment : ECLI_ENVIRONMENT
 		once
 			create Result.make
 		end

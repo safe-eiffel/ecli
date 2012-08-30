@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -28,7 +28,7 @@ create
 
 feature -- Status report
 
-	is_ok (index : INTEGER) : BOOLEAN is
+	is_ok (index : INTEGER) : BOOLEAN
 			-- is `index'-th status ok?
 		require
 			valid_index: index >= 1 and index <= count
@@ -36,7 +36,7 @@ feature -- Status report
 			Result := (item (index) = Sql_row_success) or else (item (index) = Sql_row_success_with_info)
 		end
 
-	is_error (index : INTEGER) : BOOLEAN is
+	is_error (index : INTEGER) : BOOLEAN
 			-- is `index'-th status in error ?
 		require
 			valid_index: index >= 1 and index <= count

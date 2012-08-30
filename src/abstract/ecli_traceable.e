@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -19,7 +19,7 @@ deferred class
 
 feature {ECLI_TRACER, ECLI_TRACEABLE} -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 			-- Trace current object through 'a_tracer'
 		require
 			trace_possible: can_trace
@@ -27,7 +27,7 @@ feature {ECLI_TRACER, ECLI_TRACEABLE} -- Basic operations
 		deferred
 		end
 
-	can_trace : BOOLEAN is
+	can_trace : BOOLEAN
 			-- Can Current trace itself ?
 		deferred
 		end

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -23,7 +23,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (new_connection_string : STRING) is
+	make (new_connection_string : STRING)
 			-- Make with `new_connection_string'.
 		require
 			new_connection_string_not_void: new_connection_string /= Void
@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 			mode_no_prompt: mode = Sql_driver_noprompt
 		end
 
-	make_interactive (new_connection_string : STRING; new_parent_window_handle : POINTER) is
+	make_interactive (new_connection_string : STRING; new_parent_window_handle : POINTER)
 			-- Make using `new_connection_string'. Connection dialog shall use `new_parent_window_handle' as parent window.
 		require
 			new_connection_string_not_void: new_connection_string /= Void
@@ -50,7 +50,7 @@ feature {NONE} -- Initialization
 			parent_window_handle_set: parent_window_handle = new_parent_window_handle
 		end
 
-	make_complete_strict (new_connection_string : STRING; new_parent_window_handle : POINTER) is
+	make_complete_strict (new_connection_string : STRING; new_parent_window_handle : POINTER)
 			-- Make using `new_connection_string'. Complete connection string with a dialog if necessary.
 			-- Possible connection dialog shall use `new_parent_window_handle'.
 			-- All attributes in `new_connection_string' will be checked.
@@ -66,7 +66,7 @@ feature {NONE} -- Initialization
 			parent_window_handle_set: parent_window_handle = new_parent_window_handle
 		end
 
-	make_complete_lazy (new_connection_string : STRING; new_parent_window_handle : POINTER) is
+	make_complete_lazy (new_connection_string : STRING; new_parent_window_handle : POINTER)
 			-- Make using `new_connection_string'. Complete connection string with a dialog if necessary.
 			-- Possible connection dialog shall use `new_parent_window_handle'.
 			-- Only necessary attributes in `new_connection_string' whill be checked.
@@ -94,7 +94,7 @@ feature -- Access
 
 feature -- Basic operations
 
-	connect (the_session : ECLI_SESSION) is
+	connect (the_session : ECLI_SESSION)
 			-- Connect `the_session'
 		local
 			actual_length : XS_C_INT16
@@ -122,7 +122,7 @@ feature -- Basic operations
 
 feature -- Constants
 
-	completed_connection_string_default_length : INTEGER is 4096
+	completed_connection_string_default_length : INTEGER = 4096
 
 feature -- Inapplicable
 

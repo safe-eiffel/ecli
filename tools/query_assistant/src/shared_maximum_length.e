@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Accesses to shared maximum length."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -9,7 +9,7 @@ class
 
 feature -- Access
 
-	maximum_length : INTEGER is
+	maximum_length : INTEGER
 		do
 			Result := maximum_length_cell.item
 		end
@@ -24,7 +24,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_maximum_length (new_length : INTEGER) is
+	set_maximum_length (new_length : INTEGER)
 		do
 			Maximum_length_cell.put (new_length)
 		ensure
@@ -51,7 +51,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	maximum_length_cell : DS_CELL [INTEGER] is
+	maximum_length_cell : DS_CELL [INTEGER]
 		once
 			create Result.make (0)
 		end

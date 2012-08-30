@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -28,7 +28,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_all_procedures (a_session : ECLI_SESSION) is
+	make_all_procedures (a_session : ECLI_SESSION)
 			-- make cursor for all types of session
 		require
 			session_opened: a_session /= Void and then a_session.is_connected
@@ -43,7 +43,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_PROCEDURE_METADATA is
+	item : ECLI_PROCEDURE_METADATA
 			-- item at current cursor position
 		do
 			Result := impl_item
@@ -65,7 +65,7 @@ feature {ECLI_PROCEDURE_METADATA} -- Access
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create buffers for cursor
 		do
 			create buffer_catalog_name.make (255)
@@ -89,7 +89,7 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	create_item is
+	create_item
 			-- create item at curren cursor position
 		do
 			if not off then
@@ -101,18 +101,18 @@ feature {NONE} -- Implementation
 
 	impl_item : like item
 
-	definition : STRING is once Result := "SQLProcedures" end
+	definition : STRING once Result := "SQLProcedures" end
 
 	do_query_metadata (l_catalog : POINTER; catalog_length : INTEGER;
 		l_schema : POINTER; schema_length : INTEGER;
-		l_name : POINTER; name_length : INTEGER) : INTEGER is
+		l_name : POINTER; name_length : INTEGER) : INTEGER
 			-- actual external query
 		do
 			Result := ecli_c_get_procedures ( handle,
 				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
 		end
 
-	query_metadata_feature_name : STRING is do Result := "ecli_c_get_procedures" end
+	query_metadata_feature_name : STRING do Result := "ecli_c_get_procedures" end
 
 
 end

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -21,13 +21,13 @@ create
 
 feature -- Access
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 		do
 			Result := Sql_longvarchar
 		end
 
 feature {NONE} -- Implementation
 
-	default_maximum_capacity : INTEGER is 1_000_000
+	default_maximum_capacity : INTEGER = 1_000_000
 
 end

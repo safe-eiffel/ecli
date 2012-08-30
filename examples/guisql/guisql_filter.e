@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that ..."
 	author: ""
 	date: "$Date$"
@@ -25,7 +25,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_sql_data : like sql_data; a_message : EV_TEXT; an_error : EV_TEXTABLE) is
+	make (a_sql_data : like sql_data; a_message : EV_TEXT; an_error : EV_TEXTABLE)
 		do
 			sql_data := a_sql_data
 			message := a_message
@@ -56,25 +56,25 @@ feature -- Access
 
 feature -- Basic operations
 
-	put_heading (s: STRING_8) is
+	put_heading (s: STRING_8)
 		do
 			precursor (s)
 			current_headings.put_last (s)
 		end
 
-	put_error (s: STRING_8) is
+	put_error (s: STRING_8)
 		do
 			precursor (s)
 			message.append_text (s)
 			error.set_text (s)
 		end
 
-	put_message (s: STRING_8) is
+	put_message (s: STRING_8)
 		do
 			message.append_text (s)
 		end
 
-	put_column (s: STRING_8) is
+	put_column (s: STRING_8)
 		local
 		do
 			precursor (s)
@@ -82,13 +82,13 @@ feature -- Basic operations
 			column_index := column_index + 1
 		end
 
-	begin_heading is
+	begin_heading
 		do
 			current_headings.wipe_out
 			precursor
 		end
 
-	end_heading is
+	end_heading
 		local
 			i : INTEGER
 		do
@@ -123,7 +123,7 @@ feature -- Basic operations
 			sql_data.unlock_update
 		end
 
-	end_row is
+	end_row
 		local
 			i : INTEGER
 			grid_item : GUISQL_GRID_LABEL_ITEM
@@ -152,7 +152,7 @@ feature -- Basic operations
 			Precursor {ISQL_FILTER}
 		end
 
-	begin_row is
+	begin_row
 		do
 			precursor
 			current_data.wipe_out
@@ -160,12 +160,12 @@ feature -- Basic operations
 
 feature -- constants
 
-	light_blue : EV_COLOR is
+	light_blue : EV_COLOR
 		once
 			create Result.make_with_8_bit_rgb (230, 230, 255)
 		end
 
-	white : EV_COLOR is
+	white : EV_COLOR
 		once
 			create Result.make_with_8_bit_rgb (255, 255, 255)
 		end
