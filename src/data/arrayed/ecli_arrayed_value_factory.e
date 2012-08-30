@@ -31,7 +31,11 @@ inherit
 			create_date_value,
 			create_char_value,
 			create_varchar_value,
-			create_decimal_value
+			create_decimal_value,
+			create_numeric_value,
+			create_longvarchar_value,
+			create_longvarbinary_value,
+			create_binary_value
 		end
 
 create
@@ -111,6 +115,26 @@ feature {NONE} -- Implementation
 	create_decimal_value (precision, decimal_digits: INTEGER_32)
 		do
 			create {ECLI_ARRAYED_DECIMAL} last_result.make (row_count, precision, decimal_digits)
+		end
+
+	create_numeric_value (precision, decimal_digits: INTEGER_32)
+		do
+			create {ECLI_ARRAYED_DECIMAL} last_result.make (row_count, precision, decimal_digits)
+		end
+
+	create_longvarchar_value (precision: INTEGER_32)
+		do
+			create {ECLI_ARRAYED_LONGVARCHAR} last_result.make (row_count, precision)
+		end
+
+	create_longvarbinary_value (precision: INTEGER_32)
+		do
+			create {ECLI_ARRAYED_LONGVARBINARY} last_result.make (row_count, precision)
+		end
+
+	create_binary_value (column_precision: INTEGER_32)
+		do
+			create {ECLI_ARRAYED_BINARY} last_result.make (row_count, column_precision)
 		end
 
 end
