@@ -63,7 +63,7 @@ feature {NONE}-- Initialization
 			l_ev_vertical_box_1.set_padding (10)
 			l_ev_vertical_box_1.set_border_width (10)
 			l_ev_vertical_box_1.disable_item_expand (l_ev_horizontal_box_1)
-			l_ev_label_1.set_text ("Query Assistant GUI%N%NCopyright 2002-2007 Paul G. Crismer and others.%NReleased under the Eiffel Forum version 2 license.")
+			l_ev_label_1.set_text ("Query Assistant GUI%N%NCopyright 2002-2012, Paul G. Crismer and others.%NReleased under the Eiffel Forum version 2 license.")
 			l_ev_horizontal_box_1.set_padding (5)
 			l_ev_horizontal_box_1.set_border_width (5)
 			l_ev_horizontal_box_1.disable_item_expand (l_ev_button_1)

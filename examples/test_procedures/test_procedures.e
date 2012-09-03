@@ -375,7 +375,7 @@ feature -- Miscellaneous
 
 end
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License version 2 <http://www.opensource.org/licenses/ver2_eiffel.php>
 -- See file <forum.txt>
 --

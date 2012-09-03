@@ -12,7 +12,7 @@ note
 		 ]"
 
 	library: "GOBO Eiffel Decimal Arithmetic Library"
-	copyright: "Copyright (c) 2005, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2005-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
