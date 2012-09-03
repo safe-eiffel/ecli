@@ -37,7 +37,7 @@
 		<sql>
 		select count (*) as count from PARTICIPANT p, REGISTRATION r where
 			r.participant_id = p.identifier AND
-			(r.fee - r.paid_amount) > ?remaining_amount
+			(r.registration_fee - r.paid_amount) > ?remaining_amount
 		</sql>
 		<parameter_set>
 			<parameter name="remaining_amount" table="REGISTRATION" column="paid_amount" sample="256"/> 
@@ -50,9 +50,9 @@
 		</description>
 		<sql>
 		select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
-		 p.country, r.reg_time, (r.fee - r.paid_amount) as remaining from PARTICIPANT p, REGISTRATION r where
+		 p.country, r.reg_time, (r.registration_fee - r.paid_amount) as remaining from PARTICIPANT p, REGISTRATION r where
 			r.participant_id = p.identifier AND
-			(r.fee - r.paid_amount) > ?remaining_amount
+			(r.registration_fee - r.paid_amount) > ?remaining_amount
 		</sql>
 		<parameter_set>
 			<parameter name="remaining_amount" table="REGISTRATION" column="paid_amount" sample="256"/> 
@@ -82,7 +82,7 @@
 			r.reg_time > ?reg_time
 		</sql>
 		<parameter_set>
-			<parameter name="reg_time" table="REGISTRATION" column="reg_time" sample="{ts '2000-07-28 10:12:01.23'}"/> 
+			<parameter name="reg_time" table="REGISTRATION" column="reg_time" /> 
 		</parameter_set>
 		<result_set extends="PARTICIPANT_ROW"/>
 	</access>

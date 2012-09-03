@@ -19,7 +19,6 @@ inherit
 			put_parameter_finish
 		end
 
-inherit {NONE}
 	ECLI_STATUS_CONSTANTS
 		export
 			{NONE} all

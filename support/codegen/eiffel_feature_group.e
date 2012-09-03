@@ -26,6 +26,7 @@ feature -- Initialization
 		require
 			comment_not_void: new_comment /= Void
 		do
+			enable_ecma367v2
 			set_comment (new_comment)
 			create exports.make
 			create features.make
@@ -66,7 +67,7 @@ feature -- Status setting
 			new_feature_not_void: new_feature /= Void
 		do
 			features.force_last (new_feature)
-		end 
+		end
 
 feature -- Basic operations
 
@@ -118,9 +119,9 @@ feature {NONE} -- Implementation
 				features.forth
 			end
 		end
-	
+
 invariant
-	
+
 	comment_not_void: comment /= Void
 	feature_not_void: features /= Void
 	exports_not_void:exports /= Void

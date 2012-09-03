@@ -16,7 +16,7 @@ feature -- Access
 	reserved_words : ARRAY[STRING]
 		once
 			Result := <<
-				"agent","alias","all","and","as","assign", "attached", "attribute",
+				"across","agent","alias","all","and","as","assign", "attached", "attribute",
 				"check","class","convert","create","Current",
 				"debug","deferred","detachable","do",
 				"else","elseif","end","ensure","expanded","export","external",

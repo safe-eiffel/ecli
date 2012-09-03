@@ -29,6 +29,7 @@ feature -- Initialization
 			new_name_not_void: new_name /= Void
 			new_type_not_void: new_type /= Void
 		do
+			enable_ecma367v2
 			feature_make (new_name)
 			set_type (new_type)
 		end

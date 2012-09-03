@@ -26,6 +26,7 @@ feature -- Initialization
 		require
 			class_name_not_void: class_name /= Void
 		do
+			enable_ecma367v2
 			set_name (class_name)
 			create indexing_clauses.make
 			create parents.make

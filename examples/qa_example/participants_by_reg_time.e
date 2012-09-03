@@ -4,8 +4,9 @@ note
 			description: "Select participants by amount already paid"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_REG_TIME'. DO NOT EDIT!"
-	generated: "2009/03/03 16:41:34.818"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.921"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_REG_TIME
 

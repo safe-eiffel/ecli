@@ -29,6 +29,9 @@ inherit
 			create_date_value,
 			create_timestamp_value,
 			create_time_value,
+			create_numeric_value,
+			create_longvarbinary_value,
+			create_binary_value,
 			last_result
 		end
 
@@ -237,6 +240,21 @@ feature -- Miscellaneous
 	create_time_value
 		do
 			create {QA_TIME}last_result.make_default
+		end
+
+	create_numeric_value (precision, decimal_digits: INTEGER_32)
+		do
+			create {QA_DECIMAL}last_result.make (precision, decimal_digits)
+		end
+
+	create_longvarbinary_value (precision: INTEGER_32)
+		do
+			create {QA_LONGVARBINARY}last_result.make (precision)
+		end
+
+	create_binary_value (column_precision: INTEGER_32)
+		do
+			create {QA_BINARY} last_result.make (column_precision)
 		end
 
 feature {NONE} -- Implementation

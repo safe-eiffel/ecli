@@ -22,6 +22,7 @@ feature -- Initialization
 		require
 			name_not_void: new_name /= Void
 		do
+			enable_ecma367v2
 			set_name (new_name)
 		end
 
@@ -32,7 +33,7 @@ feature -- Access
 
 	comment : STRING
 			-- Comment of feature
-			
+
 feature -- Status setting
 
 	set_name (new_name: STRING)

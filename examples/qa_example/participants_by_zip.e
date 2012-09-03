@@ -4,8 +4,9 @@ note
 			description: "Select participants by zip"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_ZIP'. DO NOT EDIT!"
-	generated: "2009/03/03 16:41:33.005"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.858"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_ZIP
 
@@ -22,7 +23,7 @@ feature  -- -- Access
 
 	parameters_object: PARTICIPANTS_BY_ZIP_PARAMETERS
 
-	item: PARTICIPANTS_BY_ZIP_RESULTS
+	item: PARTICIPANT_ROW
 
 feature  -- -- Element change
 

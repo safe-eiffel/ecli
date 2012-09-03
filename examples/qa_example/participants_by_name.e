@@ -4,8 +4,9 @@ note
 			description: "Select participants matching a last name"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_NAME'. DO NOT EDIT!"
-	generated: "2009/03/03 16:41:32.552"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.845"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_NAME
 
@@ -22,7 +23,7 @@ feature  -- -- Access
 
 	parameters_object: PARTICIPANTS_BY_NAME_PARAMETERS
 
-	item: PARTICIPANTS_BY_NAME_RESULTS
+	item: PARTICIPANT_ROW
 
 feature  -- -- Element change
 
