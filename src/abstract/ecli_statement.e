@@ -94,6 +94,7 @@ feature {} -- Initialization
 			--| name to position map table for parameters
 			create name_to_position.make (10)
 			name_to_position.set_equality_tester (create {KL_EQUALITY_TESTER[DS_LIST[INTEGER]]})
+			initialize
 			if is_valid then
 				session.register_statement (Current)
 			end
@@ -124,6 +125,11 @@ feature {NONE} -- Initialization
 			create {DS_LINKED_LIST[STRING]}impl_parameter_names.make
 		end
 
+	initialize
+			-- Initialize internal state just before registering to session
+		do
+		end
+		
 --	create_error_handler is
 --			-- create `error_handler´
 --		do

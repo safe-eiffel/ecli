@@ -19,7 +19,7 @@ inherit
 			default_create
 		end
 
-inherit {NONE}
+-- inherit {NONE}
 
 	ECLI_EXTERNAL_API
 		export {NONE}	all
@@ -32,12 +32,6 @@ inherit {NONE}
 		redefine
 			default_create
 		end
-
---	EXCEPTIONS
---		export {NONE} all
---		redefine
---			default_create
---		end
 
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all

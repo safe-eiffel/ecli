@@ -17,9 +17,6 @@
 			<redefine target="init"/>
 			<redefine target="prepare_compile"/>
 			<redefine target="help"/>
-			<redefine target="install"/>
-			<redefine target="clean"/>
-			<redefine target="clobber"/>
 			<redefine target="xace"/>
 		</parent>
 	</inherit>
@@ -104,23 +101,6 @@
 
         </target>
 
-	<target name="install" depend="compile_libs, compile_tools">
-		<description>
-			Call 'geant' with the same target ${target}
-			in all subdirectories.
-		</description>
-	
-	</target>
-	
-        <target name="compile_libs" depend="prepare_compile, prepare_compile_windows">
-	</target>
-	
-        <target name="compile_tools">
-		<description>
-			Compile tools
-		</description>
-		<geant file="build.eant" target="compile" dir="${ECLI}/tools"/>
-	</target>
 	
 	<target name="help">
 		<precursor/>
@@ -130,7 +110,6 @@
 	</target>
 
 	<target name="help2">
-		<echo message="   geant compile_libs"/>
 		<echo message="   geant install"/>
 		<echo message="   geant compile"/>
 		<echo message="   geant compile_ise"/>
@@ -139,24 +118,11 @@
 		<echo message="   geant compile_debug_ise"/>
 		<echo message="   geant compile_debug_ge"/>
 		<echo message="   geant compile_debug_se"/>
+		<echo message="   geant compile_libs        -- compile c libraries"/>
+		<echo message="   geant compile_tools       -- compile tools"/>
 		<echo message="   geant clean"/>
 		<echo message="   geant clobber"/>
 	</target>
 
-	<target name="clean">
-		<set name="target" value="clean"/>
-		<geant target="do_all"/>
-	</target>
 
-
-	<target name="clobber">
-		<set name="target" value="clobber"/>
-		<geant target="do_all"/>
-	</target>
-	
-<!-- Implementation -->
-
-	<target name="do_all">
-		<geant file="build.eant" target="${target}" dir="${ECLI}/tools"/>
-	</target>
 </project>

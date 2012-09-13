@@ -15,7 +15,16 @@ inherit
 
 	ECLI_QUERY
 		redefine
-			real_execution
+			real_execution,
+			make
+		end
+
+feature {NONE} -- Initialization
+
+	make (a_session: ECLI_SESSION)
+		do
+			Precursor (a_session)
+			create_buffers
 		end
 
 feature -- Status report

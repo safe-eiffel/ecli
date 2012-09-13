@@ -643,11 +643,14 @@ feature -- Basic Operations
 		require
 			is_valid: is_valid
 			connected: is_connected
+		local
+			statements_cursor: like statements.new_cursor
 		do
 			-- First close all statements, if any
 			if statements_count > 0 then
-				if attached statements.new_cursor as statements_cursor then
 					from
+						statements_cursor := statements.new_cursor
+						check attached statements_cursor end
 						statements_cursor.start
 					until
 						statements_cursor.off
@@ -658,7 +661,6 @@ feature -- Basic Operations
 				end
 				statements.wipe_out
 				statements_count := 0
-			end
 			do_disconnect
 		ensure
 			not_connected: not is_connected implies is_ok

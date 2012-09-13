@@ -82,6 +82,8 @@ feature {NONE} -- Implementation
 		local
 			the_key : ECLI_FOREIGN_KEY
 			ref_key : ECLI_PRIMARY_KEY
+			columns_cursor : detachable DS_LIST_CURSOR[STRING]
+			ref_cols_cursor : detachable DS_LIST_CURSOR[STRING]
 			index : INTEGER
 		do
 			if a_cursor.is_executed then
@@ -108,50 +110,50 @@ feature {NONE} -- Implementation
 				loop
 					the_key := a_cursor.item
 					ref_key := a_cursor.item.referenced_key
-					if attached the_key.columns.new_cursor as columns_cursor and then
-					   attached ref_key.columns.new_cursor as ref_cols_cursor then
-						from
-							columns_cursor.start
-							ref_cols_cursor.start
-							index := 1
-						until
-							columns_cursor.off
-						loop
-							context.filter.begin_row
-							context.filter.put_column (nullable_string (the_key.key_name))
-							context.filter.put_column (nullable_string (ref_key.key_name))
-							context.filter.put_column (index.out)
-							context.filter.put_column (nullable_string (the_key.catalog))
-							context.filter.put_column (nullable_string (the_key.schema))
-							context.filter.put_column (nullable_string (the_key.table))
-							context.filter.put_column (nullable_string (columns_cursor.item))
-							context.filter.put_column (nullable_string (ref_key.catalog))
-							context.filter.put_column (nullable_string (ref_key.schema))
-							context.filter.put_column (nullable_string (ref_key.table))
-							context.filter.put_column (nullable_string (ref_cols_cursor.item))
-							if the_key.is_update_rule_applicable then
-								context.filter.put_column (the_key.update_rule.out)
-							else
-								context.filter.put_column ("NULL")
-							end
-							if the_key.is_delete_rule_applicable then
-								context.filter.put_column (the_key.delete_rule.out)
-							else
-								context.filter.put_column ("NULL")
-							end
-
-							if the_key.is_deferrability_applicable then
-								context.filter.put_column (the_key.deferrability.out)
-							else
-								context.filter.put_column ("NULL")
-							end
-							context.filter.end_row
-							columns_cursor.forth
-							ref_cols_cursor.forth
-							index := index + 1
+					columns_cursor := the_key.columns.new_cursor
+					ref_cols_cursor := ref_key.columns.new_cursor
+					check attached columns_cursor and attached ref_cols_cursor end
+					from
+						columns_cursor.start
+						ref_cols_cursor.start
+						index := 1
+					until
+						columns_cursor.off
+					loop
+						context.filter.begin_row
+						context.filter.put_column (nullable_string (the_key.key_name))
+						context.filter.put_column (nullable_string (ref_key.key_name))
+						context.filter.put_column (index.out)
+						context.filter.put_column (nullable_string (the_key.catalog))
+						context.filter.put_column (nullable_string (the_key.schema))
+						context.filter.put_column (nullable_string (the_key.table))
+						context.filter.put_column (nullable_string (columns_cursor.item))
+						context.filter.put_column (nullable_string (ref_key.catalog))
+						context.filter.put_column (nullable_string (ref_key.schema))
+						context.filter.put_column (nullable_string (ref_key.table))
+						context.filter.put_column (nullable_string (ref_cols_cursor.item))
+						if the_key.is_update_rule_applicable then
+							context.filter.put_column (the_key.update_rule.out)
+						else
+							context.filter.put_column ("NULL")
 						end
-						a_cursor.forth
+						if the_key.is_delete_rule_applicable then
+							context.filter.put_column (the_key.delete_rule.out)
+						else
+							context.filter.put_column ("NULL")
+						end
+
+						if the_key.is_deferrability_applicable then
+							context.filter.put_column (the_key.deferrability.out)
+						else
+							context.filter.put_column ("NULL")
+						end
+						context.filter.end_row
+						columns_cursor.forth
+						ref_cols_cursor.forth
+						index := index + 1
 					end
+					a_cursor.forth
 				end
 			else
 				context.filter.begin_error
