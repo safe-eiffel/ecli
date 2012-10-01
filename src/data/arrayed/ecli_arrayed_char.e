@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"SQL CHAR (n) arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -33,7 +33,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_content_capacity : INTEGER; a_array_capacity : INTEGER) is
+	make (a_content_capacity : INTEGER; a_array_capacity : INTEGER)
 		do
 			Precursor (a_content_capacity, a_array_capacity)
 			content_count := content_capacity
@@ -45,7 +45,7 @@ feature -- Access
 
 	content_count : INTEGER
 
-	item_at (index : INTEGER) : like item is
+	item_at (index : INTEGER) : like item
 		do
 			if not is_null_at (index) then
 				Result := Precursor (index)
@@ -66,14 +66,14 @@ feature -- Measurement
 
 feature -- Status report
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_varchar
 		end
 
 feature -- Transformation
 
-	formatted (v : like item) : like item is
+	formatted (v : like item) : like item
 		do
 			create Result.make_from_string (v)
 			format (Result)
@@ -81,7 +81,7 @@ feature -- Transformation
 
 feature {NONE} -- Implementation
 
-	format (s : STRING) is
+	format (s : STRING)
 			-- format 's' according to 'capacity'
 		require
 			s_not_void: s /= Void --FIXME: VS-DEL
@@ -95,6 +95,6 @@ feature {NONE} -- Implementation
 
 feature {NONE} -- Implementation
 
-	default_maximum_capacity : INTEGER is 255
+	default_maximum_capacity : INTEGER = 255
 
 end

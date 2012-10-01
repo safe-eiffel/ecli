@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that show HELP about CLISQL commands."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("he[lp]", Command_width)
 			Result.append_string ("Print the list of available commands.")
 		end
 
-	match_string : STRING is "he"
+	match_string : STRING = "he"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show help
 		local
 			cursor: like {ISQL_COMMANDS}.new_cursor

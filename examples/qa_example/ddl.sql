@@ -14,8 +14,8 @@ create table REGISTRATION (
 	identifier INTEGER not null,
 	participant_id INTEGER not null,
 	reg_time TIMESTAMP,
-	fee	DOUBLE,
-	paid_amount DOUBLE)
+	registration_fee	REAL,
+	paid_amount REAL)
 ;
 q
 ;

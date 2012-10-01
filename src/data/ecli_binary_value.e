@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"SQL Binary values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -21,7 +21,7 @@ inherit
 feature -- Access
 
 
-	item : STRING is
+	item : STRING
 		do
 			if is_null then
 				create Result.make_empty
@@ -31,7 +31,7 @@ feature -- Access
 			end
 		end
 
-	c_type_code : INTEGER is
+	c_type_code : INTEGER
 		once
 			Result := sql_c_binary
 		end

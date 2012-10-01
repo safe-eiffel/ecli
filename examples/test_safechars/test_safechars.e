@@ -1,4 +1,4 @@
-indexing
+note
 	description: "[
 			test_safechars sample application.
 			
@@ -18,7 +18,7 @@ indexing
 	]";
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2010, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -43,7 +43,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 		local
 			c : ECLI_CHAR
 		do
@@ -97,13 +97,13 @@ feature -- Access
 	selection : detachable ECLI_STATEMENT
 	insertion : detachable ECLI_STATEMENT
 
-	s_selection : STRING is "select a, b from TSTECLIDATA where a=?"
-	s_insertion : STRING is "insert into TSTECLIDATA (a, b) values (?, ?)"
-	s_param : STRING is "select a, b, c from TSTECLIDATA where c=?"
-	s_create : STRING is "[
+	s_selection : STRING = "select a, b from TSTECLIDATA where a=?"
+	s_insertion : STRING = "insert into TSTECLIDATA (a, b) values (?, ?)"
+	s_param : STRING = "select a, b, c from TSTECLIDATA where c=?"
+	s_create : STRING = "[
 				create table TSTECLIDATA (a varchar (20), b varchar (20), c varchar (20))
 ]"
-	s_delete_content : STRING is "delete from TSTECLIDATA";
+	s_delete_content : STRING = "delete from TSTECLIDATA";
 
 --	v_file : ECLI_FILE_LONGVARBINARY
 
@@ -120,7 +120,7 @@ feature -- Measurement
 
 feature -- Basic operations
 
-	do_connect is
+	do_connect
 		local
 			tracefile: KL_TEXT_OUTPUT_FILE
 		do
@@ -209,7 +209,7 @@ feature -- Basic operations
 			end
 		end
 
-	assert (tag : STRING; assertion : BOOLEAN; diagnostic : STRING) is
+	assert (tag : STRING; assertion : BOOLEAN; diagnostic : STRING)
 		do
 			test_count := test_count + 1
 			if assertion then
@@ -226,44 +226,44 @@ feature -- Basic operations
 			io.put_new_line
 		end
 
-	test_insert_less (stmt : ECLI_STATEMENT) is
+	test_insert_less (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-LESS"), ecli_string_longvarchar_object (10, "1234567890")>>, Void)
 			assert ("I-LESS-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
 		end
 
-	test_insert_same (stmt : ECLI_STATEMENT) is
+	test_insert_same (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-SAME"), ecli_string_longvarchar_object (20, "12345678901234567890")>>, Void)
 			assert ("I-SAME-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
 		end
 
-	test_insert_greater_buffer (stmt : ECLI_STATEMENT) is
+	test_insert_greater_buffer (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-GRTP"), ecli_string_longvarchar_object (10, "12345678901234567890")>>, Void)
 			assert ("I-GRTP-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
 		end
 
-	test_insert_larger_column (stmt : ECLI_STATEMENT) is
+	test_insert_larger_column (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-GRTC"), ecli_string_longvarchar_object (20, "123456789012345678901234567890")>>, Void)
 			assert ("I-GRTC-NOTEXCTD", not stmt.is_executed, stmt.diagnostic_message)
 		end
 
-	test_insert_null (stmt : ECLI_STATEMENT) is
+	test_insert_null (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-NULL"), ecli_string_longvarchar_object (20, Void)>>, Void)
 			assert ("I-NULL-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
 		end
 
-	test_select_less (stmt : ECLI_STATEMENT) is
+	test_select_less (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-LESS")>>,<<ecli_varchar (20, Void),ecli_string_longvarchar_object (10, Void)>>)
 			stmt.start
 			assert ("S-LESS-EXECUTED", stmt.results[2].as_string ~ "1234567890", stmt.diagnostic_message)
 		end
 
-	test_select_same (stmt : ECLI_STATEMENT) is
+	test_select_same (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-SAME")>>,<<ecli_varchar (20, Void),ecli_string_longvarchar_object (20, Void)>>)
 			assert ("S-SAME-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
@@ -271,7 +271,7 @@ feature -- Basic operations
 			assert ("S-SAME-RESOK", stmt.results[2].as_string ~ "12345678901234567890", stmt.diagnostic_message)
 		end
 
-	test_select_greater (stmt : ECLI_STATEMENT) is
+	test_select_greater (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-GRTP")>>,<<ecli_varchar (20, Void),ecli_string_longvarchar_object (10, Void)>>)
 			assert ("S-GRTP-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
@@ -279,7 +279,7 @@ feature -- Basic operations
 			assert ("S-GRTP-RESOK", stmt.results[2].as_string ~ "12345678901234567890", stmt.diagnostic_message)
 		end
 
-	test_select_null (stmt : ECLI_STATEMENT) is
+	test_select_null (stmt : ECLI_STATEMENT)
 		do
 			do_execute_with_parameters (stmt, <<ecli_varchar (20, "I-NULL")>>,<<ecli_varchar (20, Void),ecli_string_longvarchar_object (20, "Toto")>>)
 			assert ("S-NULL-EXECUTED", stmt.is_executed, stmt.diagnostic_message)
@@ -307,7 +307,7 @@ feature -- Basic operations
 		end
 
 
-	ecli_string_longvarchar_object (n : INTEGER; value : detachable STRING) : ECLI_STRING_LONGVARCHAR is
+	ecli_string_longvarchar_object (n : INTEGER; value : detachable STRING) : ECLI_STRING_LONGVARCHAR
 		do
 			create Result.make (n)
 			if value /= Void then
@@ -315,7 +315,7 @@ feature -- Basic operations
 			end
 		end
 
-	ecli_varchar (n : INTEGER; value : detachable STRING) : ECLI_VARCHAR is
+	ecli_varchar (n : INTEGER; value : detachable STRING) : ECLI_VARCHAR
 		do
 			Create Result.make (n)
 			if value /= Void then
@@ -323,12 +323,12 @@ feature -- Basic operations
 			end
 		end
 
-	do_insert (stmt : ECLI_STATEMENT; label : STRING; value : ECLI_STRING_LONGVARCHAR) is
+	do_insert (stmt : ECLI_STATEMENT; label : STRING; value : ECLI_STRING_LONGVARCHAR)
 		do
 
 		end
 
-	do_select (stmt : ECLI_STATEMENT; label : STRING; value : ECLI_STRING_LONGVARCHAR) is
+	do_select (stmt : ECLI_STATEMENT; label : STRING; value : ECLI_STRING_LONGVARCHAR)
 		do
 
 		end
@@ -460,7 +460,7 @@ feature {} -- Implementation
 	arg_create_option: AP_STRING_OPTION
 
 
-	print_diagnostics is
+	print_diagnostics
 		do
 			io.put_string ("Total  Tests: "+test_count.out+"%N")
 			io.put_string ("Passed Tests: "+pass_count.out+"%N")
@@ -469,7 +469,7 @@ feature {} -- Implementation
 
 end -- class test_safechars
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Access module generator XML constants."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -9,39 +9,39 @@ class
 
 feature -- Access
 
-	t_access : STRING is "access"
+	t_access : STRING = "access"
 
-	t_parameter_map : STRING is "parameter_map"
+	t_parameter_map : STRING = "parameter_map"
 
-	t_name : STRING is "name"
+	t_name : STRING = "name"
 
-	t_type : STRING is "type"
+	t_type : STRING = "type"
 
-	t_sql : STRING is "sql"
+	t_sql : STRING = "sql"
 
-	t_result_set : STRING is "result_set"
+	t_result_set : STRING = "result_set"
 
-	t_extends : STRING is "extends"
+	t_extends : STRING = "extends"
 
-	t_parameter_set : STRING is "parameter_set"
+	t_parameter_set : STRING = "parameter_set"
 
-	t_table : STRING is "table"
+	t_table : STRING = "table"
 
-	t_column : STRING is "column"
+	t_column : STRING = "column"
 
-	t_description : STRING is "description"
+	t_description : STRING = "description"
 
-	t_parameter : STRING is "parameter"
+	t_parameter : STRING = "parameter"
 
-	t_direction : STRING is "direction"
+	t_direction : STRING = "direction"
 
-	t_sample : STRING is "sample"
+	t_sample : STRING = "sample"
 
-	t_modules : STRING is "modules"
+	t_modules : STRING = "modules"
 
-	v_input : STRING is "input"
-	v_output: STRING is "output"
-	v_input_output: STRING is "input-output"
+	v_input : STRING = "input"
+	v_output: STRING = "output"
+	v_input_output: STRING = "input-output"
 
 feature -- Measurement
 

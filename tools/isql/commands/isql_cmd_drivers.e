@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: "Objects that list DRIVERS registered in ODBC."
 	author: "Paul G. Crismer"
@@ -18,26 +18,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("dri[vers]", Command_width)
 			Result.append_string ("List registered drivers.")
 		end
 
-	match_string : STRING is "dri"
+	match_string : STRING = "dri"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- connect to a datasource
 		local
 			cursor : ECLI_DRIVERS_CURSOR
@@ -54,7 +54,7 @@ feature -- Basic operations
 			end
 		end
 
-	show_driver (driver : ECLI_DRIVER; filter : ISQL_FILTER) is
+	show_driver (driver : ECLI_DRIVER; filter : ISQL_FILTER)
 			-- Show `driver' through `filter'.
 		do
 			filter.begin_row
@@ -63,7 +63,7 @@ feature -- Basic operations
 			filter.end_row
 		end
 
-	show_headings (filter : ISQL_FILTER) is
+	show_headings (filter : ISQL_FILTER)
 			-- Show headings through `filter'.
 		do
 			filter.begin_heading
@@ -72,7 +72,7 @@ feature -- Basic operations
 			filter.end_heading
 		end
 
-	format_attributes (attributes : DS_HASH_TABLE[STRING, STRING]) : STRING is
+	format_attributes (attributes : DS_HASH_TABLE[STRING, STRING]) : STRING
 			-- format `attributes' on a single line.
 		do
 			create Result.make (200)

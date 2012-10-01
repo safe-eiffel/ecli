@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that handle cached accesses to database repository."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,7 +12,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (current_session : ECLI_SESSION) is
+	make (current_session : ECLI_SESSION)
 			-- make repository for `current_session'
 		require
 			current_session_not_void: current_session /= Void
@@ -39,7 +39,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	search (catalog_name, schema_name, table_name, column_name : STRING) is
+	search (catalog_name, schema_name, table_name, column_name : STRING)
 			-- Search columns corresponding to `catalog_name', `schema_name', `table_name', `column_name'.
 		require
 			table_name_not_void: table_name /= Void
@@ -88,7 +88,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	hash_identifiant (catalog_name, schema_name, table_name, column_name : STRING) : STRING is
+	hash_identifiant (catalog_name, schema_name, table_name, column_name : STRING) : STRING
 		require
 			table_name_not_void: table_name /= Void
 			columne_name_not_void: column_name /= Void
@@ -109,7 +109,7 @@ feature {NONE} -- Implementation
 			result_not_void: Result /= Void
 		end
 
-	hash_delimiter : CHARACTER is '|'
+	hash_delimiter : CHARACTER = '|'
 
 	columns : DS_HASH_TABLE[detachable ECLI_COLUMN, STRING]
 

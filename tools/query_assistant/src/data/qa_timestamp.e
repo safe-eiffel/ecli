@@ -1,4 +1,4 @@
-indexing
+note
 	description: "SQL TIMESTAMP values."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -18,11 +18,11 @@ create
 
 feature
 
-	ecli_type : STRING is "ECLI_TIMESTAMP"
+	ecli_type : STRING = "ECLI_TIMESTAMP"
 		
-	value_type : STRING is "DT_DATE_TIME"
+	value_type : STRING = "DT_DATE_TIME"
 		
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_null_call
 		end
@@ -30,7 +30,7 @@ feature
 
 end -- class QA_TIMESTAMP
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

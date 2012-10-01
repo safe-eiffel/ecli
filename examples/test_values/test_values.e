@@ -6,16 +6,16 @@ create
 
 feature
 
-	make is
+	make
 		do
 			io.put_string ("Hello !%N")
 			do_tests
 			do_arrayed_tests
 		end
 
-	string_foo : STRING is "Foo"
+	string_foo : STRING = "Foo"
 
-	string_long : STRING is "The quick brown fox jumps over the lazy dog. %
+	string_long : STRING = "The quick brown fox jumps over the lazy dog. %
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
@@ -26,7 +26,7 @@ feature
 
 --	string_file : KL_STRING_INPUT_FILE
 
-	do_tests is
+	do_tests
 			-- run test on ECLI_VALUE descendants
 		do
 			print ("test CHAR%N")
@@ -53,7 +53,7 @@ feature
 			test_longvarbinary
 		end
 
-	do_arrayed_tests is
+	do_arrayed_tests
 			-- run test on ECLI_VALUE descendants
 		do
 			test_arrayed_char
@@ -70,7 +70,7 @@ feature
 		end
 
 
-	test_char is
+	test_char
 			--
 		local
 			v, z : ECLI_CHAR
@@ -84,7 +84,7 @@ feature
 			end
 		end
 
-	test_varchar is
+	test_varchar
 			--
 		local
 			v : ECLI_VARCHAR
@@ -95,7 +95,7 @@ feature
 			b := v.item.is_equal (string_foo)
 		end
 
-	test_longvarchar is
+	test_longvarchar
 			--
 		local
 			v : ECLI_LONGVARCHAR
@@ -106,7 +106,7 @@ feature
 			v.set_item (string_long)
 		end
 
-	test_longvarbinary is
+	test_longvarbinary
 			--
 		local
 			v : ECLI_LONGVARBINARY
@@ -117,7 +117,7 @@ feature
 			v.set_item (string_long)
 		end
 
-	test_date is
+	test_date
 			--
 		local
 			v, z : ECLI_DATE
@@ -136,7 +136,7 @@ feature
 			end
 		end
 
-	test_time is
+	test_time
 			--
 		local
 			v : ECLI_TIME
@@ -150,7 +150,7 @@ feature
 			v.set_item (t)
 		end
 
-	test_timestamp is
+	test_timestamp
 			--
 		local
 			v : ECLI_TIMESTAMP
@@ -164,7 +164,7 @@ feature
 			v.set_item (d)
 		end
 
-	test_integer is
+	test_integer
 			--
 		local
 			v : ECLI_INTEGER
@@ -175,7 +175,7 @@ feature
 			v.set_item (-2_124_123_432)
 		end
 
-	test_double is
+	test_double
 			--
 		local
 			v : ECLI_DOUBLE
@@ -186,7 +186,7 @@ feature
 			v.set_item (-1.2345e23)
 		end
 
-	test_real is
+	test_real
 			--
 		local
 			v : ECLI_REAL
@@ -200,7 +200,7 @@ feature
 			v.set_item (r)
 		end
 
-	test_float is
+	test_float
 			--
 		local
 			v : ECLI_FLOAT
@@ -211,7 +211,7 @@ feature
 			v.set_item (-1.2345e23)
 		end
 
-	test_arrayed_char is
+	test_arrayed_char
 			--
 		local
 			v : ECLI_ARRAYED_CHAR
@@ -225,7 +225,7 @@ feature
 			v.set_null_at (2)
 		end
 
-	test_arrayed_varchar is
+	test_arrayed_varchar
 			--
 		local
 			v : ECLI_ARRAYED_VARCHAR
@@ -237,7 +237,7 @@ feature
 			v.set_null_at (2)
 		end
 
-	test_arrayed_longvarchar is
+	test_arrayed_longvarchar
 			--
 		local
 			v, z : ECLI_ARRAYED_LONGVARCHAR
@@ -255,7 +255,7 @@ feature
 			end
 		end
 
-	test_arrayed_date is
+	test_arrayed_date
 			--
 		local
 			v : ECLI_ARRAYED_DATE
@@ -271,7 +271,7 @@ feature
 			v.set_item_at (d, 3)
 		end
 
-	test_arrayed_time is
+	test_arrayed_time
 			--
 		local
 			v : ECLI_ARRAYED_TIME
@@ -287,7 +287,7 @@ feature
 			v.set_item_at (t,3)
 		end
 
-	test_arrayed_timestamp is
+	test_arrayed_timestamp
 			--
 		local
 			v : ECLI_ARRAYED_TIMESTAMP
@@ -303,7 +303,7 @@ feature
 			v.set_item_at (d,3)
 		end
 
-	test_arrayed_integer is
+	test_arrayed_integer
 			--
 		local
 			v : ECLI_ARRAYED_INTEGER
@@ -314,7 +314,7 @@ feature
 			v.set_item_at (-2_124_123_432, 3)
 		end
 
-	test_arrayed_double is
+	test_arrayed_double
 			--
 		local
 			v : ECLI_ARRAYED_DOUBLE
@@ -325,7 +325,7 @@ feature
 			v.set_item_at (-1.2345e23, 3)
 		end
 
-	test_arrayed_real is
+	test_arrayed_real
 			--
 		local
 			v : ECLI_ARRAYED_REAL
@@ -339,7 +339,7 @@ feature
 			v.set_item_at (r, 3)
 		end
 
-	test_arrayed_float is
+	test_arrayed_float
 			--
 		local
 			v,z : ECLI_ARRAYED_FLOAT
@@ -355,7 +355,7 @@ feature
 			end
 		end
 
-	test_arrayed_decimal is
+	test_arrayed_decimal
 		local
 			v, z : ECLI_ARRAYED_DECIMAL
 			l_zero : MA_DECIMAL

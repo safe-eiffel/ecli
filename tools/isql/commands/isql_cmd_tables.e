@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that list tables on current session."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("tab[les]", command_width)
 			Result.append_string ("List all tables in current catalog.")
 		end
 
-	match_string : STRING is "tab"
+	match_string : STRING = "tab"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show tables of current datasource
 		local
 			index : INTEGER
@@ -67,7 +67,7 @@ feature -- Basic operations
 			end
 		end
 
-	put_headings (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT) is
+	put_headings (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT)
 		local
 			l_catalog : STRING
 			l_schema : STRING
@@ -95,6 +95,6 @@ feature -- Basic operations
 			context.filter.end_heading
 		end
 
-	c_maximum_initial_column_capacity : INTEGER is 25
+	c_maximum_initial_column_capacity : INTEGER = 25
 
 end -- class ISQL_CMD_TABLES

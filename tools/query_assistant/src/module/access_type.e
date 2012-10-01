@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Access type enumeration."
 	author: "Paul G. Crismer & others."
 	date: "$Date$"
@@ -12,7 +12,7 @@ create
 
 feature -- Initialization
 
-	make_from_string (name : STRING) is
+	make_from_string (name : STRING)
 		require
 			name_not_void: name /= Void
 		do
@@ -39,7 +39,7 @@ feature -- Access
 
 feature -- Conversion
 
-	to_string : STRING is
+	to_string : STRING
 		do
 			Result := types.item (type)
 		end
@@ -47,14 +47,14 @@ feature -- Conversion
 
 feature -- Status report
 
-	is_read : BOOLEAN is do Result := (type = c_read) end
-	is_write : BOOLEAN is do Result := (type = c_write) end
-	is_update : BOOLEAN is do Result := (type = c_update) end
-	is_delete : BOOLEAN is do Result := (type = c_delete) end
-	is_exists : BOOLEAN is do Result := (type = c_exists) end
-	is_extended : BOOLEAN is do Result := (type = c_extended) end
+	is_read : BOOLEAN do Result := (type = c_read) end
+	is_write : BOOLEAN do Result := (type = c_write) end
+	is_update : BOOLEAN do Result := (type = c_update) end
+	is_delete : BOOLEAN do Result := (type = c_delete) end
+	is_exists : BOOLEAN do Result := (type = c_exists) end
+	is_extended : BOOLEAN do Result := (type = c_extended) end
 
-	valid_type (name : STRING) : BOOLEAN is
+	valid_type (name : STRING) : BOOLEAN
 		require
 			name_not_void: name /= Void
 		do
@@ -77,24 +77,24 @@ feature -- Status report
 
 feature -- constants
 
-	c_read : INTEGER is 1
-	c_write : INTEGER is 2
-	c_exists : INTEGER is 3
-	c_update : INTEGER is 4
-	c_delete : INTEGER is 5
-	c_extended : INTEGER is 6
+	c_read : INTEGER = 1
+	c_write : INTEGER = 2
+	c_exists : INTEGER = 3
+	c_update : INTEGER = 4
+	c_delete : INTEGER = 5
+	c_extended : INTEGER = 6
 
-	t_read : STRING is "read"
-	t_write : STRING is "write"
-	t_exists : STRING is "update"
-	t_update : STRING is "delete"
-	t_delete : STRING is "exists"
-	t_extended : STRING is "extended"
+	t_read : STRING = "read"
+	t_write : STRING = "write"
+	t_exists : STRING = "update"
+	t_update : STRING = "delete"
+	t_delete : STRING = "exists"
+	t_extended : STRING = "extended"
 
 
 feature {NONE} -- Implementation
 
-	types : ARRAY[STRING] is
+	types : ARRAY[STRING]
 		once
 			create Result.make (1,6)
 			Result.put (t_read, c_read)

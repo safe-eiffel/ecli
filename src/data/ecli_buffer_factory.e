@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that create buffers for DB to application information exchange."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -28,9 +28,9 @@ feature -- Initialization
 
 feature -- Access
 
-	Default_precision_limit : INTEGER is 8192
+	Default_precision_limit : INTEGER = 8192
 
-	precision_limit : INTEGER is
+	precision_limit : INTEGER
 			-- maximum acceptable precision
 		do
 			if precision_limit_impl /= 0 then
@@ -48,7 +48,7 @@ feature -- Access
 
 feature -- Element change
 
-	set_precision_limit (p : INTEGER) is
+	set_precision_limit (p : INTEGER)
 			-- set maximum number of characters retrieved for each item
 		require
 			greater_than_zero: p > 0
@@ -72,7 +72,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-		create_buffers (cursor_description :ARRAY [ECLI_COLUMN_DESCRIPTION]) is
+		create_buffers (cursor_description :ARRAY [ECLI_COLUMN_DESCRIPTION])
 			-- Create all ECLI_VALUE objects.
 			-- Empty column names are replaced by the column index.
 		require
@@ -137,7 +137,7 @@ feature {NONE} -- Implementation
 			create {ECLI_CHAR}Result.make (1)
 		end
 
-	map_name_to_index (index : INTEGER; name : STRING) is
+	map_name_to_index (index : INTEGER; name : STRING)
 			-- hook: map column `name' to column `index'
 		require
 			index_stricly_positive: index > 0
@@ -146,7 +146,7 @@ feature {NONE} -- Implementation
 			last_index_table.put (index, name)
 		end
 
-	create_name_to_index (size : INTEGER) is
+	create_name_to_index (size : INTEGER)
 			-- hook: create name to index map
 		do
 			create last_index_table.make (size)
@@ -156,7 +156,7 @@ feature {NONE} -- Implementation
 
 	impl_value_factory : detachable like value_factory
 
-	value_factory : ECLI_VALUE_FACTORY is
+	value_factory : ECLI_VALUE_FACTORY
 		do
 			if attached impl_value_factory as l_factory then
 				Result := l_factory

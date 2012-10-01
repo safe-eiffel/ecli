@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Summary description for {ECLI_DATASET_DESCRIPTION}."
 	author: ""
 	date: "$Date$"

@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Primary keys of a table."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -89,7 +89,7 @@ feature -- Access
 
 feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 
-	add_column (a_column_name : STRING) is
+	add_column (a_column_name : STRING)
 			-- add `a_column_name' in columns
 		require
 			a_column_name_not_void: a_column_name /= Void --FIXME: VS-DEL
@@ -101,7 +101,7 @@ feature {ECLI_PRIMARY_KEY_CURSOR, ECLI_PRIMARY_KEY}-- Measurement
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse printable representation
 		do
 			create Result.make (0)

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "SQL CHAR (n) values."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -19,18 +19,18 @@ create
 
 feature
 
-	ecli_type : STRING is "ECLI_CHAR"
+	ecli_type : STRING = "ECLI_CHAR"
 
-	value_type : STRING is "STRING"
+	value_type : STRING = "STRING"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call_with_precision
 		end
 
 end -- class QA_CHAR
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

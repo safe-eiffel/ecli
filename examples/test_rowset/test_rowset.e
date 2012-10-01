@@ -1,4 +1,4 @@
-indexing
+note
 	description: "ECLI test of arrayed value classes. It allows bulk insert/retrieve in a single query execution.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -21,7 +21,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 		do
 			create  session.make_default
 			-- session opening
@@ -80,7 +80,7 @@ feature -- Basic Operations
 			end
 		end
 
-	do_tests is
+	do_tests
 		local
 			test : ROWSET_MODIFIER_TEST
 		do
@@ -93,7 +93,7 @@ feature -- Basic Operations
 
 feature {NONE} -- Implementation
 
-	parse_arguments is
+	parse_arguments
 		local
 			index : INTEGER
 			current_argument : STRING
@@ -124,7 +124,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	set_error (message, value : STRING) is
+	set_error (message, value : STRING)
 		do
 			create error_message.make (0)
 			error_message.append_string (message)
@@ -135,7 +135,7 @@ feature {NONE} -- Implementation
 			error_message /= Void
 		end
 
-	print_usage is
+	print_usage
 		do
 			if error_message /= Void then
 				io.put_string (error_message)
@@ -148,7 +148,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	print_error (stmt : ECLI_STATUS) is
+	print_error (stmt : ECLI_STATUS)
 		do
 			io.put_string ("** ERROR **%N")
 			io.put_string (stmt.diagnostic_message)

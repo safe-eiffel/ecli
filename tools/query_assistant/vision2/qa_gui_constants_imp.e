@@ -1,4 +1,4 @@
-indexing
+note
 	description: "[
 			Objects that provide access to constants, possibly loaded from a files.
 			Each constant is generated into two features: both a query and a storage
@@ -35,7 +35,7 @@ deferred class
 	
 feature {NONE} -- Initialization
 
-	initialize_constants is
+	initialize_constants
 			-- Load all constants from file.
 		local
 			file: PLAIN_TEXT_FILE
@@ -56,7 +56,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	reload_constants_from_file is
+	reload_constants_from_file
 			-- Re-load all constants from file named `file_name'.
 			-- When used in conjunction with `set_file_name', it enables
 			-- you to load a fresh set of INTEGER and STRING constants
@@ -101,385 +101,385 @@ feature -- Access
 			parent_modify_label_cell.put(string_constant_by_name ("parent_modify_label"))
 		end
 
-	general_options_label: STRING is
+	general_options_label: STRING
 			-- `Result' is STRING constant named `general_options_label'.
 		do
 			Result := general_options_label_cell.item
 		end
 
-	general_options_label_cell: CELL [STRING] is
+	general_options_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `general_options_label'.
 		once
 			create Result.put (string_constant_by_name ("general_options_label"))
 		end
 
-	access_routines_prefix_label: STRING is
+	access_routines_prefix_label: STRING
 			-- `Result' is STRING constant named `access_routines_prefix_label'.
 		do
 			Result := access_routines_prefix_label_cell.item
 		end
 
-	access_routines_prefix_label_cell: CELL [STRING] is
+	access_routines_prefix_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `access_routines_prefix_label'.
 		once
 			create Result.put (string_constant_by_name ("access_routines_prefix_label"))
 		end
 
-	parent_cursor_label: STRING is
+	parent_cursor_label: STRING
 			-- `Result' is STRING constant named `parent_cursor_label'.
 		do
 			Result := parent_cursor_label_cell.item
 		end
 
-	parent_cursor_label_cell: CELL [STRING] is
+	parent_cursor_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `parent_cursor_label'.
 		once
 			create Result.put (string_constant_by_name ("parent_cursor_label"))
 		end
 
-	data_source_options_label: STRING is
+	data_source_options_label: STRING
 			-- `Result' is STRING constant named `data_source_options_label'.
 		do
 			Result := data_source_options_label_cell.item
 		end
 
-	data_source_options_label_cell: CELL [STRING] is
+	data_source_options_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `data_source_options_label'.
 		once
 			create Result.put (string_constant_by_name ("data_source_options_label"))
 		end
 
-	minimum_generation_label: INTEGER is
+	minimum_generation_label: INTEGER
 			-- `Result' is INTEGER constant named `minimum_generation_label'.
 		do
 			Result := minimum_generation_label_cell.item
 		end
 
-	minimum_generation_label_cell: CELL [INTEGER] is
+	minimum_generation_label_cell: CELL [INTEGER]
 			--`Result' is once access to a cell holding vale of `minimum_generation_label'.
 		once
 			create Result.put (integer_constant_by_name ("minimum_generation_label"))
 		end
 
-	user_name_label: STRING is
+	user_name_label: STRING
 			-- `Result' is STRING constant named `user_name_label'.
 		do
 			Result := user_name_label_cell.item
 		end
 
-	user_name_label_cell: CELL [STRING] is
+	user_name_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `user_name_label'.
 		once
 			create Result.put (string_constant_by_name ("user_name_label"))
 		end
 
-	password_label: STRING is
+	password_label: STRING
 			-- `Result' is STRING constant named `password_label'.
 		do
 			Result := password_label_cell.item
 		end
 
-	password_label_cell: CELL [STRING] is
+	password_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `password_label'.
 		once
 			create Result.put (string_constant_by_name ("password_label"))
 		end
 
-	generate_button_label: STRING is
+	generate_button_label: STRING
 			-- `Result' is STRING constant named `generate_button_label'.
 		do
 			Result := generate_button_label_cell.item
 		end
 
-	generate_button_label_cell: CELL [STRING] is
+	generate_button_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `generate_button_label'.
 		once
 			create Result.put (string_constant_by_name ("generate_button_label"))
 		end
 
-	function_prototype_label: STRING is
+	function_prototype_label: STRING
 			-- `Result' is STRING constant named `function_prototype_label'.
 		do
 			Result := function_prototype_label_cell.item
 		end
 
-	function_prototype_label_cell: CELL [STRING] is
+	function_prototype_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `function_prototype_label'.
 		once
 			create Result.put (string_constant_by_name ("function_prototype_label"))
 		end
 
-	output_directory_label: STRING is
+	output_directory_label: STRING
 			-- `Result' is STRING constant named `output_directory_label'.
 		do
 			Result := output_directory_label_cell.item
 		end
 
-	output_directory_label_cell: CELL [STRING] is
+	output_directory_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `output_directory_label'.
 		once
 			create Result.put (string_constant_by_name ("output_directory_label"))
 		end
 
-	data_source_schema_label: STRING is
+	data_source_schema_label: STRING
 			-- `Result' is STRING constant named `data_source_schema_label'.
 		do
 			Result := data_source_schema_label_cell.item
 		end
 
-	data_source_schema_label_cell: CELL [STRING] is
+	data_source_schema_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `data_source_schema_label'.
 		once
 			create Result.put (string_constant_by_name ("data_source_schema_label"))
 		end
 
-	menu_about_label: STRING is
+	menu_about_label: STRING
 			-- `Result' is STRING constant named `menu_about_label'.
 		do
 			Result := menu_about_label_cell.item
 		end
 
-	menu_about_label_cell: CELL [STRING] is
+	menu_about_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `menu_about_label'.
 		once
 			create Result.put (string_constant_by_name ("menu_about_label"))
 		end
 
-	menu_help_label: STRING is
+	menu_help_label: STRING
 			-- `Result' is STRING constant named `menu_help_label'.
 		do
 			Result := menu_help_label_cell.item
 		end
 
-	menu_help_label_cell: CELL [STRING] is
+	menu_help_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `menu_help_label'.
 		once
 			create Result.put (string_constant_by_name ("menu_help_label"))
 		end
 
-	catalog_name_label: STRING is
+	catalog_name_label: STRING
 			-- `Result' is STRING constant named `catalog_name_label'.
 		do
 			Result := catalog_name_label_cell.item
 		end
 
-	catalog_name_label_cell: CELL [STRING] is
+	catalog_name_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `catalog_name_label'.
 		once
 			create Result.put (string_constant_by_name ("catalog_name_label"))
 		end
 
-	use_decimal_label: STRING is
+	use_decimal_label: STRING
 			-- `Result' is STRING constant named `use_decimal_label'.
 		do
 			Result := use_decimal_label_cell.item
 		end
 
-	use_decimal_label_cell: CELL [STRING] is
+	use_decimal_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `use_decimal_label'.
 		once
 			create Result.put (string_constant_by_name ("use_decimal_label"))
 		end
 
-	input_file_label: STRING is
+	input_file_label: STRING
 			-- `Result' is STRING constant named `input_file_label'.
 		do
 			Result := input_file_label_cell.item
 		end
 
-	input_file_label_cell: CELL [STRING] is
+	input_file_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `input_file_label'.
 		once
 			create Result.put (string_constant_by_name ("input_file_label"))
 		end
 
-	parent_cursor_tooltip: STRING is
+	parent_cursor_tooltip: STRING
 			-- `Result' is STRING constant named `parent_cursor_tooltip'.
 		do
 			Result := parent_cursor_tooltip_cell.item
 		end
 
-	parent_cursor_tooltip_cell: CELL [STRING] is
+	parent_cursor_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `parent_cursor_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("parent_cursor_tooltip"))
 		end
 
-	parent_modify_tooltip: STRING is
+	parent_modify_tooltip: STRING
 			-- `Result' is STRING constant named `parent_modify_tooltip'.
 		do
 			Result := parent_modify_tooltip_cell.item
 		end
 
-	parent_modify_tooltip_cell: CELL [STRING] is
+	parent_modify_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `parent_modify_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("parent_modify_tooltip"))
 		end
 
-	max_length_tooltip: STRING is
+	max_length_tooltip: STRING
 			-- `Result' is STRING constant named `max_length_tooltip'.
 		do
 			Result := max_length_tooltip_cell.item
 		end
 
-	max_length_tooltip_cell: CELL [STRING] is
+	max_length_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `max_length_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("max_length_tooltip"))
 		end
 
-	xml_parser_label: STRING is
+	xml_parser_label: STRING
 			-- `Result' is STRING constant named `xml_parser_label'.
 		do
 			Result := xml_parser_label_cell.item
 		end
 
-	xml_parser_label_cell: CELL [STRING] is
+	xml_parser_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `xml_parser_label'.
 		once
 			create Result.put (string_constant_by_name ("xml_parser_label"))
 		end
 
-	generation_option_label: STRING is
+	generation_option_label: STRING
 			-- `Result' is STRING constant named `generation_option_label'.
 		do
 			Result := generation_option_label_cell.item
 		end
 
-	generation_option_label_cell: CELL [STRING] is
+	generation_option_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `generation_option_label'.
 		once
 			create Result.put (string_constant_by_name ("generation_option_label"))
 		end
 
-	find_button_ellipsis: STRING is
+	find_button_ellipsis: STRING
 			-- `Result' is STRING constant named `find_button_ellipsis'.
 		do
 			Result := find_button_ellipsis_cell.item
 		end
 
-	find_button_ellipsis_cell: CELL [STRING] is
+	find_button_ellipsis_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `find_button_ellipsis'.
 		once
 			create Result.put (string_constant_by_name ("find_button_ellipsis"))
 		end
 
-	input_output_label: STRING is
+	input_output_label: STRING
 			-- `Result' is STRING constant named `input_output_label'.
 		do
 			Result := input_output_label_cell.item
 		end
 
-	input_output_label_cell: CELL [STRING] is
+	input_output_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `input_output_label'.
 		once
 			create Result.put (string_constant_by_name ("input_output_label"))
 		end
 
-	xml_parser_tooltip: STRING is
+	xml_parser_tooltip: STRING
 			-- `Result' is STRING constant named `xml_parser_tooltip'.
 		do
 			Result := xml_parser_tooltip_cell.item
 		end
 
-	xml_parser_tooltip_cell: CELL [STRING] is
+	xml_parser_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `xml_parser_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("xml_parser_tooltip"))
 		end
 
-	data_source_name_label: STRING is
+	data_source_name_label: STRING
 			-- `Result' is STRING constant named `data_source_name_label'.
 		do
 			Result := data_source_name_label_cell.item
 		end
 
-	data_source_name_label_cell: CELL [STRING] is
+	data_source_name_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `data_source_name_label'.
 		once
 			create Result.put (string_constant_by_name ("data_source_name_label"))
 		end
 
-	minimum_file_name_width: INTEGER is
+	minimum_file_name_width: INTEGER
 			-- `Result' is INTEGER constant named `minimum_file_name_width'.
 		do
 			Result := minimum_file_name_width_cell.item
 		end
 
-	minimum_file_name_width_cell: CELL [INTEGER] is
+	minimum_file_name_width_cell: CELL [INTEGER]
 			--`Result' is once access to a cell holding vale of `minimum_file_name_width'.
 		once
 			create Result.put (integer_constant_by_name ("minimum_file_name_width"))
 		end
 
-	verbose_tooltip: STRING is
+	verbose_tooltip: STRING
 			-- `Result' is STRING constant named `verbose_tooltip'.
 		do
 			Result := verbose_tooltip_cell.item
 		end
 
-	verbose_tooltip_cell: CELL [STRING] is
+	verbose_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `verbose_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("verbose_tooltip"))
 		end
 
-	verbose_label: STRING is
+	verbose_label: STRING
 			-- `Result' is STRING constant named `verbose_label'.
 		do
 			Result := verbose_label_cell.item
 		end
 
-	verbose_label_cell: CELL [STRING] is
+	verbose_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `verbose_label'.
 		once
 			create Result.put (string_constant_by_name ("verbose_label"))
 		end
 
-	max_length_label: STRING is
+	max_length_label: STRING
 			-- `Result' is STRING constant named `max_length_label'.
 		do
 			Result := max_length_label_cell.item
 		end
 
-	max_length_label_cell: CELL [STRING] is
+	max_length_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `max_length_label'.
 		once
 			create Result.put (string_constant_by_name ("max_length_label"))
 		end
 
-	data_source_schema_tooltip: STRING is
+	data_source_schema_tooltip: STRING
 			-- `Result' is STRING constant named `data_source_schema_tooltip'.
 		do
 			Result := data_source_schema_tooltip_cell.item
 		end
 
-	data_source_schema_tooltip_cell: CELL [STRING] is
+	data_source_schema_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `data_source_schema_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("data_source_schema_tooltip"))
 		end
 
-	data_source_name_tooltip: STRING is
+	data_source_name_tooltip: STRING
 			-- `Result' is STRING constant named `data_source_name_tooltip'.
 		do
 			Result := data_source_name_tooltip_cell.item
 		end
 
-	data_source_name_tooltip_cell: CELL [STRING] is
+	data_source_name_tooltip_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `data_source_name_tooltip'.
 		once
 			create Result.put (string_constant_by_name ("data_source_name_tooltip"))
 		end
 
-	parent_modify_label: STRING is
+	parent_modify_label: STRING
 			-- `Result' is STRING constant named `parent_modify_label'.
 		do
 			Result := parent_modify_label_cell.item
 		end
 
-	parent_modify_label_cell: CELL [STRING] is
+	parent_modify_label_cell: CELL [STRING]
 			--`Result' is once access to a cell holding vale of `parent_modify_label'.
 		once
 			create Result.put (string_constant_by_name ("parent_modify_label"))
@@ -490,13 +490,13 @@ feature -- Access
 --| FIXME `constant_by_name' and `has_constant' `constants_initialized' are only required until the complete change to
 --| constants is complete. They are required for the pixmaps at the moment.
 
-	constants_initialized: BOOLEAN is
+	constants_initialized: BOOLEAN
 			-- Have constants been initialized from file?
 		do
 			Result := initialized_cell.item
 		end
 
-	string_constant_by_name (a_name: STRING): STRING is
+	string_constant_by_name (a_name: STRING): STRING
 			-- `Result' is STRING 
 		require
 			initialized: constants_initialized
@@ -508,7 +508,7 @@ feature -- Access
 			Result_not_void: Result /= Void
 		end
 		
-	integer_constant_by_name (a_name: STRING): INTEGER is
+	integer_constant_by_name (a_name: STRING): INTEGER
 			-- `Result' is STRING 
 		require
 			initialized: constants_initialized
@@ -525,7 +525,7 @@ feature -- Access
 			Result := l_string.to_integer
 		end
 		
-	has_constant (a_name: STRING): BOOLEAN is
+	has_constant (a_name: STRING): BOOLEAN
 			-- Does constant `a_name' exist?
 		require
 			initialized: constants_initialized
@@ -536,41 +536,41 @@ feature -- Access
 
 feature {NONE} -- Implementation
 
-	initialized_cell: CELL [BOOLEAN] is
+	initialized_cell: CELL [BOOLEAN]
 			-- A cell to hold whether the constants have been loaded.
 		once
 			create Result
 		end
 		
-	all_constants: HASH_TABLE [STRING, STRING] is
+	all_constants: HASH_TABLE [STRING, STRING]
 			-- All constants loaded from constants file.
 		once
 			create Result.make (4)
 		end
 		
-	file_name: STRING is
+	file_name: STRING
 			-- File name from which constants must be loaded.
 		do
 			Result := file_name_cell.item
 		end
 		
-	file_name_cell: CELL [STRING] is
+	file_name_cell: CELL [STRING]
 		once
 			create Result
 			Result.put ("constants.txt")
 		end
 		
-	set_file_name (a_file_name: STRING) is
+	set_file_name (a_file_name: STRING)
 			-- Assign `a_file_name' to `file_name'.
 		do
 			file_name_cell.put (a_file_name)
 		end
 		
-	String_constant: STRING is "STRING"
+	String_constant: STRING = "STRING"
 	
-	Integer_constant: STRING is "INTEGER"
+	Integer_constant: STRING = "INTEGER"
 		
-	parse_file_contents (content: STRING) is
+	parse_file_contents (content: STRING)
 			-- Parse contents of `content' into `all_constants'.
 		local
 			line_contents: STRING
@@ -600,7 +600,7 @@ feature {NONE} -- Implementation
 			end
 		end
 		
-	first_line (content: STRING): STRING is
+	first_line (content: STRING): STRING
 			-- `Result' is first line of `Content',
 			-- which will be stripped from `content'.
 		require
@@ -622,7 +622,7 @@ feature {NONE} -- Implementation
 			no_characters_lost: old content.count = Result.count + content.count
 		end
 
-	set_with_named_file (a_pixmap: EV_PIXMAP; a_file_name: STRING) is
+	set_with_named_file (a_pixmap: EV_PIXMAP; a_file_name: STRING)
 			-- Set image of `a_pixmap' from file, `a_file_name'.
 			-- If `a_file_name' does not exist, do nothing.
 		require

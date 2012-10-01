@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Column sets (parameters or results) of an SQL access module."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -25,7 +25,7 @@ inherit
 
 feature {NONE}-- Initialization
 
-	make (a_name : STRING) is
+	make (a_name : STRING)
 			-- creation using `a_name'
 		require
 			a_name_not_void: a_name /= Void
@@ -39,7 +39,7 @@ feature {NONE}-- Initialization
 			generatable: is_generatable
 		end
 
-	make_with_parent_name (a_name : STRING; a_parent_name : STRING) is
+	make_with_parent_name (a_name : STRING; a_parent_name : STRING)
 			-- creation using `a_name' and `a_parent_name'
 		require
 			a_name_not_void: a_name /= Void
@@ -56,7 +56,7 @@ feature {NONE}-- Initialization
 
 feature -- Access
 
-	type : STRING is
+	type : STRING
 			--
 		do
 			if parent_name /= Void and then local_items /= Void and then local_items.count = 0 then
@@ -75,7 +75,7 @@ feature -- Access
 	local_items : DS_HASH_SET [G]
 		-- local items : difference between Current and parent
 
-	final_set_name : STRING is
+	final_set_name : STRING
 			--
 		do
 			if parent /= Void and then local_items /= Void and then local_items.count = 0 then
@@ -85,7 +85,7 @@ feature -- Access
 			end
 		end
 
-	eiffel_signature : STRING is
+	eiffel_signature : STRING
 			--
 		local
 			cursor : like new_cursor
@@ -107,7 +107,7 @@ feature -- Access
 			end
 		end
 
-	item_for_name (a_name : STRING) : G  is
+	item_for_name (a_name : STRING) : G
 			-- item whose name is `a_name'
 		require
 			a_name_not_void: a_name /= Void
@@ -134,7 +134,7 @@ feature -- Status report
 
 	is_flattened : BOOLEAN
 
-	same_equality_tester (other: DS_SEARCHABLE [G]) : BOOLEAN is
+	same_equality_tester (other: DS_SEARCHABLE [G]) : BOOLEAN
 		do
 			Result := True
 		end
@@ -153,7 +153,7 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_parent (a_parent : like parent) is
+	set_parent (a_parent : like parent)
 			-- set `parent' to `a_parent'
 		require
 			a_parent_not_void: a_parent /= Void
@@ -168,7 +168,7 @@ feature -- Element change
 			parent_set : parent = a_parent
 		end
 
-	set_name (a_name : like name) is
+	set_name (a_name : like name)
 			-- set `name' to `a_name'
 		require
 			a_name_not_void: a_name /= Void
@@ -178,7 +178,7 @@ feature -- Element change
 			name_set: name = a_name
 		end
 
-	set_parent_name (a_parent_name : like parent_name) is
+	set_parent_name (a_parent_name : like parent_name)
 			-- set `parent_name' to `a_parent_name'
 		require
 			a_parent_name_not_void: a_parent_name /= Void
@@ -190,7 +190,7 @@ feature -- Element change
 
 feature -- Conversion
 
-	as_set_name : DS_SET [STRING] is
+	as_set_name : DS_SET [STRING]
 			-- Set constituted with the names of the parameters
 		local
 			cursor : DS_SET_CURSOR[G]
@@ -215,7 +215,7 @@ feature -- Conversion
 
 feature -- Basic operations
 
-	flatten is
+	flatten
 			-- flatten so that columns of parent set are included in current set
 		do
 			if not is_flattened then
@@ -235,9 +235,9 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	initial_size : INTEGER is 5
+	initial_size : INTEGER = 5
 
-	item_eiffel_name (an_item : G) : STRING is
+	item_eiffel_name (an_item : G) : STRING
 			--
 		require
 			an_item_not_void: an_item /= Void
@@ -246,7 +246,7 @@ feature {NONE} -- Implementation
 			result_not_void: Result /= Void
 		end
 
-	item_eiffel_type (an_item : G) : STRING is
+	item_eiffel_type (an_item : G) : STRING
 			--
 		require
 			an_item_not_void: an_item /= Void
@@ -262,7 +262,7 @@ invariant
 
 end -- class COLUMN_SET
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

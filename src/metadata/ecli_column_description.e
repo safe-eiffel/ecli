@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Description of result-set column."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -37,7 +37,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER) is
+	make (stmt : ECLI_STATEMENT; index : INTEGER; max_name_length : INTEGER)
 			-- Describe `index'th column of current result-set of `stmt', limiting the name length to `max_name_length'
 		require
 			stmt_attached: stmt /= Void --FIXME: VS-DEL
@@ -84,14 +84,14 @@ feature -- Status Report
 
 feature -- Measurement
 
-	hash_code : INTEGER is
+	hash_code : INTEGER
 		do
 			Result := name.hash_code
 		end
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			--
 		do
 			Result := same_description (other) and then name.is_equal (other.name)
@@ -99,7 +99,7 @@ feature -- Comparison
 
 feature {NONE} -- Implementation
 
-	ext_actual_name_length : XS_C_INT32 is once create Result.make end
+	ext_actual_name_length : XS_C_INT32 once create Result.make end
 
 invariant
 	name_significant: not iznogoud implies not name.is_empty

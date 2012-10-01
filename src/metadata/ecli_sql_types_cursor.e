@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Cursors over the SQL types supported by the datasource related to a session."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -56,7 +56,7 @@ feature {} -- Initialization
 			create_buffer_objects
 		end
 
-	make_all_types, open_all_types (a_session : ECLI_SESSION) is
+	make_all_types, open_all_types (a_session : ECLI_SESSION)
 			-- make cursor for all types supported by `a_session'
 		require
 			session_not_void: a_session /= Void  --FIXME: VS-DEL
@@ -70,7 +70,7 @@ feature {} -- Initialization
 		end
 
 
-	make (a_type : INTEGER; a_session : ECLI_SESSION) is
+	make (a_type : INTEGER; a_session : ECLI_SESSION)
 			-- make cursor for `a_type', if it is a type known by the datasource
 		require
 			a_session_not_void: a_session /= Void --FIXME: VS-DEL
@@ -87,7 +87,7 @@ feature {} -- Initialization
 
 feature -- Access
 
-	item : ECLI_SQL_TYPE is
+	item : ECLI_SQL_TYPE
 			-- item at current cursor position
 		require
 			not_off: not off
@@ -99,7 +99,7 @@ feature -- Access
 			definition: Result /= Void --FIXME: VS-DEL
 		end
 
-	supported_types : ARRAY[INTEGER] is
+	supported_types : ARRAY[INTEGER]
 			-- array of supported types
 		once
 			Result := <<
@@ -122,7 +122,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-	start is
+	start
 			-- advance cursor to first position if any
 		do
 			if results.is_empty then
@@ -134,7 +134,7 @@ feature -- Cursor Movement
 			end
 		end
 
-	forth is
+	forth
 			-- advance cursor to next position
 		do
 			Precursor
@@ -147,7 +147,7 @@ feature -- Cursor Movement
 
 feature {ECLI_SQL_TYPE} -- Status
 
-	is_odbc_v3 : BOOLEAN is
+	is_odbc_v3 : BOOLEAN
 			-- does this type description contain ODBC > 3.x information ?
 		do
 			Result := result_columns_count > 15
@@ -178,7 +178,7 @@ feature {ECLI_SQL_TYPE} -- Access
 
 feature {NONE} -- Implementation
 
-		create_buffers is
+		create_buffers
 				-- create buffers for results
 		do
 			set_results (<<
@@ -230,9 +230,9 @@ feature {NONE} -- Implementation
 
 	impl_item : detachable ECLI_SQL_TYPE
 
-	definition : STRING is once Result := "SQLGetTypeInfo" end
+	definition : STRING once Result := "SQLGetTypeInfo" end
 
-	get_type_info (type : INTEGER) is
+	get_type_info (type : INTEGER)
 			-- get information on `type'
 		do
 			set_status ("ecli_c_get_type_info", ecli_c_get_type_info (handle, type))

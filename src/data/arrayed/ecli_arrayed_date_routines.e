@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Routines for handling arrayed buffers of DATEs or date part of TIMESTAMPs."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -22,19 +22,19 @@ inherit
 
 feature -- Access
 
-	buffer : POINTER is
+	buffer : POINTER
 		deferred
 		end
 
-	transfer_octet_length : INTEGER_64 is
+	transfer_octet_length : INTEGER_64
 		deferred
 		end
 
-	cursor_index : INTEGER is
+	cursor_index : INTEGER
 		deferred
 		end
 
-	year : INTEGER is
+	year : INTEGER
 			-- year_at (cursor_index)
 		do
 			if not off then
@@ -46,7 +46,7 @@ feature -- Access
 			zero_when_off: off implies Result = 0
 		end
 
-	month : INTEGER is
+	month : INTEGER
 			-- month_at (cursor_index)
 		do
 			if not off then
@@ -58,7 +58,7 @@ feature -- Access
 			zero_when_off: off implies Result = 0
 		end
 
-	day : INTEGER is
+	day : INTEGER
 			-- day_at (cursor_index)
 		do
 			if not off then
@@ -70,7 +70,7 @@ feature -- Access
 			zero_when_off: off implies Result = 0
 		end
 
-	year_at (index : INTEGER) : INTEGER is
+	year_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
@@ -82,7 +82,7 @@ feature -- Access
 			end
 		end
 
-	month_at (index : INTEGER) : INTEGER is
+	month_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
@@ -94,7 +94,7 @@ feature -- Access
 			end
 		end
 
-	day_at (index : INTEGER) : INTEGER is
+	day_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and then index <= upper
 		local
@@ -108,26 +108,26 @@ feature -- Access
 
 feature -- Measurement
 
-	lower : INTEGER is
+	lower : INTEGER
 		deferred
 		end
 
-	upper : INTEGER is
+	upper : INTEGER
 		deferred
 		end
 
 
 feature -- Status report
 
-	is_null : BOOLEAN is
+	is_null : BOOLEAN
 		deferred
 		end
 
-	off : BOOLEAN is
+	off : BOOLEAN
 		deferred
 		end
 
-	is_null_at (index : INTEGER) : BOOLEAN is
+	is_null_at (index : INTEGER) : BOOLEAN
 		deferred
 		end
 
@@ -137,14 +137,14 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	go (ith : INTEGER) is
+	go (ith : INTEGER)
 			-- advance internal cursor
 		deferred
 		ensure
 			cursor_index = ith
 		end
 
-	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER ) is
+	set_date_at (a_year, a_month, a_day : INTEGER; index : INTEGER )
 		local
 			date_pointer : POINTER
 		do
@@ -167,12 +167,12 @@ feature -- Transformation
 
 feature -- Conversion
 
-	as_string : STRING is
+	as_string : STRING
 		do
 			Result := out_item_at (cursor_index)
 		end
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 		local
 			save_index : INTEGER
 		do
@@ -203,7 +203,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	Integer_format : ECLI_FORMAT_INTEGER is
+	Integer_format : ECLI_FORMAT_INTEGER
 		deferred
 		end
 

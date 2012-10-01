@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that are named metadata, i.e. with catalog, schema and name."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -37,7 +37,7 @@ feature -- Access
 
 feature -- Element change
 
-	set_catalog (value : ECLI_VARCHAR) is
+	set_catalog (value : ECLI_VARCHAR)
 			-- set `catalog' wit `value'
 		require
 			value: value /= Void --FIXME: VS-DEL
@@ -52,7 +52,7 @@ feature -- Element change
 			assigned_if_not_null: not value.is_null implies catalog.is_equal (value.as_string)
 		end
 
-	set_schema (value : ECLI_VARCHAR) is
+	set_schema (value : ECLI_VARCHAR)
 			-- set `schema' with `value'
 		require
 			value: value /= Void --FIXME: VS-DEL
@@ -67,7 +67,7 @@ feature -- Element change
 			assigned_if_not_null: not value.is_null implies schema.is_equal (value.as_string)
 		end
 
-	set_name (value : ECLI_VARCHAR) is
+	set_name (value : ECLI_VARCHAR)
 			-- set `name' with `value'
 		require
 			value_not_void: value /= Void --FIXME: VS-DEL

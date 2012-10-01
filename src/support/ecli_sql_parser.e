@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that parse SQL queries, searching for parameters."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -17,7 +17,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- initialize
 		do
 			parameter_marker := cli_marker
@@ -47,7 +47,7 @@ feature -- Status report
 
 	escape : BOOLEAN
 
-	is_separator (c : CHARACTER) : BOOLEAN is
+	is_separator (c : CHARACTER) : BOOLEAN
 		do
 			inspect c
 			when ' ', '%T', '%N', '%R', ',', ';', '(', ')', '{', '}' then
@@ -57,7 +57,7 @@ feature -- Status report
 			end
 		end
 
-	is_parameter_marker (c : CHARACTER) : BOOLEAN is
+	is_parameter_marker (c : CHARACTER) : BOOLEAN
 		do
 			inspect c
 			when '?',':' then
@@ -71,7 +71,7 @@ feature -- Status report
 
 feature -- Element change
 
-	set_parameter_marker (marker : CHARACTER) is
+	set_parameter_marker (marker : CHARACTER)
 			-- set `parameter_marker'
 		require
 			good_marker: allowed_parameter_markers.has (marker)
@@ -83,11 +83,11 @@ feature -- Element change
 
 feature -- Constants
 
-	allowed_parameter_markers : STRING is ":?~°§"
+	allowed_parameter_markers : STRING = ":?~°§"
 
 feature -- Basic operations
 
-	parse (sql : STRING; callback : ECLI_SQL_PARSER_CALLBACK) is
+	parse (sql : STRING; callback : ECLI_SQL_PARSER_CALLBACK)
 			-- parse s, replacing every parameter by the ODBC/CLI marker '?'
 		require
 			sql_not_void: sql /= Void --FIXME: VS-DEL
@@ -250,10 +250,10 @@ feature {NONE} -- Implementation
 	State_table_literal : INTEGER = 103
 	State_parameter : INTEGER = 104
 
-	single_quote : CHARACTER is '%''
-	double_quote : CHARACTER is '%"'
+	single_quote : CHARACTER = '%''
+	double_quote : CHARACTER = '%"'
 
-	cli_marker : CHARACTER is '?'
+	cli_marker : CHARACTER = '?'
 
 invariant
 	good_parameter_marker: allowed_parameter_markers.has (parameter_marker)

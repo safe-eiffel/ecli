@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"CLI SQL DOUBLE arrayed value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -35,7 +35,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 		do
 			buffer := ecli_c_alloc_array_value (8, a_capacity)
 			capacity := a_capacity
@@ -45,12 +45,12 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : DOUBLE is
+	item : DOUBLE
 		do
 			Result := item_at (cursor_index)
 		end
 
-	item_at (index : INTEGER) : DOUBLE is
+	item_at (index : INTEGER) : DOUBLE
 		do
 			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
 			--Result := impl_item
@@ -63,16 +63,16 @@ feature -- Status report
 
 feature -- Status setting
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Cursor movement
 
 feature -- Element change
 
-	set_item_at (value : DOUBLE; index : INTEGER) is
+	set_item_at (value : DOUBLE; index : INTEGER)
 			-- set item to 'value', truncating if necessary
 		do
 --			impl_item := value.item
@@ -95,7 +95,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	out : STRING is
+	out : STRING
 		local
 			message_buffer : XS_C_STRING
 			i : INTEGER

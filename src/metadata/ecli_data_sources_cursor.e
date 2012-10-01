@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that iterate over installed data sources."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -54,7 +54,7 @@ feature {NONE} -- Initialization
 			create name.make_empty
 		end
 
-	make_all is
+	make_all
 			-- make cursor on 'all' datasources
 		do
 			default_create
@@ -68,7 +68,7 @@ feature {NONE} -- Initialization
 			before: before
 		end
 
-	make_user is
+	make_user
 			-- make cursor on 'user' datasources
 		do
 			default_create
@@ -81,7 +81,7 @@ feature {NONE} -- Initialization
 			before: before
 		end
 
-	make_system is
+	make_system
 			-- make cursor on 'system' datasources
 		do
 			default_create
@@ -96,7 +96,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_DATA_SOURCE is
+	item : ECLI_DATA_SOURCE
 			-- current item
 		require
 			not_off: not off
@@ -115,7 +115,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	off : BOOLEAN is
+	off : BOOLEAN
 			-- is there no valid item at cursor position ?
 		do
 			Result := before or after
@@ -140,7 +140,7 @@ feature -- Status setting
 
 feature -- Cursor movement
 
-	start is
+	start
 			-- advance cursor on first position if any
 		require
 			is_off: off
@@ -153,7 +153,7 @@ feature -- Cursor movement
 			not_before: not before
 		end
 
-	forth is
+	forth
 			-- advance cursor on the next position if any
 		require
 			not_off: not off
@@ -165,7 +165,7 @@ feature -- Cursor movement
 
 feature -- Basic operations
 
-	close is
+	close
 			-- close cursor
 		do
 			--| do nothing; defined just to be consistent with other cursors
@@ -184,19 +184,19 @@ feature {ECLI_DATA_SOURCE} -- Implementation
 
 feature {NONE} -- Implementation
 
-	release_handle is do end
+	release_handle do end
 
-	disposal_failure_reason : STRING is once Result := "" end
+	disposal_failure_reason : STRING once Result := "" end
 
-	is_ready_for_disposal : BOOLEAN is do Result := True end
+	is_ready_for_disposal : BOOLEAN do Result := True end
 
-	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER
 			-- to be redefined in descendant classes
 		do
 			Result := ecli_c_environment_error (Shared_environment.handle, record_index, state, native_error, message, buffer_length, length_indicator)
 		end
 
-	do_fetch (direction : INTEGER) is
+	do_fetch (direction : INTEGER)
 			-- actual external query
 		do
 			set_status ("ecli_c_get_datasources", ecli_c_get_datasources (Shared_environment.handle, direction, c_name.handle, max_source_name_length, actual_name_length.handle, c_description.handle, max_source_description_length, actual_description_length.handle))
@@ -214,8 +214,8 @@ feature {NONE} -- Implementation
 
 	item_ : detachable ECLI_DATA_SOURCE
 
-	max_source_name_length : INTEGER is 100
-	max_source_description_length : INTEGER is 300
+	max_source_name_length : INTEGER = 100
+	max_source_description_length : INTEGER = 300
 
 invariant
 	invariant_clause: True -- Your invariant here

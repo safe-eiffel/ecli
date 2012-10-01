@@ -1,9 +1,10 @@
-indexing
+note
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2009/03/03 16:41:35.490"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.952"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANT_COUNT
 
@@ -13,7 +14,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- Creation of buffers
 		do
 			create count.make

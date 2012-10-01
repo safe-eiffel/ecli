@@ -1,4 +1,4 @@
-indexing
+note
 	description: "[
 			TEST1 sample application.
 			
@@ -35,7 +35,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 			-- Application constructor.
 		local
 			nl : BOOLEAN
@@ -130,7 +130,7 @@ feature -- Access
 
 	error_handler : UT_ERROR_HANDLER
 
-	valid_sql_types : DS_LIST[STRING] is
+	valid_sql_types : DS_LIST[STRING]
 			-- Valid sql types
 		once
 			create {DS_LINKED_LIST[STRING]}Result.make
@@ -155,7 +155,7 @@ feature -- Status setting
 
 feature --  Basic operations
 
-	create_and_connect_session is
+	create_and_connect_session
 			-- Create session and connect user `data_source_name', `user_name' and `password'.
 		require
 			data_source_name_not_void: data_source_name /= Void
@@ -181,7 +181,7 @@ feature --  Basic operations
 			session_not_void: session /= Void
 		end
 
-	trace_if_necessary is
+	trace_if_necessary
 			-- Activate trace if trace_file_name exists.
 		local
 			f : KL_TEXT_OUTPUT_FILE
@@ -208,7 +208,7 @@ feature --  Basic operations
 			end
 		end
 
-	create_statement is
+	create_statement
 			-- Create 'stmt'.
 		require
 			session_connected: session /= VOid and then session.is_connected
@@ -221,7 +221,7 @@ feature --  Basic operations
 			stmt_not_void: stmt /= Void
 		end
 
-	determine_current_sql_type is
+	determine_current_sql_type
 		local
 			name : STRING
 		do
@@ -237,7 +237,7 @@ feature --  Basic operations
 			end
 		end
 
-	create_sample_table is
+	create_sample_table
 				-- Create sample tables.
 			require
 				stmt_not_void: stmt /= Void
@@ -266,7 +266,7 @@ feature --  Basic operations
 				is_tables_created := stmt.is_ok
 			end
 
-	simple_insert_sample_tuples is
+	simple_insert_sample_tuples
 			-- Insert sample tuples with simple direct SQL.
 		do
 			error_handler.report_info_message ("=> DML - Insert tuples - Direct SQL")
@@ -286,7 +286,7 @@ feature --  Basic operations
 			show_query (stmt)
 		end
 
-	parameterized_insert is
+	parameterized_insert
 			-- Insert tuples through parameterized statements.
 		local
 			p_isbn : ECLI_VARCHAR
@@ -323,7 +323,7 @@ feature --  Basic operations
 			end
 		end
 
-	parameterized_prepared_insert_sample_tuples is
+	parameterized_prepared_insert_sample_tuples
 			-- Insert tuples with parameterized and prepared SQL.
 		local
 			p_isbn : ECLI_VARCHAR
@@ -389,7 +389,7 @@ feature --  Basic operations
 			end
 		end
 
-	query_database is
+	query_database
 			-- Query database to see what's in the BOOK table.
 		local
 			buffer_factory : ECLI_BUFFER_FACTORY
@@ -427,7 +427,7 @@ feature --  Basic operations
 
 		end
 
-	put_photo (an_isbn, a_target_filename : STRING) is
+	put_photo (an_isbn, a_target_filename : STRING)
 			-- Put long data.
 		require
 			an_isbn_not_void: an_isbn /= Void
@@ -461,7 +461,7 @@ feature --  Basic operations
 			l_stmt.close
 		end
 
-	get_photo (an_isbn, a_target_filename : STRING) is
+	get_photo (an_isbn, a_target_filename : STRING)
 			-- Get long data.
 		require
 			an_isbn_not_void: an_isbn /= Void
@@ -500,7 +500,7 @@ feature --  Basic operations
 			end
 		end
 
-	drop_tables is
+	drop_tables
 			-- Drop tables.
 		do
 			error_handler.report_info_message ("=> DDL - Dropping tables")
@@ -524,7 +524,7 @@ feature --  Basic operations
 			end
 		end
 
-	disconnect_session is
+	disconnect_session
 			-- Disconnect session.
 		require
 			session_not_void: session /= Void
@@ -541,7 +541,7 @@ feature --  Basic operations
 			session_disconnected: not session.is_connected
 		end
 
-	close_statement is
+	close_statement
 			-- Close `stmt'.
 		require
 			stmt_not_void: stmt /= Void
@@ -552,7 +552,7 @@ feature --  Basic operations
 			stmt_not_valid: not stmt.is_valid
 		end
 
-	close_session is
+	close_session
 			-- Close `session'.
 		require
 			session_not_void: session /= Void
@@ -565,18 +565,18 @@ feature --  Basic operations
 
 feature -- Constants
 
-	sql_92 : STRING is "sql92"
-	sql_oracle : STRING is "ora"
-	sql_interbase : STRING is "ib"
-	sql_mssql : STRING is "mssql"
-	sql_postgres : STRING is "pg"
+	sql_92 : STRING = "sql92"
+	sql_oracle : STRING = "ora"
+	sql_interbase : STRING = "ib"
+	sql_mssql : STRING = "mssql"
+	sql_postgres : STRING = "pg"
 
-	dml_parameterized_insert_book : STRING is "INSERT INTO BOOK VALUES (?isbn, ?title, ?author)"
-	dml_parameterized_insert_copy : STRING is "INSERT INTO COPY VALUES (?isbn, ?serial, ?purchased, ?price, ?store, ?shelf, ?row, ?borrower, ?borrow_date)"
+	dml_parameterized_insert_book : STRING = "INSERT INTO BOOK VALUES (?isbn, ?title, ?author)"
+	dml_parameterized_insert_copy : STRING = "INSERT INTO COPY VALUES (?isbn, ?serial, ?purchased, ?price, ?store, ?shelf, ?row, ?borrower, ?borrow_date)"
 
 feature {NONE} -- Implementation
 
-	parse_arguments is
+	parse_arguments
 			-- Parse program arguments.
 		local
 			i : INTEGER
@@ -623,7 +623,7 @@ feature {NONE} -- Implementation
 			ok: arguments_ok implies (data_source_name /= Void and user_name /= Void and password /= Void)
 		end
 
-	print_usage is
+	print_usage
 			-- Print terse usage string.
 		local
 			usage : UT_USAGE_MESSAGE
@@ -646,7 +646,7 @@ feature {NONE} -- Implementation
 			error_handler.report_warning (usage)
 		end
 
-	show_parameter_names (a_statement : ECLI_STATEMENT) is
+	show_parameter_names (a_statement : ECLI_STATEMENT)
 			-- Show parameter names of SQL in `a_statement'
 		do
 			if attached a_statement.parameter_names.new_cursor as list_cursor then
@@ -664,7 +664,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	show_column_names (a_statement : ECLI_STATEMENT) is
+	show_column_names (a_statement : ECLI_STATEMENT)
 			-- Show column names of `a_statement'.cursor_description
 		require
 			statement_not_void: a_statement /= Void
@@ -689,7 +689,7 @@ feature {NONE} -- Implementation
 			io.put_character ('%N')
 		end
 
-	formatted_column (s : STRING; d : ECLI_COLUMN_DESCRIPTION) : STRING is
+	formatted_column (s : STRING; d : ECLI_COLUMN_DESCRIPTION) : STRING
 			-- Format `s' with respect to `d'.size.
 		local
 			width : INTEGER
@@ -713,7 +713,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	show_result_row (a_statement : ECLI_STATEMENT) is
+	show_result_row (a_statement : ECLI_STATEMENT)
 			-- Show values at current cursor position for `a_statement'.
 		local
 			i : INTEGER
@@ -733,7 +733,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	show_query (statement : ECLI_STATEMENT) is
+	show_query (statement : ECLI_STATEMENT)
 			-- Show query in `statement'.
 		local
 			message: STRING
@@ -751,7 +751,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	handle_status (status : ECLI_STATUS) is
+	handle_status (status : ECLI_STATUS)
 			-- Handle `status' information.
 		local
 			message: STRING
@@ -783,7 +783,7 @@ feature {NONE} -- Implementation
 	ddl_borrower: STRING
 	ddl_bookcover: STRING
 
-	get_ddl_statements is
+	get_ddl_statements
 			-- Get DDL SQL statements in configuration files.
 		require
 			current_sql_type_not_void: current_sql_type /= Void
@@ -799,9 +799,9 @@ feature {NONE} -- Implementation
 			ddl_borrower_set: ddl_borrower /= Void and then not ddl_borrower.is_empty
 		end
 
-	ddl_file_prefix : STRING is "ddl_"
+	ddl_file_prefix : STRING = "ddl_"
 
-	ddl_filename_for (table, sql_type : STRING) : STRING is
+	ddl_filename_for (table, sql_type : STRING) : STRING
 			-- Ddl file name for `table' and `sql_type'.
 		require
 			table_not_void: table /= Void
@@ -818,7 +818,7 @@ feature {NONE} -- Implementation
 			Result.append_string (".sql")
 		end
 
-	photo_filename (name : STRING) : STRING is
+	photo_filename (name : STRING) : STRING
 			-- Photo filename for `name'.
 		require
 			name_not_void: name /= Void
@@ -832,7 +832,7 @@ feature {NONE} -- Implementation
 			photo_filename_not_void: Result /= Void
 		end
 
-	string_from_file (filename : STRING) : STRING is
+	string_from_file (filename : STRING) : STRING
 			-- String extracted from file `filename'.
 		require
 			filename_not_void: filename /= Void
@@ -857,7 +857,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	dbms2sqlsyntax : DS_HASH_TABLE[STRING, STRING] is
+	dbms2sqlsyntax : DS_HASH_TABLE[STRING, STRING]
 			-- Map of dbms name to sql syntax.
 		once
 			create Result.make (10)
@@ -868,7 +868,7 @@ feature {NONE} -- Implementation
 			Result.put (sql_mssql, "ACCESS")
 		end
 
-	dbms2longvarbinary : DS_HASH_TABLE[BOOLEAN, STRING] is
+	dbms2longvarbinary : DS_HASH_TABLE[BOOLEAN, STRING]
 		once
 			create Result.make (10)
 			Result.put (True, "Firebird 1.5")
@@ -878,7 +878,7 @@ feature {NONE} -- Implementation
 
 end -- class TEST1
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

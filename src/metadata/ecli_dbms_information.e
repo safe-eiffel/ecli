@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that give information about the underlying DBMS"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -25,7 +25,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_session : ECLI_SESSION) is
+	make (a_session : ECLI_SESSION)
 		require
 			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 		do
@@ -40,7 +40,7 @@ feature -- Access
 
 	session : ECLI_SESSION
 
-	aggregate_functions : INTEGER is
+	aggregate_functions : INTEGER
 		-- SQL_AGGREGATE_FUNCTIONS; (ODBC 3.0)
 		--An SQLUINTEGER bitmask enumerating support for aggregation functions:
 		--SQL_AF_ALL; SQL_AF_AVG; SQL_AF_COUNT; SQL_AF_DISTINCT; SQL_AF_MAX; SQL_AF_MIN; SQL_AF_SUM
@@ -49,7 +49,7 @@ feature -- Access
 			Result := integer32_info (sql_aggregate_functions)
 		end
 
-	alter_domain : INTEGER is
+	alter_domain : INTEGER
 		-- SQL_ALTER_DOMAIN; (ODBC 3.0)
 		--An SQLUINTEGER bitmask enumerating the clauses in the ALTER DOMAIN statement, as defined in SQL-92, supported by the data source. An SQL-92 Full level–compliant driver will always return all of the bitmasks. A return value of "0" means that the ALTER DOMAIN statement is not supported.
 		--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -65,7 +65,7 @@ feature -- Access
 			Result := integer32_info (sql_alter_domain)
 		end
 
-	alter_table : INTEGER is
+	alter_table : INTEGER
 		-- SQL_ALTER_TABLE; (ODBC 2.0)
 		--An SQLUINTEGER bitmask enumerating the clauses in the ALTER TABLE statement supported by the data source.
 		--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -88,7 +88,7 @@ feature -- Access
 			Result := integer32_info (sql_alter_table)
 		end
 
-	async_mode : INTEGER is
+	async_mode : INTEGER
 		-- SQL_ASYNC_MODE; (ODBC 3.0)
 		--An SQLUINTEGER value indicating the level of asynchronous support in the driver:
 		--SQL_AM_CONNECTION = Connection level asynchronous execution is supported. Either all statement handles associated with a given connection handle are in asynchronous mode or all are in synchronous mode. A statement handle on a connection cannot be in asynchronous mode while another statement handle on the same connection is in synchronous mode, and vice versa.
@@ -98,7 +98,7 @@ feature -- Access
 			Result := integer32_info (sql_async_mode)
 		end
 
-	batch_row_count : INTEGER is
+	batch_row_count : INTEGER
 		--SQL_BATCH_ROW_COUNT ; (ODBC 3.0)
 		--An SQLUINTEGER bitmask enumerating the behavior of the driver with respect to the availability of row counts. The following bitmasks are used in conjunction with the information type:
 		--SQL_BRC_ROLLED_UP = Row counts for consecutive INSERT, DELETE, or UPDATE statements are rolled up into one. If this bit is not set, then row counts are available for each individual statement.
@@ -108,7 +108,7 @@ feature -- Access
 			Result := integer32_info (sql_batch_row_count)
 		end
 
-	batch_support : INTEGER is
+	batch_support : INTEGER
 		-- SQL_BATCH_SUPPORT ; (ODBC 3.0)
 		--An SQLUINTEGER bitmask enumerating the driver's support for batches. The following bitmasks are used to determine which level is supported:
 		--SQL_BS_SELECT_EXPLICIT = The driver supports explicit batches that can have result-set generating statements.
@@ -119,7 +119,7 @@ feature -- Access
 			Result := integer32_info (sql_batch_support)
 		end
 
-	bookmark_persistence : INTEGER is
+	bookmark_persistence : INTEGER
 		-- SQL_BOOKMARK_PERSISTENCE; (ODBC 2.0)
 		--An SQLUINTEGER bitmask enumerating the operations through which bookmarks persist.
 		--The following bitmasks are used in conjunction with the flag to determine through which options bookmarks persist:
@@ -133,7 +133,7 @@ feature -- Access
 			Result := integer32_info (sql_bookmark_persistence)
 		end
 
-	catalog_location : INTEGER is
+	catalog_location : INTEGER
 		-- SQL_CATALOG_LOCATION; (ODBC 2.0)
 		--An SQLUSMALLINT value indicating the position of the catalog in a qualified table name:
 		--SQL_CL_START; SQL_CL_END
@@ -144,7 +144,7 @@ feature -- Access
 			Result := integer16_info (sql_catalog_name)
 		end
 
-	catalog_name_separator : STRING is
+	catalog_name_separator : STRING
 			-- SQL_CATALOG_NAME_SEPARATOR; (ODBC 1.0)
 			--A character string: the character or characters that the data source defines as the separator between a catalog name and the qualified name element that follows or precedes it.
 			--An empty string is returned if catalogs are not supported by the data source. To find out whether catalogs are supported, an application calls SQLGetInfo with the SQL_CATALOG_NAME information type. An SQL-92 Full level–conformant driver will always return ".".
@@ -153,7 +153,7 @@ feature -- Access
 			Result := string_info (sql_catalog_name_separator)
 		end
 
-	catalog_term : STRING is
+	catalog_term : STRING
 			-- SQL_CATALOG_TERM; (ODBC 1.0)
 			--A character string with the data source vendor's name for a catalog; for example, "database" or "directory". This string can be in upper, lower, or mixed case.
 			--An empty string is returned if catalogs are not supported by the data source. To find out whether catalogs are supported, an application calls SQLGetInfo with the SQL_CATALOG_NAME information type. An SQL-92 Full level–conformant driver will always return "catalog".
@@ -162,7 +162,7 @@ feature -- Access
 			Result := string_info (sql_catalog_term)
 		end
 
-	catalog_usage : INTEGER is
+	catalog_usage : INTEGER
 			-- SQL_CATALOG_USAGE; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating the statements in which catalogs can be used.
 			--The following bitmasks are used to determine where catalogs can be used:
@@ -177,14 +177,14 @@ feature -- Access
 			Result := integer32_info (sql_catalog_usage)
 		end
 
-	collation_seq : STRING is
+	collation_seq : STRING
 			-- SQL_COLLATION_SEQ; (ODBC 3.0)
 			--The name of the collation sequence. This is a character string that indicates the name of the default collation for the default character set for this server (for example, 'ISO 8859-1' or EBCDIC). If this is unknown, an empty string will be returned. An SQL-92 Full level–conformant driver will always return a non-empty string.
 		do
 			Result := string_info (sql_collation_seq)
 		end
 
-	concat_null_behavior : INTEGER is
+	concat_null_behavior : INTEGER
 			-- SQL_CONCAT_NULL_BEHAVIOR; (ODBC 1.0)
 			--An SQLUSMALLINT value indicating how the data source handles the concatenation of NULL valued character data type columns with non-NULL valued character data type columns:
 			--SQL_CB_NULL = Result is NULL valued.
@@ -194,7 +194,7 @@ feature -- Access
 			Result := integer16_info (sql_concat_null_behavior)
 		end
 
-	convert_bigint : INTEGER is
+	convert_bigint : INTEGER
 			-- SQL_CONVERT_BIGINT; SQL_CONVERT_BINARY; SQL_CONVERT_BIT ; SQL_CONVERT_CHAR ; SQL_CONVERT_GUID; SQL_CONVERT_DATE; SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -204,7 +204,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_bigint)
 		end
 
-	convert_binary : INTEGER is
+	convert_binary : INTEGER
 			-- SQL_CONVERT_BINARY; SQL_CONVERT_BIT ; SQL_CONVERT_CHAR ; SQL_CONVERT_GUID; SQL_CONVERT_DATE; SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -214,7 +214,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_binary)
 		end
 
-	convert_bit : INTEGER is
+	convert_bit : INTEGER
 			-- SQL_CONVERT_BIT ; SQL_CONVERT_CHAR ; SQL_CONVERT_GUID; SQL_CONVERT_DATE; SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -224,7 +224,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_bit)
 		end
 
-	convert_char : INTEGER is
+	convert_char : INTEGER
 			-- SQL_CONVERT_CHAR ; SQL_CONVERT_GUID; SQL_CONVERT_DATE; SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -234,7 +234,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_char)
 		end
 
-	convert_guid : INTEGER is
+	convert_guid : INTEGER
 			-- SQL_CONVERT_GUID; SQL_CONVERT_DATE; SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -244,7 +244,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_guid)
 		end
 
-	convert_date : INTEGER is
+	convert_date : INTEGER
 			-- SQL_CONVERT_DATE; SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -254,7 +254,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_date)
 		end
 
-	convert_decimal : INTEGER is
+	convert_decimal : INTEGER
 			-- SQL_CONVERT_DECIMAL; SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -264,7 +264,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_decimal)
 		end
 
-	convert_double : INTEGER is
+	convert_double : INTEGER
 			-- SQL_CONVERT_DOUBLE; SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -274,7 +274,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_double)
 		end
 
-	convert_float : INTEGER is
+	convert_float : INTEGER
 			-- SQL_CONVERT_FLOAT; SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -284,7 +284,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_float)
 		end
 
-	convert_integer : INTEGER is
+	convert_integer : INTEGER
 			-- SQL_CONVERT_INTEGER; SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -294,7 +294,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_integer)
 		end
 
-	convert_interval_year_month : INTEGER is
+	convert_interval_year_month : INTEGER
 			-- SQL_CONVERT_INTERVAL_YEAR_MONTH; SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -304,7 +304,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_interval_year_month)
 		end
 
-	convert_interval_day_time : INTEGER is
+	convert_interval_day_time : INTEGER
 			-- SQL_CONVERT_INTERVAL_DAY_TIME; SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -314,7 +314,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_interval_day_time)
 		end
 
-	convert_longvarbinary : INTEGER is
+	convert_longvarbinary : INTEGER
 			-- SQL_CONVERT_LONGVARBINARY; SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -324,7 +324,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_longvarbinary)
 		end
 
-	convert_longvarchar : INTEGER is
+	convert_longvarchar : INTEGER
 			-- SQL_CONVERT_LONGVARCHAR; SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -334,7 +334,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_longvarchar)
 		end
 
-	convert_numeric : INTEGER is
+	convert_numeric : INTEGER
 			-- SQL_CONVERT_NUMERIC; SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -344,7 +344,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_numeric)
 		end
 
-	convert_real : INTEGER is
+	convert_real : INTEGER
 			-- SQL_CONVERT_REAL; SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -354,7 +354,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_real)
 		end
 
-	convert_smallint : INTEGER is
+	convert_smallint : INTEGER
 			-- SQL_CONVERT_SMALLINT; SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -364,7 +364,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_smallint)
 		end
 
-	convert_time : INTEGER is
+	convert_time : INTEGER
 			-- SQL_CONVERT_TIME; SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -374,7 +374,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_time)
 		end
 
-	convert_timestamp : INTEGER is
+	convert_timestamp : INTEGER
 			--SQL_CONVERT_TIMESTAMP; SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -384,7 +384,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_timestamp)
 		end
 
-	convert_tinyint : INTEGER is
+	convert_tinyint : INTEGER
 			--SQL_CONVERT_TINYINT; SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -394,7 +394,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_tinyint)
 		end
 
-	convert_varbinary : INTEGER is
+	convert_varbinary : INTEGER
 			--SQL_CONVERT_VARBINARY; SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -404,7 +404,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_varbinary)
 		end
 
-	convert_varchar : INTEGER is
+	convert_varchar : INTEGER
 			--SQL_CONVERT_VARCHAR ; (ODBC 1.0)
 			--An SQLUINTEGER bitmask. The bitmask indicates the conversions supported by the data source with the CONVERT scalar function for data of the type named in the InfoType. If the bitmask equals zero, the data source does not support any conversions from data of the named type, including conversion to the same data type.
 			--For example, to find out if a data source supports the conversion of SQL_INTEGER data to the SQL_BIGINT data type, an application calls SQLGetInfo with the InfoType of SQL_CONVERT_INTEGER. The application performs an AND operation with the returned bitmask and SQL_CVT_BIGINT. If the resulting value is nonzero, the conversion is supported.
@@ -414,7 +414,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_varchar)
 		end
 
-	convert_functions : INTEGER is
+	convert_functions : INTEGER
 			-- SQL_CONVERT_FUNCTIONS; (ODBC 1.0)
 			--An SQLUINTEGER bitmask enumerating the scalar conversion functions supported by the driver and associated data source.
 			--The following bitmask is used to determine which conversion functions are supported:
@@ -423,7 +423,7 @@ feature -- Access
 			Result := integer32_info (sql_convert_functions)
 		end
 
-	correlation_name : INTEGER is
+	correlation_name : INTEGER
 			-- SQL_CORRELATION_NAME; (ODBC 1.0)
 			--An SQLUSMALLINT value indicating whether table correlation names are supported:
 			--SQL_CN_NONE = Correlation names are not supported.
@@ -434,7 +434,7 @@ feature -- Access
 			Result := integer16_info (sql_correlation_name)
 		end
 
-	create_assertion : INTEGER is
+	create_assertion : INTEGER
 			-- SQL_CREATE_ASSERTION; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE ASSERTION statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -446,7 +446,7 @@ feature -- Access
 			Result := integer32_info (sql_create_assertion)
 		end
 
-	create_character_set : INTEGER is
+	create_character_set : INTEGER
 			-- SQL_CREATE_CHARACTER_SET; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE CHARACTER SET statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -456,7 +456,7 @@ feature -- Access
 			Result := integer32_info (sql_create_character_set)
 		end
 
-	create_collation : INTEGER is
+	create_collation : INTEGER
 			-- SQL_CREATE_COLLATION; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE COLLATION statement, as defined in SQL-92, supported by the data source.
 			--The following bitmask is used to determine which clauses are supported:
@@ -466,7 +466,7 @@ feature -- Access
 			Result := integer32_info (sql_create_collation)
 		end
 
-	create_domain : INTEGER is
+	create_domain : INTEGER
 			-- SQL_CREATE_DOMAIN; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE DOMAIN statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -480,7 +480,7 @@ feature -- Access
 			Result := integer32_info (sql_create_domain)
 		end
 
-	create_schema : INTEGER is
+	create_schema : INTEGER
 			-- SQL_CREATE_SCHEMA; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE SCHEMA statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -490,7 +490,7 @@ feature -- Access
 			Result := integer32_info (sql_create_schema)
 		end
 
-	create_table : INTEGER is
+	create_table : INTEGER
 			-- SQL_CREATE_TABLE; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE TABLE statement, as defined in SQL-92, supported by the data source.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -508,7 +508,7 @@ feature -- Access
 			Result := integer32_info (sql_create_table)
 		end
 
-	create_translation : INTEGER is
+	create_translation : INTEGER
 			-- SQL_CREATE_TRANSLATION; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE TRANSLATION statement, as defined in SQL-92, supported by the data source.
 			--The following bitmask is used to determine which clauses are supported:
@@ -518,7 +518,7 @@ feature -- Access
 			Result := integer32_info (sql_create_translation)
 		end
 
-	create_view : INTEGER is
+	create_view : INTEGER
 			-- SQL_CREATE_VIEW; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the CREATE VIEW statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -530,7 +530,7 @@ feature -- Access
 			Result := integer32_info (sql_create_view)
 		end
 
-	cursor_commit_behavior : INTEGER is
+	cursor_commit_behavior : INTEGER
 			-- SQL_CURSOR_COMMIT_BEHAVIOR; (ODBC 1.0)
 			--An SQLUSMALLINT value indicating how a COMMIT operation affects cursors and prepared statements in the data source:
 			--SQL_CB_DELETE = Close cursors and delete prepared statements. To use the cursor again, the application must reprepare and reexecute the statement.
@@ -540,7 +540,7 @@ feature -- Access
 			Result := integer16_info (sql_cursor_commit_behavior)
 		end
 
-	cursor_rollback_behavior : INTEGER is
+	cursor_rollback_behavior : INTEGER
 			-- SQL_CURSOR_ROLLBACK_BEHAVIOR; (ODBC 1.0)
 			--An SQLUSMALLINT value indicating how a ROLLBACK operation affects cursors and prepared statements in the data source:
 			--SQL_CB_DELETE = Close cursors and delete prepared statements. To use the cursor again, the application must reprepare and reexecute the statement.
@@ -550,7 +550,7 @@ feature -- Access
 			Result := integer16_info (sql_cursor_rollback_behavior)
 		end
 
-	cursor_sensitivity : INTEGER is
+	cursor_sensitivity : INTEGER
 			-- SQL_CURSOR_ROLLBACK_SQL_CURSOR_SENSITIVITY; (ODBC 3.0)
 			--An SQLUINTEGER value indicating the support for cursor sensitivity:
 			--SQL_INSENSITIVE = All cursors on the statement handle show the result set without reflecting any changes made to it by any other cursor within the same transaction.
@@ -562,14 +562,14 @@ feature -- Access
 			Result := integer32_info (sql_cursor_sensitivity)
 		end
 
-	data_source_name : STRING is
+	data_source_name : STRING
 			-- SQL_DATA_SOURCE_NAME; (ODBC 1.0)
 			--A character string with the data source name used during connection. If the application called SQLConnect, this is the value of the szDSN argument. If the application called SQLDriverConnect or SQLBrowseConnect, this is the value of the DSN keyword in the connection string passed to the driver. If the connection string did not contain the DSN keyword (such as when it contains the DRIVER keyword), this is an empty string.
 		do
 			Result := string_info (sql_data_source_name)
 		end
 
-	datetime_literals : INTEGER is
+	datetime_literals : INTEGER
 			-- SQL_DATETIME_LITERALS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the SQL-92 datetime literals supported by the data source. Note that these are the datetime literals listed in the SQL-92 specification and are separate from the datetime literal escape clauses defined by ODBC. For more information about the ODBC datetime literal escape clauses, see Date, Time, and Timestamp Literals.
 			--A FIPS Transitional level–conformant driver will always return the "1" value in the bitmask for the bits listed below. A value of "0" means that SQL-92 datetime literals are not supported.
@@ -580,21 +580,21 @@ feature -- Access
 			Result := integer32_info (sql_datetime_literals)
 		end
 
-	dbms_name : STRING is
+	dbms_name : STRING
 			-- SQL_DBMS_NAME; (ODBC 1.0)
 			--A character string with the name of the DBMS product accessed by the driver.
 		do
 			Result := string_info (sql_dbms_name)
 		end
 
-	dbms_ver : STRING is
+	dbms_ver : STRING
 			-- SQL_DBMS_VER; (ODBC 1.0)
 			--A character string indicating the version of the DBMS product accessed by the driver. The version is of the form ##.##.####, where the first two digits are the major version, the next two digits are the minor version, and the last four digits are the release version. The driver must render the DBMS product version in this form but can also append the DBMS product-specific version as well. For example, "04.01.0000 Rdb 4.1".
 		do
 			Result := string_info (sql_dbms_ver)
 		end
 
-	ddl_index : INTEGER is
+	ddl_index : INTEGER
 			-- SQL_DDL_INDEX; (ODBC 3.0)
 			--An SQLUINTEGER value that indicates support for creation and dropping of indexes:
 			--SQL_DI_CREATE_INDEX; SQL_DI_DROP_INDEX
@@ -602,7 +602,7 @@ feature -- Access
 			Result := integer32_info (sql_ddl_index)
 		end
 
-	default_txn_isolation : INTEGER is
+	default_txn_isolation : INTEGER
 			-- SQL_DEFAULT_TXN_ISOLATION; (ODBC 1.0)
 			--An SQLUINTEGER value that indicates the default transaction isolation level supported by the driver or data source, or zero if the data source does not support transactions. The following terms are used to define transaction isolation levels:
 			--Dirty Read Transaction 1 changes a row. Transaction 2 reads the changed row before transaction 1 commits the change. If transaction 1 rolls back the change, transaction 2 will have read a row that is considered to have never existed.
@@ -617,7 +617,7 @@ feature -- Access
 			Result := integer32_info (sql_default_txn_isolation)
 		end
 
-	dm_ver : STRING is
+	dm_ver : STRING
 			-- SQL_DM_VER; (ODBC 3.0)
 			--A character string with the version of the Driver Manager. The version is of the form ##.##.####.####, where:
 			--The first set of two digits is the major ODBC version, as given by the constant SQL_SPEC_MAJOR.
@@ -628,7 +628,7 @@ feature -- Access
 			Result := string_info (sql_dm_ver)
 		end
 
-	driver_hdbc : INTEGER is
+	driver_hdbc : INTEGER
 			-- SQL_DRIVER_HDBC; SQL_DRIVER_HENV; (ODBC 1.0)
 			--An SQLUINTEGER value, the driver's environment handle or connection handle, determined by the argument InfoType.
 			--These information types are implemented by the Driver Manager alone.
@@ -636,7 +636,7 @@ feature -- Access
 			Result := integer32_info (sql_driver_hdbc)
 		end
 
-	driver_henv : INTEGER is
+	driver_henv : INTEGER
 			-- SQL_DRIVER_HDBC; SQL_DRIVER_HENV; (ODBC 1.0)
 			--An SQLUINTEGER value, the driver's environment handle or connection handle, determined by the argument InfoType.
 			--These information types are implemented by the Driver Manager alone.
@@ -644,7 +644,7 @@ feature -- Access
 			Result := integer32_info (sql_driver_henv)
 		end
 
-	driver_hdesc : INTEGER is
+	driver_hdesc : INTEGER
 			-- SQL_DRIVER_HDESC; (ODBC 3.0)
 			--An SQLUINTEGER value, the driver's descriptor handle determined by the Driver Manager's descriptor handle, which must be passed on input in *InfoValuePtr from the application. In this case, InfoValuePtr is both an input and output argument. The input descriptor handle passed in *InfoValuePtr must have been either explicitly or implicitly allocated on the ConnectionHandle.
 			--The application should make a copy of the Driver Manager's descriptor handle before calling SQLGetInfo with this information type, to ensure that the handle is not overwritten on output.
@@ -653,7 +653,7 @@ feature -- Access
 			Result := integer32_info (sql_driver_hdesc)
 		end
 
-	driver_hlib : INTEGER is
+	driver_hlib : INTEGER
 			-- SQL_DRIVER_HLIB; (ODBC 2.0)
 			--An SQLUINTEGER value, the hinst from the load library returned to the Driver Manager when it loaded the driver DLL (on a Microsoft® Windows® platform) or equivalent on a non-Windows platform. The handle is valid only for the connection handle specified in the call to SQLGetInfo.
 			--This information type is implemented by the Driver Manager alone.
@@ -661,7 +661,7 @@ feature -- Access
 			Result := integer32_info (sql_driver_hlib)
 		end
 
-	driver_hstmt : INTEGER is
+	driver_hstmt : INTEGER
 			-- SQL_DRIVER_HSTMT; (ODBC 1.0)
 			--An SQLUINTEGER value, the driver's statement handle determined by the Driver Manager statement handle, which must be passed on input in *InfoValuePtr from the application. In this case, InfoValuePtr is both an input and an output argument. The input statement handle passed in *InfoValuePtr must have been allocated on the argument ConnectionHandle.
 			--The application should make a copy of the Driver Manager's statement handle before calling SQLGetInfo with this information type, to ensure that the handle is not overwritten on output.
@@ -670,28 +670,28 @@ feature -- Access
 			Result := integer32_info (sql_driver_hstmt)
 		end
 
-	driver_name : STRING is
+	driver_name : STRING
 			-- SQL_DRIVER_NAME; (ODBC 1.0)
 			--A character string with the file name of the driver used to access the data source.
 		do
 			Result := string_info (sql_driver_name)
 		end
 
-	driver_odbc_ver : STRING is
+	driver_odbc_ver : STRING
 			-- SQL_DRIVER_ODBC_VER; (ODBC 2.0)
 			--A character string with the version of ODBC that the driver supports. The version is of the form ##.##, where the first two digits are the major version and the next two digits are the minor version. SQL_SPEC_MAJOR and SQL_SPEC_MINOR define the major and minor version numbers. For the version of ODBC described in this manual, these are 3 and 0, and the driver should return "03.00".
 		do
 			Result := string_info (sql_driver_odbc_ver)
 		end
 
-	driver_ver : STRING is
+	driver_ver : STRING
 			-- SQL_DRIVER_VER; (ODBC 1.0)
 			--A character string with the version of the driver and optionally, a description of the driver. At a minimum, the version is of the form ##.##.####, where the first two digits are the major version, the next two digits are the minor version, and the last four digits are the release version.
 		do
 			Result := string_info (sql_driver_ver)
 		end
 
-	drop_assertion : INTEGER is
+	drop_assertion : INTEGER
 			-- SQL_DROP_ASSERTION; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP ASSERTION statement, as defined in SQL-92, supported by the data source.
 			--The following bitmask is used to determine which clauses are supported:
@@ -701,7 +701,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_assertion)
 		end
 
-	drop_character_set : INTEGER is
+	drop_character_set : INTEGER
 			-- SQL_DROP_CHARACTER_SET; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP CHARACTER SET statement, as defined in SQL-92, supported by the data source.
 			--The following bitmask is used to determine which clauses are supported:
@@ -711,7 +711,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_character_set)
 		end
 
-	drop_collation : INTEGER is
+	drop_collation : INTEGER
 			-- SQL_DROP_COLLATION; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP COLLATION statement, as defined in SQL-92, supported by the data source.
 			--The following bitmask is used to determine which clauses are supported:
@@ -721,7 +721,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_collation)
 		end
 
-	drop_domain : INTEGER is
+	drop_domain : INTEGER
 			-- SQL_DROP_DOMAIN; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP DOMAIN statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -731,7 +731,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_domain)
 		end
 
-	drop_schema : INTEGER is
+	drop_schema : INTEGER
 			-- SQL_DROP_SCHEMA; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP SCHEMA statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -741,7 +741,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_schema)
 		end
 
-	drop_table : INTEGER is
+	drop_table : INTEGER
 			-- SQL_DROP_TABLE; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP TABLE statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -751,7 +751,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_table)
 		end
 
-	drop_translation : INTEGER is
+	drop_translation : INTEGER
 			-- SQL_DROP_TRANSLATION; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP TRANSLATION statement, as defined in SQL-92, supported by the data source.
 			--The following bitmask is used to determine which clauses are supported:
@@ -761,7 +761,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_translation)
 		end
 
-	drop_view : INTEGER is
+	drop_view : INTEGER
 			-- SQL_DROP_VIEW; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses in the DROP VIEW statement, as defined in SQL-92, supported by the data source.
 			--The following bitmasks are used to determine which clauses are supported:
@@ -771,7 +771,7 @@ feature -- Access
 			Result := integer32_info (sql_drop_view)
 		end
 
-	dynamic_cursor_attributes1 : INTEGER is
+	dynamic_cursor_attributes1 : INTEGER
 			-- SQL_DYNAMIC_CURSOR_ATTRIBUTES1; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a dynamic cursor that are supported by the driver. This bitmask contains the first subset of attributes; for the second subset, see SQL_DYNAMIC_CURSOR_ATTRIBUTES2.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -798,7 +798,7 @@ feature -- Access
 			Result := integer32_info (sql_dynamic_cursor_attributes1)
 		end
 
-	dynamic_cursor_attributes2 : INTEGER is
+	dynamic_cursor_attributes2 : INTEGER
 			-- SQL_DYNAMIC_CURSOR_ATTRIBUTES2; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a dynamic cursor that are supported by the driver. This bitmask contains the second subset of attributes; for the first subset, see SQL_DYNAMIC_CURSOR_ATTRIBUTES1.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -824,7 +824,7 @@ feature -- Access
 			Result := integer32_info (sql_dynamic_cursor_attributes2)
 		end
 
-	file_usage : INTEGER is
+	file_usage : INTEGER
 			-- SQL_FILE_USAGE; (ODBC 2.0)
 			--An SQLUSMALLINT value indicating how a single-tier driver directly treats files in a data source:
 			--SQL_FILE_NOT_SUPPORTED = The driver is not a single-tier driver. For example, an ORACLE driver is a two-tier driver.
@@ -836,7 +836,7 @@ feature -- Access
 			Result := integer16_info (sql_file_usage)
 		end
 
-	forward_only_cursor_attributes1 : INTEGER is
+	forward_only_cursor_attributes1 : INTEGER
 			-- SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES1; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a forward-only cursor that are supported by the driver. This bitmask contains the first subset of attributes; for the second subset, see SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES2.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -846,7 +846,7 @@ feature -- Access
 			Result := integer32_info (sql_forward_only_cursor_attributes1)
 		end
 
-	forward_only_cursor_attributes2 : INTEGER is
+	forward_only_cursor_attributes2 : INTEGER
 			-- SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES2; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a forward-only cursor that are supported by the driver. This bitmask contains the second subset of attributes; for the first subset, see SQL_FORWARD_ONLY_CURSOR_ATTRIBUTES1.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -856,7 +856,7 @@ feature -- Access
 			Result := integer32_info (sql_forward_only_cursor_attributes2)
 		end
 
-	getdata_extensions : INTEGER is
+	getdata_extensions : INTEGER
 			-- SQL_GETDATA_EXTENSIONS; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating extensions to SQLGetData.
 			--The following bitmasks are used in conjunction with the flag to determine what common extensions the driver supports for SQLGetData:
@@ -870,7 +870,7 @@ feature -- Access
 			Result := integer32_info (sql_getdata_extensions)
 		end
 
-	group_by : INTEGER is
+	group_by : INTEGER
 			-- SQL_GROUP_BY; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the relationship between the columns in the GROUP BY clause and the nonaggregated columns in the select list:
 			--SQL_GB_COLLATE = A COLLATE clause can be specified at the end of each grouping column. (ODBC 3.0)
@@ -883,7 +883,7 @@ feature -- Access
 			Result := integer16_info (sql_group_by)
 		end
 
-	identifier_case : INTEGER is
+	identifier_case : INTEGER
 			-- SQL_IDENTIFIER_CASE; (ODBC 1.0)
 			--An SQLUSMALLINT value as follows:
 			--SQL_IC_UPPER = Identifiers in SQL are not case-sensitive and are stored in uppercase in system catalog.
@@ -895,7 +895,7 @@ feature -- Access
 			Result := integer16_info (sql_identifier_case)
 		end
 
-	identifier_quote_char : STRING is
+	identifier_quote_char : STRING
 			-- SQL_IDENTIFIER_QUOTE_CHAR; (ODBC 1.0)
 			--The character string used as the starting and ending delimiter of a quoted (delimited) identifier in SQL statements. (Identifiers passed as arguments to ODBC functions do not need to be quoted.) If the data source does not support quoted identifiers, a blank is returned.
 			--This character string can also be used for quoting catalog function arguments when the connection attribute SQL_ATTR_METADATA_ID is set to SQL_TRUE.
@@ -904,7 +904,7 @@ feature -- Access
 			Result := string_info (sql_identifier_quote_char)
 		end
 
-	index_keywords : INTEGER is
+	index_keywords : INTEGER
 			-- SQL_INDEX_KEYWORDS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that enumerates keywords in the CREATE INDEX statement that are supported by the driver:
 			--SQL_IK_NONE = None of the keywords is supported.
@@ -916,7 +916,7 @@ feature -- Access
 			Result := integer32_info (sql_index_keywords)
 		end
 
-	info_schema_views : INTEGER is
+	info_schema_views : INTEGER
 			-- SQL_INFO_SCHEMA_VIEWS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the views in the INFORMATION_SCHEMA that are supported by the driver. The views in, and the contents of, INFORMATION_SCHEMA are as defined in SQL-92.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -948,7 +948,7 @@ feature -- Access
 			Result := integer32_info (sql_info_schema_views)
 		end
 
-	insert_statement : INTEGER is
+	insert_statement : INTEGER
 			-- SQL_INSERT_STATEMENT; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that indicates support for INSERT statements:
 			--SQL_IS_INSERT_LITERALS
@@ -959,7 +959,7 @@ feature -- Access
 			Result := integer32_info (sql_insert_statement)
 		end
 
-	keyset_cursor_attributes1 : INTEGER is
+	keyset_cursor_attributes1 : INTEGER
 			-- SQL_KEYSET_CURSOR_ATTRIBUTES1; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a keyset cursor that are supported by the driver. This bitmask contains the first subset of attributes; for the second subset, see SQL_KEYSET_CURSOR_ATTRIBUTES2.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -970,7 +970,7 @@ feature -- Access
 			Result := integer32_info (sql_keyset_cursor_attributes1)
 		end
 
-	keyset_cursor_attributes2 : INTEGER is
+	keyset_cursor_attributes2 : INTEGER
 			-- SQL_KEYSET_CURSOR_ATTRIBUTES2; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a keyset cursor that are supported by the driver. This bitmask contains the second subset of attributes; for the first subset, see SQL_KEYSET_CURSOR_ATTRIBUTES1.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -980,7 +980,7 @@ feature -- Access
 			Result := integer32_info (sql_keyset_cursor_attributes2)
 		end
 
-	keywords : STRING is
+	keywords : STRING
 			-- SQL_KEYWORDS; (ODBC 2.0)
 			--A character string containing a comma-separated list of all data source–specific keywords. This list does not contain keywords specific to ODBC or keywords used by both the data source and ODBC. This list represents all the reserved keywords; interoperable applications should not use these words in object names.
 			--For a list of ODBC keywords, see "List of Reserved Keywords" in Appendix C, "SQL Grammar." The #define value SQL_ODBC_KEYWORDS contains a comma-separated list of ODBC keywords.
@@ -988,7 +988,7 @@ feature -- Access
 			Result := string_info (sql_keywords)
 		end
 
-	non_nullable_colum : INTEGER is
+	non_nullable_colum : INTEGER
 			-- SQL_NON_NULLABLE_COLUMNS; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying whether the data source supports NOT NULL in columns:
 			--SQL_NNC_NULL = All columns must be nullable.
@@ -998,7 +998,7 @@ feature -- Access
 			Result := integer16_info (sql_non_nullable_columns)
 		end
 
-	null_collation : INTEGER is
+	null_collation : INTEGER
 			-- SQL_NULL_COLLATION; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying where NULLs are sorted in a result set:
 			--SQL_NC_END = NULLs are sorted at the end of the result set, regardless of the ASC or DESC keywords.
@@ -1009,7 +1009,7 @@ feature -- Access
 			Result := integer16_info (sql_null_collation)
 		end
 
-	numeric_functions : INTEGER is
+	numeric_functions : INTEGER
 			-- SQL_NUMERIC_FUNCTIONS; (ODBC 1.0)
 			----The information type was introduced in ODBC 1.0; each bitmask is labeled with the version in which it was introduced.
 			-- An SQLUINTEGER bitmask enumerating the scalar numeric functions supported by the driver and associated data source.
@@ -1019,7 +1019,7 @@ feature -- Access
 			Result := integer32_info (sql_numeric_functions)
 		end
 
-	odbc_interface_conformance : INTEGER is
+	odbc_interface_conformance : INTEGER
 			-- SQL_ODBC_INTERFACE_CONFORMANCE; (ODBC 3.0)
 			--An SQLUINTEGER value indicating the level of the ODBC 3.x interface that the driver conforms to.
 			--SQL_OIC_CORE: The minimum level that all ODBC drivers are expected to conform to. This level includes basic interface elements such as connection functions, functions for preparing and executing an SQL statement, basic result set metadata functions, basic catalog functions, and so on.
@@ -1030,14 +1030,14 @@ feature -- Access
 			Result := integer32_info (sql_odbc_interface_conformance)
 		end
 
-	odbc_ver : STRING is
+	odbc_ver : STRING
 			-- SQL_ODBC_VER; (ODBC 1.0)
 			--A character string with the version of ODBC to which the Driver Manager conforms. The version is of the form ##.##.0000, where the first two digits are the major version and the next two digits are the minor version. This is implemented solely in the Driver Manager.
 		do
 			Result := string_info (sql_odbc_ver)
 		end
 
-	oj_capabilities : INTEGER is
+	oj_capabilities : INTEGER
 			-- SQL_OJ_CAPABILITIES; (ODBC 2.01)
 			--An SQLUINTEGER bitmask enumerating the types of outer joins supported by the driver and data source. The following bitmasks are used to determine which types are supported:
 			--SQL_OJ_LEFT = Left outer joins are supported.
@@ -1053,7 +1053,7 @@ feature -- Access
 			Result := integer32_info (sql_oj_capabilities)
 		end
 
-	param_array_row_counts : INTEGER is
+	param_array_row_counts : INTEGER
 			-- SQL_PARAM_ARRAY_ROW_COUNTS; (ODBC 3.0)
 			--An SQLUINTEGER enumerating the driver's properties regarding the availability of row counts in a parameterized execution. Has the following values:
 			--SQL_PARC_BATCH = Individual row counts are available for each set of parameters. This is conceptually equivalent to the driver generating a batch of SQL statements, one for each parameter set in the array. Extended error information can be retrieved by using the SQL_PARAM_STATUS_PTR descriptor field.
@@ -1062,7 +1062,7 @@ feature -- Access
 			Result := integer32_info (sql_param_array_row_counts)
 		end
 
-	param_array_selects : INTEGER is
+	param_array_selects : INTEGER
 			-- SQL_PARAM_ARRAY_SELECTS; (ODBC 3.0)
 			--An SQLUINTEGER enumerating the driver's properties regarding the availability of result sets in a parameterized execution. Has the following values:
 			--SQL_PAS_BATCH = There is one result set available per set of parameters. This is conceptually equivalent to the driver generating a batch of SQL statements, one for each parameter set in the array.
@@ -1072,14 +1072,14 @@ feature -- Access
 			Result := integer32_info (sql_param_array_selects)
 		end
 
-	procedure_term : STRING is
+	procedure_term : STRING
 			-- SQL_PROCEDURE_TERM; (ODBC 1.0)
 			--A character string with the data source vendor's name for a procedure; for example, "database procedure", "stored procedure", "procedure", "package", or "stored query".
 		do
 			Result := string_info (sql_procedure_term)
 		end
 
-	pos_operations : INTEGER is
+	pos_operations : INTEGER
 			-- SQL_POS_OPERATIONS (ODBC 2.0)
 			--An SQLINTEGER bitmask enumerating the support operations in SQLSetPos.
 			--The following bitmasks are used in conjunction with the flag to determine which options are supported.
@@ -1088,7 +1088,7 @@ feature -- Access
 			Result := integer32_info (sql_pos_operations)
 		end
 
-	quoted_identifier_case : INTEGER is
+	quoted_identifier_case : INTEGER
 			-- SQL_QUOTED_IDENTIFIER_CASE; (ODBC 2.0)
 			--An SQLUSMALLINT value as follows:
 			--SQL_IC_UPPER = Quoted identifiers in SQL are not case-sensitive and are stored in uppercase in the system catalog.
@@ -1100,7 +1100,7 @@ feature -- Access
 			Result := integer16_info (sql_quoted_identifier_case)
 		end
 
-	schema_term : STRING is
+	schema_term : STRING
 			-- SQL_SCHEMA_TERM; (ODBC 1.0)
 			--A character string with the data source vendor's name for an schema; for example, "owner", "Authorization ID", or "Schema".
 			--The character string can be returned in upper, lower, or mixed case.
@@ -1110,7 +1110,7 @@ feature -- Access
 			Result := string_info (sql_schema_term)
 		end
 
-	schema_usage : INTEGER is
+	schema_usage : INTEGER
 			-- SQL_SCHEMA_USAGE; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating the statements in which schemas can be used:
 			--SQL_SU_DML_STATEMENTS = Schemas are supported in all Data Manipulation Language statements: SELECT, INSERT, UPDATE, DELETE, and if supported, SELECT FOR UPDATE and positioned update and delete statements.
@@ -1124,7 +1124,7 @@ feature -- Access
 			Result := integer32_info (sql_schema_usage)
 		end
 
-	scroll_options : INTEGER is
+	scroll_options : INTEGER
 			-- SQL_SCROLL_OPTIONS; (ODBC 1.0)
 			----The information type was introduced in ODBC 1.0; each bitmask is labeled with the version in which it was introduced.
 			--An SQLUINTEGER bitmask enumerating the scroll options supported for scrollable cursors.
@@ -1139,7 +1139,7 @@ feature -- Access
 			Result := integer32_info (sql_scroll_options)
 		end
 
-	search_pattern_escape : STRING is
+	search_pattern_escape : STRING
 			-- SQL_SEARCH_PATTERN_ESCAPE; (ODBC 1.0)
 			--A character string specifying what the driver supports as an escape character that permits the use of the pattern match metacharacters underscore (_) and percent sign (%) as valid characters in search patterns. This escape character applies only for those catalog function arguments that support search strings. If this string is empty, the driver does not support a search-pattern escape character. 
 			--Because this information type does not indicate general support of the escape character in the LIKE predicate, SQL-92 does not include requirements for this character string.
@@ -1148,21 +1148,21 @@ feature -- Access
 			Result := string_info (sql_search_pattern_escape)
 		end
 
-	server_name : STRING is
+	server_name : STRING
 			-- SQL_SERVER_NAME; (ODBC 1.0)
 			--A character string with the actual data source–specific server name; useful when a data source name is used during SQLConnect, SQLDriverConnect, and SQLBrowseConnect.
 		do
 			Result := string_info (sql_server_name)
 		end
 
-	special_characters : STRING is
+	special_characters : STRING
 			-- SQL_SPECIAL_CHARACTERS; (ODBC 2.0)
 			--A character string containing all special characters (that is, all characters except a through z, A through Z, 0 through 9, and underscore) that can be used in an identifier name, such as a table name, column column name, or index name, on the data source. For example, "#$^". If an identifier contains one or more of these characters, the identifier must be a delimited identifier.
 		do
 			Result := string_info (sql_special_characters)
 		end
 
-	sql_conformance : INTEGER is
+	sql_conformance : INTEGER
 			-- SQL_SQL_CONFORMANCE; (ODBC 3.0)
 			--An SQLUINTEGER value indicating the level of SQL-92 supported by the driver:
 			--SQL_SC_SQL92_ENTRY = Entry level SQL-92 compliant.
@@ -1173,7 +1173,7 @@ feature -- Access
 			Result := integer32_info (sql_sql_conformance)
 		end
 
-	sql92_datetime_functions : INTEGER is
+	sql92_datetime_functions : INTEGER
 			-- SQL_SQL92_DATETIME_FUNCTIONS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the datetime scalar functions that are supported by the driver and the associated data source, as defined in SQL-92.
 			--The following bitmasks are used to determine which datetime functions are supported:
@@ -1182,7 +1182,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_datetime_functions)
 		end
 
-	sql92_foreign_key_delete_rule : INTEGER is
+	sql92_foreign_key_delete_rule : INTEGER
 			-- SQL_SQL92_FOREIGN_KEY_DELETE_RULE; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the rules supported for a foreign key in a DELETE statement, as defined in SQL-92.
 			--The following bitmasks are used to determine which clauses are supported by the data source:
@@ -1192,7 +1192,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_foreign_key_delete_rule)
 		end
 
-	sql92_foreign_key_update_rule : INTEGER is
+	sql92_foreign_key_update_rule : INTEGER
 			-- SQL_SQL92_FOREIGN_KEY_UPDATE_RULE; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the rules supported for a foreign key in an UPDATE statement, as defined in SQL-92.
 			--The following bitmasks are used to determine which clauses are supported by the data source:
@@ -1202,7 +1202,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_foreign_key_update_rule)
 		end
 
-	sql92_grant : INTEGER is
+	sql92_grant : INTEGER
 			-- SQL_SQL92_GRANT; (ODBC 3.0) : INTEGER is
 			--An SQLUINTEGER bitmask enumerating the clauses supported in the GRANT statement, as defined in SQL-92.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -1212,7 +1212,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_grant)
 		end
 
-	sql92_numeric_value_functions : INTEGER is
+	sql92_numeric_value_functions : INTEGER
 			-- SQL_SQL92_NUMERIC_VALUE_FUNCTIONS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the numeric value scalar functions that are supported by the driver and the associated data source, as defined in SQL-92.
 			--The following bitmasks are used to determine which numeric functions are supported:
@@ -1221,7 +1221,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_numeric_value_functions)
 		end
 
-	sql92_predicates : INTEGER is
+	sql92_predicates : INTEGER
 			-- SQL_SQL92_PREDICATES; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the predicates supported in a SELECT statement, as defined in SQL-92.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -1231,7 +1231,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_predicates)
 		end
 
-	sql92_relational_join_operators : INTEGER is
+	sql92_relational_join_operators : INTEGER
 			-- SQL_SQL92_RELATIONAL_JOIN_OPERATORS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the relational join operators supported in a SELECT statement, as defined in SQL-92.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -1242,7 +1242,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_relational_join_operators)
 		end
 
-	sql92_revoke : INTEGER is
+	sql92_revoke : INTEGER
 			-- SQL_SQL92_REVOKE; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the clauses supported in the REVOKE statement, as defined in SQL-92, supported by the data source.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -1252,7 +1252,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_revoke)
 		end
 
-	sql92_row_value_constructor : INTEGER is
+	sql92_row_value_constructor : INTEGER
 			-- SQL_SQL92_ROW_VALUE_CONSTRUCTOR; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the row value constructor expressions supported in a SELECT statement, as defined in SQL-92. The following bitmasks are used to determine which options are supported by the data source:
 			--SQL_SRVC_VALUE_EXPRESSION ; SQL_SRVC_NULL ; SQL_SRVC_DEFAULT ; SQL_SRVC_ROW_SUBQUERY
@@ -1260,7 +1260,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_row_value_constructor)
 		end
 
-	sql92_string_functions : INTEGER is
+	sql92_string_functions : INTEGER
 			-- SQL_SQL92_STRING_FUNCTIONS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the string scalar functions that are supported by the driver and the associated data source, as defined in SQL-92.
 			--The following bitmasks are used to determine which string functions are supported:
@@ -1269,7 +1269,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_string_functions)
 		end
 
-	sql92_value_expressions : INTEGER is
+	sql92_value_expressions : INTEGER
 			-- SQL_SQL92_VALUE_EXPRESSIONS; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the value expressions supported, as defined in SQL-92.
 			--The SQL-92 or FIPS conformance level at which this feature needs to be supported is shown in parentheses next to each bitmask.
@@ -1279,7 +1279,7 @@ feature -- Access
 			Result := integer32_info (sql_sql92_value_expressions)
 		end
 
-	standard_cli_conformance : INTEGER is
+	standard_cli_conformance : INTEGER
 			-- SQL_STANDARD_CLI_CONFORMANCE; (ODBC 3.0)
 			--An SQLUINTEGER bitmask enumerating the CLI standard or standards to which the driver conforms. The following bitmasks are used to determine which levels the driver conforms to:
 			--SQL_SCC_XOPEN_CLI_VERSION1: The driver conforms to the X/Open CLI version 1.
@@ -1288,7 +1288,7 @@ feature -- Access
 			Result := integer32_info (sql_standard_cli_conformance)
 		end
 
-	static_cursor_attributes1 : INTEGER is
+	static_cursor_attributes1 : INTEGER
 			-- SQL_STATIC_CURSOR_ATTRIBUTES1; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a static cursor that are supported by the driver. This bitmask contains the first subset of attributes; for the second subset, see SQL_STATIC_CURSOR_ATTRIBUTES2.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -1299,7 +1299,7 @@ feature -- Access
 			Result := integer32_info (sql_static_cursor_attributes1)
 		end
 
-	static_cursor_attributes2 : INTEGER is
+	static_cursor_attributes2 : INTEGER
 			-- SQL_STATIC_CURSOR_ATTRIBUTES2; (ODBC 3.0)
 			--An SQLUINTEGER bitmask that describes the attributes of a static cursor that are supported by the driver. This bitmask contains the second subset of attributes; for the first subset, see SQL_STATIC_CURSOR_ATTRIBUTES1.
 			--The following bitmasks are used to determine which attributes are supported:
@@ -1309,7 +1309,7 @@ feature -- Access
 			Result := integer32_info (sql_static_cursor_attributes2)
 		end
 
-	string_functions : INTEGER is
+	string_functions : INTEGER
 			-- SQL_STRING_FUNCTIONS; (ODBC 1.0)
 			----The information type was introduced in ODBC 1.0; each bitmask is labeled with the version in which it was introduced.
 			--An SQLUINTEGER bitmask enumerating the scalar string functions supported by the driver and associated data source.
@@ -1321,7 +1321,7 @@ feature -- Access
 			Result := integer32_info (sql_string_functions)
 		end
 
-	subqueries : INTEGER is
+	subqueries : INTEGER
 			-- SQL_SUBQUERIES; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating the predicates that support subqueries:
 			--SQL_SQ_CORRELATED_SUBQUERIES; SQL_SQ_COMPARISON; SQL_SQ_EXISTS; SQL_SQ_IN; SQL_SQ_QUANTIFIED
@@ -1331,7 +1331,7 @@ feature -- Access
 			Result := integer32_info (sql_subqueries)
 		end
 
-	system_functions : INTEGER is
+	system_functions : INTEGER
 			-- SQL_SYSTEM_FUNCTIONS; (ODBC 1.0)
 			--An SQLUINTEGER bitmask enumerating the scalar system functions supported by the driver and associated data source.
 			--The following bitmasks are used to determine which system functions are supported:
@@ -1340,7 +1340,7 @@ feature -- Access
 			Result := integer32_info (sql_system_functions)
 		end
 
-	table_term : STRING is
+	table_term : STRING
 			-- SQL_TABLE_TERM; (ODBC 1.0)
 			--A character string with the data source vendor's name for a table; for example, "table" or "file".
 			--This character string can be in upper, lower, or mixed case.
@@ -1349,7 +1349,7 @@ feature -- Access
 			Result := string_info (sql_table_term)
 		end
 
-	timedate_add_intervals : INTEGER is
+	timedate_add_intervals : INTEGER
 			-- SQL_TIMEDATE_ADD_INTERVALS; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating the timestamp intervals supported by the driver and associated data source for the TIMESTAMPADD scalar function.
 			--The following bitmasks are used to determine which intervals are supported:
@@ -1359,7 +1359,7 @@ feature -- Access
 			Result := integer32_info (sql_timedate_add_intervals)
 		end
 
-	timedate_diff_intervals : INTEGER is
+	timedate_diff_intervals : INTEGER
 			-- SQL_TIMEDATE_DIFF_INTERVALS; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating the timestamp intervals supported by the driver and associated data source for the TIMESTAMPDIFF scalar function.
 			--The following bitmasks are used to determine which intervals are supported:
@@ -1369,7 +1369,7 @@ feature -- Access
 			Result := integer32_info (sql_timedate_diff_intervals)
 		end
 
-	timedate_functions : INTEGER is
+	timedate_functions : INTEGER
 			-- SQL_TIMEDATE_FUNCTIONS; (ODBC 1.0)
 			----The information type was introduced in ODBC 1.0; each bitmask is labeled with the version in which it was introduced.
 			--An SQLUINTEGER bitmask enumerating the scalar date and time functions supported by the driver and associated data source.
@@ -1379,7 +1379,7 @@ feature -- Access
 			Result := integer32_info (sql_timedate_functions)
 		end
 
-	txn_capable : INTEGER is
+	txn_capable : INTEGER
 			-- SQL_TXN_CAPABLE; (ODBC 1.0)
 			----The information type was introduced in ODBC 1.0; each return value is labeled with the version in which it was introduced.
 			--An SQLUSMALLINT value describing the transaction support in the driver or data source:
@@ -1393,7 +1393,7 @@ feature -- Access
 			Result := integer16_info (sql_txn_capable)
 		end
 
-	txn_isolation_option : INTEGER is
+	txn_isolation_option : INTEGER
 			-- SQL_TXN_ISOLATION_OPTION; (ODBC 1.0)
 			--An SQLUINTEGER bitmask enumerating the transaction isolation levels available from the driver or data source.
 			--The following bitmasks are used in conjunction with the flag to determine which options are supported:
@@ -1405,7 +1405,7 @@ feature -- Access
 			Result := integer32_info (sql_txn_isolation_option)
 		end
 
-	union : INTEGER is
+	union : INTEGER
 			-- SQL_UNION; (ODBC 2.0)
 			--An SQLUINTEGER bitmask enumerating the support for the UNION clause:
 			--SQL_U_UNION = The data source supports the UNION clause.
@@ -1415,14 +1415,14 @@ feature -- Access
 			Result := integer32_info (sql_union)
 		end
 
-	user_name : STRING is
+	user_name : STRING
 			-- SQL_USER_NAME; (ODBC 1.0)
 			--A character string with the name used in a particular database, which can be different from the login name.
 		do
 			Result := string_info (sql_user_name)
 		end
 
-	xopen_cli_year : STRING is
+	xopen_cli_year : STRING
 			-- SQL_XOPEN_CLI_YEAR; (ODBC 3.0)
 			--A character string that indicates the year of publication of the X/Open specification with which the version of the ODBC Driver Manager fully complies.
 		do
@@ -1432,28 +1432,28 @@ feature -- Access
 feature -- Measurement
 
 
-	active_environments : INTEGER is
+	active_environments : INTEGER
 		-- SQL_ACTIVE_ENVIRONMENTS; (ODBC 3.0)
 		--An SQLUSMALLINT value specifying the maximum number of active environments that the driver can support. If there is no specified limit or the limit is unknown, this value is set to zero.
 		do
 			Result := integer16_info (sql_active_environments)
 		end
 
-	max_async_concurrent_statements : INTEGER is
+	max_async_concurrent_statements : INTEGER
 			-- SQL_MAX_ASYNC_CONCURRENT_STATEMENTS; (ODBC 3.0)
 			--An SQLUINTEGER value specifying the maximum number of active concurrent statements in asynchronous mode that the driver can support on a given connection. If there is no specific limit or the limit is unknown, this value is zero.
 		do
 			Result := integer32_info (sql_max_async_concurrent_statements)
 		end
 
-	max_binary_literal_len : INTEGER is
+	max_binary_literal_len : INTEGER
 			-- SQL_MAX_BINARY_LITERAL_LEN; (ODBC 2.0)
 			--An SQLUINTEGER value specifying the maximum length (number of hexadecimal characters, excluding the literal prefix and suffix returned by SQLGetTypeInfo) of a binary literal in an SQL statement. For example, the binary literal 0xFFAA has a length of 4. If there is no maximum length or the length is unknown, this value is set to zero.
 		do
 			Result := integer32_info (sql_max_binary_literal_len)
 		end
 
-	max_catalog_name_len : INTEGER is
+	max_catalog_name_len : INTEGER
 			-- SQL_MAX_CATALOG_NAME_LEN; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum length of a catalog name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 			--An FIPS Full level–conformant driver will return at least 128.
@@ -1462,14 +1462,14 @@ feature -- Measurement
 			Result := integer16_info (sql_max_catalog_name_len)
 		end
 
-	max_char_literal_len : INTEGER is
+	max_char_literal_len : INTEGER
 			-- SQL_MAX_CHAR_LITERAL_LEN; (ODBC 2.0)
 			--An SQLUINTEGER value specifying the maximum length (number of characters, excluding the literal prefix and suffix returned by SQLGetTypeInfo) of a character literal in an SQL statement. If there is no maximum length or the length is unknown, this value is set to zero.
 		do
 			Result := integer32_info (sql_max_char_literal_len)
 		end
 
-	max_column_name_len : INTEGER is
+	max_column_name_len : INTEGER
 			-- SQL_MAX_COLUMN_NAME_LEN; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum length of a column name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 18. An FIPS Intermediate level–conformant driver will return at least 128.
@@ -1477,7 +1477,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_column_name_len)
 		end
 
-	max_columns_in_group_by : INTEGER is
+	max_columns_in_group_by : INTEGER
 			-- SQL_MAX_COLUMNS_IN_GROUP_BY; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum number of columns allowed in a GROUP BY clause. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 6. An FIPS Intermediate level–conformant driver will return at least 15.
@@ -1485,14 +1485,14 @@ feature -- Measurement
 			Result := integer16_info (sql_max_columns_in_group_by)
 		end
 
-	max_columns_in_index : INTEGER is
+	max_columns_in_index : INTEGER
 			-- SQL_MAX_COLUMNS_IN_INDEX; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum number of columns allowed in an index. If there is no specified limit or the limit is unknown, this value is set to zero.
 		do
 			Result := integer16_info (sql_max_columns_in_index)
 		end
 
-	max_columns_in_order_by : INTEGER is
+	max_columns_in_order_by : INTEGER
 			-- SQL_MAX_COLUMNS_IN_ORDER_BY; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum number of columns allowed in an ORDER BY clause. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 6. An FIPS Intermediate level–conformant driver will return at least 15.
@@ -1500,7 +1500,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_columns_in_order_by)
 		end
 
-	max_columns_in_select : INTEGER is
+	max_columns_in_select : INTEGER
 			-- SQL_MAX_COLUMNS_IN_SELECT; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum number of columns allowed in a select list. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 100. An FIPS Intermediate level–conformant driver will return at least 250.
@@ -1508,7 +1508,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_columns_in_select)
 		end
 
-	max_columns_in_table : INTEGER is
+	max_columns_in_table : INTEGER
 			-- SQL_MAX_COLUMNS_IN_TABLE; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum number of columns allowed in a table. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 100. An FIPS Intermediate level–conformant driver will return at least 250.
@@ -1516,7 +1516,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_columns_in_table)
 		end
 
-	max_concurrent_activities : INTEGER is
+	max_concurrent_activities : INTEGER
 			-- SQL_MAX_CONCURRENT_ACTIVITIES; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum number of active statements that the driver can support for a connection. A statement is defined as active if it has results pending, with the term "results" meaning rows from a SELECT operation or rows affected by an INSERT, UPDATE, or DELETE operation (such as a row count), or if it is in a NEED_DATA state. This value can reflect a limitation imposed by either the driver or the data source. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--This InfoType has been renamed for ODBC 3.0 from the ODBC 2.0 InfoType SQL_ACTIVE_STATEMENTS.
@@ -1524,7 +1524,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_concurrent_activities)
 		end
 
-	max_cursor_name_len : INTEGER is
+	max_cursor_name_len : INTEGER
 			-- SQL_MAX_CURSOR_NAME_LEN; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum length of a cursor name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 18. An FIPS Intermediate level–conformant driver will return at least 128.
@@ -1532,7 +1532,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_cursor_name_len)
 		end
 
-	max_driver_connections : INTEGER is
+	max_driver_connections : INTEGER
 			-- SQL_MAX_DRIVER_CONNECTIONS; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum number of active connections that the driver can support for an environment. This value can reflect a limitation imposed by either the driver or the data source. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--This InfoType has been renamed for ODBC 3.0 from the ODBC 2.0 InfoType SQL_ACTIVE_CONNECTIONS.
@@ -1540,7 +1540,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_driver_connections)
 		end
 
-	max_identifier_len : INTEGER is
+	max_identifier_len : INTEGER
 			-- SQL_MAX_IDENTIFIER_LEN; (ODBC 3.0)
 			--An SQLUSMALLINT that indicates the maximum size in characters that the data source supports for user-defined names.
 			--An FIPS Entry level–conformant driver will return at least 18. An FIPS Intermediate level–conformant driver will return at least 128.
@@ -1548,21 +1548,21 @@ feature -- Measurement
 			Result := integer16_info (sql_max_identifier_len)
 		end
 
-	max_index_size : INTEGER is
+	max_index_size : INTEGER
 			-- SQL_MAX_INDEX_SIZE; (ODBC 2.0)
 			--An SQLUINTEGER value specifying the maximum number of bytes allowed in the combined fields of an index. If there is no specified limit or the limit is unknown, this value is set to zero.
 		do
 			Result := integer32_info (sql_max_index_size)
 		end
 
-	max_procedure_name_len : INTEGER is
+	max_procedure_name_len : INTEGER
 			-- SQL_MAX_PROCEDURE_NAME_LEN; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum length of a procedure name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 		do
 			Result := integer16_info (sql_max_procedure_name_len)
 		end
 
-	max_row_size : INTEGER is
+	max_row_size : INTEGER
 			-- SQL_MAX_ROW_SIZE; (ODBC 2.0)
 			--An SQLUINTEGER value specifying the maximum length of a single row in a table. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 2,000. An FIPS Intermediate level–conformant driver will return at least 8,000.
@@ -1570,14 +1570,14 @@ feature -- Measurement
 			Result := integer32_info (sql_max_row_size)
 		end
 
-	max_row_size_includes_long : BOOLEAN is
+	max_row_size_includes_long : BOOLEAN
 			-- SQL_MAX_ROW_SIZE_INCLUDES_LONG; (ODBC 3.0)
 			-- True if the maximum row size returned for the SQL_MAX_ROW_SIZE information type includes the length of all SQL_LONGVARCHAR and SQL_LONGVARBINARY columns in the row.
 		do
 			Result := boolean_string_info (sql_max_row_size_includes_long)
 		end
 
-	max_schema_name_len : INTEGER is
+	max_schema_name_len : INTEGER
 			-- SQL_MAX_SCHEMA_NAME_LEN; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum length of a schema name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 18. An FIPS Intermediate level–conformant driver will return at least 128.
@@ -1586,14 +1586,14 @@ feature -- Measurement
 			Result := integer16_info (sql_max_schema_name_len)
 		end
 
-	max_statement_len : INTEGER is
+	max_statement_len : INTEGER
 			-- SQL_MAX_STATEMENT_LEN; (ODBC 2.0)
 			--An SQLUINTEGER value specifying the maximum length (number of characters, including white space) of an SQL statement. If there is no maximum length or the length is unknown, this value is set to zero.
 		do
 			Result := integer32_info (sql_max_statement_len)
 		end
 
-	max_table_name_len : INTEGER is
+	max_table_name_len : INTEGER
 			-- SQL_MAX_TABLE_NAME_LEN; (ODBC 1.0)
 			--An SQLUSMALLINT value specifying the maximum length of a table name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 18. An FIPS Intermediate level–conformant driver will return at least 128.
@@ -1601,7 +1601,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_table_name_len)
 		end
 
-	max_tables_in_select : INTEGER is
+	max_tables_in_select : INTEGER
 			-- SQL_MAX_TABLES_IN_SELECT; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum number of tables allowed in the FROM clause of a SELECT statement. If there is no specified limit or the limit is unknown, this value is set to zero.
 			--An FIPS Entry level–conformant driver will return at least 15. An FIPS Intermediate level–conformant driver will return at least 50.
@@ -1609,7 +1609,7 @@ feature -- Measurement
 			Result := integer16_info (sql_max_tables_in_select)
 		end
 
-	max_user_name_len : INTEGER is
+	max_user_name_len : INTEGER
 			-- SQL_MAX_USER_NAME_LEN; (ODBC 2.0)
 			--An SQLUSMALLINT value specifying the maximum length of a user name in the data source. If there is no maximum length or the length is unknown, this value is set to zero.
 		do
@@ -1620,21 +1620,21 @@ feature -- Comparison
 
 feature -- Status report
 
-	accessible_procedures : BOOLEAN is
+	accessible_procedures : BOOLEAN
 			-- SQL_ACCESSIBLE_PROCEDURES; (ODBC 1.0)
 			-- True if the user can execute all procedures returned by SQLProcedures; False if there may be procedures returned that the user cannot execute.
 		do
 			Result := boolean_string_info (sql_accessible_procedures)
 		end
 
-	accessible_tables : BOOLEAN is
+	accessible_tables : BOOLEAN
 			-- SQL_ACCESSIBLE_TABLES; (ODBC 1.0)
 			-- True if the user is guaranteed SELECT privileges to all tables returned by SQLTables; False if there may be tables returned that the user cannot access.
 		do
 			Result := boolean_string_info (sql_accessible_tables)
 		end
 
-	catalog_name : BOOLEAN is
+	catalog_name : BOOLEAN
 		-- SQL_CATALOG_NAME; (ODBC 3.0)
 		--A character string: "Y" if the server supports catalog names, or .
 		--An SQL-92 Full level–conformant driver will always return "Y".
@@ -1643,7 +1643,7 @@ feature -- Status report
 		end
 
 
-	like_escape_clause : BOOLEAN is
+	like_escape_clause : BOOLEAN
 			-- SQL_LIKE_ESCAPE_CLAUSE; (ODBC 2.0)
 			-- True if the data source supports an escape character for the percent character (%) and underscore character (_) in a LIKE predicate and the driver supports the ODBC syntax for defining a LIKE predicate escape character.
 		do
@@ -1651,7 +1651,7 @@ feature -- Status report
 		end
 
 
-	column_alias : BOOLEAN is
+	column_alias : BOOLEAN
 			-- SQL_COLUMN_ALIAS; (ODBC 2.0)
 			-- True if the data source supports column aliases.
 			--A column alias is an alternate name that can be specified for a column in the select list by using an AS clause. An SQL-92 Entry level–conformant driver will always return "Y".
@@ -1659,7 +1659,7 @@ feature -- Status report
 			Result := boolean_string_info (sql_column_alias)
 		end
 
-	data_source_read_only : BOOLEAN is
+	data_source_read_only : BOOLEAN
 			-- SQL_DATA_SOURCE_READ_ONLY; (ODBC 1.0)
 			--A character string. "Y" if the data source is set to READ ONLY mode, False if it is otherwise.
 			--This characteristic pertains only to the data source itself; it is not a characteristic of the driver that enables access to the data source. A driver that is read/write can be used with a data source that is read-only. If a driver is read-only, all of its data sources must be read-only and must return SQL_DATA_SOURCE_READ_ONLY.
@@ -1667,7 +1667,7 @@ feature -- Status report
 			Result := boolean_string_info (sql_data_source_read_only)
 		end
 
-	describe_parameter : BOOLEAN is
+	describe_parameter : BOOLEAN
 			-- SQL_DESCRIBE_PARAMETER; (ODBC 3.0)
 			-- True if parameters can be described; False, if not.
 			--An SQL-92 Full level–conformant driver will usually return "Y" because it will support the DESCRIBE INPUT statement. Because this does not directly specify the underlying SQL support, however, describing parameters might not be supported, even in a SQL-92 Full level–conformant driver.
@@ -1675,14 +1675,14 @@ feature -- Status report
 			Result := boolean_string_info (sql_describe_parameter)
 		end
 
-	expressions_in_orderby : BOOLEAN is
+	expressions_in_orderby : BOOLEAN
 			-- SQL_EXPRESSIONS_IN_ORDERBY; (ODBC 1.0)
 			-- True if the data source supports expressions in the ORDER BY list; .
 		do
 			Result := boolean_string_info (sql_expressions_in_orderby)
 		end
 
-	integrity : BOOLEAN is
+	integrity : BOOLEAN
 			-- SQL_INTEGRITY; (ODBC 1.0)
 			-- True if the data source supports the Integrity Enhancement Facility; .
 			--This InfoType has been renamed for ODBC 3.0 from the ODBC 2.0 InfoType SQL_ODBC_SQL_OPT_IEF.
@@ -1690,7 +1690,7 @@ feature -- Status report
 			Result := boolean_string_info (sql_integrity)
 		end
 
-	mult_result_sets : BOOLEAN is
+	mult_result_sets : BOOLEAN
 			-- SQL_MULT_RESULT_SETS; (ODBC 1.0)
 			-- True if the data source supports multiple result sets.
 			--For more information on multiple result sets, see Multiple Results.
@@ -1698,7 +1698,7 @@ feature -- Status report
 			Result := boolean_string_info (sql_mult_result_sets)
 		end
 
-	multiple_active_txn : BOOLEAN is
+	multiple_active_txn : BOOLEAN
 			-- SQL_MULTIPLE_ACTIVE_TXN; (ODBC 1.0)
 			-- True if the driver supports more than one active transaction at the same time, False if only one transaction can be active at any time.
 			--The information returned for this information type does not apply in the case of distributed transactions.
@@ -1706,7 +1706,7 @@ feature -- Status report
 			Result := boolean_string_info (sql_multiple_active_txn)
 		end
 
-	need_long_data_len : BOOLEAN is
+	need_long_data_len : BOOLEAN
 			-- SQL_NEED_LONG_DATA_LEN; (ODBC 2.0)
 			-- True if the data source needs the length of a long data value
 			-- (the data type is SQL_LONGVARCHAR, SQL_LONGVARBINARY, or a long data source–specific data type) before that value is sent to the data source.
@@ -1715,7 +1715,7 @@ feature -- Status report
 			Result := boolean_string_info (sql_need_long_data_len)
 		end
 
-	order_by_columns_in_select : BOOLEAN is
+	order_by_columns_in_select : BOOLEAN
 			-- SQL_ORDER_BY_COLUMNS_IN_SELECT; (ODBC 2.0)
 			-- True if the columns in the ORDER BY clause must be in the select list.
 		do
@@ -1723,14 +1723,14 @@ feature -- Status report
 		end
 
 
-	procedures : BOOLEAN is
+	procedures : BOOLEAN
 			-- SQL_PROCEDURES; (ODBC 1.0)
 			-- True if the data source supports procedures and the driver supports the ODBC procedure invocation syntax.
 		do
 			Result := boolean_string_info (sql_procedures)
 		end
 
-	row_updates : BOOLEAN is
+	row_updates : BOOLEAN
 			-- SQL_ROW_UPDATES; (ODBC 1.0)
 			-- True if a keyset-driven or mixed cursor maintains row versions or values for all fetched rows
 			-- and therefore can detect any updates made to a row by any user since the row was last fetched.
@@ -1768,7 +1768,7 @@ feature -- Constants
 
 feature {NONE} -- Implementation
 
-	integer32_info (information_type : INTEGER) : INTEGER is
+	integer32_info (information_type : INTEGER) : INTEGER
 		do
 			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_integer_32.handle, 0, default_pointer))
 			if is_ok then
@@ -1776,7 +1776,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	integer16_info (information_type : INTEGER) : INTEGER is
+	integer16_info (information_type : INTEGER) : INTEGER
 		do
 			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_integer_16.handle, 0, default_pointer))
 			if is_ok then
@@ -1784,7 +1784,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	boolean_string_info (information_type : INTEGER) : BOOLEAN is
+	boolean_string_info (information_type : INTEGER) : BOOLEAN
 		local
 			s : STRING
 		do
@@ -1792,7 +1792,7 @@ feature {NONE} -- Implementation
 			Result := not s.is_empty and then s.is_equal (string_yes)
 		end
 
-	string_info (information_type : INTEGER) : STRING is
+	string_info (information_type : INTEGER) : STRING
 		do
 			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_string.handle, string_length, ext_integer_32.handle))
 			if is_ok and ext_integer_32.item > 0 then
@@ -1802,25 +1802,25 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	ext_string : XS_C_STRING is
+	ext_string : XS_C_STRING
 		once
 			create Result.make (string_length)
 		end
 
-	ext_integer_16 : XS_C_INT16 is
+	ext_integer_16 : XS_C_INT16
 		once
 			create Result.make
 		end
 
-	ext_integer_32 : XS_C_INT32 is
+	ext_integer_32 : XS_C_INT32
 		once
 			create Result.make
 		end
 
-	string_length : INTEGER is 8192
-	string_yes: STRING is "Y"
+	string_length : INTEGER = 8192
+	string_yes: STRING = "Y"
 
-	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER
 			-- To be redefined in descendant classes
 		do
 			Result := ecli_c_session_error (session.handle, record_index, state, native_error, message, buffer_length, length_indicator)

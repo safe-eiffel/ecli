@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 		% A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -28,7 +28,7 @@ create
 
 feature -- Access
 
-	item : ECLI_PROCEDURE_COLUMN is
+	item : ECLI_PROCEDURE_COLUMN
 			--
 		do
 			check attached impl_item as i then
@@ -38,7 +38,7 @@ feature -- Access
 
 feature -- Element change
 
-	create_item is
+	create_item
 			-- create item at current cursor position
 		do
 			if not off then
@@ -54,14 +54,14 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	create_buffer_values is
+	create_buffer_values
 				-- create buffers for cursor
 		do
 			Precursor
 			create buffer_column_type.make
 		end
 
-	set_buffer_values_array is
+	set_buffer_values_array
 		do
 			set_results (<<
 				buffer_table_cat,
@@ -86,9 +86,9 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	definition : STRING is once Result := "SQLProcedureColumns" end
+	definition : STRING once Result := "SQLProcedureColumns" end
 
-	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER
 			-- actual external query
 		local
 			a_column : POINTER
@@ -105,7 +105,7 @@ feature {NONE} -- Implementation
 				a_column, a_column_length)
 		end
 
-	query_metadata_feature_name : STRING is do Result := "ecli_c_get_procedure_columns" end
+	query_metadata_feature_name : STRING do Result := "ecli_c_get_procedure_columns" end
 
 invariant
 	invariant_clause: True -- Your invariant here

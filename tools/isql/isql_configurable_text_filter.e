@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Text filters that take configuration parameters from context variables."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -26,18 +26,18 @@ create
 	
 feature -- Access
 
-	heading_begin : STRING is 
+	heading_begin : STRING 
 		do 
 			Result := variable_value (context.var_heading_begin)
 		end
 		
-	heading_separator : STRING is do Result := variable_value (context.Var_heading_separator) end
-	heading_end : STRING is do Result := variable_value (context.Var_heading_end) end
-	row_begin : STRING is do Result := variable_value (context.Var_row_begin) end
-	column_separator : STRING is do Result := variable_value (context.Var_column_separator) end
-	row_end : STRING is do Result := variable_value (context.Var_row_end) end
-	error_begin : STRING is do Result := Precursor end
-	error_separator : STRING is do Result := Precursor end
-	error_end : STRING is do Result := Precursor end
+	heading_separator : STRING do Result := variable_value (context.Var_heading_separator) end
+	heading_end : STRING do Result := variable_value (context.Var_heading_end) end
+	row_begin : STRING do Result := variable_value (context.Var_row_begin) end
+	column_separator : STRING do Result := variable_value (context.Var_column_separator) end
+	row_end : STRING do Result := variable_value (context.Var_row_end) end
+	error_begin : STRING do Result := Precursor end
+	error_separator : STRING do Result := Precursor end
+	error_end : STRING do Result := Precursor end
 	
 end -- class ISQL_CONFIGURABLE_TEXT_FILTER

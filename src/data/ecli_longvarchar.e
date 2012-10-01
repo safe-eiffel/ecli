@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"SQL LONGVARCHAR (n) values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -21,12 +21,12 @@ create
 
 feature -- Access
 
-	default_maximum_capacity : INTEGER is
+	default_maximum_capacity : INTEGER
 		do
 			Result := 1_000_000
 		end
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_longvarchar
 		end

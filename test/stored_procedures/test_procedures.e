@@ -1,4 +1,4 @@
-indexing
+note
 	description: "TEST1 sample application.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -15,7 +15,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 			-- ecli test application
 		do
 			io.put_string ("'test1' ECLI tutorial application%N%N")
@@ -61,7 +61,7 @@ feature -- Status setting
 
 feature --  Basic operations
 
-	create_procedures is
+	create_procedures
 		local
 			stmt : ECLI_STATEMENT
 		do
@@ -108,7 +108,7 @@ feature --  Basic operations
 			stmt.close
 		end
 		
-	test_procedures is
+	test_procedures
 		local
 			pin, pout, pinout, fun, mulres : ECLI_STORED_PROCEDURE
 			input : ECLI_INTEGER
@@ -229,7 +229,7 @@ feature --  Basic operations
 			end
 		end
 		
-	drop_procedures is
+	drop_procedures
 		local
 			stmt : ECLI_STATEMENT
 		do
@@ -258,7 +258,7 @@ feature --  Basic operations
 		end
 		
 		
-	parse_arguments is
+	parse_arguments
 			-- parse program arguments
 		local
 			args : ARGUMENTS
@@ -277,13 +277,13 @@ feature --  Basic operations
 			ok: arguments_ok implies (data_source_name /= Void and user_name /= Void and password /= Void)
 		end
 
-	print_usage is
+	print_usage
 			-- print terse usage string
 		do
 				io.put_string ("Usage: test1 <data_source> <user_name> <password> [<trace_file_name>]%N")
 		end
 
-	trace_if_necessary is
+	trace_if_necessary
 			-- activate trace if trace_file_name exists
 		local
 			f : KL_TEXT_OUTPUT_FILE
@@ -306,7 +306,7 @@ feature --  Basic operations
 			end		
 		end
 		
-	create_and_connect_session is
+	create_and_connect_session
 			-- create session and connect user `data_source_name', `user_name' and `password'
 		do
 			io.put_string ("%N SESSION - Creation and Connection%N")
@@ -325,7 +325,7 @@ feature --  Basic operations
 			session_not_void: session /= Void
 		end
 
-	disconnect_session is
+	disconnect_session
 			-- disconnect session before closing
 		do
 			-- session disconnection
@@ -337,7 +337,7 @@ feature --  Basic operations
 			end
 		end
 
-	close_session is
+	close_session
 			-- close `session'
 		do
 			session.close
@@ -345,7 +345,7 @@ feature --  Basic operations
 
 feature -- Miscellaneous
 
-	show_parameter_names (a_statement : ECLI_STATEMENT) is
+	show_parameter_names (a_statement : ECLI_STATEMENT)
 			-- show parameter names of SQL in `a_statement'
 		local
 			list_cursor: DS_LIST_CURSOR[STRING]
@@ -366,7 +366,7 @@ feature -- Miscellaneous
 
 
 
-	print_status (status : ECLI_STATUS) is
+	print_status (status : ECLI_STATUS)
 		require
 			status_not_void: status /= Void
 		do
@@ -375,7 +375,7 @@ feature -- Miscellaneous
 		
 end -- class TEST1
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

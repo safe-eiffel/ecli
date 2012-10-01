@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Cursors on database metadata."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -75,7 +75,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	queried_catalog : detachable STRING is
+	queried_catalog : detachable STRING
 			-- queried catalog name
 		do
 			if queried_catalog_impl /= Void then
@@ -83,7 +83,7 @@ feature -- Access
 			end
 		end
 
-	queried_schema : detachable STRING is
+	queried_schema : detachable STRING
 			-- queried schema name
 		do
 			if queried_schema_impl /= Void then
@@ -91,7 +91,7 @@ feature -- Access
 			end
 		end
 
-	queried_name : detachable STRING is
+	queried_name : detachable STRING
 			-- queried name (table, column or procedure)
 		do
 			if queried_name_impl /= Void then
@@ -99,7 +99,7 @@ feature -- Access
 			end
 		end
 
-	item : ANY is
+	item : ANY
 			-- item at current cursor position
 		require
 			not_off: not off
@@ -125,7 +125,7 @@ feature -- Status report
 
 feature -- Cursor Movement
 
-	start is
+	start
 			-- advance cursor at first item if any
 		do
 			if results.is_empty then
@@ -139,7 +139,7 @@ feature -- Cursor Movement
 			end
 		end
 
-	forth is
+	forth
 			-- advance cursor to next item
 		do
 			Precursor
@@ -150,24 +150,24 @@ feature -- Cursor Movement
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create buffers for cursor
 		deferred
 		end
 
-	create_item is
+	create_item
 			-- create item from current cursor value
 		deferred
 		end
 
 	impl_item : detachable like item
 
-	definition : STRING is
+	definition : STRING
 			-- definition of query
 	 	deferred
 	 	end
 
-	update_state_after_execution is
+	update_state_after_execution
 			-- post_make action
 		do
 			if is_ok then
@@ -186,12 +186,12 @@ feature {NONE} -- Implementation
 
 	do_query_metadata (a_catalog : POINTER; a_catalog_length : INTEGER;
 		a_schema : POINTER; a_schema_length : INTEGER;
-		a_name : POINTER; a_name_length : INTEGER) : INTEGER is
+		a_name : POINTER; a_name_length : INTEGER) : INTEGER
 			-- query metadata
 		deferred
 		end
 
-	query_metadata_feature_name : STRING is
+	query_metadata_feature_name : STRING
 			-- query metadata feature name
 		deferred
 		ensure
@@ -202,7 +202,7 @@ feature {NONE} -- Implementation
 	queried_schema_impl : XS_C_STRING
 	queried_name_impl : XS_C_STRING
 
-	set_metadata_id is
+	set_metadata_id
 		local
 			v : INTEGER_32
 		do

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -28,7 +28,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
+	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION)
 			-- create cursor for foreign keys in table identified by `a_name'
 		do
 			Precursor (a_name, a_session)
@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_FOREIGN_KEY is
+	item : ECLI_FOREIGN_KEY
 			-- current type description
 		do
 			check attached impl_item as i then
@@ -48,7 +48,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-	forth is
+	forth
 			-- advance cursor to next item if any
 		do
 			if not attached impl_item or else creating_item or else next_item /= Void then
@@ -64,7 +64,7 @@ feature -- Cursor Movement
 			end
 		end
 
-	create_item is
+	create_item
 			-- create item at current cursor position
 		do
 			if attached next_item as ni then
@@ -92,7 +92,7 @@ feature {ECLI_FOREIGN_KEY} -- Access
 
 feature {NONE} -- Implementation
 
-	fill_item is
+	fill_item
 			-- fill item with buffer values
 		local
 			done : BOOLEAN
@@ -122,7 +122,7 @@ feature {NONE} -- Implementation
 
 	last_key_seq : INTEGER
 
-	create_buffers is
+	create_buffers
 			-- create buffers for cursor
 		do
 			Precursor
@@ -142,7 +142,7 @@ feature {NONE} -- Implementation
 			create buffer_deferrability.make
 		end
 
-	set_buffer_into_cursor is
+	set_buffer_into_cursor
 			-- set results cursor with buffer array
 		do
 			set_results (<<
@@ -163,9 +163,9 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	definition : STRING is once Result := "SQLForeignKeys" end
+	definition : STRING once Result := "SQLForeignKeys" end
 
-	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER
 			-- actual external query
 		do
 			Result := ecli_c_get_foreign_keys ( handle,

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Factories for access modules from an XML element."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -20,7 +20,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_error_handler : QA_ERROR_HANDLER) is
+	make (a_error_handler : QA_ERROR_HANDLER)
 			-- creation using `a_error_handler'
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -54,7 +54,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	create_access_module (element : XM_ELEMENT) is
+	create_access_module (element : XM_ELEMENT)
 			-- process `element' as access module
 		require
 			element_not_void: element /= Void
@@ -135,7 +135,7 @@ feature -- Basic operations
 			last_module_not_void_if_no_error: not is_error implies last_access /= Void
 		end
 
-	create_parameter_set (element : XM_ELEMENT; default_name : STRING) is
+	create_parameter_set (element : XM_ELEMENT; default_name : STRING)
 			-- create parameter set from `element' into `last_parameter_set'
 		require
 			element_not_void: element /= Void
@@ -169,7 +169,7 @@ feature -- Basic operations
 			end
 		end
 
-	create_result_set (element : XM_ELEMENT; default_name : STRING) is
+	create_result_set (element : XM_ELEMENT; default_name : STRING)
 			-- create result set from `element' into `last_result_set'
 		require
 			element_not_void: element /= Void
@@ -194,7 +194,7 @@ feature -- Basic operations
 			end
 		end
 
-	create_parameter_map (element : XM_ELEMENT) is
+	create_parameter_map (element : XM_ELEMENT)
 			-- create parameter map from `element'
 		require
 			element_not_void: element /= Void
@@ -207,14 +207,14 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	module_name (a_name : STRING) : STRING is
+	module_name (a_name : STRING) : STRING
 			-- module name based on `a_name'
 		do
 			create Result.make_from_string (a_name)
 			Result.to_upper
 		end
 
-	parameter_set_name (a_prefix : STRING) : STRING is
+	parameter_set_name (a_prefix : STRING) : STRING
 			-- parameter set name based on `a_prefix'
 		do
 			create Result.make_from_string (a_prefix)
@@ -222,7 +222,7 @@ feature {NONE} -- Implementation
 			Result.to_upper
 		end
 
-	result_set_name (a_prefix : STRING) : STRING is
+	result_set_name (a_prefix : STRING) : STRING
 			-- result set name based on `a_prefix'
 		do
 			create Result.make_from_string (a_prefix)
@@ -230,7 +230,7 @@ feature {NONE} -- Implementation
 			Result.to_upper
 		end
 
-	populate_parameter_set (element : XM_ELEMENT) is
+	populate_parameter_set (element : XM_ELEMENT)
 			-- iterate over "parameter" elements in `element'
 		require
 			element_not_void: element /= Void
@@ -256,7 +256,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	populate_parameter_map (element : XM_ELEMENT) is
+	populate_parameter_map (element : XM_ELEMENT)
 			-- iterate over "parameter" elements in `element'
 		require
 			element_not_void: element /= Void
@@ -296,7 +296,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	create_parameter (element : XM_ELEMENT; is_template : BOOLEAN) is
+	create_parameter (element : XM_ELEMENT; is_template : BOOLEAN)
 			-- create parameter based on `element'
 		require
 			element_not_void: element /= Void
@@ -351,7 +351,7 @@ feature {NONE} -- Implementation
 			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void
 		end
 
-	create_parameter_from_template (element : XM_ELEMENT; template : RDBMS_ACCESS_PARAMETER) is
+	create_parameter_from_template (element : XM_ELEMENT; template : RDBMS_ACCESS_PARAMETER)
 			-- create parameter from `element', using `template'
 		require
 			element_not_void: element /= Void
@@ -386,37 +386,37 @@ feature {NONE} -- Implementation
 			last_parameter_not_void_if_no_error: not is_error implies last_parameter /= Void
 		end
 
-	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER) is
+	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER)
 			-- add new parameter to parameter list
 		do
 			parameter_names.force (a_parameter_name)
 		end
 
-	on_table_literal (sql: STRING; i_begin, i_end: INTEGER) is
+	on_table_literal (sql: STRING; i_begin, i_end: INTEGER)
 		do
 		end
 
-	on_parameter (sql: STRING; i_begin, i_end: INTEGER) is
+	on_parameter (sql: STRING; i_begin, i_end: INTEGER)
 		do
 		end
 
-	on_string_literal (sql: STRING; i_begin, i_end: INTEGER) is
+	on_string_literal (sql: STRING; i_begin, i_end: INTEGER)
 		do
 		end
 
-	on_word (sql: STRING; i_begin, i_end: INTEGER) is
+	on_word (sql: STRING; i_begin, i_end: INTEGER)
 		do
 		end
 
-	on_parameter_marker (sql: STRING; index: INTEGER) is
+	on_parameter_marker (sql: STRING; index: INTEGER)
 		do
 		end
 
 	parameter_names	: DS_HASH_SET[STRING]
 
-	is_valid : BOOLEAN is do Result := True end
+	is_valid : BOOLEAN do Result := True end
 
-	fill_parameter_set (sql : STRING) is
+	fill_parameter_set (sql : STRING)
 			--
 		local
 			sql_parser : ECLI_SQL_PARSER
@@ -457,7 +457,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	set_parameter_direction (a_parameter : like last_parameter; a_value : STRING) is
+	set_parameter_direction (a_parameter : like last_parameter; a_value : STRING)
 		do
 			if a_value.is_equal (v_input) then
 				a_parameter.enable_input
@@ -472,7 +472,7 @@ invariant
 
 end -- class ACCESS_MODULE_FACTORY
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

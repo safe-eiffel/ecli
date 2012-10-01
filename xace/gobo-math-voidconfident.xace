@@ -12,7 +12,12 @@
 
 	<cluster name="math" location="${GOBO}/library/math">
 		<option name="abstract" value="true"/>
-		<option name="void_safety" value="none"/>
+
+
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="void_safety" value="complete" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+
 		<cluster name="decimal">
 		<option name="void_safety" value="on_demand"/>		
 		</cluster>

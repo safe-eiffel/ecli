@@ -1,4 +1,4 @@
-indexing
+note
 	description: "ISQL command contexts."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -23,7 +23,7 @@ feature {NONE} -- Initialization
 
 		end
 
-	make (an_output_file : like output_file; a_commands : like commands) is
+	make (an_output_file : like output_file; a_commands : like commands)
 			-- create context
 		require
 			an_output_file_not_void: an_output_file /= Void
@@ -41,7 +41,7 @@ feature {NONE} -- Initialization
 			history_not_void: history /= Void
 		end
 
-	make_by_parent (a_parent_context : like Current) is
+	make_by_parent (a_parent_context : like Current)
 			-- make using `a_parent' as enclosing context
 		require
 			a_parent_not_void: a_parent_context /= Void
@@ -78,7 +78,7 @@ feature -- Access
 
 	commands : ISQL_COMMANDS
 
-	no_headings : BOOLEAN is False
+	no_headings : BOOLEAN = False
 
 	filter : ISQL_FILTER
 		do
@@ -90,7 +90,7 @@ feature -- Access
 			end
 		end
 
-	variable (name : STRING) : STRING is
+	variable (name : STRING) : STRING
 			-- value of variable `name'
 		require
 			name_not_void: name /= Void
@@ -106,7 +106,7 @@ feature -- Access
 			end
 		end
 
-	variables_count : INTEGER is
+	variables_count : INTEGER
 			-- count of currently set variables
 		do
 			Result := variables.count
@@ -118,14 +118,14 @@ feature -- Status report
 
 	echo_output : BOOLEAN
 
-	has_variable (name : STRING) : BOOLEAN is
+	has_variable (name : STRING) : BOOLEAN
 		require
 			name_not_void: name /= Void
 		do
 			Result := variables.has (name) or else (parent_context /= Void and then parent_context.has_variable (name))
 		end
 
-	is_executable : BOOLEAN is
+	is_executable : BOOLEAN
 			-- can this context be used for executing a command ?
 		do
 			Result := session.is_connected and then output_file.is_open_write
@@ -135,7 +135,7 @@ feature -- Status report
 
 	must_quit : BOOLEAN
 
-	is_variable_true (name : STRING) : BOOLEAN is
+	is_variable_true (name : STRING) : BOOLEAN
 			-- is `name' variable true ?
 		require
 			name_not_void: name /= Void
@@ -154,21 +154,21 @@ feature -- Status report
 
 feature -- Status setting
 
-	set_must_quit is
+	set_must_quit
 		do
 			must_quit := True
 		ensure
 			must_quit_true: must_quit
 		end
 
-	enable_echo_output is
+	enable_echo_output
 		do
 			echo_output := True
 		ensure
 			echo_output: echo_output
 		end
 
-	disable_echo_output is
+	disable_echo_output
 		do
 			echo_output := False
 		ensure
@@ -177,7 +177,7 @@ feature -- Status setting
 
 feature {ISQL} -- Element change
 
-	set_input_file (a_file : like input_file) is
+	set_input_file (a_file : like input_file)
 			--
 		require
 			a_file_not_void: a_file /= Void
@@ -187,7 +187,7 @@ feature {ISQL} -- Element change
 			input_file_set: input_file = a_file
 		end
 
-	set_interactive is
+	set_interactive
 			--
 		do
 			if attached Input as in then
@@ -199,7 +199,7 @@ feature {ISQL} -- Element change
 
 feature -- Element change
 
-	create_command_stream (stream : KI_TEXT_INPUT_STREAM) is
+	create_command_stream (stream : KI_TEXT_INPUT_STREAM)
 			--
 		do
 			if not stream.is_open_read then
@@ -229,7 +229,7 @@ feature -- Element change
 --			command_stream_assigned: command_stream = a_command_stream
 --		end
 
-	set_output_file (a_file: like OUTPUT_FILE) is
+	set_output_file (a_file: like OUTPUT_FILE)
 			-- set `output_file' to `a_file'
 		require
 			a_file_not_void: a_file /= Void
@@ -246,7 +246,7 @@ feature -- Element change
 			output_file_set: output_file = a_file
 		end
 
-	set_session (a_session : ECLI_SESSION) is
+	set_session (a_session : ECLI_SESSION)
 			-- set `session' to `a_session'
 		require
 			a_session_not_void: a_session /= Void
@@ -257,7 +257,7 @@ feature -- Element change
 
 		end
 
-	remove_variable (name : STRING) is
+	remove_variable (name : STRING)
 			--
 		require
 			name_not_void: name /= Void
@@ -267,7 +267,7 @@ feature -- Element change
 			not_has_variable: not has_variable (name)
 		end
 
-	set_variable (value, name : STRING) is
+	set_variable (value, name : STRING)
 			-- add variable `name' with `value'
 		require
 			name_not_void: name /= Void
@@ -282,7 +282,7 @@ feature -- Element change
 
 feature -- Basic operations
 
-	do_session is
+	do_session
 		do
 			from
 				read_command
@@ -300,13 +300,13 @@ feature -- Basic operations
 			end
 		end
 
-	do_execute_command (a_text : STRING) is
+	do_execute_command (a_text : STRING)
 			--
 		do
 			commands.execute (a_text, Current)
 		end
 
-	read_command is
+	read_command
 			-- read command_stream and prompt if necessary
 		do
 			if command_stream.is_interactive and command_stream.buffer_text.is_empty then
@@ -321,7 +321,7 @@ feature -- Basic operations
 			end
 		end
 
-	is_session_done : BOOLEAN is
+	is_session_done : BOOLEAN
 			--
 		do
 			Result := must_quit or else command_stream.end_of_input
@@ -329,15 +329,15 @@ feature -- Basic operations
 
 feature -- Constants
 
-	var_heading_begin : STRING is "_heading_begin"
-	var_heading_separator : STRING is "_heading_separator"
-	var_heading_end : STRING is "_heading_end"
+	var_heading_begin : STRING = "_heading_begin"
+	var_heading_separator : STRING = "_heading_separator"
+	var_heading_end : STRING = "_heading_end"
 
-	var_row_begin : STRING is "_row_begin"
-	var_row_end : STRING is "_row_end"
-	var_column_separator : STRING is "_column_separator"
-	var_editor : STRING is "_editor"
-	var_no_heading : STRING is "_no_heading"
+	var_row_begin : STRING = "_row_begin"
+	var_row_end : STRING = "_row_end"
+	var_column_separator : STRING = "_column_separator"
+	var_editor : STRING = "_editor"
+	var_no_heading : STRING = "_no_heading"
 
 feature {ISQL_CONTEXT} -- Access
 
@@ -345,18 +345,18 @@ feature {ISQL_CONTEXT} -- Access
 
 feature -- Constants
 
-	c_prompt : STRING is "ISQL> "
+	c_prompt : STRING = "ISQL> "
 
 feature {NONE} -- Implementation
 
-	new_filter : like filter is
+	new_filter : like filter
 		do
 			create {ISQL_CONFIGURABLE_TEXT_FILTER} Result.make (Current)
 		end
 
 	impl_filter : detachable like filter
 
-	show_prompt is
+	show_prompt
 		do
 			output.put_string (c_prompt)
 		end

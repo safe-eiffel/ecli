@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that filter output."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -24,15 +24,15 @@ feature -- Access
 
 	output_file : KI_TEXT_OUTPUT_STREAM
 
-	heading_begin : STRING is deferred end
-	heading_separator : STRING is deferred end
-	heading_end : STRING is deferred end
-	row_begin : STRING is deferred end
-	column_separator : STRING is deferred end
-	row_end : STRING is deferred end
-	error_begin : STRING is deferred end
-	error_separator : STRING is deferred end
-	error_end : STRING is deferred end
+	heading_begin : STRING deferred end
+	heading_separator : STRING deferred end
+	heading_end : STRING deferred end
+	row_begin : STRING deferred end
+	column_separator : STRING deferred end
+	row_end : STRING deferred end
+	error_begin : STRING deferred end
+	error_separator : STRING deferred end
+	error_end : STRING deferred end
 
 feature -- Measurement
 
@@ -50,7 +50,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	is_writable : BOOLEAN is
+	is_writable : BOOLEAN
 			-- can this filter be used to write something ?
 		do
 			Result := output_file /= Void
@@ -58,27 +58,27 @@ feature -- Status report
 
 feature -- Status setting
 
-	is_in_heading : BOOLEAN is
+	is_in_heading : BOOLEAN
 		do
 			Result := status = status_heading
 		end
 
-	is_in_row : BOOLEAN is
+	is_in_row : BOOLEAN
 		do
 			Result := status = status_row
 		end
 
-	is_in_error : BOOLEAN  is
+	is_in_error : BOOLEAN
 		do
 			Result := status = status_error
 		end
 
-	is_in_message : BOOLEAN is
+	is_in_message : BOOLEAN
 		do
 			Result := status = status_message
 		end
 
-	is_free : BOOLEAN is
+	is_free : BOOLEAN
 			-- are we out of 'heading', or 'row' or 'error' ?
 		do
 			Result := status = status_free
@@ -86,7 +86,7 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_output_file (a_file : like output_file) is
+	set_output_file (a_file : like output_file)
 			-- set `output_file' to `a_file'
 		require
 			a_file_exists: a_file /= Void and then a_file.is_open_write
@@ -98,7 +98,7 @@ feature -- Element change
 
 feature -- Basic operations
 
-	begin_heading is
+	begin_heading
 			-- begin heading of result-set
 		require
 			writable: is_writable
@@ -116,7 +116,7 @@ feature -- Basic operations
 			in_heading: is_in_heading
 		end
 
-	end_heading is
+	end_heading
 			-- end heading of result-set
 		require
 			writable: is_writable
@@ -127,7 +127,7 @@ feature -- Basic operations
 			free: is_free
 		end
 
-	put_heading (s : STRING) is
+	put_heading (s : STRING)
 			-- put `s' as heading_column
 		require
 			writable: is_writable
@@ -138,7 +138,7 @@ feature -- Basic operations
 			heading_count_incremented: heading_count = old heading_count + 1
 		end
 
-	begin_row is
+	begin_row
 			-- begin result-set row
 		require
 			writable: is_writable
@@ -151,7 +151,7 @@ feature -- Basic operations
 			in_row: is_in_row
 		end
 
-	put_column (s : STRING) is
+	put_column (s : STRING)
 			-- put `s' as result column
 		require
 			writable: is_writable
@@ -161,7 +161,7 @@ feature -- Basic operations
 			column_count_incremented: column_count = old column_count + 1
 		end
 
-	end_row is
+	end_row
 			-- end result-set row is
 		require
 			writable: is_writable
@@ -174,7 +174,7 @@ feature -- Basic operations
 			free: is_free
 		end
 
-	begin_error is
+	begin_error
 			-- begin error message
 		require
 			writable: is_writable
@@ -185,7 +185,7 @@ feature -- Basic operations
 			in_error: is_in_error
 		end
 
-	put_error (s : STRING) is
+	put_error (s : STRING)
 			-- put `s' as an error
 		require
 			writable: is_writable
@@ -196,7 +196,7 @@ feature -- Basic operations
 			error_count_incremented: error_count = old error_count + 1
 		end
 
-	end_error is
+	end_error
 			-- end error message
 		require
 			writable: is_writable
@@ -209,7 +209,7 @@ feature -- Basic operations
 			error_count_zero: error_count = 0
 		end
 
-	begin_message is
+	begin_message
 			-- begin message
 		require
 			writable: is_writable
@@ -220,7 +220,7 @@ feature -- Basic operations
 			in_message: is_in_message
 		end
 
-	put_message (s : STRING) is
+	put_message (s : STRING)
 			-- put message `s'
 		require
 			writable: is_writable
@@ -228,7 +228,7 @@ feature -- Basic operations
 		deferred
 		end
 
-	end_message is
+	end_message
 			-- en message
 		require
 			writable: is_writable
@@ -243,13 +243,13 @@ feature {NONE} -- Implementation
 
 	status : INTEGER
 
-	status_message : INTEGER is 1
-	status_heading : INTEGER is 2
-	status_error : INTEGER is 4
-	status_row : INTEGER is 3
-	status_free : INTEGER is 0
+	status_message : INTEGER = 1
+	status_heading : INTEGER = 2
+	status_error : INTEGER = 4
+	status_row : INTEGER = 3
+	status_free : INTEGER = 0
 
-	set_status (s : INTEGER) is
+	set_status (s : INTEGER)
 		do
 			status := s
 		ensure

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	default_maximum_capacity : INTEGER is
+	default_maximum_capacity : INTEGER
 		deferred
 		end
 

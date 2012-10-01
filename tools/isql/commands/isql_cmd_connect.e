@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that CONNECT to a database."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("con[nect] <dsn> <user> <pwd>", Command_width)
 			Result.append_string ("Connect to <dsn> datasource as <user> with password <pwd>.")
 		end
 
-	match_string : STRING is "con"
+	match_string : STRING = "con"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- connect to a datasource
 		local
 			worder : KL_WORD_INPUT_STREAM
@@ -44,6 +44,7 @@ feature -- Basic operations
 			tc : ECLI_TYPE_CATALOG
 			can_i32, can_i64 : BOOLEAN
 			t : ECLI_TRACER
+			st : DT_STOPWATCH
 		do
 			create worder.make (text, " %T")
 			user := ""
@@ -70,21 +71,29 @@ feature -- Basic operations
 					context.session.disconnect
 					context.session.close
 				end
+				create st.make
 				if source.has_substring ("DSN=") or else source.has_substring ("DRIVER=") then
 					create driver_strategy.make (source)
 					create session.make_default
 					session.set_login_strategy (driver_strategy)
-					session.connect
 				else
 					create session.make_default
 					create simple_login.make (source, user, password)
 					session.set_login_strategy (simple_login)
-					session.connect
 				end
-					create t.make (create {KL_STDOUT_FILE}.make)
-					t.enable_time_tracing
-					session.set_tracer (t)
+				session.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
+				st.start
+				session.connect
+				st.stop
+
+				create t.make (create {KL_STDOUT_FILE}.make)
+				t.enable_time_tracing
+				session.set_tracer (t)
 				if session.is_connected then
+					context.filter.begin_message
+					context.filter.put_message ("Connected in " + st.elapsed_time.out + ";")
+					context.filter.end_message
+
 					context.set_session (session)
 					create tc.make (session)
 					create i64.make

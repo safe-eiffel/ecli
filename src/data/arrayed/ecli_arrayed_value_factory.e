@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 	nota_bene: "Supported SQL data types currently are : sql_char, sql_decimal, sql_double, sql_float, sql_integer, sql_longvarchar, sql_numeric, sql_real, sql_smallint, sql_type_date, sql_type_time, sql_type_timestamp,	sql_varchar"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -32,11 +32,11 @@ inherit
 			create_date_value,
 			create_char_value,
 			create_varchar_value,
+			create_decimal_value,
 			create_numeric_value,
 			create_longvarchar_value,
 			create_longvarbinary_value,
-			create_binary_value,
-			create_decimal_value
+			create_binary_value
 		end
 
 create
@@ -45,7 +45,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_row_count : INTEGER) is
+	make (a_row_count : INTEGER)
 		do
 			row_count := a_row_count
 			create {ECLI_ARRAYED_VARCHAR}last_result.make (a_row_count, 100)
@@ -69,32 +69,32 @@ feature -- Measurement
 
 feature {NONE} -- Implementation
 
-	create_double_value is
+	create_double_value
 		do
 			create {ECLI_ARRAYED_DOUBLE}last_result.make (row_count)
 		end
 
-	create_real_value is
+	create_real_value
 		do
 			create {ECLI_ARRAYED_REAL}last_result.make (row_count)
 		end
 
-	create_integer_value is
+	create_integer_value
 		do
 			create {ECLI_ARRAYED_INTEGER}last_result.make (row_count)
 		end
 
-	create_integer_64_value is
+	create_integer_64_value
 		do
 			create {ECLI_ARRAYED_INTEGER_64}last_result.make (row_count)
 		end
 
-	create_char_value (column_precision : INTEGER) is
+	create_char_value (column_precision : INTEGER)
 		do
 			create {ECLI_ARRAYED_CHAR}last_result.make (column_precision,row_count)
 		end
 
-	create_varchar_value (column_precision : INTEGER) is
+	create_varchar_value (column_precision : INTEGER)
 		do
 			if column_precision > 254 then
 				create {ECLI_ARRAYED_LONGVARCHAR}last_result.make (column_precision,row_count)
@@ -103,22 +103,22 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	create_date_value is
+	create_date_value
 		do
 			create {ECLI_ARRAYED_DATE}last_result.make (row_count)
 		end
 
-	create_timestamp_value is
+	create_timestamp_value
 		do
 			create {ECLI_ARRAYED_TIMESTAMP}last_result.make (row_count)
 		end
 
-	create_time_value is
+	create_time_value
 		do
 			create {ECLI_ARRAYED_TIME}last_result.make (row_count)
 		end
 
-	create_decimal_value (precision, decimal_digits: INTEGER_32) is
+	create_decimal_value (precision, decimal_digits: INTEGER_32)
 		do
 			create {ECLI_ARRAYED_DECIMAL} last_result.make (row_count, precision, decimal_digits)
 		end

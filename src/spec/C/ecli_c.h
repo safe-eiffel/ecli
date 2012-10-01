@@ -11,6 +11,8 @@ struct ecli_c_value {
 struct ecli_c_array_value {
 	SQLLEN	length; /* length of a single element buffer*/
 	long 	count;  /* count of elements */
+	SQLLEN* length_indicators;
+	char *  values;
 	char	buffer[1]; /* beginning of buffer*/
 	/* buffer is organized like this
 		SQLLEN length_indicator [count] -- array of actual element length

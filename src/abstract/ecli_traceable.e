@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -9,7 +9,7 @@ indexing
 			% other traceable classes."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -19,7 +19,7 @@ deferred class
 
 feature {ECLI_TRACER, ECLI_TRACEABLE} -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 			-- Trace current object through 'a_tracer'
 		require
 			trace_possible: can_trace
@@ -27,7 +27,7 @@ feature {ECLI_TRACER, ECLI_TRACEABLE} -- Basic operations
 		deferred
 		end
 
-	can_trace : BOOLEAN is
+	can_trace : BOOLEAN
 			-- Can Current trace itself ?
 		deferred
 		end

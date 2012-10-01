@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Module parameter description by the user."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -36,7 +36,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_name: STRING; a_reference_column: REFERENCE_COLUMN; maximum_length : INTEGER) is
+	make (a_name: STRING; a_reference_column: REFERENCE_COLUMN; maximum_length : INTEGER)
 			-- Initialize `Current'.
 		require
 			a_name_not_void: a_name /= Void
@@ -63,13 +63,13 @@ feature -- Access
 
 	metadata : ECLI_COLUMN
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 			--
 		do
 			Result := metadata.type_code
 		end
 
-	size : INTEGER is
+	size : INTEGER
 			--
 		do
 			if maximum_length_impl > 0 and then maximum_length_impl <= metadata.size then
@@ -79,7 +79,7 @@ feature -- Access
 			end
 		end
 
-	decimal_digits : INTEGER is
+	decimal_digits : INTEGER
 			--
 		do
 			Result := metadata.decimal_digits
@@ -91,7 +91,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	metadata_available : BOOLEAN is
+	metadata_available : BOOLEAN
 			--
 		do
 			Result := metadata /= Void
@@ -99,9 +99,9 @@ feature -- Status report
 
 	is_valid : BOOLEAN
 
-	has_sample : BOOLEAN is do Result := sample /= Void end
+	has_sample : BOOLEAN do Result := sample /= Void end
 
-	is_input : BOOLEAN is
+	is_input : BOOLEAN
 			-- Is this an input parameter?
 		do
 			Result:= direction = c_input_explicit or else direction = c_input_implicit
@@ -113,13 +113,13 @@ feature -- Status report
 			Result := direction = c_input_explicit
 		end
 
-	is_output : BOOLEAN is
+	is_output : BOOLEAN
 			-- Is this an output parameter?
 		do
 			Result:= direction = c_output
 		end
 
-	is_input_output : BOOLEAN is
+	is_input_output : BOOLEAN
 			-- Is this an input-output parameter?
 		do
 			Result:= direction = c_input_output
@@ -156,7 +156,7 @@ feature -- Status setting
 --				valid_and_metadata: is_valid implies metadata /= Void
 --			end
 
-	check_validity (a_catalog_name, a_schema_name : STRING; error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	check_validity (a_catalog_name, a_schema_name : STRING; error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER)
 				-- check validity of module wrt (`a_catalog_name', `a_schema_name')
 			local
 			do
@@ -181,7 +181,7 @@ feature -- Status setting
 				valid_and_metadata: is_valid implies metadata /= Void
 			end
 
-	enable_input is
+	enable_input
 		do
 			direction := c_input_explicit
 		ensure
@@ -189,14 +189,14 @@ feature -- Status setting
 			is_input_explicit: is_input_explicit
 		end
 
-	enable_output is
+	enable_output
 		do
 			direction := c_output
 		ensure
 			is_output: is_output
 		end
 
-	enable_input_output is
+	enable_input_output
 		do
 			direction := c_input_output
 		ensure
@@ -205,7 +205,7 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_sample (s : STRING) is
+	set_sample (s : STRING)
 			--
 		require
 			s_not_void: s /= Void
@@ -218,7 +218,7 @@ feature -- Element change
 
 feature {EVTK_EDITOR} -- Element change
 
-	set_reference_column (a_reference_column: REFERENCE_COLUMN) is
+	set_reference_column (a_reference_column: REFERENCE_COLUMN)
 			-- Set `reference_column' to `a_reference_column'.
 		require
 			a_reference_column_not_void: a_reference_column /= Void
@@ -228,7 +228,7 @@ feature {EVTK_EDITOR} -- Element change
 			reference_column_assigned: reference_column = a_reference_column
 		end
 
-	set_name (a_name: STRING) is
+	set_name (a_name: STRING)
 			-- Set `name' to `a_name'.
 		require
 			a_name_not_void: a_name /= Void
@@ -239,7 +239,7 @@ feature {EVTK_EDITOR} -- Element change
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			-- is Current equal to `other' ?
 		do
 			if ANY_.same_types (Current, other) then
@@ -251,7 +251,7 @@ feature -- Comparison
 
 feature -- Duplication
 
-	copy (other : like Current) is
+	copy (other : like Current)
 			-- copy from `other'
 		do
 			create name.make_from_string (other.name)
@@ -270,10 +270,10 @@ feature {NONE} -- Implementation
 
 	direction : INTEGER
 
-	c_input_implicit : INTEGER is 0
-	c_input_explicit : INTEGER is 4
-	c_output : INTEGER is 1
-	c_input_output : INTEGER is 3
+	c_input_implicit : INTEGER = 0
+	c_input_explicit : INTEGER = 4
+	c_output : INTEGER = 1
+	c_input_output : INTEGER = 3
 
 invariant
 	name_not_void: name /= Void
@@ -281,7 +281,7 @@ invariant
 
 end -- class MODULE_PARAMETER
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

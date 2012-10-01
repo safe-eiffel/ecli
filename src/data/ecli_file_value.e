@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that transfer large data from/into a file."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -19,7 +19,6 @@ inherit
 			put_parameter_finish
 		end
 
-inherit {NONE}
 	ECLI_STATUS_CONSTANTS
 		export
 			{NONE} all
@@ -34,7 +33,7 @@ inherit {NONE}
 
 feature {NONE} -- Initialization
 
-	make_input (an_input_file : attached like input_file) is
+	make_input (an_input_file : attached like input_file)
 			-- make for reading from `an_input_file'
 		require
 			an_input_file_not_void: an_input_file /= Void --FIXME: VS-DEL
@@ -48,7 +47,7 @@ feature {NONE} -- Initialization
 			size_set: size = input_file.count
 		end
 
-	make_output (an_output_file : attached like output_file) is
+	make_output (an_output_file : attached like output_file)
 			-- make for writing to `an_output_file'
 		require
 			an_output_file_not_void: an_output_file /= Void --FIXME: VS-DEL
@@ -68,7 +67,7 @@ feature -- Access
 
 	output_file : detachable KI_OUTPUT_FILE
 
-	c_type_code: INTEGER is
+	c_type_code: INTEGER
 		do
 			Result := sql_c_default
 		end
@@ -80,7 +79,7 @@ feature -- Measurement
 
 	size: INTEGER_64
 
-	display_size: INTEGER is
+	display_size: INTEGER
 		do
 			Result := size.as_integer_32
 		end
@@ -90,7 +89,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	is_input : BOOLEAN is
+	is_input : BOOLEAN
 			-- Is Current a buffer for database input ?
 		do
 			Result := attached input_file
@@ -98,7 +97,7 @@ feature -- Status report
 			definition: Result = attached input_file
 		end
 
-	is_output : BOOLEAN is
+	is_output : BOOLEAN
 			-- Is Current a buffer for database output ?
 		do
 			Result := attached output_file
@@ -106,68 +105,68 @@ feature -- Status report
 			definition: Result = attached output_file
 		end
 
-	convertible_as_boolean: BOOLEAN is
+	convertible_as_boolean: BOOLEAN
 			-- Is this value convertible to a boolean ?
 		do
 			Result := False
 		end
 
-	convertible_as_character: BOOLEAN is
+	convertible_as_character: BOOLEAN
 			-- Is this value convertible to a character ?
 		do
 			Result := False
 		end
 
-	convertible_as_date: BOOLEAN is
+	convertible_as_date: BOOLEAN
 			-- Is this value convertible to a date ?
 		do
 			Result := False
 		end
 
-	convertible_as_double: BOOLEAN is
+	convertible_as_double: BOOLEAN
 			-- Is this value convertible to a double ?
 		do
 			Result := False
 		end
 
-	convertible_as_integer: BOOLEAN is
+	convertible_as_integer: BOOLEAN
 			-- Is this value convertible to a integer ?
 		do
 			Result := False
 		end
 
-	convertible_as_real: BOOLEAN is
+	convertible_as_real: BOOLEAN
 			-- Is this value convertible to a real ?
 		do
 			Result := False
 		end
 
-	convertible_as_string: BOOLEAN is
+	convertible_as_string: BOOLEAN
 			-- Is this value convertible to a string ?
 		do
 			Result := False
 		end
 
-	convertible_as_time: BOOLEAN is
+	convertible_as_time: BOOLEAN
 			-- Is this value convertible to a time ?
 		do
 			Result := False
 		end
 
-	convertible_as_timestamp: BOOLEAN is
+	convertible_as_timestamp: BOOLEAN
 			-- Is this value convertible to a timestamp ?
 		do
 			Result := False
 		end
 
-	convertible_as_integer_64 : BOOLEAN is
+	convertible_as_integer_64 : BOOLEAN
 			-- Is this value convertible to a INTEGER_64 ?
 		do
 			Result := False
 		end
 
 
-	convertible_as_decimal : BOOLEAN is
+	convertible_as_decimal : BOOLEAN
 			-- Is this value convertible to a decimal ?
 		do
 			Result := False
@@ -180,7 +179,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_input_file (an_input_file : attached like input_file) is
+	set_input_file (an_input_file : attached like input_file)
 			-- change `input_file' to `an_input_file'
 		require
 			not_is_output: not is_output
@@ -195,7 +194,7 @@ feature -- Element change
 			size_set: size = input_file.count
 		end
 
-	set_output_file (an_output_file : attached like output_file) is
+	set_output_file (an_output_file : attached like output_file)
 			-- change `output_file' to `an_output_file'
 		require
 			not_is_input: not is_input
@@ -218,26 +217,26 @@ feature -- Transformation
 
 feature -- Conversion
 
-	trace (a_tracer: ECLI_TRACER) is
+	trace (a_tracer: ECLI_TRACER)
 		do
 			a_tracer.put_file (Current)
 		end
 
-	as_boolean: BOOLEAN is do  end
-	as_character: CHARACTER is do  end
-	as_date: DT_DATE is do check False then create Result.make_from_day_count (0) end end
-	as_double: DOUBLE is do  end
-	as_decimal : MA_DECIMAL is do check False then create Result.make_zero end end
-	as_integer: INTEGER is do  end
-	as_integer_64: INTEGER_64 is do  end
-	as_real: REAL is do  end
-	as_string: STRING is do check False then create Result.make_empty end end
-	as_time: DT_TIME is do check False then create Result.make_from_second_count (0) end end
-	as_timestamp: DT_DATE_TIME is do check False then create Result.make_from_epoch (0) end end
+	as_boolean: BOOLEAN do  end
+	as_character: CHARACTER do  end
+	as_date: DT_DATE do check False then create Result.make_from_day_count (0) end end
+	as_double: DOUBLE do  end
+	as_decimal : MA_DECIMAL do check False then create Result.make_zero end end
+	as_integer: INTEGER do  end
+	as_integer_64: INTEGER_64 do  end
+	as_real: REAL do  end
+	as_string: STRING do check False then create Result.make_empty end end
+	as_time: DT_TIME do check False then create Result.make_from_second_count (0) end end
+	as_timestamp: DT_DATE_TIME do check False then create Result.make_from_epoch (0) end end
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 		do
 			if attached input_file as l_if then
 				if attached l_if.name as l_if_name and then attached other.input_file.name as l_oif_name then
@@ -320,7 +319,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	internal_make is
+	internal_make
 		do
 			buffer := ecli_c_alloc_value (transfer_octet_length)
 			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), Transfer_octet_length.as_integer_32)

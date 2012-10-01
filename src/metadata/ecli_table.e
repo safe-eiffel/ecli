@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that describe an SQL Table."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -33,7 +33,7 @@ feature {NONE} -- Initialization
 
 		end
 
-	make (tables_cursor : ECLI_TABLES_CURSOR) is
+	make (tables_cursor : ECLI_TABLES_CURSOR) 
 			-- create table from `tables_cursor' item from `a_repository'
 		require
 			cursor_not_void: tables_cursor /= Void --FIXME: VS-DEL
@@ -61,7 +61,7 @@ feature -- Access
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse visual representation
 		do
 			create Result.make (128)

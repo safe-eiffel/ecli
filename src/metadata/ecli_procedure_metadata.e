@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Procedures metadata."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -32,7 +32,7 @@ create
 
 feature {NONE} -- Initilization
 
-	make (cursor : ECLI_PROCEDURES_CURSOR) is
+	make (cursor : ECLI_PROCEDURES_CURSOR)
 			--
 		require
 			cursor_not_void: cursor /= Void  --FIXME: VS-DEL
@@ -62,13 +62,13 @@ feature -- Measurement
 
 feature -- Status report
 
-	is_procedure :  BOOLEAN is
+	is_procedure :  BOOLEAN
 			-- Is this a procedure ?
 		do
 			Result := type = sql_pt_procedure
 		end
 
-	is_function : BOOLEAN is
+	is_function : BOOLEAN
 			-- Is this a function (it has a return value) ?
 		do
 			Result := type = sql_pt_function
@@ -76,7 +76,7 @@ feature -- Status report
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse printable representation
 		do
 			Result :=  Precursor {ECLI_NAMED_METADATA}

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that set a value to a variable name."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("set [<variable_name>=<value>]", command_width)
 			Result.append_string ("Set/[show] variables.")
 		end
 
-	match_string : STRING is "set"
+	match_string : STRING = "set"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- execute command SET [<VAR>=<VALUE>]
 		do
 			error_message.wipe_out
@@ -40,7 +40,7 @@ feature -- Basic operations
 
 feature {ISQL} -- Inapplicable
 
-	do_assign (s : STRING; context: ISQL_CONTEXT) is
+	do_assign (s : STRING; context: ISQL_CONTEXT)
 			-- assigns <var-name>=<value>
 		local
 			setting : STRING
@@ -77,7 +77,7 @@ feature {ISQL} -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	do_set (s : STRING; context : ISQL_CONTEXT) is
+	do_set (s : STRING; context : ISQL_CONTEXT)
 			-- handle a 'set <var-name>=<value>'
 		local
 			l_message : STRING
@@ -111,7 +111,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	set_var (name, value : STRING; context : ISQL_CONTEXT) is
+	set_var (name, value : STRING; context : ISQL_CONTEXT)
 		local
 			l_value : STRING
 		do
@@ -124,7 +124,7 @@ feature {NONE} -- Implementation
 			context.variables.force (substituted_escapes (l_value), name)
 		end
 
-	substituted_escapes (s : STRING) : STRING is
+	substituted_escapes (s : STRING) : STRING
 			-- substitute 'C' escape sequences : \n, \r, \0, \t, \\
 		local
 			index : INTEGER
@@ -171,7 +171,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	escaped_value (v : STRING) : STRING is
+	escaped_value (v : STRING) : STRING
 		local
 			index : INTEGER
 		do

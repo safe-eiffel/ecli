@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Subscriber part of the publisher/subscriber pattern."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -19,14 +19,14 @@ feature -- Access
 
 feature -- Status report
 
-	unsubscribed : BOOLEAN is
+	unsubscribed : BOOLEAN
 		do
 			Result := (publisher = Void)
 		ensure
 			definition: Result = (publisher = Void)
 		end
 
-	has_publisher : BOOLEAN is
+	has_publisher : BOOLEAN
 		do
 			Result := (publisher /= Void)
 		ensure
@@ -35,7 +35,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	published (a_publisher : like publisher) is
+	published (a_publisher : like publisher)
 			-- called by publisher
 			-- redefine in descendant classes
 		do

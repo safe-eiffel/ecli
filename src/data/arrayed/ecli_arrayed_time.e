@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"SQL TIME arrayed value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -43,7 +43,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 		do
 			capacity := a_capacity
 			count := capacity
@@ -54,32 +54,32 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : DT_TIME is
+	item : DT_TIME
 		do
 			create Result.make_precise (hour, minute, second,0)
 		end
 
-	item_at (index : INTEGER) : like item is
+	item_at (index : INTEGER) : like item
 		do
 			create  Result.make (hour_at (index), minute_at (index), second_at (index))
 		end
 
-	hour : INTEGER is
+	hour : INTEGER
 		do
 			Result := hour_at (cursor_index)
 		end
 
-	minute : INTEGER is
+	minute : INTEGER
 		do
 			Result := minute_at (cursor_index)
 		end
 
-	second : INTEGER is
+	second : INTEGER
 		do
 			Result := second_at (cursor_index)
 		end
 
-	hour_at (index : INTEGER) : INTEGER is
+	hour_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= count
 		local
@@ -91,7 +91,7 @@ feature -- Access
 			end
 		end
 
-	minute_at (index : INTEGER) : INTEGER is
+	minute_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= count
 		local
@@ -103,7 +103,7 @@ feature -- Access
 			end
 		end
 
-	second_at (index : INTEGER) : INTEGER is
+	second_at (index : INTEGER) : INTEGER
 		require
 			valid_index: index >= 1 and index <= count
 		local
@@ -117,7 +117,7 @@ feature -- Access
 
 feature -- Measurement
 
-	set_at (a_hour, a_minute, a_second, index : INTEGER) is --, a_nanosecond : INTEGER; index : INTEGER ) is
+	set_at (a_hour, a_minute, a_second, index : INTEGER) --, a_nanosecond : INTEGER; index : INTEGER ) is
 		require
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
@@ -137,7 +137,7 @@ feature -- Measurement
 			second_set: second_at (index) = a_second
 		end
 
-	set_item_at (other : like item; index : INTEGER) is
+	set_item_at (other : like item; index : INTEGER)
 		do
 			set_at (other.hour, other.minute, other.second, index)
 		end
@@ -158,7 +158,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-		as_string : STRING is
+		as_string : STRING
 				--
 			do
 				Result := out_item_at (cursor_index)
@@ -170,7 +170,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_time (Current)
 		end
@@ -184,7 +184,7 @@ feature -- Basic operations
 
 feature -- Obsolete
 
-	allocate_buffer is
+	allocate_buffer
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_array_value (transfer_octet_length, capacity)
@@ -195,7 +195,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 		local
 			save_index : INTEGER
 		do

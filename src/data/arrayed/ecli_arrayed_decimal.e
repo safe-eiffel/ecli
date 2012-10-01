@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 	    "DECIMAL (precision, decimal digits) arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -64,7 +64,7 @@ feature {NONE} -- Initialization
 			round_mode_set: rounding_context.rounding_mode = default_rounding_mode
 		end
 
-	make_with_rounding (a_capacity : INTEGER; new_precision, new_decimal_digits, new_rounding_mode : INTEGER) is
+	make_with_rounding (a_capacity : INTEGER; new_precision, new_decimal_digits, new_rounding_mode : INTEGER)
 			-- Create with `new_precision' and `new_decimal_digits' and `new_rounding_mode'.
 		require
 			a_capacity_ge_1: a_capacity >= 1
@@ -90,19 +90,19 @@ feature {NONE} -- Initialization
 			round_mode_set: rounding_context.rounding_mode = new_rounding_mode
 		end
 
-	make_arrayed (a_capacity : INTEGER) is
+	make_arrayed (a_capacity : INTEGER)
 			-- dummy one
 		do
 		end
 
 feature -- Access
 
-	item : MA_DECIMAL is
+	item : MA_DECIMAL
 		do
 			Result := item_at (cursor_index)
 		end
 
-	item_at (index : INTEGER) : MA_DECIMAL is
+	item_at (index : INTEGER) : MA_DECIMAL
 			--
 		do
 			if is_null_at (index) then
@@ -120,22 +120,22 @@ feature -- Status report
 
 feature -- Status setting
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : like item) is
+	set_item (value : like item)
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
 		end
 
-	set_item_at (value : like item; index : INTEGER) is
+	set_item_at (value : like item; index : INTEGER)
 		local
 			l : MA_DECIMAL
 			s : STRING
@@ -163,7 +163,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	out : STRING is
+	out : STRING
 		local
 			i : INTEGER
 		do
@@ -185,7 +185,7 @@ feature -- Basic operations
 			Result.append_string (">>")
 		end
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_decimal (Current)
 		end

@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"Login Strategies."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -22,7 +22,7 @@ inherit
 		
 feature {ECLI_SESSION} -- Basic operations
 
-	connect (session : ECLI_SESSION) is
+	connect (session : ECLI_SESSION)
 			-- Connect `session' using current strategy.
 		require
 			session_not_void: session /= Void --FIXME: VS-DEL

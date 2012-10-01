@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that modify the database one rowset at a time."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -43,7 +43,7 @@ feature {NONE} -- Initialization
 			create status_array.make_empty
 		end
 
-	make, open (a_session : ECLI_SESSION; a_sql : STRING; a_row_capacity : INTEGER) is
+	make, open (a_session : ECLI_SESSION; a_sql : STRING; a_row_capacity : INTEGER)
 			-- create modifier on `a_session', using SQL `a_sql' for maximum `a_row_capacity' rows
 		require
 			asession_not_void: a_session /= Void --FIXME: VS-DEL
@@ -66,11 +66,11 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	parameter_anchor : detachable ECLI_ARRAYED_VALUE is do end
+	parameter_anchor : detachable ECLI_ARRAYED_VALUE do end
 
 feature -- Status report
 
-	valid_parameters_count (a_row_count : INTEGER) : BOOLEAN is
+	valid_parameters_count (a_row_count : INTEGER) : BOOLEAN
 			-- is `a_row_count' a valid parameters count ?
 		local
 			index : INTEGER
@@ -97,7 +97,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	execute (a_count : INTEGER) is
+	execute (a_count : INTEGER)
 			-- execute for 'a_count' rows
 		require
 			valid_count: a_count <= row_capacity
@@ -108,7 +108,7 @@ feature -- Basic operations
 			command: not has_result_set
 		end
 
-	bind_parameters is
+	bind_parameters
 			-- bind parameters
 		local
 			index : INTEGER
@@ -132,7 +132,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	execute_count (a_count : INTEGER) is
+	execute_count (a_count : INTEGER)
 		require
 			valid_count: a_count <= row_capacity
 			valid_parameters_count: valid_parameters_count (a_count)
@@ -145,7 +145,7 @@ feature {NONE} -- Implementation
 			command: not has_result_set
 		end
 
-	make_row_count_capable is
+	make_row_count_capable
 			--
 		do
 			create impl_row_count.make

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "ISQL Command catalog."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,7 +12,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- make commands catalog
 		local
 			l_command : ISQL_COMMAND
@@ -80,7 +80,7 @@ feature -- Access
 
 	usage_command : ISQL_CMD_USAGE
 
-	new_cursor : DS_LIST_CURSOR [ISQL_COMMAND] is
+	new_cursor : DS_LIST_CURSOR [ISQL_COMMAND]
 		do
 			check attached commands.new_cursor as c then
 				Result := c
@@ -111,7 +111,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	do_session (context : ISQL_CONTEXT; file_name : STRING) is
+	do_session (context : ISQL_CONTEXT; file_name : STRING)
 		local
 			l_command_text : STRING
 		do
@@ -124,7 +124,7 @@ feature -- Basic operations
 			execute_command.execute (l_command_text, context)
 		end
 
-	execute (a_text : STRING; context : ISQL_CONTEXT) is
+	execute (a_text : STRING; context : ISQL_CONTEXT)
 		local
 			command : ISQL_COMMAND
 		do

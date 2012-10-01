@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that are streams of ISQL commands."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -20,7 +20,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_file (a_file : KI_TEXT_INPUT_STREAM) is
+	make_file (a_file : KI_TEXT_INPUT_STREAM)
 			-- make for `a_file'
 		require
 			file_not_void: a_file /= Void
@@ -33,7 +33,7 @@ feature {NONE} -- Initialization
 			not_interactive: not is_interactive
 		end
 
-	make_interactive is
+	make_interactive
 			-- make interactive
 		do
 			create text.make (1000)
@@ -58,7 +58,7 @@ feature -- Access
 
 feature -- Status report
 
-	is_interactive : BOOLEAN is
+	is_interactive : BOOLEAN
 			-- is this an interactive text ?
 		do
 			Result := (input_file = Void)
@@ -66,7 +66,7 @@ feature -- Status report
 			interactive: Result = (input_file = Void)
 		end
 
-	end_of_input : BOOLEAN is
+	end_of_input : BOOLEAN
 			-- has 'end of file' been encountered?
 		do
 			if not is_interactive then
@@ -74,7 +74,7 @@ feature -- Status report
 			end
 		end
 
-	is_comment (a_text : STRING) : BOOLEAN is
+	is_comment (a_text : STRING) : BOOLEAN
 			-- is `a_text' a comment ?
 		local
 			index, eos : INTEGER
@@ -102,7 +102,7 @@ feature -- Status report
 
 feature -- Element change
 
-	set_buffer_text (a_buffer_text: STRING) is
+	set_buffer_text (a_buffer_text: STRING)
 			-- Set `buffer_text' to `a_buffer_text'.
 		do
 			buffer_text := a_buffer_text
@@ -112,7 +112,7 @@ feature -- Element change
 
 feature -- Basic operations
 
-	read is
+	read
 		-- read
 		local
 			done : BOOLEAN
@@ -174,7 +174,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	read_line is
+	read_line
 		do
 			if is_interactive then
 				io.read_line

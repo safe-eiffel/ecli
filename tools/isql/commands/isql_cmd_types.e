@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that list the available data types."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("ty[pes]", command_width)
 			Result.append_string ("List all types supported by current connection.")
 		end
 
-	match_string : STRING is "ty"
+	match_string : STRING = "ty"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show current datasource supported SQL types
 		do
 			do_types (context)
@@ -39,7 +39,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	do_types  (context : ISQL_CONTEXT) is
+	do_types  (context : ISQL_CONTEXT)
 			-- show types supported by current datasource
 		local
 			cursor : ECLI_SQL_TYPES_CURSOR

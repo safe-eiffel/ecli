@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that list the primary key columns of a table."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("pk <table-name>", command_width)
 			Result.append_string ("List all primary columns in <table-name>.")
 		end
 
-	match_string : STRING is "pk"
+	match_string : STRING = "pk"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show primary keys of a table
 		local
 			stream : KL_WORD_INPUT_STREAM
@@ -71,7 +71,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	put_results (a_cursor : ECLI_PRIMARY_KEY_CURSOR; context : ISQL_CONTEXT) is
+	put_results (a_cursor : ECLI_PRIMARY_KEY_CURSOR; context : ISQL_CONTEXT)
 			--
 		local
 			the_key : ECLI_PRIMARY_KEY

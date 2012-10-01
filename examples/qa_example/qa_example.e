@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Sample Application that use query assistant generated routines.";
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -16,7 +16,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 			-- QA_EXAMPLE
 		local
 			args : ARGUMENTS
@@ -48,7 +48,7 @@ feature -- Initialization
 			end;
 		end
 				
-	do_session is
+	do_session
 		local
 			parameters : PARTICIPANTS_BY_REMAINING_PARAMETERS
 		do
@@ -81,7 +81,7 @@ feature -- Initialization
 			
 		end
 		
-	print_error is
+	print_error
 		do
 			io.put_string ("** ERROR **%N")
 			io.put_string (cursor.diagnostic_message)
@@ -90,7 +90,7 @@ feature -- Initialization
 
 feature -- Basic Operations
 
-	read_command is
+	read_command
 		-- prompt user
 		do
 			last_command.copy("")
@@ -99,12 +99,12 @@ feature -- Basic Operations
 			last_command.append_string (io.last_string)
 		end
 
-	last_command : STRING is
+	last_command : STRING
 		once
 			create Result.make (1000)
 		end
 
-	pad (s : STRING; n : INTEGER) is
+	pad (s : STRING; n : INTEGER)
 			-- pad 's' with 'n' blanks
 		local
 			i : INTEGER
@@ -120,7 +120,7 @@ feature -- Basic Operations
 		end
 			
 			
-	formatting_buffer : STRING is
+	formatting_buffer : STRING
 		once
 			Result := STRING_.make (1000)
 		end
@@ -132,7 +132,7 @@ feature -- Basic Operations
 
 end -- class QA_EXAMPLE
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -35,7 +35,7 @@ feature {NONE} -- Initialization
 			create_buffer_objects
 		end
 
-	make_all_procedures (a_session : ECLI_SESSION) is
+	make_all_procedures (a_session : ECLI_SESSION)
 			-- make cursor for all types of session
 		require
 			a_session_not_void: a_session /= Void --FIXME: VS-DEL
@@ -51,7 +51,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_PROCEDURE_METADATA is
+	item : ECLI_PROCEDURE_METADATA
 			-- item at current cursor position
 		do
 			check attached impl_item as i then
@@ -75,7 +75,7 @@ feature {ECLI_PROCEDURE_METADATA} -- Access
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create buffers for cursor
 		do
 			set_results (<<
@@ -114,18 +114,18 @@ feature {NONE} -- Implementation
 
 	impl_item : detachable like item
 
-	definition : STRING is once Result := "SQLProcedures" end
+	definition : STRING once Result := "SQLProcedures" end
 
 	do_query_metadata (l_catalog : POINTER; catalog_length : INTEGER;
 		l_schema : POINTER; schema_length : INTEGER;
-		l_name : POINTER; name_length : INTEGER) : INTEGER is
+		l_name : POINTER; name_length : INTEGER) : INTEGER
 			-- actual external query
 		do
 			Result := ecli_c_get_procedures ( handle,
 				l_catalog, catalog_length, l_schema, schema_length, l_name, name_length)
 		end
 
-	query_metadata_feature_name : STRING is do Result := "ecli_c_get_procedures" end
+	query_metadata_feature_name : STRING do Result := "ecli_c_get_procedures" end
 
 
 end

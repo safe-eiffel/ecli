@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that test bulk operations."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,7 +12,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_session : ECLI_SESSION) is
+	make (a_session : ECLI_SESSION)
 			-- make and run test on `a_session'
 		do
 			session := a_session
@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	names : ARRAY [STRING] is
+	names : ARRAY [STRING]
 			-- array of names
 		once
 			Result := <<
@@ -59,7 +59,7 @@ feature -- Access
 			>>
 		end
 
-	ages : ARRAY [INTEGER] is
+	ages : ARRAY [INTEGER]
 			-- array of ages
 		once
 			Result := <<
@@ -79,19 +79,19 @@ feature -- Access
 
 feature -- Constants
 
-	sql_create : STRING is "CREATE TABLE ROWSETSAMPLE (NAME VARCHAR(5), AGE INTEGER)"
+	sql_create : STRING = "CREATE TABLE ROWSETSAMPLE (NAME VARCHAR(5), AGE INTEGER)"
 
-	sql_insert : STRING is "INSERT INTO ROWSETSAMPLE VALUES (?name, ?age)"
+	sql_insert : STRING = "INSERT INTO ROWSETSAMPLE VALUES (?name, ?age)"
 
-	sql_update : STRING is "UPDATE ROWSETSAMPLE SET AGE = ?age WHERE NAME = ?name"
+	sql_update : STRING = "UPDATE ROWSETSAMPLE SET AGE = ?age WHERE NAME = ?name"
 
-	sql_select : STRING is "SELECT NAME, AGE FROM ROWSETSAMPLE"
+	sql_select : STRING = "SELECT NAME, AGE FROM ROWSETSAMPLE"
 
-	sql_delete : STRING is "DELETE FROM ROWSETSAMPLE WHERE AGE = ?age"
+	sql_delete : STRING = "DELETE FROM ROWSETSAMPLE WHERE AGE = ?age"
 
-	sql_drop : STRING is "DROP TABLE ROWSETSAMPLE"
+	sql_drop : STRING = "DROP TABLE ROWSETSAMPLE"
 
-	sql_count : STRING is "SELECT COUNT(*) AS ROW_COUNT FROM ROWSETSAMPLE"
+	sql_count : STRING = "SELECT COUNT(*) AS ROW_COUNT FROM ROWSETSAMPLE"
 
 --| feature -- Removal
 
@@ -107,13 +107,13 @@ feature -- Constants
 
 feature -- Basic operations
 
-	create_table is
+	create_table
 			--
 		do
 			do_simple_sql (sql_create, True)
 		end
 
-	drop_table is
+	drop_table
 			--
 		local
 			tables_cursor: ECLI_TABLES_CURSOR
@@ -126,7 +126,7 @@ feature -- Basic operations
 			end
 		end
 
-	do_insert is
+	do_insert
 		do
 			print ("Trying bulk insert ... %N")
 			print ("---------------------- %N")
@@ -134,7 +134,7 @@ feature -- Basic operations
 			inserted_count := names.count - errors
 		end
 
-	test_insert is
+	test_insert
 		local
 			i : INTEGER
 		do
@@ -154,7 +154,7 @@ feature -- Basic operations
 			cursor.close
 		end
 
-	do_update is
+	do_update
 		local
 			update_array : ARRAY[INTEGER]
 			index : INTEGER
@@ -175,7 +175,7 @@ feature -- Basic operations
 			do_rowset_modify (sql_update, names, update_array)
 		end
 
-	test_update is
+	test_update
 			-- test if bulk update was ok
 		local
 			ok : BOOLEAN
@@ -208,7 +208,7 @@ feature -- Basic operations
 			print ("%N")
 		end
 
-	index_of_array_string (a : ARRAY[STRING]; s : STRING) : INTEGER is
+	index_of_array_string (a : ARRAY[STRING]; s : STRING) : INTEGER
 			-- index of `s' in `a'
 		local
 			index : INTEGER
@@ -235,13 +235,13 @@ feature {NONE} -- Implementation
 
 	session : ECLI_SESSION
 
-	buffer_name : ECLI_ARRAYED_VARCHAR is
+	buffer_name : ECLI_ARRAYED_VARCHAR
 			--
 		once
 			create Result.make (30, row_count)
 		end
 
-	buffer_age : ECLI_ARRAYED_INTEGER is
+	buffer_age : ECLI_ARRAYED_INTEGER
 			--
 		once
 			create Result.make (row_count)
@@ -261,7 +261,7 @@ feature {NONE} -- Implementation
 			statement.close
 		end
 
-	do_rowset_modify (a_sql : STRING; name_array : ARRAY[STRING]; age_array : ARRAY[INTEGER]) is
+	do_rowset_modify (a_sql : STRING; name_array : ARRAY[STRING]; age_array : ARRAY[INTEGER])
 			--
 		local
 			index, j : INTEGER
@@ -299,14 +299,14 @@ feature {NONE} -- Implementation
 
 	rowset_modifier : ECLI_ROWSET_MODIFIER
 
-	row_count : INTEGER is 10;
+	row_count : INTEGER = 10;
 
 	errors : INTEGER
 
 	inserted_count : INTEGER
 	updated_count : INTEGER
 
-	handle_modifier_errors (r : ECLI_ROWSET_MODIFIER) is
+	handle_modifier_errors (r : ECLI_ROWSET_MODIFIER)
 			-- handle errors on 'r' after execution
 			-- examine each status:
 		local

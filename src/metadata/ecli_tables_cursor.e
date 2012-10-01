@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_TABLE is
+	item : ECLI_TABLE
 			-- item at current cursor position
 		do
 			check attached impl_item as i then
@@ -46,7 +46,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-	create_item is
+	create_item
 			-- create current item from buffer values
 		do
 			if not off then
@@ -64,7 +64,7 @@ feature {ECLI_TABLE} -- Access
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 				-- create buffers for cursor
 		do
 			set_results (<<
@@ -88,13 +88,13 @@ feature {NONE} -- Implementation
 
 	impl_item : detachable like item
 
-	definition : STRING is once Result := "SQLTables" end
+	definition : STRING once Result := "SQLTables" end
 
-	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER
 		do
 			Result := ecli_c_get_tables (handle, a_catalog, a_catalog_length, a_schema, a_schema_length, a_name, a_name_length, default_pointer, 0)
 		end
 
-	query_metadata_feature_name : STRING is do Result := "ecli_c_get_tables" end
+	query_metadata_feature_name : STRING do Result := "ecli_c_get_tables" end
 
 end

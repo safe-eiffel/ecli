@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"SQL TIMESTAMP values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -25,7 +25,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER) is
+	make (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER)
 		require
 			month: a_month >= 1 and a_month <= 12
 			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
@@ -48,7 +48,7 @@ feature {NONE} -- Initialization
 			nanosecond_set: nanosecond = a_nanosecond
 		end
 
-	make_default is
+	make_default
 			-- make default time_stamp value
 		do
 			--allocate_buffer
@@ -63,7 +63,7 @@ feature {NONE} -- Initialization
 			nanosecond_set: nanosecond = 0
 		end
 
-	make_first is
+	make_first
 			-- make first day of Christian era
 		obsolete "Use `make_default' instead"
 		do
@@ -73,7 +73,7 @@ feature {NONE} -- Initialization
 			day_one:
 		end
 
-	make_null is
+	make_null
 			-- make null
 		do
 			make_default
@@ -84,75 +84,75 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : DT_DATE_TIME is
+	item : DT_DATE_TIME
 		do
 			impl_item.set_year_month_day (year,month,day)
 			impl_item.set_precise_hour_minute_second (hour, minute, second,nanosecond // 1_000_000)
 			Result := impl_item
 		end
 
-	year : INTEGER is
+	year : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_date_get_year (to_external)
 			end
 		end
 
-	month : INTEGER is
+	month : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_date_get_month (to_external)
 			end
 		end
 
-	day : INTEGER is
+	day : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_date_get_day (to_external)
 			end
 		end
 
-	hour : INTEGER is
+	hour : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_timestamp_get_hour (to_external)
 			end
 		end
 
-	minute : INTEGER is
+	minute : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_timestamp_get_minute (to_external)
 			end
 		end
 
-	second : INTEGER is
+	second : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_timestamp_get_second (to_external)
 			end
 		end
 
-	nanosecond : INTEGER is
+	nanosecond : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_timestamp_get_fraction (to_external)
 			end
 		end
 
-	c_type_code: INTEGER is
+	c_type_code: INTEGER
 		once
 			Result := sql_c_type_timestamp
 		end
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_type_timestamp
 		end
 
 feature -- Measurement
 
-	days_in_month (a_month, a_year : INTEGER) : INTEGER is
+	days_in_month (a_month, a_year : INTEGER) : INTEGER
 			-- number of days in 'a_month' for 'a_year'
 			-- feature is delegated to a DT_GREGORIAN_CALENDAR object
 			-- Feature to be deleted when smalleiffel 075 has been fixed
@@ -165,7 +165,7 @@ feature -- Measurement
 			days_in_month_not_more_31: Result <= 31
 		end
 
-	size : INTEGER_64 is
+	size : INTEGER_64
 		local
 			l_decimal_digits : INTEGER
 		do
@@ -180,74 +180,74 @@ feature -- Measurement
 	decimal_digits: INTEGER
 			-- number of digits allowed in the fractional seconds part
 
-	display_size: INTEGER is
+	display_size: INTEGER
 		do
 			Result := size.as_integer_32
 		end
 
 feature -- Status report
 
-	convertible_as_string : BOOLEAN is
+	convertible_as_string : BOOLEAN
 			--
 		do
 			Result := True
 		end
 
-	convertible_as_timestamp : BOOLEAN is
+	convertible_as_timestamp : BOOLEAN
 			-- is Current convertible to a timestamp ?
 		do
 			Result := True
 		end
 
-	convertible_as_character : BOOLEAN is
+	convertible_as_character : BOOLEAN
 			-- Is this value convertible to a character ?
 		do
 			Result := False
 		end
 
-	convertible_as_boolean : BOOLEAN is
+	convertible_as_boolean : BOOLEAN
 			-- Is this value convertible to a boolean ?
 		do
 			Result := False
 		end
 
-	convertible_as_integer : BOOLEAN is
+	convertible_as_integer : BOOLEAN
 			-- Is this value convertible to an integer ?
 		do
 			Result := False
 		end
 
-	convertible_as_integer_64 : BOOLEAN is
+	convertible_as_integer_64 : BOOLEAN
 			-- Is this value convertible to an integer_64 ?
 		do
 			Result := False
 		end
 
-	convertible_as_real : BOOLEAN is
+	convertible_as_real : BOOLEAN
 			-- Is this value convertible to a real ?
 		do
 			Result := False
 		end
 
-	convertible_as_double : BOOLEAN is
+	convertible_as_double : BOOLEAN
 			-- Is this value convertible to a double ?
 		do
 			Result := False
 		end
 
-	convertible_as_decimal : BOOLEAN is
+	convertible_as_decimal : BOOLEAN
 			-- Is this value convertible to a decimal ?
 		do
 			Result := False
 		end
 
-	convertible_as_date : BOOLEAN is
+	convertible_as_date : BOOLEAN
 			-- Is this value convertible to a date ?
 		do
 			Result := True
 		end
 
-	convertible_as_time : BOOLEAN is
+	convertible_as_time : BOOLEAN
 			-- Is this value convertible to a time ?
 		do
 			Result := False
@@ -255,7 +255,7 @@ feature -- Status report
 
 feature -- Element change
 
-	set_date (a_year, a_month, a_day : INTEGER ) is
+	set_date (a_year, a_month, a_day : INTEGER )
 		require
 			month: a_month >= 1 and a_month <= 12
 			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
@@ -271,7 +271,7 @@ feature -- Element change
 			time_set: hour = 0 and minute = 0 and second = 0 and nanosecond = 0
 		end
 
-	set_time (a_hour, a_minute, a_second, a_nanosecond : INTEGER ) is
+	set_time (a_hour, a_minute, a_second, a_nanosecond : INTEGER )
 		require
 			hour: a_hour >= 0 and a_hour <= 23
 			minute: a_minute >= 0 and a_minute <= 59
@@ -288,7 +288,7 @@ feature -- Element change
 			nanosecond_set: nanosecond = a_nanosecond
 		end
 
-	set (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER) is
+	set (a_year, a_month, a_day, a_hour, a_minute, a_second, a_nanosecond : INTEGER)
 		require
 			month: a_month > 0 and a_month <= 12
 			day: a_day > 0 and a_day <= days_in_month (a_month, a_year)
@@ -310,13 +310,13 @@ feature -- Element change
 			nanosecond_set: nanosecond = a_nanosecond
 		end
 
-	set_item (other : DT_DATE_TIME) is
+	set_item (other : DT_DATE_TIME)
 		do
 			set_date (other.year, other.month,other.day)
 			set_time (other.hour, other.minute, other.second, other.millisecond * 1_000_000)
 		end
 
-	set_decimal_digits (n : INTEGER) is
+	set_decimal_digits (n : INTEGER)
 			-- set `decimal_digits' to `n'
 			-- this value is data source dependent;
 			-- get type information using ECLI_SQL_TYPES_CURSOR
@@ -330,13 +330,13 @@ feature -- Element change
 
 feature -- Conversion
 
-	as_string : STRING is
+	as_string : STRING
 			--
 		do
 			Result := out
 		end
 
-	out : STRING is
+	out : STRING
 		do
 			if not is_null then
 				create Result.make (10)
@@ -360,47 +360,47 @@ feature -- Conversion
 			end
 		end
 
-	as_timestamp : DT_DATE_TIME is
+	as_timestamp : DT_DATE_TIME
 		do
 			Result := item.twin
 		end
 
-	as_date : DT_DATE is
+	as_date : DT_DATE
 		do
 			Result := item.date
 		end
 
-	as_character : CHARACTER is
+	as_character : CHARACTER
 			-- Current converted to CHARACTER
 		do
 		end
 
-	as_boolean : BOOLEAN is
+	as_boolean : BOOLEAN
 			-- Current converted to BOOLEAN
 		do
 		end
 
-	as_integer : INTEGER is
+	as_integer : INTEGER
 			-- Current converted to INTEGER
 		do
 		end
 
-	as_integer_64 : INTEGER_64 is
+	as_integer_64 : INTEGER_64
 			-- Current converted to INTEGER_64
 		do
 		end
 
-	as_real : REAL is
+	as_real : REAL
 			-- Current converted to REAL
 		do
 		end
 
-	as_double : DOUBLE is
+	as_double : DOUBLE
 			-- Current converted to DOUBLE
 		do
 		end
 
-	as_decimal : MA_DECIMAL is
+	as_decimal : MA_DECIMAL
 			-- Current converted to MA_DECIMAL.
 		do
 			check False then
@@ -408,7 +408,7 @@ feature -- Conversion
 			end
 		end
 
-	as_time : DT_TIME is
+	as_time : DT_TIME
 			-- Current converted to DT_TIME
 		do
 			check False then
@@ -418,12 +418,12 @@ feature -- Conversion
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_timestamp (Current)
 		end
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 		do
 			Result := year = other.year and then
 				month = other.month and
@@ -436,18 +436,18 @@ feature -- Basic operations
 
 feature -- Inapplicable
 
-	transfer_octet_length : INTEGER_64 is
+	transfer_octet_length : INTEGER_64
 		do
 			Result := ecli_c_sizeof_timestamp_struct
 		end
 
 feature {NONE} -- Implementation
 
-	ecli_c_sizeof_timestamp_struct : INTEGER is
+	ecli_c_sizeof_timestamp_struct : INTEGER
 		external "C"
 		end
 
-	create_impl_item is
+	create_impl_item
 			--
 		local
 			dt : DT_DATE_TIME
@@ -456,7 +456,7 @@ feature {NONE} -- Implementation
 			impl_item := dt
 		end
 
-	allocate_buffer is
+	allocate_buffer
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_value (transfer_octet_length)
@@ -464,7 +464,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	integer_format : 	ECLI_FORMAT_INTEGER is
+	integer_format : 	ECLI_FORMAT_INTEGER
 			-- format integer routines
 		once
 			create Result
@@ -472,9 +472,9 @@ feature {NONE} -- Implementation
 
 	impl_item : DT_DATE_TIME
 
-	calendar : DT_GREGORIAN_CALENDAR is once create Result end
+	calendar : DT_GREGORIAN_CALENDAR once create Result end
 
-	set_date_external (pointer : POINTER; a_year, a_month, a_day : INTEGER ) is
+	set_date_external (pointer : POINTER; a_year, a_month, a_day : INTEGER )
 			-- set date part of external `pointer'
 		require
 			pointer_not_default: pointer /= default_pointer
@@ -490,7 +490,7 @@ feature {NONE} -- Implementation
 			day_set: ecli_c_date_get_day (pointer) = a_day
 		end
 
-	set_time_external (pointer : POINTER; a_hour, a_minute, a_second, a_nanosecond : INTEGER ) is
+	set_time_external (pointer : POINTER; a_hour, a_minute, a_second, a_nanosecond : INTEGER )
 			-- Set time part of external structure referenced by `pointer'
 		require
 			pointer_not_default: pointer /= default_pointer

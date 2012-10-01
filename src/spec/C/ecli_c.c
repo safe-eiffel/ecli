@@ -662,6 +662,8 @@ EIF_POINTER ecli_c_alloc_array_value (EIF_INTEGER_64 c_buffer_length, EIF_INTEGE
     if (res) {
 		res->length = (SQLLEN) c_buffer_length;
 		res->count = (long) a_count;
+		res->length_indicators = (SQLLEN*) (res->buffer);
+		res->values= (char *) (res->buffer + (sizeof (SQLLEN) * a_count));
     }
 	return (EIF_POINTER) res;
 }
@@ -670,7 +672,7 @@ void ecli_c_free_array_value (EIF_POINTER ptr) {
 	free (ptr);
 }
 
-static SQLLEN * AV_LENGTH_INDICATOR_ARRAY_ADDRESS (struct ecli_c_array_value* av) {
+/* static SQLLEN * AV_LENGTH_INDICATOR_ARRAY_ADDRESS (struct ecli_c_array_value* av) {
 	return (SQLLEN *)(av->buffer);
 }
 
@@ -687,39 +689,45 @@ static  SQLLEN AV_LENGTH_SIZE (struct ecli_c_array_value* av)  {
 }
 
 static  char * AV_VALUE_ARRAY_ADDRESS (struct ecli_c_array_value* av)  {
-	return (char *)(av->buffer + AV_LENGTH_SIZE (av));
+//	return (char *)(av->buffer + AV_LENGTH_SIZE (av));
+	return av->values;
 }
+
+*/
 
 static  char * AV_VALUE (struct ecli_c_array_value* av, long i)  {
-	return (char *) (AV_VALUE_ARRAY_ADDRESS (av) + i * av->length);
+	return (char *) (av->values + i * av->length); //(AV_VALUE_ARRAY_ADDRESS (av) + i * av->length);
 }
 
+/*
 static  SQLLEN AV_BUFFER_LENGTH (struct ecli_c_array_value* av)  {
 	return (AV_LENGTH_SIZE (av) + av->length * av->count);
 }
+*/
 
 EIF_INTEGER_64 ecli_c_array_value_get_length (EIF_POINTER v) {
 	return (EIF_INTEGER_64) 	((struct ecli_c_array_value*)v)->length;
 }
 
 EIF_POINTER ecli_c_array_value_get_length_indicator_pointer (EIF_POINTER av) {
-	return (EIF_POINTER) AV_LENGTH_INDICATOR_ARRAY_ADDRESS ((struct ecli_c_array_value *) av);
+	return (EIF_POINTER) ((struct ecli_c_array_value *) av)->length_indicators; //AV_LENGTH_INDICATOR_ARRAY_ADDRESS ((struct ecli_c_array_value *) av);
 }
 
 EIF_POINTER ecli_c_array_value_get_value (EIF_POINTER av) {
-	return (EIF_POINTER) AV_VALUE_ARRAY_ADDRESS ((struct ecli_c_array_value*)av);
+	return (EIF_POINTER) ((struct ecli_c_array_value *) av)->values; //AV_VALUE_ARRAY_ADDRESS ((struct ecli_c_array_value*)av);
 }
 
-void ecli_c_array_value_set_length_indicator_at (EIF_POINTER v, EIF_INTEGER_64 li, EIF_INTEGER index) {
-	*(AV_LENGTH_INDICATOR_PTR ( (struct ecli_c_array_value*)v, index-1))= (SQLLEN) li;
+void ecli_c_array_value_set_length_indicator_at (EIF_POINTER av, EIF_INTEGER_64 li, EIF_INTEGER index) {
+	(((struct ecli_c_array_value *) av)->length_indicators)[index-1]=(SQLLEN)li; //*(AV_LENGTH_INDICATOR_PTR ((struct ecli_c_array_value*)v, index-1))= (SQLLEN) li;
+//printf("SQLLEN[%ld]=%ld",(long)index,(long)li);
 }
 
-EIF_INTEGER_64 ecli_c_array_value_get_length_indicator_at (EIF_POINTER v, EIF_INTEGER index) {
-	return (EIF_INTEGER_64) AV_LENGTH_INDICATOR ((struct ecli_c_array_value*)v, (long) index-1);
+EIF_INTEGER_64 ecli_c_array_value_get_length_indicator_at (EIF_POINTER av, EIF_INTEGER index) {
+	return (EIF_INTEGER_64) ((((struct ecli_c_array_value *) av)->length_indicators)[index-1]); // AV_LENGTH_INDICATOR ((struct ecli_c_array_value*)v, (long) index-1);
 }
 
-EIF_POINTER ecli_c_array_value_get_length_indicator_pointer_at (EIF_POINTER v, EIF_INTEGER index) {
-	return (EIF_POINTER) 	AV_LENGTH_INDICATOR_PTR((struct ecli_c_array_value*)v, (long) index-1);
+EIF_POINTER ecli_c_array_value_get_length_indicator_pointer_at (EIF_POINTER av, EIF_INTEGER index) {
+	return (EIF_POINTER) &((((struct ecli_c_array_value *) av)->length_indicators)[index-1]); // AV_LENGTH_INDICATOR_PTR((struct ecli_c_array_value*)v, (long) index-1);
 }
 
 void ecli_c_array_value_set_value_at (EIF_POINTER v, EIF_POINTER new_array_value, EIF_INTEGER actual_length, EIF_INTEGER index) {

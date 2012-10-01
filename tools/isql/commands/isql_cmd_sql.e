@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that execute SQL statements."
 	author: "Paul G. Crismer."
 	date: "$Date$"
@@ -18,7 +18,7 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("<any sql statement>", command_width)
 			Result.append_string ("Execute any SQL statement or procedure call.")
@@ -26,16 +26,16 @@ feature -- Access
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text : STRING) : BOOLEAN  is
+	matches (text : STRING) : BOOLEAN
 		do
 			Result := True
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- execute a sql command
 		local
 			cursor : ECLI_ROW_CURSOR
@@ -91,7 +91,7 @@ feature {NONE} -- Implementation
 
 	current_context : detachable ISQL_CONTEXT
 
-	set_parameters (stmt : ECLI_STATEMENT; context : ISQL_CONTEXT) is
+	set_parameters (stmt : ECLI_STATEMENT; context : ISQL_CONTEXT)
 		require
 			stmt_not_void: stmt /= Void
 			context_not_void: context /= Void
@@ -117,14 +117,14 @@ feature {NONE} -- Implementation
 		end
 
 
-	print_error (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT) is
+	print_error (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT)
 		do
 			context.filter.begin_error
 			context.filter.put_error (sql_error (cursor))
 			context.filter.end_error
 		end
 
-	show_column_names (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT) is
+	show_column_names (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT)
 		local
 			i : INTEGER
 		do
@@ -140,7 +140,7 @@ feature {NONE} -- Implementation
 			context.filter.end_heading
 		end
 
-	column_name (cursor : ECLI_ROW_CURSOR; i : INTEGER) : STRING is
+	column_name (cursor : ECLI_ROW_CURSOR; i : INTEGER) : STRING
 		local
 			l_capacity : INTEGER
 		do
@@ -154,7 +154,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	show_one_row (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT) is
+	show_one_row (cursor : ECLI_ROW_CURSOR; context : ISQL_CONTEXT)
 		require
 			cursor /= Void and then not cursor.off
 		local

@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that represent typed values to be exchanged with the database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -20,7 +20,7 @@ inherit
 
 feature -- Access
 
-	item : G is
+	item : G
 			-- Actual Eiffel value
 		require
 			not_null: not is_null
@@ -34,7 +34,7 @@ feature -- Access
 
 feature -- Element change
 
-	set_item (value: G) is
+	set_item (value: G)
 			-- Set `item' with content of `value'
 		require
 			value_valid: valid_item (value)
@@ -46,7 +46,7 @@ feature -- Element change
 
 feature -- Conversion
 
-	formatted (v : G) : G is
+	formatted (v : G) : G
 			-- 'v' formatted according to 'column_precision'
 			-- does nothing, except for fixed format types like CHAR
 			-- where values are either truncated or padded by blanks
@@ -54,7 +54,7 @@ feature -- Conversion
 			Result := v
 		end
 
-	out : STRING is
+	out : STRING
 		do
 			if is_null then
 				Result := out_null
@@ -65,7 +65,7 @@ feature -- Conversion
 
 feature -- Duplication
 
-	copy (other : like Current) is
+	copy (other : like Current)
 		do
 			if other.is_null then
 				set_null
@@ -76,14 +76,14 @@ feature -- Duplication
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			do
 				Result := (is_null and then other.is_null) or else (item.is_equal (other.item))
 			end
 
 feature -- Contract support
 
-	valid_item (value : G) : BOOLEAN is
+	valid_item (value : G) : BOOLEAN
 			-- Is `value' valid as an item ?
 		do
 			Result := value /= Void
@@ -98,12 +98,12 @@ feature {NONE} -- Implementation
 		do
 		end
 
-	create_impl_item is
+	create_impl_item
 			-- Create impl_item
 		do
 		end
 
-	out_null : STRING is
+	out_null : STRING 
 			-- Default `out' when value `is_null'
 		once
 			Result := "<NULL>"

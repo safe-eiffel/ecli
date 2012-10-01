@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"Simple Login Strategies that use a datasource name, a user name and a password."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -22,7 +22,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make (a_datasource_name, a_user_name, a_password : STRING) is
+	make (a_datasource_name, a_user_name, a_password : STRING)
 			-- Make for logging in `a_datasource_name' by `a_user_name' using `a_password'.
 		require
 			a_datasource_name_not_void: a_datasource_name /= Void --FIXME: VS-DEL
@@ -40,24 +40,24 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
-	datasource_name : STRING is
+	datasource_name : STRING
 		do
 			Result := impl_datasource_name.as_string
 		end
 		
-	user_name : STRING is
+	user_name : STRING
 		do
 			Result := impl_user_name.as_string
 		end
 		
-	password : STRING is
+	password : STRING
 		do
 			Result := impl_password.as_string
 		end
 
 feature -- Element change
 
-	set_user_name(a_user_name: STRING) is
+	set_user_name(a_user_name: STRING)
 			-- Set `user' to `a_user'
 		require
 			a_user_ok: a_user_name/= Void --FIXME: VS-DEL
@@ -67,7 +67,7 @@ feature -- Element change
 			user_name_set: user_name.is_equal (a_user_name)
 		end
 
-	set_datasource_name (a_datasource_name : STRING) is
+	set_datasource_name (a_datasource_name : STRING)
 			-- Set `datasource_name' to `a_datasource_name'
 		require
 			a_datasource_name_not_void: a_datasource_name /= Void --FIXME: VS-DEL
@@ -77,7 +77,7 @@ feature -- Element change
 			datasource_name_set: datasource_name.is_equal (a_datasource_name)
 		end
 
-	set_password (a_password : STRING) is
+	set_password (a_password : STRING)
 			-- Set password to 'a_password
 		require
 			a_password_ok: a_password /= Void --FIXME: VS-DEL
@@ -101,7 +101,7 @@ feature -- Miscellaneous
 
 feature {ECLI_SESSION} -- Basic operations
 
-	Connect (the_session : ECLI_SESSION) is
+	Connect (the_session : ECLI_SESSION)
 			-- do login `the_session'
 		do
 			the_session.set_status ("ecli_c_connect", ecli_c_connect (the_session.handle,

@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Time formats, ISO specification."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -42,7 +42,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	create_from_string (string : STRING) is
+	create_from_string (string : STRING)
 		local
 			hour, minute, second, fraction : INTEGER
 		do
@@ -67,7 +67,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	formatted (value : DT_TIME) : STRING is
+	formatted (value : DT_TIME) : STRING
 		do
 			create Result.make (20)
 			Result.append_string ("{t '")
@@ -87,7 +87,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	regex : RX_PCRE_REGULAR_EXPRESSION is
+	regex : RX_PCRE_REGULAR_EXPRESSION
 		local
 			cli_regex : STRING
 		once
@@ -98,9 +98,9 @@ feature {NONE} -- Implementation
 			Result.compile (cli_regex) -- "\{t '([0-9]{2})\:([0-9]{2})\:([0-9]{2})(\.([0-9]+))'\}")
 		end
 
-	ifmt : ECLI_FORMAT_INTEGER is
+	ifmt : ECLI_FORMAT_INTEGER
 		once create Result end
 
-	regex_component_count : INTEGER is 4
+	regex_component_count : INTEGER = 4
 
 end

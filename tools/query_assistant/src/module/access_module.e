@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Classes that group persistency accesses for a single class/concept."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,7 +12,7 @@ create
 
 feature {} -- Initialization
 
-	make is
+	make
 		do
 			create accesses.make (10)
 			create parameter_sets.make (10)
@@ -20,7 +20,7 @@ feature {} -- Initialization
 			create parameter_map.make (10)
 		end
 
-	make_from_tables (the_accesses : DS_HASH_TABLE [RDBMS_ACCESS, STRING]; the_parameter_sets : DS_HASH_TABLE[PARAMETER_SET, STRING]; the_result_sets : DS_HASH_TABLE[RESULT_SET, STRING]; the_parameter_map : PARAMETER_MAP) is
+	make_from_tables (the_accesses : DS_HASH_TABLE [RDBMS_ACCESS, STRING]; the_parameter_sets : DS_HASH_TABLE[PARAMETER_SET, STRING]; the_result_sets : DS_HASH_TABLE[RESULT_SET, STRING]; the_parameter_map : PARAMETER_MAP)
 			-- create for `accesses', `the_parameter_sets', `the_result_sets', `the_parameter_map'.
 		require
 			the_accesses_not_void: the_accesses /= Void
@@ -50,7 +50,7 @@ feature -- Access
 
 feature -- Status report
 
-	has (access_name : STRING) : BOOLEAN is
+	has (access_name : STRING) : BOOLEAN
 			-- Does the module contain an access whose name is `access_name' ?
 		require
 			access_name_not_void: access_name /= Void
@@ -58,7 +58,7 @@ feature -- Status report
 			Result := accesses.has (access_name)
 		end
 
-	has_access (access : RDBMS_ACCESS) : BOOLEAN is
+	has_access (access : RDBMS_ACCESS) : BOOLEAN
 			-- Does the module contain `access' ?
 		require
 			access_not_void: access /= Void
@@ -68,7 +68,7 @@ feature -- Status report
 
 feature -- Element change
 
-	change_access_name (original_name, new_name : !STRING) is
+	change_access_name (original_name, new_name : attached STRING)
 			-- Change access from `original_name' to `new_name'
 		require
 			has_original_name: has (original_name)
@@ -85,7 +85,7 @@ feature -- Element change
 			new_name_inserted: has (new_name)
 		end
 
-	put (access : RDBMS_ACCESS) is
+	put (access : RDBMS_ACCESS)
 			-- Put `access' into `accesses'.
 		require
 			access_not_void: access /= Void

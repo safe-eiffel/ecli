@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that are called back by an ECLI_SQL_PARSER."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -13,14 +13,14 @@ deferred class ECLI_SQL_PARSER_CALLBACK
 
 feature -- Status report
 
-	is_valid : BOOLEAN is
+	is_valid : BOOLEAN
 			--
 		deferred
 		end
 
 feature -- Basic operations
 
-	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER) is
+	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER)
 		require
 			valid_callback : is_valid
 			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
@@ -28,7 +28,7 @@ feature -- Basic operations
 		deferred
 		end
 
-	on_parameter_marker (a_sql : STRING; index : INTEGER) is
+	on_parameter_marker (a_sql : STRING; index : INTEGER)
 		require
 			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			index_positive: index > 0
@@ -36,7 +36,7 @@ feature -- Basic operations
 		deferred
 		end
 
-	on_string_literal (a_sql : STRING; i_begin, i_end : INTEGER) is
+	on_string_literal (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
 			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
@@ -46,7 +46,7 @@ feature -- Basic operations
 		deferred
 		end
 
-	on_word (a_sql : STRING; i_begin, i_end : INTEGER) is
+	on_word (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
 			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
@@ -56,7 +56,7 @@ feature -- Basic operations
 		deferred
 		end
 
-	on_table_literal (a_sql : STRING; i_begin, i_end : INTEGER) is
+	on_table_literal (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
 			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
@@ -66,7 +66,7 @@ feature -- Basic operations
 		deferred
 		end
 
-	on_parameter (a_sql : STRING; i_begin, i_end : INTEGER) is
+	on_parameter (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
 			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0

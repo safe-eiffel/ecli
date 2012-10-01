@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -8,7 +8,7 @@ indexing
 		% Status information is available for each row in the rowset."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -16,7 +16,7 @@ deferred class ECLI_ROWSET_CAPABLE
 
 feature -- Access
 
-	item_status (index : INTEGER) : INTEGER is
+	item_status (index : INTEGER) : INTEGER
 			-- Status of `index'-th value in current rowset
 		require
 			index_within_bounds: index >= 1 and then index <= row_capacity
@@ -32,7 +32,7 @@ feature -- Measurement
 	row_capacity : INTEGER
 			-- Maximum number of rows in this rowset
 
-	row_count : INTEGER_64 is
+	row_count : INTEGER_64
 			-- Number of rows processed by rowset operation
 		do
 			Result := impl_row_count.item
@@ -43,12 +43,13 @@ feature {NONE} -- Implementation
 	status_array : ARRAY[INTEGER]
 			-- For debugging purposes : rowset_status content cannot be viewed in the debugger
 
-	fill_status_array is
+	fill_status_array
 		local
 			index: INTEGER
 		do
 			from index := 1
-				create status_array.make (1, row_capacity)
+--				create status_array.make (1, row_capacity)
+				create status_array.make_filled ({ECLI_ROW_STATUS_CONSTANTS}.sql_row_success, 1, row_capacity)
 			until
 				index > row_capacity
 			loop
@@ -57,9 +58,9 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	impl_row_count : ECLI_API_SQLLEN is deferred end
+	impl_row_count : ECLI_API_SQLLEN deferred end
 
-	make_row_count_capable is
+	make_row_count_capable
 			--
 		deferred
 		end
@@ -68,7 +69,7 @@ invariant
 	row_capacity_valid: row_capacity >= 1
 	row_count_valid: row_count <= row_capacity
 	impl_row_count_not_void: impl_row_count /= Void --FIXME: VS-DEL
-	rowset_status_not_void:rowset_status /= Void 
+	rowset_status_not_void:rowset_status /= Void
 	rowset_capacity: rowset_status.count = row_capacity
 
 end

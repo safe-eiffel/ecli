@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that represent a session to a database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -75,7 +75,7 @@ create
 
 feature {} -- Initialization
 
-	make_default is
+	make_default
 			-- Default creation.
 		require
 			is_closed: is_closed
@@ -99,21 +99,21 @@ feature -- Access
 	login_strategy : detachable ECLI_LOGIN_STRATEGY
 			-- Login strategy used for connection.
 
-	data_source : STRING is
+	data_source : STRING
 			-- Data source used for connection
 		obsolete "[2004-12-23]Use `login_strategy' instead."
 		do
 			Result := simple_login.datasource_name
 		end
 
-	user_name : STRING is
+	user_name : STRING
 			-- User name used for connection
 		obsolete "[2004-12-23]Use `login_strategy' instead."
 		do
 			Result := simple_login.user_name
 		end
 
-	password : STRING is
+	password : STRING
 			-- Password used for connection
 		obsolete "[2004-12-23]Use `login_strategy' instead."
 		do
@@ -131,7 +131,7 @@ feature -- Access
 			end
 		end
 
-	transaction_capability : INTEGER is
+	transaction_capability : INTEGER
 			-- Transaction capability of established session
 		require
 			connected: is_connected
@@ -149,7 +149,7 @@ feature -- Access
 	tracer : detachable ECLI_TRACER
 			-- Tracer of all SQL. Void implies no trace.
 
-	api_trace_filename : STRING is
+	api_trace_filename : STRING
 			-- Name of the api trace file.
 		local
 			ext_string: XS_C_STRING
@@ -163,7 +163,7 @@ feature -- Access
 			api_trace_filename_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
-	transaction_isolation : ECLI_TRANSACTION_ISOLATION is
+	transaction_isolation : ECLI_TRANSACTION_ISOLATION
 			-- Current active transaction isolation options
 		local
 			ext_txn_isolation : XS_C_UINT32
@@ -175,7 +175,7 @@ feature -- Access
 			transaction_isolation_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
-	connection_timeout : DT_TIME_DURATION is
+	connection_timeout : DT_TIME_DURATION
 			-- Duration corresponding to the number of seconds to wait for any request on the connection
 			-- to complete before returning to the application.
 			-- Result.second_count = 0 means no timeout
@@ -189,7 +189,7 @@ feature -- Access
 			connection_timeout_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
-	login_timeout : DT_TIME_DURATION is
+	login_timeout : DT_TIME_DURATION
 			-- Duration corresponding to the number of seconds to wait for a login request to complete
 			-- before returning to the application. The default is driver-dependent.
 			-- Result.second_count = 0 means not timeout and a connection attempt will wait indefinitely.
@@ -203,7 +203,7 @@ feature -- Access
 			login_timeout_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
-	network_packet_size : INTEGER is
+	network_packet_size : INTEGER
 			-- Network packet size.
 			-- Note:   Many data sources either do not support this option or only can return but not set
 			--         the network packet size.
@@ -215,7 +215,7 @@ feature -- Access
 			Result := uint32.item
 		end
 
-	set_network_packet_size (new_size : INTEGER) is
+	set_network_packet_size (new_size : INTEGER)
 			--  If the specified size exceeds the maximum packet size
 			--  or is smaller than the minimum packet size, the driver substitutes that value and
 			--  returns SQLSTATE 01S02 (Option value changed).
@@ -230,13 +230,13 @@ feature -- Access
 
 feature -- Status report
 
-	has_pending_transaction : BOOLEAN is
+	has_pending_transaction : BOOLEAN
 			-- Has the session a pending transaction ?
 		do
 			Result := impl_has_pending_transaction
 		end
 
-	is_manual_commit : BOOLEAN is
+	is_manual_commit : BOOLEAN
 			-- Is this session in 'manual commit mode' ?
 		require
 			valid: is_valid
@@ -246,7 +246,7 @@ feature -- Status report
 			Result := impl_is_manual_commit
 		end
 
-	is_ready_to_connect : BOOLEAN is
+	is_ready_to_connect : BOOLEAN
 			-- Is this session ready to be connected ?
 		do
 			Result := attached login_strategy
@@ -254,7 +254,7 @@ feature -- Status report
 			definition: Result = (attached login_strategy)
 		end
 
-	is_connected : BOOLEAN is
+	is_connected : BOOLEAN
 			-- Is this session connected to a database ?
 		do
 			Result := impl_is_connected
@@ -262,7 +262,7 @@ feature -- Status report
 			connected_valid: Result implies is_valid
 		end
 
-	is_connection_dead : BOOLEAN is
+	is_connection_dead : BOOLEAN
 			-- Is the connection dead ?
 		local
 			uint_result : XS_C_UINT32
@@ -272,7 +272,7 @@ feature -- Status report
 			Result := (uint_result.item = att.Sql_cd_true)
 		end
 
-	is_transaction_capable : BOOLEAN is
+	is_transaction_capable : BOOLEAN
 		require
 			connected: is_connected
 		do
@@ -284,7 +284,7 @@ feature -- Status report
 				transaction_capability = sql_tc_ddl_ignore )
 		end
 
-	is_describe_parameters_capable : BOOLEAN is
+	is_describe_parameters_capable : BOOLEAN
 			-- Can 'ECLI_STATEMENT.describe_parameters' be called ?
 		local
 			functions : ECLI_FUNCTIONS_CONSTANTS
@@ -296,7 +296,7 @@ feature -- Status report
 			Result := impl_describe_parameters_capability = sql_true
 		end
 
-	is_bind_arrayed_parameters_capable : BOOLEAN is
+	is_bind_arrayed_parameters_capable : BOOLEAN
 			-- Can arrayed parameters be used in rowset operations ?
 		local
 			dummy_statement : ECLI_STATEMENT
@@ -313,7 +313,7 @@ feature -- Status report
 			Result := impl_is_bind_arrayed_parameters_capability = 1
 		end
 
-	is_bind_arrayed_results_capable : BOOLEAN is
+	is_bind_arrayed_results_capable : BOOLEAN
 			-- Can arrayed results be used  ?
 		local
 			dummy_statement : ECLI_STATEMENT
@@ -330,7 +330,7 @@ feature -- Status report
 			Result := impl_is_bind_arrayed_results_capability = 1
 		end
 
-	is_tracing : BOOLEAN is
+	is_tracing : BOOLEAN
 			-- Is this session tracing SQL statements ?
 		do
 			Result := attached tracer
@@ -338,7 +338,7 @@ feature -- Status report
 			tracing_is_tracer_not_void: Result = (attached tracer)
 		end
 
-	is_api_tracing : BOOLEAN is
+	is_api_tracing : BOOLEAN
 			-- Is this session tracing ODBC/CLI api calls ?
 		local
 			uint32 : XS_C_UINT32
@@ -350,7 +350,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	set_manual_commit is
+	set_manual_commit
 			-- Set commit mode to `manual'
 		require
 			valid: is_valid
@@ -363,7 +363,7 @@ feature -- Status setting
 			is_manual_commit
 		end
 
-	set_automatic_commit is
+	set_automatic_commit
 			-- Set commit mode to `automatic'
 		require
 			valid: is_valid
@@ -375,7 +375,7 @@ feature -- Status setting
 			automatic_commit: not is_manual_commit
 		end
 
-	disable_tracing is
+	disable_tracing
 			-- Disable SQL tracing.
 		require
 			tracing: is_tracing
@@ -386,7 +386,7 @@ feature -- Status setting
 			no_tracer: not attached tracer
 		end
 
-	enable_api_tracing is
+	enable_api_tracing
 			-- Enable ODBC API tracing into `api_trace_filename'.
 --		require
 --			-- FIXME: api_trace_filename set.
@@ -394,7 +394,7 @@ feature -- Status setting
 			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_on))
 		end
 
-	disable_api_tracing is
+	disable_api_tracing
 			-- Disable ODBC API tracing.
 		do
 			set_status ("ecli_c_set_integer_connection_attribute", ecli_c_set_integer_connection_attribute (handle, att.sql_attr_trace , att.sql_opt_trace_off))
@@ -429,7 +429,7 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_login_strategy (new_login : ECLI_LOGIN_STRATEGY) is
+	set_login_strategy (new_login : ECLI_LOGIN_STRATEGY)
 			-- Change `login_strategy' to `new_login'.
 		require
 			not_connected: not is_connected
@@ -440,7 +440,7 @@ feature -- Element change
 			login_strategy_set: login_strategy = new_login
 		end
 
-	set_user_name(a_user_name: STRING) is
+	set_user_name(a_user_name: STRING)
 			-- Set `user' to `a_user'
 		obsolete "[2004-12-23]Use `login_strategy' instead."
 		require
@@ -452,7 +452,7 @@ feature -- Element change
 			user_name_set: user_name.is_equal (a_user_name)
 		end
 
-	set_data_source (a_data_source : STRING) is
+	set_data_source (a_data_source : STRING)
 			-- Set `data_source' to `a_data_source'
 		obsolete "[2004-12-23]Use `set_login_strategy' instead."
 		require
@@ -464,7 +464,7 @@ feature -- Element change
 			data_source_set: data_source.is_equal (a_data_source)
 		end
 
-	set_password (a_password : STRING) is
+	set_password (a_password : STRING)
 			-- Set password to 'a_password
 		obsolete "[2004-12-23]Use `set_login_strategy' instead."
 		require
@@ -476,7 +476,7 @@ feature -- Element change
 			password_set: password.is_equal (a_password)
 		end
 
-	set_tracer (a_tracer : ECLI_TRACER) is
+	set_tracer (a_tracer : ECLI_TRACER)
 			-- Trace SQL with `a_tracer'.
 		require
 			tracer_ok: a_tracer /= Void --FIXME: VS-DEL
@@ -487,7 +487,7 @@ feature -- Element change
 			tracing: is_tracing
 		end
 
-	set_transaction_isolation (an_isolation : ECLI_TRANSACTION_ISOLATION) is
+	set_transaction_isolation (an_isolation : ECLI_TRANSACTION_ISOLATION)
 			-- Change transaction isolation level
 		require
 			an_isolation_not_void: an_isolation /= Void --FIXME: VS-DEL
@@ -498,7 +498,7 @@ feature -- Element change
 			done_when_ok: is_ok implies (transaction_isolation.is_equal (an_isolation))
 		end
 
-	set_login_timeout (duration : DT_TIME_DURATION) is
+	set_login_timeout (duration : DT_TIME_DURATION)
 			-- Set `login_timeout' to `duration'.
 			-- If the specified timeout exceeds the maximum login timeout in the data source,
 			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
@@ -515,7 +515,7 @@ feature -- Element change
 			login_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies login_timeout.is_equal (duration)
 		end
 
-	set_connection_timeout (duration : DT_TIME_DURATION) is
+	set_connection_timeout (duration : DT_TIME_DURATION)
 			-- Set `connection_timeout' to `duration'.
 			-- If the specified timeout exceeds the maximum connection timeout in the data source,
 			-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
@@ -532,7 +532,7 @@ feature -- Element change
 			connection_timeout_set: (is_ok and not cli_state.is_equal ("01S02")) implies connection_timeout.is_equal (duration)
 		end
 
-	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM) is
+	set_api_trace_filename (filename : STRING; file_system : KI_FILE_SYSTEM)
 			-- Set `api_trace_filename' to `filename'.
 		require
 			filename_not_void: filename /= Void --FIXME: VS-DEL
@@ -550,7 +550,7 @@ feature -- Element change
 
 feature -- Basic Operations
 
-	begin_transaction is
+	begin_transaction
 			-- Begin a new transaction
 		require
 			connected: is_connected
@@ -568,7 +568,7 @@ feature -- Basic Operations
 			has_pending_transaction: has_pending_transaction implies is_ok
 		end
 
-	commit is
+	commit
 			-- Commit current transaction
 		require
 			valid: is_valid
@@ -589,7 +589,7 @@ feature -- Basic Operations
 			automatic_commit : not is_manual_commit
 		end
 
-	rollback is
+	rollback
 			-- Rollback current transaction
 		require
 			valid: is_valid
@@ -610,7 +610,7 @@ feature -- Basic Operations
 			automatic_commit : not is_manual_commit
 		end
 
-	connect is
+	connect
 			-- Connect using `login_strategy'
 		require
 			is_valid: is_valid
@@ -625,7 +625,7 @@ feature -- Basic Operations
 			connected: is_connected implies is_ok
 		end
 
-	connect_with_strategy (new_strategy: ECLI_LOGIN_STRATEGY) is
+	connect_with_strategy (new_strategy: ECLI_LOGIN_STRATEGY)
 			-- Connect using `new_strategy'.
 		require
 			is_valid: is_valid
@@ -638,7 +638,7 @@ feature -- Basic Operations
 			connected: is_connected implies is_ok
 		end
 
-	disconnect is
+	disconnect
 			-- Disconnect the session and close any remaining statement
 		require
 			is_valid: is_valid
@@ -667,7 +667,7 @@ feature -- Basic Operations
 			no_opened_statements: statements_count = 0
 		end
 
-	close is
+	close
 			-- Close the session
 		require
 			valid: is_valid
@@ -687,7 +687,7 @@ feature -- Basic Operations
 
 feature {ECLI_ENVIRONMENT} --
 
-	environment_release (env : like environment) is
+	environment_release (env : like environment)
 			-- Environment is being released
 		do
 			if is_connected then
@@ -708,7 +708,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	reset_implementation is
+	reset_implementation
 			-- Reset all implementation values to default ones
 		do
 			ext_transaction_capability.put (sql_tc_none - 1)
@@ -717,25 +717,25 @@ feature {NONE} -- Implementation
 			impl_is_bind_arrayed_results_capability := -1
 		end
 
-	release_handle is
+	release_handle
 		do
 			if is_connected then
 				do_disconnect
 			end
 			if handle /= default_pointer then
-				set_status ("ecli_c_free_connection", ecli_c_free_connection (handle))
+				set_status_without_report ("ecli_c_free_connection", ecli_c_free_connection (handle))
 			end
 			set_handle ( default_pointer)
 		end
 
 	impl_has_pending_transaction : BOOLEAN
 
-	set_connected is
+	set_connected
 		do
 			impl_is_connected := True
 		end
 
-	set_disconnected is
+	set_disconnected
 		do
 			impl_is_connected := False
 		end
@@ -744,19 +744,19 @@ feature {NONE} -- Implementation
 
 	impl_info : detachable like info
 
-	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER
 			-- To be redefined in descendant classes
 		do
 			Result := ecli_c_session_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)
 
 		end
 
-	impl_is_manual_commit : BOOLEAN is
+	impl_is_manual_commit : BOOLEAN
 		do
 			Result := ext_is_manual_commit.item
 		end
 
-	impl_transaction_capability : INTEGER is
+	impl_transaction_capability : INTEGER
 		do
 			Result := ext_transaction_capability.item
 		end
@@ -765,12 +765,12 @@ feature {NONE} -- Implementation
 	ext_transaction_capability : XS_C_INT32
 	ext_describe_parameters_capability : XS_C_INT32
 
-	impl_describe_parameters_capability : INTEGER is do Result := ext_describe_parameters_capability.item end
+	impl_describe_parameters_capability : INTEGER do Result := ext_describe_parameters_capability.item end
 
 	impl_is_bind_arrayed_parameters_capability : INTEGER
 	impl_is_bind_arrayed_results_capability	: INTEGER
 
-	allocate is
+	allocate
 			-- Allocate HANDLE
 		require
 			is_closed: is_closed
@@ -795,20 +795,20 @@ feature {NONE} -- Implementation
 			valid: is_valid
 		end
 
-	is_ready_for_disposal : BOOLEAN is
+	is_ready_for_disposal : BOOLEAN
 			-- Is this object ready for disposal ?
 		do
 			Result := statements_count = 0
 		end
 
-	disposal_failure_reason : STRING is
+	disposal_failure_reason : STRING
 		once
 			Result := "ECLI_STATEMENT still opened on Current; Close them before closing this session."
 		end
 
 	environment : detachable ECLI_ENVIRONMENT
 
-	do_disconnect is
+	do_disconnect
 			-- Do disconnect
 		do
 			--| actual disconnect
@@ -818,7 +818,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS is
+	att : ECLI_CONNECTION_ATTRIBUTE_CONSTANTS
 		once
 			create Result
 		end

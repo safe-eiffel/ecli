@@ -1,11 +1,11 @@
-indexing
+note
 
 	description: 
 	
 		"Objects that reflect status of rowset operations. They basically are an array of integer."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -28,7 +28,7 @@ create
 
 feature -- Status report
 
-	is_ok (index : INTEGER) : BOOLEAN is
+	is_ok (index : INTEGER) : BOOLEAN
 			-- is `index'-th status ok?
 		require
 			valid_index: index >= 1 and index <= count
@@ -36,7 +36,7 @@ feature -- Status report
 			Result := (item (index) = Sql_row_success) or else (item (index) = Sql_row_success_with_info)
 		end
 
-	is_error (index : INTEGER) : BOOLEAN is
+	is_error (index : INTEGER) : BOOLEAN
 			-- is `index'-th status in error ?
 		require
 			valid_index: index >= 1 and index <= count

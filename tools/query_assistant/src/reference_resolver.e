@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that resolve access module metadata references to parents or descendants."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -12,7 +12,7 @@ class
 
 feature -- Basic operations
 
-	resolve_parents (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]; error_handler : QA_ERROR_HANDLER) : DS_HASH_TABLE [PARENT_COLUMN_SET [G], STRING] is
+	resolve_parents (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]; error_handler : QA_ERROR_HANDLER) : DS_HASH_TABLE [PARENT_COLUMN_SET [G], STRING]
 			-- extract parent information from `items' and create collection of parent object into Result
 		local
 --			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET [G],STRING]
@@ -59,7 +59,7 @@ feature -- Basic operations
 			end
 		end
 
-	resolve_descendants (items : DS_HASH_TABLE[COLUMN_SET [G], STRING]) is
+	resolve_descendants (items : DS_HASH_TABLE[COLUMN_SET [G], STRING])
 			-- infer local content of each item in `items' wrt to their respective parent if any
 		local
 --			cursor : DS_HASH_TABLE_CURSOR[COLUMN_SET [G],STRING]
@@ -81,7 +81,7 @@ feature -- Basic operations
 
 end -- class REFERENCE_RESOLVER
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

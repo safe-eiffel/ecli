@@ -12,7 +12,11 @@
 
 	<cluster name="kernel" location="${GOBO}/library/kernel">
 		<option name="abstract" value="true"/>
-		<option name="void_safety" value="none"/>
+
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="void_safety" value="complete" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+
 		<cluster name="basic"/>
 		<cluster name="io"/>
 		<cluster name="misc"/>

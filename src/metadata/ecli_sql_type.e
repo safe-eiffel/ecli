@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that describe a SQL type, as supported by a datasource."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -29,7 +29,7 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 			Precursor
 		end
 
-	make (type_cursor : ECLI_SQL_TYPES_CURSOR) is
+	make (type_cursor : ECLI_SQL_TYPES_CURSOR)
 			-- create type description from current cursor tuple
 		require
 			type_cursor: type_cursor /= Void --FIXME: VS-DEL
@@ -100,7 +100,7 @@ feature {ECLI_SQL_TYPES_CURSOR} -- Initialization
 
 feature -- Access
 
-	name :  STRING is
+	name :  STRING
 			-- Data-source dependent type name
 		do
 			Result := impl_name
@@ -108,13 +108,13 @@ feature -- Access
 			exists: Result /= Void --FIXME: VS-DEL
 		end
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 			-- SQL data type code
 		do
 			Result := impl_sql_type_code
 		end
 
-	size : INTEGER is
+	size : INTEGER
 			-- The maximum column size that the server supports for this data type.
 			-- For numeric data, this is the maximum precision.
 			-- For string data, this is the length in characters.
@@ -126,7 +126,7 @@ feature -- Access
 			significant: is_size_applicable implies Result /= 0
 		end
 
-	literal_prefix : STRING is
+	literal_prefix : STRING
 			-- Character(s) used to prefix a literal
 		require
 			significant: is_literal_prefix_applicable
@@ -138,7 +138,7 @@ feature -- Access
 			significant: is_literal_prefix_applicable implies Result /= Void --FIXME: VS-DEL
 		end
 
-	literal_suffix : STRING is
+	literal_suffix : STRING
 			-- Character(s) used to suffix a literal
 		require
 			significant: is_literal_suffix_applicable
@@ -150,7 +150,7 @@ feature -- Access
 			significant: is_literal_prefix_applicable implies Result /= Void --FIXME: VS-DEL
 		end
 
-	create_params : STRING is
+	create_params : STRING
 			-- A list of keywords, separated by commas, corresponding to each parameter
 			-- that the application may specify in parentheses when using the name that is returned
 			-- in the TYPE_NAME field.
@@ -168,7 +168,7 @@ feature -- Access
 			significant: is_create_params_applicable implies Result /= Void --FIXME: VS-DEL
 		end
 
-	create_parameters : DS_LIST[STRING] is
+	create_parameters : DS_LIST[STRING]
 			-- name of each individual create parameter, in the order in which they must appear.
 		local
 			splitter : ST_SPLITTER
@@ -184,7 +184,7 @@ feature -- Access
 			end
 		end
 
-	data_definition (parameters : ARRAY[INTEGER]) : STRING is
+	data_definition (parameters : ARRAY[INTEGER]) : STRING
 			-- Data definition string for Current type with `parameters'.
 		require
 			parameters_for_create_parameters: create_parameters.count > 0 implies (parameters /= Void and then parameters.count = create_parameters.count)
@@ -209,13 +209,13 @@ feature -- Access
 			end
 		end
 
-	searchable : INTEGER is
+	searchable : INTEGER
 			-- is this type searchable ?
 		do
 			Result := impl_searchable
 		end
 
-	local_type_name : detachable STRING is
+	local_type_name : detachable STRING
 			-- Localized version of the type name
 		require
 			is_local_type_name_applicable: is_local_type_name_applicable
@@ -225,7 +225,7 @@ feature -- Access
 			significant: is_local_type_name_applicable implies Result /= Void
 		end
 
-	minimum_scale : INTEGER is
+	minimum_scale : INTEGER
 			-- minimum scale for numeric values
 		require
 			is_minimum_scale_applicable
@@ -233,7 +233,7 @@ feature -- Access
 			Result := impl_minimum_scale
 		end
 
-	maximum_scale : INTEGER is
+	maximum_scale : INTEGER
 			-- maximum scale for numeric values
 		require
 			is_maximum_scale_applicable
@@ -241,7 +241,7 @@ feature -- Access
 			Result := impl_maximum_scale
 		end
 
-	sql_data_type : INTEGER is
+	sql_data_type : INTEGER
 			-- sql data type code (ODBC >= V3.0)
 		require
 			exists_sql_data_type
@@ -249,7 +249,7 @@ feature -- Access
 			Result := impl_sql_data_type
 		end
 
-	sql_date_time_sub : INTEGER is
+	sql_date_time_sub : INTEGER
 			-- sql subcode if date time or interval (ODBCV >= 3.0)
 		require
 			exists_sql_date_time_sub
@@ -257,7 +257,7 @@ feature -- Access
 			Result := impl_sql_date_time_sub
 		end
 
-	num_prec_radix : INTEGER is
+	num_prec_radix : INTEGER
 			-- precision radix for numeric (ODBCV >= 3.0)
 		require
 			exists_num_prec_radix
@@ -265,7 +265,7 @@ feature -- Access
 			Result := impl_num_prec_radix
 		end
 
-	interval_precision : INTEGER is
+	interval_precision : INTEGER
 			-- precision if interval (ODBCV >= 3.0)
 		require
 			exists_interval_precision
@@ -336,7 +336,7 @@ feature -- Status report
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse visual representation
 		do
 			create Result.make (128)

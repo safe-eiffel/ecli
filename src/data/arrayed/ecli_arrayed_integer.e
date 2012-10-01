@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"CLI SQL INTEGER arrayed value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -39,7 +39,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- make with `capacity' values
 		do
 			buffer := ecli_c_alloc_array_value (4, a_capacity)
@@ -50,12 +50,12 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : INTEGER is
+	item : INTEGER
 		do
 			Result := item_at (cursor_index)
 		end
 
-	item_at (index : INTEGER) : INTEGER is
+	item_at (index : INTEGER) : INTEGER
 			--
 		do
 			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
@@ -69,22 +69,22 @@ feature -- Status report
 
 feature -- Status setting
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
-			Result := ecli_c_array_value_get_length (buffer)
+			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
 
 feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : INTEGER) is
+	set_item (value : INTEGER)
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
 		end
 
-	set_item_at (value : INTEGER; index : INTEGER) is
+	set_item_at (value : INTEGER; index : INTEGER)
 			-- set item to 'value', truncating if necessary
 		do
 			--impl_item := value
@@ -107,7 +107,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	out : STRING is
+	out : STRING
 		local
 			i : INTEGER
 		do
@@ -129,7 +129,7 @@ feature -- Basic operations
 			Result.append_string (">>")
 		end
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_integer (Current)
 		end

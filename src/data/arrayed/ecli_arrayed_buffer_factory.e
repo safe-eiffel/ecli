@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that create arrayed buffers for rowset commands."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -24,7 +24,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_row_count : INTEGER) is
+	make (a_row_count : INTEGER)
 			-- make buffer for 'a_row_count'
 		do
 			row_count := a_row_count
@@ -67,7 +67,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	value_factory : ECLI_ARRAYED_VALUE_FACTORY is
+	value_factory : ECLI_ARRAYED_VALUE_FACTORY
 		do
 			if attached impl_value_factory as l_factory then
 				Result := l_factory
@@ -77,7 +77,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	value_anchor : detachable ECLI_ARRAYED_VALUE is
+	value_anchor : detachable ECLI_ARRAYED_VALUE
 			--
 		do
 		end
