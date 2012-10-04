@@ -1,7 +1,7 @@
 note
 
 	description:
-	
+
 			"Cursors over SQL query result set. Starting iteration creates `results' object through `create_buffers'."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -17,15 +17,15 @@ inherit
 		redefine
 			real_execution
 		end
-		
+
 feature -- Status report
 
 	real_execution : BOOLEAN
 		do
 			Result := True
 		end
-		
-			
+
+
 feature -- Cursor movement
 
 	start
@@ -33,13 +33,37 @@ feature -- Cursor movement
 		require
 			sql_set: sql /= Void
 			parameters_set: parameters_count > 0 implies (parameters.count = parameters_count and then not array_routines.has (parameters, Void))
+		local
+			must_start: BOOLEAN
 		do
-			if parameters_count > 0 and then not bound_parameters then
-				bind_parameters
+			if not is_executed then
+				if parameters_count > 0 and then not bound_parameters then
+					bind_parameters
+				end
+				execute
+				must_start := True
+			else
+				-- is_executed
+				if not off then
+					-- was inside result-set
+					go_after
+				end
+				if before then
+					-- prevent reexecuting the query twice
+					must_start := true
+				else
+					check after: after end
+					-- finished with last result-set
+					-- must re-execute with new? parameters, to get maybe fresh new resultset.
+					if parameters_count > 0 and then not bound_parameters then
+						bind_parameters
+					end
+					execute
+					must_start := True
+				end
 			end
-			execute
 			if is_ok then
-				if has_result_set then
+				if must_start and then has_result_set then
 					create_buffers
 					statement_start
 				end
@@ -57,6 +81,6 @@ feature {NONE} -- Implementation
 		ensure
 			results_set: results /= Void
 		end
-	
+
 end
 
