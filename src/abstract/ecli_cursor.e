@@ -17,20 +17,10 @@ deferred class ECLI_CURSOR
 inherit
 
 	ECLI_QUERY
-		export {NONE}
-			execute
 		redefine
-			real_execution --,
---			make
+			real_execution,
+			initialize
 		end
-
----feature {NONE} -- Initialization
---
---	make (a_session: ECLI_SESSION)
---		do
---			Precursor (a_session)
---			create_buffers   --<<<<----- Certainly not because statement has not been prepared nor executed.
---		end
 
 feature -- Status report
 
@@ -47,13 +37,32 @@ feature -- Cursor movement
 		require
 			sql_set: sql /= Void --FIXME: VS-DEL
 			parameters_set: parameters_count > 0 implies (parameters.count = parameters_count)
+		local
+			must_start: BOOLEAN
 		do
-			if parameters_count > 0 and then not bound_parameters then
-				bind_parameters
+
+			if not is_executed then
+				if parameters_count > 0 and then not bound_parameters then
+					bind_parameters
+				end
+				execute
+				must_start := True
+			else
+				if not off then
+					go_after
+				end
+				if after then
+					if parameters_count > 0 and then not bound_parameters then
+						bind_parameters
+					end
+					execute
+					must_start := True
+				else
+					must_start := True
+				end
 			end
-			execute
 			if is_ok then
-				if has_result_set then
+				if must_start and then has_result_set then
 					create_buffers
 					statement_start
 				end
@@ -66,6 +75,11 @@ feature -- Cursor movement
 		end
 
 feature {NONE} -- Implementation
+
+	initialize
+		do
+			create_buffers
+		end
 
 	create_buffers
 			-- create all ECLI_VALUE objects
