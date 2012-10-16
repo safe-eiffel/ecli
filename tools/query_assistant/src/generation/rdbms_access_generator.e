@@ -176,16 +176,17 @@ feature -- Basic operations
 
 			--| access
 			create routine.make ("last_object")
-			routine.set_type ("PO_PERSISTENT")
+			routine.set_type ("detachable PO_PERSISTENT")
 			access.add_feature (routine)
 			create routine.make ("last_cursor")
-			routine.set_type ("PO_CURSOR[like last_object]")
+			routine.set_type ("PO_CURSOR[attached like last_object]")
 			access.add_feature (routine)
 			--| status report
 			create routine.make ("is_error")
 			routine.set_type ("BOOLEAN")
 			routine.set_comment ("Did last operation produce an error?")
 			status_report.add_feature (routine)
+
 			from
 				cursor := modules.new_cursor
 				cursor.start
@@ -329,7 +330,7 @@ feature {NONE} -- Basic operations
 	--			else
 	--				parameters_class_name := module.parameters.name
 	--			end
-				create a_feature.make ("parameters_object", parameters_class_name)
+				create a_feature.make ("parameters_object", "detachable " + parameters_class_name)
 				feature_group.add_feature (a_feature)
 			end
 
@@ -503,10 +504,10 @@ feature {NONE} -- Basic operations
 			create routine.make ("create_buffers")
 			routine.set_comment ("Creation of buffers")
 
-			create local_buffers.make ("buffers", "ARRAY[like value_anchor]")
+			create local_buffers.make ("buffers", "like results") -- "ARRAY[like value_anchor]")
 			routine.add_local (local_buffers)
 			routine.add_body_line ("create item.make")
-			routine.add_body_line ("create buffers.make (1,"+module.results.count.out+")")
+			routine.add_body_line ("create buffers.make (1,0)") -- "+module.results.count.out+")")
 
 			from
 				count := module.results.count
@@ -516,7 +517,7 @@ feature {NONE} -- Basic operations
 			until
 				c.off
 			loop
-				create line.make_from_string("buffers.put (item.")
+				create line.make_from_string("buffers.force (item.") -- put (item.")
 				line.append_string (c.item.eiffel_name)
 				line.append_string (", ")
 				line.append_string (module.results.rank.item (c.item.name).out)

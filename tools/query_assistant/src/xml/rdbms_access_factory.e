@@ -89,9 +89,9 @@ feature -- Basic operations
 --vs							description := element.element_by_name (t_description)
 							last_access.set_description (description.text.string)
 						end
-						if element.has_element_by_name (t_parameter_set) then
-							if attached element.element_by_name (t_parameter) as l_parameter then
-								create_parameter_set (l_parameter, parameter_set_name (name))
+						if attached {XM_ELEMENT} element.element_by_name (t_parameter_set) as l_parameter_set then
+							if not element.has_element_by_name (t_parameter) then
+								create_parameter_set (l_parameter_set, parameter_set_name (name))
 							else
 								error_handler.report_exclusive_element (name, "parameter", "parameter_set", "access")
 								is_error := True

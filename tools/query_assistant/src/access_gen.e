@@ -421,7 +421,7 @@ feature -- Basic operations
 					default_catalog := value
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-access_routines_prefix") then
-					access_routines_prefix := value
+					set_access_routines_prefix (value)
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-parent_cursor") then
 					default_parent_cursor := value
