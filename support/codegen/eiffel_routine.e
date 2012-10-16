@@ -61,13 +61,13 @@ feature -- Access
 			-- Is this routine a function?
 		do
 --			Result := type /= Void
-			Result := type.is_empty
+			Result := not type.is_empty
 		end
 
 	is_deferred: BOOLEAN
 			-- Is this routine deferred?
 		do
-			Result := body = Void
+			Result := body.is_empty
 		end
 
 	is_once : BOOLEAN
