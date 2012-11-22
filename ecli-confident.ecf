@@ -7,11 +7,19 @@
 		</option>
 		<setting name="console_application" value="true"/>
 		<external_include location="$(ECLI)/src/spec/C"/>
-		<external_include location="$(ECLI)/src/spec/ise/windows"/>
-		<external_library location="$(ECLI)/src/spec/ise/windows/ecli_msc.lib"/>
+		<external_include location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)"/>
+		<external_library location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)/ecli_$(GOBO_CC).lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
 		<external_library location="$(ODBC32LIBPATH)ODBC32.lib"/>
 		<external_library location="$(ODBCCP32LIBPATH)ODBCCP32.lib"/>
-		<external_library location="$(SAFE_KERNEL)/external/src/spec/ise/windows/xs_c_msc.lib"/>
+		<external_library location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)/libecli_c.a">
+			<condition>
+				<platform value="unix macintosh"/>
+			</condition>
+		</external_library>
 		<library name="base-safe" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="gobo-core-confident" location="$GOBO\library\gobo-core-confident.ecf"/>
 		<library name="gobo-kernel-safe" location="$GOBO\library\kernel\gobo-kernel-safe.ecf"/>
