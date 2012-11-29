@@ -18,7 +18,12 @@ inherit
 			default_create
 		end
 
-feature -- Initialization
+create
+	default_create,
+	make_for_results
+
+	
+feature {NONE} -- Initialization
 
 	default_create
 		do
@@ -26,6 +31,22 @@ feature -- Initialization
 			create last_index_table.make (0)
 		end
 
+	make_for_results (a_statement : ECLI_STATEMENT)
+			-- Make for the current result-set of `a_statement'.
+			-- Describe and use the results metadata.
+		require
+			a_statement_not_void: a_statement /= Void
+			a_statement_executed: a_statement.is_executed
+			a_statement_has_results: a_statement.has_results
+		do
+			default_create
+			a_statement.describe_results
+			create_buffers (a_statement.results_description)
+		ensure
+			last_buffers_created: last_buffers.count = a_statement.result_columns_count
+			results_description_consistency: last_buffers.count = a_statement.results_description.count
+		end
+		
 feature -- Access
 
 	Default_precision_limit : INTEGER = 8192
@@ -94,7 +115,7 @@ feature -- Basic operations
 			until
 				i > cols
 			loop
-				column := cursor_description @ i
+				column := cursor_description[i]
 				if column.name.is_empty then
 					name := i.out
 				else
