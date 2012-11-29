@@ -749,14 +749,14 @@ feature -- Basic operations
 			description : ECLI_PARAMETER_DESCRIPTION
 		do
 			limit := parameters_count
-			create parameters_description.make (1, limit)
+			create parameters_description.make_empty
 			from
 				reset_status
 				count := 1
 			until count > limit or not is_ok
 			loop
 				create description.make (Current, count)
-				parameters_description.put (description, count)
+				parameters_description.force (description, count)
 				count := count + 1
 			end
 			if not is_ok then
