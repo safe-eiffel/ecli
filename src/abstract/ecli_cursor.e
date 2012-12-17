@@ -78,7 +78,7 @@ feature {NONE} -- Implementation
 
 	initialize
 		do
-			create_buffers
+--			create_buffers
 		end
 
 	create_buffers
