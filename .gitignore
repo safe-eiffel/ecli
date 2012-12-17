@@ -9,4 +9,6 @@ ise.ecf
 ge.xace
 *.orig
 *.bak
-
+ecli_c.o
+libecli_c.a
+src/spec/ise/unix
