@@ -41,8 +41,8 @@ feature {NONE} -- Initialization
 		do
 			Arguments.set_program_name ("query_assistant")
 			create_error_handler
-			process_arguments
 			print_prologue
+			process_arguments
 			if not has_error then
 				if default_catalog /= Void then
 					set_shared_catalog_name (default_catalog)
