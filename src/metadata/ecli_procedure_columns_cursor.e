@@ -24,7 +24,7 @@ inherit
 
 create
 
-	make
+	make, make_query_column
 
 feature -- Access
 

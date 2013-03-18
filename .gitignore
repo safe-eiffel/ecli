@@ -9,4 +9,5 @@ ise.ecf
 ge.xace
 *.orig
 *.bak
-
+query_assistant
+clisql
