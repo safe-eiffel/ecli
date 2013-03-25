@@ -240,7 +240,7 @@ feature {NONE} -- Implementation
 --			parameter : XM_ELEMENT
 		do
 			from
-				parameter_cursor := attached_ (element.new_cursor)
+				parameter_cursor := element.new_cursor.as_attached
 				parameter_cursor.start
 			until
 				parameter_cursor.off
@@ -267,7 +267,7 @@ feature {NONE} -- Implementation
 		do
 --			if attached element.new_cursor as parameter_cursor then
 				from
-					parameter_cursor := attached_ (element.new_cursor)
+					parameter_cursor := element.new_cursor.as_attached
 					parameter_cursor.start
 				until
 					parameter_cursor.off
@@ -278,7 +278,7 @@ feature {NONE} -- Implementation
 						if attached last_parameter as l_param then
 							if parameter_map.has (l_param.name) then
 								is_error := True
-								error_handler.report_duplicate_element ("?", l_param.name, attached_ (element.name))
+								error_handler.report_duplicate_element ("?", l_param.name, element.name.as_attached)
 							else
 								parameter_map.force (l_param, l_param.name)
 							end
@@ -289,12 +289,12 @@ feature {NONE} -- Implementation
 --			end
 		end
 
-	attached_ (a : detachable ANY) : attached like a
-		do
-			check attached a as l_result then
-				Result := l_result
-			end
-		end
+--	attached_ (a : detachable ANY) : attached like a
+--		do
+--			check attached a as l_result then
+--				Result := l_result
+--			end
+--		end
 
 	create_parameter (element : XM_ELEMENT; is_template : BOOLEAN)
 			-- create parameter based on `element'
