@@ -2,12 +2,17 @@ note
 
 	description:
 
-		"Objects that use an implementation (external) handle. This can be used %
-	   % in any case where an allocate/free scheme is needed.%N%
-	   % Safety  note: %NIn case of using this handle for storing externally allocated memory,%
-	   % descendant classes should redefine 'release_handle',%
-	   % in order to free externally allocated memory. `prepare_for_disposal' is executed before `release_handle'%
-	   % and should also be redefined by descendant classes."
+	"[
+		Objects that use an implementation (external) handle. 
+		This can be used in any case where an allocate/free scheme is needed.
+		
+		Safety  note: 
+			In case of using this handle for storing externally allocated memory, 
+			descendant classes should redefine 'release_handle',
+			in order to free externally allocated memory. 
+			`prepare_for_disposal' is executed before `release_handle'
+			and should also be redefined by descendant classes.
+	]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
@@ -24,14 +29,14 @@ inherit
 		redefine
 			dispose
 		end
-		
+
 	EXCEPTIONS
 		export
 			{NONE} all
 		end
 
 	ANY
-	
+
 feature {ECLI_HANDLE} -- Access
 
 	handle : POINTER
@@ -40,7 +45,7 @@ feature {ECLI_HANDLE} -- Access
 			-- Why is this object not ready_for_disposal
 		deferred
 		end
-		
+
 feature {ANY} -- Status report
 
 	is_valid : BOOLEAN
@@ -70,7 +75,7 @@ feature {NONE} -- Implementation
 			if is_valid then
 				if not is_ready_for_disposal then
 					debug ("ecli_check_closes")
-						raise (disposal_failure_reason)					
+						raise (disposal_failure_reason)
 					end
 				end
 				release_handle
@@ -96,5 +101,5 @@ feature {NONE} -- Implementation
 				e.raise ("Unable to allocate handle. What to do: Check if there is no more memory.")
 			end
 		end
-		
+
 end

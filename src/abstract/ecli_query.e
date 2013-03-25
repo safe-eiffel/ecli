@@ -2,7 +2,10 @@ note
 
 	description:
 
-			"SQL Queries, defined by a SQL text. Heir for classes whose SQL definition remains constant, (static, not modifiable)."
+	"[
+		SQL Queries, defined by a SQL text. 
+		Heir for classes whose SQL definition remains constant, (static, not modifiable).
+	]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
