@@ -40,7 +40,7 @@
 		</external_library>
 		<library name="base-safe" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="gobo-core-confident" location="$GOBO\library\gobo-core-confident.ecf"/>
-		<library name="gobo-kernel-safe" location="$GOBO\library\kernel\gobo-kernel-safe.ecf"/>
+		<library name="gobo-kernel-safe" location="$GOBO\library\kernel\library.ecf"/>
 		<library name="gobo-math-safe" location="$GOBO\library\math\gobo-math-safe.ecf"/>
 		<library name="gobo-structure-confident" location="$GOBO\library\structure\gobo-structure-confident.ecf"/>
 		<library name="gobo-time-confident" location="$GOBO\library\time\gobo-time-confident.ecf"/>

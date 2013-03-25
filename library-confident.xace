@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<library name="ecli-confident">
+	<description>
+		description: "ECLI with void-confident settings"
+		copyright: "Copyright (c) 2001-2013, Paul-G. Crismer and others"
+		license: "Eiffel Forum version 2"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<cluster name="ecli_confident">
+		<option name="ecf_library" value="${ECLI}/ecli-confident.ecf"/>
+		<option name="recursive" value="true"/>
+		<option name="read_only" value="true"/>
+	</cluster>
+</library>
