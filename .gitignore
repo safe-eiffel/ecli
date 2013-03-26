@@ -11,3 +11,6 @@ ge.xace
 *.bak
 query_assistant
 clisql
+ecli_c.o
+libecli_c.a
+src/spec/ise/unix

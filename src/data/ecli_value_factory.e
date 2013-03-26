@@ -30,7 +30,8 @@ feature {NONE} -- Initialization
 
 	make
 		do
-			create {ECLI_VARCHAR}last_result.make (100)
+--			create {ECLI_VARCHAR}last_result.make (100)
+			create_varchar_value (100)
 		end
 
 feature -- Access

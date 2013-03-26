@@ -2,10 +2,12 @@ note
 
 	description:
 
-		"Objects that are able of operating on a rowset%N%
-		% A rowset is an array  of `row_capacity' rows.%N%
-		% Database operations occur one rowset at a time.%N%
-		% Status information is available for each row in the rowset."
+	"[
+		Objects that are able of operating on a rowset.
+		A rowset is an array  of `row_capacity' rows.
+		Database operations occur one rowset at a time.
+		Status information is available for each row in the rowset through feature `item_status'.
+	]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
