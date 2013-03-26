@@ -70,10 +70,9 @@ inherit
 
 create
 
---	make,
 	make_default
 
-feature {} -- Initialization
+feature -- Initialization
 
 	make_default
 			-- Default creation.
@@ -89,11 +88,14 @@ feature {} -- Initialization
 			open: not is_closed
 		end
 
+feature {NONE} -- Initialization
+
 	default_create
 		do
 			Precursor {ECLI_STATUS}
 			Precursor {PAT_PUBLISHER}
 		end
+
 feature -- Access
 
 	login_strategy : detachable ECLI_LOGIN_STRATEGY
@@ -438,6 +440,7 @@ feature -- Element change
 			login_strategy := new_login
 		ensure
 			login_strategy_set: login_strategy = new_login
+			ready_to_connect: is_ready_to_connect
 		end
 
 	set_user_name(a_user_name: STRING)

@@ -2,10 +2,12 @@ note
 
 	description:
 
-		"Encapsulation of CLI environment.%
-				% There should be a single object of this type in a system.%
-				% This object is a handle to the CLI facilities : it is the first%
-				% CLI object to be created, and the last to be deleted."
+		"[
+		Encapsulation of CLI environment.
+		There should be a single object of this type in a system.
+		This object is a handle to the CLI facilities : it is the first
+		CLI object to be created, and the last to be deleted.
+		]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
