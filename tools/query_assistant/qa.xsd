@@ -48,7 +48,8 @@
 	</xs:element>
 	<xs:element name="sql" type="xs:string"/>
 	<xs:complexType name="parameterType">
-		<xs:attribute name="table" type="xs:string" use="required"/>
+		<xs:attribute name="table" type="xs:string" use="optional"/>
+		<xs:attribute name="procedure" type="xs:string" use="optional"/>
 		<xs:attribute name="column" type="xs:string" use="required"/>
 		<xs:attribute name="sample" type="xs:string" use="optional"/>
 	</xs:complexType>
