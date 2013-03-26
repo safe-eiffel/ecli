@@ -25,6 +25,8 @@ feature -- Access
 
 	t_parameter_set : STRING = "parameter_set"
 
+	t_procedure : STRING = "procedure"
+
 	t_table : STRING = "table"
 
 	t_column : STRING = "column"

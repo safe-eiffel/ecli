@@ -338,6 +338,20 @@ report_exclusive_element (module, element_a, element_b, parent: STRING)
 			report_error (error)
 		end
 
+	report_missing_attributes (module, a_first_attribute, a_second_attribute, element: STRING)
+			-- Report missing `a_first_attribute' or `a_second_attribute' in `element' for `module'.
+		require
+			module_not_void: module /= void
+			a_first_attribute_not_void: a_first_attribute /= void
+			a_second_attribute_not_void: a_second_attribute /= void
+			element_not_void: element /= void
+		local
+			error : QA_SYNTAX_ERROR
+		do
+			create error.make_missing_attributes (module, a_first_attribute, a_second_attribute, element)
+			report_error (error)
+		end
+
 	report_parse_error (diagnostic: STRING)
 			-- Report XML parse error with `diagnostic'.
 		require
