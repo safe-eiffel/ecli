@@ -127,7 +127,7 @@ feature {NONE} -- Initialization
 		end
 
 	create_error_handler (a_session : ECLI_SESSION)
-			-- create `error_handler´
+			-- create `error_handlerÂ´
 		do
 			error_handler := a_session.error_handler
 		ensure
@@ -138,16 +138,6 @@ feature {NONE} -- Initialization
 			-- Initialize internal state just before registering to session
 		do
 		end
-
---	create_error_handler is
---			-- create `error_handler´
---		do
---			if error_handler = Void then
---				create error_handler.make_null
---			end
---		ensure
---			error_handler_created: error_handler /= Void
---		end
 
 feature -- Basic operations
 

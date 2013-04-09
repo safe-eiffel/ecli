@@ -18,8 +18,7 @@ inherit
 
 	ECLI_QUERY
 		redefine
-			real_execution,
-			initialize
+			real_execution
 		end
 
 feature -- Status report
@@ -75,11 +74,6 @@ feature -- Cursor movement
 		end
 
 feature {NONE} -- Implementation
-
-	initialize
-		do
---			create_buffers
-		end
 
 	create_buffers
 			-- create all ECLI_VALUE objects
