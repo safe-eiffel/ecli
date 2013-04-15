@@ -35,6 +35,7 @@ feature -- Initialisation
 			create preconditions.make
 			create postconditions.make
 			create type.make_empty
+			set_deferred
 		end
 
 feature -- Access
@@ -60,15 +61,11 @@ feature -- Access
 	is_function: BOOLEAN
 			-- Is this routine a function?
 		do
---			Result := type /= Void
 			Result := not type.is_empty
 		end
 
 	is_deferred: BOOLEAN
 			-- Is this routine deferred?
-		do
-			Result := body.is_empty
-		end
 
 	is_once : BOOLEAN
 
@@ -83,6 +80,18 @@ feature -- Status setting
 			is_once := True
 		ensure
 			is_once: is_once
+		end
+
+	set_deferred
+		do
+			is_deferred := True
+		end
+
+	set_effective
+		do
+			is_deferred := False
+		ensure
+			effective_definition: not is_deferred
 		end
 
 	set_type (new_type: STRING)
@@ -110,10 +119,9 @@ feature -- Status setting
 			local_name_not_void: new_local.first /= Void
 			local_type_not_void: new_local.second /= Void
 		do
---			if locals = Void then
---				create body.make
---				create locals.make
---			end
+			if is_deferred then
+				set_effective
+			end
 			locals.force_last (new_local)
 		end
 
@@ -122,10 +130,9 @@ feature -- Status setting
 		require
 			line_not_void: line /= Void
 		do
---			if body = Void then
---				create body.make
---				create locals.make
---			end
+			if is_deferred then
+				set_effective
+			end
 			body.force_last (line)
 		end
 
@@ -315,8 +322,8 @@ feature {NONE} -- Implementation
 invariant
 
 	function_definition: is_function implies not type.is_empty
-	deferred_definition: is_deferred implies not body.is_empty
-	no_body_or_locals: body.is_empty implies locals.is_empty
+	deferred_definition: is_deferred implies body.is_empty
+--	no_body_or_locals: body.is_empty implies locals.is_empty
 	params_not_void: params /= Void
 
 end -- class EIFFEL_ROUTINE
