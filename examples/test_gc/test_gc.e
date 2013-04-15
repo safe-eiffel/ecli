@@ -22,9 +22,9 @@ feature -- Initialization
 			else
 				create session.make_default
 				session.set_login_strategy (create {ECLI_SIMPLE_LOGIN}.make (
-					attached_string (args.argument (1)),
-					attached_string (args.argument (2)),
-					attached_string (args.argument (3)))
+					args.argument (1),
+					args.argument (2),
+					args.argument (3))
 				)
 				session.connect
 				if session.has_information_message then
@@ -105,9 +105,9 @@ feature -- Initialization
 				a_tried := True
 				create session.make_default
 				session.set_login_strategy (create {ECLI_SIMPLE_LOGIN}.make (
-					attached_string (args.argument (1)),
-					attached_string (args.argument (2)),
-					attached_string (args.argument (3))
+					args.argument (1),
+					args.argument (2),
+					args.argument (3)
 					)
 				)
 
@@ -125,15 +125,6 @@ feature -- Initialization
 			retry
 		end
 
-	attached_string (s : detachable STRING) : STRING
-		do
-			check attached s as l_s then
-				Result := l_s
-			end
-		end
-
-		do
-		end
 
 	do_case_c
 		do

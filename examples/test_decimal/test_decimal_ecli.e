@@ -14,7 +14,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make 
+	make
 			-- Create and execute test.
 		do
 			io.put_string ("*** test_decimal : Test DECIMAL input/output ***%N%N")
@@ -29,9 +29,9 @@ feature {NONE} -- Initialization
 			else
 				session.set_login_strategy (
 					create {ECLI_SIMPLE_LOGIN}.make (
-						attached_string (arguments.argument (1)),
-						attached_string (arguments.argument (2)),
-						attached_string (arguments.argument (3)))
+						arguments.argument (1),
+						arguments.argument (2),
+						arguments.argument (3))
 					)
 				session.connect
 				if session.is_connected then
@@ -191,13 +191,6 @@ feature -- Constants
 
 feature -- Implementation
 
-	attached_string (s : detachable STRING) : STRING
-		do
-			check attached s as l_s then
-				Result := l_s.twin
-			end
-		end
-
 	create_test_table
 		local
 			dbms : STRING
@@ -235,7 +228,7 @@ feature -- Implementation
 			end
 		end
 
-	show_supported_numeric_types		
+	show_supported_numeric_types
 		local
 			numerics : DS_LIST[ECLI_SQL_TYPE]
 			type_catalog : ECLI_TYPE_CATALOG
