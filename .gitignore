@@ -9,4 +9,7 @@ ise.ecf
 ge.xace
 *.orig
 *.bak
-
+clisql
+ecli_c.o
+libecli_c.a
+src/spec/ise/unix

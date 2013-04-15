@@ -289,13 +289,6 @@ feature {NONE} -- Implementation
 --			end
 		end
 
---	attached_ (a : detachable ANY) : attached like a
---		do
---			check attached a as l_result then
---				Result := l_result
---			end
---		end
-
 	create_parameter (element : XM_ELEMENT; is_template : BOOLEAN)
 			-- create parameter based on `element'
 		require
@@ -321,20 +314,23 @@ feature {NONE} -- Implementation
 				template := parameter_map.item (l_name)
 				create_parameter_from_template (element, template)
 			elseif not is_error then
-				if element.has_attribute_by_name (t_table) then
-					l_table := element.attribute_by_name (t_table).value.string
-				else
-					error_handler.report_missing_attribute (last_access.name, t_table, element.name.as_attached)
-					is_error := True
-				end
 				if element.has_attribute_by_name (t_column) then
 					l_column := element.attribute_by_name (t_column).value.string
 				else
 					error_handler.report_missing_attribute (last_access.name, T_column, element.name.as_attached)
 					is_error := True
 				end
-				if l_name.count > 0 and then l_table.count > 0 and then l_column.count > 0 then
+				if element.has_attribute_by_name (t_table) then
+					l_table := element.attribute_by_name (t_table).value.string
 					create l_reference.make (l_table, l_column)
+				elseif element.has_attribute_by_name (t_procedure) then
+					l_table := element.attribute_by_name (t_procedure).value.string
+					create {PROCEDURE_REFERENCE_COLUMN} l_reference.make (l_table, l_column)
+				else
+					error_handler.report_missing_attributes (last_access.name, t_table, t_procedure, element.name.as_attached)
+					is_error := True
+				end
+				if l_name.count > 0 and then l_table.count > 0 and then l_column.count > 0 then
 					create last_parameter.make (l_name, l_reference, maximum_length)
 					if element.has_attribute_by_name (t_sample) then
 						last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
@@ -374,7 +370,7 @@ feature {NONE} -- Implementation
 				is_error := True
 			end
 			if l_name /= Void and then l_table /= Void and then l_column /= Void then
-				create l_reference.make (l_table, l_column)
+				l_reference := template.reference_column.twin
 				create last_parameter.make (l_name, l_reference, maximum_length)
 				if element.has_attribute_by_name (t_sample) then
 					last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
