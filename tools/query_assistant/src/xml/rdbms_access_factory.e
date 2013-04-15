@@ -314,7 +314,7 @@ feature {NONE} -- Implementation
 			if element.has_attribute_by_name (t_name) then
 				l_name := element.attribute_by_name (t_name).value.string
 			else
-				error_handler.report_missing_attribute (last_access.name, T_name, attached_ (element.name))
+				error_handler.report_missing_attribute (last_access.name, T_name, element.name.as_attached)
 				is_error := True
 			end
 			if not is_error and then parameter_map /= Void and then parameter_map.has (l_name) then
@@ -324,13 +324,13 @@ feature {NONE} -- Implementation
 				if element.has_attribute_by_name (t_table) then
 					l_table := element.attribute_by_name (t_table).value.string
 				else
-					error_handler.report_missing_attribute (last_access.name, t_table, attached_ (element.name))
+					error_handler.report_missing_attribute (last_access.name, t_table, element.name.as_attached)
 					is_error := True
 				end
 				if element.has_attribute_by_name (t_column) then
 					l_column := element.attribute_by_name (t_column).value.string
 				else
-					error_handler.report_missing_attribute (last_access.name, T_column, attached_ (element.name))
+					error_handler.report_missing_attribute (last_access.name, T_column, element.name.as_attached)
 					is_error := True
 				end
 				if l_name.count > 0 and then l_table.count > 0 and then l_column.count > 0 then
