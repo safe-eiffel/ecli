@@ -2,7 +2,7 @@ Eiffel Library to ISO/CLI (Call Level Interface) compatible DB systems
 
 Author : Paul G. Crismer <pgcrism@users.sourceforge.net>
 License: Released under the Eiffel Forum License
-Copyright: 2000-2003 - Paul G. Crismer 
+Copyright: 2000-2013 - Paul G. Crismer 
 
 Abstract
 ========
@@ -24,8 +24,7 @@ agree on some standard.
 Compiler portability
 ====================
 * ISE Eiffel
-* SmallEiffel
-* Visual Eiffel
+* Gobo Eiffel
 
 	Platforms :
 * Windows

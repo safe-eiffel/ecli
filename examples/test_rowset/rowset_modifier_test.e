@@ -162,7 +162,7 @@ feature -- Basic operations
 			print ("Trying bulk update...  %N")
 			print ("---------------------- %N")
 			-- create and setup update_array
-			create  update_array.make (ages.lower, ages.upper)
+			create  update_array.make_filled (0, ages.lower, ages.upper)
 			from
 				index := ages.lower
 			until

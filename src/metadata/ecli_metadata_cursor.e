@@ -32,7 +32,7 @@ feature {NONE} -- Initialization
 			create queried_name_impl.make (20)
 		end
 
-	make (criteria : ECLI_NAMED_METADATA_PATTERN; a_session : ECLI_SESSION) is
+	make (criteria : ECLI_NAMED_METADATA_PATTERN; a_session : ECLI_SESSION)
 			-- Create cursor on items matching `criteria'
 			-- Void values for criteria.catalog, criteria.schema, criteria.name can be Void are 'wildcards'
 		require

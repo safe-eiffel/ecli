@@ -242,9 +242,9 @@ feature -- Access
 			Result_count_less_or_equal_parameters_count: Result.count <= parameters_count
 		end
 
-	cursor : ARRAY[attached like value_anchor] is
-		obsolete "Use `results'"
-		do Result := results end
+--	cursor : ARRAY[attached like value_anchor] is
+--		obsolete "Use `results'"
+--		do Result := results end
 
 	results : ARRAY[attached like value_anchor]
 			-- Container of result values (i.e. buffers for transferring
@@ -593,7 +593,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_parameter (value : attached like parameter_anchor; parameter_name : STRING) is
+	put_parameter (value : attached like parameter_anchor; parameter_name : STRING)
 			-- Put `value' as `parameter_name'
 			-- WARNING : Case sensitive !
 		require
@@ -609,11 +609,11 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	set_cursor (row : like cursor) -- ARRAY[like value_anchor]) is
-		obsolete "Use `set_results' instead."
-		do
-			set_results (row)
-		end
+--	set_cursor (row : like cursor) -- ARRAY[like value_anchor]) is
+--		obsolete "Use `set_results' instead."
+--		do
+--			set_results (row)
+--		end
 
 	set_results (row : like results)
 			-- Set `results' container with `row'
@@ -854,11 +854,11 @@ feature -- Basic operations
 
 feature -- Inapplicable
 
-	value_anchor : detachable ECLI_VALUE is
+	value_anchor : detachable ECLI_VALUE
 		do
 		end
 
-	parameter_anchor : detachable ECLI_VALUE is
+	parameter_anchor : detachable ECLI_VALUE
 		do
 		end
 
@@ -936,7 +936,7 @@ feature {NONE} -- Implementation
 			reset: impl_result_columns_count.item = -1
 		end
 
-	get_result_columns_count is
+	get_result_columns_count
 		require
 			valid_statement: is_valid
 		do
@@ -1085,12 +1085,12 @@ feature {NONE} -- Implementation
 			parameters_count_consistent: parameters.count = parameters_count
 		end
 
-	put_single_parameter_with_hint (value : attached like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
+	put_single_parameter_with_hint (value : attached like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER)
 		do
 			parameters.put (value, position)
 		end
 
-	put_parameter_with_hint (value : attached like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
+	put_parameter_with_hint (value : attached like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER)
 			-- Set all parameters named `key' occurring in `sql' with `value'
 			-- WARNING : Case sensitive !
 		require

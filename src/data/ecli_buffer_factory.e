@@ -22,7 +22,7 @@ create
 	default_create,
 	make_for_results
 
-	
+
 feature {NONE} -- Initialization
 
 	default_create
@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 		require
 			a_statement_not_void: a_statement /= Void
 			a_statement_executed: a_statement.is_executed
-			a_statement_has_results: a_statement.has_results
+			a_statement_has_results: a_statement.has_result_set
 		do
 			default_create
 			a_statement.describe_results
@@ -46,7 +46,7 @@ feature {NONE} -- Initialization
 			last_buffers_created: last_buffers.count = a_statement.result_columns_count
 			results_description_consistency: last_buffers.count = a_statement.results_description.count
 		end
-		
+
 feature -- Access
 
 	Default_precision_limit : INTEGER = 8192
@@ -147,7 +147,7 @@ feature -- Obsolete
 
 feature -- Inapplicable
 
-	value_anchor : detachable ECLI_VALUE is
+	value_anchor : detachable ECLI_VALUE
 		do
 		end
 

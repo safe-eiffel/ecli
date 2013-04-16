@@ -93,7 +93,7 @@ feature -- Contract support
 
 feature {NONE} -- Implementation
 
-	impl_item : detachable G is
+	impl_item : detachable G
 			-- Reference to actual item this is always the same item !
 		do
 		end
@@ -103,7 +103,7 @@ feature {NONE} -- Implementation
 		do
 		end
 
-	out_null : STRING 
+	out_null : STRING
 			-- Default `out' when value `is_null'
 		once
 			Result := "<NULL>"

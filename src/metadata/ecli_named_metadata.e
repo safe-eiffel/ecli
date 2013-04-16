@@ -24,7 +24,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_catalog, a_schema : detachable STRING; a_name : STRING) is
+	make (a_catalog, a_schema : detachable STRING; a_name : STRING)
 			-- make for `a_catalog', `a_schema', `a_name'
 		do
 			Precursor (a_catalog, a_schema, a_name)
