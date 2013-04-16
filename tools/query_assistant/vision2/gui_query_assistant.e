@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that ..."
 	author: ""
 	date: "$Date$"
@@ -22,7 +22,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_window : QUERY_ASSISTANT_WAIN_WINDOW) is
+	make (a_window : QUERY_ASSISTANT_WAIN_WINDOW)
 		do
 			window := a_window
 			window.set_assistant (Current)
@@ -44,7 +44,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_dsn (a_dsn : STRING) is
+	set_dsn (a_dsn : STRING)
 		require
 			a_dsn_not_void: a_dsn /= Void
 		do
@@ -53,7 +53,7 @@ feature -- Element change
 			dsn_set: dsn = a_dsn
 		end
 
-	set_user (a_user : STRING) is
+	set_user (a_user : STRING)
 		require
 			a_user_not_void: a_user /= Void
 		do
@@ -62,7 +62,7 @@ feature -- Element change
 			user_set: user = a_user
 		end
 
-	set_maximum_length_string (a_length : STRING) is
+	set_maximum_length_string (a_length : STRING)
 		require
 			a_length_not_void: a_length /= Void
 		do
@@ -71,7 +71,7 @@ feature -- Element change
 			maximum_length_string_set: maximum_length_string = a_length
 		end
 
-	set_password (a_string : STRING) is
+	set_password (a_string : STRING)
 		require
 			a_string_not_void: a_string /= Void
 		do
@@ -80,21 +80,21 @@ feature -- Element change
 			password_set: password = a_string
 		end
 
-	set_is_verbose (b : BOOLEAN) is
+	set_is_verbose (b : BOOLEAN)
 		do
 			is_verbose := b
 		ensure
 			is_verbose_set: is_verbose = b
 		end
 
-	set_no_prototypes (b : BOOLEAN) is
+	set_no_prototypes (b : BOOLEAN)
 		do
 			no_prototypes := b
 		ensure
 			no_prototypes_set: no_prototypes = b
 		end
 
-	set_default_parent_modify (parent : STRING) is
+	set_default_parent_modify (parent : STRING)
 		require
 			parent_not_void: parent /= Void
 		do
@@ -103,7 +103,7 @@ feature -- Element change
 			default_parent_modify_set: default_parent_modify = parent
 		end
 
-	set_default_schema (a_schema : STRING) is
+	set_default_schema (a_schema : STRING)
 		require
 			a_schema_not_void: a_schema /= Void
 		do
@@ -126,19 +126,19 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	execute is
+	execute
 		do
 			has_error := false
 			is_verbose := false
 			make_console
 		end
 
-	create_error_handler is
+	create_error_handler
 		do
 			create error_handler.make (window.command_output)
 		end
 
-	parse_arguments is
+	parse_arguments
 		do
 --				-input
 					in_filename := window.input_file_name.text

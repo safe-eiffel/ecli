@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that rollback a current transaction."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("rol[lback transaction]", command_width)
 			Result.append_string ("Rollback current transaction.")
 		end
 
-	match_string : STRING is "rol"
+	match_string : STRING = "rol"
 	
 feature -- Status report
 	
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 	
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- rollback current transaction
 		do
 			context.session.rollback

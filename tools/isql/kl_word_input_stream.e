@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that read word streams."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -19,7 +19,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_string, a_separators : STRING) is
+	make (a_string, a_separators : STRING)
 			-- make input stream, using `a_separators'
 		require
 			a_string_not_void: a_string /= Void
@@ -44,7 +44,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	read_word is
+	read_word
 			-- Read characters from input stream until a word separator
 			-- or end of input is reached. Let the characters that have
 			-- been read available in `last_string' and discard the line
@@ -80,7 +80,7 @@ feature -- Basic operations
 			end_of_input := is_eof
 		end
 
-	read_quoted_word is
+	read_quoted_word
 			-- Read characters from input stream until a word separator
 			-- or end of input is reached.
 			-- When a word is quoted, all characters up to the next quoting character
@@ -129,7 +129,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	init_before_reading is
+	init_before_reading
 			-- initialize `last_string' and `is_last_string_quoted'
 		do
 			is_last_string_quoted := False

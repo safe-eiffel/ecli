@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that share a same catalog name."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -12,7 +12,7 @@ class
 
 feature -- Access
 
-	shared_catalog_name : STRING is
+	shared_catalog_name : STRING
 			-- 
 		once
 			create Result.make (0)
@@ -20,7 +20,7 @@ feature -- Access
 		
 feature -- Element change
 
-	set_shared_catalog_name (a_name : STRING) is
+	set_shared_catalog_name (a_name : STRING)
 			-- 
 		require
 			a_name_not_void: a_name /= Void
@@ -33,7 +33,7 @@ feature -- Element change
 
 end -- class SHARED_CATALOG_NAME
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that help testing data."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -11,7 +11,7 @@ inherit
 	
 feature -- Status report
 
-	assert_char_equal (tag, left, right : STRING) is
+	assert_char_equal (tag, left, right : STRING)
 		local
 			blanks, adjusted : STRING
 		do
@@ -26,20 +26,20 @@ feature -- Status report
 			assert_equal (tag, adjusted, right)
 		end
 
-	assert_double_equal (tag : STRING; left, right : DOUBLE) is
+	assert_double_equal (tag : STRING; left, right : DOUBLE)
 		do
 			assert (tag, (left - right).abs < double_tolerance)
 		end
 		
-	assert_real_equal (tag : STRING; left, right : REAL) is
+	assert_real_equal (tag : STRING; left, right : REAL)
 		do
 			assert (tag, (left - right).abs < real_tolerance)
 		end
 			
 feature -- Constants
 
-	double_tolerance : DOUBLE is 0.1e-15
+	double_tolerance : DOUBLE = 0.1e-15
 	
-	real_tolerance : DOUBLE is 0.1e-7
+	real_tolerance : DOUBLE = 0.1e-7
 	
 end -- class DATA_TEST_HELPER

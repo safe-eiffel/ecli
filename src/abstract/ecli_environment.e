@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -8,7 +8,7 @@ indexing
 				% CLI object to be created, and the last to be deleted."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -43,7 +43,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- Initialize CLI environment
 		local
 			ext_handle : XS_C_POINTER
@@ -60,17 +60,17 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	is_ready_for_disposal : BOOLEAN is
+	is_ready_for_disposal : BOOLEAN
 		do
 			Result := sessions_count = 0
 		end
 
-	disposal_failure_reason : STRING is
+	disposal_failure_reason : STRING
 		once
 			Result := "ECLI_SESSIONS still open; check your code and close them before exiting."
 		end
 
-	release_handle is
+	release_handle
 			-- Release environment handle
 		do
 			-- | actual release of the handle.
@@ -78,7 +78,7 @@ feature {NONE} -- Implementation
 			set_handle (default_pointer)
 		end
 
-	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER  is
+	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER
 			-- To be redefined in descendant classes
 		do
 			Result := ecli_c_environment_error (handle, record_index, state, native_error, message, buffer_length, length_indicator)

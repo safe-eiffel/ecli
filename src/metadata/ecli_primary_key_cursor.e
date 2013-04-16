@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -28,7 +28,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
+	make (a_name: ECLI_NAMED_METADATA; a_session: ECLI_SESSION)
 			-- create cursor for primary keys on `a_name' (catalog, schema, table)
 		do
 			Precursor (a_name, a_session)
@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : ECLI_PRIMARY_KEY is
+	item : ECLI_PRIMARY_KEY
 			-- item at current cursor position
 		do
 			Result := impl_item
@@ -44,7 +44,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-	forth is
+	forth
 			-- advance cursor to next item if any
 		do
 			if impl_item = Void or else creating_item then
@@ -56,7 +56,7 @@ feature -- Cursor Movement
 			end
 		end
 
-	create_item is
+	create_item
 			-- create item at current cursor position
 		do
 			if impl_item = Void then
@@ -92,7 +92,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create buffers for cursor
 		do
 			create buffer_table_cat.make (255)
@@ -104,7 +104,7 @@ feature {NONE} -- Implementation
 			set_buffer_into_cursor
 		end
 
-	set_buffer_into_cursor is
+	set_buffer_into_cursor
 			-- set results cursor with buffer values
 		do
 			set_results (<<
@@ -119,9 +119,9 @@ feature {NONE} -- Implementation
 			results_not_void: results /= Void
 		end
 
-	definition : STRING is once Result := "SQLPrimaryKeys" end
+	definition : STRING once Result := "SQLPrimaryKeys" end
 
-	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER
 			-- actual external query
 		do
 			Result := ecli_c_get_primary_keys ( handle,
@@ -132,6 +132,6 @@ feature {NONE} -- Implementation
 
 	creating_item : BOOLEAN
 
-	query_metadata_feature_name : STRING is do Result := "ecli_c_get_primary_keys" end
+	query_metadata_feature_name : STRING do Result := "ecli_c_get_primary_keys" end
 
 end

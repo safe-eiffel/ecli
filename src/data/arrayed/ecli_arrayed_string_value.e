@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Arrayed buffers of string."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -35,7 +35,7 @@ inherit
 
 feature {NONE} -- Initialization
 
-	make (a_content_capacity : INTEGER; a_capacity : INTEGER) is
+	make (a_content_capacity : INTEGER; a_capacity : INTEGER)
 		require
 			valid_content_capacity: a_content_capacity > 0 and a_content_capacity < maximum_content_capacity
 			valid_capacity: a_capacity >= 1
@@ -59,14 +59,14 @@ feature {NONE} -- Initialization
 			all_null: is_all_null -- foreach i in 1..count : is_null_at (i)
 		end
 
-	make_arrayed (a_capacity : INTEGER) is
+	make_arrayed (a_capacity : INTEGER)
 			-- dummy one
 		do
 		end
 
 feature -- Access
 
-	item_at (index : INTEGER) : STRING is
+	item_at (index : INTEGER) : STRING
 		do
 			if is_null_at (index) then
 				Result := Void
@@ -78,24 +78,24 @@ feature -- Access
 			end
 		end
 
-	item : STRING is
+	item : STRING
 			--
 		do
 			Result := item_at (cursor_index)
 		end
 
-	content_capacity : INTEGER is
+	content_capacity : INTEGER
 		do
 			Result := (ecli_c_array_value_get_length (buffer) - 1).as_integer_32
 		end
 
-	content_count : INTEGER is
+	content_count : INTEGER
 			-- actual length of item
 		do
 			Result := content_count_at (cursor_index)
 		end
 
-	content_count_at (index : INTEGER) : INTEGER is
+	content_count_at (index : INTEGER) : INTEGER
 			-- length of `index'th
 		do
 			if not is_null_at (index) then
@@ -105,7 +105,7 @@ feature -- Access
 
 feature -- Measurement
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
 			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
@@ -118,13 +118,13 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item (value : like item) is
+	set_item (value : like item)
 			-- set item to 'value', truncating if necessary
 		do
 			set_item_at (value, cursor_index)
 		end
 
-	set_item_at (value : like item; index : INTEGER) is
+	set_item_at (value : like item; index : INTEGER)
 		local
 			actual_length, transfer_length : INTEGER
 		do
@@ -161,7 +161,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_string (Current)
 		end
@@ -172,7 +172,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 		do
 			create Result.make (10)
 			Result.append_string ("'")

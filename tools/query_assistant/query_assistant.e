@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Query assistant."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -18,7 +18,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 		do
 			print_prologue
 			parse_arguments
@@ -42,7 +42,7 @@ feature -- Initialization
 			end
 		end
 
-	print_prologue is
+	print_prologue
 		do
 			io.put_string ("** ECLI Query Assistant **%N")
 			io.put_string ("*  Generates a class encapsulation of a SQL SELECT statement.%N")
@@ -50,7 +50,7 @@ feature -- Initialization
 			io.put_string ("*  Then the cursor class is generated.%N**%N")
 		end
 		
-	parse_arguments is
+	parse_arguments
 		local
 			arg_index : INTEGER
 			key, value : STRING
@@ -86,7 +86,7 @@ feature -- Initialization
 			end										
 		end
 
-	print_usage is
+	print_usage
 		do
 			io.put_string ("Usage :%N")
 			io.put_string ("%Tquery_assistant  -class <class> -sql <sql> -dsn <dsn> -user <user> -pwd <pwd> -dir <dir>%N")
@@ -129,7 +129,7 @@ feature -- Status report
 
 	parsed_arguments : BOOLEAN
 
-	arguments_ok : BOOLEAN is
+	arguments_ok : BOOLEAN
 		do
 			Result := (class_name /= Void and data_source_name /= Void and user_name /= Void
 						and password /= Void and query_file_name /= Void and target_directory_name /= Void)
@@ -158,7 +158,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	read_query is
+	read_query
 		local
 			s : STRING
 			qcount, scount : INTEGER
@@ -198,13 +198,13 @@ feature -- Basic operations
 			end
 		end
 
-	connect_session is
+	connect_session
 		do
 			create session.make (data_source_name, user_name, password)
 			session.connect
 		end
 		
-	launch_qacursor is
+	launch_qacursor
 		local
 			i : INTEGER
 		do
@@ -246,7 +246,7 @@ feature -- Basic operations
 			end				
 		end
 
-	print_error (action : STRING; cursor : QA_CURSOR) is
+	print_error (action : STRING; cursor : QA_CURSOR)
 		do
 			io.put_string ("  * Error : '")
 			io.put_string (action)
@@ -257,7 +257,7 @@ feature -- Basic operations
 			io.put_character ('%N')
 		end
 
-	generate is
+	generate
 		local
 			i : INTEGER
 			d : ECLI_COLUMN_DESCRIPTION
@@ -313,7 +313,7 @@ feature -- Basic operations
 			target_file.close	
 		end
 		
-	create_parameters_manually is
+	create_parameters_manually
 			-- create as many parameters as there are parameter names
 		local
 			plist : DS_LIST [QA_VALUE]
@@ -342,7 +342,7 @@ feature -- Basic operations
 			end
 		end
 
-	create_parameters_automatically is
+	create_parameters_automatically
 		local
 			pdef : ECLI_PARAMETER_DESCRIPTION
 			pcursor : DS_LIST_CURSOR [STRING]
@@ -361,7 +361,7 @@ feature -- Basic operations
 			end
 		end
 
-	define_parameters is
+	define_parameters
 		local
 			a_parameter : 	QA_VALUE
 			a_char : 		QA_CHAR
@@ -432,7 +432,7 @@ feature -- Basic operations
 			end
 		end
 
-	asked_type : INTEGER is
+	asked_type : INTEGER
 		local
 			t : STRING
 			ok : BOOLEAN
@@ -465,7 +465,7 @@ feature -- Basic operations
 			end
 		end
 
-	asked_precision : INTEGER is
+	asked_precision : INTEGER
 		local
 			ok : BOOLEAN
 		do
@@ -484,7 +484,7 @@ feature -- Basic operations
 			Result := io.last_string.as_integer
 		end
 
-	date_from_string (s: STRING) : DT_DATE is
+	date_from_string (s: STRING) : DT_DATE
 			-- read a date in format yyyy-mm-dd
 		local
 			y, m, d : INTEGER
@@ -497,11 +497,11 @@ feature -- Basic operations
 			sd := s.substring (9,10)
 			y := sy.as_integer
 			m := sm.as_integer
-			d := sd.as_integer
-			!! Result.make (y, m, d)
+			d := sd.as_integer 
+			create Result.make (y, m, d)
 		end
 
-	timestamp_from_string (s: STRING) : DT_DATE_TIME is
+	timestamp_from_string (s: STRING) : DT_DATE_TIME
 			-- read a timestamp in format yyyy-mm-dd hh:mm:ss
 		local
 			hh, mm, ss : INTEGER
@@ -526,7 +526,7 @@ feature {NONE} -- Implementation
 		
 end -- class QUERY_ASSISTANT
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

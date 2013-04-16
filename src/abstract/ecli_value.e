@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that represent typed values to be exchanged with the database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -53,7 +53,7 @@ inherit
 
 feature -- Status report
 
-	is_null : BOOLEAN is
+	is_null : BOOLEAN
 			-- Is this a NULL value (in RDBMS sense) ?
 		do
 			Result := ecli_c_value_get_length_indicator (buffer) = Sql_null_data
@@ -65,63 +65,63 @@ feature -- Status report
 			Result := False
 		end
 
-	convertible_as_string : BOOLEAN is
+	convertible_as_string : BOOLEAN
 			-- Is this value convertible to a string ?
 		deferred
 		end
 
-	convertible_as_character : BOOLEAN is
+	convertible_as_character : BOOLEAN
 			-- Is this value convertible to a character ?
 		deferred
 		end
 
-	convertible_as_boolean : BOOLEAN is
+	convertible_as_boolean : BOOLEAN
 			-- Is this value convertible to a boolean ?
 		deferred
 		end
 
-	convertible_as_decimal : BOOLEAN is
+	convertible_as_decimal : BOOLEAN
 			-- Is this value convertible to a boolean ?
 		deferred
 		end
 
-	convertible_as_integer : BOOLEAN is
+	convertible_as_integer : BOOLEAN
 			-- Is this value convertible to an integer ?
 		deferred
 		end
 
-	convertible_as_integer_64 : BOOLEAN is
+	convertible_as_integer_64 : BOOLEAN
 			-- Is this value convertible to an integer_64 ?
 		deferred
 		end
 
-	convertible_as_real : BOOLEAN is
+	convertible_as_real : BOOLEAN
 			-- Is this value convertible to a real ?
 		deferred
 		end
 
-	convertible_as_double : BOOLEAN is
+	convertible_as_double : BOOLEAN
 			-- Is this value convertible to a double ?
 		deferred
 		end
 
-	convertible_as_date : BOOLEAN is
+	convertible_as_date : BOOLEAN
 			-- Is this value convertible to a date ?
 		deferred
 		end
 
-	convertible_as_time : BOOLEAN is
+	convertible_as_time : BOOLEAN
 			-- Is this value convertible to a time ?
 		deferred
 		end
 
-	convertible_as_timestamp : BOOLEAN is
+	convertible_as_timestamp : BOOLEAN
 			-- Is this value convertible to a timestamp ?
 		deferred
 		end
 
 
-	can_trace : BOOLEAN is
+	can_trace : BOOLEAN
 		do
 			Result := True
 		ensure then
@@ -130,24 +130,24 @@ feature -- Status report
 
 feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 
-	c_type_code : INTEGER is
+	c_type_code : INTEGER
 			-- (redefine in descendant classes)
 		deferred
 		end
 
-	transfer_octet_length : INTEGER_64 is
+	transfer_octet_length : INTEGER_64
 			-- Actual buffer capacity for underlying data transfer.
 			-- (redefine in descendant classes)
 		deferred
 		end
 
-	display_size : INTEGER is
+	display_size : INTEGER
 			-- Display size.
 			-- (redefine in descendant classes)
 		deferred
 		end
 
-	length_indicator : INTEGER_64 is
+	length_indicator : INTEGER_64
 			-- Length indicator for database Xfer.
 		do
 			if is_null then
@@ -159,7 +159,7 @@ feature {ECLI_VALUE, ECLI_STATEMENT} -- Status Report
 
 feature -- Element change
 
-	set_null is
+	set_null
 			-- Set item to null.
 		do
 			ecli_c_value_set_length_indicator (buffer, Sql_null_data)
@@ -171,7 +171,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	as_string : STRING is
+	as_string : STRING
 			-- Current converted to STRING.
 		require
 			convertible: convertible_as_string
@@ -181,7 +181,7 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	as_character : CHARACTER is
+	as_character : CHARACTER
 			-- Current converted to CHARACTER .
 		require
 			convertible: convertible_as_character
@@ -189,7 +189,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_boolean : BOOLEAN is
+	as_boolean : BOOLEAN
 			-- Current converted to BOOLEAN.
 		require
 			convertible: convertible_as_boolean
@@ -197,7 +197,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_decimal : MA_DECIMAL is
+	as_decimal : MA_DECIMAL
 			-- Current converted to MA_DECIMAL.
 		require
 			convertible: convertible_as_decimal
@@ -205,7 +205,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_integer : INTEGER is
+	as_integer : INTEGER
 			-- Current converted to INTEGER.
 		require
 			convertible: convertible_as_integer
@@ -213,7 +213,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_integer_64 : INTEGER_64 is
+	as_integer_64 : INTEGER_64
 			-- Current converted to INTEGER_64
 		require
 			convertible: convertible_as_integer_64
@@ -221,7 +221,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_real : REAL is
+	as_real : REAL
 			-- Current converted to REAL.
 		require
 			convertible: convertible_as_real
@@ -229,7 +229,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_double : DOUBLE is
+	as_double : DOUBLE
 			-- Current converted to DOUBLE.
 		require
 			convertible: convertible_as_double
@@ -237,7 +237,7 @@ feature -- Conversion
 		deferred
 		end
 
-	as_date : DT_DATE is
+	as_date : DT_DATE
 			-- Current converted to DATE.
 		require
 			convertible: convertible_as_date
@@ -247,7 +247,7 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	as_time : DT_TIME is
+	as_time : DT_TIME
 			-- Current converted to DT_TIME.
 		require
 			convertible: convertible_as_time
@@ -257,7 +257,7 @@ feature -- Conversion
 			no_aliasing: True -- Result /= old Result
 		end
 
-	as_timestamp : DT_DATE_TIME is
+	as_timestamp : DT_DATE_TIME
 			-- Current converted to DT_DATE_TIME.
 		require
 			convertible: convertible_as_timestamp
@@ -269,13 +269,13 @@ feature -- Conversion
 
 feature {NONE} -- Implementation
 
-	release_handle is
+	release_handle
 		do
 			ecli_c_free_value (buffer)
 			buffer := default_pointer
 		end
 
-	to_external : POINTER is
+	to_external : POINTER
 			-- External 'C' address of value.
 		do
 			Result := ecli_c_value_get_value (buffer)
@@ -283,7 +283,7 @@ feature {NONE} -- Implementation
 			not_null: Result /= default_pointer
 		end
 
-	length_indicator_pointer : POINTER is
+	length_indicator_pointer : POINTER
 			-- External 'C' address of length indicator.
 		do
 			Result := ecli_c_value_get_length_indicator_pointer (buffer)
@@ -291,7 +291,7 @@ feature {NONE} -- Implementation
 
 feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 
-	read_result (stmt : ECLI_STATEMENT; index : INTEGER) is
+	read_result (stmt : ECLI_STATEMENT; index : INTEGER)
 			-- Read value from current result column 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then (stmt.is_executed and not stmt.off)
@@ -307,7 +307,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 				)
 		end
 
-	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_result  (stmt : ECLI_STATEMENT; index: INTEGER)
 			-- Bind Current as a result value.
 		require
 			stmt: stmt /= Void
@@ -323,7 +323,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 				)
 		end
 
-	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER)
 			-- Bind this value as input parameter 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
@@ -334,7 +334,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 				Parameter_directions.Sql_param_input)
 		end
 
-	bind_as_input_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_input_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER)
 			-- Bind this value as input/output parameter 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
@@ -345,7 +345,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 				Parameter_directions.Sql_param_input_output)
 		end
 
-	bind_as_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_output_parameter (stmt : ECLI_STATEMENT; index: INTEGER)
 			-- Bind this value as output parameter 'index' of 'stmt'.
 		require
 			stmt: stmt /= Void and then stmt.parameters_count > 0
@@ -356,7 +356,7 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 				Parameter_directions.Sql_param_output)
 		end
 
-	put_parameter (stmt : ECLI_STATEMENT; index : INTEGER) is
+	put_parameter (stmt : ECLI_STATEMENT; index : INTEGER)
 			-- Put parameter `index' data at execution of `stmt'.
 			-- Redefine in descendant classes if needed.
 			-- Useful when length of data is not known before `stmt' execution.
@@ -368,11 +368,11 @@ feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 
 feature {NONE} -- Implementation values
 
-	is_ready_for_disposal : BOOLEAN is True
+	is_ready_for_disposal : BOOLEAN = True
 
-	disposal_failure_reason : STRING is do	end
+	disposal_failure_reason : STRING do	end
 
-	parameter_directions : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS is
+	parameter_directions : ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS
 			-- Parameter direction constants.
 		once
 			create Result
@@ -399,7 +399,7 @@ feature {NONE} -- Implementation
 				length_indicator_pointer))
 		end
 
-	valid_directions : ARRAY[INTEGER] is
+	valid_directions : ARRAY[INTEGER]
 		once
 			Result := << parameter_directions.sql_param_input,
 						 parameter_directions.sql_param_input_output,

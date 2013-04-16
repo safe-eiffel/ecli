@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Access module metadata objects."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -18,20 +18,20 @@ inherit
 		
 feature -- Access
 
-	hash_code : INTEGER is
+	hash_code : INTEGER
 			-- 
 		do
 			Result := name.hash_code
 		end
 
-	name : STRING is
+	name : STRING
 			-- name of metadata
 		require
 			metadata_available: metadata_available
 		deferred
 		end
 	
-	eiffel_name : STRING is
+	eiffel_name : STRING
 			-- name of eiffel entity
 		local
 			index : INTEGER
@@ -53,9 +53,9 @@ feature -- Access
 			Result.to_lower
 		end
 	
-	value_type : STRING is do Result := implementation.value_type end	
+	value_type : STRING do Result := implementation.value_type end	
 	
-	creation_call : STRING is
+	creation_call : STRING
 			-- call for creating a corresponding eiffel entity
 		require
 			metadata_available: metadata_available
@@ -63,7 +63,7 @@ feature -- Access
 			Result := implementation.creation_call
 		end
 		
-	ecli_type : STRING is
+	ecli_type : STRING
 			-- ecli type for declaring a corresponding eiffel entity
 		require
 			metadata_available: metadata_available
@@ -71,21 +71,21 @@ feature -- Access
 			Result := implementation.ecli_type			
 		end
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 			-- corresponding sql type code
 		require
 			metadata_available: metadata_available
 		deferred
 		end
 		
-	size : INTEGER is
+	size : INTEGER
 			-- size in bytes
 		require
 			metadata_available: metadata_available
 		deferred
 		end
 		
-	decimal_digits : INTEGER is
+	decimal_digits : INTEGER
 			-- 
 		require
 			metadata_available: metadata_available
@@ -94,12 +94,12 @@ feature -- Access
 		
 feature -- Status report
 
-	metadata_available : BOOLEAN is
+	metadata_available : BOOLEAN
 			-- 
 		deferred
 		end
 	
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			-- 
 		do
 			if metadata_available and then other.metadata_available then
@@ -112,13 +112,13 @@ feature -- Status report
 		
 feature {NONE} -- Implementation
 
-	factory : QA_VALUE_FACTORY is
+	factory : QA_VALUE_FACTORY
 			-- 
 		once
 			create Result.make
 		end
 	
-	create_implementation is
+	create_implementation
 			-- 
 		do
 			factory.create_instance (sql_type_code, size, decimal_digits)	
@@ -127,7 +127,7 @@ feature {NONE} -- Implementation
 		
 	impl_value : QA_VALUE
 	
-	implementation : QA_VALUE is
+	implementation : QA_VALUE
 			-- 
 		do
 			if impl_value = Void then
@@ -141,7 +141,7 @@ invariant
 
 end -- class ACCESS_MODULE_METADATA
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

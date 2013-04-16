@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that edit the query buffer in an editor."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -18,26 +18,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("edit", command_width)
 			Result.append_string ("Edit query buffer with current editor.")
 		end
 
-	match_string : STRING is "edit"
+	match_string : STRING = "edit"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- launch an editor on 'clibuferr.sql'
 		local
 			editor_program : STRING

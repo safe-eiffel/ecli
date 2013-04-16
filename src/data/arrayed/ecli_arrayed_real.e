@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"CLI SQL REAL arrayed value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -41,7 +41,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 		do
 			buffer := ecli_c_alloc_array_value (4, a_capacity)
 			capacity := a_capacity
@@ -51,7 +51,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item_at (index : INTEGER) : REAL is
+	item_at (index : INTEGER) : REAL
 			--
 		do
 			--ecli_c_array_value_copy_value_at (buffer, $impl_item, index)
@@ -59,7 +59,7 @@ feature -- Access
 			Result := c_memory_get_real (ecli_c_array_value_get_value_at(buffer,index))
 		end
 
-	item : REAL is
+	item : REAL
 			--
 		do
 			Result := item_at (cursor_index)
@@ -69,7 +69,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
 			Result := ecli_c_array_value_get_length (buffer).as_integer_32
 		end
@@ -78,7 +78,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_item_at (value : REAL; index : INTEGER) is
+	set_item_at (value : REAL; index : INTEGER)
 			-- set item to 'value', truncating if necessary
 		do
 --			impl_item := value.item
@@ -95,7 +95,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	as_string : STRING is
+	as_string : STRING
 			--
 		do
 			Result := out_item_at (cursor_index)
@@ -107,7 +107,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 			--
 		local
 			message_buffer : XS_C_STRING

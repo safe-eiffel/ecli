@@ -1,11 +1,12 @@
-indexing
+note
 
 	
 			description: "Select participants by amount already paid"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_AMOUNT'. DO NOT EDIT!"
-	generated: "2009/03/03 16:41:34.271"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.902"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_AMOUNT
 
@@ -26,7 +27,7 @@ feature  -- -- Access
 
 feature  -- -- Element change
 
-	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_AMOUNT_PARAMETERS) is
+	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_AMOUNT_PARAMETERS)
 			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
@@ -40,7 +41,7 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
+	definition: STRING = "[
 select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.city, p.state,
 		 p.country, r.reg_time, r.paid_amount from PARTICIPANT p, REGISTRATION r where
 			r.participant_id = p.identifier AND
@@ -49,7 +50,7 @@ select p.identifier, p.first_name, p.last_name, p.street, no as no, p.zip, p.cit
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]

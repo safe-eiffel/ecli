@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Object that report errors or diagnostics."
 	author: "Paul G. Crismer"
 	date: "$Date$"

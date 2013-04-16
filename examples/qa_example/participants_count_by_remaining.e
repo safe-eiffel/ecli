@@ -1,11 +1,12 @@
-indexing
+note
 
 	
 			description: "Select participants count by remaining amount to pay"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_COUNT_BY_REMAINING'. DO NOT EDIT!"
-	generated: "2009/03/03 16:41:33.474"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.870"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_COUNT_BY_REMAINING
 
@@ -26,7 +27,7 @@ feature  -- -- Access
 
 feature  -- -- Element change
 
-	set_parameters_object (a_parameters_object: PARTICIPANTS_COUNT_BY_REMAINING_PARAMETERS) is
+	set_parameters_object (a_parameters_object: PARTICIPANTS_COUNT_BY_REMAINING_PARAMETERS)
 			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
@@ -40,15 +41,15 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
+	definition: STRING = "[
 select count (*) as count from PARTICIPANT p, REGISTRATION r where
 			r.participant_id = p.identifier AND
-			(r.fee - r.paid_amount) > ?remaining_amount
+			(r.registration_fee - r.paid_amount) > ?remaining_amount
 ]"
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]

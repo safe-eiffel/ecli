@@ -1,11 +1,11 @@
-indexing
+note
 
 	description: 
 	
 		"Objects that test ECLI_ARRAYED_VALUE descendants."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -21,16 +21,16 @@ inherit
 		
 feature -- Access 
 
-	string_foo : STRING is "Foo"
+	string_foo : STRING = "Foo"
 	
-	string_long : STRING is "The quick brown fox jumps over the lazy dog. %
+	string_long : STRING = "The quick brown fox jumps over the lazy dog. %
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
 		
 feature -- Basic operations
 
-	test_arrayed_char is
+	test_arrayed_char
 			-- test ECLI_ARRAYED_CHAR
 		local
 			v, z : ECLI_ARRAYED_CHAR
@@ -49,7 +49,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_arrayed_varchar is
+	test_arrayed_varchar
 			-- test ECLI_ARRAYED_VARCHAR 
 		local
 			v, z : ECLI_ARRAYED_VARCHAR
@@ -67,7 +67,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 
-	test_arrayed_longvarchar is
+	test_arrayed_longvarchar
 			-- test ECLI_ARRAYED_LONGVARCHAR
 		local
 			v, z : ECLI_ARRAYED_LONGVARCHAR
@@ -106,7 +106,7 @@ feature -- Basic operations
 --			assert_equal("copy", v, z)
 --		end
 
-	test_arrayed_date is
+	test_arrayed_date
 			-- test ECLI_ARRAYED_DATE 
 		local
 			v, z : ECLI_ARRAYED_DATE
@@ -127,7 +127,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)
 		end
 		
-	test_arrayed_time is
+	test_arrayed_time
 			-- test ECLI_ARRAYED_TIME
 		local
 			v, z : ECLI_ARRAYED_TIME
@@ -148,7 +148,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)			
 		end
 		
-	test_arrayed_timestamp is
+	test_arrayed_timestamp
 			-- test ECLI_ARRAYED_TIMESTAMP 
 		local
 			v, z : ECLI_ARRAYED_TIMESTAMP
@@ -169,7 +169,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)						
 		end
 	
-	test_arrayed_integer is
+	test_arrayed_integer
 			-- test ECLI_ARRAYED_INTEGER
 		local
 			v, z : ECLI_ARRAYED_INTEGER
@@ -187,7 +187,7 @@ feature -- Basic operations
 			assert_equal("copy", v, z)									
 		end
 
-	test_arrayed_double is
+	test_arrayed_double
 			-- test ECLI_ARRAYED_DOUBLE
 		local
 			v, z : ECLI_ARRAYED_DOUBLE
@@ -208,7 +208,7 @@ feature -- Basic operations
 			assert_double_equal ("copy", v.item_at (3), z.item_at (3))
 		end
 
-	test_arrayed_real is
+	test_arrayed_real
 			-- test ECLI_ARRAYED_REAL
 		local
 			v, z : ECLI_ARRAYED_REAL
@@ -229,7 +229,7 @@ feature -- Basic operations
 			assert_double_equal ("copy", v.item_at (3), z.item_at (3))
 		end
 
-	test_arrayed_float is
+	test_arrayed_float
 			-- test ECLI_ARRAYED_FLOAT
 		local
 			v, z : ECLI_ARRAYED_FLOAT
@@ -251,7 +251,7 @@ feature -- Basic operations
 		end
 
 
-	test_arrayed_decimal is
+	test_arrayed_decimal
 		local
 			v, z : ECLI_ARRAYED_DECIMAL
 			l_zero : MA_DECIMAL

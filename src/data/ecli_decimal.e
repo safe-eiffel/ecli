@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -12,7 +12,7 @@ indexing
 		 ]"
 
 	library: "GOBO Eiffel Decimal Arithmetic Library"
-	copyright: "Copyright (c) 2005, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2005-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -45,7 +45,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (new_precision, new_decimal_digits : INTEGER) is
+	make (new_precision, new_decimal_digits : INTEGER)
 			-- Create with `new_precision' and `new_decimal_digits'.
 		require
 			valid_new_precision: new_precision > 0
@@ -60,7 +60,7 @@ feature {NONE} -- Initialization
 			default_round_mode: rounding_context.rounding_mode = Default_rounding_mode
 		end
 
-	make_with_rounding (new_precision, new_decimal_digits, new_rounding_mode : INTEGER) is
+	make_with_rounding (new_precision, new_decimal_digits, new_rounding_mode : INTEGER)
 			-- Create with `new_precision' and `new_decimal_digits' and `new_rounding_mode'.
 		require
 			valid_new_precision: new_precision > 0
@@ -86,7 +86,7 @@ feature -- Access
 	rounding_context : MA_DECIMAL_CONTEXT
 			-- Context used for rounding to (precision, decimal_digits).
 
-	item : MA_DECIMAL is
+	item : MA_DECIMAL
 			-- Current value.
 		do
 			if is_null then
@@ -105,12 +105,12 @@ feature -- Measurement
 	decimal_digits : INTEGER
 			-- Number of digits after the decimal point.
 
-	display_size: INTEGER is
+	display_size: INTEGER
 		do
 			Result := precision + 2
 		end
 
-	size: INTEGER_64 is
+	size: INTEGER_64
 			-- Size as synonym of precision.
 		do
 			Result := precision
@@ -120,74 +120,74 @@ feature -- Measurement
 
 feature -- Status report
 
-	convertible_as_character : BOOLEAN is
+	convertible_as_character : BOOLEAN
 			-- Is this value convertible to a character ?
 		do
 			Result := False
 		end
 
-	convertible_as_boolean : BOOLEAN is
+	convertible_as_boolean : BOOLEAN
 			-- Is this value convertible to a boolean ?
 		do
 			Result := False
 		end
 
-	convertible_as_decimal : BOOLEAN is
+	convertible_as_decimal : BOOLEAN
 			-- Is this value convertible to a decimal ?
 		do
 			Result := True
 		end
 
-	convertible_as_date : BOOLEAN is
+	convertible_as_date : BOOLEAN
 			-- Is this value convertible to a date ?
 		do
 			Result := False
 		end
 
-	convertible_as_time : BOOLEAN is
+	convertible_as_time : BOOLEAN
 			-- Is this value convertible to a time ?
 		do
 			Result := False
 		end
 
-	convertible_as_timestamp : BOOLEAN is
+	convertible_as_timestamp : BOOLEAN
 			-- Is this value convertible to a timestamp ?
 		do
 			Result := False
 		end
 
-	convertible_as_string : BOOLEAN is
+	convertible_as_string : BOOLEAN
 			-- Is this value convertible to a string ?
 		do
 			Result := True
 		end
 
-	convertible_as_integer : BOOLEAN is
+	convertible_as_integer : BOOLEAN
 			-- Is this value convertible to an integer ?
 		do
 			Result := not is_null
 		end
 
-	convertible_as_integer_64 : BOOLEAN is
+	convertible_as_integer_64 : BOOLEAN
 			-- Is this value convertible to an integer ?
 		do
 			Result := not is_null
 		end
 
-	convertible_as_double : BOOLEAN is
+	convertible_as_double : BOOLEAN
 			-- Is this value convertible to a double ?
 		do
 			Result := not is_null
 		end
 
 
-	convertible_as_real : BOOLEAN is
+	convertible_as_real : BOOLEAN
 			-- Is this value convertible to a real ?
 		do
 			Result := not is_null
 		end
 
-	valid_item (value : MA_DECIMAL) : BOOLEAN is
+	valid_item (value : MA_DECIMAL) : BOOLEAN
 			-- Is `value' valid as item.
 		do
 			Result := Precursor (value)
@@ -202,26 +202,26 @@ feature -- Status report
 
 feature {ECLI_VALUE, ECLI_STATEMENT} -- Status report
 
-	c_type_code: INTEGER is
+	c_type_code: INTEGER
 			-- Type code of the underlying memory representation.
 		once
 			Result := sql_c_char
 		end
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 			-- Type code of the SQL data.
 		once
 			Result := Sql_decimal
 		end
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
 			Result := ecli_c_value_get_length (buffer).as_integer_32 -- FIXME 64/32 bits
 		end
 
 feature -- Element change
 
-	set_item (value : MA_DECIMAL) is
+	set_item (value : MA_DECIMAL)
 		local
 			new_item : MA_DECIMAL
 			s : STRING
@@ -234,7 +234,7 @@ feature -- Element change
 			ecli_c_value_set_length_indicator (buffer, s.count)
 		end
 
-	set_from_double (d : DOUBLE) is
+	set_from_double (d : DOUBLE)
 			-- set Current to `d'
 		local
 			new_item : MA_DECIMAL
@@ -243,7 +243,7 @@ feature -- Element change
 			set_item (new_item)
 		end
 
-	set_from_integer (i : INTEGER) is
+	set_from_integer (i : INTEGER)
 			-- set Current to `i'
 		local
 			new_item : MA_DECIMAL
@@ -252,7 +252,7 @@ feature -- Element change
 			set_item (new_item)
 		end
 
-	set_from_integer_64 (i : INTEGER_64) is
+	set_from_integer_64 (i : INTEGER_64)
 			-- set Current to `i'
 		local
 			new_item : MA_DECIMAL
@@ -263,18 +263,18 @@ feature -- Element change
 
 feature -- Conversion
 
-	as_string : STRING is
+	as_string : STRING
 			-- Conversion to STRING value
 		do
 			Result := item.to_scientific_string
 		end
 
-	as_integer : INTEGER is
+	as_integer : INTEGER
 		do
 			Result := item.to_integer
 		end
 
-	as_integer_64 : INTEGER_64 is
+	as_integer_64 : INTEGER_64
 		local
 			ctx : MA_DECIMAL_CONTEXT
 			temp : MA_DECIMAL
@@ -298,17 +298,17 @@ feature -- Conversion
 			end
 		end
 
-	as_double : DOUBLE is
+	as_double : DOUBLE
 		do
 			Result := item.to_double
 		end
 
-	as_real : REAL is
+	as_real : REAL
 		do
 			Result := as_string.to_real
 		end
 
-	out : STRING is
+	out : STRING
 		do
 			if is_null then
 				Result := "NULL"
@@ -317,42 +317,42 @@ feature -- Conversion
 			end
 		end
 
-	as_decimal : MA_DECIMAL is
+	as_decimal : MA_DECIMAL
 		do
 			Result := item
 		end
 
-	as_character : CHARACTER is
+	as_character : CHARACTER
 			-- Current converted to CHARACTER
 		do
 			do_nothing
 		end
 
-	as_boolean : BOOLEAN is
+	as_boolean : BOOLEAN
 			-- Current converted to BOOLEAN
 		do
 			do_nothing
 		end
 
-	as_date : DT_DATE is
+	as_date : DT_DATE
 			-- Current converted to DATE
 		do
 			do_nothing
 		end
 
-	as_time : DT_TIME is
+	as_time : DT_TIME
 			-- Current converted to DT_TIME
 		do
 			do_nothing
 		end
 
-	as_timestamp : DT_DATE_TIME is
+	as_timestamp : DT_DATE_TIME
 			-- Current converted to DT_DATE_TIME
 		do
 			do_nothing
 		end
 
-	formatted (v : MA_DECIMAL) : MA_DECIMAL is
+	formatted (v : MA_DECIMAL) : MA_DECIMAL
 		do
 			Result := v.rescale (- decimal_digits, rounding_context)
 		ensure then
@@ -361,7 +361,7 @@ feature -- Conversion
 
 feature {ECLI_TRACER} -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 			-- Trace content into `a_tracer'.
 		do
 			a_tracer.put_decimal (Current)
@@ -369,7 +369,7 @@ feature {ECLI_TRACER} -- Basic operations
 
 feature {ECLI_STATEMENT, ECLI_STATEMENT_PARAMETER} -- Basic operations
 
-	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER) is
+	bind_as_parameter (stmt : ECLI_STATEMENT; index: INTEGER)
 			-- Bind this value as input parameter 'index' of 'stmt'.
 		do
 			stmt.set_status ("ecli_c_bind_parameter", ecli_c_bind_parameter (stmt.handle,

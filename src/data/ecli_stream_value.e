@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Values whose length is known at run-time.."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -160,7 +160,7 @@ feature {NONE} -- Implementation
 
 feature {NONE} -- Implementation
 
-	actual_transfer_length : INTEGER is
+	actual_transfer_length : INTEGER
 			-- <Precursor>
 		local
 			l_res : INTEGER_64

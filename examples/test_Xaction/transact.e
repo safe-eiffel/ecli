@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Transaction test appliation."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -13,7 +13,7 @@ create
 
 feature -- Initialization
 
-	make is
+	make
 			-- TRANSACT
 		local
 			args : ARGUMENTS
@@ -50,7 +50,7 @@ feature -- Initialization
 			end;
 		end
 				
-	do_test is
+	do_test
 		do
 			show_initial_message
 			create_table
@@ -86,14 +86,14 @@ feature -- Initialization
 			
 		end
 
-	print_error is
+	print_error
 		do
 			io.put_string (" --- Diagnostic : ")
 			io.put_string (statement.diagnostic_message)
 			io.put_character ('%N')
 		end
 	
-	create_table is
+	create_table
 		do
 			io.put_string ("-1- Table creation. ")
 			statement.set_sql ("create table EXTRANSACT (first_name varchar (20), last_name varchar (30))")
@@ -106,7 +106,7 @@ feature -- Initialization
 			end
 		end
 		
-	drop_table is
+	drop_table
 		do
 			io.put_string ("-4- Table destruction. ")
 			statement.set_sql ("drop table EXTRANSACT") 
@@ -119,7 +119,7 @@ feature -- Initialization
 			end
 		end
 
-	insert_tuple (first, last : STRING) is
+	insert_tuple (first, last : STRING)
 		do
 			launch_statement ("insert into EXTRANSACT VALUES (?first, ?last)", first, last)
 			if statement.is_ok then
@@ -130,7 +130,7 @@ feature -- Initialization
 			end
 		end
 		
-	is_tuple_inserted (first, last : STRING) : BOOLEAN is
+	is_tuple_inserted (first, last : STRING) : BOOLEAN
 		local
 			n : INTEGER
 		do
@@ -157,7 +157,7 @@ feature -- Initialization
 			Result := n > 0		
 		end
 		
-	launch_statement (stmt, last, first : STRING) is
+	launch_statement (stmt, last, first : STRING)
 		local
 			param : ECLI_VARCHAR
 		do
@@ -184,7 +184,7 @@ feature -- Initialization
 	
 	session : ECLI_SESSION
 
-	create_compatible_cursor is
+	create_compatible_cursor
 		local
 			i, cols : INTEGER
 			v : ECLI_VARCHAR
@@ -205,7 +205,7 @@ feature -- Initialization
 			statement.set_results (cursor)
 		end
 
-	show_initial_message is
+	show_initial_message
 		do
 			io.put_string ("ECLI 'transact' sample application.%N")
 			io.put_string ("It tests transaction capabilities of a datasource.%N")
@@ -216,7 +216,7 @@ feature -- Initialization
 
 end -- class TRANSACT
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

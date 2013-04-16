@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"SQL DATE values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -25,7 +25,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_year, a_month, a_day : INTEGER) is
+	make (a_year, a_month, a_day : INTEGER)
 		require
 			month: a_month >= 1 and a_month <= 12
 			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
@@ -39,7 +39,7 @@ feature {NONE} -- Initialization
 			day_set: day = a_day
 		end
 
-	make_default is
+	make_default
 			-- make default date as first day of Christian Era : January 1st, 1
 		do
 			make (1, 1, 1)
@@ -50,7 +50,7 @@ feature {NONE} -- Initialization
 			day_set: day = 1
 		end
 
-	make_null is
+	make_null
 		do
 			make_default
 			set_null
@@ -60,106 +60,106 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item : DT_DATE is
+	item : DT_DATE
 		do
 			impl_item.set_year_month_day (year,month,day)
 			Result := impl_item
 		end
 
-	year : INTEGER is
+	year : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_date_get_year (to_external)
 			end
 		end
 
-	month : INTEGER is
+	month : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_date_get_month (to_external)
 			end
 		end
 
-	day : INTEGER is
+	day : INTEGER
 		do
 			if not is_null then
 				Result := ecli_c_date_get_day (to_external)
 			end
 		end
 
-	c_type_code: INTEGER is
+	c_type_code: INTEGER
 		once
 			Result := sql_c_type_date
 		end
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_type_date
 		end
 
 feature -- Status report
 
-	convertible_as_string : BOOLEAN is
+	convertible_as_string : BOOLEAN
 			-- Is this value convertible to a string ?
 		do
 			Result := True
 		end
 
-	convertible_as_character : BOOLEAN is
+	convertible_as_character : BOOLEAN
 			-- Is this value convertible to a character ?
 		do
 			Result := False
 		end
 
-	convertible_as_boolean : BOOLEAN is
+	convertible_as_boolean : BOOLEAN
 			-- Is this value convertible to a boolean ?
 		do
 			Result := False
 		end
 
-	convertible_as_decimal : BOOLEAN is
+	convertible_as_decimal : BOOLEAN
 			-- Is this value convertible to a decimal ?
 		do
 			Result := False
 		end
 
-	convertible_as_integer : BOOLEAN is
+	convertible_as_integer : BOOLEAN
 			-- Is this value convertible to an integer ?
 		do
 			Result := False
 		end
 
-	convertible_as_integer_64 : BOOLEAN is
+	convertible_as_integer_64 : BOOLEAN
 			-- Is this value convertible to an integer_64 ?
 		do
 			Result := False
 		end
 
-	convertible_as_real : BOOLEAN is
+	convertible_as_real : BOOLEAN
 			-- Is this value convertible to a real ?
 		do
 			Result := False
 		end
 
-	convertible_as_double : BOOLEAN is
+	convertible_as_double : BOOLEAN
 			-- Is this value convertible to a double ?
 		do
 			Result := False
 		end
 
-	convertible_as_date : BOOLEAN is
+	convertible_as_date : BOOLEAN
 			-- Is this value convertible to a date ?
 		do
 			Result := True
 		end
 
-	convertible_as_time : BOOLEAN is
+	convertible_as_time : BOOLEAN
 			-- Is this value convertible to a time ?
 		do
 			Result := False
 		end
 
-	convertible_as_timestamp : BOOLEAN is
+	convertible_as_timestamp : BOOLEAN
 			-- Is this value convertible to a timestamp ?
 		do
 			Result := True
@@ -167,7 +167,7 @@ feature -- Status report
 
 feature -- Measurement
 
-	days_in_month (a_month, a_year : INTEGER) : INTEGER is
+	days_in_month (a_month, a_year : INTEGER) : INTEGER
 			-- number of days in 'a_month' for 'a_year'
 			-- feature is delegated to a DT_GREGORIAN_CALENDAR object
 			-- Feature to be deleted when smalleiffel 075 has been fixed
@@ -177,29 +177,29 @@ feature -- Measurement
 			Result := calendar.days_in_month(a_month, a_year)
 		end
 
-	size : INTEGER_64 is
+	size : INTEGER_64
 		do
 			Result := 10
 		end
 
-	decimal_digits: INTEGER is
+	decimal_digits: INTEGER
 		do
 			Result := 0
 		end
 
-	display_size: INTEGER is
+	display_size: INTEGER
 		do
 			Result := 10
 		end
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
 			Result := ecli_c_sizeof_date_struct
 		end
 
 feature -- Status setting
 
-	set (a_year, a_month, a_day : INTEGER) is
+	set (a_year, a_month, a_day : INTEGER)
 		require
 			month: a_month >= 1 and a_month <= 12
 			day: a_day >= 1 and a_day <= days_in_month (a_month, a_year)
@@ -216,7 +216,7 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_item (other : DT_DATE) is
+	set_item (other : DT_DATE)
 		do
 			set (other.year, other.month, other.day)
 		end
@@ -229,7 +229,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 		do
 			if is_null then
 				Result := out_null
@@ -243,72 +243,72 @@ feature -- Conversion
 			end
 		end
 
-	as_date : DT_DATE is
+	as_date : DT_DATE
 			-- Current converted to date
 		do
 			Result := item.twin
 		end
 
-	as_timestamp : DT_DATE_TIME is
+	as_timestamp : DT_DATE_TIME
 			-- Current converted to timestamp
 		do
 			create Result.make(year, month, day, 0, 0, 0)
 		end
 
-	as_string : STRING is
+	as_string : STRING
 			-- Current converted to STRING
 		do
 			Result := out
 		end
 
-	as_character : CHARACTER is
+	as_character : CHARACTER
 			-- Current converted to CHARACTER
 		do
 		end
 
-	as_boolean : BOOLEAN is
+	as_boolean : BOOLEAN
 			-- Current converted to BOOLEAN
 		do
 		end
 
-	as_integer : INTEGER is
+	as_integer : INTEGER
 			-- Current converted to INTEGER
 		do
 		end
 
-	as_integer_64 : INTEGER_64 is
+	as_integer_64 : INTEGER_64
 			-- Current converted to INTEGER_64
 		do
 		end
 
-	as_real : REAL is
+	as_real : REAL
 			-- Current converted to REAL
 		do
 		end
 
-	as_double : DOUBLE is
+	as_double : DOUBLE
 			-- Current converted to DOUBLE
 		do
 		end
 
-	as_decimal : MA_DECIMAL is
+	as_decimal : MA_DECIMAL
 			-- Current converted to MA_DECIMAL.
 		do
 		end
 
-	as_time : DT_TIME is
+	as_time : DT_TIME
 			-- Current converted to DT_TIME
 		do
 		end
 
 feature -- Basic operations
 
-	trace (a_tracer : ECLI_TRACER) is
+	trace (a_tracer : ECLI_TRACER)
 		do
 			a_tracer.put_date (Current)
 		end
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 		do
 			Result := year = other.year and
 				month = other.month and
@@ -317,7 +317,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	allocate_buffer is
+	allocate_buffer
 		do
 			if buffer = default_pointer then
 				buffer := ecli_c_alloc_value (transfer_octet_length)
@@ -325,11 +325,11 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	ecli_c_sizeof_date_struct : INTEGER is
+	ecli_c_sizeof_date_struct : INTEGER
 		external "C"
 		end
 
-	create_impl_item is
+	create_impl_item
 		local
 			d : DT_DATE
 		do
@@ -337,7 +337,7 @@ feature {NONE} -- Implementation
 			impl_item := d
 		end
 
-	integer_format : 	ECLI_FORMAT_INTEGER is
+	integer_format : 	ECLI_FORMAT_INTEGER
 			-- format integer routines
 		once
 			create Result
@@ -345,7 +345,7 @@ feature {NONE} -- Implementation
 
 	impl_item : DT_DATE
 
-	calendar :  DT_GREGORIAN_CALENDAR is once create Result end
+	calendar :  DT_GREGORIAN_CALENDAR once create Result end
 
 invariant
 	month:	(not is_null) implies (month >= 1 and month <= 12)

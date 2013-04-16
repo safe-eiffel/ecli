@@ -1,11 +1,12 @@
-indexing
+note
 
 	
 			description: "Select participants by zip"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_ZIP'. DO NOT EDIT!"
-	generated: "2009/03/03 16:41:33.005"
-	generator_version: "v1.3b"
+	generated: "2012/09/03 16:46:50.858"
+	generator_version: "v1.6"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_ZIP
 
@@ -22,11 +23,11 @@ feature  -- -- Access
 
 	parameters_object: PARTICIPANTS_BY_ZIP_PARAMETERS
 
-	item: PARTICIPANTS_BY_ZIP_RESULTS
+	item: PARTICIPANT_ROW
 
 feature  -- -- Element change
 
-	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_ZIP_PARAMETERS) is
+	set_parameters_object (a_parameters_object: PARTICIPANTS_BY_ZIP_PARAMETERS)
 			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
@@ -40,14 +41,14 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
+	definition: STRING = "[
 select * from PARTICIPANT where
 			zip = ?zip
 ]"
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]

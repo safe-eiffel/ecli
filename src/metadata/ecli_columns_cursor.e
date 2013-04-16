@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -7,7 +7,7 @@ indexing
 		%A Void criteria is considered as a wildcard."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -28,7 +28,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_all_columns (a_session : ECLI_SESSION; a_table : STRING) is
+	make_all_columns (a_session : ECLI_SESSION; a_table : STRING)
 			-- make cursor on all columns of `a_table'
 		obsolete
 			"Use `make' or `make_query_column'"
@@ -44,7 +44,7 @@ feature {NONE} -- Initialization
 			executed: is_ok implies is_executed
 		end
 
-	make_query_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : STRING; a_session : ECLI_SESSION) is
+	make_query_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : STRING; a_session : ECLI_SESSION)
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
@@ -54,7 +54,7 @@ feature {NONE} -- Initialization
 			make (a_search_criteria, a_session)
 		end
 
-	make (criteria : ECLI_NAMED_METADATA; a_session: ECLI_SESSION) is
+	make (criteria : ECLI_NAMED_METADATA; a_session: ECLI_SESSION)
 			-- make cursor on all columns matching `criteria'
 		do
 			Precursor (criteria, a_session)
@@ -62,7 +62,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	queried_column : STRING is
+	queried_column : STRING
 			-- queried column name; Void if all columns in a table
 		do
 			if queried_column_impl /= Void then
@@ -70,7 +70,7 @@ feature -- Access
 			end
 		end
 
-	item : ECLI_COLUMN is
+	item : ECLI_COLUMN
 			-- item at current cursor position
 		do
 			Result := impl_item
@@ -78,7 +78,7 @@ feature -- Access
 
 feature -- Cursor Movement
 
-	create_item is
+	create_item
 			-- create item at current cursor position
 		do
 			if not off then
@@ -113,14 +113,14 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 				-- create buffers for cursor
 		do
 			create_buffer_values
 			set_buffer_values_array
 		end
 
-	create_buffer_values is
+	create_buffer_values
 		do
 			create buffer_table_cat.make (255)
 			create buffer_table_schem.make (255)
@@ -142,7 +142,7 @@ feature {NONE} -- Implementation
 			create buffer_is_nullable.make (255)
 		end
 
-	set_buffer_values_array is
+	set_buffer_values_array
 		do
 			set_results (<<
 				buffer_table_cat,
@@ -168,9 +168,9 @@ feature {NONE} -- Implementation
 
 	impl_item : like item
 
-	definition : STRING is once Result := "SQLColumns" end
+	definition : STRING once Result := "SQLColumns" end
 
-	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER is
+	do_query_metadata (a_catalog: POINTER; a_catalog_length: INTEGER; a_schema: POINTER; a_schema_length: INTEGER; a_name: POINTER; a_name_length: INTEGER) : INTEGER
 			-- actual external query
 		local
 			a_column : POINTER
@@ -189,6 +189,6 @@ feature {NONE} -- Implementation
 
 	queried_column_impl : XS_C_STRING
 
-	query_metadata_feature_name : STRING is do Result := "ecli_c_get_columns" end
+	query_metadata_feature_name : STRING do Result := "ecli_c_get_columns" end
 	
 end

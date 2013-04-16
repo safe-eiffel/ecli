@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that trace SQL execution on an output medium."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -20,7 +20,7 @@ create
 
 feature -- Initialization
 
-	make (a_medium : like medium) is
+	make (a_medium : like medium)
 			-- Make tracer
 		require
 			medium_not_void: a_medium /= Void
@@ -46,7 +46,7 @@ feature -- Status report
 
 feature -- Status change
 
-	enable_time_tracing is
+	enable_time_tracing
 			-- Enable time tracing
 		do
 			is_tracing_time := True
@@ -54,7 +54,7 @@ feature -- Status change
 			is_tracing_time: is_tracing_time
 		end
 
-	disable_time_tracing is
+	disable_time_tracing
 			-- Disable time tracing
 		do
 			is_tracing_time := False
@@ -64,7 +64,7 @@ feature -- Status change
 
 feature {ECLI_STATEMENT} -- Basic operations
 
-	trace (a_sql : STRING; a_parameters : ARRAY[ECLI_VALUE]) is
+	trace (a_sql : STRING; a_parameters : ARRAY[ECLI_VALUE])
 			-- Trace 'a_sql', substituting parameter markers by 'a_parameters'
 		local
 			index : INTEGER
@@ -116,13 +116,13 @@ feature {ECLI_STATEMENT} -- Basic operations
 			medium.flush
 		end
 
-	begin_execution_timing is
+	begin_execution_timing
 			-- begin query execution
 		do
 			execution_begin := system_clock.date_time_now
 		end
 
-	end_execution_timing is
+	end_execution_timing
 			-- end query execution
 		require
 			execution_begin_not_void: execution_begin /= Void
@@ -140,19 +140,19 @@ feature {ECLI_STATEMENT} -- Basic operations
 
 feature {ECLI_SESSION} -- Basic operations
 
-	trace_begin is
+	trace_begin
 			-- Trace BEGIN TRANSACTION
 		do
 			medium.put_string ("BEGIN TRANSACTION;%N")
 		end
 
-	trace_commit is
+	trace_commit
 			-- Trace COMMIT TRANSACTION
 		do
 			medium.put_string ("COMMIT TRANSACTION;%N")
 		end
 
-	trace_rollback is
+	trace_rollback
 			-- Trace ROLLBACK TRANSACTION
 		do
 			medium.put_string ("ROLLBACK TRANSACTION;%N")
@@ -160,7 +160,7 @@ feature {ECLI_SESSION} -- Basic operations
 
 feature {ECLI_VALUE} -- Basic operations
 
-	put_decimal (a_decimal : ECLI_GENERIC_VALUE[MA_DECIMAL]) is
+	put_decimal (a_decimal : ECLI_GENERIC_VALUE[MA_DECIMAL])
 			-- Put `a_value' as a decimal constant.
 		require
 			a_decimal_not_void: a_decimal /= Void
@@ -171,7 +171,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_character ('%'')
 		end
 
-	put_string (a_value : ECLI_GENERIC_VALUE[STRING]) is
+	put_string (a_value : ECLI_GENERIC_VALUE[STRING])
 			-- Put 'a_value' as a string constant
 		require
 			a_value /= Void and then not a_value.is_null
@@ -181,7 +181,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_character ('%'')
 		end
 
-	put_date (a_date : ECLI_DATE) is
+	put_date (a_date : ECLI_DATE)
 			-- Put 'a_date' as a date constant
 		require
 			a_date /= Void and then not a_date.is_null
@@ -191,7 +191,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string ("'}")
 		end
 
-	put_timestamp (a_date_time : ECLI_TIMESTAMP) is
+	put_timestamp (a_date_time : ECLI_TIMESTAMP)
 			-- Put 'a_timestamp' as a timestamp constant
 		require
 			a_date_time /= Void and then not a_date_time.is_null
@@ -201,7 +201,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string ("'}")
 		end
 
-	put_time (a_time : ECLI_TIME) is
+	put_time (a_time : ECLI_TIME)
 			-- Put 'a_time' as a time constant
 		require
 			a_time /= Void and then not a_time.is_null
@@ -211,7 +211,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string ("'}")
 		end
 
-	put_double (a_double : ECLI_DOUBLE) is
+	put_double (a_double : ECLI_DOUBLE)
 			-- Put 'a_double' as a double constant
 		require
 			a_double /= Void and then not a_double.is_null
@@ -219,7 +219,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_double.out)
 		end
 
-	put_real (a_real : ECLI_REAL) is
+	put_real (a_real : ECLI_REAL)
 			-- Put 'a_real' as a real constant
 		require
 			a_real /= Void and then not a_real.is_null
@@ -227,7 +227,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_real.out)
 		end
 
-	put_float (a_float : ECLI_FLOAT) is
+	put_float (a_float : ECLI_FLOAT)
 			-- Put 'a_float' as a float constant
 		require
 			a_float /= Void and then not a_float.is_null
@@ -235,7 +235,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_float.out)
 		end
 
-	put_integer_16 (a_integer : ECLI_INTEGER_16) is
+	put_integer_16 (a_integer : ECLI_INTEGER_16)
 			-- Put 'a_integer' as an integer constant
 		require
 			a_integer /= Void and then not a_integer.is_null
@@ -243,7 +243,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_integer.out)
 		end
 
-	put_integer (a_integer : ECLI_INTEGER) is
+	put_integer (a_integer : ECLI_INTEGER)
 			-- Put 'a_integer' as an integer constant
 		require
 			a_integer /= Void and then not a_integer.is_null
@@ -251,7 +251,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_integer.out)
 		end
 
-	put_integer_64 (a_integer_64 : ECLI_INTEGER_64) is
+	put_integer_64 (a_integer_64 : ECLI_INTEGER_64)
 			-- Put 'a_a_integer_64' as an integer constant
 		require
 			a_integer_64 /= Void and then not a_integer_64.is_null
@@ -259,7 +259,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_string (a_integer_64.out)
 		end
 
-	put_binary (a_binary : ECLI_STRING_VALUE) is
+	put_binary (a_binary : ECLI_STRING_VALUE)
 			-- Put `a_binary' as binary value
 		require
 		do
@@ -268,7 +268,7 @@ feature {ECLI_VALUE} -- Basic operations
 			medium.put_character ('%'')
 		end
 
-	put_file (a_file : ECLI_FILE_VALUE) is
+	put_file (a_file : ECLI_FILE_VALUE)
 			-- Put `a_file'
 		require
 		do
@@ -282,7 +282,7 @@ feature {ECLI_VALUE} -- Basic operations
 
 feature {NONE} -- Implementation
 
-	put_parameter_value (a_value : ECLI_VALUE) is
+	put_parameter_value (a_value : ECLI_VALUE)
 			-- Put 'a_value' on 'medium'
 		require
 			value_ok: a_value /= Void
@@ -296,23 +296,23 @@ feature {NONE} -- Implementation
 
 	parameter_count : INTEGER
 
-	state_sql, state_parameter, state_string_literal, state_literal_out : INTEGER is unique
+	state_sql, state_parameter, state_string_literal, state_literal_out : INTEGER = unique
 
 	state, next_state : INTEGER
 
-	is_quote (c : CHARACTER) : BOOLEAN is
+	is_quote (c : CHARACTER) : BOOLEAN
 			-- Is `c' a quote ?
 		do
 			Result := (c = '%'')
 		end
 
-	is_parameter_marker (c : CHARACTER) : BOOLEAN is
+	is_parameter_marker (c : CHARACTER) : BOOLEAN
 			-- Is `c' a parameter marker ?
 		do
 			Result := (c = '?')
 		end
 
-	is_separator (c : CHARACTER) : BOOLEAN is
+	is_separator (c : CHARACTER) : BOOLEAN
 			-- Is `c' a separator ?
 		do
 			Result := (c = ' ') or else (c = ',') or else (c = ')') or else (c = '%T') or else (c = '%N')

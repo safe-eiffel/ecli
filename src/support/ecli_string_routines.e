@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Supporting string routines."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -15,7 +15,7 @@ class ECLI_STRING_ROUTINES
 
 feature
 
-	trimmed (s : STRING) : STRING is
+	trimmed (s : STRING) : STRING
 			-- string made of 's' trimmed with beginning and trailing blanks
 		require
 			s /= Void and then not s.is_empty
@@ -53,7 +53,7 @@ feature
 			trimmed: not Result.is_empty implies (Result @ 1 /= ' ' and Result @ Result.count /= ' ')
 		end
 
-	pad (s : STRING; a_capacity : INTEGER) is
+	pad (s : STRING; a_capacity : INTEGER)
 			-- pad 's' with blanks, until s.count = a_capacity
 		require
 			s_not_void: s /= Void
@@ -69,7 +69,7 @@ feature
 			s.count = a_capacity
 		end
 
-	padded (s : STRING; a_capacity : INTEGER) : STRING is
+	padded (s : STRING; a_capacity : INTEGER) : STRING
 			-- copy of `s' padded with blanks
 		require
 			s_not_void: s /= Void

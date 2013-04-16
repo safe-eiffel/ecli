@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Description of Parameter data."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -33,7 +33,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (stmt : ECLI_STATEMENT; index : INTEGER) is
+	make (stmt : ECLI_STATEMENT; index : INTEGER)
 		do
 			stmt.set_status ("ecli_c_describe_parameter", ecli_c_describe_parameter (stmt.handle,
 					index,
@@ -49,7 +49,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	db_type_code : INTEGER is obsolete "Use sql_type_code instead." do Result := sql_type_code end
+	db_type_code : INTEGER obsolete "Use sql_type_code instead." do Result := sql_type_code end
 
 	sql_type_code : INTEGER
 			-- type code of SQL data type
@@ -69,9 +69,9 @@ feature -- Comparison
 
 feature {NONE} -- Implementation
 
-		ext_sql_type_code : XS_C_INT32 is once create Result.make end
-		ext_size : XS_C_INT64 is once create Result.make end
-		ext_decimal_digits : XS_C_INT32 is once create Result.make end
-		ext_nullability : XS_C_INT32 is once create Result.make end
+		ext_sql_type_code : XS_C_INT32 once create Result.make end
+		ext_size : XS_C_INT64 once create Result.make end
+		ext_decimal_digits : XS_C_INT32 once create Result.make end
+		ext_nullability : XS_C_INT32 once create Result.make end
 
 end

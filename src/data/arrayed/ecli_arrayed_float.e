@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"CLI SQL FLOAT value."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -32,27 +32,27 @@ feature -- Status report
 
 feature -- Status setting
 
-	column_precision: INTEGER_64 is
+	column_precision: INTEGER_64
 		do
 			Result := 15
 		end
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_float
 		end
 
-	decimal_digits: INTEGER is
+	decimal_digits: INTEGER
 		do
 			Result := 0
 		end
 
-	display_size: INTEGER is
+	display_size: INTEGER
 		do
 			Result := 22
 		end
 
-	transfer_octet_length: INTEGER_64 is
+	transfer_octet_length: INTEGER_64
 		do
 			Result := ecli_c_array_value_get_length (buffer)
 		end

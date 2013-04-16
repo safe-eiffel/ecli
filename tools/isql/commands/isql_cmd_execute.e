@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that execute SQL scripts in a file."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -14,26 +14,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("exec[ute] <filename>", command_width)
 			Result.append_string ("Execute clisql command_stream from <filename>.")
 		end
 
-	match_string : STRING is "exec"
+	match_string : STRING = "exec"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- execute a commands script
 		local
 			worder : KL_WORD_INPUT_STREAM

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Adapters for Access modules."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -15,7 +15,7 @@ create
 
 feature {} -- Initialization
 
-	make (an_error_handler : QA_ERROR_HANDLER) is
+	make (an_error_handler : QA_ERROR_HANDLER)
 			-- Make adapter using `an_error_handler'.
 		require
 			an_error_handler_not_void: an_error_handler /= Void
@@ -45,7 +45,7 @@ feature -- Status setting
 
 feature -- Basic operations
 
-	read_from_file (a_file_name : STRING) is
+	read_from_file (a_file_name : STRING)
 			-- read access_module from `a_file_name'
 		require
 			a_file_name_not_void: a_file_name /= Void
@@ -75,7 +75,7 @@ feature -- Basic operations
 
 		end
 
-	write_to_file (module : ACCESS_MODULE; a_file_name : STRING) is
+	write_to_file (module : ACCESS_MODULE; a_file_name : STRING)
 			-- write `module' to file with name `a_file_name'.
 		require
 			a_file_name_not_void: a_file_name /= Void
@@ -128,7 +128,7 @@ feature {NONE} -- Implementation - Constants
 feature {NONE} -- Implementation - Operations
 
 
-	create_event_parser is
+	create_event_parser
 			-- Create event parser.
 		do
 			create {XM_EIFFEL_PARSER} event_parser.make
@@ -136,7 +136,7 @@ feature {NONE} -- Implementation - Operations
 			event_parser.set_callbacks (tree_pipe.start)
 		end
 
-	process_document is
+	process_document
 			-- Process XML document.
 		require
 			parser_ok: event_parser.is_correct
@@ -222,7 +222,7 @@ feature {NONE} -- Implementation - Operations
 			result_sets_empty: result_sets.is_empty
 		end
 
-	put_document (module : ACCESS_MODULE) is
+	put_document (module : ACCESS_MODULE)
 			-- Put `module' to last_document
 		require
 			module_not_void: module /= Void
@@ -242,7 +242,7 @@ feature {NONE} -- Implementation - Operations
 			last_document_created: last_document /= old last_document
 		end
 
-	put_parameter_map (parent : XM_ELEMENT; map : PARAMETER_MAP) is
+	put_parameter_map (parent : XM_ELEMENT; map : PARAMETER_MAP)
 		local
 			element : XM_ELEMENT
 		do
@@ -250,7 +250,7 @@ feature {NONE} -- Implementation - Operations
 			map.do_all (agent put_parameter (element, ?))
 		end
 
-	put_parameter (parent : XM_ELEMENT; parameter : RDBMS_ACCESS_PARAMETER) is
+	put_parameter (parent : XM_ELEMENT; parameter : RDBMS_ACCESS_PARAMETER)
 		local
 			element : XM_ELEMENT
 		do
@@ -270,7 +270,7 @@ feature {NONE} -- Implementation - Operations
 			end
 		end
 
-	put_parameter_set (parent : XM_ELEMENT; parameter_set : PARAMETER_SET) is
+	put_parameter_set (parent : XM_ELEMENT; parameter_set : PARAMETER_SET)
 		local
 			element : XM_ELEMENT
 		do
@@ -282,7 +282,7 @@ feature {NONE} -- Implementation - Operations
 			parameter_set.do_all (agent put_parameter (element, ?))
 		end
 
-	put_result_set (parent : XM_ELEMENT; result_set : RESULT_SET) is
+	put_result_set (parent : XM_ELEMENT; result_set : RESULT_SET)
 		local
 			element : XM_ELEMENT
 		do
@@ -293,7 +293,7 @@ feature {NONE} -- Implementation - Operations
 			end
 		end
 
-	put_access (parent : XM_ELEMENT; access : RDBMS_ACCESS) is
+	put_access (parent : XM_ELEMENT; access : RDBMS_ACCESS)
 		local
 			element, description, sql : XM_ELEMENT
 			cdata : XM_CHARACTER_DATA

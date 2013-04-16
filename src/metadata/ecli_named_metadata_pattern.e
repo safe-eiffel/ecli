@@ -5,7 +5,7 @@ note
 			"Objects that describe a name pattern for metadata."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-20012, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -26,7 +26,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_catalog, a_schema, a_name : detachable STRING) is
+	make (a_catalog, a_schema, a_name : detachable STRING)
 			-- make for `a_catalog', `a_schema', `a_name'
 		do
 			catalog := a_catalog
@@ -51,7 +51,7 @@ feature -- Access
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse printable representation
 		do
 			create Result.make (0)
@@ -62,7 +62,7 @@ feature -- Conversion
 
 feature {NONE} -- Implementation
 
-	append_to_string (dest : STRING; src : detachable STRING) is
+	append_to_string (dest : STRING; src : detachable STRING)
 			--
 		require
 			dest_not_void: dest /= Void  --FIXME: VS-DEL

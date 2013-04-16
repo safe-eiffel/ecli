@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that ..."
 	author: ""
 	date: "$Date$"
@@ -21,7 +21,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_text : EV_RICH_TEXT) is
+	make (a_text : EV_RICH_TEXT)
 		require
 			a_text_not_void: a_text /= Void
 		do
@@ -57,13 +57,13 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	report_error_message (an_error : STRING) is
+	report_error_message (an_error : STRING)
 		do
 			append_text (an_error, error_format)
 			append_text ("%N", error_format)
 		end
 
-	report_info_message (an_error : STRING) is
+	report_info_message (an_error : STRING)
 		do
 			if is_verbose then
 				append_text (an_error, info_format)
@@ -72,7 +72,7 @@ feature -- Basic operations
 			end
 		end
 
-	report_warning_message (an_error : STRING) is
+	report_warning_message (an_error : STRING)
 		do
 			append_text (an_error, warning_format)
 			append_text ("%N",warning_format)
@@ -85,7 +85,7 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	append_text (a_string : STRING; a_format : EV_CHARACTER_FORMAT) is
+	append_text (a_string : STRING; a_format : EV_CHARACTER_FORMAT)
 		require
 			a_string_not_void: a_string /= Void
 		local
@@ -108,7 +108,7 @@ feature {NONE} -- Implementation
 			text.scroll_to_end
 		end
 
-	info_format : EV_CHARACTER_FORMAT is
+	info_format : EV_CHARACTER_FORMAT
 		once
 			create Result.make_with_font_and_color (message_font, info_color, color_white)
 		ensure
@@ -123,35 +123,35 @@ feature {NONE} -- Implementation
 			result_not_void: Result /= Void
 		end
 
-	error_format : EV_CHARACTER_FORMAT is
+	error_format : EV_CHARACTER_FORMAT
 		once
 			create Result.make_with_font_and_color (message_font, error_color, color_white)
 		ensure
 			result_not_void: Result /= Void
 		end
 
-	error_color : EV_COLOR is
+	error_color : EV_COLOR
 		once
 			create Result.make_with_8_bit_rgb (255,0,0)
 		ensure
 			result_not_void: Result /= Void
 		end
 
-	warning_color : EV_COLOR is
+	warning_color : EV_COLOR
 		once
 			create Result.make_with_8_bit_rgb (255, 127, 0)
 		ensure
 			result_not_void: Result /= Void
 		end
 
-	info_color : EV_COLOR is
+	info_color : EV_COLOR
 		once
 			create Result.make_with_8_bit_rgb (0, 0,255)
 		ensure
 			result_not_void: Result /= Void
 		end
 
-	message_font : EV_FONT is
+	message_font : EV_FONT
 		local
 			fc : EV_FONT_CONSTANTS
 		once
@@ -163,7 +163,7 @@ feature {NONE} -- Implementation
 				10)
 		end
 
-	color_white : EV_COLOR is
+	color_white : EV_COLOR
 		once
 			create Result.make_with_rgb (1,1,1)
 		ensure

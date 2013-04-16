@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that list the foreign key columns of a table."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("fk <table-name>", command_width)
 			Result.append_string ("List all foreign columns in <table-name>.")
 		end
 
-	match_string : STRING is "fk"
+	match_string : STRING = "fk"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show foreign keys
 		local
 			stream : KL_WORD_INPUT_STREAM
@@ -73,7 +73,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	put_results (a_cursor : ECLI_FOREIGN_KEYS_CURSOR; context : ISQL_CONTEXT) is
+	put_results (a_cursor : ECLI_FOREIGN_KEYS_CURSOR; context : ISQL_CONTEXT)
 			--
 		local
 			the_key : ECLI_FOREIGN_KEY

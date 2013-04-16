@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Procedure columns metadata : parameters, result, result_set."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -31,7 +31,7 @@ create
 
 feature -- Initialization
 
-	make (cursor : ECLI_PROCEDURE_COLUMNS_CURSOR) is
+	make (cursor : ECLI_PROCEDURE_COLUMNS_CURSOR)
 			-- create from `cursor' current position
 		do
 			Precursor (cursor)

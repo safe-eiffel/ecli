@@ -1,10 +1,10 @@
-indexing
+note
 	description:
 	
 			"File Errors."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -21,7 +21,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make_cannot_read (a_file_name : STRING) is
+	make_cannot_read (a_file_name : STRING)
 			-- Create error because `a_file_name' cannot be open for read.
 		require
 			a_file_name_not_void: a_file_name /= Void
@@ -29,7 +29,7 @@ feature {NONE} -- Initialization
 			make (cannotread_template, a_file_name)
 		end
 		
-	make_cannot_write (a_file_name : STRING) is
+	make_cannot_write (a_file_name : STRING)
 			-- Create error because `a_file_name' cannot be open for write.
 		require
 			a_file_name_not_void: a_file_name /= Void
@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 			make (cannotwrite_template, a_file_name)
 		end
 		
-	make (a_template : STRING; a_file_name : STRING) is
+	make (a_template : STRING; a_file_name : STRING)
 			-- Create error using `a_template' and `a_file_name'.
 		require
 			a_template_not_void: a_template /= Void
@@ -50,8 +50,8 @@ feature {NONE} -- Initialization
 		
 feature {NONE} -- Implementation
 
-	cannotread_template : STRING is "[E-FIL-NOTRDBL] File  not readable : '$1'"
-	cannotwrite_template : STRING is "[E-FIL-NOTWRBL] File not writable : '$1'"
+	cannotread_template : STRING = "[E-FIL-NOTRDBL] File  not readable : '$1'"
+	cannotwrite_template : STRING = "[E-FIL-NOTWRBL] File not writable : '$1'"
 
 invariant
 

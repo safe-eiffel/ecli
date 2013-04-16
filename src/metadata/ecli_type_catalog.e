@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Catalogs of types supported by a particular database."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -23,7 +23,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_session : ECLI_SESSION) is
+	make (a_session : ECLI_SESSION)
 			-- Create for a database accessed through `a_session'.
 		require
 			a_session_not_void: a_session /= Void
@@ -50,7 +50,7 @@ feature -- Access
 	session : ECLI_SESSION
 			-- Session.
 
-	types_for_id (id : INTEGER) : DS_LIST[ECLI_SQL_TYPE] is
+	types_for_id (id : INTEGER) : DS_LIST[ECLI_SQL_TYPE]
 			-- Types whose identifier is `id'.
 		require
 			known_id: has_type_id (id)
@@ -60,7 +60,7 @@ feature -- Access
 			type_for_id_not_void: Result /= Void
 		end
 
-	numeric_types : DS_LIST[ECLI_SQL_TYPE] is
+	numeric_types : DS_LIST[ECLI_SQL_TYPE]
 			-- Types that appear to be numeric
 		local
 			ht_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[ECLI_SQL_TYPE], INTEGER]
@@ -115,93 +115,93 @@ feature -- Status report
 			Result := dummy_statement.is_ok
 		end
 
-	has_type_id (id : INTEGER) : BOOLEAN is
+	has_type_id (id : INTEGER) : BOOLEAN
 			-- Does type identifier `id' exist in the catalog?
 		do
 			Result := types.has (id)
 		end
 
-	has_binary : BOOLEAN is
+	has_binary : BOOLEAN
 		do
 			Result := types.has (Sql_binary)
 		end
 
-	has_char : BOOLEAN is
+	has_char : BOOLEAN
 		do
 			Result := types.has (Sql_char)
 		end
 
-	has_date : BOOLEAN is
+	has_date : BOOLEAN
 		do
 			Result := types.has (Sql_type_date)
 		end
 
-	has_date_time : BOOLEAN is
+	has_date_time : BOOLEAN
 		do
 			Result := types.has (Sql_type_timestamp)
 		end
 
-	has_double : BOOLEAN is
+	has_double : BOOLEAN
 		do
 			Result := types.has (Sql_double)
 		end
 
-	has_float : BOOLEAN is
+	has_float : BOOLEAN
 		do
 			Result := types.has (Sql_float)
 		end
 
-	has_integer : BOOLEAN is
+	has_integer : BOOLEAN
 		do
 			Result := types.has (Sql_integer)
 		end
 
-	has_longvarbinary : BOOLEAN is
+	has_longvarbinary : BOOLEAN
 		do
 			Result := types.has (Sql_longvarbinary)
 		end
 
-	has_longvarchar : BOOLEAN is
+	has_longvarchar : BOOLEAN
 		do
 			Result := types.has (Sql_longvarchar)
 		end
 
-	has_real : BOOLEAN is
+	has_real : BOOLEAN
 		do
 			Result := types.has (Sql_real)
 		end
 
-	has_time : BOOLEAN is
+	has_time : BOOLEAN
 		do
 			Result := types.has (Sql_type_time)
 		end
 
-	has_timestamp : BOOLEAN is
+	has_timestamp : BOOLEAN
 		do
 			Result := types.has (Sql_type_timestamp)
 		end
 
-	has_varbinary : BOOLEAN is
+	has_varbinary : BOOLEAN
 		do
 			Result := types.has (Sql_varbinary)
 		end
 
-	has_varchar : BOOLEAN is
+	has_varchar : BOOLEAN
 		do
 			Result := types.has (Sql_varchar)
 		end
 
-	has_numeric : BOOLEAN is
+	has_numeric : BOOLEAN
 		do
 			Result := has_type_id (Sql_numeric)
 		end
 
-	has_decimal : BOOLEAN is
+	has_decimal : BOOLEAN
 		do
 			Result := has_type_id (Sql_decimal)
 		end
 
-	has_big_integer : BOOLEAN is
+	has_big_integer : BOOLEAN
 		do
 			Result := has_type_id (sql_bigint)
 		end
@@ -210,7 +210,7 @@ feature {NONE} -- Implementation
 
 	types : DS_HASH_TABLE[DS_LIST[ECLI_SQL_TYPE],INTEGER]
 
-	add_type (type : ECLI_SQL_TYPE) is
+	add_type (type : ECLI_SQL_TYPE)
 			-- Add `type' to Current catalog.
 		require
 			type_not_void: type /= Void
@@ -234,7 +234,7 @@ feature {NONE} -- Implementation
 
 	dummy_statement : ECLI_STATEMENT
 
-	create_dummy_statement is
+	create_dummy_statement
 		do
 			if dummy_statement = Void then
 				create dummy_statement.make (session)
@@ -242,7 +242,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	dummy_statement_sql : STRING is "select * from dummy_table where 1=?parameter"
+	dummy_statement_sql : STRING = "select * from dummy_table where 1=?parameter"
 
 invariant
 

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that ..."
 	author: ""
 	date: "$Date$"
@@ -18,7 +18,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make_with_text (s : STRING) is
+	make_with_text (s : STRING)
 		do
 			precursor (s)
 			pointer_enter_actions.extend (agent show_tooltip)
@@ -55,12 +55,12 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	show_tooltip is
+	show_tooltip
 		do
 			set_tooltip (text)
 		end
 
-	hide_tooltip is
+	hide_tooltip
 		do
 			set_tooltip (Void)
 		end

@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"SQL LONGVARCHAR large data transferred from/into a file."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -24,7 +24,7 @@ create
 
 feature -- Access
 
-	sql_type_code : INTEGER is
+	sql_type_code : INTEGER
 		do
 			Result := Sql_longvarchar
 		end

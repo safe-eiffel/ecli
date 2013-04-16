@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that describe a SQL column in a table."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -32,7 +32,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_COLUMNS_CURSOR) is
+	make (cursor : ECLI_COLUMNS_CURSOR)
 			-- create from `cursor' current position
 		require
 			cursor_not_void: cursor /= Void
@@ -112,7 +112,7 @@ feature -- Measurement
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse visual representation
 		do
 			create Result.make (0)

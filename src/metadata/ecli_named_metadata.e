@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Objects that are named metadata, i.e. with catalog, schema and name."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -24,7 +24,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_catalog, a_schema, a_name : STRING) is
+	make (a_catalog, a_schema, a_name : STRING)
 			-- make for `a_catalog', `a_schema', `a_name'
 		do
 			catalog := a_catalog
@@ -49,7 +49,7 @@ feature -- Access
 
 feature -- Element change
 
-	set_catalog (value : ECLI_VARCHAR) is
+	set_catalog (value : ECLI_VARCHAR)
 			-- set `catalog' wit `value'
 		require
 			value: value /= Void
@@ -64,7 +64,7 @@ feature -- Element change
 			assigned_if_not_null: not value.is_null implies catalog.is_equal (value.as_string)
 		end
 
-	set_schema (value : ECLI_VARCHAR) is
+	set_schema (value : ECLI_VARCHAR)
 			-- set `schema' with `value'
 		require
 			value: value /= Void
@@ -79,7 +79,7 @@ feature -- Element change
 			assigned_if_not_null: not value.is_null implies schema.is_equal (value.as_string)
 		end
 
-	set_name (value : ECLI_VARCHAR) is
+	set_name (value : ECLI_VARCHAR)
 			-- set `name' with `value'
 		require
 			value: value /= Void and then not value.is_null
@@ -91,7 +91,7 @@ feature -- Element change
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 			-- terse printable representation
 		do
 			create Result.make (0)
@@ -102,7 +102,7 @@ feature -- Conversion
 
 feature {NONE} -- Implementation
 
-	append_to_string (dest, src : STRING) is
+	append_to_string (dest, src : STRING)
 			--
 		do
 			if src = Void then

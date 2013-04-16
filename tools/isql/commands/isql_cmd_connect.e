@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that CONNECT to a database."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("con[nect] <dsn> <user> <pwd>", Command_width)
 			Result.append_string ("Connect to <dsn> datasource as <user> with password <pwd>.")
 		end
 
-	match_string : STRING is "con"
+	match_string : STRING = "con"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- connect to a datasource
 		local
 			worder : KL_WORD_INPUT_STREAM

@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -6,7 +6,7 @@ indexing
 			%Rows are physically retrieved `row_count' at a time, minimizing network traffic."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -35,7 +35,7 @@ create
 
 feature -- Initialization
 
-	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER) is
+	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER)
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
@@ -54,7 +54,7 @@ feature -- Initialization
 			row_count_set: row_capacity = a_row_capacity
 		end
 
-	make_prepared, open_prepared (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER) is
+	make_prepared, open_prepared (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER)
 			-- make prepared cursor for `a_session' on `a_definition', for fetching at most `a_row_capacity' at a time
 		require
 			session_connected: a_session /= Void and then a_session.is_connected
@@ -74,7 +74,7 @@ feature -- Initialization
 			row_count_set: row_capacity = a_row_capacity
 		end
 
-	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory : like buffer_factory) is
+	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory : like buffer_factory)
 			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
 			a_session_not_void: a_session /= Void
@@ -95,7 +95,7 @@ feature -- Initialization
 			row_count_set: row_capacity = a_row_capacity
 		end
 
-	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory :  like buffer_factory) is
+	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory :  like buffer_factory)
 			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
 			a_session_not_void: a_session /= Void
@@ -123,7 +123,7 @@ feature -- Access
 
 feature -- Basic operations
 
-	start is
+	start
 			-- Execute query `definition', positioning cursor on first available result row
 		do
 			physical_fetch_count := 0; fetch_increment := 0
@@ -135,12 +135,12 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	create_buffer_factory is
+	create_buffer_factory
 		do
 			create buffer_factory.make (row_capacity)
 		end
 
-	create_row_buffers is
+	create_row_buffers
 			-- Create `cursor' array filled with ECLI_VALUE descendants
 		do
 			Precursor
@@ -149,7 +149,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	bind_results is
+	bind_results
 			-- Bind results to cursor buffer values
 		local
 			index : INTEGER
@@ -168,7 +168,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	logical_fetch_count : INTEGER is
+	logical_fetch_count : INTEGER
 			-- logical number of fetch operations
 		do
 			Result := physical_fetch_count * row_capacity + fetch_increment
@@ -180,7 +180,7 @@ feature {NONE} -- Implementation
 	fetch_increment : INTEGER
 			-- number of logical fetches since last physical one
 
-	fill_results is
+	fill_results
 			-- update 'count' of all values in cursor
 		local
 			index : INTEGER
@@ -194,7 +194,7 @@ feature {NONE} -- Implementation
 			fetched_columns_count := result_columns_count
 		end
 
-	fetch_next_row is
+	fetch_next_row
 			-- logical fetch of one row
 		do
 			if physical_fetch_count > 0 and then row_count < row_capacity and then fetch_increment >= row_count then
@@ -217,7 +217,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	start_values is
+	start_values
 			-- call 'start' on each value in cursor
 		local
 			index : INTEGER
@@ -230,7 +230,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	forth_values is
+	forth_values
 			-- call 'forth' on each value in cursor
 		local
 			index : INTEGER
@@ -244,7 +244,7 @@ feature {NONE} -- Implementation
 
 		end
 
-	make_row_count_capable is
+	make_row_count_capable
 			--
 		do
 			create impl_row_count.make

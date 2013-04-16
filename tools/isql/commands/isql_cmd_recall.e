@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that RECALL commands from the history."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("re[call] <i>", Command_width)
 			Result.append_string ("Recall the <i>th command in the history.")
 		end
 
-	match_string : STRING is "re"
+	match_string : STRING = "re"
 
 feature -- Status report
 
-	needs_session : BOOLEAN is False
+	needs_session : BOOLEAN = False
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- recall a command in history
 		local
 			worder : KL_WORD_INPUT_STREAM

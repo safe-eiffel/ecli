@@ -1,4 +1,4 @@
-indexing
+note
 	description: "NUMBER/DECIMAL values."
 	author: ""
 	date: "$Date$"
@@ -20,11 +20,11 @@ create
 	
 feature
 
-	ecli_type : STRING is "ECLI_DECIMAL"
+	ecli_type : STRING = "ECLI_DECIMAL"
 		
-	value_type : STRING is "MA_DECIMAL"
+	value_type : STRING = "MA_DECIMAL"
 
-	creation_call : STRING is
+	creation_call : STRING
 		do
 			Result := make_call_with_precision_and_digits
 		end

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Commands that list the columns of a table."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -12,26 +12,26 @@ inherit
 
 feature -- Access
 
-	help_message : STRING is
+	help_message : STRING
 		do
 			Result := padded ("col[umns] <table-name>", command_width)
 			Result.append_string ("List all columns in <table-name>.")
 		end
 
-	match_string : STRING is once Result := "col" end
+	match_string : STRING once Result := "col" end
 
 feature -- Status report
 
-	needs_session : BOOLEAN is True
+	needs_session : BOOLEAN = True
 
-	matches (text: STRING) : BOOLEAN is
+	matches (text: STRING) : BOOLEAN
 		do
 			Result := matches_single_string (text, match_string)
 		end
 
 feature -- Basic operations
 
-	execute (text : STRING; context : ISQL_CONTEXT) is
+	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show columns
 		local
 			stream : KL_WORD_INPUT_STREAM
@@ -76,13 +76,13 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	new_cursor (a_table: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_COLUMNS_CURSOR is
+	new_cursor (a_table: ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_COLUMNS_CURSOR
 			--
 		do
 				create Result.make (a_table, a_session)
 		end
 
-	put_results (a_cursor : like cursor_type; context : ISQL_CONTEXT) is
+	put_results (a_cursor : like cursor_type; context : ISQL_CONTEXT)
 			--
 		local
 			the_column : like column_type
@@ -109,7 +109,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	put_heading (filter : ISQL_FILTER) is
+	put_heading (filter : ISQL_FILTER)
 			--
 		require
 			filter_not_void: filter /= Void
@@ -124,7 +124,7 @@ feature {NONE} -- Implementation
 			filter.put_heading ("DESCRIPTION")
 		end
 
-	put_detail (the_column : like column_type; filter : ISQL_FILTER) is
+	put_detail (the_column : like column_type; filter : ISQL_FILTER)
 			--
 		require
 			the_column_not_void: the_column /= Void
@@ -156,8 +156,8 @@ feature {NONE} -- Implementation
 			filter.put_column (nullable_string (the_column.description))
 		end
 
-	column_type : ECLI_COLUMN is do end
-	cursor_type : ECLI_COLUMNS_CURSOR is do end
+	column_type : ECLI_COLUMN do end
+	cursor_type : ECLI_COLUMNS_CURSOR do end
 
 
 end -- class ISQL_CMD_COLUMNS

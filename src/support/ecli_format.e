@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"Objects that handle some data format."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -23,7 +23,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	matching_string (s : STRING) : BOOLEAN is
+	matching_string (s : STRING) : BOOLEAN
 			-- is `s' matching current data type ?
 		do
 			regex.match (s)
@@ -36,7 +36,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	create_from_string (s : STRING) is
+	create_from_string (s : STRING)
 			-- create new `last_result' from `s'
 		require
 			s_not_void: s /= Void
@@ -55,7 +55,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	formatted (value : G) : STRING is
+	formatted (value : G) : STRING
 			-- `value' formatted with respect to Current format
 		require
 			value_not_void: value /= Void
@@ -77,14 +77,14 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	regex : RX_PCRE_REGULAR_EXPRESSION is
+	regex : RX_PCRE_REGULAR_EXPRESSION
 		deferred
 		ensure
 			result_not_void: Result /= Void
 			result_compiled: Result.is_compiled
 		end
 		
-	regex_component_count : INTEGER is deferred end
+	regex_component_count : INTEGER deferred end
 
 invariant
 	invariant_clause: True -- Your invariant here

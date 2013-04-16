@@ -1,4 +1,4 @@
-indexing
+note
 	description: "RDBMS Accesses: one access encapsulates one database DML query."
 
 	library: "Access_gen : Access Modules Generators utilities"
@@ -22,7 +22,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_name, a_query : STRING) is
+	make (a_name, a_query : STRING)
 			-- Initialize `Current'.
 		require
 			a_name_not_void: a_name /= Void
@@ -81,7 +81,7 @@ feature -- Status report
 	is_results_valid : BOOLEAN
 			-- are the results valid ?
 
-	is_valid : BOOLEAN is
+	is_valid : BOOLEAN
 			-- is this query valid ?
 		require
 			is_validity_checked: is_validity_checked
@@ -91,7 +91,7 @@ feature -- Status report
 			definition: Result = (is_query_valid and then is_parameters_valid and then is_results_valid)
 		end
 
-	has_result_set : BOOLEAN is
+	has_result_set : BOOLEAN
 			-- is this a query (if not, it is a command/modifying statement) ?
 		require
 			is_query_valid: is_query_valid
@@ -101,7 +101,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	check_validity (a_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	check_validity (a_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER)
 			-- check if query is a valid sql, and if all parameters have a description
 		require
 			a_session_not_void: a_session /= Void
@@ -142,7 +142,7 @@ feature -- Status setting
 
 feature -- Element change
 
-	set_prepared is
+	set_prepared
 			-- Set `is_prepared'
 		do
 			is_prepared := True
@@ -151,7 +151,7 @@ feature -- Element change
 		end
 
 
-	set_description (a_description: STRING) is
+	set_description (a_description: STRING)
 			-- Set `description' to `a_description'.
 		require
 			a_description_not_void: a_description /= Void
@@ -161,7 +161,7 @@ feature -- Element change
 			description_assigned: description = a_description
 		end
 
-	set_parameters (a_parameters: PARAMETER_SET) is
+	set_parameters (a_parameters: PARAMETER_SET)
 			-- set `a_parameters' as `parameters'
 		require
 			a_parameters_not_void: a_parameters /= Void
@@ -171,7 +171,7 @@ feature -- Element change
 			parameters_set: parameters = a_parameters
 		end
 
-	set_results (a_results : RESULT_SET) is
+	set_results (a_results : RESULT_SET)
 			-- set `a_results' as `results'
 		require
 			a_results_not_void: a_results /= Void
@@ -181,7 +181,7 @@ feature -- Element change
 			result_set: results = a_results
 		end
 
-	set_type (new_type : ACCESS_TYPE) is
+	set_type (new_type : ACCESS_TYPE)
 		require
 			new_type_not_void: new_type /= VOid
 		do
@@ -190,7 +190,7 @@ feature -- Element change
 			type_set: type = new_type
 		end
 
-	create_results is
+	create_results
 		do
 			create results.make (name+ default_name_prefix)
 		ensure
@@ -200,11 +200,11 @@ feature -- Element change
 
 feature -- Constants
 
-	default_name_prefix : STRING is "_RESULTS"
+	default_name_prefix : STRING = "_RESULTS"
 
 feature {EVTK_EDITOR, ACCESS_MODULE} -- Element change
 
-	set_query (a_query: STRING) is
+	set_query (a_query: STRING)
 			-- Set `query' to `a_query'.
 		require
 			a_query_not_void: a_query /= Void
@@ -214,7 +214,7 @@ feature {EVTK_EDITOR, ACCESS_MODULE} -- Element change
 			query_assigned: query = a_query
 		end
 
-	set_name (a_name: STRING) is
+	set_name (a_name: STRING)
 			-- Set `name' to `a_name'.
 		require
 			a_name_not_void: a_name /= Void
@@ -228,7 +228,7 @@ feature {NONE} -- Implementation
 
 	statement : ECLI_STATEMENT
 
-	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	describe_result_set (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER)
 			--
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -279,7 +279,7 @@ feature {NONE} -- Implementation
 			results_count: results /= Void implies results.count = query_statement.results_description.count
 		end
 
-	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER) is
+	check_parameters (query_statement : ECLI_STATEMENT; query_session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER; reasonable_maximum_size : INTEGER)
 			--| Check if declared parameters are the same as statement parameters
 		require
 			a_error_handler_not_void: a_error_handler /= Void
@@ -369,7 +369,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	prepare_query (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER) is
+	prepare_query (query_statement : ECLI_STATEMENT; a_error_handler : QA_ERROR_HANDLER)
 			-- prepare `query_statement'
 		require
 			query_statement_not_void: query_statement /= Void
@@ -384,7 +384,7 @@ feature {NONE} -- Implementation
 			is_checked_query_prepare: is_checked_query_prepare
 		end
 
-	try_query (query_statement : ECLI_STATEMENT; session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER) is
+	try_query (query_statement : ECLI_STATEMENT; session : ECLI_SESSION; a_error_handler : QA_ERROR_HANDLER)
 			--
 		require
 			query_statement_not_void: query_statement /= Void
@@ -496,7 +496,7 @@ invariant
 
 end -- class ACCESS_MODULE
 --
--- Copyright (c) 2000-2006, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright (c) 2000-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

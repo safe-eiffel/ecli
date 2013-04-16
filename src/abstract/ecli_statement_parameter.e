@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"SQL statement parameters : value and direction."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -20,24 +20,24 @@ inherit
 	
 feature -- Status report
 
-	is_input : BOOLEAN is
+	is_input : BOOLEAN
 			-- is this an input parameter? Transfer is from application to RDBMS.
 		deferred
 		end
 
-	is_output : BOOLEAN is
+	is_output : BOOLEAN
 			-- is this an output parameter? Transfer is from RDBMS to application.
 		deferred
 		end
 		
-	is_input_output : BOOLEAN is
+	is_input_output : BOOLEAN
 			-- is this an input/output parameter? Transfer is from application to RDBMS and vice versa.
 		deferred
 		end
 		
 feature {ECLI_STATEMENT} -- Basic operations
 
-	bind (statement : ECLI_STATEMENT; position : INTEGER) is
+	bind (statement : ECLI_STATEMENT; position : INTEGER)
 			-- Bind Current as `position'-th parameter in `statement'
 		require
 			statement_not_void: statement /= Void

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Maps of access module parameters, by name."
 	author: "Paul G. Crismer"
 	

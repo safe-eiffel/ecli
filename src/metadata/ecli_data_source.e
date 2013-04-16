@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"ODBC Data sources."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -17,7 +17,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (cursor : ECLI_DATA_SOURCES_CURSOR) is
+	make (cursor : ECLI_DATA_SOURCES_CURSOR)
 			-- create from current item in cursor
 		require
 			cursor_valid: cursor /= Void and then not cursor.off

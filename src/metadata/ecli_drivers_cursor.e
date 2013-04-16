@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 		"Objects that iterate over installed ODBC drivers."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -30,7 +30,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make is
+	make
 			-- Make cursor on drivers.
 		do
 			create error_handler.make_null
@@ -41,7 +41,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item: ECLI_DRIVER is
+	item: ECLI_DRIVER
 			-- current item
 		do
 			Result := item_
@@ -53,7 +53,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	off: BOOLEAN is
+	off: BOOLEAN
 			-- is there no valid item at cursor position ?
 		do
 			Result := before or
@@ -68,7 +68,7 @@ feature -- Status report
 
 feature -- Cursor movement
 
-	start is
+	start
 			-- advance cursor on first position if any
 		require
 			is_off: off
@@ -85,7 +85,7 @@ feature -- Cursor movement
 			not_before: not before
 		end
 
-	forth is
+	forth
 			-- advance cursor on the next position if any
 		require
 			not_off: not off
@@ -97,7 +97,7 @@ feature -- Cursor movement
 
 feature -- Basic operations
 
-	close is
+	close
 			-- close cursor
 		do
 				--| do nothing; defined just to be consistent with other cursors
@@ -119,29 +119,29 @@ feature {ECLI_DRIVER} -- Implementation
 
 feature {NONE} -- Implementation
 
-	release_handle is
+	release_handle
 		do
 		end
 
-	disposal_failure_reason: STRING is
+	disposal_failure_reason: STRING
 		once
 			Result := ""
 		end
 
-	is_ready_for_disposal: BOOLEAN is
+	is_ready_for_disposal: BOOLEAN
 		do
 			Result := True
 		end
 
 	get_error_diagnostic (record_index: INTEGER; state: POINTER; native_error: POINTER;
-		message: POINTER; buffer_length: INTEGER; length_indicator: POINTER): INTEGER is
+		message: POINTER; buffer_length: INTEGER; length_indicator: POINTER): INTEGER
 			-- to be redefined in descendant classes
 		do
 			Result := ecli_c_environment_error (Shared_environment.handle, record_index, state,
 				native_error, message, buffer_length, length_indicator)
 		end
 
-	do_fetch (direction: INTEGER) is
+	do_fetch (direction: INTEGER)
 			-- actual external query
 		do
 			set_status ("ecli_c_sql_drivers", ecli_c_sql_drivers (Shared_environment.handle, direction, c_name.handle,
@@ -163,9 +163,9 @@ feature {NONE} -- Implementation
 
 	item_: ECLI_DRIVER
 
-	max_source_name_length: INTEGER is 1024
+	max_source_name_length: INTEGER = 1024
 
-	max_attributes_length: INTEGER is 16384
+	max_attributes_length: INTEGER = 16384
 
 end -- class ECLI_DRIVERS_CURSOR
 

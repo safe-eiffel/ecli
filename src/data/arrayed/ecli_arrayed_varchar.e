@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"SQL VARCHAR (n) arrayed values."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -22,13 +22,13 @@ create
 
 feature -- Status report
 
-	sql_type_code: INTEGER is
+	sql_type_code: INTEGER
 		once
 			Result := sql_varchar
 		end
 
 feature {NONE} -- Implementation
 
-	default_maximum_capacity : INTEGER is 255
+	default_maximum_capacity : INTEGER = 255
 
 end

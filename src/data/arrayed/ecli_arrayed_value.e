@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 	
@@ -9,7 +9,7 @@ indexing
 		% when a rowset_cursor fetches the last set of data (usually less than the capacity)."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -31,7 +31,7 @@ inherit
 
 feature -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- make for `a_capacity' items
 		deferred
 		ensure
@@ -54,10 +54,10 @@ feature -- Measurement
 	count : INTEGER
 			-- actual number of values
 
-	lower : INTEGER is 1
+	lower : INTEGER = 1
 			-- lower index
 
-	upper : INTEGER is
+	upper : INTEGER
 			-- upper index
 		do
 			Result := count
@@ -65,7 +65,7 @@ feature -- Measurement
 		
 feature -- Status report
 
-	is_null_at (index : INTEGER) : BOOLEAN is
+	is_null_at (index : INTEGER) : BOOLEAN
 			-- is `index'th item NULL ?
 		require
 			valid_index: index >= lower and index <= count
@@ -73,7 +73,7 @@ feature -- Status report
 			Result := (ecli_c_array_value_get_length_indicator_at (buffer, index) = Sql_null_data)
 		end
 
-	is_null : BOOLEAN is
+	is_null : BOOLEAN
 			-- is element at `cursor_index' NULL ?
 		do
 			if off then
@@ -86,7 +86,7 @@ feature -- Status report
 			definition: (not off) implies (Result = is_null_at (cursor_index))
 		end
 
-	is_all_null : BOOLEAN is
+	is_all_null : BOOLEAN
 			-- are all element NULL ?
 		local
 			index : INTEGER
@@ -102,19 +102,19 @@ feature -- Status report
 			end
 		end
 
-	off : BOOLEAN is
+	off : BOOLEAN
 			-- is there any item at current cursor position ?
 		do
 			Result := cursor_index < lower or else cursor_index > count
 		end
 
-	before : BOOLEAN is
+	before : BOOLEAN
 			-- is cursor before any valid element ?
 		do
 			Result := (cursor_index < lower)
 		end
 
-	after : BOOLEAN is
+	after : BOOLEAN
 			-- is cursor after any valid element ?
 		do
 			Result := (cursor_index > count)
@@ -122,7 +122,7 @@ feature -- Status report
 
 feature -- Status setting
 
-	set_null is
+	set_null
 			-- set current item to NULL
 		do
 			if not off then
@@ -132,7 +132,7 @@ feature -- Status setting
 
 feature -- Cursor movement
 
-	start is
+	start
 			-- start internal cursor
 		do
 			cursor_index := lower
@@ -140,13 +140,13 @@ feature -- Cursor movement
 			definition: not before or else after
 		end
 
-	forth is
+	forth
 			-- advance internal cursor
 		do
 			cursor_index := cursor_index + 1
 		end
 
-	go (ith : INTEGER) is
+	go (ith : INTEGER)
 			-- advance internal cursor
 		require
 			ith: ith > 0 and ith <= count
@@ -158,7 +158,7 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_null_at (index: INTEGER) is
+	set_null_at (index: INTEGER)
 			-- set `index'th value to NULL
 		require
 			valid_index: index >= lower and index <= count
@@ -176,7 +176,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	out_item_at (index : INTEGER) : STRING is
+	out_item_at (index : INTEGER) : STRING
 		require
 			valid_index: index >= 1 and index <= count
 		deferred
@@ -190,7 +190,7 @@ feature -- Conversion
 --			Result := out_item_at (cursor_index)
 --		end
 
-	to_external : POINTER is
+	to_external : POINTER
 			-- external 'C' address of value array
 			-- contiguous memory block of 'capacity' * 'transfer_octet_length'
 			-- use at your own risks !
@@ -204,7 +204,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	set_count (a_count : INTEGER) is
+	set_count (a_count : INTEGER)
 			-- set `count' to `a_count'
 			-- used to indicate that index ranging from 'a_count' + 1 to 'capacity'
 			-- do not hold interesting values
@@ -222,19 +222,19 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	release_handle is
+	release_handle
 		do
 			ecli_c_free_array_value (buffer)
 			buffer := default_pointer
 		end
 
-	length_indicator_pointer : POINTER is
+	length_indicator_pointer : POINTER
 			-- external 'C' address of length indicator
 		do
 			Result := ecli_c_array_value_get_length_indicator_pointer (buffer)
 		end
 
-	set_all_null is
+	set_all_null
 			-- set all element to NULL
 		local
 			index : INTEGER

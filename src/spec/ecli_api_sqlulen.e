@@ -12,7 +12,7 @@ inherit
 
 create
 	make
-	
+
 feature -- Access
 
 	item: NATURAL_64
@@ -39,7 +39,7 @@ feature -- Constants
 			end
 		end
 
-	minimum_value: INTEGER_64
+	minimum_value: NATURAL_64
 		do
 			inspect item_size
 			when 4 then

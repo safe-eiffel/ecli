@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"Object that abstract a transaction isolation type."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -31,7 +31,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make (a_value : INTEGER) is
+	make (a_value : INTEGER)
 			--
 		require
 			a_value_valid: is_valid_transaction_isolation_option (a_value)
@@ -45,25 +45,25 @@ feature -- Access
 
 feature -- Status report
 
-	is_read_uncommitted : BOOLEAN is
+	is_read_uncommitted : BOOLEAN
 			-- 
 		do
 			Result := (value = Sql_transaction_read_uncommitted )
 		end
 
-	is_read_committed : BOOLEAN is
+	is_read_committed : BOOLEAN
 			-- 
 		do
 			Result := (value = Sql_transaction_read_committed )
 		end
 
-	is_repeatable_read : BOOLEAN is
+	is_repeatable_read : BOOLEAN
 			-- 
 		do
 			Result := (value = Sql_transaction_repeatable_read )
 		end
 
-	is_serializable : BOOLEAN is
+	is_serializable : BOOLEAN
 			-- 
 		do
 			Result := (value = Sql_transaction_serializable )
@@ -71,28 +71,28 @@ feature -- Status report
 		
 feature -- Status setting
 
-	set_read_uncommitted is
+	set_read_uncommitted
 		do
 			value := Sql_transaction_read_uncommitted
 		ensure
 			definition: is_read_uncommitted
 		end
 
-	set_read_committed is
+	set_read_committed
 		do
 			value := Sql_transaction_read_committed 
 		ensure
 			definition: is_read_committed
 		end
 
-	set_repeatable_read is
+	set_repeatable_read
 		do
 			value := Sql_transaction_repeatable_read 
 		ensure
 			definition: is_repeatable_read
 		end
 
-	set_serializable is
+	set_serializable
 		do
 			value := Sql_transaction_serializable 
 		ensure
@@ -101,7 +101,7 @@ feature -- Status setting
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			-- 
 		do
 			Result := (value = other.value)

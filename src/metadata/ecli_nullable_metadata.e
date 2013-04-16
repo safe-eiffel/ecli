@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"Objects that describe nullability metadata."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -21,7 +21,7 @@ inherit
 	
 feature -- Status Report
 
-	is_nullable : BOOLEAN is
+	is_nullable : BOOLEAN
 			-- is this not nullable data ?
 		require
 			known_nullability: is_known_nullability
@@ -29,7 +29,7 @@ feature -- Status Report
 			Result := nullability = sql_nullable
 		end
 
-	is_not_nullable : BOOLEAN is
+	is_not_nullable : BOOLEAN
 			-- is this nullable data ?
 		require
 			known_nullability: is_known_nullability
@@ -37,7 +37,7 @@ feature -- Status Report
 			Result := nullability = sql_no_nulls
 		end
 
-	is_known_nullability : BOOLEAN is
+	is_known_nullability : BOOLEAN
 			-- is it a 'known' nullability
 		do
 			Result := not (nullability = sql_nullable_unknown)

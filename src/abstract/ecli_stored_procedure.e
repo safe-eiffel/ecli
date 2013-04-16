@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 
 			"Stored procedures."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -32,7 +32,7 @@ create
 
 feature -- Access
 
-	directed_parameter (name : STRING) : ECLI_STATEMENT_PARAMETER is
+	directed_parameter (name : STRING) : ECLI_STATEMENT_PARAMETER
 			-- parameter related to `key'.
 		require
 			name_not_void: name /= Void
@@ -84,7 +84,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_output_parameter (value: like parameter_anchor; key: STRING) is
+	put_output_parameter (value: like parameter_anchor; key: STRING)
 			-- Put `value' as output parameter.
 			-- Its value can be set by the procedure and be accessed after the procedure exits.
 		require
@@ -104,7 +104,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_input_parameter (value : like parameter_anchor; key : STRING) is
+	put_input_parameter (value : like parameter_anchor; key : STRING)
 			-- Put `value' as input parameter.
 		local
 			direction : ECLI_INPUT_PARAMETER
@@ -117,7 +117,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_input_output_parameter (value: like parameter_anchor; key: STRING) is
+	put_input_output_parameter (value: like parameter_anchor; key: STRING)
 			-- Put `value' as input/output parameter.
 		require
 			valid_statement: is_valid
@@ -140,19 +140,19 @@ feature {NONE} -- Implementation
 
 	directed_parameters : ARRAY[ECLI_STATEMENT_PARAMETER]
 
-	create_parameters is
+	create_parameters
 			--
 		do
 			Precursor
 			create directed_parameters.make (1, parameters_count)
 		end
 
-	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER) is
+	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER)
 		do
 			Precursor (value, key, hint)
 		end
 
-	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER) is
+	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER)
 			--
 		do
 			Precursor (value, position, hint)
@@ -161,7 +161,7 @@ feature {NONE} -- Implementation
 			direction_set: directed_parameters.item (position) = hint
 		end
 
-	bind_one_parameter (i: INTEGER) is
+	bind_one_parameter (i: INTEGER)
 			--
 		do
 			directed_parameters.item (i).bind (Current, i)
