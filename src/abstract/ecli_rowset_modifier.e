@@ -21,8 +21,6 @@ inherit
 			{NONE} results, results_description, start, forth, go_after, off, set_results, close_cursor,
 				describe_results, after, before, cursor_status, Cursor_after, Cursor_before, Cursor_in,
 				statement_make, statement_open, statement_bind_parameters, statement_execute, set_sql
---				,
---				cursor, set_cursor
 		redefine
 			parameter_anchor, default_create, default_parameter
 		end

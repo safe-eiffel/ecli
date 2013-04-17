@@ -273,14 +273,14 @@ feature -- Access
 			Result := impl_interval_precision
 		end
 
-	is_case_sensitive : BOOLEAN is
+	is_case_sensitive : BOOLEAN
 			-- If a character datatype, denotes the case sensitivity in comparisons
 			-- and in collations
 		do
 			Result := impl_case_sensitive = sql_true
 		end
 
-	is_unsigned : BOOLEAN is
+	is_unsigned : BOOLEAN
 			-- is it unsigned ?
 		require
 			is_unsigned_applicable
@@ -288,13 +288,13 @@ feature -- Access
 			Result := impl_unsigned	= sql_true
 		end
 
-	is_fixed_precision_scale : BOOLEAN is
+	is_fixed_precision_scale : BOOLEAN
 			-- is the precision scale fixed ?
 		do
 			Result := impl_fixed_precision_scale = sql_true
 		end
 
-	is_auto_unique_value : BOOLEAN is
+	is_auto_unique_value : BOOLEAN
 			-- Is the data type auto incrementing ?
 		require
 			is_auto_unique_value_applicable

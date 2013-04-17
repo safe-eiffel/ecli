@@ -62,6 +62,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_for_results (a_stmt : ECLI_STATEMENT)
+			-- Make for describing `a_stmt' results.
 		require
 			a_stmt_not_void: a_stmt /= Void -- FIXME: VS-DEL
 			a_stmt_executed_or_prepared: a_stmt.is_prepared or else a_stmt.is_executed
@@ -91,7 +92,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	name (an_index : INTEGER) : STRING
-			-- name of column at `an_index'.
+			-- Name of column at `an_index'.
 		require
 			an_index_within_bounds: index_within_bounds (an_index)
 		do
@@ -101,7 +102,7 @@ feature -- Access
 		end
 
 	item (an_index : INTEGER) : ECLI_DATA_DESCRIPTION
-			-- Description for `an_index'
+			-- Description for `an_index'.
 		require
 			an_index_within_bounds: index_within_bounds (an_index)
 		do
@@ -130,11 +131,13 @@ feature -- Measurement
 		end
 
 	lower : INTEGER
+			-- Lower index.
 		do
 			Result := table_by_index.lower
 		end
 
 	upper : INTEGER
+			-- Upper index.
 		do
 			Result := table_by_index.upper
 		end
@@ -150,7 +153,9 @@ feature -- Status report
 	index_within_bounds (an_index : INTEGER) : BOOLEAN
 			-- Is `an_index' within bounds?
 		do
-			Result := lower >= an_index and an_index <= upper
+			Result := lower <= an_index and an_index <= upper
+		ensure
+			definition: Result = (lower <= an_index and an_index <= upper)
 		end
 
 feature {} -- Implementation
@@ -158,12 +163,13 @@ feature {} -- Implementation
 	create_implementation (n : INTEGER)
 		do
 			create table_by_name.make (n)
-			create table_by_index.make (1,n)
+			create table_by_index.make_filled ("", 1,n)
 		end
 
 	table_by_name : DS_HASH_TABLE[like item, STRING]
+			-- Descriptions by parameter name.
 
 	table_by_index: ARRAY[STRING]
-			-- Names of parameter by index
+			-- Name of parameter by index.
 
 end

@@ -23,6 +23,9 @@ feature -- Initialization
 
 	make
 		do
+			user := ""
+			dsn := ""
+			password := ""
 			create  session.make_default
 			-- session opening
 			parse_arguments
@@ -30,17 +33,17 @@ feature -- Initialization
 				print_usage
 			else
 				-- check for mandatory parameters
-				if user = Void then
+				if not has_arg_user then
 					set_error ("Missing user.  Specify parameter","-user")
 					print_usage
-				elseif password = Void then
+				elseif not has_arg_password then
 					set_error ("Missing password. Specify parameter","-pwd")
 					print_usage
-				elseif dsn = Void then
+				elseif not has_arg_dsn then
 					set_error ("Missign data source name. Specify parameter", "-dsn")
 					print_usage
 				else
-					session.set_login_strategy  (create {ECLI_SIMPLE_LOGIN}.make (attached_string (dsn), attached_string(user), attached_string (password)))
+					session.set_login_strategy  (create {ECLI_SIMPLE_LOGIN}.make (dsn, user, password))
 					session.connect
 					if session.is_connected then
 						io.put_string ("+ Connected %N")
@@ -59,11 +62,15 @@ feature -- Initialization
 
 feature -- Access
 
-	dsn : detachable STRING
-	user: detachable STRING
-	password : detachable STRING
+	dsn : STRING
+	user: STRING
+	password : STRING
 	session : ECLI_SESSION
 	error_message : STRING
+
+	has_arg_dsn : BOOLEAN
+	has_arg_user : BOOLEAN
+	has_arg_password : BOOLEAN
 
 feature -- Status Report
 
@@ -72,13 +79,6 @@ feature -- Status setting
 feature -- Element change
 
 feature -- Basic Operations
-
-	attached_string (s : detachable STRING) : STRING
-		do
-			check attached s as l_s then
-				Result := l_s
-			end
-		end
 
 	do_tests
 		local
@@ -109,10 +109,13 @@ feature {NONE} -- Implementation
 					if (index + 1) <= Arguments.argument_count then
 						if current_argument.is_equal ("-dsn") then
 							dsn := Arguments.argument (index + 1)
+							has_arg_dsn := True
 						elseif current_argument.is_equal ("-user") then
 							user := Arguments.argument (index + 1)
+							has_arg_user := True
 						elseif current_argument.is_equal ("-pwd") then
 							password := Arguments.argument (index + 1)
+							has_arg_password := True
 						end
 						index := index + 2
 					else

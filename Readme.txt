@@ -30,6 +30,22 @@ Compiler portability
 * Windows
 * Linux
 
+Voidsafety
+==========
+Void "confident"
+
+a) depends on http://www.github.com/pgcrism/gobo.git
+   This fork defines some voidconfident ecf files.
+   
+b) void confidence = code is voidsafe but uses unsafe libraries (gobo)
+   xace: 
+   	voidconfident <= set variable VOIDCONFIDENT to true
+   	void unsafe   <= unset VOIDCONFIDENT variable
+   ecf:
+   	<name>.ecf   : void unsafe
+   	<name>-confident.ecf : void confident
+   	
+   	
 Structure
 =========
 	ecli

@@ -41,7 +41,7 @@ feature {NONE} -- Initialization
 			create {DS_LINKED_LIST[STRING]}columns.make
 		end
 
-	make (cursor : ECLI_PRIMARY_KEY_CURSOR) is
+	make (cursor : ECLI_PRIMARY_KEY_CURSOR)
 			-- create from `cursor' current position
 		require
 			cursor_not_void: cursor /= Void --FIXME: VS-DEL
@@ -58,7 +58,7 @@ feature {NONE} -- Initialization
 			columns.put_last (cursor.buffer_column_name.as_string)
 		end
 
-	make_by_name (a_catalog_name, a_schema_name : detachable STRING; a_table_name : STRING; a_key_name : detachable STRING ; a_column_name : STRING) is
+	make_by_name (a_catalog_name, a_schema_name : detachable STRING; a_table_name : STRING; a_key_name : detachable STRING ; a_column_name : STRING)
 			-- create for `a_catalog_name', `a_schema_name', `a_table_name', `a_key_name', `a_column_name'
 		require
 			a_table_name_not_void: a_table_name /= Void --FIXME: VS-DEL

@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 			create_buffer_values
 		end
 
-	make_query_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : detachable STRING; a_session : ECLI_SESSION) is
+	make_query_column (a_search_criteria : ECLI_NAMED_METADATA; a_column_name : detachable STRING; a_session : ECLI_SESSION)
 			-- search for column whose name matches `a_search_criteria' and `a_column_name'
 			-- Void values are wildcards
 		do
@@ -52,7 +52,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	queried_column : detachable STRING is
+	queried_column : detachable STRING
 			-- queried column name; Void if all columns in a table
 		do
 			if attached queried_column_impl as q then

@@ -704,7 +704,7 @@ feature {ECLI_ENVIRONMENT} --
 
 feature {NONE} -- Implementation
 
-	simple_login : detachable ECLI_SIMPLE_LOGIN is
+	simple_login : detachable ECLI_SIMPLE_LOGIN
 		do
 			if attached {ECLI_SIMPLE_LOGIN} login_strategy as l then
 				Result := l

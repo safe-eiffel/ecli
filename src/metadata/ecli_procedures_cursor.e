@@ -102,7 +102,7 @@ feature {NONE} -- Implementation
 			create buffer_procedure_type.make
 		end
 
-	create_item is
+	create_item
 			-- create item at curren cursor position
 		do
 			if not off then

@@ -1,5 +1,9 @@
 ECLI v2.6 (2013-04)
 	- void "confident": library code is voidsafe, except for calls to non-voidsafe libs (parts of gobo at this time)
+	- xace + ecf
+		-- xace : set VOIDCONFIDENT variable to 'true' before calling geant or gexace
+		-- ecf : <name>.ecf and <name>-confident.ecf for voidunsafe/voidconfident systems
+		
 	- more flexible error-handling (ECLI_ERROR_HANDLER)
 	- bug or performance fixes
 	- new datatypes

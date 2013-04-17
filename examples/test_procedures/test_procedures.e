@@ -283,13 +283,6 @@ feature --  Basic operations
 			ok: arguments_ok implies (data_source_name /= Void and user_name /= Void and password /= Void)
 		end
 
-	attached_string (s : detachable STRING) : STRING
-		do
-			check	attached s as l_s then
-				Result := l_s.twin
-			end
-		end
-
 	print_usage is
 			-- print terse usage string
 		do
