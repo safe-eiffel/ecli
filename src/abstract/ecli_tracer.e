@@ -23,7 +23,7 @@ feature -- Initialization
 	make (a_medium : like medium)
 			-- Make tracer
 		require
-			medium_not_void: a_medium /= Void
+			medium_not_void: a_medium /= Void --FIXME: VS-DEL
 			medium_open_write: a_medium.is_open_write
 		do
 			medium := a_medium
@@ -35,9 +35,9 @@ feature -- Access
 
 	medium : KI_CHARACTER_OUTPUT_STREAM
 
-	execution_begin : DT_DATE_TIME
+	execution_begin : detachable DT_DATE_TIME
 
-	execution_end : DT_DATE_TIME
+	execution_end : detachable DT_DATE_TIME
 
 feature -- Status report
 
@@ -66,6 +66,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 
 	trace (a_sql : STRING; a_parameters : ARRAY[ECLI_VALUE])
 			-- Trace 'a_sql', substituting parameter markers by 'a_parameters'
+--FIXME: implement this feature using an sql_parser and by the tracer being a parser callback
 		local
 			index : INTEGER
 			c : CHARACTER
@@ -125,15 +126,19 @@ feature {ECLI_STATEMENT} -- Basic operations
 	end_execution_timing
 			-- end query execution
 		require
-			execution_begin_not_void: execution_begin /= Void
+			execution_begin_attached: attached execution_begin
 		local
-			duration : DT_DATE_TIME_DURATION
+			duration : detachable DT_DATE_TIME_DURATION
 		do
-			execution_end := system_clock.date_time_now
-			duration := execution_end - execution_begin
-			medium.put_string ("-- ")
-			medium.put_string (duration.to_canonical (execution_begin).out)
-			medium.put_character ('%N')
+			check attached execution_begin as l_begin and then attached system_clock.date_time_now as l_end then
+				duration := l_end - l_begin
+				if attached duration then
+					medium.put_string ("-- ")
+					medium.put_string (duration.to_canonical (l_begin).out)
+					medium.put_character ('%N')
+				end
+				execution_end := l_end
+			end
 		ensure
 			execution_end_not_void: execution_end /= Void
 		end
@@ -163,7 +168,7 @@ feature {ECLI_VALUE} -- Basic operations
 	put_decimal (a_decimal : ECLI_GENERIC_VALUE[MA_DECIMAL])
 			-- Put `a_value' as a decimal constant.
 		require
-			a_decimal_not_void: a_decimal /= Void
+			a_decimal_not_void: a_decimal /= Void --FIXME: VS-DEL
 			a_decimal_not_null: not a_decimal.is_null
 		do
 			medium.put_character ('%'')
@@ -174,7 +179,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_string (a_value : ECLI_GENERIC_VALUE[STRING])
 			-- Put 'a_value' as a string constant
 		require
-			a_value /= Void and then not a_value.is_null
+			a_value_not_void: a_value /= Void  --FIXME: VS-DEL
+			a_value_not_null: not a_value.is_null
 		do
 			medium.put_character ('%'')
 			medium.put_string (a_value.out)
@@ -184,7 +190,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_date (a_date : ECLI_DATE)
 			-- Put 'a_date' as a date constant
 		require
-			a_date /= Void and then not a_date.is_null
+			a_date_not_void: a_date /= Void  --FIXME: VS-DEL
+			a_date_not_null: not a_date.is_null
 		do
 			medium.put_string ("{d '")
 			medium.put_string (a_date.out)
@@ -194,7 +201,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_timestamp (a_date_time : ECLI_TIMESTAMP)
 			-- Put 'a_timestamp' as a timestamp constant
 		require
-			a_date_time /= Void and then not a_date_time.is_null
+			a_date_time_not_void: a_date_time /= Void --FIXME: VS-DEL
+			a_date_time_not_null: not a_date_time.is_null
 		do
 			medium.put_string ("{ts '")
 			medium.put_string (a_date_time.out)
@@ -204,7 +212,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_time (a_time : ECLI_TIME)
 			-- Put 'a_time' as a time constant
 		require
-			a_time /= Void and then not a_time.is_null
+			a_time_not_void: a_time /= Void  --FIXME: VS-DEL
+			a_time_not_null: not a_time.is_null
 		do
 			medium.put_string ("{t '")
 			medium.put_string (a_time.out)
@@ -214,7 +223,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_double (a_double : ECLI_DOUBLE)
 			-- Put 'a_double' as a double constant
 		require
-			a_double /= Void and then not a_double.is_null
+			a_double_not_void: a_double /= Void  --FIXME: VS-DEL
+			a_double_not_null: not a_double.is_null
 		do
 			medium.put_string (a_double.out)
 		end
@@ -222,7 +232,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_real (a_real : ECLI_REAL)
 			-- Put 'a_real' as a real constant
 		require
-			a_real /= Void and then not a_real.is_null
+			a_real_not_void: a_real /= Void --FIXME: VS-DEL
+			a_real_not_null: not a_real.is_null
 		do
 			medium.put_string (a_real.out)
 		end
@@ -230,7 +241,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_float (a_float : ECLI_FLOAT)
 			-- Put 'a_float' as a float constant
 		require
-			a_float /= Void and then not a_float.is_null
+			a_float_not_void: a_float /= Void --FIXME: VS-DEL
+			a_float_not_null: not a_float.is_null
 		do
 			medium.put_string (a_float.out)
 		end
@@ -238,7 +250,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_integer_16 (a_integer : ECLI_INTEGER_16)
 			-- Put 'a_integer' as an integer constant
 		require
-			a_integer /= Void and then not a_integer.is_null
+			a_integer_not_void: a_integer /= Void --FIXME: VS-DEL
+			a_integer_not_null: not a_integer.is_null
 		do
 			medium.put_string (a_integer.out)
 		end
@@ -246,7 +259,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_integer (a_integer : ECLI_INTEGER)
 			-- Put 'a_integer' as an integer constant
 		require
-			a_integer /= Void and then not a_integer.is_null
+			a_integer_not_void: a_integer /= Void --FIXME: VS-DEL
+			a_integer_not_null: not a_integer.is_null
 		do
 			medium.put_string (a_integer.out)
 		end
@@ -254,7 +268,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_integer_64 (a_integer_64 : ECLI_INTEGER_64)
 			-- Put 'a_a_integer_64' as an integer constant
 		require
-			a_integer_64 /= Void and then not a_integer_64.is_null
+			a_integer_64_not_void: a_integer_64 /= Void --FIXME: VS-DEL
+			a_integer_64_not_null: not a_integer_64.is_null
 		do
 			medium.put_string (a_integer_64.out)
 		end
@@ -262,6 +277,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_binary (a_binary : ECLI_STRING_VALUE)
 			-- Put `a_binary' as binary value
 		require
+			a_binary_not_void: a_binary /= Void --FIXME: VS-DEL
+			a_binary_not_null: not a_binary.is_null
 		do
 			medium.put_character ('%'')
 			medium.put_string (a_binary.out)
@@ -271,6 +288,8 @@ feature {ECLI_VALUE} -- Basic operations
 	put_file (a_file : ECLI_FILE_VALUE)
 			-- Put `a_file'
 		require
+			a_file_not_void: a_file /= Void  --FIXME: VS-DEL
+			a_file_not_null: not a_file.is_null
 		do
 			medium.put_string ("file://")
 			if a_file.input_file /= Void then
@@ -285,7 +304,7 @@ feature {NONE} -- Implementation
 	put_parameter_value (a_value : ECLI_VALUE)
 			-- Put 'a_value' on 'medium'
 		require
-			value_ok: a_value /= Void
+			value_not_void: a_value /= Void --FIXME: VS-DEL
 		do
 			if a_value.is_null then
 				medium.put_string ("NULL")
@@ -309,6 +328,7 @@ feature {NONE} -- Implementation
 	is_parameter_marker (c : CHARACTER) : BOOLEAN
 			-- Is `c' a parameter marker ?
 		do
+--FIXME
 			Result := (c = '?')
 		end
 
@@ -320,6 +340,7 @@ feature {NONE} -- Implementation
 
 invariant
 
-	medium_inv: medium /= Void and then medium.is_open_write
+	medium_not_void: medium /= Void  --FIXME: VS-DEL
+	medium_is_open_write: medium.is_open_write
 
 end

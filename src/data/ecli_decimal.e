@@ -73,6 +73,7 @@ feature {NONE} -- Initialization
 			buffer := ecli_c_alloc_value (new_precision + 3)
 			set_null
 			create ext_item.make_shared_from_pointer (ecli_c_value_get_value (buffer), transfer_octet_length.as_integer_32)
+			create impl_item.make (precision)
 		ensure
 			is_null: is_null
 			precision_set: precision = new_precision
@@ -90,7 +91,7 @@ feature -- Access
 			-- Current value.
 		do
 			if is_null then
-				Result := Void
+				create Result.make_zero
 			else
 				create Result.make_from_string_ctx (ext_item.as_string, rounding_context)
 			end
@@ -337,19 +338,25 @@ feature -- Conversion
 	as_date : DT_DATE
 			-- Current converted to DATE
 		do
-			do_nothing
+			check False then
+				create Result.make_from_day_count (0)
+			end
 		end
 
 	as_time : DT_TIME
 			-- Current converted to DT_TIME
 		do
-			do_nothing
+			check False then
+				create Result.make_from_second_count (0)
+			end
 		end
 
 	as_timestamp : DT_DATE_TIME
 			-- Current converted to DT_DATE_TIME
 		do
-			do_nothing
+			check False then
+				create Result.make_from_epoch (0)
+			end
 		end
 
 	formatted (v : MA_DECIMAL) : MA_DECIMAL
@@ -392,6 +399,6 @@ feature {NONE} -- Implementation
 
 invariant
 
-	rounding_context_not_void: rounding_context /= Void
+	rounding_context_not_void: rounding_context /= Void  --FIXME: VS-DEL
 
 end

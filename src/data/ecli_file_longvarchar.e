@@ -14,9 +14,6 @@ class ECLI_FILE_LONGVARCHAR
 inherit
 
 	ECLI_FILE_VALUE
---		redefine
---			get_transfer_length
---		end
 
 create
 

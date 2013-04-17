@@ -1,7 +1,7 @@
 note
 
 	description:
-	
+
 		"Row cursors.%N%
 			%A row cursor allows sweeping, row by row, through a result-set of a SQL query.%N%
 			%The ECLI_VALUE buffers composing the row are built by `buffer_factory' using%N%
@@ -29,6 +29,8 @@ inherit
 				is_valid, go_after, close, put_parameter, has_parameter,
 				has_parameters, parameters_count, bound_parameters,
 				bind_parameters, parameters
+		redefine
+			default_create
 		end
 
 create
@@ -38,30 +40,39 @@ create
 
 feature {NONE} -- Initialization
 
+	default_create
+		do
+			Precursor
+			create name_to_index.make_default
+			create_buffer_factory
+		end
+
+
 	make, open (a_session : ECLI_SESSION; sql_definition : STRING)
 			-- Make cursor for `a_session' on `sql_definition'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
-			sql_definition_not_void: sql_definition /= Void
+			sql_definition_not_void: sql_definition /= Void --FIXME: VS-DEL
 		do
-			create_buffer_factory
+			default_create
+--			create_buffer_factory
 			buffer_factory.set_precision_limit (buffer_factory.Default_precision_limit)
 			make_with_buffer_factory (a_session, sql_definition, buffer_factory)
 		ensure
 			valid: is_valid
 			definition_set: definition = sql_definition
 			definition_is_sql: equal (definition, sql)
-			buffer_factory_created: buffer_factory /= Void
+			buffer_factory_created: buffer_factory /= Void --FIXME: VS-DEL
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 		end
 
 	make_prepared, open_prepared (a_session : ECLI_SESSION; sql_definition : STRING)
 			-- Make prepared cursor for `a_session' on `sql_definition'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
-			sql_definition_not_void: sql_definition /= Void
+			sql_definition_not_void: sql_definition /= Void --FIXME: VS-DEL
 		do
 			make (a_session, sql_definition)
 			prepare
@@ -69,7 +80,7 @@ feature {NONE} -- Initialization
 			valid: is_valid
 			definition_set: definition = sql_definition
 			definition_is_sql: equal (definition, sql)
-			buffer_factory_created: buffer_factory /= Void
+			buffer_factory_created: buffer_factory /= Void --FIXME: VS-DEL
 			limit_set: buffer_factory.precision_limit = buffer_factory.Default_precision_limit
 			prepared_if_ok: is_ok implies is_prepared
 		end
@@ -77,11 +88,12 @@ feature {NONE} -- Initialization
 	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory : like buffer_factory)
 			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
-			sql_definition_not_void: sql_definition /= Void
-			a_buffer_factory_not_void: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void --FIXME: VS-DEL
+			a_buffer_factory_not_void: a_buffer_factory /= Void --FIXME: VS-DEL
 		do
+			default_create
 			definition := sql_definition
 			cursor_make (a_session)
 			buffer_factory := a_buffer_factory
@@ -91,14 +103,14 @@ feature {NONE} -- Initialization
 			definition_is_sql: equal (definition, sql)
 			buffer_factory_assigned: buffer_factory = a_buffer_factory
 		end
-		
+
 	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_buffer_factory :  like buffer_factory)
 			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
-			sql_definition_not_void: sql_definition /= Void
-			a_buffer_factory_not_void: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void --FIXME: VS-DEL
+			a_buffer_factory_not_void: a_buffer_factory /= Void --FIXME: VS-DEL
 		do
 			make_with_buffer_factory (a_session, sql_definition, a_buffer_factory)
 			prepare
@@ -109,7 +121,7 @@ feature {NONE} -- Initialization
 			buffer_factory_assigned: buffer_factory = a_buffer_factory
 			prepared_if_ok: is_ok implies is_prepared
 		end
-		
+
 feature -- Access
 
 	buffer_factory : ECLI_BUFFER_FACTORY
@@ -118,17 +130,17 @@ feature -- Access
 	definition : STRING
 			-- Definition as an SQL query
 
-	item (name : STRING) : like value_anchor
+	item (name : STRING) : attached like value_anchor
 			-- Column item by `name'
 		require
 			is_executed: is_executed
-			name_not_void: name /= Void
+			name_not_void: name /= Void --FIXME: VS-DEL
 			has_column_by_name: has_column (name)
 		do
 			Result := results.item (name_to_index.item (name))
 		end
 
-	item_by_index (index : INTEGER) : like value_anchor
+	item_by_index (index : INTEGER) : attached like value_anchor
 			-- Column item by `index'
 		require
 			is_executed: is_executed
@@ -144,7 +156,7 @@ feature -- Access
 		do
 			Result := results_description.item (index).name
 		ensure
-			not_void: Result /= Void
+			not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Measurement
@@ -170,7 +182,7 @@ feature -- Status report
 	has_column (name : STRING) : BOOLEAN
 			-- Does `name' match the name of a column in Current ?
 		require
-			name_not_void: name /= Void
+			name_not_void: name /= Void --FIXME: VS-DEL
 		do
 			Result := name_to_index.has (name)
 		end
@@ -200,7 +212,7 @@ feature -- Cursor movement
 			end
 		ensure
 			executed: is_ok implies is_executed
-			results_created_by_factory: (is_ok and then has_result_set) implies results /= Void
+			results_created_by_factory: (is_ok and then has_result_set) implies results /= Void and then results.count = result_columns_count --FIXME: VS-MOD (suppress results /= Void)
 			off_if_not_query: is_ok implies (not has_result_set implies off)
 		end
 
@@ -218,19 +230,19 @@ feature {NONE} -- Implementation
 			-- Describe results and create data-transfer buffers using `buffer_factory'
 		do
 			describe_results
-			results := Void
 			if not is_ok then
 				debug
 					print (diagnostic_message)
 					print ("%N")
 				end
+				create results.make_empty
 			else
 				buffer_factory.create_buffers (results_description)
 				set_results (buffer_factory.last_buffers)
 				name_to_index := buffer_factory.last_index_table
 			end
 		ensure then
-			results_set_described: is_ok implies results_description /= Void
+			results_set_described: is_ok implies (results_description /= Void and then results_description.count = results.count)
 			results_set: is_ok implies  results = buffer_factory.last_buffers
 			name_to_index_set: is_ok implies name_to_index = buffer_factory.last_index_table
 		end

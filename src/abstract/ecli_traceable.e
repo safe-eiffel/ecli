@@ -23,7 +23,7 @@ feature {ECLI_TRACER, ECLI_TRACEABLE} -- Basic operations
 			-- Trace current object through 'a_tracer'
 		require
 			trace_possible: can_trace
-			tracer_writable: a_tracer /= Void
+			tracer_writable: a_tracer /= Void --FIXME: VS-DEL
 		deferred
 		end
 

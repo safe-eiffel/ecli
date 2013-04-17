@@ -294,11 +294,13 @@ feature -- Conversion
 	as_decimal : MA_DECIMAL
 			-- Current converted to MA_DECIMAL.
 		do
+			create Result.make_zero
 		end
 
 	as_time : DT_TIME
 			-- Current converted to DT_TIME
 		do
+			create Result.make_from_second_count (0)
 		end
 
 feature -- Basic operations

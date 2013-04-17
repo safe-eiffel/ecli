@@ -21,8 +21,9 @@ feature {NONE} -- Initialization
 	make (cursor : ECLI_DRIVERS_CURSOR)
 			-- create from current item in cursor
 		require
-			cursor_valid: cursor /= Void and then not cursor.off
-			cursor_name_not_void: cursor.name /= Void
+			cursor_not_void: cursor /= Void  --FIXME: VS-DEL
+			cursor_not_off: not cursor.off
+			cursor_name_not_void: cursor.name /= Void  --FIXME: VS-DEL
 		local
 			index, sep : INTEGER
 			start : INTEGER
@@ -58,7 +59,7 @@ feature -- Access
 			-- Driver attribute values.
 
 invariant
-	name_not_void: name /= Void
-	attributes_not_void: attributes /= Void
+	name_not_void: name /= Void --FIXME: VS-DEL
+	attributes_not_void: attributes /= Void --FIXME: VS-DEL
 
 end -- class ECLI_DRIVER

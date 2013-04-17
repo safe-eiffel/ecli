@@ -37,32 +37,34 @@ feature -- Basic operations
 			index : INTEGER
 			table : ECLI_TABLE
 			tables_cursor : ECLI_TABLES_CURSOR
-			query : ECLI_NAMED_METADATA
+			query : ECLI_NAMED_METADATA_PATTERN
 		do
-			from index := 1
-				create query.make (Void, Void, Void)
-				create tables_cursor.make (query, context.session)
-				tables_cursor.start
-				put_headings (tables_cursor, context)
-			until
-				not tables_cursor.is_ok or else tables_cursor.off
-			loop
-				table := tables_cursor.item
-				context.filter.begin_row
-				context.filter.put_column (nullable_string (table.catalog))
-				context.filter.put_column (nullable_string (table.schema))
-				context.filter.put_column (nullable_string (table.name))
-				context.filter.put_column (nullable_string (table.type))
-				context.filter.put_column (nullable_string (table.description))
-				context.filter.end_row
-				tables_cursor.forth
+			check attached context.session as l_session then
+				from index := 1
+					create query.make (Void, Void, Void)
+					create tables_cursor.make (query, l_session)
+					tables_cursor.start
+					put_headings (tables_cursor, context)
+				until
+					not tables_cursor.is_ok or else tables_cursor.off
+				loop
+					table := tables_cursor.item
+					context.filter.begin_row
+					context.filter.put_column (nullable_string (table.catalog))
+					context.filter.put_column (nullable_string (table.schema))
+					context.filter.put_column (nullable_string (table.name))
+					context.filter.put_column (nullable_string (table.type))
+					context.filter.put_column (nullable_string (table.description))
+					context.filter.end_row
+					tables_cursor.forth
+				end
+				if not tables_cursor.is_ok then
+					context.filter.begin_error
+					context.filter.put_error (sql_error_msg (tables_cursor,"Unable to get tables metadata"))
+					context.filter.end_error
+				end
+				tables_cursor.close
 			end
-			if not tables_cursor.is_ok then
-				context.filter.begin_error
-				context.filter.put_error (sql_error_msg (tables_cursor,"Unable to get tables metadata"))
-				context.filter.end_error
-			end
-			tables_cursor.close
 		end
 
 	put_headings (cursor : ECLI_STATEMENT; context : ISQL_CONTEXT)

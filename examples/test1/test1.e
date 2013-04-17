@@ -43,6 +43,17 @@ feature -- Initialization
 		do
 			create error_handler.make_standard
 			error_handler.report_info_message ("'test1' ECLI tutorial application%N%N")
+			--| attached attributes
+			create session.make_default
+			create data_source_name.make_empty
+			create user_name.make_empty
+			create password.make_empty
+			create trace_file_name.make_empty
+			create current_sql_type.make_empty
+			create ddl_bookcover.make_empty
+			create ddl_borrower.make_empty
+			create ddl_copy.make_empty
+			create ddl_book.make_empty
 			-- session opening
 			parse_arguments
 			if not arguments_ok then
@@ -85,11 +96,22 @@ feature -- Access
 	session : ECLI_SESSION
 			-- Database session on datasource
 
-	type_catalog : ECLI_TYPE_CATALOG
+	type_catalog : detachable ECLI_TYPE_CATALOG
 			-- Catalog of types available for `session'.
+		note
+			stable: stable
+		attribute
+		end
 
 	stmt : ECLI_STATEMENT
 			-- Statement used for executing SQL
+		do
+			check attached stmt_impl as l_stmt then
+				Result := l_stmt
+			end
+		end
+
+	stmt_impl: detachable like stmt
 
 	data_source_name : STRING
 			-- Name of datasource
@@ -193,7 +215,7 @@ feature --  Basic operations
 		do
 			error_handler.report_info_message ("=> STATEMENT - Creation")
 			-- definition of statement on session
-			create  stmt.make (session)
+			create  stmt_impl.make (session)
 			stmt.set_error_handler (create {ECLI_ERROR_HANDLER}.make_standard)
 		ensure
 			stmt_not_void: stmt /= Void
@@ -606,7 +628,7 @@ feature {NONE} -- Implementation
 		local
 			usage : UT_USAGE_MESSAGE
 			message : STRING
-			c : DS_LIST_CURSOR[STRING]
+			c : detachable DS_LIST_CURSOR[STRING]
 		do
 			create message.make_from_string ("-dsn <data_source> -user <user_name> -pwd <password> -sql <sqlsyntax> [-tracefile <trace_file_name>]")
 			message.append_string ("%N%TSupported sql syntaxes :%N")
@@ -626,20 +648,19 @@ feature {NONE} -- Implementation
 
 	show_parameter_names (a_statement : ECLI_STATEMENT)
 			-- Show parameter names of SQL in `a_statement'
-		local
-			list_cursor: DS_LIST_CURSOR[STRING]
 		do
-			list_cursor := a_statement.parameter_names.new_cursor
-			from
-				list_cursor.start
-				io.put_string ("Parameter names of Query :%N")
-			until
-				list_cursor.off
-			loop
-				io.put_string ("%T%"")
-				io.put_string (list_cursor.item)
-				io.put_string ("%"%N")
-				list_cursor.forth
+			if attached a_statement.parameter_names.new_cursor as list_cursor then
+				from
+					list_cursor.start
+					io.put_string ("Parameter names of Query :%N")
+				until
+					list_cursor.off
+				loop
+					io.put_string ("%T%"")
+					io.put_string (list_cursor.item)
+					io.put_string ("%"%N")
+					list_cursor.forth
+				end
 			end
 		end
 
@@ -786,7 +807,7 @@ feature {NONE} -- Implementation
 			table_not_void: table /= Void
 			sql_type_not_void: sql_type /= Void
 		local
-			directory : STRING
+			directory : detachable STRING
 		do
 			create Result.make (125)
 			directory := file_system.nested_pathname (execution_environment.interpreted_string ("${ECLI}"), << "examples", "books" >>)
@@ -802,7 +823,7 @@ feature {NONE} -- Implementation
 		require
 			name_not_void: name /= Void
 		local
-			directory : STRING
+			directory : detachable STRING
 		do
 			create Result.make (125)
 			directory := file_system.nested_pathname (execution_environment.interpreted_string ("${ECLI}"), << "examples", "books", "data" >>)

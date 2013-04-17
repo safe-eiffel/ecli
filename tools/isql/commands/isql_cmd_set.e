@@ -34,7 +34,7 @@ feature -- Basic operations
 	execute (text : STRING; context : ISQL_CONTEXT)
 			-- execute command SET [<VAR>=<VALUE>]
 		do
-			error_message := Void
+			error_message.wipe_out
 			do_set (text, context)
 		end
 
@@ -80,7 +80,6 @@ feature {NONE} -- Implementation
 	do_set (s : STRING; context : ISQL_CONTEXT)
 			-- handle a 'set <var-name>=<value>'
 		local
-			cursor : DS_HASH_TABLE_CURSOR[STRING,STRING]
 			l_message : STRING
 		do
 			if s.count > Match_string.count then
@@ -92,21 +91,22 @@ feature {NONE} -- Implementation
 				end
 			else
 				-- show variable names
-				from
-					cursor := context.variables.new_cursor
-					cursor.start
-				until
-					cursor.off
-				loop
-					create l_message.make (30)
-					l_message.append_string (cursor.key)
-					l_message.append_string ("=%"")
-					l_message.append_string (escaped_value (cursor.item))
-					l_message.append_string ("%"")
-					context.filter.begin_message
-					context.filter.put_message (l_message)
-					context.filter.end_message
-					cursor.forth
+				if attached context.variables.new_cursor as cursor then
+					from
+						cursor.start
+					until
+						cursor.off
+					loop
+						create l_message.make (30)
+						l_message.append_string (cursor.key)
+						l_message.append_string ("=%"")
+						l_message.append_string (escaped_value (cursor.item))
+						l_message.append_string ("%"")
+						context.filter.begin_message
+						context.filter.put_message (l_message)
+						context.filter.end_message
+						cursor.forth
+					end
 				end
 			end
 		end

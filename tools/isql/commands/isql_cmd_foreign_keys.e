@@ -35,13 +35,15 @@ feature -- Basic operations
 			-- show foreign keys
 		local
 			stream : KL_WORD_INPUT_STREAM
-			l_table, l_schema, l_catalog : STRING
+			l_table : STRING
+			l_schema, l_catalog : detachable STRING
 			query : ECLI_NAMED_METADATA
 			cursor : ECLI_FOREIGN_KEYS_CURSOR
 		do
 			create stream.make (text, " %T")
 			stream.read_quoted_word
 			if not stream.end_of_input then
+				create l_table.make_empty
 				--| try reading table_name
 				stream.read_quoted_word
 				if not stream.end_of_input then
@@ -65,9 +67,11 @@ feature -- Basic operations
 					l_table := l_table.substring (2, l_table.count -1)
 				end
 				create query.make (l_catalog, l_schema, l_table)
-				create cursor.make (query, context.session)
-				put_results (cursor, context)
-				cursor.close
+				check attached context.session as l_session then
+					create cursor.make (query, l_session)
+					put_results (cursor, context)
+					cursor.close
+				end
 			end
 		end
 
@@ -78,8 +82,9 @@ feature {NONE} -- Implementation
 		local
 			the_key : ECLI_FOREIGN_KEY
 			ref_key : ECLI_PRIMARY_KEY
+			columns_cursor : detachable DS_LIST_CURSOR[STRING]
+			ref_cols_cursor : detachable DS_LIST_CURSOR[STRING]
 			index : INTEGER
-			columns_cursor, ref_cols_cursor : DS_LIST_CURSOR[STRING]
 		do
 			if a_cursor.is_executed then
 				from
@@ -105,9 +110,10 @@ feature {NONE} -- Implementation
 				loop
 					the_key := a_cursor.item
 					ref_key := a_cursor.item.referenced_key
+					columns_cursor := the_key.columns.new_cursor
+					ref_cols_cursor := ref_key.columns.new_cursor
+					check attached columns_cursor and attached ref_cols_cursor end
 					from
-						columns_cursor := the_key.columns.new_cursor
-						ref_cols_cursor := ref_key.columns.new_cursor
 						columns_cursor.start
 						ref_cols_cursor.start
 						index := 1

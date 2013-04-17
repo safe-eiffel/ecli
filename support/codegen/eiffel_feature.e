@@ -24,6 +24,7 @@ feature -- Initialization
 		do
 			enable_ecma367v2
 			set_name (new_name)
+			create comment.make_empty
 		end
 
 feature -- Access

@@ -37,6 +37,8 @@ feature {NONE} -- Initialization
 			-- make interactive
 		do
 			create text.make (1000)
+			create buffer_text.make_empty
+			create last_string.make_empty
 		ensure
 			interactive: is_interactive
 		end
@@ -49,7 +51,7 @@ feature -- Access
 	text : STRING
 		-- command text
 
-	input_file : KI_TEXT_INPUT_STREAM
+	input_file : detachable KI_TEXT_INPUT_STREAM
 		-- input file.  Void => interactive
 
 --|feature -- Measurement
@@ -116,9 +118,9 @@ feature -- Basic operations
 			done : BOOLEAN
 			separator_index : INTEGER
 		do
-			if buffer_text /= Void then
+			if not buffer_text.is_empty then
 				text.copy (buffer_text)
-				buffer_text := Void
+				buffer_text.wipe_out
 				skip_prompting := True
 			else
 				text.copy("")
@@ -178,9 +180,9 @@ feature {NONE} -- Implementation
 				io.read_line
 				last_string := io.last_string
 			else
-				if not input_file.end_of_input then
+				if not input_file.end_of_input and then attached input_file.last_string as ls then
 					input_file.read_line
-					last_string := input_file.last_string
+					last_string := ls
 				end
 			end
 		end

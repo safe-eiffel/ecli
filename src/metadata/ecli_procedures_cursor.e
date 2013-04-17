@@ -19,7 +19,7 @@ inherit
 		rename
 			queried_name as queried_procedure
 		redefine
-			item, impl_item
+			item, impl_item, default_create
 		end
 
 create
@@ -28,12 +28,20 @@ create
 
 feature {NONE} -- Initialization
 
+	default_create
+		do
+			Precursor
+
+			create_buffer_objects
+		end
+
 	make_all_procedures (a_session : ECLI_SESSION)
 			-- make cursor for all types of session
 		require
-			session_opened: a_session /= Void and then a_session.is_connected
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
+			a_session_connected: a_session.is_connected
 		local
-			search_criteria : ECLI_NAMED_METADATA
+			search_criteria : ECLI_NAMED_METADATA_PATTERN
 		do
 			create search_criteria.make (Void, Void, Void)
 			make (search_criteria, a_session)
@@ -46,7 +54,9 @@ feature -- Access
 	item : ECLI_PROCEDURE_METADATA
 			-- item at current cursor position
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		end
 
 feature -- Cursor Movement
@@ -68,15 +78,6 @@ feature {NONE} -- Implementation
 	create_buffers
 			-- create buffers for cursor
 		do
-			create buffer_catalog_name.make (255)
-			create buffer_schema_name.make (255)
-			create buffer_procedure_name.make (255)
-			create buffer_description.make (255)
-			create buffer_na1.make (10)
-			create buffer_na2.make (10)
-			create buffer_na3.make (10)
-			create buffer_procedure_type.make
-
 			set_results (<<
 					buffer_catalog_name,
 					buffer_schema_name,
@@ -89,6 +90,18 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
+	create_buffer_objects
+		do
+			create buffer_catalog_name.make (255)
+			create buffer_schema_name.make (255)
+			create buffer_procedure_name.make (255)
+			create buffer_description.make (255)
+			create buffer_na1.make (10)
+			create buffer_na2.make (10)
+			create buffer_na3.make (10)
+			create buffer_procedure_type.make
+		end
+
 	create_item
 			-- create item at curren cursor position
 		do
@@ -99,7 +112,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	impl_item : like item
+	impl_item : detachable like item
 
 	definition : STRING once Result := "SQLProcedures" end
 

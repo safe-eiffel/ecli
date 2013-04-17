@@ -15,7 +15,7 @@ inherit
 
 	ECLI_BUFFER_FACTORY
 		redefine
-			value_factory, value_anchor
+			value_factory, value_anchor, default_buffer_value
 		end
 
 create
@@ -28,6 +28,7 @@ feature {NONE} -- Initialization
 			-- make buffer for 'a_row_count'
 		do
 			row_count := a_row_count
+			default_create
 		ensure
 			row_count_set: row_count = a_row_count
 		end
@@ -68,15 +69,22 @@ feature {NONE} -- Implementation
 
 	value_factory : ECLI_ARRAYED_VALUE_FACTORY
 		do
-			if impl_value_factory = Void then
-				create impl_value_factory.make (row_count)
+			if attached impl_value_factory as l_factory then
+				Result := l_factory
+			else
+				create Result.make (row_count)
+				impl_value_factory := Result
 			end
-			Result := impl_value_factory
 		end
 
-	value_anchor : ECLI_ARRAYED_VALUE
+	value_anchor : detachable ECLI_ARRAYED_VALUE
 			--
 		do
+		end
+
+	default_buffer_value : ECLI_ARRAYED_VALUE
+		do
+			create {ECLI_ARRAYED_CHAR}Result.make (1, row_count)
 		end
 
 invariant

@@ -110,7 +110,7 @@ feature -- Basic operations
 	create_table
 			--
 		do
-			do_simple_sql (sql_create)
+			do_simple_sql (sql_create, True)
 		end
 
 	drop_table
@@ -121,7 +121,7 @@ feature -- Basic operations
 			create tables_cursor.make (create {ECLI_NAMED_METADATA}.make (Void, Void, "ROWSETSAMPLE"), session)
 			tables_cursor.start
 			if not tables_cursor.after then
-				do_simple_sql (sql_drop)
+				do_simple_sql (sql_drop, False)
 
 			end
 		end
@@ -162,7 +162,7 @@ feature -- Basic operations
 			print ("Trying bulk update...  %N")
 			print ("---------------------- %N")
 			-- create and setup update_array
-			create  update_array.make (ages.lower, ages.upper)
+			create  update_array.make_filled (0, ages.lower, ages.upper)
 			from
 				index := ages.lower
 			until
@@ -248,13 +248,15 @@ feature {NONE} -- Implementation
 		end
 
 
-	do_simple_sql (a_sql : STRING)
+	do_simple_sql (a_sql : STRING; checked : BOOLEAN) is
 		do
 			create statement.make (session)
 			statement.set_sql (a_sql)
 			statement.execute
-			check
-				statement.is_ok
+			if checked then
+				check
+					statement.is_ok
+				end
 			end
 			statement.close
 		end

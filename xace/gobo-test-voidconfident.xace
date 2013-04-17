@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<library name="test" prefix="ts_">
+	<description>
+		description: "Xace file for the Gobo Eiffel Test Library"
+		library: "Gobo Eiffel Test Library"
+		copyright: "Copyright (c) 2001, Eric Bezault and others"
+		license: "MIT License"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<cluster name="test" location="${GOBO}/library/test">
+		<option name="abstract" value="true"/>
+		<option name="void_safety" value="none"/>
+		<cluster name="generation"/>
+		<cluster name="harness"/>
+	</cluster>
+</library>

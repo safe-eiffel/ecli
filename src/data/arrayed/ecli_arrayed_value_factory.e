@@ -21,6 +21,7 @@ inherit
 		export {NONE}
 			make_value
 		redefine
+			make_value,
 			last_result,
 			create_double_value,
 			create_real_value,
@@ -47,8 +48,13 @@ feature {NONE} -- Initialization
 	make (a_row_count : INTEGER)
 		do
 			row_count := a_row_count
+			create {ECLI_ARRAYED_VARCHAR}last_result.make (a_row_count, 100)
 		ensure
 			row_count_set: row_count = a_row_count
+		end
+
+	make_value
+		do
 		end
 
 feature -- Access
@@ -119,22 +125,22 @@ feature {NONE} -- Implementation
 
 	create_numeric_value (precision, decimal_digits: INTEGER_32)
 		do
-			create {ECLI_ARRAYED_DECIMAL} last_result.make (row_count, precision, decimal_digits)
+			create  {ECLI_ARRAYED_DECIMAL}last_result.make (row_count, precision, decimal_digits)
 		end
 
 	create_longvarchar_value (precision: INTEGER_32)
 		do
-			create {ECLI_ARRAYED_LONGVARCHAR} last_result.make (row_count, precision)
+			create  {ECLI_ARRAYED_LONGVARCHAR}last_result.make (precision, row_count)
 		end
 
 	create_longvarbinary_value (precision: INTEGER_32)
 		do
-			create {ECLI_ARRAYED_LONGVARBINARY} last_result.make (row_count, precision)
+			create  {ECLI_ARRAYED_LONGVARBINARY}last_result.make (precision, row_count)
 		end
 
 	create_binary_value (column_precision: INTEGER_32)
 		do
-			create {ECLI_ARRAYED_BINARY} last_result.make (row_count, column_precision)
+			create  {ECLI_ARRAYED_BINARY}last_result.make (column_precision, row_count)
 		end
 
 end

@@ -14,23 +14,56 @@ deferred class ECLI_STATUS
 
 inherit
 
+	KL_SHARED_EXCEPTIONS
+		redefine
+			default_create
+		end
+
+-- inherit {NONE}
+
 	ECLI_EXTERNAL_API
 		export {NONE}	all
+		redefine
+			default_create
 		end
 
 	ECLI_STATUS_CONSTANTS
 		export {NONE} all
-		end
-
-	EXCEPTIONS
-		export {NONE} all
+		redefine
+			default_create
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
 		export {NONE} all
+		redefine
+			default_create
 		end
 
-	ANY
+feature {} -- Initialization
+
+	default_create
+		do
+				create impl_cli_state.make (6)
+				create impl_error_buffer.make (512) -- SQL_MAX_MSG_LEN
+				create impl_native_code.make
+				create impl_buffer_length_indicator.make
+				create impl_error_message.make(512)
+				create last_external_feature.make (40)
+				create error_handler.make_null
+		end
+
+	make_copy (other : ECLI_STATUS)
+		do
+			default_create
+			--set_status (other.last_external_feature, other.status)
+			last_external_feature := other.last_external_feature.twin
+			status := other.status
+			impl_error_message := other.diagnostic_message.twin
+			need_diagnostics := False
+			create impl_cli_state.make_from_string (other.cli_state)
+			impl_native_code.put (other.native_code)
+			error_handler := other.error_handler
+		end
 
 feature -- Access
 
@@ -177,9 +210,9 @@ feature {NONE} -- Implementation
 ---
 			get_diagnostics
 			if status = sql_invalid_handle then
-				raise ("[ECLI][Internal] Invalid Handle")
+				exceptions.raise ("[ECLI][Internal] Invalid Handle")
 			elseif exception_on_error and then not is_ok then
-				raise (diagnostic_message)
+				exceptions.raise (diagnostic_message)
 			elseif status = sql_row_success_with_info then
 				error_handler.report_row_success_with_info (last_external_feature, native_code, cli_state, diagnostic_message)
 			elseif status = sql_success_with_info then
@@ -202,24 +235,13 @@ feature {NONE} -- Implementation
 		local
 			count : INTEGER
 			retcode : INTEGER
-			impl_error_buffer : XS_C_STRING
 			saved_native_code : INTEGER
 		do
 			if need_diagnostics then
 				--impl_cli_state := STRING_.make_buffer (6)
-				if impl_cli_state = Void then
-					create impl_cli_state.make (6)
-				else
-					impl_cli_state.wipe_out
-				end
-				if impl_error_buffer = Void then
-					create impl_error_buffer.make (512) -- SQL_MAX_MSG_LEN
-				else
-					impl_error_buffer.wipe_out
-				end
-				if impl_native_code = Void then create impl_native_code.make end
-				if impl_buffer_length_indicator = Void then create impl_buffer_length_indicator.make end
-				create impl_error_message.make(0)
+				impl_cli_state.wipe_out
+				impl_error_buffer.wipe_out
+				impl_error_message.wipe_out
 				from
 					count := 1
 					retcode := sql_success
@@ -233,11 +255,10 @@ feature {NONE} -- Implementation
 							impl_error_buffer.capacity,
 							impl_buffer_length_indicator.handle)
 					if retcode = sql_success or else retcode = sql_success_with_info then
-					error_handler.report_diagnostics (status, last_external_feature,
-							impl_cli_state.substring (1, 5),
-							impl_native_code.item,
-							impl_error_buffer.substring (1,impl_buffer_length_indicator.item))
-
+							error_handler.report_diagnostics (status, last_external_feature,
+								impl_cli_state.substring (1, 5),
+								impl_native_code.item,
+								impl_error_buffer.substring (1,impl_buffer_length_indicator.item))
 					end
 					if retcode = sql_success_with_info and then impl_buffer_length_indicator.item > impl_error_buffer.capacity then
 						create impl_error_buffer.make (impl_buffer_length_indicator.item)
@@ -255,6 +276,7 @@ feature {NONE} -- Implementation
 		end
 
 	impl_native_code : XS_C_INT32
+	impl_error_buffer : XS_C_STRING
 
 	impl_cli_state : XS_C_STRING
 
@@ -267,6 +289,6 @@ feature {NONE} -- Implementation
 invariant
 
 	valid_status: valid_status (status)
-	error_handler_not_void: error_handler /= Void
+	error_handler_not_void: error_handler /= Void --FIXME: VS-DEL
 
 end

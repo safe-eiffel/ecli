@@ -289,16 +289,25 @@ feature -- Conversion
 	as_decimal : MA_DECIMAL
 			-- Current converted to MA_DECIMAL.
 		do
+			check False then
+				create Result.make_zero
+			end
 		end
 
 	as_date : DT_DATE
 			-- Current converted to DATE
 		do
+			check False then
+				create Result.make_from_day_count (0)
+			end
 		end
 
 	as_timestamp : DT_DATE_TIME
 			-- Current converted to DT_DATE_TIME
 		do
+			check False then
+				create Result.make_from_epoch (0)
+			end
 		end
 
 feature -- Duplication
@@ -355,6 +364,6 @@ feature {NONE} -- Implementation
 	impl_item : DT_TIME
 
 invariant
-	impl_item_not_void: impl_item /= Void
+	impl_item_not_void: impl_item /= Void --FIXME: VS-DEL
 
 end

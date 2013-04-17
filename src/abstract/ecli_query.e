@@ -2,7 +2,10 @@ note
 
 	description:
 
-			"SQL Queries, defined by a SQL text. Heir for classes whose SQL definition remains constant, (static, not modifiable)."
+	"[
+		SQL Queries, defined by a SQL text. 
+		Heir for classes whose SQL definition remains constant, (static, not modifiable).
+	]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
@@ -19,19 +22,29 @@ inherit
 		export
 			{NONE} all;
 			{ANY}
-				make, forth, close,
-				cursor_status, Cursor_after, Cursor_before, Cursor_in,
-				is_closed, is_ok, is_error, is_prepared, is_prepared_execution_mode, is_executed, is_valid,
-				off, before, after,
-				has_information_message, diagnostic_message, sql, results,
-				go_after, array_routines, has_result_set,
-				has_parameters, execute, bind_parameters, put_parameter, put_input_parameter, put_output_parameter, put_input_output_parameter, prepare, parameters_count, bound_parameters,
-				is_parsed, parameters, has_parameter, native_code, raise_exception_on_error, exception_on_error
+				after,
+				before, bind_parameters, bound_parameters,
+				close, Cursor_after, Cursor_before, Cursor_in, cursor_status,
+				diagnostic_message,
+				exception_on_error, execute,
+				forth,
+				go_after,
+				has_information_message, has_parameter, has_parameters, has_result_set,
+				is_closed, is_error, is_executed, is_ok, is_parsed, is_prepared, is_prepared_execution_mode, is_valid,
+				make,
+				native_code,
+				off,
+				parameters, parameters_count, prepare, put_input_output_parameter, put_input_parameter, put_output_parameter, put_parameter,
+				raise_exception_on_error, results,
+				sql
 		redefine
 			make, execute
 		end
 
 	ANY
+		undefine
+			default_create
+		end
 
 feature -- Initialization
 
@@ -85,15 +98,16 @@ feature -- Basic operations
 			else
 				reset_status
 				is_executed := True
-				if session.is_tracing then
-					trace (session.tracer)
+				if attached session.tracer as l_tracer then
+					trace (l_tracer)
 				end
 			end
 		end
 
 invariant
-	definition_not_void: definition /= Void
-	sql_is_definition: sql /= Void and then sql.is_equal (definition)
+	definition_not_void: definition /= Void --FIXME: VS-DEL
+	sql_not_void: sql /= Void --FIXME: VS-DEL
+	sql_is_definition: sql.is_equal (definition)
 
 end
 

@@ -26,28 +26,32 @@ feature {NONE} -- Initialization
 	make (new_connection_string : STRING)
 			-- Make with `new_connection_string'.
 		require
-			new_connection_string_not_void: new_connection_string /= Void
+			new_connection_string_not_void: new_connection_string /= Void --FIXME: VS-DEL
 		do
 			connection_string := new_connection_string
 			mode := Sql_driver_noprompt
 			parent_window_handle := default_pointer
+			completed_connection_string := connection_string
 		ensure
 			connection_string_set: connection_string = new_connection_string
+			completed_connection_string_set: completed_connection_string = connection_string
 			mode_no_prompt: mode = Sql_driver_noprompt
 		end
 
 	make_interactive (new_connection_string : STRING; new_parent_window_handle : POINTER)
 			-- Make using `new_connection_string'. Connection dialog shall use `new_parent_window_handle' as parent window.
 		require
-			new_connection_string_not_void: new_connection_string /= Void
+			new_connection_string_not_void: new_connection_string /= Void --FIXME: VS-DEL
 		do
 			connection_string := new_connection_string
 			mode := Sql_driver_prompt
 			parent_window_handle := new_parent_window_handle
+			completed_connection_string := connection_string
 		ensure
 			connection_string_set: connection_string = new_connection_string
 			mode_no_prompt: mode = Sql_driver_prompt
 			parent_window_handle_set: parent_window_handle = new_parent_window_handle
+			completed_connection_string_set: completed_connection_string = connection_string
 		end
 
 	make_complete_strict (new_connection_string : STRING; new_parent_window_handle : POINTER)
@@ -55,15 +59,17 @@ feature {NONE} -- Initialization
 			-- Possible connection dialog shall use `new_parent_window_handle'.
 			-- All attributes in `new_connection_string' will be checked.
 		require
-			new_connection_string_not_void: new_connection_string /= Void
+			new_connection_string_not_void: new_connection_string /= Void --FIXME: VS-DEL
 		do
 			connection_string := new_connection_string
 			mode := Sql_driver_complete
 			parent_window_handle := new_parent_window_handle
+			completed_connection_string := connection_string
 		ensure
 			connection_string_set: connection_string = new_connection_string
 			mode_complete: mode = Sql_driver_complete
 			parent_window_handle_set: parent_window_handle = new_parent_window_handle
+			completed_connection_string_set: completed_connection_string = connection_string
 		end
 
 	make_complete_lazy (new_connection_string : STRING; new_parent_window_handle : POINTER)
@@ -71,26 +77,43 @@ feature {NONE} -- Initialization
 			-- Possible connection dialog shall use `new_parent_window_handle'.
 			-- Only necessary attributes in `new_connection_string' whill be checked.
 		require
-			new_connection_string_not_void: new_connection_string /= Void
+			new_connection_string_not_void: new_connection_string /= Void --FIXME: VS-DEL
 		do
 			connection_string := new_connection_string
 			mode := Sql_driver_complete_required
 			parent_window_handle := new_parent_window_handle
+			completed_connection_string := connection_string
 		ensure
 			connection_string_set: connection_string = new_connection_string
 			mode_complete_required: mode = Sql_driver_complete_required
 			parent_window_handle_set: parent_window_handle = new_parent_window_handle
+			completed_connection_string_set: completed_connection_string = connection_string
 		end
 
 feature -- Access
 
 	connection_string : STRING
+		-- Connection string as given
 
 	completed_connection_string : STRING
+		-- Connection string as completed by driver
 
 	mode : INTEGER
+		-- Login mode (see valid_modes)
 
 	parent_window_handle : POINTER
+		-- Window handle used by the underlying windowing system as parent for the connection dialog.
+
+feature -- Status report
+
+	valid_modes : DS_SET[INTEGER]
+			-- Valid values for `modes'
+		once
+			create {DS_HASH_SET[INTEGER]}Result.make (3)
+			Result.force (Sql_driver_noprompt)
+			Result.force (Sql_driver_prompt)
+			Result.force (Sql_driver_complete)
+		end
 
 feature -- Basic operations
 
@@ -98,6 +121,8 @@ feature -- Basic operations
 			-- Connect `the_session'
 		local
 			actual_length : XS_C_INT16
+			impl_connection_string : XS_C_STRING
+			impl_completed_connection_string : XS_C_STRING
 		do
 			create actual_length.make
 			create impl_connection_string.make_from_string (connection_string)
@@ -117,7 +142,7 @@ feature -- Basic operations
 				completed_connection_string := ""
 			end
 		ensure then
-			completed_connection_string_not_void: completed_connection_string /= Void
+			completed_connection_string_not_void: completed_connection_string /= Void --FIXME: VS-DEL
 		end
 
 feature -- Constants
@@ -128,11 +153,9 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	impl_connection_string : XS_C_STRING
-	impl_completed_connection_string : XS_C_STRING
-
 invariant
 
 	connection_string_not_void: connection_string /= Void
-
+	modes_within_valid_modes: valid_modes.has (mode)
+	
 end -- class ECLI_DRIVER_LOGIN

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-10-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-10-0 http://www.eiffel.com/developers/xml/configuration-1-10-0.xsd" name="ecli" uuid="0064A5FC-DA87-465E-AD56-5873AD069654" library_target="ecli">
+	<target name="ecli">
+		<root all_classes="true"/>
+		<option warning="true" full_class_checking="true" is_attached_by_default="false" void_safety="none" syntax="transitional">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<setting name="console_application" value="true"/>
+		<external_include location="$(ECLI)/src/spec/C"/>
+		<external_include location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)"/>
+		<external_library location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)/ecli_$(GOBO_CC).lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="$(ODBC32LIBPATH)ODBC32.lib"/>
+		<external_library location="$(ODBCCP32LIBPATH)ODBCCP32.lib"/>
+		<external_library location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)/libecli_c.a">
+			<condition>
+				<platform value="unix macintosh"/>
+			</condition>
+		</external_library>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="gobo-core" location="$GOBO\library\gobo-core.ecf"/>
+		<library name="gobo-kernel" location="$GOBO\library\kernel\gobo-kernel.ecf"/>
+		<library name="gobo-math" location="$GOBO\library\math\gobo-math.ecf"/>
+		<library name="gobo-structure" location="$GOBO\library\structure\gobo-structure.ecf"/>
+		<library name="gobo-time" location="$GOBO\library\time\gobo-time.ecf"/>
+		<library name="safe-kernel-external" location="$SAFE_KERNEL\safe-kernel-external.ecf"/>
+		<cluster name="src" location="$ECLI\src\" recursive="true">
+			<file_rule>
+				<exclude>/ge$</exclude>
+				<exclude>/ve$</exclude>
+				<exclude>/se$</exclude>
+				<condition>
+					<custom name="gobo_eiffel" excluded_value="ise"/>
+				</condition>
+			</file_rule>
+			<file_rule>
+				<exclude>/ise$</exclude>
+				<exclude>/ve$</exclude>
+				<exclude>/se$</exclude>
+				<condition>
+					<custom name="gobo_eiffel" value="ge"/>
+				</condition>
+			</file_rule>
+		</cluster>
+	</target>
+</system>

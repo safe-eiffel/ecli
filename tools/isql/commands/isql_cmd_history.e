@@ -34,28 +34,28 @@ feature -- Basic operations
 	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show history
 		local
-			cursor : DS_LINKED_LIST_CURSOR[STRING]
 			count : INTEGER
 			l_message : STRING
 		do
 			--| print heading message
 			--| list commands
-			from
-				cursor := context.history.new_cursor
-				cursor.start
-				count := 1
-			until
-				cursor.off
-			loop
-				create l_message.make (30)
-				l_message.append_integer (count)
-				l_message.append_character (':')
-				l_message.append_string (cursor.item)
-				context.filter.begin_message
-				context.filter.put_message (l_message)
-				context.filter.end_message
-				cursor.forth
-				count := count + 1
+			if attached context.history.new_cursor as cursor then
+				from
+					cursor.start
+					count := 1
+				until
+					cursor.off
+				loop
+					create l_message.make (30)
+					l_message.append_integer (count)
+					l_message.append_character (':')
+					l_message.append_string (cursor.item)
+					context.filter.begin_message
+					context.filter.put_message (l_message)
+					context.filter.end_message
+					cursor.forth
+					count := count + 1
+				end
 			end
 		end
 

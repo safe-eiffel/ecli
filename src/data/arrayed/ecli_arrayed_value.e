@@ -181,7 +181,7 @@ feature -- Conversion
 			valid_index: index >= 1 and index <= count
 		deferred
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 		end
 	
 --	as_string : STRING is

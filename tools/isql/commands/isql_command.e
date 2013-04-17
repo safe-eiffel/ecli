@@ -8,25 +8,36 @@ deferred class
 	ISQL_COMMAND
 
 inherit
-	
+
 	ANY
 		export
 			{ANY} all
+		redefine
+			default_create
 		end
-	
+
 	ECLI_STRING_ROUTINES
 		export {NONE} all
+		undefine
+			default_create
 		end
-		
+
+feature {} -- Initialization
+
+	default_create
+		do
+			create error_message.make_empty
+		end
+
 feature -- Access
 
 	help_message : STRING
 			-- help message for current command
 		deferred
 		end
-		
+
 	error_message : STRING
-	
+
 feature -- Status report
 
 	matches (text : STRING) : BOOLEAN
@@ -45,7 +56,7 @@ feature -- Status report
 			-- does this command need a connected session ?
 		deferred
 		end
-		
+
 feature -- Element change
 
 	set_error (a_message : STRING)
@@ -57,7 +68,7 @@ feature -- Element change
 		ensure
 			is_error: is_error
 		end
-		
+
 feature -- Basic operations
 
 	execute (text : STRING; context : ISQL_CONTEXT)
@@ -69,7 +80,7 @@ feature -- Basic operations
 --			context_executable: context.is_executable
 		deferred
 		end
-		
+
 feature {NONE} -- Implementation
 
 	matches_single_string (text : STRING; matcher : STRING) : BOOLEAN
@@ -95,7 +106,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	nullable_string (s : STRING) : STRING
+	nullable_string (s : detachable STRING) : STRING
 		do
 			if s/= Void then
 				Result := s
@@ -103,15 +114,15 @@ feature {NONE} -- Implementation
 				Result := null_constant
 			end
 		end
-		
+
 	command_width : INTEGER = 30
 	sql_error (stmt : ECLI_STATUS) : STRING
-			-- 
+			--
 		do
 			Result := sql_error_msg (stmt, Void)
 		end
-		
-	sql_error_msg (stmt : ECLI_STATUS; msg : STRING) : STRING
+
+	sql_error_msg (stmt : ECLI_STATUS; msg : detachable STRING) : STRING
 		do
 			create Result.make (0)
 			Result.append_string ("* ERROR")
@@ -127,7 +138,7 @@ feature {NONE} -- Implementation
 			Result.append_string (";MESSAGE:")
 			Result.append_string (stmt.diagnostic_message)
 		end
-	
+
 	null_constant : STRING = "NULL"
-	
+
 end -- class ISQL_COMMAND

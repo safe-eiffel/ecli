@@ -17,7 +17,7 @@ note
 		% or column-wise binding of parameters for modifications.%
 		% Access modes: direct ('item_at'), linear ('start', 'forth', 'item')."
 
-deferred class ECLI_GENERIC_ARRAYED_VALUE [G]
+deferred class ECLI_GENERIC_ARRAYED_VALUE [G -> attached ANY]
 
 inherit
 

@@ -32,6 +32,7 @@ feature -- Initialization
 			enable_ecma367v2
 			feature_make (new_name)
 			set_type (new_type)
+			create value.make_empty
 		end
 
 feature -- Access
@@ -64,14 +65,14 @@ feature -- Basic operations
 			-- Print source code representation of this attribute on 'output'
 		do
 			output.put_string ("%T" + name + ": " + type)
-			if value /= Void then
+			if not value.is_empty then
 				if is_ecma367v2 then
 					output.put_string (" = " + value)
 				else
 					output.put_string (" is " + value)
 				end
 			end
-			if comment /= Void then
+			if not comment.is_empty then
 				output.put_new_line
 				output.put_string ("%T%T%T-- "+comment)
 			end

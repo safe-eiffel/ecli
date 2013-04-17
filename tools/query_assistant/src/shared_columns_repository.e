@@ -12,11 +12,13 @@ feature -- Access
 	shared_columns_repository : COLUMNS_REPOSITORY
 			-- shared columns repository object
 		do
-			Result := columns_repository_cell.item	
+			check attached columns_repository_cell.item as l_result then
+				Result := l_result
+			end
 		ensure
 			repository_not_void: Result /= Void
 		end
-		
+
 feature -- Element change
 
 	set_shared_columns_repository (new_columns_repository : COLUMNS_REPOSITORY)
@@ -31,10 +33,10 @@ feature -- Element change
 
 feature -- Implementation
 
-	columns_repository_cell : DS_CELL[COLUMNS_REPOSITORY]
-			-- 
+	columns_repository_cell : DS_CELL[detachable COLUMNS_REPOSITORY] 
+			--
 		once
 			create Result.make (Void)
 		end
-		
+
 end -- class SHARED_COLUMNS_REPOSITORY
