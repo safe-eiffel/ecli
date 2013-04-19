@@ -16,7 +16,6 @@
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
 		<option name="garbage_collector" value="none"/>
-		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
@@ -26,9 +25,6 @@
 	<option if="${GOBO_DOTNET}">
 		<option name="msil_generation" value="true"/>
 		<option name="line_generation" value="true"/>
-	</option>
-	<option if="${GOBO_EIFFEL}=se">
-		<option name="warning" value="none"/>
 	</option>
 
 	<cluster name="data_tester" location="${ECLI}/test/data"/>

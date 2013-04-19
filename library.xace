@@ -8,16 +8,15 @@
 			Xace file for the ECLI Library.
 			Variables used: %
 			 * ECLI			Path of ECLI library
-			 * ECLI_C_BCCDIR	directory where bcc resides if it is used
-			 * GOBO_CC		type of C compiler; values (bcc|msc|lcc|gcc)
+			 * GOBO_CC		type of C compiler; values (msc|gcc)
 			 * GOBO_OS		Operating system; values (windows|linux)
-			 * GOBO_EIFFEL		Eiffel compiler (ise|ve)
+			 * GOBO_EIFFEL		Eiffel compiler (ise|ge)
 			 * SAFE_KERNEL		path of SAFE kernel
 			]
 
 
 		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-		Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
+		Copyright: "Copyright (c) 2001-2013, Paul G. Crismer and others"
 		license: "Eiffel Forum License v2 (see forum.txt)"
 		date: "$Date$"
 
@@ -45,23 +44,16 @@
 			<option name="link" value="-lodbcinst"/>
 		</option>
 		<option if="${GOBO_OS}=windows">
-			<option name="c_compiler_options" value="-I${ECLI}/src/spec/C"/>
-			<option name="c_compiler_options" value="-I${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}"/>
-			<option name="link" value="${ECLI}\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\ecli_${GOBO_CC}.lib"/>
-			<option name="link" value="${ODBC32LIBPATH}ODBC32.lib" unless="${GOBO_CC}=bcc"/>
-			<option name="link" value="${ODBCCP32LIBPATH}ODBCCP32.lib" unless="${GOBO_CC}=bcc"/>
+			<option name="c_compiler_options" value="-I&quot;${ECLI}/src/spec/C&quot;"/>
+			<option name="c_compiler_options" value="-I&quot;${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}&quot;"/>
+			<option name="link" value="&quot;${ECLI}\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\ecli_${GOBO_CC}.lib&quot;"/>
+			<option name="link" value="&quot;${ODBC32LIBPATH}ODBC32.lib&quot;" unless="${GOBO_CC}=bcc"/>
+			<option name="link" value="&quot;${ODBCCP32LIBPATH}ODBCCP32.lib&quot;" unless="${GOBO_CC}=bcc"/>
 			<option name="link" value="-lodbc32" if="${GOBO_CC}=gcc"/>
 		</option>
 	</cluster>
 
 	<mount location="${SAFE_KERNEL}/library.xace"/>
 	<mount location="${GOBO}/library/kernel.xace"/>
-<!--	<mount location="${GOBO}/library/kernel/library.xace"/>
-	<mount location="${GOBO}/library/structure/library.xace"/>
-	<mount location="${GOBO}/library/time/library.xace"/>
-	<mount location="${GOBO}/library/utility/library.xace"/>
-	<mount location="${GOBO}/library/regexp/library.xace"/>
-	<mount location="${GOBO}/library/math/library.xace"/>
-	<mount location="${GOBO}/library/string/library.xace"/> -->
 	<mount location="${GOBO}/library/library.xace"/>
 </library>

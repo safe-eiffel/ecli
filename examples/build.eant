@@ -71,13 +71,18 @@
 		</description>
 
 		<geant file="build.eant" target="${target}" dir="control"/>
+		<geant file="build.eant" target="${target}" dir="guisql"/>
 		<geant file="build.eant" target="${target}" dir="qa_example"/>
 		<geant file="build.eant" target="${target}" dir="test1"/>
 		<geant file="build.eant" target="${target}" dir="test_decimal"/>
+		<geant file="build.eant" target="${target}" dir="test_gc"/>
 		<geant file="build.eant" target="${target}" dir="test_procedures"/>
 		<geant file="build.eant" target="${target}" dir="test_rowset"/>
 		<geant file="build.eant" target="${target}" dir="test_safechars"/>
 		<geant file="build.eant" target="${target}" dir="test_values"/>
+		<geant file="build.eant" target="${target}" dir="test_Xaction"/>
+		<geant file="build.eant" target="${target}" dir="voidsafety-migration"/>
+
 </target>
 
 </project>

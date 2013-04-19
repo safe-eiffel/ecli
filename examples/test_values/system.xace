@@ -13,20 +13,17 @@
 	</description>
 
 	<root class="TEST_VALUES" creation="make"/>
-<option name="void_safety" value="on_demand"/>
-<option name="attached_by_default" value="true"/>
-<option name="full_class_checking" value="true"/>
+
+	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
 
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
-		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
 		<option name="finalize" value="false"/>
-	</option>
-	<option if="${GOBO_OS}=windows">
-		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
 	</option>
 
 	<cluster name="test1" location="${ECLI}/examples/test_values"/>

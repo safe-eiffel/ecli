@@ -1,6 +1,6 @@
 note
 
-	description:
+	description: "Cursors over SQL query result set. Starting iteration creates `results' object through `create_buffers'."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"

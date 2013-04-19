@@ -13,12 +13,12 @@
 				<platform value="windows"/>
 			</condition>
 		</external_library>
-		<external_library location="$(ODBC32LIBPATH)ODBC32.lib">
+		<external_library location="&quot;$(ODBC32LIBPATH)ODBC32.lib&quot;">
 			<condition>
 				<platform value="windows"/>
 			</condition>
 		</external_library>
-		<external_library location="$(ODBCCP32LIBPATH)ODBCCP32.lib">
+		<external_library location="&quot;$(ODBCCP32LIBPATH)ODBCCP32.lib&quot;">
 			<condition>
 				<platform value="windows"/>
 			</condition>
