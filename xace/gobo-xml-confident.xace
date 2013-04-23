@@ -10,8 +10,8 @@
 		revision: "$Revision$"
 	</description>
 <!-- FIXME TODO -->
-	<mount location="${ECLI}/xace/gobo-xm_core-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-xm_xslt-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-xm_xpath-voidconfident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_core-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_xslt-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_xpath-confident.xace"/>
 
 </library>

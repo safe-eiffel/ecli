@@ -18,7 +18,7 @@
 		<cluster name="generation"/>
 		<cluster name="lex"/>
 		<cluster name="regexp">
-			<mount location="${ECLI}/xace/gobo-regexp-voidconfident.xace"/>
+			<mount location="${ECLI}/xace/gobo-regexp-confident.xace"/>
 		</cluster>
 		<cluster name="scanner"/>
 		<cluster name="skeleton"/>

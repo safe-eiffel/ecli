@@ -26,7 +26,7 @@
 	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
 	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
 	
-	<mount location="${ECLI}/library-voidconfident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library-confident.xace" if="${VOIDCONFIDENT}=true"/>
 	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
 
 </system>

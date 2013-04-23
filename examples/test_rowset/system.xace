@@ -28,6 +28,6 @@
 
 	<cluster name="test_rowset" location="${ECLI}/examples/test_rowset"/>
 
-	<mount location="${ECLI}/library-voidconfident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library-confident.xace" if="${VOIDCONFIDENT}=true"/>
 	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
 </system>

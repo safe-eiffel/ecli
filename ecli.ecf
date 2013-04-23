@@ -13,12 +13,12 @@
 				<platform value="windows"/>
 			</condition>
 		</external_library>
-		<external_library location="&quot;$(ODBC32LIBPATH)ODBC32.lib&quot;"/>
+		<external_library location="&quot;$(ODBC32LIBPATH)ODBC32.lib&quot;">
 			<condition>
 				<platform value="windows"/>
 			</condition>
 		</external_library>
-		<external_library location="&quot;$(ODBCCP32LIBPATH)ODBCCP32.lib&quot;"/>
+		<external_library location="&quot;$(ODBCCP32LIBPATH)ODBCCP32.lib&quot;">
 			<condition>
 				<platform value="windows"/>
 			</condition>
@@ -30,7 +30,7 @@
 		</external_library>
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
 		<library name="gobo-core" location="$GOBO\library\gobo-core.ecf"/>
-		<library name="gobo-kernel" location="$GOBO\library\kernel\gobo-kernel.ecf"/>
+		<library name="gobo-kernel" location="$GOBO\library\kernel\library.ecf"/>
 		<library name="gobo-math" location="$GOBO\library\math\gobo-math.ecf"/>
 		<library name="gobo-structure" location="$GOBO\library\structure\gobo-structure.ecf"/>
 		<library name="gobo-time" location="$GOBO\library\time\gobo-time.ecf"/>

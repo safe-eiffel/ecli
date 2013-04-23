@@ -28,6 +28,6 @@
 		<cluster name="core" />
 	</cluster>
 
-	<mount location="${ECLI}/xace/gobo-xm_core-voidconfident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_core-confident.xace"/>
 
 </library>

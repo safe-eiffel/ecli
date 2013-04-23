@@ -26,7 +26,7 @@
 		<cluster name="xslt_serializer" location="serializer" relative="true"/>
 	</cluster>
 
-	<mount location="${ECLI}/xace/gobo-xm_core-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-xm_xpath-voidconfident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_core-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_xpath-confident.xace"/>
 
 </library>

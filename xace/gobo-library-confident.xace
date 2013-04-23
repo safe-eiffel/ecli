@@ -10,20 +10,20 @@
 		revision: "$Revision$"
 	</description>
 
-	<mount location="${ECLI}/xace/gobo-argument-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-kl_kernel-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-lexical-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-math-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-parse-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-pattern-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-regexp-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-string-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-structure-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-test-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-time-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-tools-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-utility-voidconfident.xace"/>
-	<mount location="${ECLI}/xace/gobo-xml-voidconfident.xace"/>
+	<mount location="${ECLI}/xace/gobo-argument-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-kl_kernel-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-lexical-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-math-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-parse-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-pattern-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-regexp-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-string-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-structure-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-test-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-time-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-tools-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-utility-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xml-confident.xace"/>
 
 <!--	<mount location="${GOBO}/library/argument/library.xace"/>
 	<mount location="${GOBO}/library/kernel/library.xace"/>

@@ -1,16 +1,52 @@
 <?xml version="1.0"?>
-<library name="ecli-confident">
+
+<library name="ecli" prefix="ecli_">
+
 	<description>
-		description: "ECLI with void-confident settings"
-		copyright: "Copyright (c) 2001-2013, Paul-G. Crismer and others"
-		license: "Eiffel Forum version 2"
+		description:[
+
+			Xace file for the ECLI Library.
+			Variables used: %
+			 * ECLI			Path of ECLI library
+			 * ECLI_C_BCCDIR	directory where bcc resides if it is used
+			 * GOBO_CC		type of C compiler; values (bcc|msc|lcc|gcc)
+			 * GOBO_OS		Operating system; values (windows|linux)
+			 * GOBO_EIFFEL		Eiffel compiler (ise|ve)
+			 * SAFE_KERNEL		path of SAFE kernel
+			]
+
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
 		date: "$Date$"
-		revision: "$Revision$"
+
 	</description>
 
-	<cluster name="ecli_confident">
+	<cluster name="ecli-confident">
 		<option name="ecf_library" value="${ECLI}/ecli-confident.ecf"/>
-		<option name="recursive" value="true"/>
-		<option name="read_only" value="true"/>
+	</cluster>
+	
+	<cluster name="base-safe">
+		<option name="ecf_library" value="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+	</cluster>
+
+	<cluster name="gobo-core-confident">
+		<option name="ecf_library" value="$GOBO\library\gobo-core-confident.ecf"/>
+	</cluster>
+	<cluster name="gobo-kernel-safe">
+		<option name="ecf_library" value="$GOBO\library\kernel\library-safe.ecf"/>
+	</cluster>
+	<cluster name="gobo-math-safe">
+		<option name="ecf_library" value="$GOBO\library\math\gobo-math-safe.ecf"/>
+	</cluster>
+	<cluster name="gobo-structure-confident">
+		<option name="ecf_library" value="$GOBO\library\structure\gobo-structure-confident.ecf"/>
+	</cluster>
+	<cluster name="gobo-time-confident">
+		<option name="ecf_library" value="$GOBO\library\time\gobo-time-confident.ecf"/>
+	</cluster>
+	<cluster name="safe-kernel-external-confident">
+		<option name="ecf_library" value="$SAFE_KERNEL\safe-kernel-external-confident.ecf"/>
 	</cluster>
 </library>

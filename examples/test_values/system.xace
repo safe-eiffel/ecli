@@ -28,6 +28,6 @@
 
 	<cluster name="test1" location="${ECLI}/examples/test_values"/>
 
-	<mount location="${ECLI}/library-voidconfident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library-confident.xace" if="${VOIDCONFIDENT}=true"/>
 	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
 </system>
