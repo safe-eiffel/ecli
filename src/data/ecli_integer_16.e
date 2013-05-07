@@ -212,16 +212,19 @@ feature -- Conversion
 	as_date : DT_DATE
 			-- Current converted to DATE
 		do
+			create Result.make_from_day_count (0)
 		end
 
 	as_time : DT_TIME
 			-- Current converted to DT_TIME
 		do
+			create Result.make_from_second_count (0)
 		end
 
 	as_timestamp : DT_DATE_TIME
 			-- Current converted to DT_DATE_TIME
 		do
+			create Result.make_from_epoch (0)
 		end
 
 feature -- Duplication

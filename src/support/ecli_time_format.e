@@ -1,7 +1,7 @@
 note
 
 	description:
-	
+
 			"Time formats, ISO specification."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -14,9 +14,22 @@ class ECLI_TIME_FORMAT
 inherit
 
 	ECLI_FORMAT [DT_TIME]
-	
+		redefine
+			default_create
+		end
+
 	ECLI_ISO_FORMAT_CONSTANTS
-	
+		undefine
+			default_create
+		end
+
+feature {} -- Initialization
+
+	default_create
+		do
+			create last_result.make_from_second_count (0)
+		end
+
 feature -- Access
 
 feature -- Measurement
@@ -45,7 +58,7 @@ feature -- Element change
 				last_result.set_millisecond (fraction)
 			end
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -61,7 +74,7 @@ feature -- Conversion
 			Result.append_string (time_to_string (value))
 			Result.append_string ("'}")
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -87,7 +100,7 @@ feature {NONE} -- Implementation
 
 	ifmt : ECLI_FORMAT_INTEGER
 		once create Result end
-	
+
 	regex_component_count : INTEGER = 4
-	
+
 end

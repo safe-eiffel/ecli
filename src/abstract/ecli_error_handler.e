@@ -1,8 +1,12 @@
 note
-	description: "Object that report errors or diagnostics."
-	author: "Paul G. Crismer"
+	description:
+
+		"Objects that report diagnostics on ECLI/ODBC operations."
+
+	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	ECLI_ERROR_HANDLER
@@ -19,7 +23,7 @@ create
 feature -- Basic operations
 
 	report_row_success_with_info (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING)
-			--
+			-- Report row operation success with information.
 		do
 			if info_file /= null_output_stream then
 				report_info_message ("[ECLI-I-ROWSUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
@@ -27,6 +31,7 @@ feature -- Basic operations
 		end
 
 	report_success_with_info (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING)
+			-- Report success with information.
 		do
 			if info_file /= null_output_stream then
 				report_info_message ("[ECLI-I-SUCCESS]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
@@ -34,6 +39,7 @@ feature -- Basic operations
 		end
 
 	report_error (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING)
+			-- Report error.
 		do
 			if error_file /= null_output_stream then
 				report_error_message ("[ECLI-E-ERROR]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
@@ -41,9 +47,10 @@ feature -- Basic operations
 		end
 
 	report_diagnostics (status : INTEGER; last_external_feature, cli_state : STRING; native_code : INTEGER; diagnostic_message : STRING)
+			-- Report status for internal ODBC operation.
+			-- Extension point to catch precise diagnostics or database specific information.
 		do
 			do_nothing
---			report_info_message ("[ECLI-I-DIAG]" + formatted_message (last_external_feature, native_code, cli_state, diagnostic_message))
 		end
 
 feature {} -- Implementation
@@ -60,5 +67,6 @@ feature {} -- Implementation
 			Result.append_character ('%N')
 			Result.append_string ("MSG   : ")
 			Result.append_string (diagnostic_message)
+			Result.append_string ("%N")
 		end
 end

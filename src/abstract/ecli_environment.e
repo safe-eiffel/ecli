@@ -2,10 +2,12 @@ note
 
 	description:
 
-		"Encapsulation of CLI environment.%
-				% There should be a single object of this type in a system.%
-				% This object is a handle to the CLI facilities : it is the first%
-				% CLI object to be created, and the last to be deleted."
+		"[
+		Encapsulation of CLI environment.
+		There should be a single object of this type in a system.
+		This object is a handle to the CLI facilities : it is the first
+		CLI object to be created, and the last to be deleted.
+		]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
@@ -17,10 +19,19 @@ class ECLI_ENVIRONMENT
 inherit
 
 	ECLI_HANDLE
+		undefine
+			default_create
+		end
 
 	ECLI_EXTERNAL_API
+		undefine
+			default_create
+		end
 
 	ECLI_STATUS
+		redefine
+			default_create
+		end
 
 	PAT_PUBLISHER [ECLI_SESSION]
 		rename
@@ -28,14 +39,15 @@ inherit
 			unsubscribe as unregister_session,
 			has_subscribed as is_registered_session,
 			subscribers as sessions,
-			impl_subscribers as impl_sessions,
 			count as sessions_count
 		export
 			{ECLI_SESSION}
 				register_session,
 				unregister_session,
 				is_registered_session
-			end
+		redefine
+			default_create
+		end
 
 create
 
@@ -48,11 +60,18 @@ feature {NONE} -- Initialization
 		local
 			ext_handle : XS_C_POINTER
 		do
+			default_create
 			create error_handler.make_null
 			-- | Actual allocation of CLI handle
 			create ext_handle.make
 			set_status_without_report ("ecli_c_allocate_environment", ecli_c_allocate_environment (ext_handle.handle))
 			handle := ext_handle.item
+		end
+
+	default_create
+		do
+			Precursor {ECLI_STATUS}
+			Precursor {PAT_PUBLISHER}
 		end
 
 feature -- Basic operations

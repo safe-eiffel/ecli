@@ -50,6 +50,8 @@ feature -- Access
 			if not is_null_at (index) then
 				Result := Precursor (index)
 				format (Result)
+			else
+				Result := ""
 			end
 		ensure then
 			Result.count = content_count
@@ -82,7 +84,7 @@ feature {NONE} -- Implementation
 	format (s : STRING)
 			-- format 's' according to 'capacity'
 		require
-			s_not_void: s /= Void
+			s_not_void: s /= Void --FIXME: VS-DEL
 		do
 			if s.count > content_count then
 				s.keep_head (content_capacity)

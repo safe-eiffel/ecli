@@ -24,10 +24,14 @@ inherit
 			{NONE} row_cursor_make, row_cursor_open
 		redefine
 			start, value_anchor, create_row_buffers, fill_results,
-			fetch_next_row, buffer_factory, create_buffer_factory
+			fetch_next_row, buffer_factory, create_buffer_factory,
+			default_create
 		end
 
 	ECLI_ROWSET_CAPABLE
+		undefine
+			default_create
+		end
 
 create
 
@@ -37,9 +41,10 @@ feature -- Initialization
 
 	make, open (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER)
 		require
-			session_connected: a_session /= Void and then a_session.is_connected
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
+			a_session_connected: a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			definition_not_void: a_definition /= Void
+			definition_not_void: a_definition /= Void --FIXME: VS-DEL
 			row_count_valid: a_row_capacity >= 1
 		do
 			row_capacity := a_row_capacity
@@ -57,9 +62,10 @@ feature -- Initialization
 	make_prepared, open_prepared (a_session : ECLI_SESSION; a_definition : STRING; a_row_capacity : INTEGER)
 			-- make prepared cursor for `a_session' on `a_definition', for fetching at most `a_row_capacity' at a time
 		require
-			session_connected: a_session /= Void and then a_session.is_connected
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
+			a_session_connected: a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			definition_not_void: a_definition /= Void
+			definition_not_void: a_definition /= Void --FIXME: VS-DEL
 			row_count_valid: a_row_capacity >= 1
 		do
 			make (a_session, a_definition, a_row_capacity)
@@ -77,11 +83,11 @@ feature -- Initialization
 	make_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory : like buffer_factory)
 			-- Make cursor on `a_session' for `sql_definition', using `a_buffer_factory'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			sql_definition_not_void: sql_definition /= Void
-			a_buffer_factory_not_void: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void --FIXME: VS-DEL
+			a_buffer_factory_not_void: a_buffer_factory /= Void --FIXME: VS-DEL
 		do
 			row_capacity := a_row_capacity
 			make_row_count_capable
@@ -98,11 +104,11 @@ feature -- Initialization
 	make_prepared_with_buffer_factory (a_session : ECLI_SESSION; sql_definition : STRING; a_row_capacity : INTEGER; a_buffer_factory :  like buffer_factory)
 			-- Make cursor on `a_session' for prepared `sql_definition', using `a_buffer_factory'
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
 			session_handles_arrayed_results: a_session.is_bind_arrayed_results_capable
-			sql_definition_not_void: sql_definition /= Void
-			a_buffer_factory_not_void: a_buffer_factory /= Void
+			sql_definition_not_void: sql_definition /= Void --FIXME: VS-DEL
+			a_buffer_factory_not_void: a_buffer_factory /= Void --FIXME: VS-DEL
 		do
 			make_with_buffer_factory (a_session, sql_definition, a_row_capacity, a_buffer_factory)
 			prepare
@@ -115,9 +121,15 @@ feature -- Initialization
 			prepared_if_ok: is_ok implies is_prepared
 		end
 
+	default_create
+		do
+			Precursor  {ECLI_ROW_CURSOR}
+			create status_array.make_filled (0, 1, row_capacity)
+		end
+
 feature -- Access
 
-	value_anchor : ECLI_ARRAYED_VALUE
+	value_anchor : detachable ECLI_ARRAYED_VALUE
 
 	buffer_factory : ECLI_ARRAYED_BUFFER_FACTORY
 
@@ -129,7 +141,7 @@ feature -- Basic operations
 			physical_fetch_count := 0; fetch_increment := 0
 			Precursor
 		ensure then
-			results_exists: (is_executed and then has_result_set) implies (results /= Void and then results.count = result_columns_count)
+			results_exists: (is_executed and then has_result_set) implies (results /= Void and then results.count = result_columns_count) -- FIXME: VS-MOD (suppress 'results /= Void')
 			fetched_columns_count_set: (is_executed and then has_result_set) implies (fetched_columns_count = result_columns_count.min (results.count))
 		end
 
@@ -144,7 +156,7 @@ feature {NONE} -- Implementation
 			-- Create `cursor' array filled with ECLI_VALUE descendants
 		do
 			Precursor
-			if results /= Void then
+			if not results.is_empty then
 				bind_results
 			end
 		end

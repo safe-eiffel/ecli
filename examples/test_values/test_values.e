@@ -20,12 +20,12 @@ feature
 	% The quick brown fox jumps over the lazy dog.%
 	% The quick brown fox jumps over the lazy dog."
 
-	factory : ECLI_VALUE_FACTORY
+--	factory : ECLI_VALUE_FACTORY
 
-	arrayed_factory : ECLI_ARRAYED_VALUE_FACTORY
+--	arrayed_factory : ECLI_ARRAYED_VALUE_FACTORY
 
-	string_file : KL_STRING_INPUT_FILE
-	
+--	string_file : KL_STRING_INPUT_FILE
+
 	do_tests
 			-- run test on ECLI_VALUE descendants
 		do

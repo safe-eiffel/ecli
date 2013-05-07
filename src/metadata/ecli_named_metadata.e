@@ -13,9 +13,9 @@ class ECLI_NAMED_METADATA
 
 inherit
 
-	ANY
+	ECLI_NAMED_METADATA_PATTERN
 		redefine
-			out
+			make, name
 		end
 
 create
@@ -24,25 +24,13 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_catalog, a_schema, a_name : STRING)
+	make (a_catalog, a_schema : detachable STRING; a_name : STRING)
 			-- make for `a_catalog', `a_schema', `a_name'
 		do
-			catalog := a_catalog
-			schema := a_schema
-			name := a_name
-		ensure
-			catalog_assigned: catalog = a_catalog
-			schema_assigned: schema = a_schema
-			name_assigned: name = a_name
+			Precursor (a_catalog, a_schema, a_name)
 		end
 
 feature -- Access
-
-	catalog : STRING
-			-- catalog name
-
-	schema : STRING
-			-- schema name
 
 	name : STRING
 			-- table, column, or procedure name
@@ -52,7 +40,7 @@ feature -- Element change
 	set_catalog (value : ECLI_VARCHAR)
 			-- set `catalog' wit `value'
 		require
-			value: value /= Void
+			value: value /= Void --FIXME: VS-DEL
 		do
 			if not value.is_null then
 				catalog := value.as_string
@@ -67,7 +55,7 @@ feature -- Element change
 	set_schema (value : ECLI_VARCHAR)
 			-- set `schema' with `value'
 		require
-			value: value /= Void
+			value: value /= Void --FIXME: VS-DEL
 		do
 			if not value.is_null then
 				schema := value.as_string
@@ -82,7 +70,8 @@ feature -- Element change
 	set_name (value : ECLI_VARCHAR)
 			-- set `name' with `value'
 		require
-			value: value /= Void and then not value.is_null
+			value_not_void: value /= Void --FIXME: VS-DEL
+			value_not_null: not value.is_null
 		do
 			name := value.as_string
 		ensure
@@ -91,25 +80,6 @@ feature -- Element change
 
 feature -- Conversion
 
-	out : STRING
-			-- terse printable representation
-		do
-			create Result.make (0)
-			append_to_string (Result, catalog) Result.append_string ("%T")
-			append_to_string (Result, schema) Result.append_string ("%T")
-			append_to_string (Result, name)
-		end
-
 feature {NONE} -- Implementation
-
-	append_to_string (dest, src : STRING)
-			--
-		do
-			if src = Void then
-				dest.append_string ("NULL")
-			else
-				dest.append_string (src)
-			end
-		end
 
 end

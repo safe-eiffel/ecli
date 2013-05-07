@@ -11,7 +11,7 @@
 	</description>
 
 	<inherit>
-		<parent location="${GOBO}/misc/eiffel.eant">
+		<parent location="${ECLI}/misc/build.eant">
 			<redefine target="init_system"/>
 		</parent>
 	</inherit>

@@ -19,17 +19,25 @@ inherit
 		export
 			{ANY} close
 		redefine
-			start, forth, create_buffers, definition
+			start, forth, create_buffers, definition, default_create
 		end
 
 feature {NONE} -- Initialization
 
-	make (criteria : ECLI_NAMED_METADATA; a_session : ECLI_SESSION)
+	default_create
+		do
+			Precursor
+			create queried_catalog_impl.make (20)
+			create queried_schema_impl.make (20)
+			create queried_name_impl.make (20)
+		end
+
+	make (criteria : ECLI_NAMED_METADATA_PATTERN; a_session : ECLI_SESSION)
 			-- Create cursor on items matching `criteria'
 			-- Void values for criteria.catalog, criteria.schema, criteria.name can be Void are 'wildcards'
 		require
-			criteria_not_void: criteria /= Void
-			a_session_not_void: a_session /= Void
+			criteria_not_void: criteria /= Void  --FIXME: VS-DEL
+			a_session_not_void: a_session /= Void --FIXME: VS-DELid
 			a_session_connected: a_session.is_connected
 		local
 			catalog_length, schema_length, name_length : INTEGER
@@ -37,19 +45,19 @@ feature {NONE} -- Initialization
 		do
 			cursor_make (a_session)
 			set_metadata_id
-			if criteria.catalog /= Void then
-				create queried_catalog_impl.make_from_string (criteria.catalog)
+			if attached criteria.catalog as cat then
+				create queried_catalog_impl.make_from_string (cat)
 				catalog_length := criteria.catalog.count
 				p_catalog := queried_catalog_impl.handle
 			end
-			if criteria.schema /= Void then
-				create queried_schema_impl.make_from_string (criteria.schema)
+			if attached criteria.schema as sc then
+				create queried_schema_impl.make_from_string (sc)
 				schema_length := criteria.schema.count
 				p_schema := queried_schema_impl.handle
 			end
-			if criteria.name /= Void then
-				create queried_name_impl.make_from_string (criteria.name)
-				name_length := criteria.name.count
+			if attached criteria.name as nm then
+				create queried_name_impl.make_from_string (nm)
+				name_length := nm.count
 				p_name := queried_name_impl.handle
 			end
 			set_status (query_metadata_feature_name,
@@ -60,14 +68,14 @@ feature {NONE} -- Initialization
 			update_state_after_execution
 		ensure
 			executed: is_ok implies is_executed
-			queried_catalog_set: criteria.catalog /= Void implies queried_catalog.is_equal (criteria.catalog)
-			queried_schema_set: criteria.schema /= Void implies queried_schema.is_equal (criteria.schema)
-			queried_name_set: criteria.name /= Void implies queried_name.is_equal (criteria.name)
+			queried_catalog_set: criteria.catalog /= Void implies equal (queried_catalog, criteria.catalog)
+			queried_schema_set: criteria.schema /= Void implies equal (queried_schema, criteria.schema)
+			queried_name_set: criteria.name /= Void implies equal (queried_name, criteria.name)
 		end
 
 feature -- Access
 
-	queried_catalog : STRING
+	queried_catalog : detachable STRING
 			-- queried catalog name
 		do
 			if queried_catalog_impl /= Void then
@@ -75,15 +83,15 @@ feature -- Access
 			end
 		end
 
-	queried_schema : STRING
+	queried_schema : detachable STRING
 			-- queried schema name
 		do
-			if queried_name_impl /= Void then
+			if queried_schema_impl /= Void then
 				Result := queried_schema_impl.as_string
 			end
 		end
 
-	queried_name : STRING
+	queried_name : detachable STRING
 			-- queried name (table, column or procedure)
 		do
 			if queried_name_impl /= Void then
@@ -96,9 +104,11 @@ feature -- Access
 		require
 			not_off: not off
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		ensure
-			definition: Result /= Void
+			definition: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Status report
@@ -118,7 +128,7 @@ feature -- Cursor Movement
 	start
 			-- advance cursor at first item if any
 		do
-			if results  = Void then
+			if results.is_empty then
 				create_buffers
 			end
 			statement_start --Precursor
@@ -150,7 +160,7 @@ feature {NONE} -- Implementation
 		deferred
 		end
 
-	impl_item : like item
+	impl_item : detachable like item
 
 	definition : STRING
 			-- definition of query
@@ -185,7 +195,7 @@ feature {NONE} -- Implementation
 			-- query metadata feature name
 		deferred
 		ensure
-			query_metadata_feature_name_not_void: Result /= Void
+			query_metadata_feature_name_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	queried_catalog_impl : XS_C_STRING

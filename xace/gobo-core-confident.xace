@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<library name="gobo-core-confident">
+
+	<description>
+		description: "Xace file for Gobo kernel"
+		copyright: "Copyright (c) 2001-2008, Eric Bezault and others"
+		license: "MIT License"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<cluster name="gobo-core-confident">
+		<option name="ecf_library" value="$GOBO\library\gobo-core-confident.ecf"/>
+	</cluster>
+	<cluster name="gobo-kernel-safe">
+		<option name="ecf_library"  value="$GOBO\library\kernel\library.ecf"/>
+	</cluster>
+	<cluster name="gobo-math-safe">
+		<option name="ecf_library"  value="$GOBO\library\math\gobo-math-safe.ecf"/>
+	</cluster>
+	<cluster name="gobo-structure-confident">
+		<option name="ecf_library"  value="$GOBO\library\structure\gobo-structure-confident.ecf"/>
+	</cluster>
+	<cluster name="gobo-time-confident">
+		<option name="ecf_library"  value="$GOBO\library\time\gobo-time-confident.ecf"/>
+	</cluster>
+
+</library>

@@ -35,17 +35,17 @@ feature -- Access
 
 	error_handler : QA_ERROR_HANDLER
 
-	last_result_set : RESULT_SET
+	last_result_set : detachable RESULT_SET
 
-	last_parameter_set: PARAMETER_SET
+	last_parameter_set: detachable PARAMETER_SET
 
-	last_access : RDBMS_ACCESS
+	last_access : detachable RDBMS_ACCESS
 
 	parameter_map : PARAMETER_MAP
 
 feature {NONE} -- Access
 
-	last_parameter : RDBMS_ACCESS_PARAMETER
+	last_parameter : detachable RDBMS_ACCESS_PARAMETER
 
 feature -- Status report
 
@@ -60,9 +60,8 @@ feature -- Basic operations
 			element_not_void: element /= Void
 			element_name_access: element.name.string.is_equal (t_access)
 		local
-			name_att, type_att : XM_ATTRIBUTE
-			name : STRING
-			description, query : XM_ELEMENT
+			name_att, type_att : detachable XM_ATTRIBUTE
+			name : detachable STRING
 			module_type : ACCESS_TYPE
 		do
 			is_error := False
@@ -80,22 +79,22 @@ feature -- Basic operations
 				is_error := True
 			else
 				name := name_att.value
---				type := type_att.value
+--vs				type := type_att.value
 				if name /= Void then --and type /= Void then
-					if element.has_element_by_name (t_sql) then
-						query := element.element_by_name (t_sql)
+					if attached {XM_ELEMENT} element.element_by_name (t_sql) as query then
+--vs						query := element.element_by_name (t_sql)
 						create last_access.make (module_name (name), query.text.string)
 						last_access.enable_generatable
-						if element.has_element_by_name (t_description) then
-							description := element.element_by_name (t_description)
+						if attached element.element_by_name (t_description) as description then
+--vs							description := element.element_by_name (t_description)
 							last_access.set_description (description.text.string)
 						end
-						if element.has_element_by_name (t_parameter_set) then
-							if element.has_element_by_name (t_parameter) then
+						if attached {XM_ELEMENT} element.element_by_name (t_parameter_set) as l_parameter_set then
+							if not element.has_element_by_name (t_parameter) then
+								create_parameter_set (l_parameter_set, parameter_set_name (name))
+							else
 								error_handler.report_exclusive_element (name, "parameter", "parameter_set", "access")
 								is_error := True
-							else
-								create_parameter_set (element.element_by_name (t_parameter_set), parameter_set_name (name))
 							end
 						else
 							create last_parameter_set.make (parameter_set_name (name))
@@ -103,27 +102,27 @@ feature -- Basic operations
 								populate_parameter_set (element)
 							end
 						end
-						if element.has_element_by_name (t_result_set) then
-							create_result_set (element.element_by_name (t_result_set), result_set_name (name))
+						if attached element.element_by_name (t_result_set) as l_result_set then
+							create_result_set (l_result_set, result_set_name (name))
 						end
 						-- analyze SQL and infer parameter_set
 						fill_parameter_set (last_access.query)
-						if last_parameter_set /= Void then
-							if last_parameter_set.is_generatable then
-								last_access.set_parameters (last_parameter_set)
+						if attached last_parameter_set as l_last_parameter_set then
+							if l_last_parameter_set.is_generatable then
+								last_access.set_parameters (l_last_parameter_set)
 							else
 								last_access.disable_generatable
 							end
 						end
-						if last_result_set /= Void then
-							if last_result_set.is_generatable then
-								last_access.set_results (last_result_set)
+						if attached last_result_set as l_last_result_set then
+							if l_last_result_set.is_generatable then
+								last_access.set_results (l_last_result_set)
 							else
 								last_access.disable_generatable
 							end
 						end
-						if type_att /= Void then
-							create module_type.make_from_string (type_att.value)
+						if attached type_att as l_type_att then
+							create module_type.make_from_string (l_type_att.value)
 							last_access.set_type (module_type)
 						end
 					else
@@ -145,10 +144,12 @@ feature -- Basic operations
 		local
 			name, parent : STRING
 		do
+			name := ""
+			parent := ""
 			if element.has_attribute_by_name (t_name) then
 				name := element.attribute_by_name (t_name).value.string
 			end
-			if name = Void or else name.is_empty then
+			if name.is_empty then
 				name := default_name
 			end
 			if element.has_attribute_by_name (t_extends) then
@@ -177,10 +178,12 @@ feature -- Basic operations
 		local
 			name, parent : STRING
 		do
+			name := ""
+			parent := ""
 			if element.has_attribute_by_name (t_name) then
 				name := element.attribute_by_name (t_name).value.string
 			end
-			if name = Void or else name.is_empty then
+			if name.is_empty then
 				name := default_name
 			end
 			if element.has_attribute_by_name (t_extends) then
@@ -233,20 +236,20 @@ feature {NONE} -- Implementation
 			element_not_void: element /= Void
 			element_has_parameter_element: element.has_element_by_name (t_parameter)
 		local
- 			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			parameter : XM_ELEMENT
+ 			parameter_cursor : DS_LINEAR_CURSOR [detachable XM_NODE]
+--			parameter : XM_ELEMENT
 		do
 			from
-				parameter_cursor := element.new_cursor
+				parameter_cursor := element.new_cursor.as_attached
 				parameter_cursor.start
 			until
 				parameter_cursor.off
 			loop
-				parameter ?= parameter_cursor.item
-				if parameter /= Void and then parameter.name.string.is_equal (t_parameter) then
+--				parameter ?= parameter_cursor.item
+				if attached {XM_ELEMENT}parameter_cursor.item as parameter and then parameter.name.string.is_equal (t_parameter) then
 					create_parameter (parameter, False)
-					if last_parameter /= Void then
-						last_parameter_set.force (last_parameter)
+					if attached last_parameter as l_param then
+						last_parameter_set.force (l_param)
 					end
 				end
 				parameter_cursor.forth
@@ -259,29 +262,31 @@ feature {NONE} -- Implementation
 			element_not_void: element /= Void
 			element_has_parameter_element: element.has_element_by_name (t_parameter)
 		local
- 			parameter_cursor : DS_BILINEAR_CURSOR [XM_NODE]
-			parameter : XM_ELEMENT
+ 			parameter_cursor : DS_LINEAR_CURSOR [detachable XM_NODE]
+--			parameter : XM_ELEMENT
 		do
-			from
-				parameter_cursor := element.new_cursor
-				parameter_cursor.start
-			until
-				parameter_cursor.off
-			loop
-				parameter ?= parameter_cursor.item
-				if parameter /= Void and then parameter.name.string.is_equal (t_parameter) then
-					create_parameter (parameter, True)
-					if last_parameter /= Void then
-						if parameter_map.has (last_parameter.name) then
-							is_error := True
-							error_handler.report_duplicate_element ("?", last_parameter.name, element.name)
-						else
-							parameter_map.force (last_parameter, last_parameter.name)
+--			if attached element.new_cursor as parameter_cursor then
+				from
+					parameter_cursor := element.new_cursor.as_attached
+					parameter_cursor.start
+				until
+					parameter_cursor.off
+				loop
+--					parameter ?= parameter_cursor.item
+					if attached {XM_ELEMENT} parameter_cursor.item as parameter and then parameter.name.string.is_equal (t_parameter) then
+						create_parameter (parameter, True)
+						if attached last_parameter as l_param then
+							if parameter_map.has (l_param.name) then
+								is_error := True
+								error_handler.report_duplicate_element ("?", l_param.name, element.name.as_attached)
+							else
+								parameter_map.force (l_param, l_param.name)
+							end
 						end
 					end
+					parameter_cursor.forth
 				end
-				parameter_cursor.forth
-			end
+--			end
 		end
 
 	create_parameter (element : XM_ELEMENT; is_template : BOOLEAN)
@@ -296,30 +301,36 @@ feature {NONE} -- Implementation
 		do
 			is_error := False
 			last_parameter := Void
+			l_name := ""
+			l_table := ""
+			l_column := ""
 			if element.has_attribute_by_name (t_name) then
 				l_name := element.attribute_by_name (t_name).value.string
 			else
-				error_handler.report_missing_attribute (last_access.name, T_name, element.name)
+				error_handler.report_missing_attribute (last_access.name, T_name, element.name.as_attached)
 				is_error := True
 			end
 			if not is_error and then parameter_map /= Void and then parameter_map.has (l_name) then
 				template := parameter_map.item (l_name)
 				create_parameter_from_template (element, template)
 			elseif not is_error then
-				if element.has_attribute_by_name (t_table) then
-					l_table := element.attribute_by_name (t_table).value.string
-				else
-					error_handler.report_missing_attribute (last_access.name, t_table, element.name)
-					is_error := True
-				end
 				if element.has_attribute_by_name (t_column) then
 					l_column := element.attribute_by_name (t_column).value.string
 				else
-					error_handler.report_missing_attribute (last_access.name, T_column, element.name)
+					error_handler.report_missing_attribute (last_access.name, T_column, element.name.as_attached)
 					is_error := True
 				end
-				if l_name /= Void and then l_table /= Void and then l_column /= Void then
+				if element.has_attribute_by_name (t_table) then
+					l_table := element.attribute_by_name (t_table).value.string
 					create l_reference.make (l_table, l_column)
+				elseif element.has_attribute_by_name (t_procedure) then
+					l_table := element.attribute_by_name (t_procedure).value.string
+					create {PROCEDURE_REFERENCE_COLUMN} l_reference.make (l_table, l_column)
+				else
+					error_handler.report_missing_attributes (last_access.name, t_table, t_procedure, element.name.as_attached)
+					is_error := True
+				end
+				if l_name.count > 0 and then l_table.count > 0 and then l_column.count > 0 then
 					create last_parameter.make (l_name, l_reference, maximum_length)
 					if element.has_attribute_by_name (t_sample) then
 						last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
@@ -359,7 +370,7 @@ feature {NONE} -- Implementation
 				is_error := True
 			end
 			if l_name /= Void and then l_table /= Void and then l_column /= Void then
-				create l_reference.make (l_table, l_column)
+				l_reference := template.reference_column.twin
 				create last_parameter.make (l_name, l_reference, maximum_length)
 				if element.has_attribute_by_name (t_sample) then
 					last_parameter.set_sample (element.attribute_by_name (t_sample).value.string)
@@ -405,7 +416,7 @@ feature {NONE} -- Implementation
 			--
 		local
 			sql_parser : ECLI_SQL_PARSER
-			cursor : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
+--			cursor : DS_SET_CURSOR[RDBMS_ACCESS_PARAMETER]
 		do
 			create sql_parser.make
 			parameter_names.wipe_out
@@ -413,17 +424,19 @@ feature {NONE} -- Implementation
 			sql_parser.parse (sql, Current)
 			if last_parameter_set /= Void and then last_parameter_set.count < parameter_names.count then
 				-- remove parameter names that already exist
-				from
-					cursor := last_parameter_set.new_cursor
-					cursor.start
-				until
-					cursor.off
-				loop
-					parameter_names.search (cursor.item.name)
-					if parameter_names.found then
-						parameter_names.remove_found_item
+				if attached last_parameter_set.new_cursor as cursor then
+					from
+--						cursor := last_parameter_set.new_cursor
+						cursor.start
+					until
+						cursor.off
+					loop
+						parameter_names.search (cursor.item.name)
+						if parameter_names.found then
+							parameter_names.remove_found_item
+						end
+						cursor.forth
 					end
-					cursor.forth
 				end
 				-- fill parameter names that could exist in the parameter_map
 				from

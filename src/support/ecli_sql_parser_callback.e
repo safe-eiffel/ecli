@@ -23,14 +23,14 @@ feature -- Basic operations
 	add_new_parameter (a_parameter_name : STRING; a_position : INTEGER)
 		require
 			valid_callback : is_valid
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			a_position_stricly_positive: a_position > 0
 		deferred
 		end
 
 	on_parameter_marker (a_sql : STRING; index : INTEGER)
 		require
-			a_sql_not_void: a_sql /= Void
+			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			index_positive: index > 0
 			valid_index: index >= 1 and index <= a_sql.count
 		deferred
@@ -38,7 +38,7 @@ feature -- Basic operations
 
 	on_string_literal (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
-			a_sql_not_void: a_sql /= Void
+			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
 			i_end_positive: i_end > 0
 			i_begin_le_end: i_begin <= i_end
@@ -48,7 +48,7 @@ feature -- Basic operations
 
 	on_word (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
-			a_sql_not_void: a_sql /= Void
+			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
 			i_end_positive: i_end > 0
 			i_begin_le_end: i_begin <= i_end
@@ -58,7 +58,7 @@ feature -- Basic operations
 
 	on_table_literal (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
-			a_sql_not_void: a_sql /= Void
+			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
 			i_end_positive: i_end > 0
 			i_begin_le_end: i_begin <= i_end
@@ -68,7 +68,7 @@ feature -- Basic operations
 
 	on_parameter (a_sql : STRING; i_begin, i_end : INTEGER)
 		require
-			a_sql_not_void: a_sql /= Void
+			a_sql_not_void: a_sql /= Void --FIXME: VS-DEL
 			i_begin_positive: i_begin > 0
 			i_end_positive: i_end > 0
 			i_begin_le_end: i_begin <= i_end

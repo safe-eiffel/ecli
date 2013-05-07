@@ -12,6 +12,8 @@ inherit
 
 	ECLI_STRING_ROUTINES
 		export {NONE} all
+		undefine
+			default_create
 		end
 
 feature -- Access
@@ -39,53 +41,55 @@ feature -- Basic operations
 			cursor : ECLI_ROW_CURSOR
 			after_first : BOOLEAN
 		do
---			if context.session.is_bind_arrayed_results_capable then
---				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (context.session, text , 20)	
---			else
-				create cursor.make (context.session, text)
---			end
-			if cursor.is_ok then
-				if cursor.has_parameters then
-					if context.variables /= Void then
-						set_parameters (cursor, context)
-						if cursor.parameters /= Void and then cursor.parameters.count >= cursor.parameters_count then
-							cursor.bind_parameters
+			if attached context.session as l_session then
+	--			if l_session.is_bind_arrayed_results_capable then
+	--				create {ECLI_ROWSET_CURSOR}cursor.make_prepared (l_session, text , 20)	
+	--			else
+					create cursor.make (l_session, text)
+	--			end
+				if cursor.is_ok then
+					if cursor.has_parameters then
+						if context.variables /= Void then
+							set_parameters (cursor, context)
+							if cursor.parameters /= Void and then cursor.parameters.count >= cursor.parameters_count then
+								cursor.bind_parameters
+							end
 						end
 					end
-				end
-				cursor.start
-				if cursor.is_executed then
-					if cursor.has_result_set then
-						from
-							if cursor.has_information_message then
+					cursor.start
+					if cursor.is_executed then
+						if cursor.has_result_set then
+							from
+								if cursor.has_information_message then
+									print_error (cursor, context)
+								end
+							until
+								not cursor.is_ok or else cursor.off
+							loop
+								if not after_first then
+									show_column_names (cursor, context)
+									after_first := True
+								end
+								show_one_row (cursor, context)
+								cursor.forth
+							end
+							if not cursor.is_ok then
 								print_error (cursor, context)
 							end
-						until
-							not cursor.is_ok or else cursor.off
-						loop
-							if not after_first then
-								show_column_names (cursor, context)
-								after_first := True
-							end
-							show_one_row (cursor, context)
-							cursor.forth
 						end
-						if not cursor.is_ok then
-							print_error (cursor, context)
-						end
+					else
+						print_error (cursor, context)
 					end
 				else
 					print_error (cursor, context)
 				end
-			else
-				print_error (cursor, context)
+				cursor.close
 			end
-			cursor.close
 		end
 
 feature {NONE} -- Implementation
 
-	current_context : ISQL_CONTEXT
+	current_context : detachable ISQL_CONTEXT
 
 	set_parameters (stmt : ECLI_STATEMENT; context : ISQL_CONTEXT)
 		require
@@ -93,22 +97,22 @@ feature {NONE} -- Implementation
 			context_not_void: context /= Void
 		local
 			value : ECLI_VARCHAR
-			cursor : DS_LIST_CURSOR[STRING]
 			var : STRING
 		do
-			from
-				cursor := stmt.parameter_names.new_cursor
-				cursor.start
-			until
-				cursor.off
-			loop
-				if context.has_variable (cursor.item) then
-					var := context.variable (cursor.item)
-					create value.make (var.count)
-					value.set_item (var)
-					stmt.put_parameter (value, cursor.item)
+			if attached stmt.parameter_names.new_cursor as cursor then
+				from
+					cursor.start
+				until
+					cursor.off
+				loop
+					if context.has_variable (cursor.item) then
+						var := context.variable (cursor.item)
+						create value.make (var.count)
+						value.set_item (var)
+						stmt.put_parameter (value, cursor.item)
+					end
+					cursor.forth
 				end
-				cursor.forth
 			end
 		end
 
@@ -139,11 +143,13 @@ feature {NONE} -- Implementation
 	column_name (cursor : ECLI_ROW_CURSOR; i : INTEGER) : STRING
 		local
 			l_capacity : INTEGER
-			l_statement : ECLI_STATEMENT
 		do
-			l_statement ?= cursor
-			l_capacity := l_statement.results_description.item (i).size.min (50).as_integer_32
-			create Result.make (l_capacity)
+			if attached {ECLI_STATEMENT} cursor as l_statement then
+				l_capacity := l_statement.results_description.item (i).size.min (50).as_integer_32
+				create Result.make (l_capacity)
+			else
+				create Result.make_empty
+			end
 			Result.append_string (cursor.column_name (i))
 		end
 

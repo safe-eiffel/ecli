@@ -69,7 +69,7 @@ feature -- Access
 	item_at (index : INTEGER) : STRING
 		do
 			if is_null_at (index) then
-				Result := Void
+				create Result.make_empty
 			else
 				ext_item.make_shared_from_pointer (ecli_c_array_value_get_value_at (buffer, index),
 					ecli_c_array_value_get_length_indicator_at(buffer,index).as_integer_32)
@@ -79,24 +79,25 @@ feature -- Access
 		end
 
 	item : STRING
-			--
+			-- Item at current cursor_index
 		do
 			Result := item_at (cursor_index)
 		end
 
 	content_capacity : INTEGER
+			-- Capacity of a single value
 		do
 			Result := (ecli_c_array_value_get_length (buffer) - 1).as_integer_32
 		end
 
 	content_count : INTEGER
-			-- actual length of item
+			-- Actual length of item
 		do
 			Result := content_count_at (cursor_index)
 		end
 
 	content_count_at (index : INTEGER) : INTEGER
-			-- length of `index'th
+			-- Length of `index'th
 		do
 			if not is_null_at (index) then
 				Result := ecli_c_array_value_get_length_indicator_at (buffer, index).as_integer_32

@@ -39,11 +39,11 @@ feature -- Element change
 	create_from_string (s : STRING)
 			-- create new `last_result' from `s'
 		require
-			s_not_void: s /= Void
+			s_not_void: s /= Void --FIXME: VS-DEL
 			s_matching: matching_string (s)
 		deferred
 		ensure
-			last_result_not_void: last_result /= Void
+			last_result_not_void: last_result /= Void --FIXME: VS-DEL
 			last_result_same_as_s: formatted (last_result).is_equal (s)
 		end
 		
@@ -58,10 +58,10 @@ feature -- Conversion
 	formatted (value : G) : STRING
 			-- `value' formatted with respect to Current format
 		require
-			value_not_void: value /= Void
+			value_not_void: value /= Void --FIXME: VS-DEL
 		deferred
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 			result_matching_format: matching_string (Result)
 		end
 		
@@ -80,7 +80,7 @@ feature {NONE} -- Implementation
 	regex : RX_PCRE_REGULAR_EXPRESSION
 		deferred
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 			result_compiled: Result.is_compiled
 		end
 		

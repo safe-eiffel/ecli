@@ -18,6 +18,7 @@ feature -- Initialization
 	make
 			-- ecli test application
 		do
+			create  session.make_default
 			io.put_string ("ECLI 'test_procedures' application%N%N")
 			-- session opening
 			parse_arguments
@@ -263,21 +264,26 @@ feature --  Basic operations
 		local
 			args : ARGUMENTS
 		do
+			data_source_name := ""
+			user_name := ""
+			password := ""
+			trace_file_name := ""
+
 			create args
 			if args.argument_count >= 3 then
-				data_source_name := clone (args.argument (1))
-				user_name := clone (args.argument (2))
-				password := clone (args.argument (3))
+				data_source_name := args.argument (1)
+				user_name := args.argument (2)
+				password := args.argument (3)
 				arguments_ok := True
 				if args.argument_count > 3 then
-					trace_file_name := clone (args.argument (4))
+					trace_file_name := args.argument (4)
 				end
 			end
 		ensure
 			ok: arguments_ok implies (data_source_name /= Void and user_name /= Void and password /= Void)
 		end
 
-	print_usage
+	print_usage is
 			-- print terse usage string
 		do
 				io.put_string ("Usage: test_procedures <data_source> <user_name> <password> [<trace_file_name>]%N")
@@ -313,7 +319,9 @@ feature --  Basic operations
 			io.put_string ("---------------------------------%N")
 			io.put_string ("Connection can give some information about what happened%N")
 			io.put_string ("This is not necessarily an error !%N")
-			create  session.make (data_source_name, user_name, password)
+			session.set_login_strategy (
+				create {ECLI_SIMPLE_LOGIN}.make(data_source_name, user_name, password)
+				)
 			session.connect
 			if session.has_information_message or not session.is_ok then
 				print_status (session)
@@ -347,20 +355,20 @@ feature -- Miscellaneous
 
 	show_parameter_names (a_statement : ECLI_STATEMENT)
 			-- show parameter names of SQL in `a_statement'
-		local
-			list_cursor: DS_LIST_CURSOR[STRING]
 		do
-			list_cursor := a_statement.parameter_names.new_cursor
-			from
-				list_cursor.start
-				io.put_string ("Parameter names of Query :%N")
-			until
-				list_cursor.off
-			loop
-				io.put_string ("%T%"")
-				io.put_string (list_cursor.item)
-				io.put_string ("%"%N")
-				list_cursor.forth
+			if attached a_statement.parameter_names.new_cursor as list_cursor then
+
+				from
+					list_cursor.start
+					io.put_string ("Parameter names of Query :%N")
+				until
+					list_cursor.off
+				loop
+					io.put_string ("%T%"")
+					io.put_string (list_cursor.item)
+					io.put_string ("%"%N")
+					list_cursor.forth
+				end
 			end
 		end
 

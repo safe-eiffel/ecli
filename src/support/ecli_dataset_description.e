@@ -16,11 +16,9 @@ feature {NONE} -- Initialization
 	make_for_parameters (a_stmt : ECLI_STATEMENT)
 			-- Make for describing `a_stmt' parameters.
 		require
-			a_stmt_not_void: a_stmt /= Void
+			a_stmt_not_void: a_stmt /= Void --FIXME: VS-DEL
 			a_stmt_prepared: a_stmt.is_prepared
 		local
-			names_cursor : DS_LIST_CURSOR [STRING]
-			index_cursor : DS_LIST_CURSOR [INTEGER]
 			l_parameter_name : STRING
 			l_index : INTEGER
 			l_description : like item
@@ -29,23 +27,25 @@ feature {NONE} -- Initialization
 			create_implementation (a_stmt.parameters_count)
 			a_stmt.describe_parameters
 			-- Setup name for each index
-			from
-				names_cursor := a_stmt.parameter_names.new_cursor
-				names_cursor.start
-			until
-				names_cursor.after
-			loop
-				l_parameter_name := names_cursor.item
+			if attached a_stmt.parameter_names.new_cursor as names_cursor then
 				from
-					index_cursor := a_stmt.parameter_positions (l_parameter_name).new_cursor
-					index_cursor.start
+					names_cursor.start
 				until
-					index_cursor.after
+					names_cursor.after
 				loop
-					table_by_index.put (l_parameter_name, index_cursor.item)
-					index_cursor.forth
+					l_parameter_name := names_cursor.item
+					if attached a_stmt.parameter_positions (l_parameter_name).new_cursor as index_cursor then
+						from
+							index_cursor.start
+						until
+							index_cursor.after
+						loop
+							table_by_index.put (l_parameter_name, index_cursor.item)
+							index_cursor.forth
+						end
+					end
+					names_cursor.forth
 				end
-				names_cursor.forth
 			end
 			-- Setup parameter for each name.
 			from
@@ -62,8 +62,9 @@ feature {NONE} -- Initialization
 		end
 
 	make_for_results (a_stmt : ECLI_STATEMENT)
+			-- Make for describing `a_stmt' results.
 		require
-			a_stmt_not_void: a_stmt /= Void
+			a_stmt_not_void: a_stmt /= Void -- FIXME: VS-DEL
 			a_stmt_executed_or_prepared: a_stmt.is_prepared or else a_stmt.is_executed
 			a_stmt_has_result_set: a_stmt.has_result_set
 		local
@@ -91,34 +92,34 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	name (an_index : INTEGER) : STRING
-			-- name of column at `an_index'.
+			-- Name of column at `an_index'.
 		require
 			an_index_within_bounds: index_within_bounds (an_index)
 		do
 			Result := table_by_index.item (an_index)
 		ensure
-			name_not_void: Result /= Void
+			name_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	item (an_index : INTEGER) : ECLI_DATA_DESCRIPTION
-			-- Description for `an_index'
+			-- Description for `an_index'.
 		require
 			an_index_within_bounds: index_within_bounds (an_index)
 		do
 			Result := table_by_name.item (name (an_index))
 		ensure
-			item_not_void: Result /= Void
+			item_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	item_by_name (a_name : STRING) : ECLI_DATA_DESCRIPTION
 			-- Description for `a_name'.
 		require
-			a_name_not_void: a_name /= Void
+			a_name_not_void: a_name /= Void --FIXME: VS-DEL
 			has_name: has_name (a_name)
 		do
 			Result := table_by_name.item (a_name)
 		ensure
-			item_by_name_not_void: Result /= Void
+			item_by_name_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Measurement
@@ -130,11 +131,13 @@ feature -- Measurement
 		end
 
 	lower : INTEGER
+			-- Lower index.
 		do
 			Result := table_by_index.lower
 		end
 
 	upper : INTEGER
+			-- Upper index.
 		do
 			Result := table_by_index.upper
 		end
@@ -150,7 +153,9 @@ feature -- Status report
 	index_within_bounds (an_index : INTEGER) : BOOLEAN
 			-- Is `an_index' within bounds?
 		do
-			Result := lower >= an_index and an_index <= upper
+			Result := lower <= an_index and an_index <= upper
+		ensure
+			definition: Result = (lower <= an_index and an_index <= upper)
 		end
 
 feature {} -- Implementation
@@ -158,12 +163,13 @@ feature {} -- Implementation
 	create_implementation (n : INTEGER)
 		do
 			create table_by_name.make (n)
-			create table_by_index.make (1,n)
+			create table_by_index.make_filled ("", 1,n)
 		end
 
 	table_by_name : DS_HASH_TABLE[like item, STRING]
+			-- Descriptions by parameter name.
 
 	table_by_index: ARRAY[STRING]
-			-- Names of parameter by index
+			-- Name of parameter by index.
 
 end

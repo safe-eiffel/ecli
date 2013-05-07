@@ -10,11 +10,20 @@ class
 inherit
 	ISQL_COMMAND
 
-	KL_EXECUTION_ENVIRONMENT
+	KL_SHARED_EXECUTION_ENVIRONMENT
+		undefine
+			default_create
+		end
 
 	KL_SHARED_OPERATING_SYSTEM
+		undefine
+			default_create
+		end
 
 	KL_SHARED_FILE_SYSTEM
+		undefine
+			default_create
+		end
 
 feature -- Access
 
@@ -40,7 +49,7 @@ feature -- Basic operations
 	execute (text : STRING; context : ISQL_CONTEXT)
 			-- launch an editor on 'clibuferr.sql'
 		local
-			editor_program : STRING
+			editor_program : detachable STRING
 			temp_file : KL_TEXT_OUTPUT_FILE
 			shell_command : KL_SHELL_COMMAND
 		do
@@ -48,7 +57,7 @@ feature -- Basic operations
 			if context.has_variable (context.Var_editor) then
 				editor_program := context.variable (context.Var_editor)
 			else
-				editor_program := variable_value ("CLISQL_EDITOR")
+				editor_program := attached_execution_environment.variable_value ("CLISQL_EDITOR")
 			end
 			if editor_program /= Void then
 				--| create temporary file
@@ -66,4 +75,12 @@ feature -- Basic operations
 			end
 		end
 
+feature {} -- Implementation
+
+	attached_execution_environment : attached like execution_environment
+		do
+			check attached execution_environment as e then
+				Result := e
+			end
+		end
 end -- class ISQL_CMD_EDIT

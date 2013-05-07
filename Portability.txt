@@ -8,27 +8,3 @@ VUAR4: $feature valid only if not constant feature.
     => 'dummy' private attributes have been used to overcome this problem.
 
 Note: $ usage has been avoided for .NET compatibility
-
-Libraries
----------
-
-* Visual Eiffel
-	STRING.make : not same semantics as with ISE or SE
-	VE:: STRING.make (n) ensure count = n
-	{ISE,SE}::STRING.make (n) ensure count=0; capacity=n
-
-* Obsolete
-SE::STRING.empty => is_empty
-
-* Different names, same semantics
-ISE::STRING.clear_all ~= SE::STRING.wipe_out
-	ensure count = 0
-ISE::STRING.wipe_out /= SE:: STRING.wipe_out
-	ISE:: ensure count = 0 and area /= old area
-
-* Same name, different semantics
-ISE::STRING.index_of (c : CHARACTER; begin : INTEGER) : INTEGER
-SE::STRING.index_of (c : CHARACTER) : INTEGER
-
-* Absent in SE
-ISE::STRING.append_integer (i : INTEGER)

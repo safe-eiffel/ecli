@@ -11,6 +11,9 @@ inherit
 	ISQL_COMMAND
 
 	KL_STANDARD_FILES
+		undefine
+			default_create
+		end
 
 feature -- Access
 
@@ -55,7 +58,7 @@ feature -- Basic operations
 					end
 					create string_routines
 					if name.as_lower.is_equal ("stdout") then
-						context.set_output_file (Output)
+						context.set_output_file (attached_output)
 					else
 						create file.make (name)
 						file.open_write
@@ -72,6 +75,15 @@ feature -- Basic operations
 						end
 					end
 				end
+			end
+		end
+
+feature {} -- Implementation
+
+	attached_output : attached like output
+		do
+			check attached output as o then
+				Result := o
 			end
 		end
 

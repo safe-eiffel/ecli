@@ -24,14 +24,16 @@ inherit
 
 create
 
-	make
+	make, make_query_column
 
 feature -- Access
 
 	item : ECLI_PROCEDURE_COLUMN
 			--
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		end
 
 feature -- Element change

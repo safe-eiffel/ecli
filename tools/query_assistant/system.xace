@@ -16,7 +16,6 @@
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
 		<option name="garbage_collector" value="none"/>
-		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
@@ -38,7 +37,12 @@
 	
 	<mount location="${ECLI}/support/codegen/library.xace"/>
 	
-	<mount location="${ECLI}/library.xace"/>	
-	<mount location="${GOBO}/library/library.xace"/>
-	<mount location="${GOBO}/library/kernel.xace"/>
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+	
+	<mount location="${ECLI}/library-confident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
+	<mount location="${GOBO}/library/xml/library.xace"/>
+
 </system>

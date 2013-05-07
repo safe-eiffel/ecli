@@ -16,17 +16,19 @@
 
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
-		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
 	</option>
+
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
 		<option name="finalize" value="false"/>
 	</option>
-	<option if="${GOBO_OS}=windows">
-		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
-	</option>
 
-	<cluster name="test_rowset" location="${ECLI}/examples/test_gc"/>
+	<cluster name="test_gc" location="${ECLI}/examples/test_gc"/>
 
-	<mount location="${ECLI}/library.xace"/>
+	<option name="full_class_checking" value="true" if="${VOIDCONFIDENT}=true"/>
+	<option name="void_safety" value="on_demand" if="${VOIDCONFIDENT}=true"/>
+	<option name="attached_by_default" value="true" if="${VOIDCONFIDENT}=true"/>
+	
+	<mount location="${ECLI}/library-confident.xace" if="${VOIDCONFIDENT}=true"/>
+	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
 </system>

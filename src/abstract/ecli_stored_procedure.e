@@ -14,33 +14,38 @@ class ECLI_STORED_PROCEDURE
 inherit
 
 	ECLI_STATEMENT
---		rename
---			put_parameter as put_input_parameter
 		redefine
 			put_parameter,
 			create_parameters,
 			put_single_parameter_with_hint,
 			put_parameter_with_hint,
-			bind_one_parameter --,
---			put_input_parameter
-
+			bind_one_parameter,
+			default_create 
 		end
 
 create
 
 	make
 
+feature {} -- Initialization
+
+	default_create
+		do
+			Precursor
+			create directed_parameters.make_empty
+		end
+
 feature -- Access
 
 	directed_parameter (name : STRING) : ECLI_STATEMENT_PARAMETER
-			-- parameter related to `key'.
+			-- Parameter related to `key'.
 		require
-			name_not_void: name /= Void
+			name_not_void: name /= Void --FIXME: VS-DEL
 			has_parameter_of_name: has_parameter (name)
 		do
 			Result := directed_parameters.item (parameter_positions (name).first)
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Status report
@@ -48,7 +53,7 @@ feature -- Status report
 	is_parameter_input (a_parameter_name : STRING) : BOOLEAN
 			-- Is `a_parameter_name' parameter for input ?
 		require
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			known_parameter: has_parameter (a_parameter_name)
 		do
 			Result := directed_parameter (a_parameter_name).is_input
@@ -57,7 +62,7 @@ feature -- Status report
 	is_parameter_output (a_parameter_name : STRING) : BOOLEAN
 			-- Is `a_parameter_name' parameter for output?
 		require
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			known_parameter: has_parameter (a_parameter_name)
 		do
 			Result := directed_parameter (a_parameter_name).is_output
@@ -66,7 +71,7 @@ feature -- Status report
 	is_parameter_input_output (a_parameter_name : STRING) : BOOLEAN
 			-- Is `a_parameter_name' parameter for input/output ?
 		require
-			a_parameter_name_not_void: a_parameter_name /= Void
+			a_parameter_name_not_void: a_parameter_name /= Void --FIXME: VS-DEL
 			known_parameter: has_parameter (a_parameter_name)
 		do
 			Result := directed_parameter (a_parameter_name).is_input_output
@@ -74,7 +79,7 @@ feature -- Status report
 
 feature -- Element change
 
-	put_parameter (value: like parameter_anchor; key : STRING)
+	put_parameter (value: attached like parameter_anchor; key : STRING)
 			-- <Precursor>
 		do
 			put_input_parameter (value, key)
@@ -84,7 +89,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_output_parameter (value: like parameter_anchor; key: STRING)
+	put_output_parameter (value: attached like parameter_anchor; key: STRING)
 			-- Put `value' as output parameter.
 			-- Its value can be set by the procedure and be accessed after the procedure exits.
 		require
@@ -104,7 +109,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_input_parameter (value : like parameter_anchor; key : STRING)
+	put_input_parameter (value : attached like parameter_anchor; key : STRING)
 			-- Put `value' as input parameter.
 		local
 			direction : ECLI_INPUT_PARAMETER
@@ -117,7 +122,7 @@ feature -- Element change
 			not_bound: not bound_parameters
 		end
 
-	put_input_output_parameter (value: like parameter_anchor; key: STRING)
+	put_input_output_parameter (value: attached like parameter_anchor; key: STRING)
 			-- Put `value' as input/output parameter.
 		require
 			valid_statement: is_valid
@@ -144,15 +149,15 @@ feature {NONE} -- Implementation
 			--
 		do
 			Precursor
-			create directed_parameters.make (1, parameters_count)
+			create directed_parameters.make_filled (default_directed_parameter, 1, parameters_count)
 		end
 
-	put_parameter_with_hint (value : like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER)
+	put_parameter_with_hint (value : attached like parameter_anchor; key : STRING; hint : ECLI_STATEMENT_PARAMETER)
 		do
 			Precursor (value, key, hint)
 		end
 
-	put_single_parameter_with_hint (value : like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER)
+	put_single_parameter_with_hint (value : attached like parameter_anchor; position : INTEGER; hint : ECLI_STATEMENT_PARAMETER)
 			--
 		do
 			Precursor (value, position, hint)
@@ -166,5 +171,13 @@ feature {NONE} -- Implementation
 		do
 			directed_parameters.item (i).bind (Current, i)
 		end
+
+feature {} -- Implementation / Auxiliary
+
+	default_directed_parameter : ECLI_STATEMENT_PARAMETER
+		do
+			create {ECLI_INPUT_PARAMETER}Result.make (default_parameter)
+		end
+
 
 end

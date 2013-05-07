@@ -2,10 +2,12 @@ note
 
 	description:
 
-		"Objects that are able of operating on a rowset%N%
-		% A rowset is an array  of `row_capacity' rows.%N%
-		% Database operations occur one rowset at a time.%N%
-		% Status information is available for each row in the rowset."
+	"[
+		Objects that are able of operating on a rowset.
+		A rowset is an array  of `row_capacity' rows.
+		Database operations occur one rowset at a time.
+		Status information is available for each row in the rowset through feature `item_status'.
+	]"
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
 	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
@@ -48,7 +50,8 @@ feature {NONE} -- Implementation
 			index: INTEGER
 		do
 			from index := 1
-				create status_array.make (1, row_capacity)
+--				create status_array.make (1, row_capacity)
+				create status_array.make_filled ({ECLI_ROW_STATUS_CONSTANTS}.sql_row_success, 1, row_capacity)
 			until
 				index > row_capacity
 			loop
@@ -67,7 +70,8 @@ feature {NONE} -- Implementation
 invariant
 	row_capacity_valid: row_capacity >= 1
 	row_count_valid: row_count <= row_capacity
-	impl_row_count_not_void: impl_row_count /= Void
-	rowset_status_capacity: rowset_status /= Void and then rowset_status.count = row_capacity
+	impl_row_count_not_void: impl_row_count /= Void --FIXME: VS-DEL
+	rowset_status_not_void:rowset_status /= Void
+	rowset_capacity: rowset_status.count = row_capacity
 
 end

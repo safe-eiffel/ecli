@@ -22,13 +22,17 @@ feature {} -- Initialization
 		do
 			error_handler := an_error_handler
 			create_event_parser
+			create modules.make (10)
+			create parameter_sets.make (10)
+			create result_sets.make (10)
+			create parameter_map.make (10)
 		ensure
 			error_handler_set: error_handler = an_error_handler
 		end
 
 feature -- Access
 
-	last_object: ACCESS_MODULE
+	last_object: detachable ACCESS_MODULE
 			-- last object created.
 
 	error_handler : QA_ERROR_HANDLER
@@ -63,8 +67,8 @@ feature -- Basic operations
 				event_parser.set_string_mode_mixed
 				event_parser.parse_from_stream (in)
 				in.close
-				if tree_pipe.error.has_error then
-					error_handler.report_parse_error (tree_pipe.last_error)
+				if tree_pipe.error.has_error and then attached tree_pipe.last_error as tp_last_error then
+					error_handler.report_parse_error (tp_last_error)
 					has_error := True
 				else
 					process_document
@@ -72,7 +76,8 @@ feature -- Basic operations
 				end
 			end
 			error_handler.report_end (s_parsing_xml_file, not has_error)
-
+		ensure
+			last_object: not has_error implies last_object /= Void
 		end
 
 	write_to_file (module : ACCESS_MODULE; a_file_name : STRING)
@@ -91,7 +96,7 @@ feature -- Basic operations
 				create filter.make_null
 				filter.set_output_stream (file)
 				filter.set_indent (filter.default_indent)
-				filter.enable_empty_element_tags
+--				filter.enable_empty_element_tags
 				put_document (module)
 				create processor.make (filter)
 				last_document.process (processor)
@@ -107,7 +112,7 @@ feature {NONE} -- Implementation - Access
 	tree_pipe: XM_TREE_CALLBACKS_PIPE
 			-- Tree generating callbacks
 
-	last_document : XM_DOCUMENT
+	last_document : detachable XM_DOCUMENT
 			-- Last XML document
 
 	event_parser : XM_EIFFEL_PARSER
@@ -142,77 +147,80 @@ feature {NONE} -- Implementation - Operations
 			parser_ok: event_parser.is_correct
 			tree_pipe_ok: not tree_pipe.error.has_error
 		local
-			root : XM_DOCUMENT
-			element : XM_ELEMENT
-			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
+--			root : XM_DOCUMENT
+--			element : XM_ELEMENT
+--			a_cursor : DS_BILINEAR_CURSOR [XM_NODE]
 			l_factory : RDBMS_ACCESS_FACTORY
-			l_module : RDBMS_ACCESS
+--			l_module : RDBMS_ACCESS
 			l_result_sets : like result_sets
 			parameters_ok, results_ok : BOOLEAN
 		do
 			create modules.make (10)
 			create parameter_sets.make (10)
+
 			create l_result_sets.make (10)
-			from
-				root := tree_pipe.document
-				a_cursor := root.root_element.new_cursor
-				a_cursor.start
-				create l_factory.make (error_handler)
-			until
-				a_cursor.off
-			loop
-				element ?= a_cursor.item
-				if element /= Void then
-					if element.name.string.is_equal (t_access) then
-						l_factory.create_access_module (element)
-						l_module := l_factory.last_access
-						if not l_factory.is_error and then l_module /= Void then
-							modules.search (l_module.name)
-							if modules.found then
-								--| Error : module already exists
-								error_handler.report_already_exists (l_module.name, l_module.name, "Module")
-							else
-								if l_module.is_generatable then
-									parameters_ok := True
-									results_ok := True
-									parameter_sets.search (l_module.parameters.name)
-									if parameter_sets.found then
-										error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
-										parameters_ok := False
-									end
-									if l_module.results /= Void then
-										l_result_sets.search (l_module.results.name)
-										if l_result_sets.found  then
-											error_handler.report_already_exists (l_module.name, l_module.results.name, "Result set")
-											results_ok := False
+			if attached tree_pipe.document as root and then attached root.root_element as root_element and then attached root_element.new_cursor as a_cursor then
+				from
+--					root := tree_pipe.document
+--					a_cursor := root.root_element.new_cursor
+					a_cursor.start
+					create l_factory.make (error_handler)
+				until
+					a_cursor.off
+				loop
+--					element ?= a_cursor.item
+					if attached {XM_ELEMENT} a_cursor.item as element then
+						if element.name.string.is_equal (t_access) then
+							l_factory.create_access_module (element)
+--							l_module := l_factory.last_access
+							if not l_factory.is_error and then attached l_factory.last_access as l_module then
+								modules.search (l_module.name)
+								if modules.found then
+									--| Error : module already exists
+									error_handler.report_already_exists (l_module.name, l_module.name, "Module")
+								else
+									if l_module.is_generatable then
+										parameters_ok := True
+										results_ok := True
+										parameter_sets.search (l_module.parameters.name)
+										if parameter_sets.found then
+											error_handler.report_already_exists (l_module.name, l_module.parameters.name, "Parameter set")
+											parameters_ok := False
 										end
-									end
-									if parameters_ok and results_ok then
-										modules.force (l_module, l_module.name)
-										parameter_sets.force (l_module.parameters, l_module.parameters.name)
 										if l_module.results /= Void then
-											l_result_sets.force (l_module.results, l_module.results.name)
+											l_result_sets.search (l_module.results.name)
+											if l_result_sets.found  then
+												error_handler.report_already_exists (l_module.name, l_module.results.name, "Result set")
+												results_ok := False
+											end
+										end
+										if parameters_ok and results_ok then
+											modules.force (l_module, l_module.name)
+											parameter_sets.force (l_module.parameters, l_module.parameters.name)
+											if l_module.results /= Void then
+												l_result_sets.force (l_module.results, l_module.results.name)
+											end
+										else
+											error_handler.report_rejected (l_module.name)
 										end
 									else
 										error_handler.report_rejected (l_module.name)
 									end
-								else
-									error_handler.report_rejected (l_module.name)
 								end
+							else
+--								if l_module /= Void then
+--									error_handler.report_rejected (l_module.name)
+--								end
 							end
-						else
-							if l_module /= Void then
-								error_handler.report_rejected (l_module.name)
+						elseif element.name.string.is_equal (t_parameter_map) then
+							l_factory.create_parameter_map (element)
+							if l_factory.parameter_map /= Void then
+								parameter_map := l_factory.parameter_map
 							end
-						end
-					elseif element.name.string.is_equal (t_parameter_map) then
-						l_factory.create_parameter_map (element)
-						if l_factory.parameter_map /= Void then
-							parameter_map := l_factory.parameter_map
 						end
 					end
+					a_cursor.forth
 				end
-				a_cursor.forth
 			end
 			create result_sets.make (10)
 		ensure

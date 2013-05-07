@@ -40,13 +40,13 @@ feature {ECLI_STATEMENT} -- Basic operations
 	bind (statement : ECLI_STATEMENT; position : INTEGER)
 			-- Bind Current as `position'-th parameter in `statement'
 		require
-			statement_not_void: statement /= Void
+			statement_not_void: statement /= Void --FIXME: VS-DEL
 			positive_position: position > 0
 		deferred
 		end
 		
 invariant
 	exclusive_direction: is_input xor is_output xor is_input_output
-	item_set: item /= Void
+	item_set: item /= Void --FIXME: VS-DEL
 	
 end

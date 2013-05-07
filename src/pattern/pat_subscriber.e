@@ -1,7 +1,7 @@
 note
 
 	description:
-	
+
 			"Subscriber part of the publisher/subscriber pattern."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
@@ -9,15 +9,13 @@ note
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-deferred class PAT_SUBSCRIBER
+deferred class PAT_SUBSCRIBER [G -> PAT_PUBLISHER [PAT_SUBSCRIBER[G]]]
 
 feature -- Initialization
 
 feature -- Access
 
-	publisher : PAT_PUBLISHER [PAT_SUBSCRIBER]
-		deferred
-		end
+	publisher : detachable PAT_PUBLISHER [PAT_SUBSCRIBER[G]]
 
 feature -- Status report
 

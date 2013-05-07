@@ -35,13 +35,15 @@ feature -- Basic operations
 			-- show primary keys of a table
 		local
 			stream : KL_WORD_INPUT_STREAM
-			l_table, l_schema, l_catalog : STRING
+			l_table : STRING
+			l_schema, l_catalog : detachable STRING
 			query : ECLI_NAMED_METADATA
 			cursor : ECLI_PRIMARY_KEY_CURSOR
 		do
 			create stream.make (text, " %T")
 			stream.read_word
 			if not stream.end_of_input then
+				create l_table.make_empty
 				--| try reading table_name
 				stream.read_word
 				if not stream.end_of_input then
@@ -59,9 +61,11 @@ feature -- Basic operations
 					end
 				end
 				create query.make (l_catalog, l_schema, l_table)
-				create cursor.make (query, context.session)
-				put_results (cursor, context)
-				cursor.close
+				if attached context.session as l_session then
+					create cursor.make (query, l_session)
+					put_results (cursor, context)
+					cursor.close
+				end
 			end
 		end
 
@@ -72,7 +76,6 @@ feature {NONE} -- Implementation
 		local
 			the_key : ECLI_PRIMARY_KEY
 			index : INTEGER
-			columns_cursor : DS_LIST_CURSOR[STRING]
 		do
 			if a_cursor.is_executed then
 				from
@@ -89,23 +92,24 @@ feature {NONE} -- Implementation
 					not a_cursor.is_ok or else a_cursor.off
 				loop
 					the_key := a_cursor.item
-					from
-						columns_cursor := the_key.columns.new_cursor
-						columns_cursor.start
-						index := 1
-					until
-						columns_cursor.off
-					loop
-						context.filter.begin_row
-						context.filter.put_column (nullable_string (the_key.key_name))
-						context.filter.put_column (index.out)
-						context.filter.put_column (nullable_string (the_key.catalog))
-						context.filter.put_column (nullable_string (the_key.schema))
-						context.filter.put_column (nullable_string (the_key.table))
-						context.filter.put_column (nullable_string (columns_cursor.item))
-						context.filter.end_row
-						columns_cursor.forth
-						index := index + 1
+					if attached the_key.columns.new_cursor as columns_cursor then
+						from
+							columns_cursor.start
+							index := 1
+						until
+							columns_cursor.off
+						loop
+							context.filter.begin_row
+							context.filter.put_column (nullable_string (the_key.key_name))
+							context.filter.put_column (index.out)
+							context.filter.put_column (nullable_string (the_key.catalog))
+							context.filter.put_column (nullable_string (the_key.schema))
+							context.filter.put_column (nullable_string (the_key.table))
+							context.filter.put_column (nullable_string (columns_cursor.item))
+							context.filter.end_row
+							columns_cursor.forth
+							index := index + 1
+						end
 					end
 					a_cursor.forth
 				end

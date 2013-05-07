@@ -12,14 +12,12 @@ note
 class ECLI_DBMS_INFORMATION
 
 inherit
-	ECLI_EXTERNAL_API
-		export {NONE} all
-		end
-
 	ECLI_STATUS
 
 	ECLI_DBMS_INFORMATION_CONSTANTS
 		export {NONE} all
+		undefine
+			default_create
 		end
 
 create
@@ -29,8 +27,9 @@ feature {NONE} -- Initialization
 
 	make (a_session : ECLI_SESSION)
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 		do
+			default_create
 			create error_handler.make_null
 			session := a_session
 		ensure
@@ -1790,7 +1789,7 @@ feature {NONE} -- Implementation
 			s : STRING
 		do
 			s := string_info (information_type)
-			Result := s /= Void and then s.is_equal (string_yes)
+			Result := not s.is_empty and then s.is_equal (string_yes)
 		end
 
 	string_info (information_type : INTEGER) : STRING
@@ -1798,6 +1797,8 @@ feature {NONE} -- Implementation
 			set_status ("ecli_c_sql_get_info", ecli_c_sql_get_info (session.handle, information_type, ext_string.handle, string_length, ext_integer_32.handle))
 			if is_ok and ext_integer_32.item > 0 then
 				Result := ext_string.substring (1, ext_integer_32.item)
+			else
+				create Result.make_empty
 			end
 		end
 
@@ -1827,6 +1828,6 @@ feature {NONE} -- Implementation
 
 invariant
 
-	session_not_void: session /= Void
+	session_not_void: session /= Void  --FIXME: VS-DEL
 
 end

@@ -25,9 +25,9 @@ feature {NONE} -- Initialization
 	make (a_datasource_name, a_user_name, a_password : STRING)
 			-- Make for logging in `a_datasource_name' by `a_user_name' using `a_password'.
 		require
-			a_datasource_name_not_void: a_datasource_name /= Void
-			a_user_name_not_void: a_user_name /= Void
-			a_password_not_void: a_password /= Void
+			a_datasource_name_not_void: a_datasource_name /= Void --FIXME: VS-DEL
+			a_user_name_not_void: a_user_name /= Void --FIXME: VS-DEL
+			a_password_not_void: a_password /= Void --FIXME: VS-DEL
 		do
 			set_datasource_name (a_datasource_name)
 			set_user_name (a_user_name)
@@ -60,7 +60,7 @@ feature -- Element change
 	set_user_name(a_user_name: STRING)
 			-- Set `user' to `a_user'
 		require
-			a_user_ok: a_user_name/= Void
+			a_user_ok: a_user_name/= Void --FIXME: VS-DEL
 		do
 			create impl_user_name.make_from_string (a_user_name)
 		ensure
@@ -70,7 +70,7 @@ feature -- Element change
 	set_datasource_name (a_datasource_name : STRING)
 			-- Set `datasource_name' to `a_datasource_name'
 		require
-			a_datasource_name_not_void: a_datasource_name /= Void
+			a_datasource_name_not_void: a_datasource_name /= Void --FIXME: VS-DEL
 		do
 			create impl_datasource_name.make_from_string (a_datasource_name)
 		ensure
@@ -80,7 +80,7 @@ feature -- Element change
 	set_password (a_password : STRING)
 			-- Set password to 'a_password
 		require
-			a_password_ok: a_password /= Void
+			a_password_ok: a_password /= Void --FIXME: VS-DEL
 		do
 			create impl_password.make_from_string (a_password)
 		ensure
@@ -124,8 +124,8 @@ feature {NONE} -- Implementation
 
 invariant
 
-	datasource_name_not_void: datasource_name /= Void
-	user_name_not_void: user_name /= Void
-	password_not_void: password /= Void
+	datasource_name_not_void: datasource_name /= Void --FIXME: VS-DEL
+	user_name_not_void: user_name /= Void --FIXME: VS-DEL
+	password_not_void: password /= Void --FIXME: VS-DEL
 	
 end -- class ECLI_SIMPLE_LOGIN

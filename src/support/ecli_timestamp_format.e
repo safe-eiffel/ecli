@@ -14,12 +14,26 @@ class ECLI_TIMESTAMP_FORMAT
 inherit
 
 	ECLI_FORMAT [DT_DATE_TIME]
+		redefine
+			default_create
+		end
 
 	ECLI_ISO_FORMAT_CONSTANTS
+		redefine
+			default_create
+		end
+
+feature {} -- Initialization
+
+	default_create
+		do
+			create last_result.make_from_epoch (0)
+		end
+
 
 feature -- Access
 
-	item : DT_DATE_TIME
+--	item : DT_DATE_TIME
 
 	last_nanoseconds_fraction : INTEGER
 			-- Last fraction as nanoseconds
@@ -35,6 +49,7 @@ feature -- Cursor movement
 feature -- Element change
 
 	create_from_string (string : STRING)
+			-- Create `last_result' from `string'
 		local
 			year, month, day, hour, minute, second, milliseconds : INTEGER
 			l_fraction : STRING
@@ -51,7 +66,11 @@ feature -- Element change
 			second := regex.captured_substring (6).to_integer
 			if regex.match_count >= 8 then
 				create l_fraction.make_filled ('0', 9)
-				l_original_fraction := regex.captured_substring (8)
+				if attached regex.captured_substring (8) as an_orig_fraction then
+					l_original_fraction := an_orig_fraction
+				else
+					l_original_fraction := "0"
+				end
 				l_fraction.subcopy (l_original_fraction, 1, l_original_fraction.count.min (9), 1)
 				l_milliseconds := l_fraction.substring (1, 3)
 				milliseconds := l_milliseconds.to_integer
@@ -61,7 +80,6 @@ feature -- Element change
 			if milliseconds > 0 then
 				last_result.set_millisecond (milliseconds)
 			end
-
 		end
 
 feature -- Removal
@@ -106,14 +124,14 @@ feature {NONE} -- Implementation
 			cli_regex_string.append_string ("'}")
 			Result.compile (cli_regex_string)
 		ensure then
-			regex_not_void: Result /= Void
+			regex_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	ifmt : ECLI_FORMAT_INTEGER
 		once
 			create Result
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	regex_component_count : INTEGER = 7

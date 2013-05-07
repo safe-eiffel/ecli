@@ -34,7 +34,7 @@ feature -- Basic operations
 	execute (text : STRING; context : ISQL_CONTEXT)
 			-- show help
 		local
-			cursor : DS_LIST_CURSOR[ISQL_COMMAND]
+			cursor: like {ISQL_COMMANDS}.new_cursor
 		do
 			--| print heading message
 			context.filter.begin_message
@@ -43,21 +43,24 @@ feature -- Basic operations
 				%Command names can be abbreviated; characters between [ ] can be avoided.%N%NAvailable commands ('*' = needs a connected session) :%N")
 
 			--| list commands
-			from
-				cursor := context.commands.new_cursor
-				cursor.start
-			until
-				cursor.off
-			loop
-				if cursor.item.needs_session then
-					context.filter.put_message ("* ")
-				else
-					context.filter.put_message ("  ")
+--			if attached context.commands.new_cursor as cursor then
+				from
+					cursor := context.commands.new_cursor
+					check attached cursor end
+					cursor.start
+				until
+					cursor.off
+				loop
+					if cursor.item.needs_session then
+						context.filter.put_message ("* ")
+					else
+						context.filter.put_message ("  ")
+					end
+					context.filter.put_message (cursor.item.help_message)
+					context.filter.put_message ("%N")
+					cursor.forth
 				end
-				context.filter.put_message (cursor.item.help_message)
-				context.filter.put_message ("%N")
-				cursor.forth
-			end
+--			end
 --			context.filter.put_message ("* ")
 --			context.filter.put_message (context.sql_command.help_message)
 			context.filter.end_message

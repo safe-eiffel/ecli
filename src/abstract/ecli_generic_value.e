@@ -1,6 +1,6 @@
 note
 
-	description: 
+	description:
 
 		"Objects that represent typed values to be exchanged with the database."
 
@@ -9,7 +9,7 @@ note
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-deferred class ECLI_GENERIC_VALUE [G]
+deferred class ECLI_GENERIC_VALUE [G -> attached ANY]
 
 inherit
 
@@ -17,7 +17,7 @@ inherit
 		redefine
 			out, copy
 		end
-		
+
 feature -- Access
 
 	item : G
@@ -25,9 +25,11 @@ feature -- Access
 		require
 			not_null: not is_null
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		ensure
-			not_void: Result /= Void
+			not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Element change
@@ -60,7 +62,7 @@ feature -- Conversion
 				Result := item.out
 			end
 		end
-		
+
 feature -- Duplication
 
 	copy (other : like Current)
@@ -71,7 +73,7 @@ feature -- Duplication
 				set_item (other.item)
 			end
 		end
-		
+
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN
@@ -88,23 +90,23 @@ feature -- Contract support
 		ensure
 			definition: Result implies value /= Void
 		end
-		
+
 feature {NONE} -- Implementation
 
-	impl_item : G
+	impl_item : detachable G
 			-- Reference to actual item this is always the same item !
 		do
 		end
-		
+
 	create_impl_item
 			-- Create impl_item
 		do
 		end
-	
-	out_null : STRING 
+
+	out_null : STRING
 			-- Default `out' when value `is_null'
-		once 
+		once
 			Result := "<NULL>"
 		end
-	
+
 end

@@ -30,7 +30,6 @@ feature -- Status report
 		local
 			max_bits : INTEGER_32
 			max_val : INTEGER_64
-			l_natural : NATURAL_64
 		do
 			max_bits := platform.pointer_bits
 			if max_bits > 32 then
@@ -485,6 +484,8 @@ feature {NONE} -- Value handling functions
 feature {NONE} -- Value handling functions for ARRAYED values
 
 	ecli_c_alloc_array_value (c_buffer_length : INTEGER_64; a_count : INTEGER)  : POINTER
+		require
+			platform_compatible_length (c_buffer_length)
 		external "C"
 		end
 

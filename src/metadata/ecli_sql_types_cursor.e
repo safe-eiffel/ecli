@@ -19,7 +19,7 @@ inherit
 		export
 			{ANY} close
 		redefine
-			start, forth
+			start, forth, default_create
 		end
 
 	ECLI_TYPE_CONSTANTS
@@ -38,20 +38,29 @@ inherit
 			sql_type_time,
 			sql_type_timestamp,
 			sql_longvarchar
+		undefine
+			default_create
 		end
 
-	KL_IMPORTED_ARRAY_ROUTINES
+--	KL_IMPORTED_ARRAY_ROUTINES
 
 create
 
-	make_all_types, make_by_type
+	make_all_types, make
 
-feature -- Initialization
+feature {} -- Initialization
+
+	default_create
+		do
+			Precursor {ECLI_CURSOR}
+			create_buffer_objects
+		end
 
 	make_all_types, open_all_types (a_session : ECLI_SESSION)
 			-- make cursor for all types supported by `a_session'
 		require
-			session_opened: a_session /= Void and then a_session.is_connected
+			session_not_void: a_session /= Void  --FIXME: VS-DEL
+			a_session_connected: a_session.is_connected
 			closed: is_closed
 		do
 			make (sql_all_types, a_session)
@@ -60,25 +69,13 @@ feature -- Initialization
 			open: not is_closed
 		end
 
-	make_by_type, open_by_type (a_session : ECLI_SESSION; a_type : INTEGER)
-		obsolete
-			" Use `make' ."
-		require
-			session_opened: a_session /= Void and then a_session.is_connected
-			valid_type: Integer_array_.has (supported_types, a_type)
-			closed: is_closed
-		do
-			make (a_type, a_session)
-		ensure
-			executed: is_ok implies is_executed
-			open: not is_closed
-		end
 
 	make (a_type : INTEGER; a_session : ECLI_SESSION)
 			-- make cursor for `a_type', if it is a type known by the datasource
 		require
-			session_opened: a_session /= Void and then a_session.is_connected
-			valid_type: Integer_array_.has (supported_types, a_type)
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
+			a_session_connected: a_session.is_connected
+			valid_type: supported_types.has (a_type)
 			closed: is_closed
 		do
 			cursor_make (a_session)
@@ -95,9 +92,11 @@ feature -- Access
 		require
 			not_off: not off
 		do
-			Result := impl_item
+			check attached impl_item as i then
+				Result := i
+			end
 		ensure
-			definition: Result /= Void
+			definition: Result /= Void --FIXME: VS-DEL
 		end
 
 	supported_types : ARRAY[INTEGER]
@@ -126,7 +125,7 @@ feature -- Cursor Movement
 	start
 			-- advance cursor to first position if any
 		do
-			if results  = Void then
+			if results.is_empty then
 				create_buffers
 			end
 			statement_start
@@ -182,27 +181,6 @@ feature {NONE} -- Implementation
 		create_buffers
 				-- create buffers for results
 		do
-			create buffer_type_name.make (40)
-			create buffer_literal_prefix.make (20)
-			create buffer_literal_suffix.make (20)
-			create buffer_create_params.make (40)
-			create buffer_local_type_name.make (40)
-
-			create buffer_data_type.make
-			create buffer_column_size.make
-			create buffer_nullable.make
-			create buffer_case_sensitive.make
-			create buffer_searchable.make
-			create buffer_unsigned_attribute.make
-			create buffer_fixed_prec_scale.make
-			create buffer_auto_unique_value.make
-			create buffer_minimum_scale.make
-			create buffer_maximum_scale.make
-			create buffer_sql_data_type.make
-			create buffer_sql_date_time_sub.make
-			create buffer_num_prec_radix.make
-			create buffer_interval_precision.make
-
 			set_results (<<
 				buffer_type_name,
 				buffer_data_type,
@@ -226,7 +204,31 @@ feature {NONE} -- Implementation
 				>>)
 		end
 
-	impl_item : ECLI_SQL_TYPE
+	create_buffer_objects
+		do
+			create buffer_type_name.make (40)
+			create buffer_literal_prefix.make (20)
+			create buffer_literal_suffix.make (20)
+			create buffer_create_params.make (40)
+			create buffer_local_type_name.make (40)
+
+			create buffer_data_type.make
+			create buffer_column_size.make
+			create buffer_nullable.make
+			create buffer_case_sensitive.make
+			create buffer_searchable.make
+			create buffer_unsigned_attribute.make
+			create buffer_fixed_prec_scale.make
+			create buffer_auto_unique_value.make
+			create buffer_minimum_scale.make
+			create buffer_maximum_scale.make
+			create buffer_sql_data_type.make
+			create buffer_sql_date_time_sub.make
+			create buffer_num_prec_radix.make
+			create buffer_interval_precision.make
+		end
+
+	impl_item : detachable ECLI_SQL_TYPE
 
 	definition : STRING once Result := "SQLGetTypeInfo" end
 

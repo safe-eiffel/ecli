@@ -1,3 +1,35 @@
+ECLI v2.6 (2013-04)
+	- void "confident": library code is voidsafe, except for calls to non-voidsafe libs (parts of gobo at this time)
+	- xace + ecf
+		-- xace : set VOIDCONFIDENT variable to 'true' before calling geant or gexace
+		-- ecf : <name>.ecf and <name>-confident.ecf for voidunsafe or voidconfident systems respectively.
+		
+	- more flexible error-handling (ECLI_ERROR_HANDLER)
+		- Each diagnostic is available through ECLI_ERROR_HANDLER.
+	- bug or performance fixes
+	- support for connection pooling 
+	- new datatypes
+		-- stream value (you do not have to know the length in advance): ECLI_STREAM_VALUE and descendants.
+		   Length of data is known at execution.
+		-- ECLI_INTEGER_16
+		-- ECLI_STRING_LONGVARCHAR, ECLI_STRING_LONGVARBINARY
+		
+	- 64 bit support - however actual data length is limited to 32 bits
+	- ODBC API tracing
+	- ECMA367v2 syntax
+	- allow input/output parameters (see ECLI_STORED_PROCEDURE + samples app)
+	
+	- FIX
+		- Added environment Variables ODBC32LIBPATH and ODBCCP32LIBPATH to cope with Windows SDK7.1 linking error; users must use those environment variables to target the SDK 6 librarires 
+		
+	- Query Assistant
+		- new options -straight, -force_string
+		- generate the original xml file name as a note in the classes
+		- Report error when parameter meta data and parameter samples mismatch
+		- Do not generate modules/results/parameters with errors
+		- Reference columns can come from stored procedures (xml attribute 'procedure' instead of 'table')
+		
+	
 ECLI V2.4
 	Now only tested on
 	- EiffelStudio 6.3

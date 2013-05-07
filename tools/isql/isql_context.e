@@ -9,11 +9,19 @@ class
 
 inherit
 	KL_STANDARD_FILES
+		redefine
+			default_create
+		end
 
 create
 	make, make_by_parent
 
 feature {NONE} -- Initialization
+
+	default_create
+		do
+
+		end
 
 	make (an_output_file : like output_file; a_commands : like commands)
 			-- create context
@@ -21,11 +29,11 @@ feature {NONE} -- Initialization
 			an_output_file_not_void: an_output_file /= Void
 			a_commands_not_void: a_commands /= Void
 		do
+			default_create
 			output_file := an_output_file
 			commands := a_commands
-			create variables.make (10)
+			create variables.make_default
 			create history.make
-			create_filter
 			filter.set_output_file (output_file)
 		ensure
 			output_file_affected: output_file = an_output_file
@@ -45,7 +53,6 @@ feature {NONE} -- Initialization
 			session := parent_context.session
 			create variables.make (10)
 			create history.make
-			create_filter
 			filter.set_output_file (output_file)
 		ensure
 			parent_context_set: parent_context = a_parent_context
@@ -59,21 +66,29 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	command_stream: ISQL_COMMAND_STREAM
+	command_stream: detachable ISQL_COMMAND_STREAM
 
-	input_file : KI_TEXT_INPUT_STREAM
+	input_file : detachable KI_TEXT_INPUT_STREAM
 
 	variables : DS_HASH_TABLE[STRING,STRING]
 
-	parent_context : like Current
+	parent_context : detachable like Current
 
-	session : ECLI_SESSION
+	session : detachable ECLI_SESSION
 
 	commands : ISQL_COMMANDS
 
 	no_headings : BOOLEAN = False
 
 	filter : ISQL_FILTER
+		do
+			if attached impl_filter as f then
+				Result := f
+			else
+				Result := new_filter
+				impl_filter := Result
+			end
+		end
 
 	variable (name : STRING) : STRING
 			-- value of variable `name'
@@ -81,6 +96,7 @@ feature -- Access
 			name_not_void: name /= Void
 			has_variable_name: has_variable (name)
 		do
+			Result := ""
 			if variables.has (name) then
 				Result := variables.item (name)
 			else
@@ -174,7 +190,9 @@ feature {ISQL} -- Element change
 	set_interactive
 			--
 		do
-			input_file := Input
+			if attached Input as in then
+				input_file := in
+			end
 		ensure
 			input_file_set: input_file = Input
 		end
@@ -187,8 +205,8 @@ feature -- Element change
 			if not stream.is_open_read then
 				filter.begin_error
 				filter.put_error ("EXECUTE : Cannot open stream '")
-				if stream /= Input then
-					filter.put_error (stream.name)
+				if stream /= Input and attached stream.name as n then
+					filter.put_error (n)
 				else
 					filter.put_error ("stdin")
 				end
@@ -291,7 +309,7 @@ feature -- Basic operations
 	read_command
 			-- read command_stream and prompt if necessary
 		do
-			if command_stream.is_interactive and command_stream.buffer_text = Void then
+			if command_stream.is_interactive and command_stream.buffer_text.is_empty then
 				show_prompt
 			end
 			command_stream.read
@@ -331,10 +349,12 @@ feature -- Constants
 
 feature {NONE} -- Implementation
 
-	create_filter
+	new_filter : like filter
 		do
-			create {ISQL_CONFIGURABLE_TEXT_FILTER} filter.make (Current)
+			create {ISQL_CONFIGURABLE_TEXT_FILTER} Result.make (Current)
 		end
+
+	impl_filter : detachable like filter
 
 	show_prompt
 		do

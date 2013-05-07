@@ -14,15 +14,27 @@ class ECLI_DATA_SOURCES_CURSOR
 inherit
 
 	ECLI_SHARED_ENVIRONMENT
+		undefine
+			default_create
+		end
 
 	ECLI_HANDLE
+		undefine
+			default_create
+		end
+
 
 	ECLI_STATUS
 		export
 			{ANY} Sql_fetch_first, Sql_fetch_first_user, Sql_fetch_first_system
+		redefine
+			default_create
 		end
 
 	KL_IMPORTED_STRING_ROUTINES
+		undefine
+			default_create
+		end
 
 create
 
@@ -30,9 +42,22 @@ create
 
 feature {NONE} -- Initialization
 
+	default_create
+		do
+			Precursor {ECLI_STATUS}
+			--| implementation
+			create c_name.make (max_source_name_length + 1)
+			create c_description.make (max_source_description_length + 1)
+			create actual_name_length.make
+			create actual_description_length.make
+			create description.make_empty
+			create name.make_empty
+		end
+
 	make_all
 			-- make cursor on 'all' datasources
 		do
+			default_create
 			create error_handler.make_null
 			fetch_first_operation := Sql_fetch_first
 			is_all_datasources := True
@@ -46,6 +71,7 @@ feature {NONE} -- Initialization
 	make_user
 			-- make cursor on 'user' datasources
 		do
+			default_create
 			fetch_first_operation := Sql_fetch_first_user
 			is_user_datasources := True
 			before := True
@@ -58,6 +84,7 @@ feature {NONE} -- Initialization
 	make_system
 			-- make cursor on 'system' datasources
 		do
+			default_create
 			fetch_first_operation := Sql_fetch_first_system
 			is_system_datasources := True
 			before := True
@@ -71,10 +98,14 @@ feature -- Access
 
 	item : ECLI_DATA_SOURCE
 			-- current item
+		require
+			not_off: not off
 		do
-			Result := item_
+			check attached item_ as i then
+				Result := i
+			end
 		ensure
-			definition: Result /= Void implies not off
+			definition: Result /= Void implies not off  --FIXME: VS-DEL
 		end
 
 	fetch_first_operation : INTEGER
@@ -116,10 +147,6 @@ feature -- Cursor movement
 		do
 			before := False
 			after := False
-			create c_name.make (max_source_name_length + 1)
-			create c_description.make (max_source_description_length + 1)
-			create actual_name_length.make
-			create actual_description_length.make
 			item_ := Void
 			do_fetch (fetch_first_operation)
 		ensure
@@ -180,10 +207,12 @@ feature {NONE} -- Implementation
 			else
 				item_ := Void
 				after := True
+				name.wipe_out
+				description.wipe_out
 			end
 		end
 
-	item_ : ECLI_DATA_SOURCE
+	item_ : detachable ECLI_DATA_SOURCE
 
 	max_source_name_length : INTEGER = 100
 	max_source_description_length : INTEGER = 300

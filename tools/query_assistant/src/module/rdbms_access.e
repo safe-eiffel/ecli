@@ -202,7 +202,7 @@ feature -- Constants
 
 	default_name_prefix : STRING = "_RESULTS"
 
-feature {EVTK_EDITOR, ACCESS_MODULE} -- Element change
+feature {ACCESS_EDITOR, ACCESS_MODULE} -- Element change
 
 	set_query (a_query: STRING)
 			-- Set `query' to `a_query'.

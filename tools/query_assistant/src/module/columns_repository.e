@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	last_column : ECLI_COLUMN
+	last_column : detachable ECLI_COLUMN
 			-- Last column found in the repository
 
 	session : ECLI_SESSION
@@ -39,16 +39,17 @@ feature -- Status report
 
 feature -- Basic operations
 
-	search (catalog_name, schema_name, table_name, column_name : STRING)
-			-- Search columns corresponding to `catalog_name', `schema_name', `table_name', `column_name'.
+	search (catalog_name, schema_name : STRING; reference_column : REFERENCE_COLUMN)
+			-- Search columns corresponding to `catalog_name', `schema_name', `reference_column'.
 		require
-			table_name_not_void: table_name /= Void
-			columne_name_not_void: column_name /= Void
+			reference_column_not_void: reference_column /= Void
 		local
 			cursor : ECLI_COLUMNS_CURSOR
 			nm : ECLI_NAMED_METADATA
-			id : STRING
+			id, table_name, column_name : STRING
 		do
+			table_name := reference_column.table
+			column_name := reference_column.column
 			id := hash_identifiant (catalog_name, schema_name, table_name, column_name)
 			columns.search (id)
 			if columns.found then
@@ -56,7 +57,7 @@ feature -- Basic operations
 			else
 				last_column := Void
 				create nm.make (catalog_name, schema_name, table_name)
-				create cursor.make_query_column ( nm, column_name, session)
+				cursor := reference_column.new_cursor (nm, session)
 				--| Fix for Oracle driver that returns fool results.  Retrieve all results.
 				from
 					if cursor.is_ok then
@@ -111,6 +112,6 @@ feature {NONE} -- Implementation
 
 	hash_delimiter : CHARACTER = '|'
 
-	columns : DS_HASH_TABLE[ECLI_COLUMN, STRING]
+	columns : DS_HASH_TABLE[detachable ECLI_COLUMN, STRING]
 
 end -- class COLUMNS_REPOSITORY

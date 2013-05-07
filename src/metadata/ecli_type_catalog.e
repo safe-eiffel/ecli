@@ -14,8 +14,14 @@ class
 
 inherit
 	ANY
+		redefine
+			default_create
+		end
 
 	ECLI_TYPE_CONSTANTS
+		undefine
+			default_create
+		end
 
 create
 
@@ -23,16 +29,23 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_session : ECLI_SESSION)
+	default_create
+		do
+
+		end
+
+	make (a_session : ECLI_SESSION) 
 			-- Create for a database accessed through `a_session'.
 		require
-			a_session_not_void: a_session /= Void
+			a_session_not_void: a_session /= Void --FIXME: VS-DEL
 			a_session_connected: a_session.is_connected
 		local
 			cursor : ECLI_SQL_TYPES_CURSOR
 		do
+			default_create
 			create types.make (10)
 			session := a_session
+			create_dummy_statement
 			create cursor.make_all_types (a_session)
 			from
 				cursor.start
@@ -57,44 +70,43 @@ feature -- Access
 		do
 			Result := types.item (id)
 		ensure
-			type_for_id_not_void: Result /= Void
+			type_for_id_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 	numeric_types : DS_LIST[ECLI_SQL_TYPE]
 			-- Types that appear to be numeric
-		local
-			ht_cursor : DS_HASH_TABLE_CURSOR[DS_LIST[ECLI_SQL_TYPE], INTEGER]
-			l_cursor : DS_LIST_CURSOR[ECLI_SQL_TYPE]
 		do
-			if numerics_table /= Void then
-				Result := numerics_table
+			if attached numerics_table as n then
+				Result := n
 			else
-				from
-					ht_cursor := types.new_cursor
-					ht_cursor.start
-					create {DS_LINKED_LIST[ECLI_SQL_TYPE]}Result.make
-				until
-					ht_cursor.off
-				loop
+				create {DS_LINKED_LIST[ECLI_SQL_TYPE]}Result.make
+				if attached types.new_cursor as ht_cursor then
 					from
-						l_cursor := ht_cursor.item.new_cursor
-						l_cursor.start
+						ht_cursor.start
 					until
-						l_cursor.off
+						ht_cursor.off
 					loop
-						if l_cursor.item.is_unsigned_applicable
-							and then l_cursor.item.is_auto_unique_value_applicable
-							and then not l_cursor.item.is_auto_unique_value then
-								Result.put_last (l_cursor.item)
+						if attached ht_cursor.item.new_cursor as l_cursor then
+							from
+								l_cursor.start
+							until
+								l_cursor.off
+							loop
+								if l_cursor.item.is_unsigned_applicable
+									and then l_cursor.item.is_auto_unique_value_applicable
+									and then not l_cursor.item.is_auto_unique_value then
+										Result.put_last (l_cursor.item)
+								end
+								l_cursor.forth
+							end
 						end
-						l_cursor.forth
+						ht_cursor.forth
 					end
-					ht_cursor.forth
 				end
 				numerics_table := Result
 			end
 		ensure
-			result_not_void: Result /= Void
+			result_not_void: Result /= Void --FIXME: VS-DEL
 		end
 
 feature -- Measurement
@@ -106,10 +118,9 @@ feature -- Status report
 			-- Is `a_value' bindable ?
 			-- WARNING: not trustable with some drivers (like Oracle 10g)
 		require
-			a_value_not_void: a_value /= Void
+			a_value_not_void: a_value /= Void --FIXME: VS-DEL
 			session_connected: session.is_connected
 		do
-			create_dummy_statement
 			dummy_statement.put_parameter (a_value, "parameter")
 			dummy_statement.bind_parameters
 			Result := dummy_statement.is_ok
@@ -208,12 +219,14 @@ feature -- Status report
 
 feature {NONE} -- Implementation
 
+	dummy_statement: ECLI_STATEMENT
+
 	types : DS_HASH_TABLE[DS_LIST[ECLI_SQL_TYPE],INTEGER]
 
 	add_type (type : ECLI_SQL_TYPE)
 			-- Add `type' to Current catalog.
 		require
-			type_not_void: type /= Void
+			type_not_void: type /= Void --FIXME: VS-DEL
 		local
 			list : DS_LIST[ECLI_SQL_TYPE]
 		do
@@ -230,23 +243,20 @@ feature {NONE} -- Implementation
 			has_type: types.item (type.sql_type_code).has (type)
 		end
 
-	numerics_table : like numeric_types
+	numerics_table : detachable like numeric_types
 
-	dummy_statement : ECLI_STATEMENT
 
 	create_dummy_statement
 		do
-			if dummy_statement = Void then
-				create dummy_statement.make (session)
-				dummy_statement.set_sql (dummy_statement_sql)
-			end
+			create dummy_statement.make (session)
+			dummy_statement.set_sql (dummy_statement_sql)
 		end
 
 	dummy_statement_sql : STRING = "select * from dummy_table where 1=?parameter"
 
 invariant
 
-	types_not_void: types /= Void
-	session_not_void: session /= Void
+	types_not_void: types /= Void --FIXME: VS-DEL
+	session_not_void: session /= Void --FIXME: VS-DEL
 
 end -- class ECLI_TYPE_CATALOG

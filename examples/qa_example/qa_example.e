@@ -9,7 +9,7 @@ class
 
 inherit
 	KL_IMPORTED_STRING_ROUTINES
-	
+
 create
 
 	make
@@ -33,7 +33,7 @@ feature -- Initialization
 				session.set_login_strategy (simple_login)
 				session.connect
 				if session.has_information_message then
-					io.put_string (session.cli_state) 
+					io.put_string (session.cli_state)
 					io.put_string (session.diagnostic_message)
 				end
 				if session.is_connected then
@@ -47,7 +47,7 @@ feature -- Initialization
 				session.close
 			end;
 		end
-				
+
 	do_session
 		local
 			parameters : PARTICIPANTS_BY_REMAINING_PARAMETERS
@@ -62,7 +62,7 @@ feature -- Initialization
 				io.put_string (last_command)
 				io.put_string (" to pay%N")
 				from
-					parameters.remaining_amount.set_item (last_command.to_double)
+					parameters.remaining_amount.set_item (last_command.to_double.truncated_to_real)
 					cursor.set_parameters_object (parameters)
 					cursor.start
 				until
@@ -78,9 +78,9 @@ feature -- Initialization
 				end
 				read_command
 			end
-			
+
 		end
-		
+
 	print_error
 		do
 			io.put_string ("** ERROR **%N")
@@ -118,15 +118,15 @@ feature -- Basic Operations
 				i := i + 1
 			end
 		end
-			
-			
+
+
 	formatting_buffer : STRING
 		once
-			Result := STRING_.make (1000)
+			Result := STRING_.make_buffer (1000)
 		end
-	
+
 	session : ECLI_SESSION
-	
+
 	cursor : PARTICIPANTS_BY_REMAINING
 
 

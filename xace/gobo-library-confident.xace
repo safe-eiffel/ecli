@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<library name="gobo">
+
+	<description>
+		description: "Xace file for the Gobo Eiffel Library libraries"
+		copyright: "Copyright (c) 2001-2006, Eric Bezault and others"
+		license: "MIT License"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<mount location="${ECLI}/xace/gobo-argument-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-kl_kernel-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-lexical-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-math-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-parse-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-pattern-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-regexp-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-string-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-structure-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-test-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-time-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-tools-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-utility-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xml-confident.xace"/>
+
+<!--	<mount location="${GOBO}/library/argument/library.xace"/>
+	<mount location="${GOBO}/library/kernel/library.xace"/>
+	<mount location="${GOBO}/library/lexical/library.xace"/>
+	<mount location="${GOBO}/library/math/library.xace"/>
+	<mount location="${GOBO}/library/parse/library.xace"/>
+	<mount location="${GOBO}/library/pattern/library.xace"/>
+	<mount location="${GOBO}/library/regexp/library.xace"/>
+	<mount location="${GOBO}/library/string/library.xace"/>
+	<mount location="${GOBO}/library/structure/library.xace"/>
+	<mount location="${GOBO}/library/test/library.xace"/>
+	<mount location="${GOBO}/library/time/library.xace"/>
+	<mount location="${GOBO}/library/tools/library.xace"/>
+	<mount location="${GOBO}/library/utility/library.xace"/>
+	<mount location="${GOBO}/library/xml/library.xace"/> -->
+</library>

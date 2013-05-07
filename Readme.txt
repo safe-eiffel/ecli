@@ -2,7 +2,7 @@ Eiffel Library to ISO/CLI (Call Level Interface) compatible DB systems
 
 Author : Paul G. Crismer <pgcrism@users.sourceforge.net>
 License: Released under the Eiffel Forum License
-Copyright: 2000-2012, Paul G. Crismer 
+Copyright: 2000-2013 - Paul G. Crismer 
 
 Abstract
 ========
@@ -24,13 +24,28 @@ agree on some standard.
 Compiler portability
 ====================
 * ISE Eiffel
-* SmallEiffel
-* Visual Eiffel
+* Gobo Eiffel
 
 	Platforms :
 * Windows
 * Linux
 
+Voidsafety
+==========
+Void "confident"
+
+a) depends on http://www.github.com/pgcrism/gobo.git
+   This fork defines some voidconfident ecf files.
+   
+b) void confidence = code is voidsafe but uses unsafe libraries (gobo)
+   xace: 
+   	voidconfident <= set variable VOIDCONFIDENT to true
+   	void unsafe   <= unset VOIDCONFIDENT variable
+   ecf:
+   	<name>.ecf   : void unsafe
+   	<name>-confident.ecf : void confident
+   	
+   	
 Structure
 =========
 	ecli

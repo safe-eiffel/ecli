@@ -25,7 +25,7 @@ feature {ECLI_SESSION} -- Basic operations
 	connect (session : ECLI_SESSION)
 			-- Connect `session' using current strategy.
 		require
-			session_not_void: session /= Void
+			session_not_void: session /= Void --FIXME: VS-DEL
 		deferred
 		end
 

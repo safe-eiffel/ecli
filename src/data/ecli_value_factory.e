@@ -22,8 +22,6 @@ inherit
 			sql_real, sql_double, sql_smallint, sql_float, sql_decimal, sql_numeric
 		end
 
-	KL_IMPORTED_ARRAY_ROUTINES
-
 create
 
 	make
@@ -32,6 +30,8 @@ feature {NONE} -- Initialization
 
 	make
 		do
+--			create {ECLI_VARCHAR}last_result.make (100)
+			create_varchar_value (100)
 		end
 
 feature -- Access
@@ -46,7 +46,7 @@ feature -- Status report
 
 	valid_type (type_code : INTEGER) : BOOLEAN
 		do
-			Result := array_routines.has(valid_types, type_code)
+			Result := valid_types.has (type_code)
 		end
 
 feature -- Status setting
@@ -151,7 +151,6 @@ feature -- Basic operations
 		require
 			db_type_ok: valid_type (db_type)
 		do
-			last_result := Void
 			inspect db_type
 			when sql_binary then
 					create_binary_value (column_precision)
@@ -185,9 +184,10 @@ feature -- Basic operations
 				create_longvarchar_value (column_precision)
 			end
 		ensure
-			not_void: last_result /= Void
+			not_void: last_result /= Void --FIXME: VS-DEL
 			--	((db_type = sql_double or else db_type = sql_float or else db_type = sql_numeric or else db_type = sql_decimal or else last_result.column_precision >= column_precision) and then last_result.decimal_digits >= decimal_digits)
 			-- condition is relaxed for sql_float.  Oracle's NUMBER is given as sql_float or sql_double with precision 38 !!!
+			new_last_result: last_result /= old last_result
 		end
 
 feature {NONE} -- Implementation
@@ -213,7 +213,5 @@ feature {NONE} -- Implementation
 				sql_varchar
 			>>
 		end
-
-	array_routines : KL_ARRAY_ROUTINES[INTEGER] do Result := Integer_array_ end
 
 end

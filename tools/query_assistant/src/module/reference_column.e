@@ -39,6 +39,12 @@ feature -- Access
 	table: STRING
 			-- table name
 
+	new_cursor (a_table : ECLI_NAMED_METADATA; a_session: ECLI_SESSION) : ECLI_COLUMNS_CURSOR
+			-- New cursor on `a_table' columns metadata, querying `a_session' catalog.
+		do
+			create Result.make_query_column (a_table, column, a_session)
+		end
+
 feature -- Measurement
 
 feature -- Status report

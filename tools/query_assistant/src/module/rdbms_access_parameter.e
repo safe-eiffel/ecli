@@ -160,7 +160,7 @@ feature -- Status setting
 				-- check validity of module wrt (`a_catalog_name', `a_schema_name')
 			local
 			do
-				shared_columns_repository.search (a_catalog_name, a_schema_name, reference_column.table, reference_column.column)
+				shared_columns_repository.search (a_catalog_name, a_schema_name, reference_column)
 				if shared_columns_repository.found then
 					metadata := shared_columns_repository.last_column
 					if size > reasonable_maximum_size then
@@ -243,7 +243,7 @@ feature -- Comparison
 			-- is Current equal to `other' ?
 		do
 			if ANY_.same_types (Current, other) then
-				Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
+				Result := name.is_equal (other.name) and then reference_column ~ other.reference_column
 			else
 				Result := Precursor {RDBMS_ACCESS_METADATA} (other)
 			end
@@ -255,7 +255,7 @@ feature -- Duplication
 			-- copy from `other'
 		do
 			create name.make_from_string (other.name)
-			create reference_column.make (other.reference_column.table, other.reference_column.column)
+			reference_column := other.reference_column.twin
 			if other.metadata /= Void then
 				metadata := other.metadata.twin
 			end

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<library name="xml" prefix="xm_">
+	<description>
+		description: "Xace file for the Gobo Eiffel XML Library"
+		library: "Gobo Eiffel XML Library"
+		copyright: "Copyright (c) 2001-2005, Eric Bezault and others"
+		license: "MIT License"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+<!-- FIXME TODO -->
+	<mount location="${ECLI}/xace/gobo-xm_core-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_xslt-confident.xace"/>
+	<mount location="${ECLI}/xace/gobo-xm_xpath-confident.xace"/>
+
+</library>
