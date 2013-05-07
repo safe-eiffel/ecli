@@ -1,5 +1,6 @@
 note
-	description: "Application that help migrate towards voidsafety.
+	description: "Application that help migrate towards voidsafety."
+
 class
 	VSMIG_SUPPORT
 

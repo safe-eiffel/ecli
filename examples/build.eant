@@ -81,7 +81,7 @@
 		<geant file="build.eant" target="${target}" dir="test_safechars"/>
 		<geant file="build.eant" target="${target}" dir="test_values"/>
 		<geant file="build.eant" target="${target}" dir="test_Xaction"/>
-		<geant file="build.eant" target="${target}" dir="voidsafety-migration"/>
+		<geant file="build.eant" target="${target}" dir="voidsafety-migration/support"/>
 
 </target>
 
