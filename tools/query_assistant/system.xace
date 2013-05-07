@@ -43,5 +43,6 @@
 	
 	<mount location="${ECLI}/library-confident.xace" if="${VOIDCONFIDENT}=true"/>
 	<mount location="${ECLI}/library.xace" unless="${VOIDCONFIDENT}=true"/>
+	<mount location="${GOBO}/library/xml/library.xace"/>
 
 </system>
