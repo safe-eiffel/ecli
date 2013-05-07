@@ -243,7 +243,7 @@ feature -- Comparison
 			-- is Current equal to `other' ?
 		do
 			if ANY_.same_types (Current, other) then
-				Result := name.is_equal (other.name) and then reference_column.is_equal (other.reference_column)
+				Result := name.is_equal (other.name) and then reference_column ~ other.reference_column
 			else
 				Result := Precursor {RDBMS_ACCESS_METADATA} (other)
 			end
