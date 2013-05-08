@@ -35,7 +35,7 @@
 		<option name="ecf_library" value="$GOBO\library\gobo-core-confident.ecf"/>
 	</cluster>
 	<cluster name="gobo-kernel-safe">
-		<option name="ecf_library" value="$GOBO\library\kernel\library-safe.ecf"/>
+		<option name="ecf_library" value="$GOBO\library\kernel\library.ecf"/>
 	</cluster>
 	<cluster name="gobo-math-safe">
 		<option name="ecf_library" value="$GOBO\library\math\gobo-math-safe.ecf"/>

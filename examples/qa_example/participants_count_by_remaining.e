@@ -4,8 +4,8 @@ note
 			description: "Select participants count by remaining amount to pay"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_COUNT_BY_REMAINING'. DO NOT EDIT!"
-	generated: "2012/09/03 16:46:50.870"
-	generator_version: "v1.6"
+	generated: "2013/05/08 18:11:42.062"
+	generator_version: "v1.7.2"
 	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_COUNT_BY_REMAINING
@@ -13,6 +13,9 @@ class PARTICIPANTS_COUNT_BY_REMAINING
 inherit
 
 	ECLI_CURSOR
+		redefine
+			initialize
+		end
 
 
 create
@@ -21,7 +24,7 @@ create
 
 feature  -- -- Access
 
-	parameters_object: PARTICIPANTS_COUNT_BY_REMAINING_PARAMETERS
+	parameters_object: detachable PARTICIPANTS_COUNT_BY_REMAINING_PARAMETERS
 
 	item: PARTICIPANT_COUNT
 
@@ -52,12 +55,20 @@ feature {NONE} -- Implementation
 	create_buffers
 			-- Creation of buffers
 		local
-			buffers: ARRAY[like value_anchor]
+			buffers: like results
 		do
-			create item.make
-			create buffers.make (1,1)
-			buffers.put (item.count, 1)
+			create buffers.make (1,0)
+			buffers.force (item.count, 1)
 			set_results (buffers)
+		end
+
+feature {NONE} -- Initialization
+
+	initialize
+			-- <Precursor>
+		do
+			Precursor
+			create item.make
 		end
 
 end

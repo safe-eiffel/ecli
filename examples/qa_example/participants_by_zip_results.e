@@ -2,8 +2,9 @@ note
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2009/03/03 16:41:33.349"
-	generator_version: "v1.3b"
+	generated: "2013/05/08 18:11:42.062"
+	generator_version: "v1.7.2"
+	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_ZIP_RESULTS
 

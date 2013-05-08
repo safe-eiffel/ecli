@@ -4,8 +4,8 @@ note
 			description: "Select participants by amount already paid"
 		
 	status: "Cursor/Query automatically generated for 'PARTICIPANTS_BY_AMOUNT'. DO NOT EDIT!"
-	generated: "2012/09/03 16:46:50.902"
-	generator_version: "v1.6"
+	generated: "2013/05/08 18:11:42.109"
+	generator_version: "v1.7.2"
 	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_AMOUNT
@@ -13,6 +13,9 @@ class PARTICIPANTS_BY_AMOUNT
 inherit
 
 	ECLI_CURSOR
+		redefine
+			initialize
+		end
 
 
 create
@@ -21,7 +24,7 @@ create
 
 feature  -- -- Access
 
-	parameters_object: PARTICIPANTS_BY_AMOUNT_PARAMETERS
+	parameters_object: detachable PARTICIPANTS_BY_AMOUNT_PARAMETERS
 
 	item: PARTICIPANTS_BY_AMOUNT_RESULTS
 
@@ -53,22 +56,30 @@ feature {NONE} -- Implementation
 	create_buffers
 			-- Creation of buffers
 		local
-			buffers: ARRAY[like value_anchor]
+			buffers: like results
 		do
-			create item.make
-			create buffers.make (1,11)
-			buffers.put (item.identifier, 1)
-			buffers.put (item.first_name, 2)
-			buffers.put (item.last_name, 3)
-			buffers.put (item.street, 4)
-			buffers.put (item.no, 5)
-			buffers.put (item.zip, 6)
-			buffers.put (item.city, 7)
-			buffers.put (item.state, 8)
-			buffers.put (item.country, 9)
-			buffers.put (item.reg_time, 10)
-			buffers.put (item.paid_amount, 11)
+			create buffers.make (1,0)
+			buffers.force (item.identifier, 1)
+			buffers.force (item.first_name, 2)
+			buffers.force (item.last_name, 3)
+			buffers.force (item.street, 4)
+			buffers.force (item.no, 5)
+			buffers.force (item.zip, 6)
+			buffers.force (item.city, 7)
+			buffers.force (item.state, 8)
+			buffers.force (item.country, 9)
+			buffers.force (item.reg_time, 10)
+			buffers.force (item.paid_amount, 11)
 			set_results (buffers)
+		end
+
+feature {NONE} -- Initialization
+
+	initialize
+			-- <Precursor>
+		do
+			Precursor
+			create item.make
 		end
 
 end

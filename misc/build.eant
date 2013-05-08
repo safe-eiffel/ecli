@@ -60,12 +60,11 @@
 	</target>
 
 	<target name="check_ecli_variables">
-		<echo message="ERROR: GOBO_EIFFEL must be set." unless="${GOBO_EIFFEL}"/>
-		<echo message="WARNING: ECLI variable not set" unless="${ECLI}"/>
-		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
-		<echo message="WARNING: ECLI_C_BCC_DIR variable not set" if="${GOBO_CC}=bcc" unless="${ECLI_C_BCCDIR}"/>
-		<echo message="WARNING: SAFE_KERNEL variable not set" unless="${SAFE_KERNEL}"/>
-		<echo message="WARNING: SMARTEIFFELDIR variable not set" unless="${SMARTEIFFELDIR}" if="${GOBO_EIFFEL}=se"/>
+		<echo message="ERROR: ECLI variable must be set" unless="${ECLI}"/>
+		<echo message="ERROR: GOBO_EIFFEL variable must be set." unless="${GOBO_EIFFEL}"/>
+		<echo message="ERROR: GOBO_CC variable must be set. Must be msc|gcc" unless="${GOBO_CC}"/>
+		<echo message="ERROR: GOBO_OS variabe must be set" unless="${GOBO_OS}"/>
+		<echo message="ERROR: SAFE_KERNEL variable must be set" unless="${SAFE_KERNEL}"/>
 	</target>
 
 	<target unless="${GOBO_OS}=windows" name="prepare_compile" depend="init">

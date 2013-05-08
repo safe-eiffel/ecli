@@ -2,8 +2,8 @@ note
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2012/09/03 16:46:50.895"
-	generator_version: "v1.6"
+	generated: "2013/05/08 18:11:42.093"
+	generator_version: "v1.7.2"
 	source_filename: "access_modules.xml"
 
 class PARTICIPANTS_BY_REMAINING_RESULTS
@@ -25,17 +25,21 @@ feature {NONE} -- Initialization
 			-- Creation of buffers
 		do
 			Precursor
-			create reg_time.make (8)
+			create no.make
+			create reg_time.make_null
 			create remaining.make
 		ensure then
+			no_is_null: no.is_null
 			reg_time_is_null: reg_time.is_null
 			remaining_is_null: remaining.is_null
 		end
 
 feature  -- Access
 
-	reg_time: ECLI_BINARY
+	no: ECLI_INTEGER
 
-	remaining: ECLI_REAL
+	reg_time: ECLI_TIMESTAMP
+
+	remaining: ECLI_DOUBLE
 
 end
