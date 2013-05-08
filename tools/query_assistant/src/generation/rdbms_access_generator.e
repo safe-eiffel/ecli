@@ -427,6 +427,7 @@ feature {NONE} -- Basic operations
 		do
 			if module.has_result_set then
 				put_create_buffers (module)
+				put_initialize (module)
 			end
 		end
 
@@ -449,6 +450,13 @@ feature {NONE} -- Basic operations
 				else
 					parent_clause.append_string (c_cursor_parent_name)
 				end
+				parent_clause.append_string ("{
+
+		redefine
+			initialize
+		end
+		}"
+			)
 			else
 				if parent_name /= Void then
 					parent_clause.append_string (parent_name)
@@ -457,7 +465,6 @@ feature {NONE} -- Basic operations
 				end
 			end
 			parent_clause.append_character ('%N')
-
 			cursor_class.add_parent (parent_clause)
 
 			cursor_class.add_creation_procedure_name ("make")
@@ -487,6 +494,23 @@ feature {NONE} -- Basic operations
 			cursor_class.add_feature_group (feature_group)
 		end
 
+	put_initialize (module : RDBMS_ACCESS)
+			-- put `initialize' feature of `module' into `cursor_class'.
+		local
+			feature_group: EIFFEL_FEATURE_GROUP
+			routine: EIFFEL_ROUTINE
+		do
+			create feature_group.make ("Initialization")
+			feature_group.add_export ("NONE")
+			create routine.make ("initialize")
+			routine.set_comment ("<Precursor>")
+			routine.add_body_line ("Precursor")
+			routine.add_body_line ("create item.make")
+
+			feature_group.add_feature (routine)
+			cursor_class.add_feature_group (feature_group)
+		end
+
 	put_create_buffers (module : RDBMS_ACCESS)
 			-- put `create_buffers'  features of `module' into `cursor_class'
 		local
@@ -506,7 +530,7 @@ feature {NONE} -- Basic operations
 
 			create local_buffers.make ("buffers", "like results") -- "ARRAY[like value_anchor]")
 			routine.add_local (local_buffers)
-			routine.add_body_line ("create item.make")
+--			routine.add_body_line ("create item.make")
 			routine.add_body_line ("create buffers.make (1,0)") -- "+module.results.count.out+")")
 
 			from
