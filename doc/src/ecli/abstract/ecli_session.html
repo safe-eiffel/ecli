@@ -1,0 +1,1243 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_SESSION (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_SESSION</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a>, <a href="../../ecli/abstract/ecli_handle.html" class="class-name">ECLI_HANDLE</a>, <a href="../../ecli/abstract/ecli_shared_environment.html" class="class-name">ECLI_SHARED_ENVIRONMENT</a>, <a href="../../ecli/pattern/pat_publisher.html" class="class-name">PAT_PUBLISHER</a>, <a href="../../ecli/pattern/pat_subscriber.html" class="class-name">PAT_SUBSCRIBER</a>, <a href="../../ecli/spec/constants/ecli_transaction_capability_constants.html" class="class-name">ECLI_TRANSACTION_CAPABILITY_CONSTANTS</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make_default" class="feature-name">make_default</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#make_default" class="feature-name">make_default</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#api_trace_filename" class="feature-name">api_trace_filename</a></li>
+<li><a href="#connection_timeout" class="feature-name">connection_timeout</a></li>
+<li><a href="#data_source" class="feature-name">data_source</a></li>
+<li><a href="#info" class="feature-name">info</a></li>
+<li><a href="#login_strategy" class="feature-name">login_strategy</a></li>
+<li><a href="#login_timeout" class="feature-name">login_timeout</a></li>
+<li><a href="#network_packet_size" class="feature-name">network_packet_size</a></li>
+<li><a href="#password" class="feature-name">password</a></li>
+<li><a href="#set_network_packet_size" class="feature-name">set_network_packet_size</a></li>
+<li><a href="#tracer" class="feature-name">tracer</a></li>
+<li><a href="#transaction_capability" class="feature-name">transaction_capability</a></li>
+<li><a href="#transaction_isolation" class="feature-name">transaction_isolation</a></li>
+<li><a href="#user_name" class="feature-name">user_name</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#has_pending_transaction" class="feature-name">has_pending_transaction</a></li>
+<li><a href="#is_api_tracing" class="feature-name">is_api_tracing</a></li>
+<li><a href="#is_bind_arrayed_parameters_capable" class="feature-name">is_bind_arrayed_parameters_capable</a></li>
+<li><a href="#is_bind_arrayed_results_capable" class="feature-name">is_bind_arrayed_results_capable</a></li>
+<li><a href="#is_connected" class="feature-name">is_connected</a></li>
+<li><a href="#is_connection_dead" class="feature-name">is_connection_dead</a></li>
+<li><a href="#is_describe_parameters_capable" class="feature-name">is_describe_parameters_capable</a></li>
+<li><a href="#is_manual_commit" class="feature-name">is_manual_commit</a></li>
+<li><a href="#is_ready_to_connect" class="feature-name">is_ready_to_connect</a></li>
+<li><a href="#is_tracing" class="feature-name">is_tracing</a></li>
+<li><a href="#is_transaction_capable" class="feature-name">is_transaction_capable</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_setting">Status&nbsp;setting</a></strong>
+<ul class="feature-list-features">
+<li><a href="#disable_api_tracing" class="feature-name">disable_api_tracing</a></li>
+<li><a href="#disable_tracing" class="feature-name">disable_tracing</a></li>
+<li><a href="#enable_api_tracing" class="feature-name">enable_api_tracing</a></li>
+<li><a href="#set_automatic_commit" class="feature-name">set_automatic_commit</a></li>
+<li><a href="#set_manual_commit" class="feature-name">set_manual_commit</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_api_trace_filename" class="feature-name">set_api_trace_filename</a></li>
+<li><a href="#set_connection_timeout" class="feature-name">set_connection_timeout</a></li>
+<li><a href="#set_data_source" class="feature-name">set_data_source</a></li>
+<li><a href="#set_login_strategy" class="feature-name">set_login_strategy</a></li>
+<li><a href="#set_login_timeout" class="feature-name">set_login_timeout</a></li>
+<li><a href="#set_password" class="feature-name">set_password</a></li>
+<li><a href="#set_tracer" class="feature-name">set_tracer</a></li>
+<li><a href="#set_transaction_isolation" class="feature-name">set_transaction_isolation</a></li>
+<li><a href="#set_user_name" class="feature-name">set_user_name</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_Operations">Basic&nbsp;Operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#begin_transaction" class="feature-name">begin_transaction</a></li>
+<li><a href="#close" class="feature-name">close</a></li>
+<li><a href="#commit" class="feature-name">commit</a></li>
+<li><a href="#connect" class="feature-name">connect</a></li>
+<li><a href="#connect_with_strategy" class="feature-name">connect_with_strategy</a></li>
+<li><a href="#disconnect" class="feature-name">disconnect</a></li>
+<li><a href="#rollback" class="feature-name">rollback</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-"></a></strong>
+<ul class="feature-list-features">
+<li><a href="#environment_release" class="feature-name">environment_release</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that represent a session to a database.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_SESSION</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a></div>
+<div><a href="../../ecli/abstract/ecli_handle.html" class="class-name">ECLI_HANDLE</a></div>
+<div><a href="../../ecli/abstract/ecli_shared_environment.html" class="class-name">ECLI_SHARED_ENVIRONMENT</a></div>
+<div>
+<a href="../../ecli/pattern/pat_publisher.html" class="class-name">PAT_PUBLISHER</a>
+<span class="symbol">[</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">]</span></div>
+<div>
+<a href="../../ecli/pattern/pat_subscriber.html" class="class-name">PAT_SUBSCRIBER</a>
+<span class="symbol">[</span><a href="../../ecli/abstract/ecli_environment.html" class="class-name">ECLI_ENVIRONMENT</a><span class="symbol">]</span></div>
+<div><a href="../../ecli/spec/constants/ecli_transaction_capability_constants.html" class="class-name">ECLI_TRANSACTION_CAPABILITY_CONSTANTS</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make_default"><span class="feature-name">make_default</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Default creation.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span> is_closed<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="make_default"><span class="feature-name">make_default</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Default creation.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span> is_closed<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="api_trace_filename"><span class="feature-name">api_trace_filename</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Name of the api trace file.
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">api_trace_filename_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="connection_timeout"><span class="feature-name">connection_timeout</span></a><span class="symbol">:</span> <span class="class-name">DT_TIME_DURATION</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Duration corresponding to the number of seconds to wait for any request on the connection<br/>
+-- to complete before returning to the application.<br/>
+-- Result.second_count = 0 means no timeout
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">connection_timeout_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="data_source"><span class="feature-name">data_source</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Data source used for connection
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+[2004-12-23]Use <a href="#login_strategy" class="feature-name">login_strategy</a> instead.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="info"><span class="feature-name">info</span></a><span class="symbol">:</span> <a href="../../ecli/metadata/ecli_dbms_information.html" class="class-name">ECLI_DBMS_INFORMATION</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Various informations about underlying DBMS.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="login_strategy"><span class="feature-name">login_strategy</span></a><span class="symbol">:</span> <span class="keyword">detachable</span> <a href="../../ecli/abstract/ecli_login_strategy.html" class="class-name">ECLI_LOGIN_STRATEGY</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Login strategy used for connection.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="login_timeout"><span class="feature-name">login_timeout</span></a><span class="symbol">:</span> <span class="class-name">DT_TIME_DURATION</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Duration corresponding to the number of seconds to wait for a login request to complete<br/>
+-- before returning to the application. The default is driver-dependent.<br/>
+-- Result.second_count = 0 means not timeout and a connection attempt will wait indefinitely.
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">login_timeout_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="network_packet_size"><span class="feature-name">network_packet_size</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Network packet size.<br/>
+-- Note:   Many data sources either do not support this option or only can return but not set<br/>
+--         the network packet size.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="password"><span class="feature-name">password</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Password used for connection
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+[2004-12-23]Use <a href="#login_strategy" class="feature-name">login_strategy</a> instead.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_network_packet_size"><span class="feature-name">set_network_packet_size</span></a> <span class="symbol">(</span>new_size <span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  If the specified size exceeds the maximum packet size<br/>
+--  or is smaller than the minimum packet size, the driver substitutes that value and<br/>
+--  returns SQLSTATE 01S02 (Option value changed).
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">new_size_positive:</span> new_size <span class="symbol">&gt;</span> 0 <br/>
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">network_packet_size_set:</span> <span class="symbol">(</span>is_ok <span class="keyword">and</span> <span class="keyword">not</span> cli_state<span class="symbol">.</span>is_equal <span class="symbol">(</span>"01S02"<span class="symbol">)</span><span class="symbol">)</span> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_session.html#network_packet_size" class="feature-name">network_packet_size</a> <span class="symbol">=</span> new_size<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="tracer"><span class="feature-name">tracer</span></a><span class="symbol">:</span> <span class="keyword">detachable</span> <a href="../../ecli/abstract/ecli_tracer.html" class="class-name">ECLI_TRACER</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Tracer of all SQL. Void implies no trace.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="transaction_capability"><span class="feature-name">transaction_capability</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Transaction capability of established session
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> Sql_tc_all <span class="keyword">or</span> <span class="keyword">else</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> Sql_tc_ddl_commit <span class="keyword">or</span> <span class="keyword">else</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> Sql_tc_ddl_ignore <span class="keyword">or</span> <span class="keyword">else</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> Sql_tc_dml <span class="keyword">or</span> <span class="keyword">else</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> Sql_tc_none<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="transaction_isolation"><span class="feature-name">transaction_isolation</span></a><span class="symbol">:</span> <a href="../../ecli/abstract/ecli_transaction_isolation.html" class="class-name">ECLI_TRANSACTION_ISOLATION</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current active transaction isolation options
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">transaction_isolation_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="user_name"><span class="feature-name">user_name</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- User name used for connection
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+[2004-12-23]Use <a href="#login_strategy" class="feature-name">login_strategy</a> instead.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="has_pending_transaction"><span class="feature-name">has_pending_transaction</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has the session a pending transaction ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_api_tracing"><span class="feature-name">is_api_tracing</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this session tracing ODBC/CLI api calls ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_bind_arrayed_parameters_capable"><span class="feature-name">is_bind_arrayed_parameters_capable</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can arrayed parameters be used in rowset operations ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_bind_arrayed_results_capable"><span class="feature-name">is_bind_arrayed_results_capable</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can arrayed results be used  ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_connected"><span class="feature-name">is_connected</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this session connected to a database ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">connected_valid:</span> <span class="special-keyword">Result</span> <span class="keyword">implies</span> is_valid<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_connection_dead"><span class="feature-name">is_connection_dead</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is the connection dead ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_describe_parameters_capable"><span class="feature-name">is_describe_parameters_capable</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can '<a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a>.describe_parameters' be called ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_manual_commit"><span class="feature-name">is_manual_commit</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this session in 'manual commit mode' ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_ready_to_connect"><span class="feature-name">is_ready_to_connect</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this session ready to be connected ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span><span class="keyword">attached</span> <a href="../../ecli/abstract/ecli_session.html#login_strategy" class="feature-name">login_strategy</a><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_tracing"><span class="feature-name">is_tracing</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this session tracing SQL statements ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">tracing_is_tracer_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span><span class="keyword">attached</span> <a href="../../ecli/abstract/ecli_session.html#tracer" class="feature-name">tracer</a><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_transaction_capable"><span class="feature-name">is_transaction_capable</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">capability:</span> <span class="special-keyword">Result</span> <span class="keyword">implies</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_session.html#transaction_capability" class="feature-name">transaction_capability</a> <span class="symbol">=</span> sql_tc_all <span class="keyword">or</span> <a href="../../ecli/abstract/ecli_session.html#transaction_capability" class="feature-name">transaction_capability</a> <span class="symbol">=</span> sql_tc_dml <span class="keyword">or</span> <a href="../../ecli/abstract/ecli_session.html#transaction_capability" class="feature-name">transaction_capability</a> <span class="symbol">=</span> sql_tc_ddl_commit <span class="keyword">or</span> <a href="../../ecli/abstract/ecli_session.html#transaction_capability" class="feature-name">transaction_capability</a> <span class="symbol">=</span> sql_tc_ddl_ignore <span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_setting" class="keyword">feature</a>
+<span class="comment">-- Status setting</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="disable_api_tracing"><span class="feature-name">disable_api_tracing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Disable ODBC API tracing.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="disable_tracing"><span class="feature-name">disable_tracing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Disable SQL tracing.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">tracing:</span> <a href="../../ecli/abstract/ecli_session.html#is_tracing" class="feature-name">is_tracing</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_tracing:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_tracing" class="feature-name">is_tracing</a> <br/>
+<span class="assertion-tag">no_tracer:</span> <span class="keyword">not</span> <span class="keyword">attached</span> <a href="../../ecli/abstract/ecli_session.html#tracer" class="feature-name">tracer</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="enable_api_tracing"><span class="feature-name">enable_api_tracing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Enable ODBC API tracing into <a href="#api_trace_filename" class="feature-name">api_trace_filename</a>.<br/>
+--		require<br/>
+--			-- FIXME: api_trace_filename set.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_automatic_commit"><span class="feature-name">set_automatic_commit</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set commit mode to <span class="feature-name-comment">automatic</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">automatic_commit:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_manual_commit"><span class="feature-name">set_manual_commit</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set commit mode to <span class="feature-name-comment">manual</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">capable:</span> <a href="../../ecli/abstract/ecli_session.html#is_transaction_capable" class="feature-name">is_transaction_capable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_api_trace_filename"><span class="feature-name">set_api_trace_filename</span></a> <span class="symbol">(</span>filename <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> file_system <span class="symbol">:</span> <span class="class-name">KI_FILE_SYSTEM</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#api_trace_filename" class="feature-name">api_trace_filename</a> to <span class="feature-name-comment">filename</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">filename_not_void:</span> filename <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">file_system_not_void:</span> file_system <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">file_name_valid:</span> file_system<span class="symbol">.</span>directory_exists <span class="symbol">(</span>file_system<span class="symbol">.</span>dirname <span class="symbol">(</span>filename<span class="symbol">)</span><span class="symbol">)</span> <br/>
+<span class="assertion-tag">not_api_tracing:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_api_tracing" class="feature-name">is_api_tracing</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">api_trace_filename_set:</span> is_ok <span class="keyword">implies</span> <span class="keyword">attached</span> file_system<span class="symbol">.</span>basename <span class="symbol">(</span><a href="../../ecli/abstract/ecli_session.html#api_trace_filename" class="feature-name">api_trace_filename</a><span class="symbol">)</span> <span class="keyword">as</span> f_api <span class="keyword">and</span> <span class="keyword">then</span> <span class="keyword">attached</span> file_system<span class="symbol">.</span>basename <span class="symbol">(</span>filename<span class="symbol">)</span> <span class="keyword">as</span> fn <span class="keyword">and</span> <span class="keyword">then</span> f_api<span class="symbol">.</span>is_equal <span class="symbol">(</span>fn<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_connection_timeout"><span class="feature-name">set_connection_timeout</span></a> <span class="symbol">(</span>duration <span class="symbol">:</span> <span class="class-name">DT_TIME_DURATION</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#connection_timeout" class="feature-name">connection_timeout</a> to <span class="feature-name-comment">duration</span>.<br/>
+-- If the specified timeout exceeds the maximum connection timeout in the data source,<br/>
+-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">duration_not_void:</span> duration <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">connection_timeout_set:</span> <span class="symbol">(</span>is_ok <span class="keyword">and</span> <span class="keyword">not</span> cli_state<span class="symbol">.</span>is_equal <span class="symbol">(</span>"01S02"<span class="symbol">)</span><span class="symbol">)</span> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_session.html#connection_timeout" class="feature-name">connection_timeout</a><span class="symbol">.</span>is_equal <span class="symbol">(</span>duration<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_data_source"><span class="feature-name">set_data_source</span></a> <span class="symbol">(</span>a_data_source <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#data_source" class="feature-name">data_source</a> to <span class="feature-name-comment">a_data_source</span>
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+[2004-12-23]Use <a href="#set_login_strategy" class="feature-name">set_login_strategy</a> instead.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">a_data_source_ok:</span> a_data_source <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">data_source_set:</span> <a href="../../ecli/abstract/ecli_session.html#data_source" class="feature-name">data_source</a><span class="symbol">.</span>is_equal <span class="symbol">(</span>a_data_source<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_login_strategy"><span class="feature-name">set_login_strategy</span></a> <span class="symbol">(</span>new_login <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_login_strategy.html" class="class-name">ECLI_LOGIN_STRATEGY</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Change <a href="#login_strategy" class="feature-name">login_strategy</a> to <span class="feature-name-comment">new_login</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">new_login_not_void:</span> new_login <span class="symbol">/=</span> <span class="special-keyword">Void</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">login_strategy_set:</span> <a href="../../ecli/abstract/ecli_session.html#login_strategy" class="feature-name">login_strategy</a> <span class="symbol">=</span> new_login <br/>
+<span class="assertion-tag">ready_to_connect:</span> <a href="../../ecli/abstract/ecli_session.html#is_ready_to_connect" class="feature-name">is_ready_to_connect</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_login_timeout"><span class="feature-name">set_login_timeout</span></a> <span class="symbol">(</span>duration <span class="symbol">:</span> <span class="class-name">DT_TIME_DURATION</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#login_timeout" class="feature-name">login_timeout</a> to <span class="feature-name-comment">duration</span>.<br/>
+-- If the specified timeout exceeds the maximum login timeout in the data source,<br/>
+-- the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">duration_not_void:</span> duration <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">login_timeout_set:</span> <span class="symbol">(</span>is_ok <span class="keyword">and</span> <span class="keyword">not</span> cli_state<span class="symbol">.</span>is_equal <span class="symbol">(</span>"01S02"<span class="symbol">)</span><span class="symbol">)</span> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_session.html#login_timeout" class="feature-name">login_timeout</a><span class="symbol">.</span>is_equal <span class="symbol">(</span>duration<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_password"><span class="feature-name">set_password</span></a> <span class="symbol">(</span>a_password <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set password to 'a_password
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+[2004-12-23]Use <a href="#set_login_strategy" class="feature-name">set_login_strategy</a> instead.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">a_password_ok:</span> a_password <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">password_set:</span> <a href="../../ecli/abstract/ecli_session.html#password" class="feature-name">password</a><span class="symbol">.</span>is_equal <span class="symbol">(</span>a_password<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_tracer"><span class="feature-name">set_tracer</span></a> <span class="symbol">(</span>a_tracer <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_tracer.html" class="class-name">ECLI_TRACER</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Trace SQL with <span class="feature-name-comment">a_tracer</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">tracer_ok:</span> a_tracer <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">tracer_set:</span> <a href="../../ecli/abstract/ecli_session.html#tracer" class="feature-name">tracer</a> <span class="symbol">=</span> a_tracer <br/>
+<span class="assertion-tag">tracing:</span> <a href="../../ecli/abstract/ecli_session.html#is_tracing" class="feature-name">is_tracing</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_transaction_isolation"><span class="feature-name">set_transaction_isolation</span></a> <span class="symbol">(</span>an_isolation <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_transaction_isolation.html" class="class-name">ECLI_TRANSACTION_ISOLATION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Change transaction isolation level
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">an_isolation_not_void:</span> an_isolation <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">no_pending_transaction:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#has_pending_transaction" class="feature-name">has_pending_transaction</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">done_when_ok:</span> is_ok <span class="keyword">implies</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_session.html#transaction_isolation" class="feature-name">transaction_isolation</a><span class="symbol">.</span>is_equal <span class="symbol">(</span>an_isolation<span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_user_name"><span class="feature-name">set_user_name</span></a> <span class="symbol">(</span>a_user_name<span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <span class="feature-name-comment">user</span> to <span class="feature-name-comment">a_user</span>
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+[2004-12-23]Use <a href="#login_strategy" class="feature-name">login_strategy</a> instead.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">a_user_ok:</span> a_user_name<span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">user_name_set:</span> <a href="../../ecli/abstract/ecli_session.html#user_name" class="feature-name">user_name</a><span class="symbol">.</span>is_equal <span class="symbol">(</span>a_user_name<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_Operations" class="keyword">feature</a>
+<span class="comment">-- Basic Operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="begin_transaction"><span class="feature-name">begin_transaction</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Begin a new transaction
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">capable:</span> <a href="../../ecli/abstract/ecli_session.html#is_transaction_capable" class="feature-name">is_transaction_capable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">manual_commit:</span> <a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a> <span class="keyword">implies</span> is_ok <br/>
+<span class="assertion-tag">has_pending_transaction:</span> <a href="../../ecli/abstract/ecli_session.html#has_pending_transaction" class="feature-name">has_pending_transaction</a> <span class="keyword">implies</span> is_ok<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="close"><span class="feature-name">close</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Close the session
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">not_closed:</span> <span class="keyword">not</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">closed:</span> is_closed <br/>
+<span class="assertion-tag">unregistered:</span> <span class="keyword">not</span> <span class="symbol">(</span><span class="keyword">old</span> environment<span class="symbol">)</span><span class="symbol">.</span>is_registered_session <span class="symbol">(</span><span class="special-keyword">Current</span><span class="symbol">)</span> <br/>
+<span class="assertion-tag">not_valid:</span> <span class="keyword">not</span> is_valid<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="commit"><span class="feature-name">commit</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Commit current transaction
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">manual_commit:</span> <a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a> <br/>
+<span class="assertion-tag">pending_transaction:</span> <a href="../../ecli/abstract/ecli_session.html#has_pending_transaction" class="feature-name">has_pending_transaction</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">no_pending_transaction:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#has_pending_transaction" class="feature-name">has_pending_transaction</a> <span class="keyword">implies</span> is_ok <br/>
+<span class="assertion-tag">automatic_commit:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="connect"><span class="feature-name">connect</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Connect using <a href="#login_strategy" class="feature-name">login_strategy</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_valid:</span> is_valid <br/>
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">ready_to_connect:</span> <a href="../../ecli/abstract/ecli_session.html#is_ready_to_connect" class="feature-name">is_ready_to_connect</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <span class="keyword">implies</span> is_ok<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="connect_with_strategy"><span class="feature-name">connect_with_strategy</span></a> <span class="symbol">(</span>new_strategy<span class="symbol">:</span> <a href="../../ecli/abstract/ecli_login_strategy.html" class="class-name">ECLI_LOGIN_STRATEGY</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Connect using <span class="feature-name-comment">new_strategy</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_valid:</span> is_valid <br/>
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">login_set:</span> <a href="../../ecli/abstract/ecli_session.html#login_strategy" class="feature-name">login_strategy</a> <span class="symbol">=</span> new_strategy <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <span class="keyword">implies</span> is_ok<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="disconnect"><span class="feature-name">disconnect</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Disconnect the session and close any remaining statement
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_valid:</span> is_valid <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_connected:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <span class="keyword">implies</span> is_ok <br/>
+<span class="assertion-tag">no_opened_statements:</span> statements_count <span class="symbol">=</span> 0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="rollback"><span class="feature-name">rollback</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Rollback current transaction
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid <br/>
+<span class="assertion-tag">connected:</span> <a href="../../ecli/abstract/ecli_session.html#is_connected" class="feature-name">is_connected</a> <br/>
+<span class="assertion-tag">manual_commit:</span> <a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a> <br/>
+<span class="assertion-tag">pending_transaction:</span> <a href="../../ecli/abstract/ecli_session.html#has_pending_transaction" class="feature-name">has_pending_transaction</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">no_pending_transaction:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#has_pending_transaction" class="feature-name">has_pending_transaction</a> <span class="keyword">implies</span> is_ok <br/>
+<span class="assertion-tag">automatic_commit:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_session.html#is_manual_commit" class="feature-name">is_manual_commit</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_environment.html" class="class-name">ECLI_ENVIRONMENT</a><span class="symbol">}</span>
+<span class="comment">-- </span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="environment_release"><span class="feature-name">environment_release</span></a> <span class="symbol">(</span>env <span class="symbol">:</span> <span class="keyword">like</span> environment<span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Environment is being released
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="assertion-tag">released_environment:</span> is_closed <span class="symbol">=</span> <span class="special-keyword">True</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">valid_session:</span> <span class="symbol">(</span><span class="keyword">attached</span> environment<span class="symbol">)</span> <span class="keyword">implies</span> environment <span class="symbol">=</span> shared_environment <br/>
+<span class="assertion-tag">info_not_void:</span> <a href="../../ecli/abstract/ecli_session.html#info" class="feature-name">info</a> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

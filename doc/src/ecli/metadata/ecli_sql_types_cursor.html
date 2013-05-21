@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_SQL_TYPES_CURSOR (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/metadata/cluster.metadata.html" class="cluster-name">metadata</a></div>
+<h1>Class ECLI_SQL_TYPES_CURSOR</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_cursor.html" class="class-name">ECLI_CURSOR</a>, <a href="../../ecli/spec/constants/ecli_type_constants.html" class="class-name">ECLI_TYPE_CONSTANTS</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make_all_types" class="feature-name">make_all_types</a></li>
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_create" class="feature-name">default_create</a></li>
+<li><a href="#make" class="feature-name">make</a></li>
+<li><a href="#make_all_types" class="feature-name">make_all_types</a></li>
+<li><a href="#open_all_types" class="feature-name">open_all_types</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#item" class="feature-name">item</a></li>
+<li><a href="#supported_types" class="feature-name">supported_types</a></li>
+<li><a href="#buffer_auto_unique_value" class="feature-name">buffer_auto_unique_value</a></li>
+<li><a href="#buffer_case_sensitive" class="feature-name">buffer_case_sensitive</a></li>
+<li><a href="#buffer_column_size" class="feature-name">buffer_column_size</a></li>
+<li><a href="#buffer_create_params" class="feature-name">buffer_create_params</a></li>
+<li><a href="#buffer_data_type" class="feature-name">buffer_data_type</a></li>
+<li><a href="#buffer_fixed_prec_scale" class="feature-name">buffer_fixed_prec_scale</a></li>
+<li><a href="#buffer_interval_precision" class="feature-name">buffer_interval_precision</a></li>
+<li><a href="#buffer_literal_prefix" class="feature-name">buffer_literal_prefix</a></li>
+<li><a href="#buffer_literal_suffix" class="feature-name">buffer_literal_suffix</a></li>
+<li><a href="#buffer_local_type_name" class="feature-name">buffer_local_type_name</a></li>
+<li><a href="#buffer_maximum_scale" class="feature-name">buffer_maximum_scale</a></li>
+<li><a href="#buffer_minimum_scale" class="feature-name">buffer_minimum_scale</a></li>
+<li><a href="#buffer_nullable" class="feature-name">buffer_nullable</a></li>
+<li><a href="#buffer_num_prec_radix" class="feature-name">buffer_num_prec_radix</a></li>
+<li><a href="#buffer_searchable" class="feature-name">buffer_searchable</a></li>
+<li><a href="#buffer_sql_data_type" class="feature-name">buffer_sql_data_type</a></li>
+<li><a href="#buffer_sql_date_time_sub" class="feature-name">buffer_sql_date_time_sub</a></li>
+<li><a href="#buffer_type_name" class="feature-name">buffer_type_name</a></li>
+<li><a href="#buffer_unsigned_attribute" class="feature-name">buffer_unsigned_attribute</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Cursor_Movement">Cursor&nbsp;Movement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#forth" class="feature-name">forth</a></li>
+<li><a href="#start" class="feature-name">start</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status">Status</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_odbc_v3" class="feature-name">is_odbc_v3</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Cursors over the SQL types supported by the datasource related to a session.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_SQL_TYPES_CURSOR</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_cursor.html" class="class-name">ECLI_CURSOR</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make_all_types"><span class="feature-name">make_all_types</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor for all types supported by <span class="feature-name-comment">a_session</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">executed:</span> is_ok<span class="keyword">implies</span>is_executed<br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span>is_closed<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_type<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">;</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor for <span class="feature-name-comment">a_type</span>, if it is a type known by the datasource
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">valid_type:</span> <a href="../../ecli/metadata/ecli_sql_types_cursor.html#supported_types" class="feature-name">supported_types</a><span class="symbol">.</span>has<span class="symbol">(</span>a_type<span class="symbol">)</span><br/>
+<span class="assertion-tag">closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">executed:</span> is_ok<span class="keyword">implies</span>is_executed<br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span>is_closed<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_create"><span class="feature-name">default_create</span></a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_type<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">;</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor for <span class="feature-name-comment">a_type</span>, if it is a type known by the datasource
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">valid_type:</span> <a href="../../ecli/metadata/ecli_sql_types_cursor.html#supported_types" class="feature-name">supported_types</a><span class="symbol">.</span>has<span class="symbol">(</span>a_type<span class="symbol">)</span><br/>
+<span class="assertion-tag">closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">executed:</span> is_ok<span class="keyword">implies</span>is_executed<br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span>is_closed<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make_all_types"><span class="feature-name">make_all_types</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor for all types supported by <span class="feature-name-comment">a_session</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">executed:</span> is_ok<span class="keyword">implies</span>is_executed<br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span>is_closed<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="open_all_types"><span class="feature-name">open_all_types</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor for all types supported by <span class="feature-name-comment">a_session</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">closed:</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">executed:</span> is_ok<span class="keyword">implies</span>is_executed<br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span>is_closed<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a><span class="symbol">:</span><a href="../../ecli/metadata/ecli_sql_type.html" class="class-name">ECLI_SQL_TYPE</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- item at current cursor position
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_off:</span> <span class="keyword">not</span>off<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="supported_types"><span class="feature-name">supported_types</span></a><span class="symbol">:</span><span class="class-name">ARRAY</span><span class="symbol">[</span><span class="class-name">INTEGER</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- array of supported types
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">feature</span>
+<span class="symbol">{</span><a href="../../ecli/metadata/ecli_sql_type.html" class="class-name">ECLI_SQL_TYPE</a><span class="symbol">}</span>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="buffer_auto_unique_value"><span class="feature-name">buffer_auto_unique_value</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_case_sensitive"><span class="feature-name">buffer_case_sensitive</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_column_size"><span class="feature-name">buffer_column_size</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_create_params"><span class="feature-name">buffer_create_params</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_varchar.html" class="class-name">ECLI_VARCHAR</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_data_type"><span class="feature-name">buffer_data_type</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_fixed_prec_scale"><span class="feature-name">buffer_fixed_prec_scale</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_interval_precision"><span class="feature-name">buffer_interval_precision</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_literal_prefix"><span class="feature-name">buffer_literal_prefix</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_varchar.html" class="class-name">ECLI_VARCHAR</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_literal_suffix"><span class="feature-name">buffer_literal_suffix</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_varchar.html" class="class-name">ECLI_VARCHAR</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_local_type_name"><span class="feature-name">buffer_local_type_name</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_varchar.html" class="class-name">ECLI_VARCHAR</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_maximum_scale"><span class="feature-name">buffer_maximum_scale</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_minimum_scale"><span class="feature-name">buffer_minimum_scale</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_nullable"><span class="feature-name">buffer_nullable</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_num_prec_radix"><span class="feature-name">buffer_num_prec_radix</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_searchable"><span class="feature-name">buffer_searchable</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_sql_data_type"><span class="feature-name">buffer_sql_data_type</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_sql_date_time_sub"><span class="feature-name">buffer_sql_date_time_sub</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_type_name"><span class="feature-name">buffer_type_name</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_varchar.html" class="class-name">ECLI_VARCHAR</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="buffer_unsigned_attribute"><span class="feature-name">buffer_unsigned_attribute</span></a><span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Cursor_Movement" class="keyword">feature</a>
+<span class="comment">-- Cursor Movement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="forth"><span class="feature-name">forth</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance cursor to next position
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="start"><span class="feature-name">start</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance cursor to first position if any
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/metadata/ecli_sql_type.html" class="class-name">ECLI_SQL_TYPE</a><span class="symbol">}</span>
+<span class="comment">-- Status</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_odbc_v3"><span class="feature-name">is_odbc_v3</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- does this type description contain ODBC > 3.x information ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# List of ordered feature clauses. 
+# Unknown feature clauses are inserted at $user_defined$ position.
+
+Initialisation
+Initialization
+Access
+Measurement
+Comparison
+Status report
+Status setting
+Cursor movement
+Element change
+Removal
+Resizing
+Transformation
+Conversion
+Duplication
+Miscellaneous
+Basic Operations
+
+$user_defined$
+
+Obsolete
+Inapplicable
+Implementation

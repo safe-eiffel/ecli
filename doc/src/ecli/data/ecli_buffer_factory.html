@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_BUFFER_FACTORY (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/data/cluster.data.html" class="cluster-name">data</a></div>
+<h1>Class ECLI_BUFFER_FACTORY</h1>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/data/arrayed/ecli_arrayed_buffer_factory.html" class="class-name">ECLI_ARRAYED_BUFFER_FACTORY</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-default_create" class="feature-name">default_create</a></li>
+<li><a href="#creator-make_for_results" class="feature-name">make_for_results</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_precision_limit" class="feature-name">Default_precision_limit</a></li>
+<li><a href="#last_buffers" class="feature-name">last_buffers</a></li>
+<li><a href="#last_index_table" class="feature-name">last_index_table</a></li>
+<li><a href="#precision_limit" class="feature-name">precision_limit</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_precision_limit" class="feature-name">set_precision_limit</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#create_buffers" class="feature-name">create_buffers</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Inapplicable">Inapplicable</a></strong>
+<ul class="feature-list-features">
+<li><a href="#value_anchor" class="feature-name">value_anchor</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that create buffers for DB to application information exchange.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_BUFFER_FACTORY</span>
+</h2>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-default_create"><span class="feature-name">default_create</span></a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_for_results"><span class="feature-name">make_for_results</span></a> <span class="symbol">(</span>a_statement<span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make for the current result-set of <span class="feature-name-comment">a_statement</span>.<br/>
+-- Describe and use the results metadata.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_statement_not_void:</span> a_statement<span class="symbol">/=</span><span class="special-keyword">Void</span><br/>
+<span class="assertion-tag">a_statement_executed:</span> a_statement<span class="symbol">.</span>is_executed<br/>
+<span class="assertion-tag">a_statement_has_results:</span> a_statement<span class="symbol">.</span>has_result_set<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">last_buffers_created:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_buffers" class="feature-name">last_buffers</a><span class="symbol">.</span>count<span class="symbol">=</span>a_statement<span class="symbol">.</span>result_columns_count<br/>
+<span class="assertion-tag">results_description_consistency:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_buffers" class="feature-name">last_buffers</a><span class="symbol">.</span>count<span class="symbol">=</span>a_statement<span class="symbol">.</span>results_description<span class="symbol">.</span>count<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_precision_limit"><span class="feature-name">Default_precision_limit</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="last_buffers"><span class="feature-name">last_buffers</span></a><span class="symbol">:</span><span class="class-name">ARRAY</span><span class="symbol">[</span><span class="keyword">attached</span><span class="keyword">like</span><a href="../../ecli/data/ecli_buffer_factory.html#value_anchor" class="feature-name">value_anchor</a><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- last created buffers
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="last_index_table"><span class="feature-name">last_index_table</span></a><span class="symbol">:</span><span class="class-name">DS_HASH_TABLE</span><span class="symbol">[</span><span class="class-name">INTEGER</span><span class="symbol">,</span><span class="class-name">STRING</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- last table mapping column name to column index in last_buffer
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="precision_limit"><span class="feature-name">precision_limit</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- maximum acceptable precision
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_precision_limit"><span class="feature-name">set_precision_limit</span></a> <span class="symbol">(</span>p<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set maximum number of characters retrieved for each item
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">greater_than_zero:</span> p<span class="symbol">&gt;</span>0<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/data/ecli_buffer_factory.html#precision_limit" class="feature-name">precision_limit</a><span class="symbol">=</span>p<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="create_buffers"><span class="feature-name">create_buffers</span></a> <span class="symbol">(</span>cursor_description<span class="symbol">:</span><span class="class-name">ARRAY</span><span class="symbol">[</span><a href="../../ecli/metadata/ecli_column_description.html" class="class-name">ECLI_COLUMN_DESCRIPTION</a><span class="symbol">]</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Create all <a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a> objects.<br/>
+-- Empty column names are replaced by the column index.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">cursor_description_not_void:</span> cursor_description<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">lower_is_one:</span> cursor_description<span class="symbol">.</span>lower<span class="symbol">=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">last_buffers_created:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_buffers" class="feature-name">last_buffers</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">same_buffers_count_as_cursor_description:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_buffers" class="feature-name">last_buffers</a><span class="symbol">.</span>count<span class="symbol">=</span>cursor_description<span class="symbol">.</span>count<br/>
+<span class="assertion-tag">same_buffers_lower_as_cursor_count:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_buffers" class="feature-name">last_buffers</a><span class="symbol">.</span>lower<span class="symbol">=</span>1<br/>
+<span class="assertion-tag">last_index_table_not_void:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_index_table" class="feature-name">last_index_table</a><span class="symbol">/=</span><span class="special-keyword">Void</span><br/>
+<span class="assertion-tag">same_index_table_count_as_cursor_description:</span> <a href="../../ecli/data/ecli_buffer_factory.html#last_index_table" class="feature-name">last_index_table</a><span class="symbol">.</span>count<span class="symbol">=</span>cursor_description<span class="symbol">.</span>count<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Inapplicable" class="keyword">feature</a>
+<span class="comment">-- Inapplicable</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="value_anchor"><span class="feature-name">value_anchor</span></a><span class="symbol">:</span><span class="keyword">detachable</span><a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">invariant_clause:</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

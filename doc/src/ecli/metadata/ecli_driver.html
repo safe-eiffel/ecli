@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_DRIVER (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/metadata/cluster.metadata.html" class="cluster-name">metadata</a></div>
+<h1>Class ECLI_DRIVER</h1>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#attributes" class="feature-name">attributes</a></li>
+<li><a href="#name" class="feature-name">name</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ODBC Drivers.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_DRIVER</span>
+</h2>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>cursor<span class="symbol">:</span><a href="../../ecli/metadata/ecli_drivers_cursor.html" class="class-name">ECLI_DRIVERS_CURSOR</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- create from current item in cursor
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">cursor_not_void:</span> cursor<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">cursor_not_off:</span> <span class="keyword">not</span>cursor<span class="symbol">.</span>off<br/>
+<span class="assertion-tag">cursor_name_not_void:</span> cursor<span class="symbol">.</span><a href="../../ecli/metadata/ecli_driver.html#name" class="feature-name">name</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="attributes"><span class="feature-name">attributes</span></a><span class="symbol">:</span><span class="class-name">DS_HASH_TABLE</span><span class="symbol">[</span><span class="class-name">STRING</span><span class="symbol">,</span><span class="class-name">STRING</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Driver attribute values.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="name"><span class="feature-name">name</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Name.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">name_not_void:</span> <a href="../../ecli/metadata/ecli_driver.html#name" class="feature-name">name</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">attributes_not_void:</span> <a href="../../ecli/metadata/ecli_driver.html#attributes" class="feature-name">attributes</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

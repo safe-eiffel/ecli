@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_STREAM_VALUE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/data/cluster.data.html" class="cluster-name">data</a></div>
+<h1>Class ECLI_STREAM_VALUE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/data/ecli_file_value.html" class="class-name">ECLI_FILE_VALUE</a>, <a href="../../ecli/data/ecli_string.html" class="class-name">ECLI_STRING</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#capacity" class="feature-name">capacity</a></li>
+<li><a href="#input_count" class="feature-name">input_count</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_buffer_too_small" class="feature-name">is_buffer_too_small</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#bind_as_parameter" class="feature-name">bind_as_parameter</a></li>
+<li><a href="#put_parameter" class="feature-name">put_parameter</a></li>
+<li><a href="#read_result" class="feature-name">read_result</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Values whose length is known at run-time..
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">author</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Paul G. Crismer
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_STREAM_VALUE</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a></div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="capacity"><span class="feature-name">capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="input_count"><span class="feature-name">input_count</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Count as input parameter
+</p>
+</div>
+</div>
+<div class="keyword">deferred</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_buffer_too_small"><span class="feature-name">is_buffer_too_small</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- <Precursor>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">}</span>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="bind_as_parameter"><span class="feature-name">bind_as_parameter</span></a> <span class="symbol">(</span>stmt<span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">;</span>index<span class="symbol">:</span><span class="class-name">INTEGER_32</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- <Precursor>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_parameter"><span class="feature-name">put_parameter</span></a> <span class="symbol">(</span>stmt<span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">;</span>index<span class="symbol">:</span><span class="class-name">INTEGER_32</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- <Precursor>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="read_result"><span class="feature-name">read_result</span></a> <span class="symbol">(</span>stmt<span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">;</span>index<span class="symbol">:</span><span class="class-name">INTEGER_32</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- <Precursor>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">invariant_clause:</span> <span class="special-keyword">True</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

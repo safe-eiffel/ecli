@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_ROWSET_MODIFIER (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_ROWSET_MODIFIER</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a>, <a href="../../ecli/abstract/ecli_rowset_capable.html" class="class-name">ECLI_ROWSET_CAPABLE</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#parameter_anchor" class="feature-name">parameter_anchor</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#valid_parameters_count" class="feature-name">valid_parameters_count</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#bind_parameters" class="feature-name">bind_parameters</a></li>
+<li><a href="#execute" class="feature-name">execute</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that modify the database one rowset at a time.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_ROWSET_MODIFIER</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a></div>
+<div><a href="../../ecli/abstract/ecli_rowset_capable.html" class="class-name">ECLI_ROWSET_CAPABLE</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_sql<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- create modifier on <span class="feature-name-comment">a_session</span>, using SQL <span class="feature-name-comment">a_sql</span> for maximum <span class="feature-name-comment">a_row_capacity</span> rows
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">asession_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">sql_not_void:</span> a_sql<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_row_capacity_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">row_capacity_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+<span class="assertion-tag">sql_set:</span> sql<span class="symbol">=</span>a_sql<br/>
+<span class="assertion-tag">session_ok:</span> session<span class="symbol">=</span>a_session<span class="keyword">and</span><span class="keyword">not</span>is_closed<br/>
+<span class="assertion-tag">registered:</span> session<span class="symbol">.</span>is_registered_statement<span class="symbol">(</span><span class="special-keyword">Current</span><span class="symbol">)</span><br/>
+<span class="assertion-tag">valid:</span> is_valid<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="parameter_anchor"><span class="feature-name">parameter_anchor</span></a><span class="symbol">:</span><span class="keyword">detachable</span><a href="../../ecli/data/arrayed/ecli_arrayed_value.html" class="class-name">ECLI_ARRAYED_VALUE</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="valid_parameters_count"><span class="feature-name">valid_parameters_count</span></a> <span class="symbol">(</span>a_row_count<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is <span class="feature-name-comment">a_row_count</span> a valid parameters count ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> <span class="special-keyword">True</span> <br/>
+<span class="assertion-tag">same_count:</span> <span class="special-keyword">True</span> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="bind_parameters"><span class="feature-name">bind_parameters</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- bind parameters
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">bound_parameters:</span> bound_parameters<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="execute"><span class="feature-name">execute</span></a> <span class="symbol">(</span>a_count<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- execute for 'a_count' rows
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_count:</span> a_count<span class="symbol">&lt;=</span>row_capacity<br/>
+<span class="assertion-tag">valid_parameters_count:</span> <a href="../../ecli/abstract/ecli_rowset_modifier.html#valid_parameters_count" class="feature-name">valid_parameters_count</a><span class="symbol">(</span>a_count<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">command:</span> <span class="keyword">not</span>has_result_set<br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

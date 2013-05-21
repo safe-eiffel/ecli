@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>metadata (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<span class="active-button">Cluster</span>
+<span class="button">Class</span>
+<a href="../../index-m.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+</div>
+</div>
+<hr/>
+<h1>Cluster <a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<span class="cluster-name">metadata</span></h1>
+<hr/>
+<div class="comment">
+<p>
+<h1>Metadata Cluster</h1>
+<p>Classes that represent various metadata and specific cursor classes that gives access to them. Column metadata are descendants of <a href="../../ecli/metadata/ecli_named_metadata.html" class="class-name">ECLI_NAMED_METADATA</a> or <a href="../../ecli/metadata/ecli_data_description.html" class="class-name">ECLI_DATA_DESCRIPTION</a>. Other are <a href="../../ecli/metadata/ecli_driver.html" class="class-name">ECLI_DRIVER</a>, <a href="../../ecli/metadata/ecli_sql_type.html" class="class-name">ECLI_SQL_TYPE</a>, ECLI_DATASOURCE.</p>
+<p>Cursor classes provide a standard method to query the underlying database catalog. <a href="../../ecli/metadata/ecli_metadata_cursor.html" class="class-name">ECLI_METADATA_CURSOR</a> actually is the ancestor of classes that give access to column metadata like table columns, primary or foreign key columns. <a href="../../ecli/metadata/ecli_data_sources_cursor.html" class="class-name">ECLI_DATA_SOURCES_CURSOR</a>, <a href="../../ecli/metadata/ecli_drivers_cursor.html" class="class-name">ECLI_DRIVERS_CURSOR</a>, <a href="../../ecli/metadata/ecli_sql_types_cursor.html" class="class-name">ECLI_SQL_TYPES_CURSOR</a></p>
+<p>Instances of <a href="../../ecli/metadata/ecli_dbms_information.html" class="class-name">ECLI_DBMS_INFORMATION</a> give access to various attributes about the underlying DBMS/driver capabilities.</p>
+</p>
+<p>
+</p>
+</div>
+<hr/>
+<h2>Classes</h2>
+<ul>
+<li>
+<a href="../../ecli/metadata/ecli_column.html" class="class-name">ECLI_COLUMN</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_columns_cursor.html" class="class-name">ECLI_COLUMNS_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_column_description.html" class="class-name">ECLI_COLUMN_DESCRIPTION</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_data_description.html" class="class-name">ECLI_DATA_DESCRIPTION</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_data_source.html" class="class-name">ECLI_DATA_SOURCE</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_data_sources_cursor.html" class="class-name">ECLI_DATA_SOURCES_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_dbms_information.html" class="class-name">ECLI_DBMS_INFORMATION</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_driver.html" class="class-name">ECLI_DRIVER</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_drivers_cursor.html" class="class-name">ECLI_DRIVERS_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_foreign_key.html" class="class-name">ECLI_FOREIGN_KEY</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_foreign_keys_cursor.html" class="class-name">ECLI_FOREIGN_KEYS_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_metadata_cursor.html" class="class-name">ECLI_METADATA_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_named_metadata.html" class="class-name">ECLI_NAMED_METADATA</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_named_metadata_pattern.html" class="class-name">ECLI_NAMED_METADATA_PATTERN</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_nullable_metadata.html" class="class-name">ECLI_NULLABLE_METADATA</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_parameter_description.html" class="class-name">ECLI_PARAMETER_DESCRIPTION</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_primary_key.html" class="class-name">ECLI_PRIMARY_KEY</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_primary_key_cursor.html" class="class-name">ECLI_PRIMARY_KEY_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_procedures_cursor.html" class="class-name">ECLI_PROCEDURES_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_procedure_column.html" class="class-name">ECLI_PROCEDURE_COLUMN</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_procedure_columns_cursor.html" class="class-name">ECLI_PROCEDURE_COLUMNS_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_procedure_metadata.html" class="class-name">ECLI_PROCEDURE_METADATA</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_procedure_type_metadata.html" class="class-name">ECLI_PROCEDURE_TYPE_METADATA</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_procedure_type_metadata_constants.html" class="class-name">ECLI_PROCEDURE_TYPE_METADATA_CONSTANTS</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_sql_type.html" class="class-name">ECLI_SQL_TYPE</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_sql_types_cursor.html" class="class-name">ECLI_SQL_TYPES_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_table.html" class="class-name">ECLI_TABLE</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_tables_cursor.html" class="class-name">ECLI_TABLES_CURSOR</a></li>
+<li>
+<a href="../../ecli/metadata/ecli_type_catalog.html" class="class-name">ECLI_TYPE_CATALOG</a></li>
+</ul>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<span class="active-button">Cluster</span>
+<span class="button">Class</span>
+<a href="../../index-m.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+</div>
+</div>
+</body>
+</html>

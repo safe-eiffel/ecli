@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_TIMESTAMP (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/data/cluster.data.html" class="cluster-name">data</a></div>
+<h1>Class ECLI_TIMESTAMP</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_generic_value.html" class="class-name">ECLI_GENERIC_VALUE</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/data/ecli_date_time.html" class="class-name">ECLI_DATE_TIME</a>, <a href="../../ecli/data/arrayed/ecli_arrayed_timestamp.html" class="class-name">ECLI_ARRAYED_TIMESTAMP</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+<li><a href="#creator-make_first" class="feature-name">make_first</a></li>
+<li><a href="#creator-make_default" class="feature-name">make_default</a></li>
+<li><a href="#creator-make_null" class="feature-name">make_null</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#c_type_code" class="feature-name">c_type_code</a></li>
+<li><a href="#day" class="feature-name">day</a></li>
+<li><a href="#hour" class="feature-name">hour</a></li>
+<li><a href="#item" class="feature-name">item</a></li>
+<li><a href="#minute" class="feature-name">minute</a></li>
+<li><a href="#month" class="feature-name">month</a></li>
+<li><a href="#nanosecond" class="feature-name">nanosecond</a></li>
+<li><a href="#second" class="feature-name">second</a></li>
+<li><a href="#sql_type_code" class="feature-name">sql_type_code</a></li>
+<li><a href="#year" class="feature-name">year</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#days_in_month" class="feature-name">days_in_month</a></li>
+<li><a href="#decimal_digits" class="feature-name">decimal_digits</a></li>
+<li><a href="#display_size" class="feature-name">display_size</a></li>
+<li><a href="#size" class="feature-name">size</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#convertible_as_boolean" class="feature-name">convertible_as_boolean</a></li>
+<li><a href="#convertible_as_character" class="feature-name">convertible_as_character</a></li>
+<li><a href="#convertible_as_date" class="feature-name">convertible_as_date</a></li>
+<li><a href="#convertible_as_decimal" class="feature-name">convertible_as_decimal</a></li>
+<li><a href="#convertible_as_double" class="feature-name">convertible_as_double</a></li>
+<li><a href="#convertible_as_integer" class="feature-name">convertible_as_integer</a></li>
+<li><a href="#convertible_as_integer_64" class="feature-name">convertible_as_integer_64</a></li>
+<li><a href="#convertible_as_real" class="feature-name">convertible_as_real</a></li>
+<li><a href="#convertible_as_string" class="feature-name">convertible_as_string</a></li>
+<li><a href="#convertible_as_time" class="feature-name">convertible_as_time</a></li>
+<li><a href="#convertible_as_timestamp" class="feature-name">convertible_as_timestamp</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set" class="feature-name">set</a></li>
+<li><a href="#set_date" class="feature-name">set_date</a></li>
+<li><a href="#set_decimal_digits" class="feature-name">set_decimal_digits</a></li>
+<li><a href="#set_item" class="feature-name">set_item</a></li>
+<li><a href="#set_time" class="feature-name">set_time</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#as_boolean" class="feature-name">as_boolean</a></li>
+<li><a href="#as_character" class="feature-name">as_character</a></li>
+<li><a href="#as_date" class="feature-name">as_date</a></li>
+<li><a href="#as_decimal" class="feature-name">as_decimal</a></li>
+<li><a href="#as_double" class="feature-name">as_double</a></li>
+<li><a href="#as_integer" class="feature-name">as_integer</a></li>
+<li><a href="#as_integer_64" class="feature-name">as_integer_64</a></li>
+<li><a href="#as_real" class="feature-name">as_real</a></li>
+<li><a href="#as_string" class="feature-name">as_string</a></li>
+<li><a href="#as_time" class="feature-name">as_time</a></li>
+<li><a href="#as_timestamp" class="feature-name">as_timestamp</a></li>
+<li><a href="#out" class="feature-name">out</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_equal" class="feature-name">is_equal</a></li>
+<li><a href="#trace" class="feature-name">trace</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Inapplicable">Inapplicable</a></strong>
+<ul class="feature-list-features">
+<li><a href="#transfer_octet_length" class="feature-name">transfer_octet_length</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+SQL TIMESTAMP values.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_TIMESTAMP</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div>
+<a href="../../ecli/abstract/ecli_generic_value.html" class="class-name">ECLI_GENERIC_VALUE</a>
+<span class="symbol">[</span><span class="class-name">DT_DATE_TIME</span><span class="symbol">]</span></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_year<span class="symbol">,</span>a_month<span class="symbol">,</span>a_day<span class="symbol">,</span>a_hour<span class="symbol">,</span>a_minute<span class="symbol">,</span>a_second<span class="symbol">,</span>a_nanosecond<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">month:</span> a_month<span class="symbol">&gt;=</span>1<span class="keyword">and</span>a_month<span class="symbol">&lt;=</span>12<br/>
+<span class="assertion-tag">day:</span> a_day<span class="symbol">&gt;=</span>1<span class="keyword">and</span>a_day<span class="symbol">&lt;=</span><a href="../../ecli/data/ecli_timestamp.html#days_in_month" class="feature-name">days_in_month</a><span class="symbol">(</span>a_month<span class="symbol">,</span>a_year<span class="symbol">)</span><br/>
+<span class="assertion-tag">hour:</span> a_hour<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_hour<span class="symbol">&lt;=</span>23<br/>
+<span class="assertion-tag">minute:</span> a_minute<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_minute<span class="symbol">&lt;=</span>59<br/>
+<span class="assertion-tag">second:</span> a_second<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_second<span class="symbol">&lt;=</span>61 <br/>
+<span class="assertion-tag">nanosecond:</span> a_nanosecond<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_nanosecond<span class="symbol">&lt;=</span>999_999_999<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span>is_null<br/>
+<span class="assertion-tag">year_set:</span> <a href="../../ecli/data/ecli_timestamp.html#year" class="feature-name">year</a><span class="symbol">=</span>a_year<br/>
+<span class="assertion-tag">month_set:</span> <a href="../../ecli/data/ecli_timestamp.html#month" class="feature-name">month</a><span class="symbol">=</span>a_month<br/>
+<span class="assertion-tag">day_set:</span> <a href="../../ecli/data/ecli_timestamp.html#day" class="feature-name">day</a><span class="symbol">=</span>a_day<br/>
+<span class="assertion-tag">hour_set:</span> <a href="../../ecli/data/ecli_timestamp.html#hour" class="feature-name">hour</a><span class="symbol">=</span>a_hour<br/>
+<span class="assertion-tag">minute_set:</span> <a href="../../ecli/data/ecli_timestamp.html#minute" class="feature-name">minute</a><span class="symbol">=</span>a_minute<br/>
+<span class="assertion-tag">second_set:</span> <a href="../../ecli/data/ecli_timestamp.html#second" class="feature-name">second</a><span class="symbol">=</span>a_second<br/>
+<span class="assertion-tag">nanosecond_set:</span> <a href="../../ecli/data/ecli_timestamp.html#nanosecond" class="feature-name">nanosecond</a><span class="symbol">=</span>a_nanosecond<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_first"><span class="feature-name">make_first</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make first day of Christian era
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Use <span class="feature-name-comment">make_default</span> instead
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span>is_null<br/>
+<span class="assertion-tag">day_one:</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_default"><span class="feature-name">make_default</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make default time_stamp value
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span>is_null<br/>
+<span class="assertion-tag">day_one:</span> <a href="../../ecli/data/ecli_timestamp.html#year" class="feature-name">year</a><span class="symbol">=</span>1<span class="keyword">and</span><span class="keyword">then</span><a href="../../ecli/data/ecli_timestamp.html#month" class="feature-name">month</a><span class="symbol">=</span>1<span class="keyword">and</span><span class="keyword">then</span><a href="../../ecli/data/ecli_timestamp.html#day" class="feature-name">day</a><span class="symbol">=</span>1<br/>
+<span class="assertion-tag">hour_set:</span> <a href="../../ecli/data/ecli_timestamp.html#hour" class="feature-name">hour</a><span class="symbol">=</span>0<br/>
+<span class="assertion-tag">minute_set:</span> <a href="../../ecli/data/ecli_timestamp.html#minute" class="feature-name">minute</a><span class="symbol">=</span>0<br/>
+<span class="assertion-tag">second_set:</span> <a href="../../ecli/data/ecli_timestamp.html#second" class="feature-name">second</a><span class="symbol">=</span>0<br/>
+<span class="assertion-tag">nanosecond_set:</span> <a href="../../ecli/data/ecli_timestamp.html#nanosecond" class="feature-name">nanosecond</a><span class="symbol">=</span>0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_null"><span class="feature-name">make_null</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make null
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">is_null:</span> is_null<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="c_type_code"><span class="feature-name">c_type_code</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="day"><span class="feature-name">day</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="hour"><span class="feature-name">hour</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a><span class="symbol">:</span><span class="class-name">DT_DATE_TIME</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="minute"><span class="feature-name">minute</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="month"><span class="feature-name">month</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="nanosecond"><span class="feature-name">nanosecond</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="second"><span class="feature-name">second</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_type_code"><span class="feature-name">sql_type_code</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="year"><span class="feature-name">year</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="days_in_month"><span class="feature-name">days_in_month</span></a> <span class="symbol">(</span>a_month<span class="symbol">,</span>a_year<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- number of days in 'a_month' for 'a_year'<br/>
+-- feature is delegated to a DT_GREGORIAN_CALENDAR object<br/>
+-- Feature to be deleted when smalleiffel 075 has been fixed
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">month_ok:</span> a_month<span class="symbol">&gt;=</span>1<span class="keyword">and</span>a_month<span class="symbol">&lt;=</span>12<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">days_in_month_positive:</span> <span class="special-keyword">Result</span><span class="symbol">&gt;</span>0<br/>
+<span class="assertion-tag">days_in_month_not_more_31:</span> <span class="special-keyword">Result</span><span class="symbol">&lt;=</span>31<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="decimal_digits"><span class="feature-name">decimal_digits</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- number of digits allowed in the fractional seconds part
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="display_size"><span class="feature-name">display_size</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="size"><span class="feature-name">size</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="convertible_as_boolean"><span class="feature-name">convertible_as_boolean</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a boolean ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_character"><span class="feature-name">convertible_as_character</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a character ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_date"><span class="feature-name">convertible_as_date</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a date ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_decimal"><span class="feature-name">convertible_as_decimal</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a decimal ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_double"><span class="feature-name">convertible_as_double</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a double ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_integer"><span class="feature-name">convertible_as_integer</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to an integer ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_integer_64"><span class="feature-name">convertible_as_integer_64</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to an integer_64 ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_real"><span class="feature-name">convertible_as_real</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a real ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_string"><span class="feature-name">convertible_as_string</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_time"><span class="feature-name">convertible_as_time</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a time ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_timestamp"><span class="feature-name">convertible_as_timestamp</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is Current convertible to a timestamp ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set"><span class="feature-name">set</span></a> <span class="symbol">(</span>a_year<span class="symbol">,</span>a_month<span class="symbol">,</span>a_day<span class="symbol">,</span>a_hour<span class="symbol">,</span>a_minute<span class="symbol">,</span>a_second<span class="symbol">,</span>a_nanosecond<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">month:</span> a_month<span class="symbol">&gt;</span>0<span class="keyword">and</span>a_month<span class="symbol">&lt;=</span>12<br/>
+<span class="assertion-tag">day:</span> a_day<span class="symbol">&gt;</span>0<span class="keyword">and</span>a_day<span class="symbol">&lt;=</span><a href="../../ecli/data/ecli_timestamp.html#days_in_month" class="feature-name">days_in_month</a><span class="symbol">(</span>a_month<span class="symbol">,</span>a_year<span class="symbol">)</span><br/>
+<span class="assertion-tag">hour:</span> a_hour<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_hour<span class="symbol">&lt;=</span>23<br/>
+<span class="assertion-tag">minute:</span> a_minute<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_minute<span class="symbol">&lt;=</span>59<br/>
+<span class="assertion-tag">second:</span> a_second<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_second<span class="symbol">&lt;=</span>61 <br/>
+<span class="assertion-tag">nanosecond:</span> a_nanosecond<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_nanosecond<span class="symbol">&lt;=</span>999_999_999<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span>is_null<br/>
+<span class="assertion-tag">year_set:</span> <a href="../../ecli/data/ecli_timestamp.html#year" class="feature-name">year</a><span class="symbol">=</span>a_year<br/>
+<span class="assertion-tag">month_set:</span> <a href="../../ecli/data/ecli_timestamp.html#month" class="feature-name">month</a><span class="symbol">=</span>a_month<br/>
+<span class="assertion-tag">day_set:</span> <a href="../../ecli/data/ecli_timestamp.html#day" class="feature-name">day</a><span class="symbol">=</span>a_day<br/>
+<span class="assertion-tag">hour_set:</span> <a href="../../ecli/data/ecli_timestamp.html#hour" class="feature-name">hour</a><span class="symbol">=</span>a_hour<br/>
+<span class="assertion-tag">minute_set:</span> <a href="../../ecli/data/ecli_timestamp.html#minute" class="feature-name">minute</a><span class="symbol">=</span>a_minute<br/>
+<span class="assertion-tag">second_set:</span> <a href="../../ecli/data/ecli_timestamp.html#second" class="feature-name">second</a><span class="symbol">=</span>a_second<br/>
+<span class="assertion-tag">nanosecond_set:</span> <a href="../../ecli/data/ecli_timestamp.html#nanosecond" class="feature-name">nanosecond</a><span class="symbol">=</span>a_nanosecond<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_date"><span class="feature-name">set_date</span></a> <span class="symbol">(</span>a_year<span class="symbol">,</span>a_month<span class="symbol">,</span>a_day<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">month:</span> a_month<span class="symbol">&gt;=</span>1<span class="keyword">and</span>a_month<span class="symbol">&lt;=</span>12<br/>
+<span class="assertion-tag">day:</span> a_day<span class="symbol">&gt;=</span>1<span class="keyword">and</span>a_day<span class="symbol">&lt;=</span><a href="../../ecli/data/ecli_timestamp.html#days_in_month" class="feature-name">days_in_month</a><span class="symbol">(</span>a_month<span class="symbol">,</span>a_year<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span>is_null<br/>
+<span class="assertion-tag">year_set:</span> <a href="../../ecli/data/ecli_timestamp.html#year" class="feature-name">year</a><span class="symbol">=</span>a_year<br/>
+<span class="assertion-tag">month_set:</span> <a href="../../ecli/data/ecli_timestamp.html#month" class="feature-name">month</a><span class="symbol">=</span>a_month<br/>
+<span class="assertion-tag">day_set:</span> <a href="../../ecli/data/ecli_timestamp.html#day" class="feature-name">day</a><span class="symbol">=</span>a_day<br/>
+<span class="assertion-tag">time_set:</span> <a href="../../ecli/data/ecli_timestamp.html#hour" class="feature-name">hour</a><span class="symbol">=</span>0<span class="keyword">and</span><a href="../../ecli/data/ecli_timestamp.html#minute" class="feature-name">minute</a><span class="symbol">=</span>0<span class="keyword">and</span><a href="../../ecli/data/ecli_timestamp.html#second" class="feature-name">second</a><span class="symbol">=</span>0<span class="keyword">and</span><a href="../../ecli/data/ecli_timestamp.html#nanosecond" class="feature-name">nanosecond</a><span class="symbol">=</span>0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_decimal_digits"><span class="feature-name">set_decimal_digits</span></a> <span class="symbol">(</span>n<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set <a href="#decimal_digits" class="feature-name">decimal_digits</a> to <span class="feature-name-comment">n</span><br/>
+-- this value is data source dependent;<br/>
+-- get type information using <a href="../../ecli/metadata/ecli_sql_types_cursor.html" class="class-name">ECLI_SQL_TYPES_CURSOR</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_number:</span> n<span class="symbol">&lt;=</span>9<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">decimal_digits_set:</span> <a href="../../ecli/data/ecli_timestamp.html#decimal_digits" class="feature-name">decimal_digits</a><span class="symbol">=</span>n<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_item"><span class="feature-name">set_item</span></a> <span class="symbol">(</span>other<span class="symbol">:</span><span class="class-name">DT_DATE_TIME</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_time"><span class="feature-name">set_time</span></a> <span class="symbol">(</span>a_hour<span class="symbol">,</span>a_minute<span class="symbol">,</span>a_second<span class="symbol">,</span>a_nanosecond<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">hour:</span> a_hour<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_hour<span class="symbol">&lt;=</span>23<br/>
+<span class="assertion-tag">minute:</span> a_minute<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_minute<span class="symbol">&lt;=</span>59<br/>
+<span class="assertion-tag">second:</span> a_second<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_second<span class="symbol">&lt;=</span>61 <br/>
+<span class="assertion-tag">nanosecond:</span> a_nanosecond<span class="symbol">&gt;=</span>0<span class="keyword">and</span>a_nanosecond<span class="symbol">&lt;=</span>999_999_999 <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">hour_set:</span> <a href="../../ecli/data/ecli_timestamp.html#hour" class="feature-name">hour</a><span class="symbol">=</span>a_hour<br/>
+<span class="assertion-tag">minute_set:</span> <a href="../../ecli/data/ecli_timestamp.html#minute" class="feature-name">minute</a><span class="symbol">=</span>a_minute<br/>
+<span class="assertion-tag">second_set:</span> <a href="../../ecli/data/ecli_timestamp.html#second" class="feature-name">second</a><span class="symbol">=</span>a_second<br/>
+<span class="assertion-tag">nanosecond_set:</span> <a href="../../ecli/data/ecli_timestamp.html#nanosecond" class="feature-name">nanosecond</a><span class="symbol">=</span>a_nanosecond<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="as_boolean"><span class="feature-name">as_boolean</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to BOOLEAN
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_character"><span class="feature-name">as_character</span></a><span class="symbol">:</span><span class="class-name">CHARACTER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to CHARACTER
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_date"><span class="feature-name">as_date</span></a><span class="symbol">:</span><span class="class-name">DT_DATE</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_decimal"><span class="feature-name">as_decimal</span></a><span class="symbol">:</span><span class="class-name">MA_DECIMAL</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to MA_DECIMAL.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_double"><span class="feature-name">as_double</span></a><span class="symbol">:</span><span class="class-name">DOUBLE</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to DOUBLE
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_integer"><span class="feature-name">as_integer</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to INTEGER
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_integer_64"><span class="feature-name">as_integer_64</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to INTEGER_64
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_real"><span class="feature-name">as_real</span></a><span class="symbol">:</span><span class="class-name">REAL</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to REAL
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_string"><span class="feature-name">as_string</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_time"><span class="feature-name">as_time</span></a><span class="symbol">:</span><span class="class-name">DT_TIME</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to DT_TIME
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_timestamp"><span class="feature-name">as_timestamp</span></a><span class="symbol">:</span><span class="class-name">DT_DATE_TIME</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="out"><span class="feature-name">out</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_equal"><span class="feature-name">is_equal</span></a> <span class="symbol">(</span>other<span class="symbol">:</span><span class="keyword">like</span><span class="special-keyword">Current</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trace"><span class="feature-name">trace</span></a> <span class="symbol">(</span>a_tracer<span class="symbol">:</span><a href="../../ecli/abstract/ecli_tracer.html" class="class-name">ECLI_TRACER</a><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Inapplicable" class="keyword">feature</a>
+<span class="comment">-- Inapplicable</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="transfer_octet_length"><span class="feature-name">transfer_octet_length</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

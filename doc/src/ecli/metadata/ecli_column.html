@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_COLUMN (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/metadata/cluster.metadata.html" class="cluster-name">metadata</a></div>
+<h1>Class ECLI_COLUMN</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/metadata/ecli_nullable_metadata.html" class="class-name">ECLI_NULLABLE_METADATA</a>, <a href="../../ecli/metadata/ecli_named_metadata.html" class="class-name">ECLI_NAMED_METADATA</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/metadata/ecli_procedure_column.html" class="class-name">ECLI_PROCEDURE_COLUMN</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#decimal_digits" class="feature-name">decimal_digits</a></li>
+<li><a href="#description" class="feature-name">description</a></li>
+<li><a href="#precision_radix" class="feature-name">precision_radix</a></li>
+<li><a href="#size" class="feature-name">size</a></li>
+<li><a href="#table" class="feature-name">table</a></li>
+<li><a href="#transfer_length" class="feature-name">transfer_length</a></li>
+<li><a href="#type_code" class="feature-name">type_code</a></li>
+<li><a href="#type_name" class="feature-name">type_name</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_decimal_digits_applicable" class="feature-name">is_decimal_digits_applicable</a></li>
+<li><a href="#is_description_applicable" class="feature-name">is_description_applicable</a></li>
+<li><a href="#is_precision_radix_applicable" class="feature-name">is_precision_radix_applicable</a></li>
+<li><a href="#is_size_applicable" class="feature-name">is_size_applicable</a></li>
+<li><a href="#is_transfer_length_applicable" class="feature-name">is_transfer_length_applicable</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#out" class="feature-name">out</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that describe a SQL column in a table.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_COLUMN</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/metadata/ecli_nullable_metadata.html" class="class-name">ECLI_NULLABLE_METADATA</a></div>
+<div><a href="../../ecli/metadata/ecli_named_metadata.html" class="class-name">ECLI_NAMED_METADATA</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+<span class="symbol">{</span><a href="../../ecli/metadata/ecli_columns_cursor.html" class="class-name">ECLI_COLUMNS_CURSOR</a><span class="symbol">}</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>cursor<span class="symbol">:</span><a href="../../ecli/metadata/ecli_columns_cursor.html" class="class-name">ECLI_COLUMNS_CURSOR</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- create from <span class="feature-name-comment">cursor</span> current position
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">cursor_not_void:</span> cursor<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">cursor_not_off:</span> <span class="keyword">not</span>cursor<span class="symbol">.</span>off<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="decimal_digits"><span class="feature-name">decimal_digits</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- number of decimal digits if numeric type
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="description"><span class="feature-name">description</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- optional comments, remarks, or description regarding this column
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="precision_radix"><span class="feature-name">precision_radix</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- 10 or 2 if numeric type
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="size"><span class="feature-name">size</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- size, display length, number of bits, ... depending on actual datatype
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="table"><span class="feature-name">table</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- table name
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="transfer_length"><span class="feature-name">transfer_length</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- maximum number of bytes to read for a transfer
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="type_code"><span class="feature-name">type_code</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- ODBC code of SQL type
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="type_name"><span class="feature-name">type_name</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Datasource dependant type name
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_decimal_digits_applicable"><span class="feature-name">is_decimal_digits_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is 'decimal_digits' applicable for this type ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_description_applicable"><span class="feature-name">is_description_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is the description applicable ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_precision_radix_applicable"><span class="feature-name">is_precision_radix_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is this a numeric type, where 'precision_radix' is applicable ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_size_applicable"><span class="feature-name">is_size_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is this a type parameterized by a size ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_transfer_length_applicable"><span class="feature-name">is_transfer_length_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- does a transfer length apply ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="out"><span class="feature-name">out</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- terse visual representation
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

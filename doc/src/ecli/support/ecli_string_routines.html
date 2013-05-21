@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_STRING_ROUTINES (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/support/cluster.support.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/support/cluster.support.html" class="cluster-name">support</a></div>
+<h1>Class ECLI_STRING_ROUTINES</h1>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/data/arrayed/ecli_arrayed_char.html" class="class-name">ECLI_ARRAYED_CHAR</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-"></a></strong>
+<ul class="feature-list-features">
+<li><a href="#pad" class="feature-name">pad</a></li>
+<li><a href="#padded" class="feature-name">padded</a></li>
+<li><a href="#trimmed" class="feature-name">trimmed</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Supporting string routines.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">usage</h3>
+<div class="indent">
+<div class="comment">
+<p>
+mix-in, module-object
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_STRING_ROUTINES</span>
+</h2>
+<h2>
+<a id="clause-" class="keyword">feature</a>
+<span class="comment">-- </span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="pad"><span class="feature-name">pad</span></a> <span class="symbol">(</span>s<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- pad 's' with blanks, until s.count = a_capacity
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">s_not_void:</span> s<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">count_not_capacity:</span> s<span class="symbol">.</span>count<span class="symbol">&lt;=</span>a_capacity<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+s<span class="symbol">.</span>count<span class="symbol">=</span>a_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="padded"><span class="feature-name">padded</span></a> <span class="symbol">(</span>s<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- copy of <span class="feature-name-comment">s</span> padded with blanks
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">s_not_void:</span> s<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_capacity_greater_s_count:</span> a_capacity<span class="symbol">&gt;=</span>s<span class="symbol">.</span>count<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trimmed"><span class="feature-name">trimmed</span></a> <span class="symbol">(</span>s<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- string made of 's' trimmed with beginning and trailing blanks
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">attached_s:</span> s<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">not_s_empty:</span> <span class="keyword">not</span>s<span class="symbol">.</span>is_empty<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">trimmed:</span> <span class="keyword">not</span><span class="special-keyword">Result</span><span class="symbol">.</span>is_empty<span class="keyword">implies</span><span class="symbol">(</span><span class="special-keyword">Result</span>@1<span class="symbol">/=</span>' '<span class="keyword">and</span><span class="special-keyword">Result</span>@<span class="special-keyword">Result</span><span class="symbol">.</span>count<span class="symbol">/=</span>' '<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/support/cluster.support.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_FUNCTIONS_CONSTANTS (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/spec/constants/cluster.constants.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../../ecli/spec/cluster.spec.html" class="cluster-name">spec</a>.<a href="../../../ecli/spec/constants/cluster.constants.html" class="cluster-name">constants</a></div>
+<h1>Class ECLI_FUNCTIONS_CONSTANTS</h1>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#sql_api_sqlallocconnect" class="feature-name">Sql_api_sqlallocconnect</a></li>
+<li><a href="#sql_api_sqlallocenv" class="feature-name">Sql_api_sqlallocenv</a></li>
+<li><a href="#sql_api_sqlallochandle" class="feature-name">Sql_api_sqlallochandle</a></li>
+<li><a href="#sql_api_sqlallochandlestd" class="feature-name">Sql_api_sqlallochandlestd</a></li>
+<li><a href="#sql_api_sqlallocstmt" class="feature-name">Sql_api_sqlallocstmt</a></li>
+<li><a href="#sql_api_sqlbindcol" class="feature-name">Sql_api_sqlbindcol</a></li>
+<li><a href="#sql_api_sqlbindparam" class="feature-name">Sql_api_sqlbindparam</a></li>
+<li><a href="#sql_api_sqlbindparameter" class="feature-name">Sql_api_sqlbindparameter</a></li>
+<li><a href="#sql_api_sqlbrowseconnect" class="feature-name">Sql_api_sqlbrowseconnect</a></li>
+<li><a href="#sql_api_sqlbulkoperations" class="feature-name">Sql_api_sqlbulkoperations</a></li>
+<li><a href="#sql_api_sqlcancel" class="feature-name">Sql_api_sqlcancel</a></li>
+<li><a href="#sql_api_sqlclosecursor" class="feature-name">Sql_api_sqlclosecursor</a></li>
+<li><a href="#sql_api_sqlcolattribute" class="feature-name">Sql_api_sqlcolattribute</a></li>
+<li><a href="#sql_api_sqlcolattributes" class="feature-name">Sql_api_sqlcolattributes</a></li>
+<li><a href="#sql_api_sqlcolumnprivileges" class="feature-name">Sql_api_sqlcolumnprivileges</a></li>
+<li><a href="#sql_api_sqlcolumns" class="feature-name">Sql_api_sqlcolumns</a></li>
+<li><a href="#sql_api_sqlconnect" class="feature-name">Sql_api_sqlconnect</a></li>
+<li><a href="#sql_api_sqlcopydesc" class="feature-name">Sql_api_sqlcopydesc</a></li>
+<li><a href="#sql_api_sqldatasources" class="feature-name">Sql_api_sqldatasources</a></li>
+<li><a href="#sql_api_sqldescribecol" class="feature-name">Sql_api_sqldescribecol</a></li>
+<li><a href="#sql_api_sqldescribeparam" class="feature-name">Sql_api_sqldescribeparam</a></li>
+<li><a href="#sql_api_sqldisconnect" class="feature-name">Sql_api_sqldisconnect</a></li>
+<li><a href="#sql_api_sqldriverconnect" class="feature-name">Sql_api_sqldriverconnect</a></li>
+<li><a href="#sql_api_sqldrivers" class="feature-name">Sql_api_sqldrivers</a></li>
+<li><a href="#sql_api_sqlendtran" class="feature-name">Sql_api_sqlendtran</a></li>
+<li><a href="#sql_api_sqlerror" class="feature-name">Sql_api_sqlerror</a></li>
+<li><a href="#sql_api_sqlexecdirect" class="feature-name">Sql_api_sqlexecdirect</a></li>
+<li><a href="#sql_api_sqlexecute" class="feature-name">Sql_api_sqlexecute</a></li>
+<li><a href="#sql_api_sqlextendedfetch" class="feature-name">Sql_api_sqlextendedfetch</a></li>
+<li><a href="#sql_api_sqlfetch" class="feature-name">Sql_api_sqlfetch</a></li>
+<li><a href="#sql_api_sqlfetchscroll" class="feature-name">Sql_api_sqlfetchscroll</a></li>
+<li><a href="#sql_api_sqlforeignkeys" class="feature-name">Sql_api_sqlforeignkeys</a></li>
+<li><a href="#sql_api_sqlfreeconnect" class="feature-name">Sql_api_sqlfreeconnect</a></li>
+<li><a href="#sql_api_sqlfreeenv" class="feature-name">Sql_api_sqlfreeenv</a></li>
+<li><a href="#sql_api_sqlfreehandle" class="feature-name">Sql_api_sqlfreehandle</a></li>
+<li><a href="#sql_api_sqlfreestmt" class="feature-name">Sql_api_sqlfreestmt</a></li>
+<li><a href="#sql_api_sqlgetconnectattr" class="feature-name">Sql_api_sqlgetconnectattr</a></li>
+<li><a href="#sql_api_sqlgetconnectoption" class="feature-name">Sql_api_sqlgetconnectoption</a></li>
+<li><a href="#sql_api_sqlgetcursorname" class="feature-name">Sql_api_sqlgetcursorname</a></li>
+<li><a href="#sql_api_sqlgetdata" class="feature-name">Sql_api_sqlgetdata</a></li>
+<li><a href="#sql_api_sqlgetdescfield" class="feature-name">Sql_api_sqlgetdescfield</a></li>
+<li><a href="#sql_api_sqlgetdescrec" class="feature-name">Sql_api_sqlgetdescrec</a></li>
+<li><a href="#sql_api_sqlgetdiagfield" class="feature-name">Sql_api_sqlgetdiagfield</a></li>
+<li><a href="#sql_api_sqlgetdiagrec" class="feature-name">Sql_api_sqlgetdiagrec</a></li>
+<li><a href="#sql_api_sqlgetenvattr" class="feature-name">Sql_api_sqlgetenvattr</a></li>
+<li><a href="#sql_api_sqlgetfunctions" class="feature-name">Sql_api_sqlgetfunctions</a></li>
+<li><a href="#sql_api_sqlgetinfo" class="feature-name">Sql_api_sqlgetinfo</a></li>
+<li><a href="#sql_api_sqlgetstmtattr" class="feature-name">Sql_api_sqlgetstmtattr</a></li>
+<li><a href="#sql_api_sqlgetstmtoption" class="feature-name">Sql_api_sqlgetstmtoption</a></li>
+<li><a href="#sql_api_sqlgettypeinfo" class="feature-name">Sql_api_sqlgettypeinfo</a></li>
+<li><a href="#sql_api_sqlmoreresults" class="feature-name">Sql_api_sqlmoreresults</a></li>
+<li><a href="#sql_api_sqlnativesql" class="feature-name">Sql_api_sqlnativesql</a></li>
+<li><a href="#sql_api_sqlnumparams" class="feature-name">Sql_api_sqlnumparams</a></li>
+<li><a href="#sql_api_sqlnumresultcols" class="feature-name">Sql_api_sqlnumresultcols</a></li>
+<li><a href="#sql_api_sqlparamdata" class="feature-name">Sql_api_sqlparamdata</a></li>
+<li><a href="#sql_api_sqlparamoptions" class="feature-name">Sql_api_sqlparamoptions</a></li>
+<li><a href="#sql_api_sqlprepare" class="feature-name">Sql_api_sqlprepare</a></li>
+<li><a href="#sql_api_sqlprimarykeys" class="feature-name">Sql_api_sqlprimarykeys</a></li>
+<li><a href="#sql_api_sqlprocedurecolumns" class="feature-name">Sql_api_sqlprocedurecolumns</a></li>
+<li><a href="#sql_api_sqlprocedures" class="feature-name">Sql_api_sqlprocedures</a></li>
+<li><a href="#sql_api_sqlputdata" class="feature-name">Sql_api_sqlputdata</a></li>
+<li><a href="#sql_api_sqlrowcount" class="feature-name">Sql_api_sqlrowcount</a></li>
+<li><a href="#sql_api_sqlsetconnectattr" class="feature-name">Sql_api_sqlsetconnectattr</a></li>
+<li><a href="#sql_api_sqlsetconnectoption" class="feature-name">Sql_api_sqlsetconnectoption</a></li>
+<li><a href="#sql_api_sqlsetcursorname" class="feature-name">Sql_api_sqlsetcursorname</a></li>
+<li><a href="#sql_api_sqlsetdescfield" class="feature-name">Sql_api_sqlsetdescfield</a></li>
+<li><a href="#sql_api_sqlsetdescrec" class="feature-name">Sql_api_sqlsetdescrec</a></li>
+<li><a href="#sql_api_sqlsetenvattr" class="feature-name">Sql_api_sqlsetenvattr</a></li>
+<li><a href="#sql_api_sqlsetparam" class="feature-name">Sql_api_sqlsetparam</a></li>
+<li><a href="#sql_api_sqlsetpos" class="feature-name">Sql_api_sqlsetpos</a></li>
+<li><a href="#sql_api_sqlsetscrolloptions" class="feature-name">Sql_api_sqlsetscrolloptions</a></li>
+<li><a href="#sql_api_sqlsetstmtattr" class="feature-name">Sql_api_sqlsetstmtattr</a></li>
+<li><a href="#sql_api_sqlsetstmtoption" class="feature-name">Sql_api_sqlsetstmtoption</a></li>
+<li><a href="#sql_api_sqlspecialcolumns" class="feature-name">Sql_api_sqlspecialcolumns</a></li>
+<li><a href="#sql_api_sqlstatistics" class="feature-name">Sql_api_sqlstatistics</a></li>
+<li><a href="#sql_api_sqltableprivileges" class="feature-name">Sql_api_sqltableprivileges</a></li>
+<li><a href="#sql_api_sqltables" class="feature-name">Sql_api_sqltables</a></li>
+<li><a href="#sql_api_sqltransact" class="feature-name">Sql_api_sqltransact</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Constants accepted by SQLGetFunctions;.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_FUNCTIONS_CONSTANTS</span>
+</h2>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="sql_api_sqlallocconnect"><span class="feature-name">Sql_api_sqlallocconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlallocenv"><span class="feature-name">Sql_api_sqlallocenv</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlallochandle"><span class="feature-name">Sql_api_sqlallochandle</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlallochandlestd"><span class="feature-name">Sql_api_sqlallochandlestd</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlallocstmt"><span class="feature-name">Sql_api_sqlallocstmt</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlbindcol"><span class="feature-name">Sql_api_sqlbindcol</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlbindparam"><span class="feature-name">Sql_api_sqlbindparam</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlbindparameter"><span class="feature-name">Sql_api_sqlbindparameter</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlbrowseconnect"><span class="feature-name">Sql_api_sqlbrowseconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlbulkoperations"><span class="feature-name">Sql_api_sqlbulkoperations</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- ENDIF  --  ODBCVER >= 0x0300
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlcancel"><span class="feature-name">Sql_api_sqlcancel</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- IF (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlclosecursor"><span class="feature-name">Sql_api_sqlclosecursor</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlcolattribute"><span class="feature-name">Sql_api_sqlcolattribute</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- ENDIF
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlcolattributes"><span class="feature-name">Sql_api_sqlcolattributes</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlcolumnprivileges"><span class="feature-name">Sql_api_sqlcolumnprivileges</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlcolumns"><span class="feature-name">Sql_api_sqlcolumns</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlconnect"><span class="feature-name">Sql_api_sqlconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlcopydesc"><span class="feature-name">Sql_api_sqlcopydesc</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqldatasources"><span class="feature-name">Sql_api_sqldatasources</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqldescribecol"><span class="feature-name">Sql_api_sqldescribecol</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqldescribeparam"><span class="feature-name">Sql_api_sqldescribeparam</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqldisconnect"><span class="feature-name">Sql_api_sqldisconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqldriverconnect"><span class="feature-name">Sql_api_sqldriverconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqldrivers"><span class="feature-name">Sql_api_sqldrivers</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlendtran"><span class="feature-name">Sql_api_sqlendtran</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlerror"><span class="feature-name">Sql_api_sqlerror</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlexecdirect"><span class="feature-name">Sql_api_sqlexecdirect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlexecute"><span class="feature-name">Sql_api_sqlexecute</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlextendedfetch"><span class="feature-name">Sql_api_sqlextendedfetch</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlfetch"><span class="feature-name">Sql_api_sqlfetch</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlfetchscroll"><span class="feature-name">Sql_api_sqlfetchscroll</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlforeignkeys"><span class="feature-name">Sql_api_sqlforeignkeys</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlfreeconnect"><span class="feature-name">Sql_api_sqlfreeconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlfreeenv"><span class="feature-name">Sql_api_sqlfreeenv</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlfreehandle"><span class="feature-name">Sql_api_sqlfreehandle</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlfreestmt"><span class="feature-name">Sql_api_sqlfreestmt</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetconnectattr"><span class="feature-name">Sql_api_sqlgetconnectattr</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetconnectoption"><span class="feature-name">Sql_api_sqlgetconnectoption</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetcursorname"><span class="feature-name">Sql_api_sqlgetcursorname</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetdata"><span class="feature-name">Sql_api_sqlgetdata</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- IF (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetdescfield"><span class="feature-name">Sql_api_sqlgetdescfield</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetdescrec"><span class="feature-name">Sql_api_sqlgetdescrec</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetdiagfield"><span class="feature-name">Sql_api_sqlgetdiagfield</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetdiagrec"><span class="feature-name">Sql_api_sqlgetdiagrec</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetenvattr"><span class="feature-name">Sql_api_sqlgetenvattr</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- ENDIF
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetfunctions"><span class="feature-name">Sql_api_sqlgetfunctions</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetinfo"><span class="feature-name">Sql_api_sqlgetinfo</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetstmtattr"><span class="feature-name">Sql_api_sqlgetstmtattr</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgetstmtoption"><span class="feature-name">Sql_api_sqlgetstmtoption</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlgettypeinfo"><span class="feature-name">Sql_api_sqlgettypeinfo</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlmoreresults"><span class="feature-name">Sql_api_sqlmoreresults</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlnativesql"><span class="feature-name">Sql_api_sqlnativesql</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlnumparams"><span class="feature-name">Sql_api_sqlnumparams</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlnumresultcols"><span class="feature-name">Sql_api_sqlnumresultcols</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlparamdata"><span class="feature-name">Sql_api_sqlparamdata</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlparamoptions"><span class="feature-name">Sql_api_sqlparamoptions</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlprepare"><span class="feature-name">Sql_api_sqlprepare</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlprimarykeys"><span class="feature-name">Sql_api_sqlprimarykeys</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlprocedurecolumns"><span class="feature-name">Sql_api_sqlprocedurecolumns</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlprocedures"><span class="feature-name">Sql_api_sqlprocedures</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlputdata"><span class="feature-name">Sql_api_sqlputdata</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlrowcount"><span class="feature-name">Sql_api_sqlrowcount</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetconnectattr"><span class="feature-name">Sql_api_sqlsetconnectattr</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetconnectoption"><span class="feature-name">Sql_api_sqlsetconnectoption</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetcursorname"><span class="feature-name">Sql_api_sqlsetcursorname</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- IF (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetdescfield"><span class="feature-name">Sql_api_sqlsetdescfield</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetdescrec"><span class="feature-name">Sql_api_sqlsetdescrec</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetenvattr"><span class="feature-name">Sql_api_sqlsetenvattr</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- ENDIF
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetparam"><span class="feature-name">Sql_api_sqlsetparam</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetpos"><span class="feature-name">Sql_api_sqlsetpos</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetscrolloptions"><span class="feature-name">Sql_api_sqlsetscrolloptions</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetstmtattr"><span class="feature-name">Sql_api_sqlsetstmtattr</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlsetstmtoption"><span class="feature-name">Sql_api_sqlsetstmtoption</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlspecialcolumns"><span class="feature-name">Sql_api_sqlspecialcolumns</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqlstatistics"><span class="feature-name">Sql_api_sqlstatistics</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqltableprivileges"><span class="feature-name">Sql_api_sqltableprivileges</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqltables"><span class="feature-name">Sql_api_sqltables</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_api_sqltransact"><span class="feature-name">Sql_api_sqltransact</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  SQLGetFunctions: additional values for<br/>
+--  fFunction to represent functions that<br/>
+--  are not in the X/Open spec.<br/>
+</p>
+<p>
+-- IF (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/spec/constants/cluster.constants.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

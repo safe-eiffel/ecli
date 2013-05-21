@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_STORED_PROCEDURE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_STORED_PROCEDURE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/abstract/ecli_query.html" class="class-name">ECLI_QUERY</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_create" class="feature-name">default_create</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#directed_parameter" class="feature-name">directed_parameter</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_parameter_input" class="feature-name">is_parameter_input</a></li>
+<li><a href="#is_parameter_input_output" class="feature-name">is_parameter_input_output</a></li>
+<li><a href="#is_parameter_output" class="feature-name">is_parameter_output</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#put_input_output_parameter" class="feature-name">put_input_output_parameter</a></li>
+<li><a href="#put_input_parameter" class="feature-name">put_input_parameter</a></li>
+<li><a href="#put_output_parameter" class="feature-name">put_output_parameter</a></li>
+<li><a href="#put_parameter" class="feature-name">put_parameter</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Implementation__slash__Auxiliary">Implementation&nbsp;/&nbsp;Auxiliary</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_directed_parameter" class="feature-name">default_directed_parameter</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Stored procedures.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_STORED_PROCEDURE</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a></div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_create"><span class="feature-name">default_create</span></a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="directed_parameter"><span class="feature-name">directed_parameter</span></a> <span class="symbol">(</span>name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement_parameter.html" class="class-name">ECLI_STATEMENT_PARAMETER</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Parameter related to <span class="feature-name-comment">key</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">name_not_void:</span> name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">has_parameter_of_name:</span> has_parameter<span class="symbol">(</span>name<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">result_not_void:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_parameter_input"><span class="feature-name">is_parameter_input</span></a> <span class="symbol">(</span>a_parameter_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is <span class="feature-name-comment">a_parameter_name</span> parameter for input ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_parameter_name_not_void:</span> a_parameter_name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">known_parameter:</span> has_parameter<span class="symbol">(</span>a_parameter_name<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_parameter_input_output"><span class="feature-name">is_parameter_input_output</span></a> <span class="symbol">(</span>a_parameter_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is <span class="feature-name-comment">a_parameter_name</span> parameter for input/output ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_parameter_name_not_void:</span> a_parameter_name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">known_parameter:</span> has_parameter<span class="symbol">(</span>a_parameter_name<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_parameter_output"><span class="feature-name">is_parameter_output</span></a> <span class="symbol">(</span>a_parameter_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is <span class="feature-name-comment">a_parameter_name</span> parameter for output?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_parameter_name_not_void:</span> a_parameter_name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">known_parameter:</span> has_parameter<span class="symbol">(</span>a_parameter_name<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="put_input_output_parameter"><span class="feature-name">put_input_output_parameter</span></a> <span class="symbol">(</span>value<span class="symbol">:</span><span class="keyword">attached</span><span class="keyword">like</span>parameter_anchor<span class="symbol">;</span>key<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">value</span> as input/output parameter.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">has_parameters:</span> parameters_count<span class="symbol">&gt;</span>0<br/>
+<span class="assertion-tag">value_ok:</span> value<span class="symbol">/=</span><span class="special-keyword">void</span><br/>
+<span class="assertion-tag">key_ok:</span> key<span class="symbol">/=</span><span class="special-keyword">void</span><br/>
+<span class="assertion-tag">known_key:</span> has_parameter<span class="symbol">(</span>key<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>item<span class="symbol">=</span>value<br/>
+<span class="assertion-tag">direction_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>is_input_output<br/>
+<span class="assertion-tag">not_bound:</span> <span class="keyword">not</span>bound_parameters<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_input_parameter"><span class="feature-name">put_input_parameter</span></a> <span class="symbol">(</span>value<span class="symbol">:</span><span class="keyword">attached</span><span class="keyword">like</span>parameter_anchor<span class="symbol">;</span>key<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">value</span> as input parameter.
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>item<span class="symbol">=</span>value<br/>
+<span class="assertion-tag">direction_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>is_input<br/>
+<span class="assertion-tag">not_bound:</span> <span class="keyword">not</span>bound_parameters<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_output_parameter"><span class="feature-name">put_output_parameter</span></a> <span class="symbol">(</span>value<span class="symbol">:</span><span class="keyword">attached</span><span class="keyword">like</span>parameter_anchor<span class="symbol">;</span>key<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">value</span> as output parameter.<br/>
+-- Its value can be set by the procedure and be accessed after the procedure exits.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">has_parameters:</span> parameters_count<span class="symbol">&gt;</span>0<br/>
+<span class="assertion-tag">value_ok:</span> value<span class="symbol">/=</span><span class="special-keyword">void</span><br/>
+<span class="assertion-tag">key_ok:</span> key<span class="symbol">/=</span><span class="special-keyword">void</span><br/>
+<span class="assertion-tag">known_key:</span> has_parameter<span class="symbol">(</span>key<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>item<span class="symbol">=</span>value<br/>
+<span class="assertion-tag">direction_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>is_output<br/>
+<span class="assertion-tag">not_bound:</span> <span class="keyword">not</span>bound_parameters<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_parameter"><span class="feature-name">put_parameter</span></a> <span class="symbol">(</span>value<span class="symbol">:</span><span class="keyword">attached</span><span class="keyword">like</span>parameter_anchor<span class="symbol">;</span>key<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- <Precursor>
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>item<span class="symbol">=</span>value<br/>
+<span class="assertion-tag">direction_set:</span> <a href="../../ecli/abstract/ecli_stored_procedure.html#directed_parameter" class="feature-name">directed_parameter</a><span class="symbol">(</span>key<span class="symbol">)</span><span class="symbol">.</span>is_input<br/>
+<span class="assertion-tag">not_bound:</span> <span class="keyword">not</span>bound_parameters<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Implementation__slash__Auxiliary" class="keyword">feature</a>
+<span class="comment">-- Implementation / Auxiliary</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_directed_parameter"><span class="feature-name">default_directed_parameter</span></a><span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement_parameter.html" class="class-name">ECLI_STATEMENT_PARAMETER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

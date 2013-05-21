@@ -1,0 +1,164 @@
+# Default options file for edoc
+#
+# These settings can be overridden by another
+# options file or by commandline parameters
+
+#################
+# INPUT OPTIONS #
+#################
+
+#ace = some.ace
+#system = system.xace
+#library = library.xace
+
+#mount = a_mounted_library.xace
+#mount = another_mounted_library.xace
+
+# Comma seperated list of clusternames which will not be included in the documentation
+ignored_clusters =
+
+# Include mounted libraries?
+# Yes: All mounted libraries are per default included
+# No: Mounted libraries are per default ignored
+include_mounted_libraries = No
+
+# Environment variables
+
+# Set (overwrite) envrionment variable
+#env = NAME1 = VALUE1
+#env = NAME2 = VALUE2
+
+# Set environment variable only if it is not alredy set
+#env-default = NAME3 = VALUE3
+#env-default = NAME4 = VALUE4
+
+env-default = GOBO_OS = unix
+env-default = GOBO_EIFFEL = ise
+
+env-default = EDOC_PARSING = true
+
+
+##################
+# OUTPUT OPTIONS #
+##################
+
+# Output directory
+output_directory = ./output/
+
+# Is output flat?
+# Yes: All files are in output directory
+# No: Files are structured like cluster hirarchy
+flat_output = No
+
+# Is a file per cluster generated?
+# Yes: A file per cluster is generated
+# No: No files for clusters are generated
+generate_cluster_files = Yes
+
+# Is a file to display all clusters generated?
+# Yes: Generate clusters file
+# No: Don't generate clusters file
+generate_clusters_file = Yes
+
+# Is an class list generated (as a single file)?
+# Yes: Generate class list file
+# No: Don't generate class list file
+generate_classes_file = Yes
+
+# Is an index generated?
+# Yes: Generate index files
+# No: Don't generate index files
+generate_index = Yes
+
+# Is a single file as index over everything generated?
+# This file can become very large!
+# Yes: Generate index file
+# No: Don't generate index file
+generate_index_all = Yes
+
+# Is an overview page generated?
+# Yes: Generate overview page
+# No: Don't generate overview page
+generate_overview = Yes
+
+# Are usage files generated?
+# Yes: A usage file is generated per class
+# No: No usage file is generated
+# NOT YET IMPLEMENTED generate_usage = Yes
+
+# Is feature list generated?
+# Yes: Per class file is a feature list generated
+# No: No feature list is generated
+generate_feature_list = Yes
+
+# Is an inheritance tree displayed in class files?
+# Yes: A tree is displayed
+# No: No tree is displayed
+generate_inherit_tree = Yes
+
+# Is an ancestors list displayed in class files?
+# Yes: An ancestors list is displayed
+# No: No ancestors list is displayed
+generate_ancestors_list = Yes
+
+# Is an known descendants list displayed in class files?
+# Yes: A known descendants list is displayed
+# No: No known descendants list is displayed
+generate_descendants_list = Yes
+
+##################
+# PARSER OPTIONS #
+##################
+
+# Are output classes in flat form?
+# Yes: Classes are in flat form
+# No: Classes are not in flat form
+flatten_classes = Yes
+
+# Indexing tags which are ignored
+ignore_indexing = date, revision
+
+# Ignore inherit exported to NONE?
+# Yes: Inherited classes which are exported to NONE are ignored
+# No: All inherited classes are shown
+ignore_inherit_export_none = Yes
+
+# Ignore inherit classes (even if they are not exported to NONE)
+# Comma seperated list of case-sensitive classnames
+ignore_inherit_classes = ANY, GENERAL
+# NOT YET IMPLEMENTED ignore_inherit_classes_file = 
+
+# Ignore features exported to NONE?
+# Yes: Features which are exported to NONE are ignored
+# No: All features are shown
+ignore_features_export_none = Yes
+
+# Ignore feature clauses (even if they are not exported to NONE)
+# Comma seperated list of case-sensitive clauses
+ignore_feature_clauses = 
+# NOT YET IMPLEMENTED ignore_feature_clauses_file =
+
+# Feature clause order
+feature_clause_order_file = feature_clause_list.default
+
+################
+# XML OPTIONS #
+################
+
+# Documentation title
+#title =
+
+# Short documentation title
+#short_title =
+
+# Version
+#version =
+
+# xsd file
+xsd = edoc.xsd
+
+# Print edoc notice
+print_edoc_notice = Yes
+
+# URL of homepage
+home_url =

@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_TRACER (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_TRACER</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<span class="class-name">DT_SHARED_SYSTEM_CLOCK</span></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#make" class="feature-name">make</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#execution_begin" class="feature-name">execution_begin</a></li>
+<li><a href="#execution_end" class="feature-name">execution_end</a></li>
+<li><a href="#medium" class="feature-name">medium</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_tracing_time" class="feature-name">is_tracing_time</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#trace_begin" class="feature-name">trace_begin</a></li>
+<li><a href="#trace_commit" class="feature-name">trace_commit</a></li>
+<li><a href="#trace_rollback" class="feature-name">trace_rollback</a></li>
+<li><a href="#begin_execution_timing" class="feature-name">begin_execution_timing</a></li>
+<li><a href="#end_execution_timing" class="feature-name">end_execution_timing</a></li>
+<li><a href="#trace" class="feature-name">trace</a></li>
+<li><a href="#put_binary" class="feature-name">put_binary</a></li>
+<li><a href="#put_date" class="feature-name">put_date</a></li>
+<li><a href="#put_decimal" class="feature-name">put_decimal</a></li>
+<li><a href="#put_double" class="feature-name">put_double</a></li>
+<li><a href="#put_file" class="feature-name">put_file</a></li>
+<li><a href="#put_float" class="feature-name">put_float</a></li>
+<li><a href="#put_integer" class="feature-name">put_integer</a></li>
+<li><a href="#put_integer_16" class="feature-name">put_integer_16</a></li>
+<li><a href="#put_integer_64" class="feature-name">put_integer_64</a></li>
+<li><a href="#put_real" class="feature-name">put_real</a></li>
+<li><a href="#put_string" class="feature-name">put_string</a></li>
+<li><a href="#put_time" class="feature-name">put_time</a></li>
+<li><a href="#put_timestamp" class="feature-name">put_timestamp</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_change">Status&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#disable_time_tracing" class="feature-name">disable_time_tracing</a></li>
+<li><a href="#enable_time_tracing" class="feature-name">enable_time_tracing</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that trace SQL execution on an output medium.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_TRACER</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><span class="class-name">DT_SHARED_SYSTEM_CLOCK</span></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_medium<span class="symbol">:</span><span class="keyword">like</span><a href="../../ecli/abstract/ecli_tracer.html#medium" class="feature-name">medium</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make tracer
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">medium_not_void:</span> a_medium<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">medium_open_write:</span> a_medium<span class="symbol">.</span>is_open_write<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">medium:</span> <a href="../../ecli/abstract/ecli_tracer.html#medium" class="feature-name">medium</a><span class="symbol">=</span>a_medium<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_medium<span class="symbol">:</span><span class="keyword">like</span><a href="../../ecli/abstract/ecli_tracer.html#medium" class="feature-name">medium</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make tracer
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">medium_not_void:</span> a_medium<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">medium_open_write:</span> a_medium<span class="symbol">.</span>is_open_write<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">medium:</span> <a href="../../ecli/abstract/ecli_tracer.html#medium" class="feature-name">medium</a><span class="symbol">=</span>a_medium<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="execution_begin"><span class="feature-name">execution_begin</span></a><span class="symbol">:</span><span class="keyword">detachable</span><span class="class-name">DT_DATE_TIME</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="execution_end"><span class="feature-name">execution_end</span></a><span class="symbol">:</span><span class="keyword">detachable</span><span class="class-name">DT_DATE_TIME</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="medium"><span class="feature-name">medium</span></a><span class="symbol">:</span><span class="class-name">KI_CHARACTER_OUTPUT_STREAM</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_tracing_time"><span class="feature-name">is_tracing_time</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is time tracing enabled ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">}</span>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="trace_begin"><span class="feature-name">trace_begin</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Trace BEGIN TRANSACTION
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trace_commit"><span class="feature-name">trace_commit</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Trace COMMIT TRANSACTION
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trace_rollback"><span class="feature-name">trace_rollback</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Trace ROLLBACK TRANSACTION
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">feature</span>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">}</span>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="begin_execution_timing"><span class="feature-name">begin_execution_timing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- begin query execution
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="end_execution_timing"><span class="feature-name">end_execution_timing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- end query execution
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">execution_begin_attached:</span> <span class="keyword">attached</span><a href="../../ecli/abstract/ecli_tracer.html#execution_begin" class="feature-name">execution_begin</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">execution_end_not_void:</span> <a href="../../ecli/abstract/ecli_tracer.html#execution_end" class="feature-name">execution_end</a><span class="symbol">/=</span><span class="special-keyword">Void</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trace"><span class="feature-name">trace</span></a> <span class="symbol">(</span>a_sql<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_parameters<span class="symbol">:</span><span class="class-name">ARRAY</span><span class="symbol">[</span><a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a><span class="symbol">]</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Trace 'a_sql', substituting parameter markers by 'a_parameters'<br/>
+--FIXME: implement this feature using an sql_parser and by the tracer being a parser callback
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">feature</span>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a><span class="symbol">}</span>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="put_binary"><span class="feature-name">put_binary</span></a> <span class="symbol">(</span>a_binary<span class="symbol">:</span><a href="../../ecli/data/ecli_string_value.html" class="class-name">ECLI_STRING_VALUE</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">a_binary</span> as binary value
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_binary_not_void:</span> a_binary<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_binary_not_null:</span> <span class="keyword">not</span>a_binary<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_date"><span class="feature-name">put_date</span></a> <span class="symbol">(</span>a_date<span class="symbol">:</span><a href="../../ecli/data/ecli_date.html" class="class-name">ECLI_DATE</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_date' as a date constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_date_not_void:</span> a_date<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_date_not_null:</span> <span class="keyword">not</span>a_date<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_decimal"><span class="feature-name">put_decimal</span></a> <span class="symbol">(</span>a_decimal<span class="symbol">:</span><a href="../../ecli/abstract/ecli_generic_value.html" class="class-name">ECLI_GENERIC_VALUE</a><span class="symbol">[</span><span class="class-name">MA_DECIMAL</span><span class="symbol">]</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">a_value</span> as a decimal constant.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_decimal_not_void:</span> a_decimal<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_decimal_not_null:</span> <span class="keyword">not</span>a_decimal<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_double"><span class="feature-name">put_double</span></a> <span class="symbol">(</span>a_double<span class="symbol">:</span><a href="../../ecli/data/ecli_double.html" class="class-name">ECLI_DOUBLE</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_double' as a double constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_double_not_void:</span> a_double<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_double_not_null:</span> <span class="keyword">not</span>a_double<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_file"><span class="feature-name">put_file</span></a> <span class="symbol">(</span>a_file<span class="symbol">:</span><a href="../../ecli/data/ecli_file_value.html" class="class-name">ECLI_FILE_VALUE</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">a_file</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_file_not_void:</span> a_file<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_file_not_null:</span> <span class="keyword">not</span>a_file<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_float"><span class="feature-name">put_float</span></a> <span class="symbol">(</span>a_float<span class="symbol">:</span><a href="../../ecli/data/ecli_float.html" class="class-name">ECLI_FLOAT</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_float' as a float constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_float_not_void:</span> a_float<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_float_not_null:</span> <span class="keyword">not</span>a_float<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_integer"><span class="feature-name">put_integer</span></a> <span class="symbol">(</span>a_integer<span class="symbol">:</span><a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_integer' as an integer constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_integer_not_void:</span> a_integer<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_integer_not_null:</span> <span class="keyword">not</span>a_integer<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_integer_16"><span class="feature-name">put_integer_16</span></a> <span class="symbol">(</span>a_integer<span class="symbol">:</span><a href="../../ecli/data/ecli_integer_16.html" class="class-name">ECLI_INTEGER_16</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_integer' as an integer constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_integer_not_void:</span> a_integer<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_integer_not_null:</span> <span class="keyword">not</span>a_integer<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_integer_64"><span class="feature-name">put_integer_64</span></a> <span class="symbol">(</span>a_integer_64<span class="symbol">:</span><a href="../../ecli/data/ecli_integer_64.html" class="class-name">ECLI_INTEGER_64</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_a_integer_64' as an integer constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_integer_64_not_void:</span> a_integer_64<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_integer_64_not_null:</span> <span class="keyword">not</span>a_integer_64<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_real"><span class="feature-name">put_real</span></a> <span class="symbol">(</span>a_real<span class="symbol">:</span><a href="../../ecli/data/ecli_real.html" class="class-name">ECLI_REAL</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_real' as a real constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_real_not_void:</span> a_real<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_real_not_null:</span> <span class="keyword">not</span>a_real<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_string"><span class="feature-name">put_string</span></a> <span class="symbol">(</span>a_value<span class="symbol">:</span><a href="../../ecli/abstract/ecli_generic_value.html" class="class-name">ECLI_GENERIC_VALUE</a><span class="symbol">[</span><span class="class-name">STRING</span><span class="symbol">]</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_value' as a string constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_value_not_void:</span> a_value<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_value_not_null:</span> <span class="keyword">not</span>a_value<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_time"><span class="feature-name">put_time</span></a> <span class="symbol">(</span>a_time<span class="symbol">:</span><a href="../../ecli/data/ecli_time.html" class="class-name">ECLI_TIME</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_time' as a time constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_time_not_void:</span> a_time<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_time_not_null:</span> <span class="keyword">not</span>a_time<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="put_timestamp"><span class="feature-name">put_timestamp</span></a> <span class="symbol">(</span>a_date_time<span class="symbol">:</span><a href="../../ecli/data/ecli_timestamp.html" class="class-name">ECLI_TIMESTAMP</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put 'a_timestamp' as a timestamp constant
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_date_time_not_void:</span> a_date_time<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_date_time_not_null:</span> <span class="keyword">not</span>a_date_time<span class="symbol">.</span>is_null<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_change" class="keyword">feature</a>
+<span class="comment">-- Status change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="disable_time_tracing"><span class="feature-name">disable_time_tracing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Disable time tracing
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_tracing_time:</span> <span class="keyword">not</span><a href="../../ecli/abstract/ecli_tracer.html#is_tracing_time" class="feature-name">is_tracing_time</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="enable_time_tracing"><span class="feature-name">enable_time_tracing</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Enable time tracing
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">is_tracing_time:</span> <a href="../../ecli/abstract/ecli_tracer.html#is_tracing_time" class="feature-name">is_tracing_time</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">medium_not_void:</span> <a href="../../ecli/abstract/ecli_tracer.html#medium" class="feature-name">medium</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">medium_is_open_write:</span> <a href="../../ecli/abstract/ecli_tracer.html#medium" class="feature-name">medium</a><span class="symbol">.</span>is_open_write<br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_FOREIGN_KEY (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/metadata/cluster.metadata.html" class="cluster-name">metadata</a></div>
+<h1>Class ECLI_FOREIGN_KEY</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/metadata/ecli_primary_key.html" class="class-name">ECLI_PRIMARY_KEY</a>, <a href="../../ecli/spec/constants/ecli_foreign_key_constants.html" class="class-name">ECLI_FOREIGN_KEY_CONSTANTS</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#deferrability" class="feature-name">deferrability</a></li>
+<li><a href="#delete_rule" class="feature-name">delete_rule</a></li>
+<li><a href="#referenced_key" class="feature-name">referenced_key</a></li>
+<li><a href="#update_rule" class="feature-name">update_rule</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#add_column" class="feature-name">add_column</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_deferrability_applicable" class="feature-name">is_deferrability_applicable</a></li>
+<li><a href="#is_delete_rule_applicable" class="feature-name">is_delete_rule_applicable</a></li>
+<li><a href="#is_update_rule_applicable" class="feature-name">is_update_rule_applicable</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#out" class="feature-name">out</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Foreign keys of a table, referring to a primary key of other table.<br/>
+The table identified by [catalog, schema, table] is the referring table.<br/>
+The foreign key of the referring table is composed of <span class="feature-name-comment">columns</span> and is identified by <span class="feature-name-comment">key_name</span>.<br/>
+The referenced table primary key is <span class="feature-name-comment">referenced key</span>.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_FOREIGN_KEY</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/metadata/ecli_primary_key.html" class="class-name">ECLI_PRIMARY_KEY</a></div>
+<div><a href="../../ecli/spec/constants/ecli_foreign_key_constants.html" class="class-name">ECLI_FOREIGN_KEY_CONSTANTS</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>cursor<span class="symbol">:</span><a href="../../ecli/metadata/ecli_foreign_keys_cursor.html" class="class-name">ECLI_FOREIGN_KEYS_CURSOR</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- create from <span class="feature-name-comment">cursor</span> current position
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">cursor_not_void:</span> cursor<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">cursor_not_off:</span> <span class="keyword">not</span>cursor<span class="symbol">.</span>off<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="deferrability"><span class="feature-name">deferrability</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  deferrability of
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">deferrability_applicable:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#is_deferrability_applicable" class="feature-name">is_deferrability_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="symbol">(</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_initially_deferred<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_initially_immediate<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_not_deferrable<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="delete_rule"><span class="feature-name">delete_rule</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Action to be applied to the foreign key when the SQL operation is DELETE
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">delete_rule_applicable:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#is_delete_rule_applicable" class="feature-name">is_delete_rule_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="symbol">(</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_cascade<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_set_null<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_set_default<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_no_action<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="referenced_key"><span class="feature-name">referenced_key</span></a><span class="symbol">:</span><a href="../../ecli/metadata/ecli_primary_key.html" class="class-name">ECLI_PRIMARY_KEY</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- key of referenced table
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="update_rule"><span class="feature-name">update_rule</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- update rule
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">update_rule_applicable:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#is_update_rule_applicable" class="feature-name">is_update_rule_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="symbol">(</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_cascade<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_set_null<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_set_default<span class="keyword">or</span><span class="keyword">else</span><span class="special-keyword">Result</span><span class="symbol">=</span>Sql_no_action<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="add_column"><span class="feature-name">add_column</span></a> <span class="symbol">(</span>a_column_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_pk_column_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- add <span class="feature-name-comment">a_column_name</span> in columns with corresponding <span class="feature-name-comment">a_pk_column_name</span> into <span class="feature-name-comment">primary_key_c</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_column_name_not_void:</span> a_column_name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_pk_column_name_not_void:</span> a_pk_column_name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_deferrability_applicable"><span class="feature-name">is_deferrability_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_delete_rule_applicable"><span class="feature-name">is_delete_rule_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_update_rule_applicable"><span class="feature-name">is_update_rule_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="out"><span class="feature-name">out</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- terse printable representation
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">referenced_key_not_void:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#referenced_key" class="feature-name">referenced_key</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">columns_count_equal:</span> columns<span class="symbol">.</span>count<span class="symbol">=</span><a href="../../ecli/metadata/ecli_foreign_key.html#referenced_key" class="feature-name">referenced_key</a><span class="symbol">.</span>columns<span class="symbol">.</span>count<br/>
+<span class="assertion-tag">update_rule_value:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#is_update_rule_applicable" class="feature-name">is_update_rule_applicable</a><span class="keyword">implies</span><span class="symbol">(</span><a href="../../ecli/metadata/ecli_foreign_key.html#update_rule" class="feature-name">update_rule</a><span class="symbol">=</span>Sql_cascade<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#update_rule" class="feature-name">update_rule</a><span class="symbol">=</span>Sql_set_null<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#update_rule" class="feature-name">update_rule</a><span class="symbol">=</span>Sql_set_default<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#update_rule" class="feature-name">update_rule</a><span class="symbol">=</span>Sql_no_action<span class="symbol">)</span><br/>
+<span class="assertion-tag">delete_rule_value:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#is_delete_rule_applicable" class="feature-name">is_delete_rule_applicable</a><span class="keyword">implies</span><span class="symbol">(</span><a href="../../ecli/metadata/ecli_foreign_key.html#delete_rule" class="feature-name">delete_rule</a><span class="symbol">=</span>Sql_cascade<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#delete_rule" class="feature-name">delete_rule</a><span class="symbol">=</span>Sql_set_null<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#delete_rule" class="feature-name">delete_rule</a><span class="symbol">=</span>Sql_set_default<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#delete_rule" class="feature-name">delete_rule</a><span class="symbol">=</span>Sql_no_action<span class="symbol">)</span><br/>
+<span class="assertion-tag">deferrability_value:</span> <a href="../../ecli/metadata/ecli_foreign_key.html#is_deferrability_applicable" class="feature-name">is_deferrability_applicable</a><span class="keyword">implies</span><span class="symbol">(</span><a href="../../ecli/metadata/ecli_foreign_key.html#deferrability" class="feature-name">deferrability</a><span class="symbol">=</span>Sql_initially_deferred<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#deferrability" class="feature-name">deferrability</a><span class="symbol">=</span>Sql_initially_immediate<span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/metadata/ecli_foreign_key.html#deferrability" class="feature-name">deferrability</a><span class="symbol">=</span>Sql_not_deferrable<span class="symbol">)</span><br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

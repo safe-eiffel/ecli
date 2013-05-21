@@ -1,0 +1,1597 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_STATEMENT (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_STATEMENT</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a>, <a href="../../ecli/abstract/ecli_handle.html" class="class-name">ECLI_HANDLE</a>, <a href="../../ecli/abstract/ecli_traceable.html" class="class-name">ECLI_TRACEABLE</a>, <a href="../../ecli/pattern/pat_subscriber.html" class="class-name">PAT_SUBSCRIBER</a>, <span class="class-name">KL_IMPORTED_ARRAY_ROUTINES</span>, <a href="../../ecli/support/ecli_sql_parser_callback.html" class="class-name">ECLI_SQL_PARSER_CALLBACK</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/abstract/ecli_stored_procedure.html" class="class-name">ECLI_STORED_PROCEDURE</a>, <a href="../../ecli/abstract/ecli_rowset_modifier.html" class="class-name">ECLI_ROWSET_MODIFIER</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#make" class="feature-name">make</a></li>
+<li><a href="#open" class="feature-name">open</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#cursor_description" class="feature-name">cursor_description</a></li>
+<li><a href="#info" class="feature-name">info</a></li>
+<li><a href="#last_bound_parameter_index" class="feature-name">last_bound_parameter_index</a></li>
+<li><a href="#parameter" class="feature-name">parameter</a></li>
+<li><a href="#parameter_names" class="feature-name">parameter_names</a></li>
+<li><a href="#parameter_positions" class="feature-name">parameter_positions</a></li>
+<li><a href="#parameters" class="feature-name">parameters</a></li>
+<li><a href="#parameters_description" class="feature-name">parameters_description</a></li>
+<li><a href="#results" class="feature-name">results</a></li>
+<li><a href="#results_description" class="feature-name">results_description</a></li>
+<li><a href="#sql" class="feature-name">sql</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#fetched_columns_count" class="feature-name">fetched_columns_count</a></li>
+<li><a href="#modified_row_count" class="feature-name">modified_row_count</a></li>
+<li><a href="#parameter_count" class="feature-name">parameter_count</a></li>
+<li><a href="#parameters_count" class="feature-name">parameters_count</a></li>
+<li><a href="#result_column_count" class="feature-name">result_column_count</a></li>
+<li><a href="#result_columns_count" class="feature-name">result_columns_count</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_setting">Status&nbsp;setting</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_immediate_execution_mode" class="feature-name">set_immediate_execution_mode</a></li>
+<li><a href="#set_prepared_execution_mode" class="feature-name">set_prepared_execution_mode</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Cursor_movement">Cursor&nbsp;movement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#close_cursor" class="feature-name">close_cursor</a></li>
+<li><a href="#finish" class="feature-name">finish</a></li>
+<li><a href="#forth" class="feature-name">forth</a></li>
+<li><a href="#forth_result_set" class="feature-name">forth_result_set</a></li>
+<li><a href="#go_after" class="feature-name">go_after</a></li>
+<li><a href="#start" class="feature-name">start</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#put_parameter" class="feature-name">put_parameter</a></li>
+<li><a href="#set_parameters" class="feature-name">set_parameters</a></li>
+<li><a href="#set_results" class="feature-name">set_results</a></li>
+<li><a href="#set_sql" class="feature-name">set_sql</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Miscellaneous">Miscellaneous</a></strong>
+<ul class="feature-list-features">
+<li><a href="#session_disconnect" class="feature-name">session_disconnect</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_Operations">Basic&nbsp;Operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#do_close" class="feature-name">do_close</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#bind_parameters" class="feature-name">bind_parameters</a></li>
+<li><a href="#describe_cursor" class="feature-name">describe_cursor</a></li>
+<li><a href="#describe_parameters" class="feature-name">describe_parameters</a></li>
+<li><a href="#describe_results" class="feature-name">describe_results</a></li>
+<li><a href="#execute" class="feature-name">execute</a></li>
+<li><a href="#prepare" class="feature-name">prepare</a></li>
+<li><a href="#trace" class="feature-name">trace</a></li>
+<li><a href="#close" class="feature-name">close</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Callback">Callback</a></strong>
+<ul class="feature-list-features">
+<li><a href="#add_new_parameter" class="feature-name">add_new_parameter</a></li>
+<li><a href="#on_parameter" class="feature-name">on_parameter</a></li>
+<li><a href="#on_parameter_marker" class="feature-name">on_parameter_marker</a></li>
+<li><a href="#on_string_literal" class="feature-name">on_string_literal</a></li>
+<li><a href="#on_table_literal" class="feature-name">on_table_literal</a></li>
+<li><a href="#on_word" class="feature-name">on_word</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_Report">Status&nbsp;Report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#after" class="feature-name">after</a></li>
+<li><a href="#before" class="feature-name">before</a></li>
+<li><a href="#bound_parameters" class="feature-name">bound_parameters</a></li>
+<li><a href="#can_trace" class="feature-name">can_trace</a></li>
+<li><a href="#has_another_result_set" class="feature-name">has_another_result_set</a></li>
+<li><a href="#has_parameter" class="feature-name">has_parameter</a></li>
+<li><a href="#has_parameters" class="feature-name">has_parameters</a></li>
+<li><a href="#has_result_set" class="feature-name">has_result_set</a></li>
+<li><a href="#has_results" class="feature-name">has_results</a></li>
+<li><a href="#is_describe_parameters_capable" class="feature-name">is_describe_parameters_capable</a></li>
+<li><a href="#is_executed" class="feature-name">is_executed</a></li>
+<li><a href="#is_parsed" class="feature-name">is_parsed</a></li>
+<li><a href="#is_prepared" class="feature-name">is_prepared</a></li>
+<li><a href="#is_prepared_execution_mode" class="feature-name">is_prepared_execution_mode</a></li>
+<li><a href="#off" class="feature-name">off</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Inapplicable">Inapplicable</a></strong>
+<ul class="feature-list-features">
+<li><a href="#parameter_anchor" class="feature-name">parameter_anchor</a></li>
+<li><a href="#value_anchor" class="feature-name">value_anchor</a></li>
+<li><a href="#can_use_arrayed_parameters" class="feature-name">can_use_arrayed_parameters</a></li>
+<li><a href="#can_use_arrayed_results" class="feature-name">can_use_arrayed_results</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that represent statements that manipulate<br/>
+a database. They are defined on a connected session.<br/>
+Provide CLI/ODBC CORE and some Level 1 functionalities.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_STATEMENT</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a></div>
+<div><a href="../../ecli/abstract/ecli_handle.html" class="class-name">ECLI_HANDLE</a></div>
+<div><a href="../../ecli/abstract/ecli_traceable.html" class="class-name">ECLI_TRACEABLE</a></div>
+<div>
+<a href="../../ecli/pattern/pat_subscriber.html" class="class-name">PAT_SUBSCRIBER</a>
+<span class="symbol">[</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">]</span></div>
+<div><a href="../../ecli/support/ecli_sql_parser_callback.html" class="class-name">ECLI_SQL_PARSER_CALLBACK</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_session <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Create a statement for use on <span class="feature-name-comment">session</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">not_valid:</span> <span class="keyword">not</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">session_ok:</span> session <span class="symbol">=</span> a_session <span class="keyword">and</span> <span class="keyword">not</span> is_closed<br/>
+<span class="assertion-tag">registered:</span> session<span class="symbol">.</span>is_registered_statement <span class="symbol">(</span><span class="special-keyword">Current</span><span class="symbol">)</span><br/>
+<span class="assertion-tag">same_exception_on_error:</span> exception_on_error <span class="symbol">=</span> session<span class="symbol">.</span>exception_on_error<br/>
+<span class="assertion-tag">same_error_handler:</span> error_handler <span class="symbol">=</span> session<span class="symbol">.</span>error_handler<br/>
+<span class="assertion-tag">valid:</span> is_valid<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_session <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Create a statement for use on <span class="feature-name-comment">session</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">not_valid:</span> <span class="keyword">not</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">session_ok:</span> session <span class="symbol">=</span> a_session <span class="keyword">and</span> <span class="keyword">not</span> is_closed<br/>
+<span class="assertion-tag">registered:</span> session<span class="symbol">.</span>is_registered_statement <span class="symbol">(</span><span class="special-keyword">Current</span><span class="symbol">)</span><br/>
+<span class="assertion-tag">same_exception_on_error:</span> exception_on_error <span class="symbol">=</span> session<span class="symbol">.</span>exception_on_error<br/>
+<span class="assertion-tag">same_error_handler:</span> error_handler <span class="symbol">=</span> session<span class="symbol">.</span>error_handler<br/>
+<span class="assertion-tag">valid:</span> is_valid<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="open"><span class="feature-name">open</span></a> <span class="symbol">(</span>a_session <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Create a statement for use on <span class="feature-name-comment">session</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">not_valid:</span> <span class="keyword">not</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">session_ok:</span> session <span class="symbol">=</span> a_session <span class="keyword">and</span> <span class="keyword">not</span> is_closed<br/>
+<span class="assertion-tag">registered:</span> session<span class="symbol">.</span>is_registered_statement <span class="symbol">(</span><span class="special-keyword">Current</span><span class="symbol">)</span><br/>
+<span class="assertion-tag">same_exception_on_error:</span> exception_on_error <span class="symbol">=</span> session<span class="symbol">.</span>exception_on_error<br/>
+<span class="assertion-tag">same_error_handler:</span> error_handler <span class="symbol">=</span> session<span class="symbol">.</span>error_handler<br/>
+<span class="assertion-tag">valid:</span> is_valid<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="cursor_description"><span class="feature-name">cursor_description</span></a><span class="symbol">:</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#results_description" class="feature-name">results_description</a>
+</h3>
+<div class="indent">
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Use <a href="#results_description" class="feature-name">results_description</a>.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="info"><span class="feature-name">info</span></a><span class="symbol">:</span> <a href="../../ecli/metadata/ecli_dbms_information.html" class="class-name">ECLI_DBMS_INFORMATION</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- DBMS information
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">info_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="last_bound_parameter_index"><span class="feature-name">last_bound_parameter_index</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Index of last *successfuly* bound parameter after <a href="#bind_parameters" class="feature-name">bind_parameters</a>.<br/>
+-- Zero if none has been bound.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameter"><span class="feature-name">parameter</span></a> <span class="symbol">(</span>parameter_name <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> <span class="symbol">:</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#parameter_anchor" class="feature-name">parameter_anchor</a> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Parameter value of <span class="feature-name-comment">parameter_name</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">parameter_name_ok:</span> parameter_name <span class="symbol">/=</span> <span class="special-keyword">Void</span><br/>
+<span class="assertion-tag">has_parameter:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0<br/>
+<span class="assertion-tag">defined_parameter:</span> <a href="../../ecli/abstract/ecli_statement.html#has_parameter" class="feature-name">has_parameter</a> <span class="symbol">(</span>parameter_name<span class="symbol">)</span><br/>
+<span class="assertion-tag">parameters_not_void:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a> <span class="symbol">/=</span> <span class="special-keyword">Void</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">Result_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameter_names"><span class="feature-name">parameter_names</span></a><span class="symbol">:</span> <span class="class-name">DS_LIST</span><span class="symbol">[</span><span class="class-name">STRING</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Unique names of parameters in <a href="#sql" class="feature-name">sql</a> query<br/>
+--| FIXME: this should be a DS_SET[STRING] !
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">Result_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">Result_count_less_or_equal_parameters_count:</span> <span class="special-keyword">Result</span><span class="symbol">.</span>count <span class="symbol">&lt;=</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameter_positions"><span class="feature-name">parameter_positions</span></a> <span class="symbol">(</span>parameter_name <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> <span class="symbol">:</span> <span class="class-name">DS_LIST</span><span class="symbol">[</span><span class="class-name">INTEGER</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Positions of parameter <span class="feature-name-comment">parameter_name</span> in <a href="#sql" class="feature-name">sql</a> statement.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">parameter_name_ok:</span> parameter_name <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">has_parameter:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0<br/>
+<span class="assertion-tag">defined_parameter:</span> <a href="../../ecli/abstract/ecli_statement.html#has_parameter" class="feature-name">has_parameter</a> <span class="symbol">(</span>parameter_name<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">Result_not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span><br/>
+<span class="assertion-tag">Result_not_empty:</span> <span class="keyword">not</span> <span class="special-keyword">Result</span><span class="symbol">.</span>is_empty<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameters"><span class="feature-name">parameters</span></a><span class="symbol">:</span> <span class="class-name">ARRAY</span><span class="symbol">[</span><span class="keyword">attached</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#parameter_anchor" class="feature-name">parameter_anchor</a><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current parameter values for the statement
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameters_description"><span class="feature-name">parameters_description</span></a><span class="symbol">:</span> <span class="class-name">ARRAY</span><span class="symbol">[</span><a href="../../ecli/metadata/ecli_parameter_description.html" class="class-name">ECLI_PARAMETER_DESCRIPTION</a><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Metadata for parameters, available after calling <a href="#describe_parameters" class="feature-name">describe_parameters</a> successfully
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="results"><span class="feature-name">results</span></a><span class="symbol">:</span> <span class="class-name">ARRAY</span><span class="symbol">[</span><span class="keyword">attached</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#value_anchor" class="feature-name">value_anchor</a><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Container of result values (i.e. buffers for transferring<br/>
+-- data from program to database) content is meaningful only<br/>
+-- while sweeping through a result set, i.e. <span class="feature-name-comment">not off and has_result_set</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="results_description"><span class="feature-name">results_description</span></a><span class="symbol">:</span> <span class="class-name">ARRAY</span><span class="symbol">[</span><a href="../../ecli/metadata/ecli_column_description.html" class="class-name">ECLI_COLUMN_DESCRIPTION</a><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Metadata for results, available after calling <a href="#describe_results" class="feature-name">describe_results</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql"><span class="feature-name">sql</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Sql statement to be executed
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="fetched_columns_count"><span class="feature-name">fetched_columns_count</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Number of columns retrieved by latest <a href="#start" class="feature-name">start</a> or <a href="#forth" class="feature-name">forth</a> operation
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="modified_row_count"><span class="feature-name">modified_row_count</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Number of rows modified by some inserting, updating or deleting operation.<br/>
+-- Invalid for query operations
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">executed:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">not_a_query:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameter_count"><span class="feature-name">parameter_count</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Please use <a href="#parameters_count" class="feature-name">parameters_count</a> instead (note <a href="#parameters" class="feature-name">parameters</a> is plural).
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameters_count"><span class="feature-name">parameters_count</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Number of parameters in <a href="#sql" class="feature-name">sql</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="result_column_count"><span class="feature-name">result_column_count</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Please use <a href="#result_columns_count" class="feature-name">result_columns_count</a> instead (note <span class="feature-name-comment">columns</span> is plural).
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="result_columns_count"><span class="feature-name">result_columns_count</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Number of columns in result-set<br/>
+-- 0 if no result set is available
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">executed_or_prepared:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a> <span class="keyword">or</span> <span class="keyword">else</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_setting" class="keyword">feature</a>
+<span class="comment">-- Status setting</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_immediate_execution_mode"><span class="feature-name">set_immediate_execution_mode</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set execution mode where <a href="#execute" class="feature-name">execute</a> (1) evaluates and (2) executes the query plan of <a href="#sql" class="feature-name">sql</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">good_mode:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared_execution_mode" class="feature-name">is_prepared_execution_mode</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_prepared_execution_mode"><span class="feature-name">set_prepared_execution_mode</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set execution mode where <a href="#prepare" class="feature-name">prepare</a> evaluates the query plan of <a href="#sql" class="feature-name">sql</a> once<br/>
+-- and where <a href="#execute" class="feature-name">execute</a> just executes the query plan
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">good_mode:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared_execution_mode" class="feature-name">is_prepared_execution_mode</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Cursor_movement" class="keyword">feature</a>
+<span class="comment">-- Cursor movement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="close_cursor"><span class="feature-name">close_cursor</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Finish iterating on all result sets, releasing internal resources.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">valid_state:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">has_result_set:</span> <a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">after:</span> <a href="../../ecli/abstract/ecli_statement.html#after" class="feature-name">after</a><br/>
+<span class="assertion-tag">fetched_columns:</span> <a href="../../ecli/abstract/ecli_statement.html#fetched_columns_count" class="feature-name">fetched_columns_count</a> <span class="symbol">=</span> 0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="finish"><span class="feature-name">finish</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Finish iterating on all result sets, releasing internal resources.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">valid_state:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">has_result_set:</span> <a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">after:</span> <a href="../../ecli/abstract/ecli_statement.html#after" class="feature-name">after</a><br/>
+<span class="assertion-tag">fetched_columns:</span> <a href="../../ecli/abstract/ecli_statement.html#fetched_columns_count" class="feature-name">fetched_columns_count</a> <span class="symbol">=</span> 0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="forth"><span class="feature-name">forth</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Advance cursor in result set
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">executed:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">result_pending:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#off" class="feature-name">off</a> <span class="keyword">and</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#before" class="feature-name">before</a> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">fetched_columns:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#off" class="feature-name">off</a> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#fetched_columns_count" class="feature-name">fetched_columns_count</a> <span class="symbol">=</span> <a href="../../ecli/abstract/ecli_statement.html#result_columns_count" class="feature-name">result_columns_count</a><span class="symbol">.</span>min <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#results" class="feature-name">results</a><span class="symbol">.</span>count<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="forth_result_set"><span class="feature-name">forth_result_set</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Advance to next result set.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">has_another_result_set:</span> <a href="../../ecli/abstract/ecli_statement.html#has_another_result_set" class="feature-name">has_another_result_set</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">before:</span> <a href="../../ecli/abstract/ecli_statement.html#before" class="feature-name">before</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="go_after"><span class="feature-name">go_after</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Finish iterating on current result set.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">valid_state:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">has_result_set:</span> <a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">after:</span> <a href="../../ecli/abstract/ecli_statement.html#after" class="feature-name">after</a><br/>
+<span class="assertion-tag">fetched_columns:</span> <a href="../../ecli/abstract/ecli_statement.html#fetched_columns_count" class="feature-name">fetched_columns_count</a> <span class="symbol">=</span> 0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="start"><span class="feature-name">start</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Start iterating on result set
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">executed:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a> <span class="keyword">and</span> is_ok<br/>
+<span class="assertion-tag">before:</span> <a href="../../ecli/abstract/ecli_statement.html#before" class="feature-name">before</a> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">results:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#off" class="feature-name">off</a> <span class="keyword">implies</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a> <span class="keyword">and</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#before" class="feature-name">before</a><span class="symbol">)</span><br/>
+<span class="assertion-tag">fetched_columns:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#off" class="feature-name">off</a> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#fetched_columns_count" class="feature-name">fetched_columns_count</a> <span class="symbol">=</span> <a href="../../ecli/abstract/ecli_statement.html#result_columns_count" class="feature-name">result_columns_count</a><span class="symbol">.</span>min <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#results" class="feature-name">results</a><span class="symbol">.</span>count<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="put_parameter"><span class="feature-name">put_parameter</span></a> <span class="symbol">(</span>value <span class="symbol">:</span> <span class="keyword">attached</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#parameter_anchor" class="feature-name">parameter_anchor</a><span class="symbol">;</span> parameter_name <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Put <span class="feature-name-comment">value</span> as <span class="feature-name-comment">parameter_name</span><br/>
+-- WARNING : Case sensitive !
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">statement_has_parameters:</span> <a href="../../ecli/abstract/ecli_statement.html#has_parameters" class="feature-name">has_parameters</a><br/>
+<span class="assertion-tag">value_not_void:</span> value <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">parameter_name_exists:</span> parameter_name <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">known_parameter_name:</span> <a href="../../ecli/abstract/ecli_statement.html#has_parameter" class="feature-name">has_parameter</a> <span class="symbol">(</span>parameter_name<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_set:</span> <a href="../../ecli/abstract/ecli_statement.html#parameter" class="feature-name">parameter</a> <span class="symbol">(</span>parameter_name<span class="symbol">)</span> <span class="symbol">=</span> value <br/>
+<span class="assertion-tag">not_bound:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#bound_parameters" class="feature-name">bound_parameters</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_parameters"><span class="feature-name">set_parameters</span></a> <span class="symbol">(</span>parameters_array <span class="symbol">:</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#parameters" class="feature-name">parameters</a> value with <span class="feature-name-comment">parameters_array</span><br/>
+-- all parameters are taken as input parameters
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">parameters_array_not_void:</span> parameters_array <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">parameters_array_valid_bounds:</span> parameters_array<span class="symbol">.</span>lower <span class="symbol">=</span> 1 <span class="keyword">and</span> <span class="keyword">then</span> parameters_array<span class="symbol">.</span>count <span class="symbol">=</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameters_set:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a> <span class="symbol">=</span> parameters_array<br/>
+<span class="assertion-tag">not_bound:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#bound_parameters" class="feature-name">bound_parameters</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_results"><span class="feature-name">set_results</span></a> <span class="symbol">(</span>row <span class="symbol">:</span> <span class="keyword">like</span> <a href="../../ecli/abstract/ecli_statement.html#results" class="feature-name">results</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#results" class="feature-name">results</a> container with <span class="feature-name-comment">row</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">row_not_void:</span> row <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_lower:</span> row<span class="symbol">.</span>lower <span class="symbol">=</span> 1<br/>
+<span class="assertion-tag">row_count:</span> row<span class="symbol">.</span>count <span class="symbol">&gt;</span> 0<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">results_set:</span> <a href="../../ecli/abstract/ecli_statement.html#results" class="feature-name">results</a> <span class="symbol">=</span> row<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_sql"><span class="feature-name">set_sql</span></a> <span class="symbol">(</span>new_sql <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#sql" class="feature-name">sql</a> statement to <span class="feature-name-comment">new_sql</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">sql_meaningful:</span> <span class="keyword">not</span> new_sql<span class="symbol">.</span>is_empty<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">has_sql:</span> <a href="../../ecli/abstract/ecli_statement.html#sql" class="feature-name">sql</a> <span class="symbol">=</span> new_sql<br/>
+<span class="assertion-tag">parsed:</span> <a href="../../ecli/abstract/ecli_statement.html#is_parsed" class="feature-name">is_parsed</a><br/>
+<span class="assertion-tag">not_executed:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">not_prepared:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a><br/>
+<span class="assertion-tag">no_bound_parameters:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#bound_parameters" class="feature-name">bound_parameters</a> <span class="keyword">and</span> <span class="keyword">then</span> <a href="../../ecli/abstract/ecli_statement.html#last_bound_parameter_index" class="feature-name">last_bound_parameter_index</a> <span class="symbol">=</span> 0<br/>
+<span class="assertion-tag">no_more_parameters:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a><span class="symbol">.</span>is_empty<br/>
+<span class="assertion-tag">reset_descriptions:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_description" class="feature-name">parameters_description</a><span class="symbol">.</span>is_empty <span class="keyword">and</span> <a href="../../ecli/abstract/ecli_statement.html#results_description" class="feature-name">results_description</a><span class="symbol">.</span>is_empty<br/>
+<span class="assertion-tag">is_ok:</span> is_ok<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Miscellaneous" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">}</span>
+<span class="comment">-- Miscellaneous</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="session_disconnect"><span class="feature-name">session_disconnect</span></a> <span class="symbol">(</span>a_session <span class="symbol">:</span> <span class="keyword">like</span> session<span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="keyword">not</span> is_valid<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_Operations" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">}</span>
+<span class="comment">-- Basic Operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="do_close"><span class="feature-name">do_close</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Close unconditionally without unregistering from the session
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">not_closed:</span> <span class="keyword">not</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_valid:</span> <span class="keyword">not</span> is_valid<br/>
+<span class="assertion-tag">no_session:</span> <span class="keyword">not</span> <span class="keyword">attached</span> session<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="bind_parameters"><span class="feature-name">bind_parameters</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Bind parameters
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">parameters_exist:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0<br/>
+<span class="assertion-tag">parameters_not_void:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">parameters_are_set:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a><span class="symbol">.</span>count <span class="symbol">&gt;=</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">bound_parameters:</span> is_ok <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#bound_parameters" class="feature-name">bound_parameters</a><br/>
+<span class="assertion-tag">parameter_index_less:</span> <span class="keyword">not</span> is_ok <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#last_bound_parameter_index" class="feature-name">last_bound_parameter_index</a> <span class="symbol">&lt;</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a><span class="symbol">.</span>upper<br/>
+<span class="assertion-tag">parameter_index_n:</span> is_ok <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#last_bound_parameter_index" class="feature-name">last_bound_parameter_index</a> <span class="symbol">=</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a><span class="symbol">.</span>upper<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="describe_cursor"><span class="feature-name">describe_cursor</span></a>
+</h3>
+<div class="indent">
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Use <a href="#describe_results" class="feature-name">describe_results</a>.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="describe_parameters"><span class="feature-name">describe_parameters</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Get metadata about parameters in <a href="#parameters_description" class="feature-name">parameters_description</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">describe_capable:</span> <a href="../../ecli/abstract/ecli_statement.html#is_describe_parameters_capable" class="feature-name">is_describe_parameters_capable</a><br/>
+<span class="assertion-tag">prepared:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a><br/>
+<span class="assertion-tag">has_parameters:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_description_updated:</span> is_ok <span class="keyword">implies</span> <span class="symbol">(</span><span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_description" class="feature-name">parameters_description</a><span class="symbol">.</span>is_empty <span class="keyword">and</span> <span class="keyword">then</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_description" class="feature-name">parameters_description</a><span class="symbol">.</span>count <span class="symbol">=</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="describe_results"><span class="feature-name">describe_results</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Get metadata about current result-set in <a href="#results_description" class="feature-name">results_description</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">executed_or_prepared:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a> <span class="keyword">or</span> <span class="keyword">else</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+<span class="assertion-tag">has_result_set:</span> <a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">results_described:</span> is_ok <span class="keyword">implies</span> <span class="symbol">(</span><span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#results_description" class="feature-name">results_description</a><span class="symbol">.</span>is_empty <span class="keyword">and</span> <span class="keyword">then</span> <a href="../../ecli/abstract/ecli_statement.html#results_description" class="feature-name">results_description</a><span class="symbol">.</span>lower <span class="symbol">=</span> 1 <span class="keyword">and</span> <span class="keyword">then</span> <a href="../../ecli/abstract/ecli_statement.html#results_description" class="feature-name">results_description</a><span class="symbol">.</span>count <span class="symbol">=</span> <a href="../../ecli/abstract/ecli_statement.html#result_columns_count" class="feature-name">result_columns_count</a><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="execute"><span class="feature-name">execute</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Execute sql statement
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">query_is_parsed:</span> <a href="../../ecli/abstract/ecli_statement.html#is_parsed" class="feature-name">is_parsed</a><br/>
+<span class="assertion-tag">prepared_when_mode_prepared:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared_execution_mode" class="feature-name">is_prepared_execution_mode</a> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a><br/>
+<span class="assertion-tag">parameters_set:</span> <a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0 <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#bound_parameters" class="feature-name">bound_parameters</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">is_executed_implies_is_ok:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a> <span class="keyword">implies</span> is_ok<br/>
+<span class="assertion-tag">consistent_cursor_state:</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a> <span class="keyword">implies</span> <span class="symbol">(</span><span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#before" class="feature-name">before</a><span class="symbol">)</span> <span class="keyword">or</span> <span class="symbol">(</span><span class="keyword">not</span> <a href="../../ecli/abstract/ecli_statement.html#has_result_set" class="feature-name">has_result_set</a> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#after" class="feature-name">after</a><span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="prepare"><span class="feature-name">prepare</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Prepare the sql statement
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">prepared_mode:</span> is_ok <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared_execution_mode" class="feature-name">is_prepared_execution_mode</a><br/>
+<span class="assertion-tag">prepared_stmt:</span> is_ok <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trace"><span class="feature-name">trace</span></a> <span class="symbol">(</span>a_tracer <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_tracer.html" class="class-name">ECLI_TRACER</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Trace in <span class="feature-name-comment">a_tracer</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="close"><span class="feature-name">close</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Close statement and release external resources
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">not_closed:</span> <span class="keyword">not</span> is_closed<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">closed:</span> is_closed<br/>
+<span class="assertion-tag">unregistered:</span> <span class="keyword">not</span> <span class="symbol">(</span><span class="keyword">old</span> session<span class="symbol">)</span><span class="symbol">.</span>is_registered_statement <span class="symbol">(</span><span class="special-keyword">Current</span><span class="symbol">)</span><br/>
+<span class="assertion-tag">not_valid:</span> <span class="keyword">not</span> is_valid<br/>
+<span class="assertion-tag">no_session:</span> <span class="keyword">not</span> <span class="symbol">(</span><span class="keyword">attached</span> session<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Callback" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/support/ecli_sql_parser.html" class="class-name">ECLI_SQL_PARSER</a><span class="symbol">}</span>
+<span class="comment">-- Callback</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="add_new_parameter"><span class="feature-name">add_new_parameter</span></a> <span class="symbol">(</span>a_parameter_name <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> a_position <span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="on_parameter"><span class="feature-name">on_parameter</span></a> <span class="symbol">(</span>a_sql<span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> i_begin<span class="symbol">,</span> i_end<span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="on_parameter_marker"><span class="feature-name">on_parameter_marker</span></a> <span class="symbol">(</span>a_sql<span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> index<span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="on_string_literal"><span class="feature-name">on_string_literal</span></a> <span class="symbol">(</span>a_sql<span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> i_begin<span class="symbol">,</span> i_end<span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="on_table_literal"><span class="feature-name">on_table_literal</span></a> <span class="symbol">(</span>a_sql<span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> i_begin<span class="symbol">,</span> i_end<span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="on_word"><span class="feature-name">on_word</span></a> <span class="symbol">(</span>a_sql<span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">;</span> i_begin<span class="symbol">,</span> i_end<span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_Report" class="keyword">feature</a>
+<span class="comment">-- Status Report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="after"><span class="feature-name">after</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is there no valid position to the right of current cursor position ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span>cursor_status <span class="symbol">=</span> cursor_after <span class="keyword">or</span> <span class="keyword">else</span> cursor_status <span class="symbol">=</span> cursor_closed<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="before"><span class="feature-name">before</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is cursor <a href="#before" class="feature-name">before</a> results (no results or not yet started reading) ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span>cursor_status <span class="symbol">=</span> cursor_before<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="bound_parameters"><span class="feature-name">bound_parameters</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Have the parameters been bound ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="can_trace"><span class="feature-name">can_trace</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can Current trace itself ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span> <span class="keyword">implies</span> <span class="symbol">(</span>is_valid <span class="keyword">and</span> <a href="../../ecli/abstract/ecli_statement.html#is_parsed" class="feature-name">is_parsed</a> <span class="keyword">and</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#is_prepared_execution_mode" class="feature-name">is_prepared_execution_mode</a> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a><span class="symbol">)</span> <span class="keyword">and</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0 <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#bound_parameters" class="feature-name">bound_parameters</a><span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="has_another_result_set"><span class="feature-name">has_another_result_set</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has this statement another result-set ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="has_parameter"><span class="feature-name">has_parameter</span></a> <span class="symbol">(</span>name <span class="symbol">:</span> <span class="class-name">STRING</span><span class="symbol">)</span> <span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has the statement a <span class="feature-name-comment">name</span> parameter ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">name_ok:</span> name <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="has_parameters"><span class="feature-name">has_parameters</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has this statement some parameters ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#parameters_count" class="feature-name">parameters_count</a> <span class="symbol">&gt;</span> 0<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="has_result_set"><span class="feature-name">has_result_set</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has this statement a result-set ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">executed_or_prepared:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a> <span class="keyword">or</span> <span class="keyword">else</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">results:</span> <span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#result_columns_count" class="feature-name">result_columns_count</a> <span class="symbol">&gt;</span> 0<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="has_results"><span class="feature-name">has_results</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has this statement a result-set ?
+</p>
+</div>
+</div>
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Use <a href="#has_result_set" class="feature-name">has_result_set</a>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">executed_or_prepared:</span> <a href="../../ecli/abstract/ecli_statement.html#is_prepared" class="feature-name">is_prepared</a> <span class="keyword">or</span> <span class="keyword">else</span> <a href="../../ecli/abstract/ecli_statement.html#is_executed" class="feature-name">is_executed</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_describe_parameters_capable"><span class="feature-name">is_describe_parameters_capable</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can <a href="#describe_parameters" class="feature-name">describe_parameters</a> be called ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+<span class="assertion-tag">open:</span> <span class="keyword">not</span> is_closed<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_executed"><span class="feature-name">is_executed</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is current <a href="#sql" class="feature-name">sql</a> executed ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_parsed"><span class="feature-name">is_parsed</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is the <a href="#sql" class="feature-name">sql</a> statement parsed for parameters ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_prepared"><span class="feature-name">is_prepared</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is current <a href="#sql" class="feature-name">sql</a> query plan prepared by database server ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_prepared_execution_mode"><span class="feature-name">is_prepared_execution_mode</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is it a <span class="feature-name-comment">prepared</span> execution mode ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="off"><span class="feature-name">off</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is there no current cursor content ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_statement:</span> is_valid<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="special-keyword">Result</span> <span class="symbol">=</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#before" class="feature-name">before</a> <span class="keyword">or</span> <a href="../../ecli/abstract/ecli_statement.html#after" class="feature-name">after</a><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Inapplicable" class="keyword">feature</a>
+<span class="comment">-- Inapplicable</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="parameter_anchor"><span class="feature-name">parameter_anchor</span></a><span class="symbol">:</span> <span class="keyword">detachable</span> <a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="value_anchor"><span class="feature-name">value_anchor</span></a><span class="symbol">:</span> <span class="keyword">detachable</span> <a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">feature</span>
+<span class="symbol">{</span><a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a><span class="symbol">}</span>
+<span class="comment">-- Inapplicable</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="can_use_arrayed_parameters"><span class="feature-name">can_use_arrayed_parameters</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can we use arrayed parameters ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="can_use_arrayed_results"><span class="feature-name">can_use_arrayed_results</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can we use arrayed results ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">existing_session_implies_not_closed:</span> <span class="keyword">attached</span> session <span class="keyword">implies</span> <span class="keyword">not</span> is_closed <br/>
+<span class="assertion-tag">parameter_index_bounds:</span> <a href="../../ecli/abstract/ecli_statement.html#last_bound_parameter_index" class="feature-name">last_bound_parameter_index</a> <span class="symbol">&gt;=</span> 0 <span class="keyword">and</span> <span class="keyword">then</span> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_statement.html#last_bound_parameter_index" class="feature-name">last_bound_parameter_index</a> <span class="symbol">&lt;=</span> <a href="../../ecli/abstract/ecli_statement.html#parameters" class="feature-name">parameters</a><span class="symbol">.</span>upper<span class="symbol">)</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

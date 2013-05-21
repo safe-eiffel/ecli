@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_ROWSET_CURSOR (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_ROWSET_CURSOR</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_row_cursor.html" class="class-name">ECLI_ROW_CURSOR</a>, <a href="../../ecli/abstract/ecli_rowset_capable.html" class="class-name">ECLI_ROWSET_CAPABLE</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+<li><a href="#creator-make_prepared" class="feature-name">make_prepared</a></li>
+<li><a href="#creator-open" class="feature-name">open</a></li>
+<li><a href="#creator-open_prepared" class="feature-name">open_prepared</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_create" class="feature-name">default_create</a></li>
+<li><a href="#make" class="feature-name">make</a></li>
+<li><a href="#make_prepared" class="feature-name">make_prepared</a></li>
+<li><a href="#make_prepared_with_buffer_factory" class="feature-name">make_prepared_with_buffer_factory</a></li>
+<li><a href="#make_with_buffer_factory" class="feature-name">make_with_buffer_factory</a></li>
+<li><a href="#open" class="feature-name">open</a></li>
+<li><a href="#open_prepared" class="feature-name">open_prepared</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#buffer_factory" class="feature-name">buffer_factory</a></li>
+<li><a href="#value_anchor" class="feature-name">value_anchor</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#start" class="feature-name">start</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Row cursors that physically fetch sets of rows.%N<br/>
+Rows are physically retrieved <span class="feature-name-comment">row_count</span> at a time, minimizing network traffic.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_ROWSET_CURSOR</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_row_cursor.html" class="class-name">ECLI_ROW_CURSOR</a></div>
+<div><a href="../../ecli/abstract/ecli_rowset_capable.html" class="class-name">ECLI_ROWSET_CAPABLE</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_prepared"><span class="feature-name">make_prepared</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make prepared cursor for <span class="feature-name-comment">a_session</span> on <span class="feature-name-comment">a_definition</span>, for fetching at most <span class="feature-name-comment">a_row_capacity</span> at a time
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">prepared_if_ok:</span> is_ok<span class="keyword">implies</span>is_prepared<br/>
+<span class="assertion-tag">definition_is_a_query:</span> is_ok<span class="keyword">implies</span>has_result_set<br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-open"><span class="feature-name">open</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-open_prepared"><span class="feature-name">open_prepared</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make prepared cursor for <span class="feature-name-comment">a_session</span> on <span class="feature-name-comment">a_definition</span>, for fetching at most <span class="feature-name-comment">a_row_capacity</span> at a time
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">prepared_if_ok:</span> is_ok<span class="keyword">implies</span>is_prepared<br/>
+<span class="assertion-tag">definition_is_a_query:</span> is_ok<span class="keyword">implies</span>has_result_set<br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_create"><span class="feature-name">default_create</span></a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make_prepared"><span class="feature-name">make_prepared</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make prepared cursor for <span class="feature-name-comment">a_session</span> on <span class="feature-name-comment">a_definition</span>, for fetching at most <span class="feature-name-comment">a_row_capacity</span> at a time
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">prepared_if_ok:</span> is_ok<span class="keyword">implies</span>is_prepared<br/>
+<span class="assertion-tag">definition_is_a_query:</span> is_ok<span class="keyword">implies</span>has_result_set<br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make_prepared_with_buffer_factory"><span class="feature-name">make_prepared_with_buffer_factory</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>sql_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">;</span>a_buffer_factory<span class="symbol">:</span> <span class="keyword">like</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make cursor on <span class="feature-name-comment">a_session</span> for prepared <span class="feature-name-comment">sql_definition</span>, using <span class="feature-name-comment">a_buffer_factory</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">sql_definition_not_void:</span> sql_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_buffer_factory_not_void:</span> a_buffer_factory<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>sql_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">buffer_factory_assigned:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">=</span>a_buffer_factory<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+<span class="assertion-tag">prepared_if_ok:</span> is_ok<span class="keyword">implies</span>is_prepared<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make_with_buffer_factory"><span class="feature-name">make_with_buffer_factory</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>sql_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">;</span>a_buffer_factory<span class="symbol">:</span><span class="keyword">like</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make cursor on <span class="feature-name-comment">a_session</span> for <span class="feature-name-comment">sql_definition</span>, using <span class="feature-name-comment">a_buffer_factory</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">sql_definition_not_void:</span> sql_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_buffer_factory_not_void:</span> a_buffer_factory<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>sql_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">buffer_factory_assigned:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">=</span>a_buffer_factory<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="open"><span class="feature-name">open</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="open_prepared"><span class="feature-name">open_prepared</span></a> <span class="symbol">(</span>a_session<span class="symbol">:</span><a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a><span class="symbol">;</span>a_definition<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>a_row_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make prepared cursor for <span class="feature-name-comment">a_session</span> on <span class="feature-name-comment">a_definition</span>, for fetching at most <span class="feature-name-comment">a_row_capacity</span> at a time
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_session_not_void:</span> a_session<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_session_connected:</span> a_session<span class="symbol">.</span>is_connected<br/>
+<span class="assertion-tag">session_handles_arrayed_results:</span> a_session<span class="symbol">.</span>is_bind_arrayed_results_capable<br/>
+<span class="assertion-tag">definition_not_void:</span> a_definition<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">row_count_valid:</span> a_row_capacity<span class="symbol">&gt;=</span>1<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">valid:</span> is_valid<br/>
+<span class="assertion-tag">definition_set:</span> definition<span class="symbol">=</span>a_definition<br/>
+<span class="assertion-tag">definition_is_sql:</span> equal<span class="symbol">(</span>definition<span class="symbol">,</span>sql<span class="symbol">)</span><br/>
+<span class="assertion-tag">prepared_if_ok:</span> is_ok<span class="keyword">implies</span>is_prepared<br/>
+<span class="assertion-tag">definition_is_a_query:</span> is_ok<span class="keyword">implies</span>has_result_set<br/>
+<span class="assertion-tag">limit_set:</span> <a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>precision_limit<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_cursor.html#buffer_factory" class="feature-name">buffer_factory</a><span class="symbol">.</span>Default_precision_limit<br/>
+<span class="assertion-tag">row_count_set:</span> row_capacity<span class="symbol">=</span>a_row_capacity<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="buffer_factory"><span class="feature-name">buffer_factory</span></a><span class="symbol">:</span><a href="../../ecli/data/arrayed/ecli_arrayed_buffer_factory.html" class="class-name">ECLI_ARRAYED_BUFFER_FACTORY</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="value_anchor"><span class="feature-name">value_anchor</span></a><span class="symbol">:</span><span class="keyword">detachable</span><a href="../../ecli/data/arrayed/ecli_arrayed_value.html" class="class-name">ECLI_ARRAYED_VALUE</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="start"><span class="feature-name">start</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Execute query <span class="feature-name-comment">definition</span>, positioning cursor on first available result row
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="assertion-tag">results_exists:</span> <span class="symbol">(</span>is_executed<span class="keyword">and</span><span class="keyword">then</span>has_result_set<span class="symbol">)</span><span class="keyword">implies</span><span class="symbol">(</span>results<span class="symbol">/=</span><span class="special-keyword">Void</span><span class="keyword">and</span><span class="keyword">then</span>results<span class="symbol">.</span>count<span class="symbol">=</span>result_columns_count<span class="symbol">)</span> <br/>
+<span class="assertion-tag">fetched_columns_count_set:</span> <span class="symbol">(</span>is_executed<span class="keyword">and</span><span class="keyword">then</span>has_result_set<span class="symbol">)</span><span class="keyword">implies</span><span class="symbol">(</span>fetched_columns_count<span class="symbol">=</span>result_columns_count<span class="symbol">.</span>min<span class="symbol">(</span>results<span class="symbol">.</span>count<span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

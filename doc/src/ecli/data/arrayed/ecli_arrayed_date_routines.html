@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_ARRAYED_DATE_ROUTINES (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../../ecli/data/cluster.data.html" class="cluster-name">data</a>.<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="cluster-name">arrayed</a></div>
+<h1>Class ECLI_ARRAYED_DATE_ROUTINES</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../../ecli/spec/ecli_external_api.html" class="class-name">ECLI_EXTERNAL_API</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../../ecli/data/arrayed/ecli_arrayed_date.html" class="class-name">ECLI_ARRAYED_DATE</a>, <a href="../../../ecli/data/arrayed/ecli_arrayed_timestamp.html" class="class-name">ECLI_ARRAYED_TIMESTAMP</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#buffer" class="feature-name">buffer</a></li>
+<li><a href="#cursor_index" class="feature-name">cursor_index</a></li>
+<li><a href="#day" class="feature-name">day</a></li>
+<li><a href="#day_at" class="feature-name">day_at</a></li>
+<li><a href="#month" class="feature-name">month</a></li>
+<li><a href="#month_at" class="feature-name">month_at</a></li>
+<li><a href="#transfer_octet_length" class="feature-name">transfer_octet_length</a></li>
+<li><a href="#year" class="feature-name">year</a></li>
+<li><a href="#year_at" class="feature-name">year_at</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#lower" class="feature-name">lower</a></li>
+<li><a href="#upper" class="feature-name">upper</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_null" class="feature-name">is_null</a></li>
+<li><a href="#is_null_at" class="feature-name">is_null_at</a></li>
+<li><a href="#off" class="feature-name">off</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#go" class="feature-name">go</a></li>
+<li><a href="#set_date_at" class="feature-name">set_date_at</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#as_string" class="feature-name">as_string</a></li>
+<li><a href="#out_item_at" class="feature-name">out_item_at</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Routines for handling arrayed buffers of DATEs or date part of TIMESTAMPs.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_ARRAYED_DATE_ROUTINES</span>
+</h2>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="buffer"><span class="feature-name">buffer</span></a><span class="symbol">:</span><span class="class-name">POINTER</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="cursor_index"><span class="feature-name">cursor_index</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="day"><span class="feature-name">day</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- day_at (cursor_index)
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">value_at_cursor_index:</span> <span class="symbol">(</span><span class="keyword">not</span><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#is_null" class="feature-name">is_null</a><span class="keyword">or</span><span class="keyword">else</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#off" class="feature-name">off</a><span class="symbol">)</span><span class="symbol">)</span><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#day_at" class="feature-name">day_at</a><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#cursor_index" class="feature-name">cursor_index</a><span class="symbol">)</span><br/>
+<span class="assertion-tag">zero_when_null:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#is_null" class="feature-name">is_null</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span>0<br/>
+<span class="assertion-tag">zero_when_off:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#off" class="feature-name">off</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span>0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="day_at"><span class="feature-name">day_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_index:</span> index<span class="symbol">&gt;=</span>1<span class="keyword">and</span><span class="keyword">then</span>index<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#upper" class="feature-name">upper</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="month"><span class="feature-name">month</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- month_at (cursor_index)
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">value_at_cursor_index:</span> <span class="symbol">(</span><span class="keyword">not</span><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#is_null" class="feature-name">is_null</a><span class="keyword">or</span><span class="keyword">else</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#off" class="feature-name">off</a><span class="symbol">)</span><span class="symbol">)</span><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#month_at" class="feature-name">month_at</a><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#cursor_index" class="feature-name">cursor_index</a><span class="symbol">)</span><br/>
+<span class="assertion-tag">zero_when_null:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#is_null" class="feature-name">is_null</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span>0<br/>
+<span class="assertion-tag">zero_when_off:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#off" class="feature-name">off</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span>0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="month_at"><span class="feature-name">month_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_index:</span> index<span class="symbol">&gt;=</span>1<span class="keyword">and</span><span class="keyword">then</span>index<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#upper" class="feature-name">upper</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="transfer_octet_length"><span class="feature-name">transfer_octet_length</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="year"><span class="feature-name">year</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- year_at (cursor_index)
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">value_at_cursor_index:</span> <span class="symbol">(</span><span class="keyword">not</span><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#is_null" class="feature-name">is_null</a><span class="keyword">or</span><span class="keyword">else</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#off" class="feature-name">off</a><span class="symbol">)</span><span class="symbol">)</span><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#year_at" class="feature-name">year_at</a><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#cursor_index" class="feature-name">cursor_index</a><span class="symbol">)</span><br/>
+<span class="assertion-tag">zero_when_null:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#is_null" class="feature-name">is_null</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span>0<br/>
+<span class="assertion-tag">zero_when_off:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#off" class="feature-name">off</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">=</span>0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="year_at"><span class="feature-name">year_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_index:</span> index<span class="symbol">&gt;=</span>1<span class="keyword">and</span><span class="keyword">then</span>index<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#upper" class="feature-name">upper</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="lower"><span class="feature-name">lower</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="upper"><span class="feature-name">upper</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_null"><span class="feature-name">is_null</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_null_at"><span class="feature-name">is_null_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="off"><span class="feature-name">off</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="keyword">deferred</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="go"><span class="feature-name">go</span></a> <span class="symbol">(</span>ith<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance internal cursor
+</p>
+</div>
+</div>
+<div class="keyword">deferred</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#cursor_index" class="feature-name">cursor_index</a><span class="symbol">=</span>ith<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_date_at"><span class="feature-name">set_date_at</span></a> <span class="symbol">(</span>a_year<span class="symbol">,</span>a_month<span class="symbol">,</span>a_day<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">;</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">year_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#year_at" class="feature-name">year_at</a><span class="symbol">(</span>index<span class="symbol">)</span><span class="symbol">=</span>a_year<br/>
+<span class="assertion-tag">month_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#month_at" class="feature-name">month_at</a><span class="symbol">(</span>index<span class="symbol">)</span><span class="symbol">=</span>a_month<br/>
+<span class="assertion-tag">day_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html#day_at" class="feature-name">day_at</a><span class="symbol">(</span>index<span class="symbol">)</span><span class="symbol">=</span>a_day<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="as_string"><span class="feature-name">as_string</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="out_item_at"><span class="feature-name">out_item_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">invariant_clause:</span> <span class="special-keyword">True</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

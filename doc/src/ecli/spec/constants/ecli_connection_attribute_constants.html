@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_CONNECTION_ATTRIBUTE_CONSTANTS (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/spec/constants/cluster.constants.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../../ecli/spec/cluster.spec.html" class="cluster-name">spec</a>.<a href="../../../ecli/spec/constants/cluster.constants.html" class="cluster-name">constants</a></div>
+<h1>Class ECLI_CONNECTION_ATTRIBUTE_CONSTANTS</h1>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Keys">Keys</a></strong>
+<ul class="feature-list-features">
+<li><a href="#sql_access_mode" class="feature-name">Sql_access_mode</a></li>
+<li><a href="#sql_attr_access_mode" class="feature-name">Sql_attr_access_mode</a></li>
+<li><a href="#sql_attr_autocommit" class="feature-name">Sql_attr_autocommit</a></li>
+<li><a href="#sql_attr_connection_dead" class="feature-name">Sql_attr_connection_dead</a></li>
+<li><a href="#sql_attr_connection_timeout" class="feature-name">Sql_attr_connection_timeout</a></li>
+<li><a href="#sql_attr_current_catalog" class="feature-name">Sql_attr_current_catalog</a></li>
+<li><a href="#sql_attr_disconnect_behavior" class="feature-name">Sql_attr_disconnect_behavior</a></li>
+<li><a href="#sql_attr_enlist_in_dtc" class="feature-name">Sql_attr_enlist_in_dtc</a></li>
+<li><a href="#sql_attr_enlist_in_xa" class="feature-name">Sql_attr_enlist_in_xa</a></li>
+<li><a href="#sql_attr_login_timeout" class="feature-name">Sql_attr_login_timeout</a></li>
+<li><a href="#sql_attr_odbc_cursors" class="feature-name">Sql_attr_odbc_cursors</a></li>
+<li><a href="#sql_attr_packet_size" class="feature-name">Sql_attr_packet_size</a></li>
+<li><a href="#sql_attr_quiet_mode" class="feature-name">Sql_attr_quiet_mode</a></li>
+<li><a href="#sql_attr_trace" class="feature-name">Sql_attr_trace</a></li>
+<li><a href="#sql_attr_tracefile" class="feature-name">Sql_attr_tracefile</a></li>
+<li><a href="#sql_attr_translate_lib" class="feature-name">Sql_attr_translate_lib</a></li>
+<li><a href="#sql_attr_translate_option" class="feature-name">Sql_attr_translate_option</a></li>
+<li><a href="#sql_attr_txn_isolation" class="feature-name">Sql_attr_txn_isolation</a></li>
+<li><a href="#sql_autocommit" class="feature-name">Sql_autocommit</a></li>
+<li><a href="#sql_current_qualifier" class="feature-name">Sql_current_qualifier</a></li>
+<li><a href="#sql_login_timeout" class="feature-name">Sql_login_timeout</a></li>
+<li><a href="#sql_odbc_cursors" class="feature-name">Sql_odbc_cursors</a></li>
+<li><a href="#sql_opt_trace" class="feature-name">Sql_opt_trace</a></li>
+<li><a href="#sql_opt_tracefile" class="feature-name">Sql_opt_tracefile</a></li>
+<li><a href="#sql_packet_size" class="feature-name">Sql_packet_size</a></li>
+<li><a href="#sql_quiet_mode" class="feature-name">Sql_quiet_mode</a></li>
+<li><a href="#sql_translate_dll" class="feature-name">Sql_translate_dll</a></li>
+<li><a href="#sql_translate_option" class="feature-name">Sql_translate_option</a></li>
+<li><a href="#sql_txn_isolation" class="feature-name">Sql_txn_isolation</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Values">Values</a></strong>
+<ul class="feature-list-features">
+<li><a href="#sql_autocommit_default" class="feature-name">Sql_autocommit_default</a></li>
+<li><a href="#sql_autocommit_off" class="feature-name">Sql_autocommit_off</a></li>
+<li><a href="#sql_autocommit_on" class="feature-name">Sql_autocommit_on</a></li>
+<li><a href="#sql_cd_false" class="feature-name">Sql_cd_false</a></li>
+<li><a href="#sql_cd_true" class="feature-name">Sql_cd_true</a></li>
+<li><a href="#sql_cur_default" class="feature-name">Sql_cur_default</a></li>
+<li><a href="#sql_cur_use_driver" class="feature-name">Sql_cur_use_driver</a></li>
+<li><a href="#sql_cur_use_if_needed" class="feature-name">Sql_cur_use_if_needed</a></li>
+<li><a href="#sql_cur_use_odbc" class="feature-name">Sql_cur_use_odbc</a></li>
+<li><a href="#sql_db_default" class="feature-name">Sql_db_default</a></li>
+<li><a href="#sql_db_disconnect" class="feature-name">Sql_db_disconnect</a></li>
+<li><a href="#sql_db_return_to_pool" class="feature-name">Sql_db_return_to_pool</a></li>
+<li><a href="#sql_dtc_done" class="feature-name">Sql_dtc_done</a></li>
+<li><a href="#sql_login_timeout_default" class="feature-name">Sql_login_timeout_default</a></li>
+<li><a href="#sql_mode_default" class="feature-name">Sql_mode_default</a></li>
+<li><a href="#sql_mode_read_only" class="feature-name">Sql_mode_read_only</a></li>
+<li><a href="#sql_mode_read_write" class="feature-name">Sql_mode_read_write</a></li>
+<li><a href="#sql_opt_trace_default" class="feature-name">Sql_opt_trace_default</a></li>
+<li><a href="#sql_opt_trace_file_default" class="feature-name">Sql_opt_trace_file_default</a></li>
+<li><a href="#sql_opt_trace_off" class="feature-name">Sql_opt_trace_off</a></li>
+<li><a href="#sql_opt_trace_on" class="feature-name">Sql_opt_trace_on</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Connection attribute constants : keys and values.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_CONNECTION_ATTRIBUTE_CONSTANTS</span>
+</h2>
+<h2>
+<a id="clause-Keys" class="keyword">feature</a>
+<span class="comment">-- Keys</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="sql_access_mode"><span class="feature-name">Sql_access_mode</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_access_mode"><span class="feature-name">Sql_attr_access_mode</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_autocommit"><span class="feature-name">Sql_attr_autocommit</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_connection_dead"><span class="feature-name">Sql_attr_connection_dead</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  GetConnectAttr only<br/>
+</p>
+<p>
+--SQL_ATTR_ACCESS_MODE<br/>
+--	Either[1]<br/>
+--	(ODBC 1.0)<br/>
+--	An SQLUINTEGER value. SQL_MODE_READ_ONLY is used by the driver or data source as an indicator that the connection is not required to support SQL statements that cause updates to occur. This mode can be used to optimize locking strategies, transaction management, or other areas as appropriate to the driver or data source. The driver is not required to prevent such statements from being submitted to the data source. The behavior of the driver and data source when asked to process SQL statements that are not read-only during a read-only connection is implementation-defined. SQL_MODE_READ_WRITE is the default.<br/>
+</p>
+<p>
+--SQL_ATTR_ASYNC_ENABLE<br/>
+--	Either[2]<br/>
+--	(ODBC 3.0)<br/>
+--	An SQLUINTEGER value that specifies whether a function called with a statement on the specified connection is executed asynchronously:<br/>
+--	SQL_ASYNC_ENABLE_OFF = Off (the default)<br/>
+--	SQL_ASYNC_ENABLE_ON = On<br/>
+--<br/>
+--	Setting SQL_ASYNC_ENABLE_ON enables asynchronous execution for all future statement handles allocated on this connection. It is driver-defined whether this enables asynchronous execution for existing statement handles associated with this connection. An error is returned if asynchronous execution is enabled while there is an active statement on the connection.<br/>
+--<br/>
+--	This attribute can be set whether SQLGetInfo with the SQL_ASYNC_MODE information type returns SQL_AM_CONNECTION or SQL_AM_STATEMENT.<br/>
+--<br/>
+--	After a function has been called asynchronously, only the original function, SQLAllocHandle, SQLCancel, SQLGetDiagField, or SQLGetDiagRec can be called on the statement or the connection associated with StatementHandle, until the original function returns a code other than SQL_STILL_EXECUTING. Any other function called on StatementHandle or the connection associated with StatementHandle returns SQL_ERROR with an SQLSTATE of HY010 (Function sequence error). Functions can be called on other statements. For more information, see Asynchronous Execution.<br/>
+--<br/>
+--	In general, applications should execute functions asynchronously only on single-thread operating systems. On multithread operating systems, applications should execute functions on separate threads rather than executing them asynchronously on the same thread. Drivers that operate only on multithread operating systems do not need to support asynchronous execution.<br/>
+--<br/>
+--	The following functions can be executed asynchronously:<br/>
+--<br/>
+--	SQLBulkOperations<br/>
+--	SQLColAttribute<br/>
+--	SQLColumnPrivileges<br/>
+--	SQLColumns<br/>
+--	SQLCopyDesc<br/>
+--	SQLDescribeCol<br/>
+--	SQLDescribeParam<br/>
+--	SQLExecDirect<br/>
+--	SQLExecute<br/>
+--	SQLFetch<br/>
+--	SQLFetchScroll<br/>
+--	SQLForeignKeys<br/>
+--	SQLGetData<br/>
+--	SQLGetDescField[1]<br/>
+--	SQLGetDescRec[1]<br/>
+--	SQLGetDiagField<br/>
+--	SQLGetDiagRec<br/>
+--	SQLGetTypeInfo<br/>
+--	SQLMoreResults<br/>
+--	SQLNumParams<br/>
+--	SQLNumResultCols<br/>
+--	SQLParamData<br/>
+--	SQLPrepare<br/>
+--	SQLPrimaryKeys<br/>
+--	SQLProcedureColumns<br/>
+--	SQLProcedures<br/>
+--	SQLPutData<br/>
+--	SQLSetPos<br/>
+--	SQLSpecialColumns<br/>
+--	SQLStatistics<br/>
+--	SQLTablePrivileges<br/>
+--	SQLTables<br/>
+</p>
+<p>
+--SQL_ATTR_AUTO_IPD<br/>
+--	(ODBC 3.0)<br/>
+--	A read-only SQLUINTEGER value that specifies whether automatic population of the IPD after a call to SQLPrepare is supported:<br/>
+--	SQL_TRUE = Automatic population of the IPD after a call to SQLPrepare is supported by the driver.<br/>
+--<br/>
+--	SQL_FALSE = Automatic population of the IPD after a call to SQLPrepare is not supported by the driver. Servers that do not support prepared statements will not be able to populate the IPD automatically.<br/>
+--<br/>
+--	If SQL_TRUE is returned for the SQL_ATTR_AUTO_IPD connection attribute, the statement attribute SQL_ATTR_ENABLE_AUTO_IPD can be set to turn automatic population of the IPD on or off. If SQL_ATTR_AUTO_IPD is SQL_FALSE, SQL_ATTR_ENABLE_AUTO_IPD cannot be set to SQL_TRUE. The default value of SQL_ATTR_ENABLE_AUTO_IPD is equal to the value of SQL_ATTR_AUTO_IPD.<br/>
+--<br/>
+--	This connection attribute can be returned by SQLGetConnectAttr but cannot be set by SQLSetConnectAttr.<br/>
+</p>
+<p>
+--SQL_ATTR_AUTOCOMMIT<br/>
+--	Either<br/>
+--	(ODBC 1.0)<br/>
+--	An SQLUINTEGER value that specifies whether to use autocommit or manual-commit mode:<br/>
+--	SQL_AUTOCOMMIT_OFF = The driver uses manual-commit mode, and the application must explicitly commit or roll back transactions with SQLEndTran.<br/>
+--<br/>
+--	SQL_AUTOCOMMIT_ON = The driver uses autocommit mode. Each statement is committed immediately after it is executed. This is the default. Any open transactions on the connection are committed when SQL_ATTR_AUTOCOMMIT is set to SQL_AUTOCOMMIT_ON to change from manual-commit mode to autocommit mode.<br/>
+--<br/>
+--	For more information, see Commit Mode.<br/>
+--<br/>
+--	Important   Some data sources delete the access plans and close the cursors for all statements on a connection each time a statement is committed; autocommit mode can cause this to happen after each nonquery statement is executed or when the cursor is closed for a query. For more information, see the SQL_CURSOR_COMMIT_BEHAVIOR and SQL_CURSOR_ROLLBACK_BEHAVIOR information types in SQLGetInfo and Effect of Transactions on Cursors and Prepared Statements.<br/>
+--	When a batch is executed in autocommit mode, two things are possible. The entire batch can be treated as an autocommitable unit, or each statement in a batch is treated as an autocommitable unit. Certain data sources can support both these behaviors and may provide a way of choosing one or the other. It is driver-defined whether a batch is treated as an autocommitable unit or whether each individual statement within the batch is autocommitable.<br/>
+</p>
+<p>
+--	SQL_ATTR_CONNECTION_DEAD<br/>
+--	(ODBC 3.5)<br/>
+--	 An SQLUINTERGER value that indicates the state of the connection. If SQL_CD_TRUE, the connection has been lost. If SQL_CD_FALSE, the connection is still active.<br/>
+</p>
+<p>
+--SQL_ATTR_CONNECTION_TIMEOUT<br/>
+--	Either<br/>
+--	(ODBC 3.0)<br/>
+--	An SQLUINTEGER value corresponding to the number of seconds to wait for any request on the connection to complete before returning to the application. The driver should return SQLSTATE HYT00 (Timeout expired) anytime that it is possible to time out in a situation not associated with query execution or login.<br/>
+--	If ValuePtr is equal to 0 (the default), there is no timeout.<br/>
+</p>
+<p>
+--SQL_ATTR_CURRENT_CATALOG<br/>
+--	Either[1]<br/>
+--	(ODBC 2.0)<br/>
+--	A character string containing the name of the catalog to be used by the data source. For example, in SQL Server, the catalog is a database, so the driver sends a USE database statement to the data source, where database is the database specified in *ValuePtr. For a single-tier driver, the catalog might be a directory, so the driver changes its current directory to the directory specified in *ValuePtr.<br/>
+</p>
+<p>
+--SQL_ATTR_LOGIN_TIMEOUT<br/>
+--	Before<br/>
+--	(ODBC 1.0)<br/>
+--	An SQLUINTEGER value corresponding to the number of seconds to wait for a login request to complete before returning to the application. The default is driver-dependent. If ValuePtr is 0, the timeout is disabled and a connection attempt will wait indefinitely.<br/>
+--	If the specified timeout exceeds the maximum login timeout in the data source, the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).<br/>
+</p>
+<p>
+--SQL_ATTR_METADATA_ID<br/>
+--	Either<br/>
+--	(ODBC 3.0)<br/>
+--	An SQLUINTEGER value that determines how the string arguments of catalog functions are treated.<br/>
+--	If SQL_TRUE, the string argument of catalog functions are treated as identifiers. The case is not significant. For nondelimited strings, the driver removes any trailing spaces and the string is folded to uppercase. For delimited strings, the driver removes any leading or trailing spaces and takes literally whatever is between the delimiters. If one of these arguments is set to a null pointer, the function returns SQL_ERROR and SQLSTATE HY009 (Invalid use of null pointer).<br/>
+--<br/>
+--	If SQL_FALSE, the string arguments of catalog functions are not treated as identifiers. The case is significant. They can either contain a string search pattern or not, depending on the argument.<br/>
+--<br/>
+--	The default value is SQL_FALSE.<br/>
+--<br/>
+--	The TableType argument of SQLTables, which takes a list of values, is not affected by this attribute.<br/>
+--<br/>
+--	SQL_ATTR_METADATA_ID can also be set on the statement level. (It is the only connection attribute that is also a statement attribute.)<br/>
+--<br/>
+--	For more information, see Arguments in Catalog Functions.<br/>
+</p>
+<p>
+--SQL_ATTR_ODBC_CURSORS<br/>
+--	Before<br/>
+--	(ODBC 2.0)<br/>
+--	An SQLUINTEGER value specifying how the Driver Manager uses the ODBC cursor library:<br/>
+--	SQL_CUR_USE_IF_NEEDED = The Driver Manager uses the ODBC cursor library only if it is needed. If the driver supports the SQL_FETCH_PRIOR option in SQLFetchScroll, the Driver Manager uses the scrolling capabilities of the driver. Otherwise, it uses the ODBC cursor library.<br/>
+--<br/>
+--	SQL_CUR_USE_ODBC = The Driver Manager uses the ODBC cursor library.<br/>
+--<br/>
+--	SQL_CUR_USE_DRIVER = The Driver Manager uses the scrolling capabilities of the driver. This is the default setting.<br/>
+--<br/>
+--	For more information about the ODBC cursor library, see Appendix F: ODBC Cursor Library.<br/>
+</p>
+<p>
+--SQL_ATTR_PACKET_SIZE<br/>
+--	Before<br/>
+--	(ODBC 2.0)<br/>
+--	An SQLUINTEGER value specifying the network packet size in bytes.<br/>
+--	Note   Many data sources either do not support this option or only can return but not set the network packet size.<br/>
+--	If the specified size exceeds the maximum packet size or is smaller than the minimum packet size, the driver substitutes that value and returns SQLSTATE 01S02 (Option value changed).<br/>
+--<br/>
+--	If the application sets packet size after a connection has already been made, the driver will return SQLSTATE HY011 (Attribute cannot be set now).<br/>
+</p>
+<p>
+--SQL_ATTR_QUIET_MODE<br/>
+--	Either<br/>
+--	(ODBC 2.0)<br/>
+--	A 32-bit window handle (hwnd).<br/>
+--	If the window handle is a null pointer, the driver does not display any dialog boxes.<br/>
+--<br/>
+--	If the window handle is not a null pointer, it should be the parent window handle of the application. This is the default. The driver uses this handle to display dialog boxes.<br/>
+--<br/>
+--	Note   The SQL_ATTR_QUIET_MODE connection attribute does not apply to dialog boxes displayed by SQLDriverConnect.<br/>
+</p>
+<p>
+--SQL_ATTR_TRACE<br/>
+--	Either<br/>
+--	(ODBC 1.0)<br/>
+--	An SQLUINTEGER value telling the Driver Manager whether to perform tracing:<br/>
+--	SQL_OPT_TRACE_OFF = Tracing off (the default)<br/>
+--<br/>
+--	SQL_OPT_TRACE_ON = Tracing on<br/>
+--<br/>
+--	When tracing is on, the Driver Manager writes each ODBC function call to the trace file.<br/>
+--<br/>
+--	Note   When tracing is on, the Driver Manager can return SQLSTATE IM013 (Trace file error) from any function.<br/>
+--	An application specifies a trace file with the SQL_ATTR_TRACEFILE option. If the file already exists, the Driver Manager appends to the file. Otherwise, it creates the file. If tracing is on and no trace file has been specified, the Driver Manager writes to the file SQL.LOG in the root directory.<br/>
+--<br/>
+--	An application can set the variable ODBCSharedTraceFlag to enable tracing dynamically. Tracing is then enabled for all ODBC applications currently running. If an application turns tracing off, it is turned off only for that application.<br/>
+--<br/>
+--	If the Trace keyword in the system information is set to 1 when an application calls SQLAllocHandle with a HandleType of SQL_HANDLE_ENV, tracing is enabled for all handles. It is enabled only for the application that called SQLAllocHandle.<br/>
+--<br/>
+--	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_TRACE does not require that the ConnectionHandle argument be valid and will not return SQL_ERROR if ConnectionHandle is NULL. This attribute applies to all connections.<br/>
+</p>
+<p>
+--SQL_ATTR_TRACEFILE<br/>
+--	Either<br/>
+--	(ODBC 1.0)<br/>
+--	A null-terminated character string containing the name of the trace file.<br/>
+--	The default value of the SQL_ATTR_TRACEFILE attribute is specified with the TraceFile keyword in the system information. For more information, see ODBC Subkey.<br/>
+--<br/>
+--	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_ TRACEFILE does not require the ConnectionHandle argument to be valid and will not return SQL_ERROR if ConnectionHandle is invalid. This attribute applies to all connections.<br/>
+</p>
+<p>
+--SQL_ATTR_TRANSLATE_LIB<br/>
+--	After<br/>
+--	(ODBC 1.0)<br/>
+--	A null-terminated character string containing the name of a library containing the functions SQLDriverToDataSource and SQLDataSourceToDriver that the driver accesses to perform tasks such as character set translation. This option may be specified only if the driver has connected to the data source. The setting of this attribute will persist across connections. For more information about translating data, see Translation DLLs and Translation DLL Function Reference.<br/>
+</p>
+<p>
+--SQL_ATTR_TRANSLATE_OPTION<br/>
+--	After<br/>
+--	(ODBC 1.0)<br/>
+--	A 32-bit flag value that is passed to the translation DLL. This attribute can be specified only if the driver has connected to the data source. For information about translating data, see Translation DLLs.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_connection_timeout"><span class="feature-name">Sql_attr_connection_timeout</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_current_catalog"><span class="feature-name">Sql_attr_current_catalog</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_disconnect_behavior"><span class="feature-name">Sql_attr_disconnect_behavior</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_enlist_in_dtc"><span class="feature-name">Sql_attr_enlist_in_dtc</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_enlist_in_xa"><span class="feature-name">Sql_attr_enlist_in_xa</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_login_timeout"><span class="feature-name">Sql_attr_login_timeout</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_odbc_cursors"><span class="feature-name">Sql_attr_odbc_cursors</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_packet_size"><span class="feature-name">Sql_attr_packet_size</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_quiet_mode"><span class="feature-name">Sql_attr_quiet_mode</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_trace"><span class="feature-name">Sql_attr_trace</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_tracefile"><span class="feature-name">Sql_attr_tracefile</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_translate_lib"><span class="feature-name">Sql_attr_translate_lib</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_translate_option"><span class="feature-name">Sql_attr_translate_option</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_attr_txn_isolation"><span class="feature-name">Sql_attr_txn_isolation</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_autocommit"><span class="feature-name">Sql_autocommit</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_current_qualifier"><span class="feature-name">Sql_current_qualifier</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_login_timeout"><span class="feature-name">Sql_login_timeout</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_odbc_cursors"><span class="feature-name">Sql_odbc_cursors</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_opt_trace"><span class="feature-name">Sql_opt_trace</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_opt_tracefile"><span class="feature-name">Sql_opt_tracefile</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_packet_size"><span class="feature-name">Sql_packet_size</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  connection attributes with new names<br/>
+-- IF (ODBCVER >= 0x0300)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_quiet_mode"><span class="feature-name">Sql_quiet_mode</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_translate_dll"><span class="feature-name">Sql_translate_dll</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_translate_option"><span class="feature-name">Sql_translate_option</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_txn_isolation"><span class="feature-name">Sql_txn_isolation</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Values" class="keyword">feature</a>
+<span class="comment">-- Values</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="sql_autocommit_default"><span class="feature-name">Sql_autocommit_default</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Sql_autocommit_on<br/>
+</p>
+<p>
+--  Sql_login_timeout options
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_autocommit_off"><span class="feature-name">Sql_autocommit_off</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_autocommit_on"><span class="feature-name">Sql_autocommit_on</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_cd_false"><span class="feature-name">Sql_cd_false</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  Connection is	open/available
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_cd_true"><span class="feature-name">Sql_cd_true</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  Connection is	closed/dead
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_cur_default"><span class="feature-name">Sql_cur_default</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Sql_cur_use_driver<br/>
+</p>
+<p>
+-- IF (ODBCVER >= 0x0300)<br/>
+--  values for Sql_attr_disconnect_behavior
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_cur_use_driver"><span class="feature-name">Sql_cur_use_driver</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_cur_use_if_needed"><span class="feature-name">Sql_cur_use_if_needed</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_cur_use_odbc"><span class="feature-name">Sql_cur_use_odbc</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_db_default"><span class="feature-name">Sql_db_default</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Sql_db_return_to_pool<br/>
+</p>
+<p>
+--  values for Sql_attr_enlist_in_dtc
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_db_disconnect"><span class="feature-name">Sql_db_disconnect</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_db_return_to_pool"><span class="feature-name">Sql_db_return_to_pool</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_dtc_done"><span class="feature-name">Sql_dtc_done</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- ENDIF   --  ODBCVER >= 0x0300<br/>
+</p>
+<p>
+--  values for Sql_attr_connection_dead
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_login_timeout_default"><span class="feature-name">Sql_login_timeout_default</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  Sql_opt_trace options
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_mode_default"><span class="feature-name">Sql_mode_default</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Sql_mode_read_write<br/>
+</p>
+<p>
+--  Sql_autocommit options
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_mode_read_only"><span class="feature-name">Sql_mode_read_only</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_mode_read_write"><span class="feature-name">Sql_mode_read_write</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_opt_trace_default"><span class="feature-name">Sql_opt_trace_default</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Sql_opt_trace_off
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_opt_trace_file_default"><span class="feature-name">Sql_opt_trace_file_default</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--  Sql_odbc_cursors options
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_opt_trace_off"><span class="feature-name">Sql_opt_trace_off</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_opt_trace_on"><span class="feature-name">Sql_opt_trace_on</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/spec/constants/cluster.constants.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

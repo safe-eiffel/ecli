@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_DATASET_DESCRIPTION (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/support/cluster.support.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/support/cluster.support.html" class="cluster-name">support</a></div>
+<h1>Class ECLI_DATASET_DESCRIPTION</h1>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make_for_parameters" class="feature-name">make_for_parameters</a></li>
+<li><a href="#creator-make_for_results" class="feature-name">make_for_results</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#item" class="feature-name">item</a></li>
+<li><a href="#item_by_name" class="feature-name">item_by_name</a></li>
+<li><a href="#name" class="feature-name">name</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#count" class="feature-name">count</a></li>
+<li><a href="#lower" class="feature-name">lower</a></li>
+<li><a href="#upper" class="feature-name">upper</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#has_name" class="feature-name">has_name</a></li>
+<li><a href="#index_within_bounds" class="feature-name">index_within_bounds</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Implementation">Implementation</a></strong>
+<ul class="feature-list-features">
+<li><a href="#create_implementation" class="feature-name">create_implementation</a></li>
+<li><a href="#table_by_index" class="feature-name">table_by_index</a></li>
+<li><a href="#table_by_name" class="feature-name">table_by_name</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Summary description for {<a href="../../ecli/support/ecli_dataset_description.html" class="class-name">ECLI_DATASET_DESCRIPTION</a>}.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">author</h3>
+<div class="indent">
+<div class="comment">
+<p>
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_DATASET_DESCRIPTION</span>
+</h2>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make_for_parameters"><span class="feature-name">make_for_parameters</span></a> <span class="symbol">(</span>a_stmt<span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make for describing <span class="feature-name-comment">a_stmt</span> parameters.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_stmt_not_void:</span> a_stmt<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_stmt_prepared:</span> a_stmt<span class="symbol">.</span>is_prepared<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_for_results"><span class="feature-name">make_for_results</span></a> <span class="symbol">(</span>a_stmt<span class="symbol">:</span><a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Make for describing <span class="feature-name-comment">a_stmt</span> results.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_stmt_not_void:</span> a_stmt<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">a_stmt_executed_or_prepared:</span> a_stmt<span class="symbol">.</span>is_prepared<span class="keyword">or</span><span class="keyword">else</span>a_stmt<span class="symbol">.</span>is_executed<br/>
+<span class="assertion-tag">a_stmt_has_result_set:</span> a_stmt<span class="symbol">.</span>has_result_set<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a> <span class="symbol">(</span>an_index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><a href="../../ecli/metadata/ecli_data_description.html" class="class-name">ECLI_DATA_DESCRIPTION</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Description for <span class="feature-name-comment">an_index</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">an_index_within_bounds:</span> <a href="../../ecli/support/ecli_dataset_description.html#index_within_bounds" class="feature-name">index_within_bounds</a><span class="symbol">(</span>an_index<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">item_not_void:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="item_by_name"><span class="feature-name">item_by_name</span></a> <span class="symbol">(</span>a_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><a href="../../ecli/metadata/ecli_data_description.html" class="class-name">ECLI_DATA_DESCRIPTION</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Description for <span class="feature-name-comment">a_name</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">a_name_not_void:</span> a_name<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">has_name:</span> <a href="../../ecli/support/ecli_dataset_description.html#has_name" class="feature-name">has_name</a><span class="symbol">(</span>a_name<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">item_by_name_not_void:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="name"><span class="feature-name">name</span></a> <span class="symbol">(</span>an_index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Name of column at <span class="feature-name-comment">an_index</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">an_index_within_bounds:</span> <a href="../../ecli/support/ecli_dataset_description.html#index_within_bounds" class="feature-name">index_within_bounds</a><span class="symbol">(</span>an_index<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">name_not_void:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="count"><span class="feature-name">count</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Number of columns.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="lower"><span class="feature-name">lower</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Lower index.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="upper"><span class="feature-name">upper</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Upper index.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="has_name"><span class="feature-name">has_name</span></a> <span class="symbol">(</span>a_name<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Has dataset a column with <span class="feature-name-comment">a_name</span>?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="index_within_bounds"><span class="feature-name">index_within_bounds</span></a> <span class="symbol">(</span>an_index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is <span class="feature-name-comment">an_index</span> within bounds?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span><span class="symbol">=</span><span class="symbol">(</span><a href="../../ecli/support/ecli_dataset_description.html#lower" class="feature-name">lower</a><span class="symbol">&lt;=</span>an_index<span class="keyword">and</span>an_index<span class="symbol">&lt;=</span><a href="../../ecli/support/ecli_dataset_description.html#upper" class="feature-name">upper</a><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Implementation" class="keyword">feature</a>
+<span class="comment">-- Implementation</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="create_implementation"><span class="feature-name">create_implementation</span></a> <span class="symbol">(</span>n<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="table_by_index"><span class="feature-name">table_by_index</span></a><span class="symbol">:</span><span class="class-name">ARRAY</span><span class="symbol">[</span><span class="class-name">STRING</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Name of parameter by index.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="table_by_name"><span class="feature-name">table_by_name</span></a><span class="symbol">:</span><span class="class-name">DS_HASH_TABLE</span><span class="symbol">[</span><span class="keyword">like</span><a href="../../ecli/support/ecli_dataset_description.html#item" class="feature-name">item</a><span class="symbol">,</span><span class="class-name">STRING</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Descriptions by parameter name.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/support/cluster.support.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

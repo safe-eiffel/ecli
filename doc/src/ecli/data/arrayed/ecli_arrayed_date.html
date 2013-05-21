@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_ARRAYED_DATE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../../ecli/data/cluster.data.html" class="cluster-name">data</a>.<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="cluster-name">arrayed</a></div>
+<h1>Class ECLI_ARRAYED_DATE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../../ecli/data/arrayed/ecli_generic_arrayed_value.html" class="class-name">ECLI_GENERIC_ARRAYED_VALUE</a>, <a href="../../../ecli/data/ecli_date.html" class="class-name">ECLI_DATE</a>, <a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html" class="class-name">ECLI_ARRAYED_DATE_ROUTINES</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#item" class="feature-name">item</a></li>
+<li><a href="#item_at" class="feature-name">item_at</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_item" class="feature-name">set_item</a></li>
+<li><a href="#set_item_at" class="feature-name">set_item_at</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#trace" class="feature-name">trace</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+SQL DATE arrayed buffers.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_ARRAYED_DATE</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div>
+<a href="../../../ecli/data/arrayed/ecli_generic_arrayed_value.html" class="class-name">ECLI_GENERIC_ARRAYED_VALUE</a>
+<span class="symbol">[</span><span class="class-name">DT_DATE</span><span class="symbol">]</span></div>
+<div><a href="../../../ecli/data/ecli_date.html" class="class-name">ECLI_DATE</a></div>
+<div><a href="../../../ecli/data/arrayed/ecli_arrayed_date_routines.html" class="class-name">ECLI_ARRAYED_DATE_ROUTINES</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make array of null dates
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a><span class="symbol">:</span><span class="class-name">DT_DATE</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="item_at"><span class="feature-name">item_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">DT_DATE</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_item"><span class="feature-name">set_item</span></a> <span class="symbol">(</span>other<span class="symbol">:</span><span class="class-name">DT_DATE</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_item_at"><span class="feature-name">set_item_at</span></a> <span class="symbol">(</span>other<span class="symbol">:</span><span class="class-name">DT_DATE</span><span class="symbol">;</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="trace"><span class="feature-name">trace</span></a> <span class="symbol">(</span>a_tracer<span class="symbol">:</span><a href="../../../ecli/abstract/ecli_tracer.html" class="class-name">ECLI_TRACER</a><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">valid_month:</span> <span class="symbol">(</span><span class="keyword">not</span>is_null<span class="symbol">)</span><span class="keyword">implies</span><span class="symbol">(</span>month<span class="symbol">&gt;=</span>1<span class="keyword">and</span>month<span class="symbol">&lt;=</span>12<span class="symbol">)</span><br/>
+<span class="assertion-tag">valid_day:</span> <span class="symbol">(</span><span class="keyword">not</span>is_null<span class="symbol">)</span><span class="keyword">implies</span><span class="symbol">(</span>day<span class="symbol">&gt;=</span>1<span class="keyword">and</span>day<span class="symbol">&lt;=</span>days_in_month<span class="symbol">(</span>month<span class="symbol">,</span>year<span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

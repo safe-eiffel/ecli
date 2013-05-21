@@ -1,9 +1,0 @@
-${ECLI}/src/abstract/
-${ECLI}/src/data/
-${ECLI}/src/data/arrayed
-${ECLI}/src/metadata/
-${ECLI}/src/pattern/
-${ECLI}/src/spec/
-${ECLI}/src/spec/constants
-${ECLI}/src/spec/se/
-${ECLI}/src/support/

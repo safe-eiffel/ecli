@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_SQL_PARSER (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/support/cluster.support.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/support/cluster.support.html" class="cluster-name">support</a></div>
+<h1>Class ECLI_SQL_PARSER</h1>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#original_sql" class="feature-name">original_sql</a></li>
+<li><a href="#parameter_marker" class="feature-name">parameter_marker</a></li>
+<li><a href="#parsed_sql" class="feature-name">parsed_sql</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#parameters_count" class="feature-name">parameters_count</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#escape" class="feature-name">escape</a></li>
+<li><a href="#is_parameter_marker" class="feature-name">is_parameter_marker</a></li>
+<li><a href="#is_separator" class="feature-name">is_separator</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_parameter_marker" class="feature-name">set_parameter_marker</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#parse" class="feature-name">parse</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Constants">Constants</a></strong>
+<ul class="feature-list-features">
+<li><a href="#allowed_parameter_markers" class="feature-name">allowed_parameter_markers</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that parse SQL queries, searching for parameters.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_SQL_PARSER</span>
+</h2>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- initialize
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_marker_set:</span> <a href="../../ecli/support/ecli_sql_parser.html#parameter_marker" class="feature-name">parameter_marker</a><span class="symbol">=</span>'?'<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="original_sql"><span class="feature-name">original_sql</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Original SQL.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parameter_marker"><span class="feature-name">parameter_marker</span></a><span class="symbol">:</span><span class="class-name">CHARACTER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- parameter marker in input sql.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="parsed_sql"><span class="feature-name">parsed_sql</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Parsed SQL.<br/>
+-- Same as original SQL, but with parameter names stripped and parameter_marker replaced by cli_marker.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="parameters_count"><span class="feature-name">parameters_count</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="escape"><span class="feature-name">escape</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_parameter_marker"><span class="feature-name">is_parameter_marker</span></a> <span class="symbol">(</span>c<span class="symbol">:</span><span class="class-name">CHARACTER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_separator"><span class="feature-name">is_separator</span></a> <span class="symbol">(</span>c<span class="symbol">:</span><span class="class-name">CHARACTER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_parameter_marker"><span class="feature-name">set_parameter_marker</span></a> <span class="symbol">(</span>marker<span class="symbol">:</span><span class="class-name">CHARACTER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set <a href="#parameter_marker" class="feature-name">parameter_marker</a>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">good_marker:</span> <a href="../../ecli/support/ecli_sql_parser.html#allowed_parameter_markers" class="feature-name">allowed_parameter_markers</a><span class="symbol">.</span>has<span class="symbol">(</span>marker<span class="symbol">)</span><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">parameter_marker_set:</span> <a href="../../ecli/support/ecli_sql_parser.html#parameter_marker" class="feature-name">parameter_marker</a><span class="symbol">=</span>marker<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="parse"><span class="feature-name">parse</span></a> <span class="symbol">(</span>sql<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">;</span>callback<span class="symbol">:</span><a href="../../ecli/support/ecli_sql_parser_callback.html" class="class-name">ECLI_SQL_PARSER_CALLBACK</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- parse s, replacing every parameter by the ODBC/CLI marker '?'
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">sql_not_void:</span> sql<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">callback_not_void:</span> callback<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">original_sql_set:</span> <a href="../../ecli/support/ecli_sql_parser.html#original_sql" class="feature-name">original_sql</a><span class="symbol">=</span>sql<br/>
+<span class="assertion-tag">parsed_sql_set:</span> <a href="../../ecli/support/ecli_sql_parser.html#original_sql" class="feature-name">original_sql</a><span class="symbol">.</span>count<span class="symbol">&gt;</span>0<span class="keyword">implies</span><span class="keyword">not</span><a href="../../ecli/support/ecli_sql_parser.html#parsed_sql" class="feature-name">parsed_sql</a><span class="symbol">.</span>is_empty <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Constants" class="keyword">feature</a>
+<span class="comment">-- Constants</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="allowed_parameter_markers"><span class="feature-name">allowed_parameter_markers</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">good_parameter_marker:</span> <a href="../../ecli/support/ecli_sql_parser.html#allowed_parameter_markers" class="feature-name">allowed_parameter_markers</a><span class="symbol">.</span>has<span class="symbol">(</span><a href="../../ecli/support/ecli_sql_parser.html#parameter_marker" class="feature-name">parameter_marker</a><span class="symbol">)</span><br/>
+<span class="assertion-tag">good_state:</span> state<span class="symbol">=</span>State_sql<span class="keyword">implies</span><span class="keyword">not</span><a href="../../ecli/support/ecli_sql_parser.html#escape" class="feature-name">escape</a><br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/support/cluster.support.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

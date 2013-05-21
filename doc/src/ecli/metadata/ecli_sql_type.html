@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_SQL_TYPE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/metadata/cluster.metadata.html" class="cluster-name">metadata</a></div>
+<h1>Class ECLI_SQL_TYPE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/metadata/ecli_nullable_metadata.html" class="class-name">ECLI_NULLABLE_METADATA</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make" class="feature-name">make</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_create" class="feature-name">default_create</a></li>
+<li><a href="#make" class="feature-name">make</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#create_parameters" class="feature-name">create_parameters</a></li>
+<li><a href="#create_params" class="feature-name">create_params</a></li>
+<li><a href="#data_definition" class="feature-name">data_definition</a></li>
+<li><a href="#interval_precision" class="feature-name">interval_precision</a></li>
+<li><a href="#is_auto_unique_value" class="feature-name">is_auto_unique_value</a></li>
+<li><a href="#is_case_sensitive" class="feature-name">is_case_sensitive</a></li>
+<li><a href="#is_fixed_precision_scale" class="feature-name">is_fixed_precision_scale</a></li>
+<li><a href="#is_unsigned" class="feature-name">is_unsigned</a></li>
+<li><a href="#literal_prefix" class="feature-name">literal_prefix</a></li>
+<li><a href="#literal_suffix" class="feature-name">literal_suffix</a></li>
+<li><a href="#local_type_name" class="feature-name">local_type_name</a></li>
+<li><a href="#maximum_scale" class="feature-name">maximum_scale</a></li>
+<li><a href="#minimum_scale" class="feature-name">minimum_scale</a></li>
+<li><a href="#name" class="feature-name">name</a></li>
+<li><a href="#num_prec_radix" class="feature-name">num_prec_radix</a></li>
+<li><a href="#searchable" class="feature-name">searchable</a></li>
+<li><a href="#size" class="feature-name">size</a></li>
+<li><a href="#sql_data_type" class="feature-name">sql_data_type</a></li>
+<li><a href="#sql_date_time_sub" class="feature-name">sql_date_time_sub</a></li>
+<li><a href="#sql_type_code" class="feature-name">sql_type_code</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#exists_interval_precision" class="feature-name">exists_interval_precision</a></li>
+<li><a href="#exists_num_prec_radix" class="feature-name">exists_num_prec_radix</a></li>
+<li><a href="#exists_sql_data_type" class="feature-name">exists_sql_data_type</a></li>
+<li><a href="#exists_sql_date_time_sub" class="feature-name">exists_sql_date_time_sub</a></li>
+<li><a href="#is_auto_unique_value_applicable" class="feature-name">is_auto_unique_value_applicable</a></li>
+<li><a href="#is_create_params_applicable" class="feature-name">is_create_params_applicable</a></li>
+<li><a href="#is_literal_prefix_applicable" class="feature-name">is_literal_prefix_applicable</a></li>
+<li><a href="#is_literal_suffix_applicable" class="feature-name">is_literal_suffix_applicable</a></li>
+<li><a href="#is_local_type_name_applicable" class="feature-name">is_local_type_name_applicable</a></li>
+<li><a href="#is_maximum_scale_applicable" class="feature-name">is_maximum_scale_applicable</a></li>
+<li><a href="#is_minimum_scale_applicable" class="feature-name">is_minimum_scale_applicable</a></li>
+<li><a href="#is_size_applicable" class="feature-name">is_size_applicable</a></li>
+<li><a href="#is_unsigned_applicable" class="feature-name">is_unsigned_applicable</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#out" class="feature-name">out</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that describe a SQL type, as supported by a datasource.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_SQL_TYPE</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/metadata/ecli_nullable_metadata.html" class="class-name">ECLI_NULLABLE_METADATA</a></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make"><span class="feature-name">make</span></a> <span class="symbol">(</span>type_cursor<span class="symbol">:</span><a href="../../ecli/metadata/ecli_sql_types_cursor.html" class="class-name">ECLI_SQL_TYPES_CURSOR</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- create type description from current cursor tuple
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">type_cursor:</span> type_cursor<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">current_exists:</span> <span class="keyword">not</span>type_cursor<span class="symbol">.</span>off<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/metadata/ecli_sql_types_cursor.html" class="class-name">ECLI_SQL_TYPES_CURSOR</a><span class="symbol">}</span>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_create"><span class="feature-name">default_create</span></a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make"><span class="feature-name">make</span></a> <span class="symbol">(</span>type_cursor<span class="symbol">:</span><a href="../../ecli/metadata/ecli_sql_types_cursor.html" class="class-name">ECLI_SQL_TYPES_CURSOR</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- create type description from current cursor tuple
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">type_cursor:</span> type_cursor<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">current_exists:</span> <span class="keyword">not</span>type_cursor<span class="symbol">.</span>off<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="create_parameters"><span class="feature-name">create_parameters</span></a><span class="symbol">:</span><span class="class-name">DS_LIST</span><span class="symbol">[</span><span class="class-name">STRING</span><span class="symbol">]</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- name of each individual create parameter, in the order in which they must appear.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="create_params"><span class="feature-name">create_params</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- A list of keywords, separated by commas, corresponding to each parameter<br/>
+-- that the application may specify in parentheses when using the name that is returned<br/>
+-- in the TYPE_NAME field.<br/>
+-- The keywords in the list can be any of the following:<br/>
+-- length, precision, scale.<br/>
+-- They appear in the order that the syntax requires that they be used.<br/>
+-- The driver supplies the CREATE_PARAMS text in the language of the country where it is used.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_create_params_applicable" class="feature-name">is_create_params_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_create_params_applicable" class="feature-name">is_create_params_applicable</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="data_definition"><span class="feature-name">data_definition</span></a> <span class="symbol">(</span>parameters<span class="symbol">:</span><span class="class-name">ARRAY</span><span class="symbol">[</span><span class="class-name">INTEGER</span><span class="symbol">]</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Data definition string for Current type with <span class="feature-name-comment">parameters</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">parameters_for_create_parameters:</span> <a href="../../ecli/metadata/ecli_sql_type.html#create_parameters" class="feature-name">create_parameters</a><span class="symbol">.</span>count<span class="symbol">&gt;</span>0<span class="keyword">implies</span><span class="symbol">(</span>parameters<span class="symbol">/=</span><span class="special-keyword">Void</span><span class="keyword">and</span><span class="keyword">then</span>parameters<span class="symbol">.</span>count<span class="symbol">=</span><a href="../../ecli/metadata/ecli_sql_type.html#create_parameters" class="feature-name">create_parameters</a><span class="symbol">.</span>count<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="interval_precision"><span class="feature-name">interval_precision</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- precision if interval (ODBCV >= 3.0)
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#exists_interval_precision" class="feature-name">exists_interval_precision</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_auto_unique_value"><span class="feature-name">is_auto_unique_value</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is the data type auto incrementing ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#is_auto_unique_value_applicable" class="feature-name">is_auto_unique_value_applicable</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_case_sensitive"><span class="feature-name">is_case_sensitive</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- If a character datatype, denotes the case sensitivity in comparisons<br/>
+-- and in collations
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_fixed_precision_scale"><span class="feature-name">is_fixed_precision_scale</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is the precision scale fixed ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_unsigned"><span class="feature-name">is_unsigned</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is it unsigned ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#is_unsigned_applicable" class="feature-name">is_unsigned_applicable</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="literal_prefix"><span class="feature-name">literal_prefix</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Character(s) used to prefix a literal
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_literal_prefix_applicable" class="feature-name">is_literal_prefix_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_literal_prefix_applicable" class="feature-name">is_literal_prefix_applicable</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="literal_suffix"><span class="feature-name">literal_suffix</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Character(s) used to suffix a literal
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_literal_suffix_applicable" class="feature-name">is_literal_suffix_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_literal_prefix_applicable" class="feature-name">is_literal_prefix_applicable</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="local_type_name"><span class="feature-name">local_type_name</span></a><span class="symbol">:</span><span class="keyword">detachable</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Localized version of the type name
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_local_type_name_applicable:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_local_type_name_applicable" class="feature-name">is_local_type_name_applicable</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_local_type_name_applicable" class="feature-name">is_local_type_name_applicable</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="maximum_scale"><span class="feature-name">maximum_scale</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- maximum scale for numeric values
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#is_maximum_scale_applicable" class="feature-name">is_maximum_scale_applicable</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="minimum_scale"><span class="feature-name">minimum_scale</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- minimum scale for numeric values
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#is_minimum_scale_applicable" class="feature-name">is_minimum_scale_applicable</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="name"><span class="feature-name">name</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Data-source dependent type name
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">exists:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="num_prec_radix"><span class="feature-name">num_prec_radix</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- precision radix for numeric (ODBCV >= 3.0)
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#exists_num_prec_radix" class="feature-name">exists_num_prec_radix</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="searchable"><span class="feature-name">searchable</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is this type searchable ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="size"><span class="feature-name">size</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- The maximum column size that the server supports for this data type.<br/>
+-- For numeric data, this is the maximum precision.<br/>
+-- For string data, this is the length in characters.<br/>
+-- For datetime data types, this is the length in characters of the string representation<br/>
+--  (assuming the maximum allowed precision of the fractional seconds component.)
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">significant:</span> <a href="../../ecli/metadata/ecli_sql_type.html#is_size_applicable" class="feature-name">is_size_applicable</a><span class="keyword">implies</span><span class="special-keyword">Result</span><span class="symbol">/=</span>0<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_data_type"><span class="feature-name">sql_data_type</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- sql data type code (ODBC >= V3.0)
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#exists_sql_data_type" class="feature-name">exists_sql_data_type</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_date_time_sub"><span class="feature-name">sql_date_time_sub</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- sql subcode if date time or interval (ODBCV >= 3.0)
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<a href="../../ecli/metadata/ecli_sql_type.html#exists_sql_date_time_sub" class="feature-name">exists_sql_date_time_sub</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="sql_type_code"><span class="feature-name">sql_type_code</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- SQL data type code
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="exists_interval_precision"><span class="feature-name">exists_interval_precision</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="exists_num_prec_radix"><span class="feature-name">exists_num_prec_radix</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="exists_sql_data_type"><span class="feature-name">exists_sql_data_type</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="exists_sql_date_time_sub"><span class="feature-name">exists_sql_date_time_sub</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_auto_unique_value_applicable"><span class="feature-name">is_auto_unique_value_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Can such type be autoincremented ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_create_params_applicable"><span class="feature-name">is_create_params_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_literal_prefix_applicable"><span class="feature-name">is_literal_prefix_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_literal_suffix_applicable"><span class="feature-name">is_literal_suffix_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_local_type_name_applicable"><span class="feature-name">is_local_type_name_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_maximum_scale_applicable"><span class="feature-name">is_maximum_scale_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_minimum_scale_applicable"><span class="feature-name">is_minimum_scale_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_size_applicable"><span class="feature-name">is_size_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_unsigned_applicable"><span class="feature-name">is_unsigned_applicable</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- True if it is a numeric type
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="out"><span class="feature-name">out</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- terse visual representation
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

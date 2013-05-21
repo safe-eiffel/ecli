@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_DATA_SOURCES_CURSOR (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/metadata/cluster.metadata.html" class="cluster-name">metadata</a></div>
+<h1>Class ECLI_DATA_SOURCES_CURSOR</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_shared_environment.html" class="class-name">ECLI_SHARED_ENVIRONMENT</a>, <a href="../../ecli/abstract/ecli_handle.html" class="class-name">ECLI_HANDLE</a>, <a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a>, <span class="class-name">KL_IMPORTED_STRING_ROUTINES</span></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Creation</h2>
+<ul class="feature-list-features">
+<li><a href="#creator-make_all" class="feature-name">make_all</a></li>
+<li><a href="#creator-make_user" class="feature-name">make_user</a></li>
+<li><a href="#creator-make_system" class="feature-name">make_system</a></li>
+</ul>
+<h2>Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#fetch_first_operation" class="feature-name">fetch_first_operation</a></li>
+<li><a href="#item" class="feature-name">item</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#after" class="feature-name">after</a></li>
+<li><a href="#before" class="feature-name">before</a></li>
+<li><a href="#is_all_datasources" class="feature-name">is_all_datasources</a></li>
+<li><a href="#is_system_datasources" class="feature-name">is_system_datasources</a></li>
+<li><a href="#is_user_datasources" class="feature-name">is_user_datasources</a></li>
+<li><a href="#off" class="feature-name">off</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Cursor_movement">Cursor&nbsp;movement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#forth" class="feature-name">forth</a></li>
+<li><a href="#start" class="feature-name">start</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#close" class="feature-name">close</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Implementation">Implementation</a></strong>
+<ul class="feature-list-features">
+<li><a href="#actual_description_length" class="feature-name">actual_description_length</a></li>
+<li><a href="#actual_name_length" class="feature-name">actual_name_length</a></li>
+<li><a href="#c_description" class="feature-name">c_description</a></li>
+<li><a href="#c_name" class="feature-name">c_name</a></li>
+<li><a href="#description" class="feature-name">description</a></li>
+<li><a href="#name" class="feature-name">name</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that iterate over installed data sources.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">class</span>
+<span class="class-name">ECLI_DATA_SOURCES_CURSOR</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_shared_environment.html" class="class-name">ECLI_SHARED_ENVIRONMENT</a></div>
+<div><a href="../../ecli/abstract/ecli_handle.html" class="class-name">ECLI_HANDLE</a></div>
+<div><a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a></div>
+<div><span class="class-name">KL_IMPORTED_STRING_ROUTINES</span></div>
+</div>
+<h2>
+<a id="create"><span class="keyword">create</span></a>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="creator-make_all"><span class="feature-name">make_all</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor on 'all' datasources
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">all_sources:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#is_all_datasources" class="feature-name">is_all_datasources</a><br/>
+<span class="assertion-tag">fetch_first:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#fetch_first_operation" class="feature-name">fetch_first_operation</a><span class="symbol">=</span>Sql_fetch_first<br/>
+<span class="assertion-tag">before:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#before" class="feature-name">before</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_user"><span class="feature-name">make_user</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor on 'user' datasources
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">user_sources:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#is_user_datasources" class="feature-name">is_user_datasources</a><br/>
+<span class="assertion-tag">fetch_first:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#fetch_first_operation" class="feature-name">fetch_first_operation</a><span class="symbol">=</span>Sql_fetch_first_user<br/>
+<span class="assertion-tag">before:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#before" class="feature-name">before</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="creator-make_system"><span class="feature-name">make_system</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make cursor on 'system' datasources
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">system_sources:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#is_system_datasources" class="feature-name">is_system_datasources</a><br/>
+<span class="assertion-tag">fetch_first:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#fetch_first_operation" class="feature-name">fetch_first_operation</a><span class="symbol">=</span>Sql_fetch_first_system<br/>
+<span class="assertion-tag">before:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#before" class="feature-name">before</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="fetch_first_operation"><span class="feature-name">fetch_first_operation</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- operation code for fetching first source
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a><span class="symbol">:</span><a href="../../ecli/metadata/ecli_data_source.html" class="class-name">ECLI_DATA_SOURCE</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- current item
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_off:</span> <span class="keyword">not</span><a href="../../ecli/metadata/ecli_data_sources_cursor.html#off" class="feature-name">off</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span><span class="keyword">implies</span><span class="keyword">not</span><a href="../../ecli/metadata/ecli_data_sources_cursor.html#off" class="feature-name">off</a> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="after"><span class="feature-name">after</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is cursor after any valid item ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="before"><span class="feature-name">before</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is cursor before any valid item ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_all_datasources"><span class="feature-name">is_all_datasources</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is this a cursor on all datasources ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_system_datasources"><span class="feature-name">is_system_datasources</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is this a cursor on system datasources ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_user_datasources"><span class="feature-name">is_user_datasources</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is this a cursor on user datasources ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="off"><span class="feature-name">off</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is there no valid item at cursor position ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Cursor_movement" class="keyword">feature</a>
+<span class="comment">-- Cursor movement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="forth"><span class="feature-name">forth</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance cursor on the next position if any
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_off:</span> <span class="keyword">not</span><a href="../../ecli/metadata/ecli_data_sources_cursor.html#off" class="feature-name">off</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">off_is_after:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#off" class="feature-name">off</a><span class="keyword">implies</span><a href="../../ecli/metadata/ecli_data_sources_cursor.html#after" class="feature-name">after</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="start"><span class="feature-name">start</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance cursor on first position if any
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">is_off:</span> <a href="../../ecli/metadata/ecli_data_sources_cursor.html#off" class="feature-name">off</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_before:</span> <span class="keyword">not</span><a href="../../ecli/metadata/ecli_data_sources_cursor.html#before" class="feature-name">before</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="close"><span class="feature-name">close</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- close cursor
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Implementation" class="keyword">feature</a>
+<span class="symbol">{</span><a href="../../ecli/metadata/ecli_data_source.html" class="class-name">ECLI_DATA_SOURCE</a><span class="symbol">}</span>
+<span class="comment">-- Implementation</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="actual_description_length"><span class="feature-name">actual_description_length</span></a><span class="symbol">:</span><span class="class-name">XS_C_INT32</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="actual_name_length"><span class="feature-name">actual_name_length</span></a><span class="symbol">:</span><span class="class-name">XS_C_INT32</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="c_description"><span class="feature-name">c_description</span></a><span class="symbol">:</span><span class="class-name">XS_C_STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="c_name"><span class="feature-name">c_name</span></a><span class="symbol">:</span><span class="class-name">XS_C_STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="description"><span class="feature-name">description</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="name"><span class="feature-name">name</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">invariant_clause:</span> <span class="special-keyword">True</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/metadata/cluster.metadata.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

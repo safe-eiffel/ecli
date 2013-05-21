@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>PAT_SUBSCRIBER (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/pattern/cluster.pattern.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-p.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/pattern/cluster.pattern.html" class="cluster-name">pattern</a></div>
+<h1>Class PAT_SUBSCRIBER</h1>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a>, <a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#publisher" class="feature-name">publisher</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#has_publisher" class="feature-name">has_publisher</a></li>
+<li><a href="#unsubscribed" class="feature-name">unsubscribed</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#published" class="feature-name">published</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Subscriber part of the publisher/subscriber pattern.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">PAT_SUBSCRIBER</span>
+<span class="non-bold"><span class="symbol">[</span>G<span class="symbol">-&gt;</span><a href="../../ecli/pattern/pat_publisher.html" class="class-name">PAT_PUBLISHER</a><span class="symbol">[</span><a href="../../ecli/pattern/pat_subscriber.html" class="class-name">PAT_SUBSCRIBER</a><span class="symbol">[</span>G<span class="symbol">]</span><span class="symbol">]</span><span class="symbol">]</span></span>
+</h2>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="publisher"><span class="feature-name">publisher</span></a><span class="symbol">:</span><span class="keyword">detachable</span><a href="../../ecli/pattern/pat_publisher.html" class="class-name">PAT_PUBLISHER</a><span class="symbol">[</span><a href="../../ecli/pattern/pat_subscriber.html" class="class-name">PAT_SUBSCRIBER</a><span class="symbol">[</span>G<span class="symbol">]</span><span class="symbol">]</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="has_publisher"><span class="feature-name">has_publisher</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span><span class="symbol">=</span><span class="symbol">(</span><a href="../../ecli/pattern/pat_subscriber.html#publisher" class="feature-name">publisher</a><span class="symbol">/=</span><span class="special-keyword">Void</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="unsubscribed"><span class="feature-name">unsubscribed</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span><span class="symbol">=</span><span class="symbol">(</span><a href="../../ecli/pattern/pat_subscriber.html#publisher" class="feature-name">publisher</a><span class="symbol">=</span><span class="special-keyword">Void</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="published"><span class="feature-name">published</span></a> <span class="symbol">(</span>a_publisher<span class="symbol">:</span><span class="keyword">like</span><a href="../../ecli/pattern/pat_subscriber.html#publisher" class="feature-name">publisher</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- called by publisher<br/>
+-- redefine in descendant classes
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">subscription:</span> <a href="../../ecli/pattern/pat_subscriber.html#unsubscribed" class="feature-name">unsubscribed</a><span class="keyword">or</span><span class="keyword">else</span><a href="../../ecli/pattern/pat_subscriber.html#has_publisher" class="feature-name">has_publisher</a><br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/pattern/cluster.pattern.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-p.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

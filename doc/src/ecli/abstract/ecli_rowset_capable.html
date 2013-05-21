@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_ROWSET_CAPABLE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_ROWSET_CAPABLE</h1>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/abstract/ecli_rowset_cursor.html" class="class-name">ECLI_ROWSET_CURSOR</a>, <a href="../../ecli/abstract/ecli_rowset_modifier.html" class="class-name">ECLI_ROWSET_MODIFIER</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#item_status" class="feature-name">item_status</a></li>
+<li><a href="#rowset_status" class="feature-name">rowset_status</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#row_capacity" class="feature-name">row_capacity</a></li>
+<li><a href="#row_count" class="feature-name">row_count</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that are able of operating on a rowset.<br/>
+A rowset is an array  of <a href="#row_capacity" class="feature-name">row_capacity</a> rows.<br/>
+Database operations occur one rowset at a time.<br/>
+Status information is available for each row in the rowset through feature <a href="#item_status" class="feature-name">item_status</a>.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_ROWSET_CAPABLE</span>
+</h2>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="item_status"><span class="feature-name">item_status</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Status of <span class="feature-name-comment">index</span>-th value in current rowset
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">index_within_bounds:</span> index<span class="symbol">&gt;=</span>1<span class="keyword">and</span><span class="keyword">then</span>index<span class="symbol">&lt;=</span><a href="../../ecli/abstract/ecli_rowset_capable.html#row_capacity" class="feature-name">row_capacity</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="rowset_status"><span class="feature-name">rowset_status</span></a><span class="symbol">:</span><a href="../../ecli/abstract/ecli_rowset_status.html" class="class-name">ECLI_ROWSET_STATUS</a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Status of last operation, one per row in the set
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="row_capacity"><span class="feature-name">row_capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Maximum number of rows in this rowset
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="row_count"><span class="feature-name">row_count</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Number of rows processed by rowset operation
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">row_capacity_valid:</span> <a href="../../ecli/abstract/ecli_rowset_capable.html#row_capacity" class="feature-name">row_capacity</a><span class="symbol">&gt;=</span>1 <br/>
+<span class="assertion-tag">row_count_valid:</span> <a href="../../ecli/abstract/ecli_rowset_capable.html#row_count" class="feature-name">row_count</a><span class="symbol">&lt;=</span><a href="../../ecli/abstract/ecli_rowset_capable.html#row_capacity" class="feature-name">row_capacity</a> <br/>
+<span class="assertion-tag">impl_row_count_not_void:</span> impl_row_count<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">rowset_status_not_void:</span> <a href="../../ecli/abstract/ecli_rowset_capable.html#rowset_status" class="feature-name">rowset_status</a><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">rowset_capacity:</span> <a href="../../ecli/abstract/ecli_rowset_capable.html#rowset_status" class="feature-name">rowset_status</a><span class="symbol">.</span>count<span class="symbol">=</span><a href="../../ecli/abstract/ecli_rowset_capable.html#row_capacity" class="feature-name">row_capacity</a><br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

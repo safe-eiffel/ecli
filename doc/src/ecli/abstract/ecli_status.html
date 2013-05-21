@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_STATUS (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_STATUS</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<span class="class-name">KL_SHARED_EXCEPTIONS</span>, <a href="../../ecli/spec/ecli_external_api.html" class="class-name">ECLI_EXTERNAL_API</a>, <a href="../../ecli/spec/constants/ecli_status_constants.html" class="class-name">ECLI_STATUS_CONSTANTS</a>, <span class="class-name">KL_IMPORTED_STRING_ROUTINES</span></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/abstract/ecli_session.html" class="class-name">ECLI_SESSION</a>, <a href="../../ecli/abstract/ecli_environment.html" class="class-name">ECLI_ENVIRONMENT</a>, <a href="../../ecli/abstract/ecli_statement.html" class="class-name">ECLI_STATEMENT</a>, <a href="../../ecli/metadata/ecli_dbms_information.html" class="class-name">ECLI_DBMS_INFORMATION</a>, <a href="../../ecli/abstract/ecli_status_value.html" class="class-name">ECLI_STATUS_VALUE</a>, <a href="../../ecli/metadata/ecli_data_sources_cursor.html" class="class-name">ECLI_DATA_SOURCES_CURSOR</a>, <a href="../../ecli/metadata/ecli_drivers_cursor.html" class="class-name">ECLI_DRIVERS_CURSOR</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_create" class="feature-name">default_create</a></li>
+<li><a href="#make_copy" class="feature-name">make_copy</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#cli_state" class="feature-name">cli_state</a></li>
+<li><a href="#diagnostic_message" class="feature-name">diagnostic_message</a></li>
+<li><a href="#error_handler" class="feature-name">error_handler</a></li>
+<li><a href="#last_external_feature" class="feature-name">last_external_feature</a></li>
+<li><a href="#native_code" class="feature-name">native_code</a></li>
+<li><a href="#status" class="feature-name">status</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#exception_on_error" class="feature-name">exception_on_error</a></li>
+<li><a href="#has_information_message" class="feature-name">has_information_message</a></li>
+<li><a href="#is_error" class="feature-name">is_error</a></li>
+<li><a href="#is_no_data" class="feature-name">is_no_data</a></li>
+<li><a href="#is_ok" class="feature-name">is_ok</a></li>
+<li><a href="#valid_status" class="feature-name">valid_status</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_setting">Status&nbsp;setting</a></strong>
+<ul class="feature-list-features">
+<li><a href="#disable_exception_on_error" class="feature-name">disable_exception_on_error</a></li>
+<li><a href="#raise_exception_on_error" class="feature-name">raise_exception_on_error</a></li>
+<li><a href="#set_error_handler" class="feature-name">set_error_handler</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that represent a CLI status, reflects its various values<br/>
+and associated information messages
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_STATUS</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><span class="class-name">KL_SHARED_EXCEPTIONS</span></div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_create"><span class="feature-name">default_create</span></a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="make_copy"><span class="feature-name">make_copy</span></a> <span class="symbol">(</span>other <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_status.html" class="class-name">ECLI_STATUS</a><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="cli_state"><span class="feature-name">cli_state</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Name of the internal CLI state
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="diagnostic_message"><span class="feature-name">diagnostic_message</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Message describing the current status<br/>
+-- Empty if status does not reflect an error or warning
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="error_handler"><span class="feature-name">error_handler</span></a><span class="symbol">:</span> <a href="../../ecli/abstract/ecli_error_handler.html" class="class-name">ECLI_ERROR_HANDLER</a>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="last_external_feature"><span class="feature-name">last_external_feature</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Name of the last called external feature
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="native_code"><span class="feature-name">native_code</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Native error code
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="status"><span class="feature-name">status</span></a><span class="symbol">:</span> <span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Status code of last CLI operation
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="exception_on_error"><span class="feature-name">exception_on_error</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is an exception raised when not <a href="#is_ok" class="feature-name">is_ok</a> ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="has_information_message"><span class="feature-name">has_information_message</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is last CLI command successful, but with an information message ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="special-keyword">Result</span> <span class="keyword">implies</span> <a href="../../ecli/abstract/ecli_status.html#is_ok" class="feature-name">is_ok</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_error"><span class="feature-name">is_error</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is last CLI command in error ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_no_data"><span class="feature-name">is_no_data</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is last fetch indicating there is no data anymore ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_ok"><span class="feature-name">is_ok</span></a><span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is last CLI command ok ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="valid_status"><span class="feature-name">valid_status</span></a> <span class="symbol">(</span>code <span class="symbol">:</span> <span class="class-name">INTEGER</span><span class="symbol">)</span> <span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is <span class="feature-name-comment">code</span> a valid status ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_setting" class="keyword">feature</a>
+<span class="comment">-- Status setting</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="disable_exception_on_error"><span class="feature-name">disable_exception_on_error</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Disable exceptions for CLI operation failures
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">continue_on_error:</span> <span class="keyword">not</span> <a href="../../ecli/abstract/ecli_status.html#exception_on_error" class="feature-name">exception_on_error</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="raise_exception_on_error"><span class="feature-name">raise_exception_on_error</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Enable exceptions for CLI operation failure
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">exception_on_error:</span> <a href="../../ecli/abstract/ecli_status.html#exception_on_error" class="feature-name">exception_on_error</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="set_error_handler"><span class="feature-name">set_error_handler</span></a> <span class="symbol">(</span>an_error_handler <span class="symbol">:</span> <a href="../../ecli/abstract/ecli_error_handler.html" class="class-name">ECLI_ERROR_HANDLER</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#error_handler" class="feature-name">error_handler</a> to <span class="feature-name-comment">an_error_handler</span>.
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">error_handler_set:</span> <a href="../../ecli/abstract/ecli_status.html#error_handler" class="feature-name">error_handler</a> <span class="symbol">=</span> an_error_handler<br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">valid_status:</span> <a href="../../ecli/abstract/ecli_status.html#valid_status" class="feature-name">valid_status</a> <span class="symbol">(</span><a href="../../ecli/abstract/ecli_status.html#status" class="feature-name">status</a><span class="symbol">)</span> <br/>
+<span class="assertion-tag">error_handler_not_void:</span> <a href="../../ecli/abstract/ecli_status.html#error_handler" class="feature-name">error_handler</a> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

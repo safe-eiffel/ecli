@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_STRING_VALUE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/data/cluster.data.html" class="cluster-name">data</a></div>
+<h1>Class ECLI_STRING_VALUE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_generic_value.html" class="class-name">ECLI_GENERIC_VALUE</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/data/ecli_varchar.html" class="class-name">ECLI_VARCHAR</a>, <a href="../../ecli/data/ecli_binary_value.html" class="class-name">ECLI_BINARY_VALUE</a>, <a href="../../ecli/data/ecli_char.html" class="class-name">ECLI_CHAR</a>, <a href="../../ecli/data/ecli_longvarchar.html" class="class-name">ECLI_LONGVARCHAR</a>, <a href="../../ecli/data/ecli_string.html" class="class-name">ECLI_STRING</a>, <a href="../../ecli/data/arrayed/ecli_arrayed_string_value.html" class="class-name">ECLI_ARRAYED_STRING_VALUE</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#c_type_code" class="feature-name">c_type_code</a></li>
+<li><a href="#capacity" class="feature-name">capacity</a></li>
+<li><a href="#count" class="feature-name">count</a></li>
+<li><a href="#item" class="feature-name">item</a></li>
+<li><a href="#max_capacity" class="feature-name">max_capacity</a></li>
+<li><a href="#maximum_capacity" class="feature-name">maximum_capacity</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#decimal_digits" class="feature-name">decimal_digits</a></li>
+<li><a href="#display_size" class="feature-name">display_size</a></li>
+<li><a href="#size" class="feature-name">size</a></li>
+<li><a href="#transfer_octet_length" class="feature-name">transfer_octet_length</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#convertible_as_boolean" class="feature-name">convertible_as_boolean</a></li>
+<li><a href="#convertible_as_character" class="feature-name">convertible_as_character</a></li>
+<li><a href="#convertible_as_date" class="feature-name">convertible_as_date</a></li>
+<li><a href="#convertible_as_decimal" class="feature-name">convertible_as_decimal</a></li>
+<li><a href="#convertible_as_double" class="feature-name">convertible_as_double</a></li>
+<li><a href="#convertible_as_integer" class="feature-name">convertible_as_integer</a></li>
+<li><a href="#convertible_as_integer_64" class="feature-name">convertible_as_integer_64</a></li>
+<li><a href="#convertible_as_real" class="feature-name">convertible_as_real</a></li>
+<li><a href="#convertible_as_string" class="feature-name">convertible_as_string</a></li>
+<li><a href="#convertible_as_time" class="feature-name">convertible_as_time</a></li>
+<li><a href="#convertible_as_timestamp" class="feature-name">convertible_as_timestamp</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_item" class="feature-name">set_item</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#as_boolean" class="feature-name">as_boolean</a></li>
+<li><a href="#as_character" class="feature-name">as_character</a></li>
+<li><a href="#as_date" class="feature-name">as_date</a></li>
+<li><a href="#as_decimal" class="feature-name">as_decimal</a></li>
+<li><a href="#as_double" class="feature-name">as_double</a></li>
+<li><a href="#as_integer" class="feature-name">as_integer</a></li>
+<li><a href="#as_integer_64" class="feature-name">as_integer_64</a></li>
+<li><a href="#as_real" class="feature-name">as_real</a></li>
+<li><a href="#as_string" class="feature-name">as_string</a></li>
+<li><a href="#as_time" class="feature-name">as_time</a></li>
+<li><a href="#as_timestamp" class="feature-name">as_timestamp</a></li>
+<li><a href="#out" class="feature-name">out</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#append_substring_to" class="feature-name">append_substring_to</a></li>
+<li><a href="#trace" class="feature-name">trace</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Constants">Constants</a></strong>
+<ul class="feature-list-features">
+<li><a href="#default_maximum_capacity" class="feature-name">default_maximum_capacity</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Buffers for exchanging string-based values between application and database.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_STRING_VALUE</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div>
+<a href="../../ecli/abstract/ecli_generic_value.html" class="class-name">ECLI_GENERIC_VALUE</a>
+<span class="symbol">[</span><span class="class-name">STRING</span><span class="symbol">]</span></div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="c_type_code"><span class="feature-name">c_type_code</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="capacity"><span class="feature-name">capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="count"><span class="feature-name">count</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- actual length of item
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="max_capacity"><span class="feature-name">max_capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="keyword">obsolete</div>
+<div class="indent">
+<div class="comment">
+<p>
+Use <a href="#maximum_capacity" class="feature-name">maximum_capacity</a> instead.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="maximum_capacity"><span class="feature-name">maximum_capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="decimal_digits"><span class="feature-name">decimal_digits</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="display_size"><span class="feature-name">display_size</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="size"><span class="feature-name">size</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="transfer_octet_length"><span class="feature-name">transfer_octet_length</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="convertible_as_boolean"><span class="feature-name">convertible_as_boolean</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a boolean ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_character"><span class="feature-name">convertible_as_character</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_date"><span class="feature-name">convertible_as_date</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a date ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_decimal"><span class="feature-name">convertible_as_decimal</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a decimal ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_double"><span class="feature-name">convertible_as_double</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_integer"><span class="feature-name">convertible_as_integer</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_integer_64"><span class="feature-name">convertible_as_integer_64</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_real"><span class="feature-name">convertible_as_real</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a real ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_string"><span class="feature-name">convertible_as_string</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_time"><span class="feature-name">convertible_as_time</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a time ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="convertible_as_timestamp"><span class="feature-name">convertible_as_timestamp</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is this value convertible to a timestamp ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_item"><span class="feature-name">set_item</span></a> <span class="symbol">(</span>value<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set item to 'value', truncating if necessary
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="as_boolean"><span class="feature-name">as_boolean</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to BOOLEAN
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_character"><span class="feature-name">as_character</span></a><span class="symbol">:</span><span class="class-name">CHARACTER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Conversion to CHARACTER value
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="assertion-tag">result_is_first_character:</span> <span class="special-keyword">Result</span><span class="symbol">=</span><a href="../../ecli/data/ecli_string_value.html#item" class="feature-name">item</a>@1<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_date"><span class="feature-name">as_date</span></a><span class="symbol">:</span><span class="class-name">DT_DATE</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to DATE
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_decimal"><span class="feature-name">as_decimal</span></a><span class="symbol">:</span><span class="class-name">MA_DECIMAL</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to MA_DECIMAL.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_double"><span class="feature-name">as_double</span></a><span class="symbol">:</span><span class="class-name">DOUBLE</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+--
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_integer"><span class="feature-name">as_integer</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Conversion to INTEGER value
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_integer_64"><span class="feature-name">as_integer_64</span></a><span class="symbol">:</span><span class="class-name">INTEGER_64</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Conversion to INTEGER_64 value
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_real"><span class="feature-name">as_real</span></a><span class="symbol">:</span><span class="class-name">REAL</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to REAL
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_string"><span class="feature-name">as_string</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Conversion to STRING value
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_time"><span class="feature-name">as_time</span></a><span class="symbol">:</span><span class="class-name">DT_TIME</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to DT_TIME
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="as_timestamp"><span class="feature-name">as_timestamp</span></a><span class="symbol">:</span><span class="class-name">DT_DATE_TIME</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Current converted to DT_DATE_TIME
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="out"><span class="feature-name">out</span></a><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="append_substring_to"><span class="feature-name">append_substring_to</span></a> <span class="symbol">(</span>i_start<span class="symbol">,</span>i_end<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">;</span>string<span class="symbol">:</span><span class="class-name">STRING</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- append substring [i_start..i_end] to string
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">i_start_ok:</span> i_start<span class="symbol">&gt;</span>0<span class="keyword">and</span>i_start<span class="symbol">&lt;=</span>i_end<br/>
+<span class="assertion-tag">i_end_ok:</span> i_end<span class="symbol">&gt;</span>0<span class="keyword">and</span>i_end<span class="symbol">&lt;=</span><a href="../../ecli/data/ecli_string_value.html#count" class="feature-name">count</a><br/>
+<span class="assertion-tag">string_not_void:</span> string<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span>is_null<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">string_set:</span> string<span class="symbol">.</span>substring<span class="symbol">(</span> <span class="symbol">(</span><span class="keyword">old</span><span class="symbol">(</span>string<span class="symbol">.</span><a href="../../ecli/data/ecli_string_value.html#count" class="feature-name">count</a><span class="symbol">)</span><span class="symbol">)</span><span class="symbol">+</span>1<span class="symbol">,</span> string<span class="symbol">.</span><a href="../../ecli/data/ecli_string_value.html#count" class="feature-name">count</a><span class="symbol">)</span><span class="symbol">.</span>is_equal<span class="symbol">(</span><a href="../../ecli/data/ecli_string_value.html#item" class="feature-name">item</a><span class="symbol">.</span>substring<span class="symbol">(</span>i_start<span class="symbol">,</span>i_end<span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="trace"><span class="feature-name">trace</span></a> <span class="symbol">(</span>a_tracer<span class="symbol">:</span><a href="../../ecli/abstract/ecli_tracer.html" class="class-name">ECLI_TRACER</a><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- trace content into <span class="feature-name-comment">a_tracer</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Constants" class="keyword">feature</a>
+<span class="comment">-- Constants</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="default_maximum_capacity"><span class="feature-name">default_maximum_capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- default maximum capacity
+</p>
+</div>
+</div>
+<div class="keyword">deferred</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">ext_item_not_void:</span> ext_item<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+<span class="assertion-tag">impl_item_not_void:</span> impl_item<span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/data/cluster.data.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_ARRAYED_VALUE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../../ecli/data/cluster.data.html" class="cluster-name">data</a>.<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="cluster-name">arrayed</a></div>
+<h1>Class ECLI_ARRAYED_VALUE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../../ecli/data/arrayed/ecli_generic_arrayed_value.html" class="class-name">ECLI_GENERIC_ARRAYED_VALUE</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Initialization">Initialization</a></strong>
+<ul class="feature-list-features">
+<li><a href="#make" class="feature-name">make</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#cursor_index" class="feature-name">cursor_index</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Measurement">Measurement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#capacity" class="feature-name">capacity</a></li>
+<li><a href="#count" class="feature-name">count</a></li>
+<li><a href="#lower" class="feature-name">lower</a></li>
+<li><a href="#upper" class="feature-name">upper</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_report">Status&nbsp;report</a></strong>
+<ul class="feature-list-features">
+<li><a href="#after" class="feature-name">after</a></li>
+<li><a href="#before" class="feature-name">before</a></li>
+<li><a href="#is_all_null" class="feature-name">is_all_null</a></li>
+<li><a href="#is_null" class="feature-name">is_null</a></li>
+<li><a href="#is_null_at" class="feature-name">is_null_at</a></li>
+<li><a href="#off" class="feature-name">off</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Status_setting">Status&nbsp;setting</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_null" class="feature-name">set_null</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Cursor_movement">Cursor&nbsp;movement</a></strong>
+<ul class="feature-list-features">
+<li><a href="#forth" class="feature-name">forth</a></li>
+<li><a href="#go" class="feature-name">go</a></li>
+<li><a href="#start" class="feature-name">start</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_null_at" class="feature-name">set_null_at</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#out_item_at" class="feature-name">out_item_at</a></li>
+<li><a href="#to_external" class="feature-name">to_external</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Basic_operations">Basic&nbsp;operations</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_count" class="feature-name">set_count</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that represent ARRAYs of typed values to be exchanged with the database.<br/>
+These mainly are exchange buffers.  The capacity is set at creation and cannot be changed.<br/>
+The actual number of elements to take into account is set using set_count.<br/>
+'set_count' must not be used by a client except when passing parameters.  The other private usage is<br/>
+when a rowset_cursor fetches the last set of data (usually less than the capacity).
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">usage</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Used in row-set operations : column-wise binding for result-sets,<br/>
+or column-wise binding of parameters for modifications.<br/>
+Access modes: direct ('item_at'), linear ('start', 'forth', 'item').
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_ARRAYED_VALUE</span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a></div>
+</div>
+<h2>
+<a id="clause-Initialization" class="keyword">feature</a>
+<span class="comment">-- Initialization</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="make"><span class="feature-name">make</span></a> <span class="symbol">(</span>a_capacity<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- make for <span class="feature-name-comment">a_capacity</span> items
+</p>
+</div>
+</div>
+<div class="keyword">deferred</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">capacity_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#capacity" class="feature-name">capacity</a><span class="symbol">=</span>a_capacity<br/>
+<span class="assertion-tag">count_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><span class="symbol">=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#capacity" class="feature-name">capacity</a><br/>
+<span class="assertion-tag">cursor_before:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#before" class="feature-name">before</a><br/>
+<span class="assertion-tag">all_null:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#is_all_null" class="feature-name">is_all_null</a> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="cursor_index"><span class="feature-name">cursor_index</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- index of internal cursor
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Measurement" class="keyword">feature</a>
+<span class="comment">-- Measurement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="capacity"><span class="feature-name">capacity</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- capacity of array
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="count"><span class="feature-name">count</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- actual number of values
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="lower"><span class="feature-name">lower</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- lower index
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="upper"><span class="feature-name">upper</span></a><span class="symbol">:</span><span class="class-name">INTEGER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- upper index
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_report" class="keyword">feature</a>
+<span class="comment">-- Status report</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="after"><span class="feature-name">after</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is cursor after any valid element ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="before"><span class="feature-name">before</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is cursor before any valid element ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_all_null"><span class="feature-name">is_all_null</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- are all element NULL ?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_null"><span class="feature-name">is_null</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is element at <a href="#cursor_index" class="feature-name">cursor_index</a> NULL ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure then</h4>
+<div class="indent">
+<span class="assertion-tag">null_when_off:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#off" class="feature-name">off</a><span class="keyword">implies</span><span class="special-keyword">Result</span><br/>
+<span class="assertion-tag">definition:</span> <span class="symbol">(</span><span class="keyword">not</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#off" class="feature-name">off</a><span class="symbol">)</span><span class="keyword">implies</span><span class="symbol">(</span><span class="special-keyword">Result</span><span class="symbol">=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#is_null_at" class="feature-name">is_null_at</a><span class="symbol">(</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#cursor_index" class="feature-name">cursor_index</a><span class="symbol">)</span><span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="is_null_at"><span class="feature-name">is_null_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is <span class="feature-name-comment">index</span>th item NULL ?
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_index:</span> index<span class="symbol">&gt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><span class="keyword">and</span>index<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="off"><span class="feature-name">off</span></a><span class="symbol">:</span><span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- is there any item at current cursor position ?
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Status_setting" class="keyword">feature</a>
+<span class="comment">-- Status setting</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_null"><span class="feature-name">set_null</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set current item to NULL
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Cursor_movement" class="keyword">feature</a>
+<span class="comment">-- Cursor movement</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="forth"><span class="feature-name">forth</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance internal cursor
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="go"><span class="feature-name">go</span></a> <span class="symbol">(</span>ith<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- advance internal cursor
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">ith:</span> ith<span class="symbol">&gt;</span>0<span class="keyword">and</span>ith<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#cursor_index" class="feature-name">cursor_index</a><span class="symbol">=</span>ith<br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="start"><span class="feature-name">start</span></a>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- start internal cursor
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="keyword">not</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#before" class="feature-name">before</a><span class="keyword">or</span><span class="keyword">else</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#after" class="feature-name">after</a><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_null_at"><span class="feature-name">set_null_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set <span class="feature-name-comment">index</span>th value to NULL
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_index:</span> index<span class="symbol">&gt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><span class="keyword">and</span>index<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">null_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#is_null_at" class="feature-name">is_null_at</a><span class="symbol">(</span>index<span class="symbol">)</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="out_item_at"><span class="feature-name">out_item_at</span></a> <span class="symbol">(</span>index<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span><span class="symbol">:</span><span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_index:</span> index<span class="symbol">&gt;=</span>1<span class="keyword">and</span>index<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><br/>
+</div>
+<div class="keyword">deferred</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">result_not_void:</span> <span class="special-keyword">Result</span><span class="symbol">/=</span><span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="to_external"><span class="feature-name">to_external</span></a><span class="symbol">:</span><span class="class-name">POINTER</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- external 'C' address of value array<br/>
+-- contiguous memory block of 'capacity' * 'transfer_octet_length'<br/>
+-- use at your own risks !
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Basic_operations" class="keyword">feature</a>
+<span class="comment">-- Basic operations</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_count"><span class="feature-name">set_count</span></a> <span class="symbol">(</span>a_count<span class="symbol">:</span><span class="class-name">INTEGER</span><span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- set <a href="#count" class="feature-name">count</a> to <span class="feature-name-comment">a_count</span><br/>
+-- used to indicate that index ranging from 'a_count' + 1 to 'capacity'<br/>
+-- do not hold interesting values
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">valid_count:</span> a_count<span class="symbol">&gt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><span class="keyword">and</span>a_count<span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#capacity" class="feature-name">capacity</a><br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">count_set:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><span class="symbol">=</span>a_count<br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+<span class="assertion-tag">valid_count:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><span class="symbol">&gt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><span class="keyword">and</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#capacity" class="feature-name">capacity</a><br/>
+<span class="assertion-tag">valid_capacity:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#capacity" class="feature-name">capacity</a><span class="symbol">&gt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><br/>
+<span class="assertion-tag">lower:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><span class="symbol">=</span>1<br/>
+<span class="assertion-tag">upper:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#upper" class="feature-name">upper</a><span class="symbol">=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#count" class="feature-name">count</a><br/>
+<span class="assertion-tag">limits:</span> <a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#lower" class="feature-name">lower</a><span class="symbol">&lt;=</span><a href="../../../ecli/data/arrayed/ecli_arrayed_value.html#upper" class="feature-name">upper</a> <br/>
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../../index.html" class="button">Overview</a>
+<a href="../../../clusters.all.html" class="button">Clusters</a>
+<a href="../../../classes.all.html" class="button">Classes</a>
+<a href="../../../ecli/data/arrayed/cluster.arrayed.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>

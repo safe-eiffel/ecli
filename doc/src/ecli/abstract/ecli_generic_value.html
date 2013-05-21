@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECLI_GENERIC_VALUE (ECLI - Eiffel ODBC wrapper)</title>
+<link rel="stylesheet" type="text/css" href="../../style.css"/>
+</head>
+<body>
+<div class="header">
+<div class="header-title" id="top"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+<hr/>
+<div class="cluster-small"><a href="../../ecli/cluster.ecli.html" class="cluster-name">ecli</a>.<a href="../../ecli/abstract/cluster.abstract.html" class="cluster-name">abstract</a></div>
+<h1>Class ECLI_GENERIC_VALUE</h1>
+<hr/>
+<h2>Direct ancestors</h2>
+<div>
+<a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a></div>
+<hr/>
+<h2>Known direct descendants</h2>
+<div>
+<a href="../../ecli/data/ecli_date.html" class="class-name">ECLI_DATE</a>, <a href="../../ecli/data/ecli_timestamp.html" class="class-name">ECLI_TIMESTAMP</a>, <a href="../../ecli/data/ecli_time.html" class="class-name">ECLI_TIME</a>, <a href="../../ecli/data/ecli_double.html" class="class-name">ECLI_DOUBLE</a>, <a href="../../ecli/data/ecli_real.html" class="class-name">ECLI_REAL</a>, <a href="../../ecli/data/ecli_integer_16.html" class="class-name">ECLI_INTEGER_16</a>, <a href="../../ecli/data/ecli_integer.html" class="class-name">ECLI_INTEGER</a>, <a href="../../ecli/data/ecli_integer_64.html" class="class-name">ECLI_INTEGER_64</a>, <a href="../../ecli/data/ecli_string_value.html" class="class-name">ECLI_STRING_VALUE</a>, <a href="../../ecli/data/ecli_decimal.html" class="class-name">ECLI_DECIMAL</a></div>
+<hr/>
+<div class="feature-list">
+<h2 id="features-list">Features</h2>
+<ul class="feature-list-clauses">
+<li>
+<strong><a href="#clause-Access">Access</a></strong>
+<ul class="feature-list-features">
+<li><a href="#item" class="feature-name">item</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Comparison">Comparison</a></strong>
+<ul class="feature-list-features">
+<li><a href="#is_equal" class="feature-name">is_equal</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Element_change">Element&nbsp;change</a></strong>
+<ul class="feature-list-features">
+<li><a href="#set_item" class="feature-name">set_item</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Conversion">Conversion</a></strong>
+<ul class="feature-list-features">
+<li><a href="#formatted" class="feature-name">formatted</a></li>
+<li><a href="#out" class="feature-name">out</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Duplication">Duplication</a></strong>
+<ul class="feature-list-features">
+<li><a href="#copy" class="feature-name">copy</a></li>
+</ul>
+</li>
+<li>
+<strong><a href="#clause-Contract_support">Contract&nbsp;support</a></strong>
+<ul class="feature-list-features">
+<li><a href="#valid_item" class="feature-name">valid_item</a></li>
+</ul>
+</li>
+</ul>
+<h2><a href="#invariant">Invariants</a></h2>
+</div>
+<h2 class="keyword">note</h2>
+<div class="indexing-list indent">
+<h3 class="indexing-tag">description</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Objects that represent typed values to be exchanged with the database.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">library</h3>
+<div class="indent">
+<div class="comment">
+<p>
+ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE.
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">Copyright</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Copyright (c) 2001-2012, Paul G. Crismer and others
+</p>
+</div>
+</div>
+<h3 class="indexing-tag">license</h3>
+<div class="indent">
+<div class="comment">
+<p>
+Eiffel Forum License v2 (see forum.txt)
+</p>
+</div>
+</div>
+</div>
+<h2>
+<span class="keyword">deferred class</span>
+<span class="class-name">ECLI_GENERIC_VALUE</span>
+<span class="non-bold"><span class="symbol">[</span>G <span class="symbol">-&gt;</span> <span class="keyword">attached</span> <span class="class-name">ANY</span><span class="symbol">]</span></span>
+</h2>
+<h2 class="keyword">inherit</h2>
+<div class="indent">
+<div><a href="../../ecli/abstract/ecli_value.html" class="class-name">ECLI_VALUE</a></div>
+</div>
+<h2>
+<a id="clause-Access" class="keyword">feature</a>
+<span class="comment">-- Access</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="item"><span class="feature-name">item</span></a><span class="symbol">:</span> G 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Actual Eiffel value
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span> is_null<br/>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">not_void:</span> <span class="special-keyword">Result</span> <span class="symbol">/=</span> <span class="special-keyword">Void</span> <br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Comparison" class="keyword">feature</a>
+<span class="comment">-- Comparison</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="is_equal"><span class="feature-name">is_equal</span></a> <span class="symbol">(</span>other <span class="symbol">:</span> <span class="keyword">like</span> <span class="special-keyword">Current</span><span class="symbol">)</span> <span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Element_change" class="keyword">feature</a>
+<span class="comment">-- Element change</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="set_item"><span class="feature-name">set_item</span></a> <span class="symbol">(</span>value<span class="symbol">:</span> G<span class="symbol">)</span> 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Set <a href="#item" class="feature-name">item</a> with content of <span class="feature-name-comment">value</span>
+</p>
+</div>
+</div>
+<h4 class="keyword">require</h4>
+<div class="indent">
+<span class="assertion-tag">value_valid:</span> <a href="../../ecli/abstract/ecli_generic_value.html#valid_item" class="feature-name">valid_item</a> <span class="symbol">(</span>value<span class="symbol">)</span><br/>
+</div>
+<div class="keyword">deferred</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">item_set:</span> equal <span class="symbol">(</span><a href="../../ecli/abstract/ecli_generic_value.html#item" class="feature-name">item</a><span class="symbol">,</span> <a href="../../ecli/abstract/ecli_generic_value.html#formatted" class="feature-name">formatted</a> <span class="symbol">(</span>value<span class="symbol">)</span><span class="symbol">)</span><br/>
+<span class="assertion-tag">not_null:</span> <span class="keyword">not</span> is_null<br/>
+</div>
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Conversion" class="keyword">feature</a>
+<span class="comment">-- Conversion</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="formatted"><span class="feature-name">formatted</span></a> <span class="symbol">(</span>v <span class="symbol">:</span> G<span class="symbol">)</span> <span class="symbol">:</span> G 
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- 'v' formatted according to 'column_precision'<br/>
+-- does nothing, except for fixed format types like CHAR<br/>
+-- where values are either truncated or padded by blanks
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="feature">
+<h3>
+<a id="out"><span class="feature-name">out</span></a><span class="symbol">:</span> <span class="class-name">STRING</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Duplication" class="keyword">feature</a>
+<span class="comment">-- Duplication</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="copy"><span class="feature-name">copy</span></a> <span class="symbol">(</span>other <span class="symbol">:</span> <span class="keyword">like</span> <span class="special-keyword">Current</span><span class="symbol">)</span>
+</h3>
+<div class="indent">
+</div>
+</div>
+</div>
+<h2>
+<a id="clause-Contract_support" class="keyword">feature</a>
+<span class="comment">-- Contract support</span>
+</h2>
+<div class="indent">
+<div class="feature">
+<h3>
+<a id="valid_item"><span class="feature-name">valid_item</span></a> <span class="symbol">(</span>value <span class="symbol">:</span> G<span class="symbol">)</span> <span class="symbol">:</span> <span class="class-name">BOOLEAN</span>
+</h3>
+<div class="indent">
+<div class="indent">
+<div class="comment">
+<p>
+-- Is <span class="feature-name-comment">value</span> valid as an item ?
+</p>
+</div>
+</div>
+<h4 class="keyword">ensure</h4>
+<div class="indent">
+<span class="assertion-tag">definition:</span> <span class="special-keyword">Result</span> <span class="keyword">implies</span> value <span class="symbol">/=</span> <span class="special-keyword">Void</span><br/>
+</div>
+</div>
+</div>
+</div>
+<h2 class="keyword" id="invariant">invariant</h2>
+<div class="indent">
+</div>
+<span class="keyword">end</span>
+<hr/>
+<p>
+<br/>
+</p>
+<div class="footer">
+<div class="header-title"><a href="http://safe.sf.net" class="button">ECLI - Eiffel ODBC wrapper</a> 2.6.0.0</div>
+<div class="buttons">
+<a href="../../index.html" class="button">Overview</a>
+<a href="../../clusters.all.html" class="button">Clusters</a>
+<a href="../../classes.all.html" class="button">Classes</a>
+<a href="../../ecli/abstract/cluster.abstract.html" class="button">Cluster</a>
+<span class="active-button">Class</span>
+<a href="../../index-e.html" class="button">Index</a>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a href="#top" class="button">Top</a>
+<a href="#features-list" class="button">Features</a>
+</div>
+</div>
+</body>
+</html>
