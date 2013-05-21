@@ -4,6 +4,7 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
+	EIS: "name=Unnamed", "protocol=DOC", "src=http://www.yourwebsite.com"
 class
 	QA_EXAMPLE
 

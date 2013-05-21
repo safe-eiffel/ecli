@@ -29,13 +29,14 @@ NEW
 		(while ECLI_STATEMENT only supports input parameters).
 
 	Datatypes
+		ECLI_INTEGER_16, ECLI_INTEGER_64
 		ECLI_BINARY,
 		ECLI_VARBINARY,
 		ECLI_LONGVARBINARY
 		ECLI_FILE_VARCHAR,
 		ECLI_FILE_VARBINARY,
-		ECLI_FILE_LONGVARCHAR,
-		ECLI_FILE_LONGVARBINARY
+		ECLI_FILE_LONGVARCHAR, ECLI_STRING_LONGVARCHAR
+		ECLI_FILE_LONGVARBINARY, ECLI_STRING_LONGVARBINARY
 		
 	Metadata
 		ECLI_COLUMNS_CURSOR, ECLI_COLUMN,
@@ -58,6 +59,8 @@ NEW
 		XS_C_ARRAY_INT32,
 		XS_C_BOOLEAN,
 		XS_C_POINTER, ...
+	
+	Connection Pooling
 	
 CHANGES
 
@@ -98,9 +101,4 @@ CHANGES
 	Tutorial
 		Tutorial document takes into account the most recent changes.
 		Advanced usage is not mentioned in the tutorial.
-
-TODO
-	Full testing of ECLI_STORED_PROCEDURE
-	Variable length datatypes from/to streams : descendants for
-	ECLI_VARCHAR, ECLI_LONGVARCHAR, ECLI_VARBINARY, ECLI_LONGVARBINARY
 	

@@ -10,12 +10,17 @@ ECLI --
     + ecli
 	+- doc				-- documentation
 	+- examples			-- examples
+	|   +-  books			-- Common files for some examples
+	|   +-  control			-- System that includes all classes for compilation 
 	|   +-	test1			-- table creation, insertions, selection, drop
 	|   +-	qa_example		-- sample application for cursor generator
 	|   +-	test_Xaction		-- transaction test program
 	|   +-	test_gc			-- (obsolete) tests for problems with GC
 	|   +-	test_rowset		-- tests rowset operations : insert, updates; show specific error handling
 	|   +-	test_values		-- tests all ECLI_VALUE heirs
+	|   +-  test_decimal		-- tests ECLI_DECIMAL
+	|   +-  test_procedures		-- tests stored procedures
+	|   +-  voidsafety-migration	-- sample system for testing voidsafety compilation (not executable)
 	|
 	+- src
 	|   +-	abstract			-- abstract ECLI data types
@@ -123,12 +128,12 @@ Verify that the datasources and drivers you've defined point to the unixodbc-pro
 	OS			Database		Driver
 	----------		----------		---------
 								
-	WIN XP			Oracle 8i, 9i, 10g	Oracle
-				Ms SQL Server		Sql Server
+	WIN (XP,7)		Oracle 8i, 9i, 10g	Oracle
+	32 and 64 bits		Ms SQL Server		Sql Server
 				Access			MS
 				PostgreSQL 8.1, 8.2	PostgreSQL
 				Firebird 1.5		Firebird
 				
 	Debian Linux 3.0r	PostgreSQL 7.1.3	UnixODBC
-	Ubuntu (2009-03-05)	PostgreSQL 8.2		UnixODBC
+	Ubuntu 32 and 64bits	PostgreSQL 8.2		UnixODBC
 	

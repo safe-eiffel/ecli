@@ -1,0 +1,95 @@
+
+api tracing;;;;0;0
+begin_transaction;;;;0;0
+bind_parameters;;;;0;0
+binding parameters;;;;0;0
+bound_parameters;;;;0;0
+buffer factories;;;;0;0
+Bulk;;;;0;0
+close;;;;0;0
+commit;;;;0;0
+connect;;;;0;0
+Connection pooling;;;;0;0
+Data Source;;;;0;0
+datatypes;;;;0;0
+date;;;;0;0
+Describe parameters;;;;0;0
+Describe results;;;;0;0
+describe_parameters;;;;0;0
+describe_results;;;;0;0
+diagnostic;;;;0;0
+disconnect;;;;0;0
+Driver;;;;0;0
+ECLI_BUFFER_FACTORY;;;;0;0
+ECLI_COLUMNS_CURSOR;;;;0;0
+ECLI_DRIVER_CURSOR;;;;0;0
+ECLI_DRIVER_LOGIN;;;;0;0
+ECLI_ENVIRONMENT;;;;0;0
+ECLI_ERROR_HANDLER;;;;0;0
+ECLI_FOREIGN_KEY_CURSOR;;;;0;0
+ECLI_LOGIN_STRATEGY;;;;0;0
+ECLI_METADATA_CURSOR;;;;0;0
+ECLI_PRIMARY_KEY_CURSOR;;;;0;0
+ECLI_PROCEDURE_COLUMNS_CURSOR;;;;0;0
+ECLI_PROCEDURES_CURSOR;;;;0;0
+ECLI_SESSION;;;;0;0
+ECLI_SIMPLE_LOGIN;;;;0;0
+ECLI_STATEMENT;;;;0;0
+ECLI_TABLE_CURSOR;;;;0;0
+ECLI_TRACER;;;;0;0
+ECLI_TYPES_CURSOR;;;;0;0
+enable_time_tracing;;;;0;0
+error handler;;;;0;0
+escape sequences;;;;0;0
+execute;;;;0;0
+forth_result_set;;;;0;0
+go_after;;;;0;0
+has_another_result_set;;;;0;0
+has_information_message;;;;0;0
+has_result_set;;;;0;0
+input parameter;;;;0;0
+input/output parameter;;;;0;0
+integer;;;;0;0
+is_error;;;;0;0
+is_null;;;;0;0
+is_ok;;;;0;0
+literal;;;;0;0
+login strategy;;;;0;0
+login;;;;0;0
+long data;;;;0;0
+metadata;;;;0;0
+multiple result-sets;;;;0;0
+native code;;;;0;0
+null;;;;0;0
+output parameter;;;;0;0
+Parameter;;;;0;0
+performance;;;;0;0
+prepared statements;;;;0;0
+procedures;;;;0;0
+put_input_output_parameter;;;;0;0
+put_input_parameter;;;;0;0
+put_output_parameter;;;;0;0
+put_parameter;;;;0;0
+report_diagnostics;;;;0;0
+result set;;;;0;0
+Result;;;;0;0
+result_column_count;;;;0;0
+results;;;;0;0
+results_description;;;;0;0
+rollback;;;;0;0
+rowset;;;;0;0
+scalar functions;;;;0;0
+set_null;;;;0;0
+set_sql;;;;0;0
+state;;;;0;0
+statement execution;;;;0;0
+Statement;;;;0;0
+status;;;;0;0
+time tracing;;;;0;0
+time;;;;0;0
+timestamp;;;;0;0
+tracing;;;;0;0
+Transaction;;;;0;0
+transactions;;;;0;0
+Type catalog;;;;0;0
+type;;;;0;0

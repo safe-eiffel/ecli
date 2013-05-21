@@ -35,7 +35,7 @@ Voidsafety
 Void "confident"
 
 a) depends on http://www.github.com/pgcrism/gobo.git
-   This fork defines some voidconfident ecf files.
+   This fork defines some voidconfident ecf files (only difference with gobo project).
    
 b) void confidence = code is voidsafe but uses unsafe libraries (gobo)
    xace: 
@@ -49,9 +49,15 @@ b) void confidence = code is voidsafe but uses unsafe libraries (gobo)
 Structure
 =========
 	ecli
-	+ doc		---- documentation; see index.html and tutorial.html
-	+ src		---- sources
-	+ examples	---- some examples
-	+ tools		---- tools, like 'query assistant'
+	+ doc			---- documentation; see index.html and tutorial.html
+	+ src			---- sources
+	+ examples		---- some examples
+	+ tools			---- tools, like 'query assistant'
 
-DOCUMENTATION : doc/index.html, tutorial.html
+DOCUMENTATION
+=============
+	Readme.txt		-- This file
+	INSTALL_INFO.txt	-- Howto install et setup ECLI
+	doc/index.html		-- A general introduction
+	doc/tutorial.odt	-- Tutorial on how to use classes
+	doc/class_index.html	-- Index with class catalog, class hierarchies
