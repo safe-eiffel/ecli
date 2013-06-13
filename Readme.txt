@@ -32,18 +32,34 @@ Compiler portability
 
 Voidsafety
 ==========
-Void "confident"
+Void "confident" is the name we have chosen for code that is designed to be voidsafe, but that use void-unsafe libraries.
+
+The settings are 
+- Full class checking
+- Entities attached by default
+- On demand void safety
 
 a) depends on http://www.github.com/pgcrism/gobo.git
    This fork defines some voidconfident ecf files (only difference with gobo project).
+   Some clusters have no void-safety settings. Some have full voidsafety settings.
    
 b) void confidence = code is voidsafe but uses unsafe libraries (gobo)
-   xace: 
-   	voidconfident <= set variable VOIDCONFIDENT to true
-   	void unsafe   <= unset VOIDCONFIDENT variable
-   ecf:
-   	<name>.ecf   : void unsafe
-   	<name>-confident.ecf : void confident
+   b.1) xace: 
+       VOIDCONFIDENT is an environment variable that selects the voidsafety settings.
+       All ECLI xaces use this environment variable.
+    
+   	  VOIDCONFIDENT=true     -  Systems use voidconfident settings.
+   	  VOIDCONFIDENT=false    -  Systems use void-unsafe settings.
+  
+       The $ECLI/xace directory contains adapted xace files compatible with the development version of GOBO (see on Github).
+    
+   b.2) ecf:
+
+     Until we find an appropriate solution to have a single ECF file for both settings types, we use the same
+     system as Eiffel software.  As many ECF files as available settings.  The name of the files reflect the settings.
+     
+   	<name>.ecf             -  void unsafe settings.
+   	<name>-confident.ecf   -  void confident settings.
    	
    	
 Structure
@@ -58,6 +74,7 @@ DOCUMENTATION
 =============
 	Readme.txt		-- This file
 	INSTALL_INFO.txt	-- Howto install et setup ECLI
+	RELEASENOTES.txt	-- Release notes
 	doc/index.html		-- A general introduction
 	doc/tutorial.odt	-- Tutorial on how to use classes
 	doc/class_index.html	-- Index with class catalog, class hierarchies

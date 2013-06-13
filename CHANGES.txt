@@ -4,7 +4,7 @@
 		Experimented with inlining C code.
 		
 	!! On 64 bits platform, the size of the data is expressed in 64 bits; 
-	   However ECLI has an limited the size of data to 32 bits to stay compatible with 32 bits implementation.
+	   However ECLI has limited the size of data to 32 bits to stay compatible with 32 bits implementation.
 	   
 2012-01-13	pgcrism
 	* Support for smallint - INTEGER_16

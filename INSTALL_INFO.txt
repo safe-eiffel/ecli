@@ -8,44 +8,44 @@ ECLI --
 1. Structure
 
     + ecli
-	+- doc				-- documentation
-	+- examples			-- examples
-	|   +-  books			-- Common files for some examples
-	|   +-  control			-- System that includes all classes for compilation 
-	|   +-	test1			-- table creation, insertions, selection, drop
-	|   +-	qa_example		-- sample application for cursor generator
-	|   +-	test_Xaction		-- transaction test program
-	|   +-	test_gc			-- (obsolete) tests for problems with GC
-	|   +-	test_rowset		-- tests rowset operations : insert, updates; show specific error handling
-	|   +-	test_values		-- tests all ECLI_VALUE heirs
-	|   +-  test_decimal		-- tests ECLI_DECIMAL
-	|   +-  test_procedures		-- tests stored procedures
-	|   +-  voidsafety-migration	-- sample system for testing voidsafety compilation (not executable)
-	|
-	+- src
-	|   +-	abstract			-- abstract ECLI data types
-	|   +-	data				-- data transfer classes
-	|   |      +-   arrayed                 -- arrayed data for 'bulk' transfer, reducing network traffic.
-	|   +-	pattern				-- used pattern classes
-	|   +-	metadata			-- various classes that help get metadata
-	|   +-	spec				-- special classes
-	|   |	   +-	C			-- C wrappers
-	|   |	   +-	constants		-- classes that encapsulate various ODBC constants
-	|   |	   +-	ise			-- ise specific
-	|   |	   |	   +-	windows			Platform specific
-	|   |	   |	   +-	linux
-	|   |	   +-	ge			-- Gobo Eiffel Compiler (gec) specific
-	|   |	    	   +-	windows		 	...
-	|   |	    	   +-	linux
-	|   +-  support			-- various support classes
-	|
-	+- support			-- support classes that could be used in other projects
-	+- tools
-	    +-	isql			-- CLISQL : Command Line Interactive SQL 
-	    +-	query_assistant		-- cursor classes generator
-	   
-    + kernel				-- the SAFE_KERNEL variable should point to it
-        +- external			-- external support for all SAFE projects
+    |   +- doc				        -- documentation
+    |   +- examples			        -- examples
+    |   |   +-  books			        -- Common files for some examples
+    |   |   +-  control			        -- System that includes all classes for compilation 
+    |   |   +-	test1			        -- table creation, insertions, selection, drop
+    |   |   +-	qa_example		        -- sample application for cursor generator
+    |   |   +-	test_Xaction		        -- transaction test program
+    |   |   +-	test_gc			        -- (obsolete) tests for problems with GC
+    |   |   +-	test_rowset		        -- tests rowset operations : insert, updates; show specific error handling
+    |   |   +-	test_values		        -- tests all ECLI_VALUE heirs
+    |   |   +-  test_decimal		        -- tests ECLI_DECIMAL
+    |   |   +-  test_procedures		        -- tests stored procedures
+    |   |   +-  voidsafety-migration	        -- sample system for testing voidsafety compilation (not executable)
+    |   |
+    |   +- src
+    |   |   +-	abstract			-- abstract ECLI data types
+    |   |   +-	data				-- data transfer classes
+    |   |   |      +-   arrayed                 -- arrayed data for 'bulk' transfer, reducing network traffic.
+    |   |   +-	pattern				-- used pattern classes
+    |   |   +-	metadata			-- various classes that help get metadata
+    |   |   +-	spec				-- special classes
+    |   |   |	   +-	C			-- C wrappers
+    |   |   |	   +-	constants		-- classes that encapsulate various ODBC constants
+    |   |   |	   +-	ise			-- ise specific
+    |   |   |	   |	   +-	windows			Platform specific
+    |   |   |	   |	   +-	linux
+    |   |   |	   +-	ge			-- Gobo Eiffel Compiler (gec) specific
+    |   |   |	    	   +-	windows		 	...
+    |   |   |	    	   +-	linux
+    |   |   +-  support			        -- various support classes
+    |   |
+    |   +- support			        -- support classes that could be used in other projects
+    |   +- tools
+    |       +-	isql			        -- CLISQL : Command Line Interactive SQL 
+    |       +-	query_assistant		        -- cursor classes generator
+    |      
+    + kernel				        -- the SAFE_KERNEL variable should point to it
+        +- external			        -- external support for all SAFE projects
             +- src			
       
 
@@ -72,7 +72,15 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 			   utility classes and functions used by all SAFE projects libraries.
 	
 	
-  2.1. Building the C libraries.
+  2.1. Building tools & libraries
+
+
+	* change directory to ${ECLI}
+	* run 'geant install'
+	  ** the necessary C libraries are built
+	  ** the tools 'clisql' and 'query_assistant' are built
+	
+  2.1.1 Building the C libraries.
   
   
 	The libraries that must be built are :
@@ -82,7 +90,7 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 	** DO NOT TRUST libraries you would get from an archive; maybe they have not been
           built with a compiler compatible with your system **
 
-	2.1.1 SAFE_KERNEL
+  2.1.1.1 SAFE_KERNEL
 		
 	A) cd to SAFE_KERNEL directory
 	B) run 'geant install'
@@ -95,14 +103,29 @@ NOTE : The Kernel directory provides all SAFE projects (ECLI, EPDF and others) v
 			
 	Known problems : makefiles or .bat files are known to work, but problems may still remain.
 
-	2.1.2 ECLI
+  2.1.1.2 ECLI
 	
 	A) cd to ECLI directory
 	B) run the following command : geant install
 	
 	Example: 
-		WIN32, ge, msc => ecli_c_lcc.lib in ECLI/src/spec/ge/windows
+		WIN32, ge, msc => ecli_c_msc.lib in ECLI/src/spec/ge/windows
 		Linux, ise     => libecli_c.a  in ECLI/src/spec/ise/linux
+	
+  2.1.2 Tools
+
+  2.1.2.1 clisql
+
+	clisql is an interactive sql interpreter located in ${ECLI}/tools/isql.
+
+        Read ${ECLI}/tools/isql/Readme.txt to get help.
+	
+  2.1.2.2 query_assistant
+
+	query assistant generates classes that encapsulate SQL queries, their parameters and their results.
+
+	Useful for SQL statements using "bind variables".	
+	Not useful for dynamically built SQL statements.
 	
   2.2. Building the samples
 
