@@ -20,7 +20,7 @@ inherit
 		end
 
 create
-	make
+	make, make_force_maximum_capacity
 
 
 feature -- Access
