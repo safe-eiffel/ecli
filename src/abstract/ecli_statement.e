@@ -549,14 +549,27 @@ feature -- Element change
 		require
 			valid_statement: is_valid
 			sql_meaningful: not new_sql.is_empty
+		local
+			l_cache : ECLI_SQL_PARSER_CACHE
+			l_parser : ECLI_SQL_PARSER
 		do
 			reset_status
 			sql := new_sql
 			name_to_position.wipe_out
-			parser.parse (sql, Current)
-			create impl_sql.make_from_string (parser.parsed_sql)
+			Cache.search (sql)
+			if Cache.found then
+				l_cache := Cache.found_item
+				l_parser := l_cache.parser
+				name_to_position := l_cache.name_to_position
+			else
+				parser.parse (sql, Current)
+				create l_cache.make (parser, name_to_position)
+				Cache.force (l_cache, sql)
+				l_parser := parser
+			end
+			create impl_sql.make_from_string (l_parser.parsed_sql)
 			set_parsed
-			parameters_count_impl := parser.parameters_count
+			parameters_count_impl := l_parser.parameters_count
 			create {DS_LINKED_LIST[STRING]}impl_parameter_names.make
 			impl_result_columns_count.put (-1) -- do not know
 			is_executed := False
@@ -1071,6 +1084,12 @@ feature {NONE} -- Implementation
 				create Result.make
 				parser_impl := Result
 			end
+		end
+
+	Cache: DS_HASH_TABLE [ECLI_SQL_PARSER_CACHE, STRING]
+			-- SQL parser cache
+		once
+			create Result.make_default
 		end
 
 		parameters_count_impl : INTEGER
