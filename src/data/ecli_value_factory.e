@@ -95,6 +95,11 @@ feature {NONE} -- Miscellaneous
 			create {ECLI_DOUBLE}last_result.make
 		end
 
+	create_float_value
+		do
+			create {ECLI_FLOAT}last_result.make
+		end
+
 	create_integer_value
 		do
 			create {ECLI_INTEGER}last_result.make
@@ -161,7 +166,7 @@ feature -- Basic operations
 			when sql_double then
 					create_double_value
 			when sql_float then
-					create_real_value
+					create_float_value
 			when sql_longvarbinary then
 					create_longvarbinary_value (column_precision)
 			when sql_longvarchar then
