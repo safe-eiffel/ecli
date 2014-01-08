@@ -19,6 +19,7 @@ inherit
 	ECLI_VALUE_FACTORY
 		redefine
 			create_double_value,
+			create_float_value,
 			create_decimal_value,
 			create_real_value,
 			create_integer_value,
@@ -139,6 +140,11 @@ feature -- Miscellaneous
 	create_double_value
 		do
 			create {QA_DOUBLE}last_result.make
+		end
+
+	create_float_value
+		do
+			create {QA_FLOAT}last_result.make
 		end
 
 	create_real_value
