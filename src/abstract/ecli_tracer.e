@@ -165,6 +165,14 @@ feature {ECLI_SESSION} -- Basic operations
 
 feature {ECLI_VALUE} -- Basic operations
 
+	put_boolean (a_value : ECLI_BOOLEAN)
+			-- Put 'a_value' as a string constant
+		require
+			a_value /= Void and then not a_value.is_null
+		do
+			medium.put_string (a_value.out)
+		end
+
 	put_decimal (a_decimal : ECLI_GENERIC_VALUE[MA_DECIMAL])
 			-- Put `a_value' as a decimal constant.
 		require
