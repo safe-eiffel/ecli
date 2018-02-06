@@ -45,6 +45,7 @@ inherit
 				register_statement,
 				unregister_statement,
 				is_registered_statement
+				{ANY} statements
 		redefine
 			default_create
 		end
@@ -407,18 +408,18 @@ feature -- Status setting
 --	(ODBC 1.0)
 --	An SQLUINTEGER value telling the Driver Manager whether to perform tracing:
 --	SQL_OPT_TRACE_OFF = Tracing off (the default)
---	
+--
 --	SQL_OPT_TRACE_ON = Tracing on
---	
+--
 --	When tracing is on, the Driver Manager writes each ODBC function call to the trace file.
---	
+--
 --	Note   When tracing is on, the Driver Manager can return SQLSTATE IM013 (Trace file error) from any function.
 --	An application specifies a trace file with the SQL_ATTR_TRACEFILE option. If the file already exists, the Driver Manager appends to the file. Otherwise, it creates the file. If tracing is on and no trace file has been specified, the Driver Manager writes to the file SQL.LOG in the root directory.
---	
+--
 --	An application can set the variable ODBCSharedTraceFlag to enable tracing dynamically. Tracing is then enabled for all ODBC applications currently running. If an application turns tracing off, it is turned off only for that application.
---	
+--
 --	If the Trace keyword in the system information is set to 1 when an application calls SQLAllocHandle with a HandleType of SQL_HANDLE_ENV, tracing is enabled for all handles. It is enabled only for the application that called SQLAllocHandle.
---	
+--
 --	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_TRACE does not require that the ConnectionHandle argument be valid and will not return SQL_ERROR if ConnectionHandle is NULL. This attribute applies to all connections.
 
 --SQL_ATTR_TRACEFILE
@@ -426,7 +427,7 @@ feature -- Status setting
 --	(ODBC 1.0)
 --	A null-terminated character string containing the name of the trace file.
 --	The default value of the SQL_ATTR_TRACEFILE attribute is specified with the TraceFile keyword in the system information. For more information, see ODBC Subkey.
---	
+--
 --	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_ TRACEFILE does not require the ConnectionHandle argument to be valid and will not return SQL_ERROR if ConnectionHandle is invalid. This attribute applies to all connections.
 
 feature -- Element change
