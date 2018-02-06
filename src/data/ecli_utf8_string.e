@@ -8,8 +8,6 @@ note
 	author: "Berend de Boer <berend@pobox.com>"
 	copyright: "Copyright (c) 2010, Berend de Boer"
 	license: "MIT License (see LICENSE)"
-	date: "$Date: 2010/12/31 $"
-	revision: "$Revision: #1 $"
 
 
 class
