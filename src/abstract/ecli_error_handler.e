@@ -53,7 +53,7 @@ feature -- Basic operations
 			do_nothing
 		end
 
-feature {} -- Implementation
+feature {NONE} -- Implementation
 
 	formatted_message (last_external_feature: STRING; native_code: INTEGER; cli_state : STRING; diagnostic_message: STRING) : STRING
 		do

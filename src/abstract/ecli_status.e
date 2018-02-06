@@ -39,7 +39,7 @@ inherit
 			default_create
 		end
 
-feature {} -- Initialization
+feature {NONE} -- Initialization
 
 	default_create
 		do
@@ -112,7 +112,7 @@ feature -- Status report
 		do
 			Result := status = sql_success or else has_information_message
 				or else  status = sql_no_data
-			    	or else status = sql_need_data;
+					or else status = sql_need_data;
 		end
 
 	is_no_data : BOOLEAN
