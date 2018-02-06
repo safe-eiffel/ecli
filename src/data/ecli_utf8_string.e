@@ -113,13 +113,13 @@ feature {NONE} -- Implementation
 				from
 					c := capacity
 					Result.keep_head (c)
-				variant
-					Result.count + 1
 				until
 					utf8.valid_utf8 (s)
 				loop
 					c := c - 1
 					Result.keep_head (c)
+				variant
+					Result.count + 1
 				end
 			end
 		ensure
