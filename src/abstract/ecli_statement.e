@@ -456,6 +456,27 @@ feature -- Status setting
 			good_mode: not is_prepared_execution_mode
 		end
 
+feature -- Asynchronous execution
+
+	set_asynchronous_execution (enable: BOOLEAN) is
+			-- Enable or disable asynchronous execution
+		require
+			not_executing: not is_executing
+		do
+			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_async_enable, Sql_async_enable_on))
+		end
+
+	is_executing: BOOLEAN is
+		do
+			if is_parsed then
+				Result := status = Sql_still_executing
+				if Result then
+					set_status ("ecli_c_execute_direct", ecli_c_execute_direct (handle, impl_sql.handle))
+				end
+				Result := status = Sql_still_executing
+			end
+		end
+
 feature -- Cursor movement
 
 	start
