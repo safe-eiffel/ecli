@@ -458,7 +458,7 @@ feature -- Status setting
 
 feature -- Asynchronous execution
 
-	set_asynchronous_execution (enable: BOOLEAN) is
+	set_asynchronous_execution (enable: BOOLEAN)
 			-- Enable or disable asynchronous execution
 		require
 			not_executing: not is_executing
@@ -466,7 +466,7 @@ feature -- Asynchronous execution
 			set_status ("ecli_c_set_integer_statement_attribute", ecli_c_set_integer_statement_attribute (handle, Sql_attr_async_enable, Sql_async_enable_on))
 		end
 
-	is_executing: BOOLEAN is
+	is_executing: BOOLEAN
 		do
 			if is_parsed then
 				Result := status = Sql_still_executing

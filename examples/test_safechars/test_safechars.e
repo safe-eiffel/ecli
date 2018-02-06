@@ -197,7 +197,7 @@ feature -- Basic operations
 			end
 		end
 
-	do_execute_with_parameters (stmt : ECLI_STATEMENT; parameters : detachable ARRAY[ECLI_VALUE]; results : detachable ARRAY[ECLI_VALUE]) is
+	do_execute_with_parameters (stmt : ECLI_STATEMENT; parameters : detachable ARRAY[ECLI_VALUE]; results : detachable ARRAY[ECLI_VALUE])
 		do
 			if parameters /= Void then
 				stmt.set_parameters (parameters)

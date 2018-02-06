@@ -56,7 +56,7 @@ feature {ANY} -- SQL data type indicators
 	Sql_unknown_type	:	INTEGER =	0
 
 	Sql_char	:	INTEGER =	1
-	Sql_wchar	:	INTEGER is	-8
+	Sql_wchar	:	INTEGER =	-8
 	Sql_numeric	:	INTEGER =	2
 	Sql_decimal	:	INTEGER =	3
 	Sql_integer	:	INTEGER =	4
@@ -65,7 +65,7 @@ feature {ANY} -- SQL data type indicators
 	Sql_real	:	INTEGER =	7
 	Sql_double	:	INTEGER =	8
 	Sql_varchar	:	INTEGER =	12
-	Sql_wvarchar	:	INTEGER is	-9
+	Sql_wvarchar	:	INTEGER =	-9
 
 	Sql_type_date	:	INTEGER =	91
 	Sql_type_time	:	INTEGER =	92
@@ -73,7 +73,7 @@ feature {ANY} -- SQL data type indicators
 
 	Sql_interval	:	INTEGER =	10
 	Sql_longvarchar	:	INTEGER =	-1
-	Sql_wlongvarchar	:	INTEGER is	-10
+	Sql_wlongvarchar	:	INTEGER =	-10
 	Sql_binary	:	INTEGER =	-2
 	Sql_varbinary	:	INTEGER =	-3
 	Sql_longvarbinary	:	INTEGER =	-4
@@ -138,7 +138,7 @@ feature {NONE} -- C data type indicators
 --SQL_C_GUID
 
 	Sql_c_char	:	INTEGER do Result := Sql_char end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC
-	Sql_c_wchar	:	INTEGER is do Result := Sql_wchar end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC
+	Sql_c_wchar	:	INTEGER do Result := Sql_wchar end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC
 	Sql_c_long	:	INTEGER do Result := Sql_integer end		   --  INTEGER
 	Sql_c_short	:	INTEGER do Result := Sql_smallint end		  --  SMALLINT
 	Sql_c_float	:	INTEGER do Result := Sql_real end			  --  REAL

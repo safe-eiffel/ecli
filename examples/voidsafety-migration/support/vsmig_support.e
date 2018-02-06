@@ -12,7 +12,7 @@ create
 
 feature
 
-	make is
+	make
 		local
 		do
 			create fmti

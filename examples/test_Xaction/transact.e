@@ -56,7 +56,7 @@ feature -- Initialization
 			end;
 		end
 
-	do_test is
+	do_test
 		do
 			show_initial_message
 			create_table
