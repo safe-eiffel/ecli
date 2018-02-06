@@ -62,7 +62,7 @@ create
 
 	make
 
-feature {} -- Initialization
+feature {NONE} -- Initialization
 
 	make, open (a_session : ECLI_SESSION)
 			-- Create a statement for use on `session'
