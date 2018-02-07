@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-15-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-15-0 http://www.eiffel.com/developers/xml/configuration-1-15-0.xsd" name="ecli" uuid="0064A5FC-DA87-465E-AD56-5873AD069654" library_target="ecli">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-16-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-16-0 http://www.eiffel.com/developers/xml/configuration-1-16-0.xsd" name="ecli" uuid="0064A5FC-DA87-465E-AD56-5873AD069654" library_target="ecli">
 	<target name="ecli">
 		<root all_classes="true"/>
-		<option warning="true" full_class_checking="true" is_attached_by_default="false" void_safety="none" syntax="transitional">
+		<option warning="true" full_class_checking="true" syntax="standard">
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
+    <capability>
+      <void_safety support="conformance" use="conformance"/>
+			<catcall_detection support="none" use="none"/>
+   </capability>
 		<setting name="console_application" value="true"/>
 		<external_include location="$(ECLI)/src/spec/C"/>
 		<external_include location="$(ECLI)/src/spec/$(GOBO_EIFFEL)/$(GOBO_OS)"/>
