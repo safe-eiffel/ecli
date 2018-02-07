@@ -68,7 +68,7 @@ feature -- Access
 	item: STRING
 		do
 			if is_null then
-				Result := Void
+				create Result.make_empty
 			else
 				ext_item.copy_to (impl_item)
 				-- How to handle invalid UTF8? Now we crash...
