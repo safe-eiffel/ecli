@@ -102,27 +102,6 @@ feature -- Access
 	login_strategy : detachable ECLI_LOGIN_STRATEGY
 			-- Login strategy used for connection.
 
-	data_source : STRING
-			-- Data source used for connection
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		do
-			Result := simple_login.datasource_name
-		end
-
-	user_name : STRING
-			-- User name used for connection
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		do
-			Result := simple_login.user_name
-		end
-
-	password : STRING
-			-- Password used for connection
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		do
-			Result := simple_login.password
-		end
-
 	info : ECLI_DBMS_INFORMATION
 			-- Various informations about underlying DBMS.
 		do
@@ -444,42 +423,6 @@ feature -- Element change
 			ready_to_connect: is_ready_to_connect
 		end
 
-	set_user_name(a_user_name: STRING)
-			-- Set `user' to `a_user'
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		require
-			not_connected: not is_connected
-			a_user_ok: a_user_name/= Void --FIXME: VS-DEL
-		do
-			simple_login.set_user_name (a_user_name)
-		ensure
-			user_name_set: user_name.is_equal (a_user_name)
-		end
-
-	set_data_source (a_data_source : STRING)
-			-- Set `data_source' to `a_data_source'
-		obsolete "[2004-12-23]Use `set_login_strategy' instead."
-		require
-			not_connected: not is_connected
-			a_data_source_ok: a_data_source /= Void --FIXME: VS-DEL
-		do
-			simple_login.set_datasource_name (a_data_source)
-		ensure
-			data_source_set: data_source.is_equal (a_data_source)
-		end
-
-	set_password (a_password : STRING)
-			-- Set password to 'a_password
-		obsolete "[2004-12-23]Use `set_login_strategy' instead."
-		require
-			not_connected: not is_connected
-			a_password_ok: a_password /= Void --FIXME: VS-DEL
-		do
-			simple_login.set_password (a_password)
-		ensure
-			password_set: password.is_equal (a_password)
-		end
-
 	set_tracer (a_tracer : ECLI_TRACER)
 			-- Trace SQL with `a_tracer'.
 		require
@@ -564,8 +507,8 @@ feature -- Basic Operations
 			if is_ok then
 				impl_has_pending_transaction := True
 			end
-			if is_tracing then
-				tracer.trace_begin
+			if is_tracing and then attached tracer as l_tracer then
+				l_tracer.trace_begin
 			end
 		ensure
 			manual_commit:	is_manual_commit implies is_ok
@@ -585,8 +528,8 @@ feature -- Basic Operations
 				impl_has_pending_transaction := False
 			end
 			set_automatic_commit
-			if is_tracing then
-				tracer.trace_commit
+			if is_tracing and then attached tracer as l_tracer then
+				l_tracer.trace_commit
 			end
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
@@ -606,8 +549,8 @@ feature -- Basic Operations
 				impl_has_pending_transaction := False
 			end
 			set_automatic_commit
-			if is_tracing then
-				tracer.trace_rollback
+			if is_tracing and then attached tracer as l_tracer then
+				l_tracer.trace_rollback
 			end
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
@@ -621,7 +564,9 @@ feature -- Basic Operations
 			not_connected: not is_connected
 			ready_to_connect: is_ready_to_connect
 		do
-			login_strategy.connect (Current)
+			if attached login_strategy as l_login_strategy then
+				l_login_strategy.connect (Current)
+			end
 			if is_ok and then status /= Sql_no_data then
 				set_connected
 			end
@@ -678,14 +623,14 @@ feature -- Basic Operations
 			not_connected: not is_connected
 			not_closed: not is_closed
 		do
-			if not is_closed then
-				environment.unregister_session (Current)
+			if not is_closed and then attached environment as e then
+				e.unregister_session (Current)
 			end
 			release_handle
 			environment := Void
 		ensure
 			closed:     	is_closed
-			unregistered:	not (old environment).is_registered_session (Current)
+			unregistered:	attached old environment as e and then not e.is_registered_session (Current)
 			not_valid:  	not is_valid
 		end
 
@@ -789,13 +734,17 @@ feature {NONE} -- Implementation
 
 			-- | Allocate session handle
 			environment := shared_environment
-			henv := environment.handle
+			if attached environment as e then
+				henv := e.handle
+			end
 			set_status_without_report ("ecli_c_allocate_connection", ecli_c_allocate_connection(henv, ext_handle.handle))
 			handle := ext_handle.item
 			--| register with environment
-			environment.register_session (Current)
+			if attached environment as e then
+				e.register_session (Current)
+			end
 		ensure
-			registered: environment.is_registered_session (Current)
+			registered: attached environment as e and then e.is_registered_session (Current)
 			valid: is_valid
 		end
 

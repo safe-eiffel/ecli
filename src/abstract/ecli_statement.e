@@ -83,12 +83,12 @@ feature {NONE} -- Initialization
 
 			--| session
 			session := a_session
-			if session.exception_on_error then
+			if a_session.exception_on_error then
 				raise_exception_on_error
 			end
 
 			--| statement handle
-			set_status_without_report ("ecli_c_allocate_statement", ecli_c_allocate_statement (session.handle, ext_handle.handle))
+			set_status_without_report ("ecli_c_allocate_statement", ecli_c_allocate_statement (a_session.handle, ext_handle.handle))
 			handle := ext_handle.item
 
 			--| name to position map table for parameters
@@ -96,13 +96,13 @@ feature {NONE} -- Initialization
 			name_to_position.set_equality_tester (create {KL_EQUALITY_TESTER[DS_LIST[INTEGER]]})
 			initialize
 			if is_valid then
-				session.register_statement (Current)
+				a_session.register_statement (Current)
 			end
 		ensure
 			session_ok: session = a_session and not is_closed
-			registered: session.is_registered_statement (Current)
-			same_exception_on_error: exception_on_error = session.exception_on_error
-			same_error_handler: error_handler = session.error_handler
+			registered: a_session.is_registered_statement (Current)
+			same_exception_on_error: exception_on_error = a_session.exception_on_error
+			same_error_handler: error_handler = a_session.error_handler
 			valid: 	is_valid
 		end
 
@@ -147,13 +147,13 @@ feature -- Basic operations
 			valid_statement: is_valid
 			not_closed: not is_closed
 		do
-			if not is_closed then
-				session.unregister_statement (Current)
+			if not is_closed and then attached session as s then
+				s.unregister_statement (Current)
 			end
 			do_close
 		ensure
 			closed: 		is_closed
-			unregistered: 	not (old session).is_registered_statement (Current)
+			unregistered: 	attached old session as s and then not (s).is_registered_statement (Current)
 			not_valid:  	not is_valid
 			no_session: 	not (attached session)
 		end
@@ -177,13 +177,17 @@ feature {ECLI_SESSION} -- Basic Operations
 
 feature -- Access
 
-	info : ECLI_DBMS_INFORMATION
+	info : detachable ECLI_DBMS_INFORMATION
 			-- DBMS information
+		require
+			open: has_session
 		do
--- ?? Not VEVI error while session is detachable???
-			Result := session.info
+			-- ?? Not VEVI error while session is detachable???
+			if attached session as s then
+				Result := s.info
+			end
 		ensure
-			info_not_void: Result /= Void --FIXME: VS-DEL
+			info_not_void: has_session implies attached Result
 		end
 
 	sql : STRING
@@ -323,7 +327,9 @@ feature -- Status Report
 			valid_statement: is_valid
 			open: not is_closed
 		do
-			Result := session.is_describe_parameters_capable
+			if attached session as s then
+				Result := s.is_describe_parameters_capable
+			end
 		end
 
 	has_results : BOOLEAN
@@ -690,9 +696,11 @@ feature -- Basic operations
 					bind_parameters
 				end
 			end
-			if session.is_tracing then
-				if session.tracer.is_tracing_time then
-					session.tracer.begin_execution_timing
+			if attached session as my_session then
+				if my_session.is_tracing and then attached my_session.tracer as l_tracer then
+					if l_tracer.is_tracing_time then
+						l_tracer.begin_execution_timing
+					end
 				end
 			end
 			if is_prepared_execution_mode then
@@ -704,10 +712,12 @@ feature -- Basic operations
 			--| reset column count
 			reset_result_columns_count
 			--|
-			if session.is_tracing and then attached session.tracer as l_tracer then
-				trace (l_tracer)
-				if session.tracer.is_tracing_time then
-					session.tracer.end_execution_timing
+			if attached session as my_session then
+				if my_session.is_tracing and then attached my_session.tracer as l_tracer then
+					trace (l_tracer)
+					if l_tracer.is_tracing_time then
+						l_tracer.end_execution_timing
+					end
 				end
 			end
 			--| restore status

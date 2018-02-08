@@ -6,7 +6,7 @@
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
     <capability>
-      <void_safety support="initialization" use="initialization"/>
+      <void_safety support="transitional" use="transitional"/>
 			<catcall_detection support="none" use="none"/>
    </capability>
 		<setting name="console_application" value="true"/>

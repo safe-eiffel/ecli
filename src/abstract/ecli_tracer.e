@@ -300,10 +300,10 @@ feature {ECLI_VALUE} -- Basic operations
 			a_file_not_null: not a_file.is_null
 		do
 			medium.put_string ("file://")
-			if a_file.input_file /= Void then
-				medium.put_string (a_file.input_file.name)
-			else
-				medium.put_string (a_file.output_file.name)
+			if attached a_file.input_file as f then
+				medium.put_string (f.name)
+			elseif attached a_file.output_file as f then
+				medium.put_string (f.name)
 			end
 		end
 

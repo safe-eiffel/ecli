@@ -44,7 +44,7 @@ feature {NONE} -- Initialization
 			internal_make
 		ensure
 			input_file_set: input_file = an_input_file
-			size_set: size = input_file.count
+			size_set: attached input_file as f and then size = f.count
 		end
 
 	make_output (an_output_file : attached like output_file)
@@ -58,7 +58,7 @@ feature {NONE} -- Initialization
 			internal_make
 		ensure
 			output_file_set: output_file = an_output_file
-			size_set: size = output_file.count
+			size_set: attached output_file as f and then size = f.count
 		end
 
 feature -- Access
@@ -191,7 +191,7 @@ feature -- Element change
 			size := an_input_file.count
 		ensure
 			input_file_set: input_file = an_input_file
-			size_set: size = input_file.count
+			size_set: attached input_file as f and then size = f.count
 		end
 
 	set_output_file (an_output_file : attached like output_file)
@@ -206,7 +206,7 @@ feature -- Element change
 			size := an_output_file.count
 		ensure
 			output_file_set: output_file = an_output_file
-			size_set: size = output_file.count
+			size_set: attached output_file as f and then size = f.count
 		end
 
 feature -- Removal
@@ -238,12 +238,12 @@ feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN
 		do
-			if attached input_file as l_if then
-				if attached l_if.name as l_if_name and then attached other.input_file.name as l_oif_name then
+			if attached input_file as l_if and then attached other.input_file as o_if then
+				if attached l_if.name as l_if_name and then attached o_if.name as l_oif_name then
 					Result := l_if_name.is_equal (l_oif_name)
 				end
-			elseif attached output_file as l_of then
-				if attached l_of.name as l_of_name and then attached other.output_file.name as l_oof_name then
+			elseif attached output_file as l_of and then attached other.output_file as o_of then
+				if attached l_of.name as l_of_name and then attached o_of.name as l_oof_name then
 					Result := l_of_name.is_equal (l_oof_name)
 				end
 			end
@@ -334,34 +334,48 @@ feature {NONE} -- Implementation
 
 	put_parameter_off: BOOLEAN
 		do
-			Result := input_file.end_of_input
+			if attached input_file as f then
+				Result := f.end_of_input
+			else
+				Result := True
+			end
 		end
 
 	put_parameter_forth
 		do
-			input_file.read_string (Transfer_octet_length.as_integer_32)
+			if attached input_file as f then
+				f.read_string (Transfer_octet_length.as_integer_32)
+			end
 		end
 
 	put_parameter_start
 		do
-			input_file.open_read
-			input_file.read_string (Transfer_octet_length.as_integer_32)
+			if attached input_file as f then
+				f.open_read
+				f.read_string (Transfer_octet_length.as_integer_32)
+			end
 		end
 
 	put_parameter_finish
 		do
-			input_file.close
+			if attached input_file as f then
+				f.close
+			end
 		end
 
 	read_result_start
 		do
-			output_file.open_write
+			if attached output_file as f then
+				f.open_write
+			end
 			create transfer_string.make (Transfer_octet_length.as_integer_32)
 		end
 
 	read_result_finish
 		do
-			output_file.close
+			if attached output_file as f then
+				f.close
+			end
 		end
 
 	copy_item_chunck_to_buffer (a_length: INTEGER_32)
@@ -375,12 +389,16 @@ feature {NONE} -- Implementation
 		do
 			transfer_string.wipe_out
 			ext_item.append_substring_to (1, a_length, transfer_string)
-			output_file.put_string (transfer_string)
+			if attached output_file as f then
+				f.put_string (transfer_string)
+			end
 		end
 
 	parameter_count_to_transfer: INTEGER_32
 		do
-			Result := input_file.last_string.count
+			if attached input_file as f then
+				Result := f.last_string.count
+			end
 		end
 
 	capacity: INTEGER_32
@@ -391,8 +409,10 @@ feature {NONE} -- Implementation
 
 	input_count: INTEGER_32
 		do
-			if input_file.is_closed then
-				input_count_impl := input_file.count
+			if attached input_file as f and then f.is_closed then
+				input_count_impl := f.count
+			else
+				input_count_impl := 0
 			end
 			Result := input_count_impl
 		end
