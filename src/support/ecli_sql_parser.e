@@ -100,6 +100,7 @@ feature -- Basic operations
 			table_begin, table_end : INTEGER
 			word_begin, word_end : INTEGER
 			parameter : STRING
+			next_character_is_also_a_parameter_marker: BOOLEAN
 		do
 			from
 				index := 1
@@ -140,10 +141,17 @@ feature -- Basic operations
 							word_begin := index.max (1)
 						end
 						if is_parameter_marker (c) then
-							state := State_parameter
-							callback.on_parameter_marker (sql, index)
-							parameter_begin := index + 1
-							parsed_sql.append_character (Cli_marker)
+							next_character_is_also_a_parameter_marker := index < sql_count and then is_parameter_marker (original_sql.item (index + 1))
+							if not next_character_is_also_a_parameter_marker then
+								state := State_parameter
+								callback.on_parameter_marker (sql, index)
+								parameter_begin := index + 1
+								parsed_sql.append_character (Cli_marker)
+							else
+								parsed_sql.append_character (c)
+								parsed_sql.append_character (original_sql.item (index + 1))
+								index := index + 1
+							end
 						else
 							parsed_sql.append_character (c)
 						end

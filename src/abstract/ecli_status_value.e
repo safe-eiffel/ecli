@@ -14,7 +14,7 @@ create
 	default_create,
 	make_copy
 
-feature {} -- Implementation
+feature {NONE} -- Implementation
 
 	get_error_diagnostic (record_index : INTEGER; state : POINTER; native_error : POINTER; message : POINTER; buffer_length : INTEGER; length_indicator : POINTER) : INTEGER
 		do

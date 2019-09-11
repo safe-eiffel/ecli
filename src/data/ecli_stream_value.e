@@ -75,7 +75,7 @@ feature {ECLI_STATEMENT} -- Basic operations
 				create parameter_rank.make
 				create length_at_execution.make
 				parameter_rank.put (index)
-				if stmt.info.need_long_data_len then
+				if attached stmt.info as info and then info.need_long_data_len then
 					length_at_execution.put (ecli_c_len_data_at_exe (input_count))
 				else
 					length_at_execution.put (sql_data_at_exec)

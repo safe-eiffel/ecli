@@ -283,7 +283,7 @@ feature --  Basic operations
 			ok: arguments_ok implies (data_source_name /= Void and user_name /= Void and password /= Void)
 		end
 
-	print_usage is
+	print_usage
 			-- print terse usage string
 		do
 				io.put_string ("Usage: test_procedures <data_source> <user_name> <password> [<trace_file_name>]%N")

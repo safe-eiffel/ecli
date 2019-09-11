@@ -1,7 +1,7 @@
 note
 
 	description:
-	
+
 			"CLI DB type codes.  Use this class as a mix-in. Extracted from SQL.h, for ODBC ver >= 3.5	."
 
 --SQL_CHAR
@@ -51,11 +51,12 @@ class ECLI_TYPE_CONSTANTS
 feature {ANY} -- SQL data type indicators
 
 	Sql_all_types	:	INTEGER =	0
-		--  GetTypeInfo() request for all data types 
+		--  GetTypeInfo() request for all data types
 
 	Sql_unknown_type	:	INTEGER =	0
 
 	Sql_char	:	INTEGER =	1
+	Sql_wchar	:	INTEGER =	-8
 	Sql_numeric	:	INTEGER =	2
 	Sql_decimal	:	INTEGER =	3
 	Sql_integer	:	INTEGER =	4
@@ -64,25 +65,27 @@ feature {ANY} -- SQL data type indicators
 	Sql_real	:	INTEGER =	7
 	Sql_double	:	INTEGER =	8
 	Sql_varchar	:	INTEGER =	12
+	Sql_wvarchar	:	INTEGER =	-9
 
 	Sql_type_date	:	INTEGER =	91
 	Sql_type_time	:	INTEGER =	92
 	Sql_type_timestamp	:	INTEGER =	93
 
-	Sql_interval	:	INTEGER =	10 
+	Sql_interval	:	INTEGER =	10
 	Sql_longvarchar	:	INTEGER =	-1
+	Sql_wlongvarchar	:	INTEGER =	-10
 	Sql_binary	:	INTEGER =	-2
 	Sql_varbinary	:	INTEGER =	-3
 	Sql_longvarbinary	:	INTEGER =	-4
 	Sql_bigint	:	INTEGER =	-5
 	Sql_tinyint	:	INTEGER =	-6
 	Sql_bit	:	INTEGER =	-7
-	Sql_guid	:	INTEGER =	-11 
+	Sql_guid	:	INTEGER =	-11
 
 feature {NONE} -- Not yet supported
-	
+
 	-- IF (ODBCVER >= 0x0300)
-	--  interval code 
+	--  interval code
 --	Sql_code_year	:	INTEGER is	1
 --	Sql_code_month	:	INTEGER is	2
 --	Sql_code_day	:	INTEGER is	3
@@ -134,12 +137,13 @@ feature {NONE} -- C data type indicators
 --SQL_C_NUMERIC
 --SQL_C_GUID
 
-	Sql_c_char	:	INTEGER do Result := Sql_char end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC 
-	Sql_c_long	:	INTEGER do Result := Sql_integer end		   --  INTEGER					  
-	Sql_c_short	:	INTEGER do Result := Sql_smallint end		  --  SMALLINT					 
-	Sql_c_float	:	INTEGER do Result := Sql_real end			  --  REAL						 
-	Sql_c_double	:	INTEGER do Result := Sql_double end			--  FLOAT, DOUBLE				
-	Sql_c_numeric	:	INTEGER do Result := Sql_numeric end  
+	Sql_c_char	:	INTEGER do Result := Sql_char end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC
+	Sql_c_wchar	:	INTEGER do Result := Sql_wchar end			  --  CHAR, VARCHAR, DECIMAL, NUMERIC
+	Sql_c_long	:	INTEGER do Result := Sql_integer end		   --  INTEGER
+	Sql_c_short	:	INTEGER do Result := Sql_smallint end		  --  SMALLINT
+	Sql_c_float	:	INTEGER do Result := Sql_real end			  --  REAL
+	Sql_c_double	:	INTEGER do Result := Sql_double end			--  FLOAT, DOUBLE
+	Sql_c_numeric	:	INTEGER do Result := Sql_numeric end
 	Sql_c_default	:	INTEGER =	99
 
 	Sql_signed_offset	:	INTEGER =	-20
@@ -166,22 +170,22 @@ feature {NONE} -- C data type indicators
 	Sql_c_binary	:	INTEGER do Result := Sql_binary end
 	Sql_c_bit	:	INTEGER do Result := Sql_bit end
 
-	Sql_c_sbigint	:	INTEGER do Result := (Sql_bigint+Sql_signed_offset) end		--  SIGNED BIGINT 
-	Sql_c_ubigint	:	INTEGER do Result := (Sql_bigint+Sql_unsigned_offset) end	--  UNSIGNED BIGINT 
+	Sql_c_sbigint	:	INTEGER do Result := (Sql_bigint+Sql_signed_offset) end		--  SIGNED BIGINT
+	Sql_c_ubigint	:	INTEGER do Result := (Sql_bigint+Sql_unsigned_offset) end	--  UNSIGNED BIGINT
 
 	Sql_c_tinyint	:	INTEGER do Result := Sql_tinyint end
-	Sql_c_slong	:	INTEGER do Result := (Sql_c_long+Sql_signed_offset) end	 --  SIGNED INTEGER  
-	Sql_c_sshort	:	INTEGER do Result := (Sql_c_short+Sql_signed_offset) end	--  SIGNED SMALLINT 
-	Sql_c_stinyint	:	INTEGER do Result := (Sql_tinyint+Sql_signed_offset) end	--  SIGNED TINYINT  
+	Sql_c_slong	:	INTEGER do Result := (Sql_c_long+Sql_signed_offset) end	 --  SIGNED INTEGER
+	Sql_c_sshort	:	INTEGER do Result := (Sql_c_short+Sql_signed_offset) end	--  SIGNED SMALLINT
+	Sql_c_stinyint	:	INTEGER do Result := (Sql_tinyint+Sql_signed_offset) end	--  SIGNED TINYINT
 
 	Sql_c_ulong	:	INTEGER do Result := (Sql_c_long+Sql_unsigned_offset) end   --  UNSIGNED INTEGER
 	Sql_c_ushort	:	INTEGER do Result := (Sql_c_short+Sql_unsigned_offset) end  --  UNSIGNED SMALLINT
 	Sql_c_utinyint	:	INTEGER do Result := (Sql_tinyint+Sql_unsigned_offset) end  --  UNSIGNED TINYINT
 
-	Sql_c_bookmark	:	INTEGER do Result := Sql_c_ulong end						--  BOOKMARK		
-	Sql_c_varbookmark	:	INTEGER do Result := Sql_c_binary end -- (ODBCVER >= 0x0300)   --  ODBCVER >= 0x0300 
+	Sql_c_bookmark	:	INTEGER do Result := Sql_c_ulong end						--  BOOKMARK
+	Sql_c_varbookmark	:	INTEGER do Result := Sql_c_binary end -- (ODBCVER >= 0x0300)   --  ODBCVER >= 0x0300
 
-	Sql_c_guid	:	INTEGER do Result := Sql_guid end -- (ODBCVER >= 0x0350)   --  ODBCVER >= 0x0350 
+	Sql_c_guid	:	INTEGER do Result := Sql_guid end -- (ODBCVER >= 0x0350)   --  ODBCVER >= 0x0350
 
 	Sql_type_null	:	INTEGER =	0
 

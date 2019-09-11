@@ -45,6 +45,7 @@ inherit
 				register_statement,
 				unregister_statement,
 				is_registered_statement
+				{ANY} statements
 		redefine
 			default_create
 		end
@@ -100,27 +101,6 @@ feature -- Access
 
 	login_strategy : detachable ECLI_LOGIN_STRATEGY
 			-- Login strategy used for connection.
-
-	data_source : STRING
-			-- Data source used for connection
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		do
-			Result := simple_login.datasource_name
-		end
-
-	user_name : STRING
-			-- User name used for connection
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		do
-			Result := simple_login.user_name
-		end
-
-	password : STRING
-			-- Password used for connection
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		do
-			Result := simple_login.password
-		end
 
 	info : ECLI_DBMS_INFORMATION
 			-- Various informations about underlying DBMS.
@@ -407,18 +387,18 @@ feature -- Status setting
 --	(ODBC 1.0)
 --	An SQLUINTEGER value telling the Driver Manager whether to perform tracing:
 --	SQL_OPT_TRACE_OFF = Tracing off (the default)
---	
+--
 --	SQL_OPT_TRACE_ON = Tracing on
---	
+--
 --	When tracing is on, the Driver Manager writes each ODBC function call to the trace file.
---	
+--
 --	Note   When tracing is on, the Driver Manager can return SQLSTATE IM013 (Trace file error) from any function.
 --	An application specifies a trace file with the SQL_ATTR_TRACEFILE option. If the file already exists, the Driver Manager appends to the file. Otherwise, it creates the file. If tracing is on and no trace file has been specified, the Driver Manager writes to the file SQL.LOG in the root directory.
---	
+--
 --	An application can set the variable ODBCSharedTraceFlag to enable tracing dynamically. Tracing is then enabled for all ODBC applications currently running. If an application turns tracing off, it is turned off only for that application.
---	
+--
 --	If the Trace keyword in the system information is set to 1 when an application calls SQLAllocHandle with a HandleType of SQL_HANDLE_ENV, tracing is enabled for all handles. It is enabled only for the application that called SQLAllocHandle.
---	
+--
 --	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_TRACE does not require that the ConnectionHandle argument be valid and will not return SQL_ERROR if ConnectionHandle is NULL. This attribute applies to all connections.
 
 --SQL_ATTR_TRACEFILE
@@ -426,7 +406,7 @@ feature -- Status setting
 --	(ODBC 1.0)
 --	A null-terminated character string containing the name of the trace file.
 --	The default value of the SQL_ATTR_TRACEFILE attribute is specified with the TraceFile keyword in the system information. For more information, see ODBC Subkey.
---	
+--
 --	Calling SQLSetConnectAttr with an Attribute of SQL_ATTR_ TRACEFILE does not require the ConnectionHandle argument to be valid and will not return SQL_ERROR if ConnectionHandle is invalid. This attribute applies to all connections.
 
 feature -- Element change
@@ -441,42 +421,6 @@ feature -- Element change
 		ensure
 			login_strategy_set: login_strategy = new_login
 			ready_to_connect: is_ready_to_connect
-		end
-
-	set_user_name(a_user_name: STRING)
-			-- Set `user' to `a_user'
-		obsolete "[2004-12-23]Use `login_strategy' instead."
-		require
-			not_connected: not is_connected
-			a_user_ok: a_user_name/= Void --FIXME: VS-DEL
-		do
-			simple_login.set_user_name (a_user_name)
-		ensure
-			user_name_set: user_name.is_equal (a_user_name)
-		end
-
-	set_data_source (a_data_source : STRING)
-			-- Set `data_source' to `a_data_source'
-		obsolete "[2004-12-23]Use `set_login_strategy' instead."
-		require
-			not_connected: not is_connected
-			a_data_source_ok: a_data_source /= Void --FIXME: VS-DEL
-		do
-			simple_login.set_datasource_name (a_data_source)
-		ensure
-			data_source_set: data_source.is_equal (a_data_source)
-		end
-
-	set_password (a_password : STRING)
-			-- Set password to 'a_password
-		obsolete "[2004-12-23]Use `set_login_strategy' instead."
-		require
-			not_connected: not is_connected
-			a_password_ok: a_password /= Void --FIXME: VS-DEL
-		do
-			simple_login.set_password (a_password)
-		ensure
-			password_set: password.is_equal (a_password)
 		end
 
 	set_tracer (a_tracer : ECLI_TRACER)
@@ -563,8 +507,8 @@ feature -- Basic Operations
 			if is_ok then
 				impl_has_pending_transaction := True
 			end
-			if is_tracing then
-				tracer.trace_begin
+			if is_tracing and then attached tracer as l_tracer then
+				l_tracer.trace_begin
 			end
 		ensure
 			manual_commit:	is_manual_commit implies is_ok
@@ -584,8 +528,8 @@ feature -- Basic Operations
 				impl_has_pending_transaction := False
 			end
 			set_automatic_commit
-			if is_tracing then
-				tracer.trace_commit
+			if is_tracing and then attached tracer as l_tracer then
+				l_tracer.trace_commit
 			end
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
@@ -605,8 +549,8 @@ feature -- Basic Operations
 				impl_has_pending_transaction := False
 			end
 			set_automatic_commit
-			if is_tracing then
-				tracer.trace_rollback
+			if is_tracing and then attached tracer as l_tracer then
+				l_tracer.trace_rollback
 			end
 		ensure
 			no_pending_transaction: not has_pending_transaction implies is_ok
@@ -620,7 +564,9 @@ feature -- Basic Operations
 			not_connected: not is_connected
 			ready_to_connect: is_ready_to_connect
 		do
-			login_strategy.connect (Current)
+			if attached login_strategy as l_login_strategy then
+				l_login_strategy.connect (Current)
+			end
 			if is_ok and then status /= Sql_no_data then
 				set_connected
 			end
@@ -677,14 +623,14 @@ feature -- Basic Operations
 			not_connected: not is_connected
 			not_closed: not is_closed
 		do
-			if not is_closed then
-				environment.unregister_session (Current)
+			if not is_closed and then attached environment as e then
+				e.unregister_session (Current)
 			end
 			release_handle
 			environment := Void
 		ensure
 			closed:     	is_closed
-			unregistered:	not (old environment).is_registered_session (Current)
+			unregistered:	attached old environment as e and then not e.is_registered_session (Current)
 			not_valid:  	not is_valid
 		end
 
@@ -788,13 +734,17 @@ feature {NONE} -- Implementation
 
 			-- | Allocate session handle
 			environment := shared_environment
-			henv := environment.handle
+			if attached environment as e then
+				henv := e.handle
+			end
 			set_status_without_report ("ecli_c_allocate_connection", ecli_c_allocate_connection(henv, ext_handle.handle))
 			handle := ext_handle.item
 			--| register with environment
-			environment.register_session (Current)
+			if attached environment as e then
+				e.register_session (Current)
+			end
 		ensure
-			registered: environment.is_registered_session (Current)
+			registered: attached environment as e and then e.is_registered_session (Current)
 			valid: is_valid
 		end
 

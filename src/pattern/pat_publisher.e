@@ -17,7 +17,7 @@ inherit
 			default_create
 		end
 
-feature {} -- Initialization
+feature {NONE} -- Initialization
 
 	default_create
 		do

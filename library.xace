@@ -39,7 +39,9 @@
 		<option unless="${GOBO_OS}=windows">
 			<option name="c_compiler_options" value="-I${ECLI}/src/spec/C"/>
 			<option name="c_compiler_options" value="-I${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}"/>
+			<option name="c_compiler_options" value="-I/usr/local/include"/>
 			<option name="link" value="${ECLI}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libecli_c.a"/>
+			<option name="link" value="-L/usr/local/lib"/>
 			<option name="link" value="-lodbc"/>
 			<option name="link" value="-lodbcinst"/>
 		</option>

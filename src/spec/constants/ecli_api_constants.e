@@ -13,6 +13,7 @@ class ECLI_API_CONSTANTS
 
 feature {NONE} -- statement attributes
 
+	Sql_attr_async_enable: INTEGER = 4
 	Sql_attr_row_bind_type : INTEGER = 5
 	Sql_attr_row_bind_offset_ptr: INTEGER = 23
 	Sql_attr_row_operation_ptr: INTEGER = 24
@@ -41,6 +42,11 @@ feature {NONE} -- Binding modes
 
 	Sql_bind_by_column : INTEGER = 0
 	Sql_parameter_bind_by_column : INTEGER = 0
+
+feature {NONE} -- Asynchronous execution modes
+
+	Sql_async_enable_off: INTEGER = 0
+	Sql_async_enable_on: INTEGER = 1
 
 feature {NONE} -- boolean values
 

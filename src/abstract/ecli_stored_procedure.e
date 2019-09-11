@@ -20,14 +20,14 @@ inherit
 			put_single_parameter_with_hint,
 			put_parameter_with_hint,
 			bind_one_parameter,
-			default_create 
+			default_create
 		end
 
 create
 
 	make
 
-feature {} -- Initialization
+feature {NONE} -- Initialization
 
 	default_create
 		do
@@ -172,7 +172,7 @@ feature {NONE} -- Implementation
 			directed_parameters.item (i).bind (Current, i)
 		end
 
-feature {} -- Implementation / Auxiliary
+feature {NONE} -- Implementation / Auxiliary
 
 	default_directed_parameter : ECLI_STATEMENT_PARAMETER
 		do

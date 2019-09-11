@@ -248,7 +248,7 @@ feature {NONE} -- Implementation
 		end
 
 
-	do_simple_sql (a_sql : STRING; checked : BOOLEAN) is
+	do_simple_sql (a_sql : STRING; checked : BOOLEAN)
 		do
 			create statement.make (session)
 			statement.set_sql (a_sql)

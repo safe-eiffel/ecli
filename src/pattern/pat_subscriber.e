@@ -21,14 +21,14 @@ feature -- Status report
 
 	unsubscribed : BOOLEAN
 		do
-			Result := (publisher = Void)
+			Result := not attached publisher
 		ensure
 			definition: Result = (publisher = Void)
 		end
 
 	has_publisher : BOOLEAN
 		do
-			Result := (publisher /= Void)
+			Result := attached publisher
 		ensure
 			definition: Result = (publisher /= Void)
 		end

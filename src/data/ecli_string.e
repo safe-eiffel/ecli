@@ -123,7 +123,7 @@ feature {NONE} -- Implementation
 
 	sql_type_code_impl : INTEGER
 
-feature {} -- Implementation of ECLI_STREAM_VALUE deferred routines
+feature {NONE} -- Implementation of ECLI_STREAM_VALUE deferred routines
 
 	put_parameter_start
 		do
@@ -175,4 +175,3 @@ feature {} -- Implementation of ECLI_STREAM_VALUE deferred routines
 		end
 
 end
-
